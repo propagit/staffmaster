@@ -2,9 +2,9 @@
 <p>Add clients using below form or import multiple clients.</p>
 
 
-<a href="<?=base_url();?>client/search"><i class="icon-plus-sign"></i> Search Clients</a>
+<a href="<?=base_url();?>client/search"><i class="fa fa-search"></i> Search Clients</a>
 <br /><br />
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-heading">Add New Client</div>
 	<div class="panel-body">
 		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/add">
@@ -112,7 +112,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
-					<button type="submit" class="btn btn-info"><i class="icon-plus-sign"></i> Add Client</button>
+					<button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Add Client</button>
 				</div>
 			</div>
 		</form>

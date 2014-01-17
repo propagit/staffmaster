@@ -2,9 +2,9 @@
 <p>Add staff using below form or import multiple staff.</p>
 
 
-<a href="<?=base_url();?>staff/search"><i class="icon-plus-sign"></i> Search Staff</a>
+<a href="<?=base_url();?>staff/search"><i class="fa fa-search"></i> Search Staff</a>
 <br /><br />
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-heading">Add New Staff</div>
 	<div class="panel-body">
 		<ul class="nav nav-pills">
@@ -160,7 +160,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<div class="col-lg-offset-4 col-lg-8">
-						<button type="submit" class="btn btn-info"><i class="icon-plus-sign"></i> Add Staff</button>
+						<button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Add Staff</button>
 					</div>
 				</div>
 			</div>

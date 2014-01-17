@@ -2,11 +2,11 @@
 
 <p>Find your staff to communicate with them or view and edit their profile.</p>
 
-<a href="#"><i class="icon-search"></i> Search Jobs</a>
+<a href="<?=base_url();?>job/search"><i class="fa fa-search"></i> Search Jobs</a>
 &nbsp; &nbsp; &nbsp;
-<a href="<?=base_url();?>staff/add"><i class="icon-plus-sign"></i> Add Staff</a>
+<a href="<?=base_url();?>staff/add"><i class="fa fa-plus"></i> Add Staff</a>
 <br /><br />
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-heading">Search Staff</div>
 	<div class="panel-body">
 		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/search">
@@ -87,7 +87,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<div class="col-lg-offset-4 col-lg-8">
-						<button type="submit" class="btn btn-info"><i class="icon-search"></i> Search Staff</button>
+						<button type="submit" class="btn btn-info"><i class="fa fa-search"></i> Search Staff</button>
 					</div>
 				</div>
 			</div>

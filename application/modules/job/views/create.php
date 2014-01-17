@@ -1,12 +1,9 @@
 <h2>Create Job</h2>
 <p><b>Step 1</b> - Create a job folder name to store jobs in and choose a job creation style.</p>
 
-
-<a href="<?=base_url();?>job/calendar"><i class="icon-calendar"></i> Jobs Calendar</a>
-&nbsp; &nbsp; &nbsp;
-<a href="<?=base_url();?>job/search"><i class="icon-search"></i> Search Jobs</a>
+<a href="<?=base_url();?>job/search"><i class="fa fa-search"></i> Search Jobs</a>
 <br /><br />
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-heading">Create New Job - <b>Step 1</b></div>
 	<div class="panel-body">		
 		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>job/create">
@@ -31,7 +28,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<div class="col-lg-offset-4 col-lg-8">
-						<button type="submit" class="btn btn-info"><i class="icon-plus-sign"></i> Create Job</button>
+						<button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Create Job</button>
 					</div>
 				</div>
 			</div>

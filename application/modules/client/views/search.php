@@ -5,9 +5,9 @@
 
 <p>Search and manage your client list.</p>
 
-<a href="<?=base_url();?>client/add"><i class="icon-plus-sign"></i> Add Client</a>
+<a href="<?=base_url();?>client/add"><i class="fa fa-plus"></i> Add Client</a>
 <br /><br />
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-heading">Search Client</div>
 	<div class="panel-body">
 		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/search">
@@ -17,7 +17,7 @@
 					<input type="text" class="form-control" id="keyword" name="keyword" placeholder="company name" />
 				</div>
 				<div class="pull=right">
-					<button type="submit" class="btn btn-info"><i class="icon-search"></i> Search</button>
+					<button type="submit" class="btn btn-info"><i class="fa fa-search"></i> Search</button>
 				</div>
 			</div>
 		

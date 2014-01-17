@@ -2,22 +2,22 @@
 <p>Edit staff using below form.</p>
 
 
-<a href="<?=base_url();?>staff/search"><i class="icon-plus-sign"></i> Search Staff</a>
+<a href="<?=base_url();?>staff/search"><i class="fa fa-search"></i> Search Staff</a>
 <br /><br />
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-heading">Edit Staff</div>
 	<div class="panel-body">
-		<ul class="nav nav-pills" id="navStaff">
-			<li class="active"><a href="#personal">Personal Details</a></li>
-			<li><a href="#financial">Financial Details</a></li>
-			<li><a href="#super">Super Details</a></li>
-			<li><a href="#availability">Availability</a></li>
-			<li><a href="#roles">Roles</a></li>
-			<li><a href="#payrate">Pay Rate</a></li>
-			<li><a href="#option">Options</a></li>
-			<li><a href="#location">Location</a></li>
-			<li><a href="#setting">Settings</a></li>
-			<li><a href="#document">Documents</a></li>
+		<ul class="nav nav-tabs" id="navStaff">
+			<li class="active"><a href="#personal" data-toggle="tab">Personal Details</a></li>
+			<li><a href="#financial" data-toggle="tab">Financial Details</a></li>
+			<li><a href="#super" data-toggle="tab">Super Details</a></li>
+			<li><a href="#availability" data-toggle="tab">Availability</a></li>
+			<li><a href="#roles" data-toggle="tab">Roles</a></li>
+			<li><a href="#payrate" data-toggle="tab">Pay Rate</a></li>
+			<li><a href="#option" data-toggle="tab">Options</a></li>
+			<li><a href="#location" data-toggle="tab">Location</a></li>
+			<li><a href="#setting" data-toggle="tab">Settings</a></li>
+			<li><a href="#document" data-toggle="tab">Documents</a></li>
 		</ul>
 		<br />
 		
@@ -641,7 +641,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<div class="col-lg-offset-4 col-lg-8">
-							<button type="submit" class="btn btn-info"><i class="icon-save"></i> Update Staff</button>
+							<button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Update Staff</button>
 						</div>
 					</div>
 				</div>

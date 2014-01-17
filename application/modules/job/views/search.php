@@ -1,11 +1,9 @@
 <h2>Search Jobs</h2>
 
 <p>Find jobs you have created to view and edit them.</p>
-<a href="<?=base_url();?>job/calendar"><i class="icon-calendar"></i> Jobs Calendar</a>
-&nbsp; &nbsp; &nbsp;
-<a href="<?=base_url();?>job/create"><i class="icon-plus-sign"></i> Create Job</a>
+<a href="<?=base_url();?>job/create"><i class="fa fa-plus"></i> Create Job</a>
 <br /><br />
-<div class="panel">
+<div class="panel panel-default">
 	<div class="panel-heading">Search Job</div>
 	<div class="panel-body">
 		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>job/search">
@@ -72,7 +70,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<div class="col-lg-offset-4 col-lg-8">
-							<button type="submit" class="btn btn-info"><i class="icon-search"></i> Search</button>
+							<button type="submit" class="btn btn-info"><i class="fa fa-search"></i> Search</button>
 						</div>
 					</div>
 				</div>
