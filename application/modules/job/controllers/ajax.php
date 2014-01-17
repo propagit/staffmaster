@@ -105,20 +105,6 @@ class Ajax extends MX_Controller {
 		$date = $this->input->post('date');
 		$this->session->set_userdata('job_date', $date);
 		
-		/*
-		if (!$this->session->userdata('job_date'))
-		{
-			if ($job_dates)
-			{
-				$this->session->set_userdata('job_date', $job_dates[0]['job_date']);
-			}
-		}
-		if ($this->input->post('date'))
-		{
-			$this->session->set_userdata('job_date', $this->input->post('date'));
-		}
-		*/
-		
 		$data['total_date'] = count($job_dates);
 		$key = 0;
 		foreach($job_dates as $index => $value)
@@ -145,7 +131,7 @@ class Ajax extends MX_Controller {
 			$right_index = $key + 1;
 			$left_index = $key - 1;
 		}
-		#echo $left_index . ' - ' . $right_index;
+		
 		$op_job_dates = array();
 		foreach($job_dates as $index => $value)
 		{
@@ -162,6 +148,17 @@ class Ajax extends MX_Controller {
 		$this->load->view('job_shifts_list_view', isset($data) ? $data : NULL);
 	}
 	
+	function load_month_view()
+	{
+		$this->session->set_userdata('calendar_view', 'month');
+		echo date('Y-m-d', $this->input->post('date'));
+	}
+	function load_week_view()
+	{
+		$this->session->set_userdata('calendar_view', 'week');
+		echo date('Y-m-d', $this->input->post('date'));
+	}
+	
 	function load_job_calendar()
 	{
 		$job_id = $this->input->post('job_id');
@@ -176,14 +173,21 @@ class Ajax extends MX_Controller {
 			$data['custom_date'] = strtotime($this->input->post('date'));
 		}
 		$data['job_id'] = $job_id;
-		$this->load->view('job_shifts_week_view', isset($data) ? $data : NULL);
+		
+		#if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week')
+		#{
+			$this->load->view('job_shifts_week_view', isset($data) ? $data : NULL);	
+		#} else if ($this->session->userdata('calendar_view') == 'month')
+		#{
+		#	echo 'a';
+		#}
 	}
 	
 	function load_job_week()
 	{
-		#$date = $this->input->post('date');
-		#$date += (int) $this->input->post('i') * 7*24*24*60;
-		#echo date('Y-m-d', $date);	
+		$date = $this->input->post('date');
+		$date += (int) $this->input->post('step') * 7*24*60*60;
+		echo date('Y-m-d', $date);	
 	}
 	
 	function set_order_param()

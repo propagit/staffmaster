@@ -28,21 +28,6 @@ function load_job_calendar(job_id, date=null)
 		}
 	})
 }
-function load_job_week(job_id,date,i)
-{
-	//alert(job_id + ' ' + date + ' '  + i);
-	$.ajax({
-		type: "POST",
-		url: base_url + 'job/ajax/load_job_week',
-		data: { date: date, i: i},
-		success: function(html)
-		{
-			//alert(html);
-			//load_job_shifts(job_id);
-			//load_job_calendar(job_id, html);
-		}
-	})
-}
 
 $(function(){
 	$('input[type="checkbox"]').prettyCheckable();
