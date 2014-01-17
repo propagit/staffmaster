@@ -1,0 +1,466 @@
+@import url(http://fonts.googleapis.com/css?family=Lato);
+
+html,
+body {
+	height: 100%;
+	/* The html and body elements cannot have any padding or margin. */
+	font-family: 'Lato', sans-serif;
+	font-size: 15px;
+	background: #ffffff;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height */
+	margin: 0 auto -60px;
+}
+h1, h2, h3, h4 {
+	font-weight: 600;
+}
+a, a:hover, a:focus {
+	color: #00bbf8;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.nm {
+	margin: 0;
+	padding: 0;
+}
+i {
+	margin-right: 5px;
+}
+.label i {
+	margin: 0;
+}
+.btn {
+	font-size: 15px;
+	font-weight: 400;
+	/* background: #00bbf8; */
+}
+.thin {
+	font-family: "RobotoThin";
+}
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+	height: 60px;
+}
+#footer {
+	position: relative;
+	z-index: -1;
+	font-size: 12px;
+}
+#footer ul {
+	list-style: none;
+	margin-top: 20px;
+}
+#footer ul li {
+	display: inline;
+	margin-left: 20px;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+	#footer {
+		margin-left: -20px;
+		margin-right: -20px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+.container {
+	width: 1160px;
+	padding: 0 20px;
+}
+.navbar-static-top .container {
+	width: 1160px;
+}
+.container .credit {
+	margin: 20px 0;
+}
+
+.upcase {
+	text-transform: uppercase;
+}
+.modal {
+}
+
+
+#wrap > .container {
+	background: #fff;
+}
+
+
+#header {
+	height: 120px;
+	padding-top: 20px;
+	background: #ededed;
+}
+
+#header h3 {
+	font-weight: 400;
+	line-height: 1em;
+	margin: 0;
+	padding: 0;
+}
+#header h4 {
+	font-weight: 500;
+	font-size: 15px;
+	margin: 5px 0 8px 0;
+}
+.user_avatar {
+	background: #fff;
+	padding: 15px;
+	color: #00bbf8;
+	margin-right: 20px;
+}
+ul.top_nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+ul.top_nav li {
+	display: inline;
+}
+ul.top_nav li a {
+	margin: 0 10px 0 0;
+	padding: 0 10px 0 0;
+	border-right: 2px solid #00bbf8;
+	color: #00bbf8;
+	text-decoration: none;
+}
+ul.top_nav li:last-child a {
+	border: 0;
+	padding: 0;
+}
+span.required {
+	font-weight: bold;
+	color: #00bbf8;
+}
+.menu {
+	margin: 0;
+	height: 50px;
+	line-height: 50px;
+	/* fallback */ 
+	background-color: #00bbf8; 
+	text-transform: capitalize;
+	font-size: 15px;
+}
+.menu ul.main_nav .caret {
+	border-top: 4px solid rgb(255,255,255);
+}
+.menu ul.main_nav {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.menu ul.main_nav li {
+	margin: 0;
+	padding: 0;
+	float: left;
+	text-align: center;
+}
+.menu ul.main_nav li:hover {
+	background: #00b1eb;
+}
+
+.menu ul.main_nav li:first-child {
+	margin-left: 0;
+}
+.menu ul.main_nav li:last-child {
+	margin-right: 0;
+}
+.menu ul.main_nav li a {
+	line-height: 50px;
+	text-decoration: none;
+	color: #fff;
+	margin: 0 20px;
+}
+.menu ul.dropdown-menu {
+	overflow: hidden;
+	background: #fff;
+	max-height: 300px;
+	margin-top: 0px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-top: 0;
+}
+.menu ul.dropdown-menu li a {
+	color: #000;
+	height: 30px;
+	line-height: 22px;	
+	width: 180px;
+	text-align: left;
+	margin-left: 0;
+}
+.menu ul.dropdown-menu li:hover a {
+	background: #00b1eb;
+	color: #fff;
+}
+.menu ul.dropdown-menu li a:focus {
+	outline: none;
+}
+
+.form-group .auto-width {
+	width: auto;	
+	min-width: 100px;
+}
+.form-group ol {
+}
+.form-group .auto-width option {
+	padding-right: 20px;
+}
+.form-group select.pull-left {
+	margin-right: 10px;
+}
+.label_checkbox {
+	margin-top:5px;
+	margin-left: -35px;
+}
+.radio {
+	margin-bottom: 0;
+	margin-top: 6px;	
+}
+.table_action {
+	margin-bottom: -10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.table_action .btn {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.table_settings {
+	overflow: hidden;
+	clear: both;
+	margin-top: 10px;
+	margin-bottom: -10px;
+	padding: 10px;
+	border: 2px solid #ddd;
+	border-bottom: 0;
+	background: #eee;
+}
+.table_settings label {
+	margin: 0 10px;
+}
+.btn-day {
+	color: #fff;
+	background: #d5d5d5;
+}
+.btn-day:hover {
+	color: #666;
+	border-color: #aaa;
+}
+.btn-day-active {
+	color: #eee;
+	background: #333;
+}
+.btn-day-active:hover {
+	color: #fff;
+	background: #000;
+}
+.table thead {
+	background: #ededed;
+	font-weight: bold;
+}
+.table td.left {
+	padding-left: 20px;
+}
+.table td.right {
+	text-align: right;
+}
+.table td.center, .table th.center {
+	text-align: center;
+}
+
+.table tbody > tr > td {
+	line-height: 30px;
+	margin: 0;
+	padding-bottom: 10px;
+}
+.table tbody > tr > td.has-pretty-child {
+	padding-bottom: 0;
+}
+.table .sort_key, .table-striped tbody > tr:nth-child(2n+1) > td.sort_key, .table-striped tbody > tr:nth-child(2n+1) > th {
+	background: #e6ffd2;
+}
+.table i {
+	margin-left: 10px;
+}
+.table .label i {
+	margin: 0;
+}
+
+table.calendar {
+	font-size: 18px;
+	width: 100%;
+}
+table.calendar tr.heading td {
+	padding: 20px;
+}
+table.calendar tr.week_day td {
+	background: #eaeae8;
+	font-weight: bold;
+	padding: 20px;
+	text-align: center;
+	width: 14%;
+}
+table.calendar tr.week_day td:first-child {	
+	border-top-left-radius: 15px;
+}
+table.calendar tr.week_day td:last-child {
+	border-top-right-radius: 15px;
+}
+table.calendar tr.date {
+	
+}
+table.calendar tr.date-row td div.date {
+	padding: 20px 0 80px 20px;
+	border: 1px solid #eaeae8;
+	background: #f7f7f4;
+}
+table.calendar tr.date-row td div.date:hover {
+	background: #fff;
+}
+
+#slider-range,#SlideMax{width:400px;}
+#slider-range,#time, #SlideMax, table{margin:10px 0;display:block;}
+#job_card_status h2 {
+	margin: 0;
+	padding: 0 0 10px 0;
+}
+
+
+.rating{
+	unicode-bidi:bidi-override;
+	direction:rtl;
+	font-size:30px;
+	margin-top: -8px;
+	margin-bottom: -8px;
+}
+.rating span.star{
+	font-family:FontAwesome;
+	font-weight:normal;
+	font-style:normal;
+	display:inline-block;
+}
+.rating span.star:hover{
+	cursor:pointer;
+}
+.rating span.star:before{
+	content:"\f006";
+	padding-right:0px;
+	color:#999999;
+}
+.rating span.star:hover:before,.rating span.star:hover~span.star:before{
+	content:"\f005";
+	color:#e3cf7a;
+}
+
+.panel-heading.panel-heading-mid {
+	border-top: 1px solid rgb(221, 221, 221);
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
+.staff_search_profile {
+	float: left;
+	margin: 20px 20px 20px 0;
+	text-align: center;
+	overflow: hidden;
+}
+.staff_search_profile .profile_photo {
+	width: 90px;
+	height: 110px;
+	border: 1px solid rgb(221, 221, 221);
+	color: #00bbf8;
+	margin-bottom: 10px;
+}
+.staff_search_profile .profile_photo i {
+	margin-left: 5px;
+	line-height: 110px;
+}
+.staff_search_profile .rating{
+	font-size:17px;	
+	margin: 2px 0;
+}
+
+.content-inner {
+	margin: 20px 0;
+	overflow: hidden;	
+	padding: 0 0 20px 0;
+	min-height: 460px;
+}
+/*
+.dropdown-menu {
+	max-height: 200px;
+	overflow: auto;
+	margin-top: 5px;
+}
+*/
+
+.box {
+	border: 1px solid #ccc;
+	padding: 15px;
+	width: 650px;
+	overflow: hidden;
+	margin: 10px 0 25px 0;
+}
+.box.order {
+	width: 480px;
+	margin-top: 0;
+}
+.box.order textarea {
+	width: 465px;
+}
+.box .photo {
+	width: 130px;
+	float: left;
+	border: 1px solid #ccc;
+	margin-right: 20px;
+}
+.box .info {
+	float: left;
+	width: 460px;
+}
+
+.modal .box {
+	border: 0;
+	padding: 0;
+	width: 540px;
+}
+.modal .box .photo {
+	width: 100px;
+}
+.modal .box .info {
+	width: 370px;
+	margin-top: -6px;
+}
+.form-horizontal {
+	margin: 10px 0;
+}
+
+
+.pagination {
+	margin: 5px 0 0 0;
+}
+.clear {
+	clear: both;
+}
+hr {
+	margin: 5px 0;
+}
+
+.media-heading {
+	margin: 0 0 -2px 0;
+	padding: 0;
+}

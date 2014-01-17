@@ -1,0 +1,261 @@
+@import url("roboto-fontfacekit/stylesheet.css");
+
+html,
+body {
+height: 100%;
+/* The html and body elements cannot have any padding or margin. */
+font-family: "RobotoRegular", "Arial", "Lucida Grande", "Helvetica", Sans-Serif;
+font-size: 12px;
+color: #000000;
+background: #ffffff;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+/* Negative indent footer by it's height */
+margin: 0 auto -60px;
+}
+h1, h2, h3, h4 {
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+}
+.thin {
+	font-family: "RobotoThin";
+}
+/* Set the fixed height of the footer here */
+#push {
+height: 60px;
+}
+#footer {
+	background: #f5f5f5;
+	position: relative;
+	z-index: 1;
+	font-size: 12px;
+	text-align: center;
+}
+#footer .credit {
+	margin: 30px 0;
+}
+#footer a {
+	color: #8799a3;
+	text-decoration: underline;
+}
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+#footer {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+}
+a.btn i {
+	margin-top: 0px;
+}
+b {
+	font-weight: normal;
+	font-family: "RobotoBold";
+}
+#header {
+	background: url(../img/bg_header.jpg);
+	height: 91px;
+	color: #ffffff;
+}
+#header #logo {
+	width: 247px;
+	height: 75px;
+	background: url(../img/logo_admin.png);
+	margin-top: 7px;
+	float: left;
+}
+#header #welcome {
+	float: right;
+	color: #686363;
+	text-align: right;
+	line-height: 30px;
+	margin-top: 15px;
+}
+.left_panel {
+	width: 250px;
+	float: left;
+	margin-right: 20px;
+	
+}
+.left_panel .nav-stacked {
+	text-transform: uppercase;
+	font-family: "RobotoBold";
+	background: #f1f1f1;
+	font-size: 14px;
+}
+.left_panel .nav-stacked i {
+	float: right;
+	opacity: .5;
+}
+.left_panel .nav-stacked i.icon-white {
+	opacity: 1;
+}
+.left_panel .nav li a {
+	color: #000;
+}
+.left_panel .nav li.active a {
+	color: #fff;
+	background: #d99540;
+	border-color: #b97d40;
+}
+.nav.nav-sub {
+	margin-bottom: 0;
+	text-transform: capitalize;
+	background: #ffffff;
+	font-family: "RobotoLight";
+}
+.left_panel .nav.nav-sub  li a {
+	color: #fff;
+	background: #d99540;
+	font-weight: normal;
+}
+.left_panel .nav.nav-sub  li.active a {
+	color: #fff;
+	background: #cc7100;
+	border-color: #b97d40;
+}
+
+.nav.nav-sub li:first-child a {
+	border-radius: 0;
+	border-top: 0;
+}
+.nav.nav-sub li:last-child a {
+	border-radius: 0;
+	border-bottom: 0;
+	margin-bottom: 1px;
+}
+.breadcrumb {	
+	font-family: "RobotoBold";
+	font-size: 18px;
+	padding: 15px 25px;
+}
+.breadcrumb a {
+	color: #000000;
+}
+.breadcrumb li.active {
+	font-family: "RobotoBold";
+	font-size: 18px;
+	color: #000000;
+}
+.main-content {
+	margin-left: 270px;
+	color: #000000;
+	margin-bottom: 100px;
+}
+.main-content .table a {
+	color: #cc7100;
+}
+
+.main-content .table a.btn {
+	color: #ffffff;
+}
+.darkred {
+	color: #900703;
+}
+.shadow_reverse {
+	width: 980px;
+	margin: -16px 0 -10px 0;
+	height: 16px;
+	background: url(../img/bg_shadow.png);
+	-webkit-transform:rotate(180deg);
+    -moz-transform:rotate(180deg);
+}
+.box {
+	background: none;
+	border: 1px solid #d6d6d6;
+	padding: 19px;
+	margin-bottom: 20px;
+	border-radius: 4px;
+	overflow: hidden;
+}
+.shadow_title {
+	width: 980px;
+	margin: 0 -10px 10px 0;
+	height: 20px;
+	background: url(../img/bg_shadow_title.png);
+}
+.clear {
+	clear: both;
+	padding-top: 20px;
+}
+.box .clear {
+	padding-top: 0;
+}
+.table thead {
+	font-family: "RobotoBold";
+	font-size: 14px;
+	color: #000;
+}
+.table .options {
+	float: right;
+	margin-right: 12px;
+}
+.table td.center {
+	text-align: center;
+}
+.label, .badge {
+	font-weight: normal;
+	font-family: "RobotoLight";
+}
+.box-search {
+	float: right;
+	margin-bottom: 17px;
+}
+.btn-breadcrumb {
+	margin: 10px 10px 0 0;
+	float: right;
+}
+.photo_thumbnail {
+	width: 40px;
+}
+form, .form-horizontal {
+	margin-bottom: 0;
+}
+.form-horizontal .control-group {
+	margin-bottom: 0;
+	height: 40px;
+}
+.form-horizontal .control-group.textarea {
+	height: auto;
+	margin-bottom: 10px;
+}
+.form-horizontal .control-group.textarea textarea {
+	width: 400px;
+}
+.form-horizontal .control-group .control-label {
+	text-align: left;
+}
+.product_photo {
+	float: left;
+}
+.product_photo img {
+	width: 160px;
+}
+.product_brief {
+	margin-left: 200px;
+}
+.product_brief h3 {
+	font-family: "RobotoBold";
+	color: #7a7a7a;
+	line-height: 30px;
+}
+.box_filters {
+	margin-bottom: 5px;
+	margin-top: -10px;
+	float: right;
+}
+.box_filters select {
+	float: left;
+	margin-left: 10px;
+}
+.input-xxlarge {
+	width: 400px;
+}
