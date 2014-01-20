@@ -1,5 +1,5 @@
 <h4>Jobs On Month</h4>
-
+<p>Below you can see a schedule of all the jobs you have on for the month for this job campaign.You can duplicate the months shifts to another month. Unconfirmed and confirmed shifts are indicated by red or green icon. </p>
 <div class="table_action">
 	<?=modules::run('common/dropdown_actions','');?>
 	<div class="btn-group">
@@ -21,10 +21,9 @@
 
 <script>
 $(function(){
-	"use strict";
 
 	var options = {
-		events_source: [],
+		events_source: <?=$events_source;?>,
 		view: 'month',
 		tmpl_path: "<?=base_url();?>assets/bootstrap-calendar/tmpls/",
 		tmpl_cache: false,

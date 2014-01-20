@@ -946,7 +946,8 @@ if(!String.prototype.format) {
 			.on('mouseenter', function() {
 				if($('.events-list', this).length == 0) return;
 				if($(this).children('[data-cal-date]').text() == self.activecell) return;
-				downbox.show().appendTo(this);
+				// dont want to show the downbox
+				//downbox.show().appendTo(this);
 			})
 			.on('mouseleave', function() {
 				downbox.hide();

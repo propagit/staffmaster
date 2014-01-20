@@ -34,7 +34,7 @@ class Job_shift_model extends CI_Model {
 	
 	function get_job_dates($job_id)
 	{
-		$sql = "SELECT DISTINCT(`job_date`)
+		$sql = "SELECT DISTINCT(`job_date`), `start_time`, `finish_time`
 				FROM `job_shifts`
 				WHERE `job_id` = '$job_id' ORDER BY `job_date` ASC" ;
 		$query = $this->db->query($sql);

@@ -179,6 +179,18 @@ class Ajax extends MX_Controller {
 			$this->load->view('job_shifts_week_view', isset($data) ? $data : NULL);	
 		} else if ($this->session->userdata('calendar_view') == 'month')
 		{
+			$out[] = array();
+			foreach($job_dates as $date)
+			{
+				$out[] = array(
+					'id' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date']),
+					'title' => $job_id,
+					'url' => $date['job_date'],
+					'start' => $date['start_time'] . '000',
+					'end' => $date['finish_time'] . '000',
+				);
+			}
+			$data['events_source'] = str_replace('[],', '',json_encode($out));
 			$this->load->view('job_shifts_month_view', isset($data) ? $data : NULL);
 		}
 	}

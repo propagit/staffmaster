@@ -134,6 +134,9 @@
   display: block;
   width: 100%;
 }
+.cal-day-active {
+	background: #ccc;
+}
 #cal-week-box {
   position: absolute;
   width: 70px;
@@ -202,9 +205,8 @@
 }
 .events-list {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  overflow: hidden;
+  top: 40px;
+  right: 10px;
 }
 #cal-slide-content ul.unstyled {
   margin-bottom: 0;
@@ -212,8 +214,6 @@
 .event {
   display: block;
   background-color: #c3c3c3;
-  width: 12px;
-  height: 12px;
   margin-right: 2px;
   margin-bottom: 2px;
   -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
@@ -244,7 +244,6 @@
 }
 .day-highlight:hover,
 .day-highlight {
-  background-color: #dddddd;
 }
 .day-highlight.dh-event-important:hover,
 .day-highlight.dh-event-important {
@@ -342,8 +341,8 @@ span[data-cal-date] {
   -moz-transition: all 0.1s ease-in-out;
   -ms-transition: all 0.1s ease-in-out;
   -o-transition: all 0.1s ease-in-out;
-  margin-top: 15px;
-  margin-right: 15px;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 span[data-cal-date]:hover {
   opacity: 1;
@@ -359,7 +358,7 @@ span[data-cal-date]:hover {
   color: darkgreen;
 }
 .cal-month-box .cal-day-today span[data-cal-date] {
-  font-size: 1.9em;
+  font-weight: bold;
 }
 .cal-day-holiday span[data-cal-date] {
   color: #800080;
@@ -403,8 +402,9 @@ span[data-cal-date]:hover {
   line-height: 22px;
 }
 .events-list {
-  max-height: 47px;
+  max-height: 55px;
   padding-left: 5px;
+  text-align: right;
 }
 .cal-column {
   border-left: 1px solid #e1e1e1;
