@@ -1,3 +1,7 @@
+/*
+ * job_id: (int) 
+ * date: (string) YYYY-MM-DD format
+ */
 function load_job_shifts(job_id, date=null)
 {
 	if (date)
@@ -16,6 +20,10 @@ function load_job_shifts(job_id, date=null)
 		}
 	})
 }
+/*
+ * job_id: (int)
+ * date: (string) YYYY-MM-DD format
+ */
 function load_job_calendar(job_id, date=null)
 {
 	$.ajax({
@@ -25,6 +33,38 @@ function load_job_calendar(job_id, date=null)
 		success: function(html)
 		{
 			$('#wrapper_calendar').html(html);
+		}
+	})
+}
+/* 
+ * job_id: (int)
+ * custom_date: (int) timestamp format
+ */
+function load_month_view(job_id, custom_date)
+{
+	$.ajax({
+		type: "POST",
+		url: base_url + 'job/ajax/load_month_view',
+		data: { date: custom_date},
+		success: function(html)
+		{
+			load_job_shifts(job_id, html);
+		}
+	})
+}
+/* 
+ * job_id: (int)
+ * custom_date: (int) timestamp format
+ */
+function load_week_view(job_id, custom_date)
+{
+	$.ajax({
+		type: "POST",
+		url: base_url + 'job/ajax/load_week_view',
+		data: { date: custom_date},
+		success: function(html)
+		{
+			load_job_shifts(job_id, html);
 		}
 	})
 }

@@ -5,18 +5,7 @@
 
 <br />
 <div class="table_action">
-	<div class="btn-group">
-	  <button type="button" class="btn btn-info">Action</button>
-	  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-	    <span class="caret"></span>
-	    <span class="sr-only">Toggle Dropdown</span>
-	  </button>
-	  <ul class="dropdown-menu" role="menu">
-	    <li><a href="#">Edit</a></li>
-	    <li><a href="#">Delete</a></li>
-	    <li><a href="#">Copy</a></li>
-	  </ul>
-	</div>
+	<?=modules::run('common/dropdown_actions','');?>
 	<span onclick="load_job_shifts(<?=$job_id;?>)" class="btn btn-info">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</span>
 	<? foreach($job_dates as $date) { ?>
 	<span onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')" class="btn btn-day<?=($this->session->userdata('job_date') == $date['job_date']) ? '-active': '';?>">
@@ -57,6 +46,7 @@
 		<th class="center">Finish</th>
 		<th class="center">Break</th>
 		<th>Staff Assigned</th>
+		<th class="center">Pay rate</th>
 		<th class="center">Info</th>
 		<th class="center">Copy</th>
 		<th class="center" width="5%">Delete</th>
@@ -71,6 +61,7 @@
 		<td class="center"><?=date('H:i', $shift['start_time']);?></td>
 		<td class="center"><?=date('H:i', $shift['finish_time']);?></td>
 		<td class="center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
+		<td></td>
 		<td></td>
 		<td class="center"><i class="fa fa-edit"></i></td>
 		<td class="center"><i class="fa fa-copy"></i></td>

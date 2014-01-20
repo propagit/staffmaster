@@ -15,6 +15,7 @@
 	<link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="<?=base_url();?>assets/css/calendar.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/style.css" rel="stylesheet" media="screen">
 	<!-- <link href="<?=base_url();?>assets/css/smoothness/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" media="screen" /> -->
 	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
@@ -22,11 +23,13 @@
 	
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
+	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap-select.min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap-typeahead.min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap-fileupload.min.js"></script>
 	<script src="<?=base_url();?>assets/js/moment.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap-datetimepicker.js"></script>
+	<script src="<?=base_url();?>assets/js/calendar.js"></script>
 	<!-- <script src="<?=base_url();?>assets/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script> -->
 	<script src="<?=base_url();?>assets/prettyCheckable/prettyCheckable.js" type="text/javascript" charset="utf-8"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>

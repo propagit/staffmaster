@@ -174,13 +174,13 @@ class Ajax extends MX_Controller {
 		}
 		$data['job_id'] = $job_id;
 		
-		#if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week')
-		#{
+		if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week')
+		{
 			$this->load->view('job_shifts_week_view', isset($data) ? $data : NULL);	
-		#} else if ($this->session->userdata('calendar_view') == 'month')
-		#{
-		#	echo 'a';
-		#}
+		} else if ($this->session->userdata('calendar_view') == 'month')
+		{
+			$this->load->view('job_shifts_month_view', isset($data) ? $data : NULL);
+		}
 	}
 	
 	function load_job_week()

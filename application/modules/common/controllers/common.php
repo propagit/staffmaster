@@ -13,6 +13,11 @@ class Common extends MX_Controller {
 		$this->load->model('common_model');
 	}
 	
+	function dropdown_actions($field_name, $field_value=null)
+	{
+		$this->load->view('dropdown_actions', isset($data) ? $data : NULL);
+	}
+	
 	function dropdown_status($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;

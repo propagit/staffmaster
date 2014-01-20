@@ -2,6 +2,8 @@
 <p>Below you can see a schedule of all the jobs you have on for the week for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green. </p>
 
 <div class="table_action">
+	
+	<?=modules::run('common/dropdown_actions','');?>
 	<div class="btn-group">
 		<?
 		if (date('D', $custom_date) == 'Mon')
@@ -20,7 +22,6 @@
 		<a step="1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-right"></i></a>
 	</div>
 
-	<button type="button" class="btn btn-info">Duplicate this week</button>
 	<a type="button" class="btn btn-primary load_week_view"><i class="fa fa-list"></i></a>
 	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
 
@@ -70,26 +71,10 @@ $(function(){
 		})
 	});
 	$('.load_month_view').click(function(){
-		$.ajax({
-			type: "POST",
-			url: base_url + 'job/ajax/load_month_view',
-			data: { date: <?=$custom_date;?>},
-			success: function(html)
-			{
-				load_job_shifts(<?=$job_id;?>, html);
-			}
-		})
+		load_month_view(<?=$job_id;?>, <?=$custom_date;?>);
 	});
 	$('.load_week_view').click(function(){
-		$.ajax({
-			type: "POST",
-			url: base_url + 'job/ajax/load_week_view',
-			data: { date: <?=$custom_date;?>},
-			success: function(html)
-			{
-				load_job_shifts(<?=$job_id;?>, html);
-			}
-		})
+		load_week_view(<?=$job_id;?>, <?=$custom_date;?>);
 	});
 })
 </script>
