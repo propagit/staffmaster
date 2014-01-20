@@ -8,9 +8,7 @@
 		<a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a>
 	</div>
 	
-		<a data-calendar-nav="today" type="button" class="btn btn-primary">Today</a>
-	
-	
+	<a data-calendar-nav="today" type="button" class="btn btn-primary">Today</a>
 	<a type="button" class="btn btn-primary load_week_view"><i class="fa fa-list"></i></a>
 	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
 

@@ -9,12 +9,14 @@ function load_job_shifts(job_id, date=null, scroll=false)
 		var job_date = moment(date);
 		$('input[name="job_date"]').val(job_date.format("DD-MM-YYYY"));
 	}
+	start_loading();
 	$.ajax({
 		type: "POST",
 		url: base_url + 'job/ajax/load_job_shifts',
 		data: { job_id: job_id, date: date },
 		success: function(html)
 		{
+			finish_loading();
 			$('#wrapper_js').html(html);
 			if (scroll)
 			{
@@ -52,6 +54,7 @@ function load_month_view(job_id, custom_date)
 		data: { date: custom_date},
 		success: function(html)
 		{
+			$('body').scrollTo('#wrapper_calendar', 500 );
 			load_job_shifts(job_id, html);
 		}
 	})
@@ -68,9 +71,16 @@ function load_week_view(job_id, custom_date)
 		data: { date: custom_date},
 		success: function(html)
 		{
+			$('body').scrollTo('#wrapper_calendar', 500 );
 			load_job_shifts(job_id, html);
 		}
 	})
+}
+function start_loading()
+{
+}
+function finish_loading()
+{
 }
 
 $(function(){

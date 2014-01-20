@@ -23,6 +23,7 @@
 	
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
+	<script src="<?=base_url();?>assets/js/jquery.blockUI.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
 	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap-select.min.js"></script>

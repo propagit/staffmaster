@@ -21,7 +21,8 @@
 		<button type="button" class="btn btn-info"><?=date('d M', $start_date);?> - <?=date('d M', $end_date);?></button>
 		<a step="1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-right"></i></a>
 	</div>
-
+	
+	<a data-calendar-nav="today" type="button" class="btn btn-primary">Today</a>
 	<a type="button" class="btn btn-primary load_week_view"><i class="fa fa-list"></i></a>
 	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
 
@@ -48,7 +49,10 @@ $shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
 			<span onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="btn btn-<?=($shifts_count == 0) ? 'default' : 'day'; ?><?=($this->session->userdata('job_date') == date('Y-m-d',$date_ts) && ($shifts_count != 0)) ? '-active': '';?> btn-block"><?=date('D d M', $date_ts);?></span>
 		</td>
 		<td class="center"><?=$shifts_count;?></td>
-		<td></td>
+		<td class="center">
+			<span class="badge badge-success">0</span> &nbsp; 
+			<span class="badge badge-danger"><?=$shifts_count;?></span>
+		</td>
 		<td><i class="fa fa-copy"></i></td>
 		<td><i class="fa fa-trash-o"></i></td>
 	</tr>

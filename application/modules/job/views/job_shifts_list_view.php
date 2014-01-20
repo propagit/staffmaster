@@ -14,7 +14,10 @@
 		(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']));?>)
 	</span>
 	<? } ?>
-
+	
+	<a type="button" class="btn btn-primary load_week_view"><i class="fa fa-list"></i></a>
+	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
+	
 	<span class="btn btn-info pull-right"><i class="fa fa-gears"></i> Settings</span>
 </div>
 <div class="table_settings">
