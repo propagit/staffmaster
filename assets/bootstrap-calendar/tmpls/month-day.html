@@ -3,7 +3,7 @@
 	<% if (events.length > 0) { %>
 		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
 			<% _.each(events, function(event) { %>
-				<a onclick="load_job_shifts(<%= event.title %>, '<%= event.url %>')">
+				<a onclick="load_job_shifts(<%= event.title %>, '<%= event.url %>', true)">
 				
 				<span class="badge badge-success">0</span><br />
 				

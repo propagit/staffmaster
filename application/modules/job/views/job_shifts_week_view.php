@@ -45,7 +45,7 @@ $shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
 	<tr<?=($shifts_count > 0) ? ' class="active"' : '';?>>
 		<td class="center"><input type="checkbox" /></td>
 		<td>
-			<span onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>')" class="btn btn-<?=($shifts_count == 0) ? 'default' : 'day'; ?><?=($this->session->userdata('job_date') == date('Y-m-d',$date_ts) && ($shifts_count != 0)) ? '-active': '';?> btn-block"><?=date('D d M', $date_ts);?></span>
+			<span onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="btn btn-<?=($shifts_count == 0) ? 'default' : 'day'; ?><?=($this->session->userdata('job_date') == date('Y-m-d',$date_ts) && ($shifts_count != 0)) ? '-active': '';?> btn-block"><?=date('D d M', $date_ts);?></span>
 		</td>
 		<td class="center"><?=$shifts_count;?></td>
 		<td></td>

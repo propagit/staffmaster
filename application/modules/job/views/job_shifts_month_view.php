@@ -8,7 +8,7 @@
 		<a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a>
 	</div>
 	
-		<a data-calendar-nav="today" type="button" class="btn btn-day-active">Today</a>
+		<a data-calendar-nav="today" type="button" class="btn btn-primary">Today</a>
 	
 	
 	<a type="button" class="btn btn-primary load_week_view"><i class="fa fa-list"></i></a>
@@ -43,7 +43,7 @@ $(function(){
 		});
 	});
 	$('*[data-cal-date]').click(function() {
-		load_job_shifts(<?=$job_id;?>, $(this).data('cal-date'));
+		load_job_shifts(<?=$job_id;?>, $(this).data('cal-date'), true);
 		//var view = $(this).data('cal-view');
 		//if(!self.options.views[view].enable) {
 		//	return;

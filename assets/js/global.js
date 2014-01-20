@@ -2,7 +2,7 @@
  * job_id: (int) 
  * date: (string) YYYY-MM-DD format
  */
-function load_job_shifts(job_id, date=null)
+function load_job_shifts(job_id, date=null, scroll=false)
 {
 	if (date)
 	{
@@ -16,6 +16,10 @@ function load_job_shifts(job_id, date=null)
 		success: function(html)
 		{
 			$('#wrapper_js').html(html);
+			if (scroll)
+			{
+				$('body').scrollTo('#wrapper_js', 500 );
+			}
 			load_job_calendar(job_id, date);
 		}
 	})
@@ -88,3 +92,4 @@ $(function(){
         }
     });
 })
+
