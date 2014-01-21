@@ -13,7 +13,6 @@
 	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
 
 </div>
-
 <div id="calendar"></div>
 
 

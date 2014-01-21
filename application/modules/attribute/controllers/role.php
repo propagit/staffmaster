@@ -75,9 +75,22 @@ class Role extends MX_Controller {
 		redirect('attribute/role');
 	}
 	
-	function get_roles()
+	function get_roles($format=null)
 	{
-		return  $this->role_model->get_roles();
+		$roles = $this->role_model->get_roles();
+		if (!$format) {
+			return $roles;
+		}
+		if ($format == 'data_source')
+		{
+			$data_source = array();
+			foreach($roles as $role)
+			{
+				$data_source[] = '{value:' . $role['role_id'] . ', text: \'' . $role['name'] . '\'}';
+			}
+			$data_source = implode(",", $data_source);
+			return $data_source;
+		}	
 	}
 	
 	function display_role($role_id)

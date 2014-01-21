@@ -34,14 +34,14 @@ class Job_shift_model extends CI_Model {
 	
 	function get_job_dates($job_id)
 	{
-		$sql = "SELECT DISTINCT(`job_date`), `start_time`, `finish_time`
+		$sql = "SELECT DISTINCT(`job_date`)
 				FROM `job_shifts`
 				WHERE `job_id` = '$job_id' ORDER BY `job_date` ASC" ;
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	
-	function get_shift($shift_id)
+	function get_job_shift($shift_id)
 	{
 		$this->db->where('shift_id', $shift_id);
 		$query = $this->db->get('job_shifts');
@@ -55,5 +55,15 @@ class Job_shift_model extends CI_Model {
 				AND job_id = " . $job_id;
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+	
+	function update_job_shift($shift_id, $data = array())
+	{
+		if (count($data) > 0)
+		{
+			$data['modified_on'] = date('Y-m-d H:i:s');
+		}
+		$this->db->where('shift_id', $shift_id);
+		return $this->db->update('job_shifts', $data);
 	}
 }

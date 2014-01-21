@@ -13,11 +13,8 @@
 	<![endif]-->
 	
 	<link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/css/bootstrap-select.min.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/css/bootstrap-datetimepicker.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/calendar.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/style.css" rel="stylesheet" media="screen">
-	<!-- <link href="<?=base_url();?>assets/css/smoothness/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" media="screen" /> -->
 	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
 	<?=$_styles;?>
 	
@@ -25,14 +22,30 @@
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.blockUI.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
-	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
-	<script src="<?=base_url();?>assets/js/bootstrap-select.min.js"></script>
-	<script src="<?=base_url();?>assets/js/bootstrap-typeahead.min.js"></script>
-	<script src="<?=base_url();?>assets/js/bootstrap-fileupload.min.js"></script>
 	<script src="<?=base_url();?>assets/js/moment.js"></script>
+	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
+	
+	<!-- datetimepicker (bootstrap 3)  -->
+	<link href="<?=base_url();?>assets/css/bootstrap-datetimepicker.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/js/bootstrap-datetimepicker.js"></script>
+	
+	<!-- x-editable (bootstrap 3) -->
+	<link href="<?=base_url();?>assets/css/bootstrap-editable.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/bootstrap-editable.min.js"></script>
+	<script src="<?=base_url();?>assets/js/editable/time.js"></script>
+	
+	<!-- select -->
+	<link href="<?=base_url();?>assets/css/bootstrap-select.min.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/bootstrap-select.min.js"></script>
+	
+	<!-- typeaheadjs -->
+	<link href="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js"></script>
+	<script src="<?=base_url();?>assets/js/typeaheadjs/typeaheadjs.js"></script>
+	
+	
+	<script src="<?=base_url();?>assets/js/bootstrap-fileupload.min.js"></script>
 	<script src="<?=base_url();?>assets/js/calendar.js"></script>
-	<!-- <script src="<?=base_url();?>assets/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script> -->
 	<script src="<?=base_url();?>assets/prettyCheckable/prettyCheckable.js" type="text/javascript" charset="utf-8"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/global.js" type="text/javascript" charset="utf-8"></script>

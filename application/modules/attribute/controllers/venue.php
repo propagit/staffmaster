@@ -103,4 +103,22 @@ class Venue extends MX_Controller {
 		$this->load->view('dropdown_venues', isset($data) ? $data : NULL);
 	}
 	
+	function get_venues($format=null)
+	{
+		$venues = $this->venue_model->get_venues();
+		if (!$format) {
+			return $venues;
+		}
+		if ($format == 'data_source')
+		{
+			$data_source = array();
+			foreach($venues as $venue)
+			{
+				$data_source[] = '\'' . $venue['name'] . '\'';
+			}
+			$data_source = implode(",", $data_source);
+			return $data_source;
+		}		
+	}
+	
 }

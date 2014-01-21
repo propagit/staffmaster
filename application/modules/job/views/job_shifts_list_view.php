@@ -39,7 +39,9 @@
 	</form>
 
 </div>
-<table class="table table-bordered" width="100%">
+                        
+                        
+<table class="table table-bordered table-hover" width="100%">
 <thead>
 	<tr>
 		<th class="center" width="5%"><input type="checkbox" /></th>
@@ -59,11 +61,20 @@
 	<? foreach($job_shifts as $shift) { ?>
 	<tr>
 		<td class="center"><input type="checkbox" /></td>
-		<td><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></td>
-		<td><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>
-		<td class="center"><?=date('H:i', $shift['start_time']);?></td>
+		<td>
+			
+			<a href="#" class="shift_venue" data-type="typeaheadjs" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
+		</td>
+		<td>
+			<a href="#" class="shift_role" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['role_id'];?>"><?=modules::run('attribute/role/display_role', $shift['role_id']);?></a>
+		</td>
+		<td class="center">
+			<a href="#" class="shift_start_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['start_time']);?>"><?=date('H:i', $shift['start_time']);?></a>
+		</td>
 		<td class="center"><?=date('H:i', $shift['finish_time']);?></td>
-		<td class="center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
+		<td class="center">
+			<?=modules::run('common/break_time', $shift['break_time']);?>
+		</td>
 		<td></td>
 		<td></td>
 		<td class="center"><i class="fa fa-edit"></i></td>
@@ -73,3 +84,48 @@
 	<? } ?>
 </tbody>
 </table>
+
+<script>
+$(function(){	
+	$('.shift_venue').editable({
+		title: 'Start typing venue...',
+		name: 'venue',
+		typeahead: {
+            name: 'venue',
+            local: [<?=modules::run('attribute/venue/get_venues','data_source');?>]
+        },
+		tpl: '<input type="text" size="30" />',
+		url: '<?=base_url();?>job/ajax/update_shift_venue',
+		success: function(response, newValue)
+		{
+			if (response.status == 'error')
+			{
+				return response.msg;
+			}
+		}
+	});
+	$('.shift_role').editable({
+		url: '<?=base_url();?>job/ajax/update_shift_role',
+		name: 'role_id',
+		title: 'Select role',
+		source: [<?=modules::run('attribute/role/get_roles', 'data_source'); ?>]
+	});
+	$('.shift_start_time').editable({
+		title: 'Start time',
+        name: 'start_time',
+        time: {
+	        pickDate: false,
+	        minuteStepping: 15,
+	        format: "HH:mm"
+        },
+        url: '<?=base_url();?>job/ajax/update_shift_start_time',
+        success: function(response, newValue)
+        {
+	        if (response.status == 'error')
+			{
+				return response.msg;
+			}
+        }
+    });
+})
+</script>

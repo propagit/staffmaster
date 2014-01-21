@@ -41,6 +41,9 @@ i {
 	font-weight: 400;
 	/* background: #00bbf8; */
 }
+.input-sm {
+	font-size: 14px;
+}
 .badge {
 	font-weight: normal;
 	border: 1px solid #fff;
@@ -475,4 +478,11 @@ hr {
 .media-heading {
 	margin: 0 0 -2px 0;
 	padding: 0;
+}
+
+/* Typeahead styles */
+.tt-dropdown-menu {
+}
+.tt-hint {
+	display: none;
 }

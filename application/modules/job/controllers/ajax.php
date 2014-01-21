@@ -186,11 +186,18 @@ class Ajax extends MX_Controller {
 					'id' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date']),
 					'title' => $job_id,
 					'url' => $date['job_date'],
-					'start' => $date['start_time'] . '000',
-					'end' => $date['finish_time'] . '000',
+					'start' => strtotime($date['job_date']) . '000',
+					'end' => strtotime($date['job_date']) . '000',
 				);
 			}
-			$data['events_source'] = str_replace('[],', '',json_encode($out));
+			if (count($job_dates) > 0)
+			{
+				$data['events_source'] = str_replace('[],', '',json_encode($out));	
+			}
+			else
+			{
+				$data['events_source'] = '[]';
+			}
 			$this->load->view('job_shifts_month_view', isset($data) ? $data : NULL);
 		}
 	}
@@ -201,6 +208,41 @@ class Ajax extends MX_Controller {
 		$date += (int) $this->input->post('step') * 7*24*60*60;
 		echo date('Y-m-d', $date);	
 	}
+	
+	function update_shift_venue()
+	{
+		$shift_id = $this->input->post('pk');
+		$venue = modules::run('attribute/venue/get_venue_by_name', $this->input->post('value'));
+		if (!$venue)
+		{
+			$this->output->set_status_header('400');
+			echo 'Venue not found. Please try again';
+		}
+		else
+		{
+			$this->job_shift_model->update_job_shift($shift_id, array('venue_id' => $venue['venue_id']));
+			echo json_encode(array('status' => 'success', 'value' => $this->input->post('value')));
+		}
+	}
+	function update_shift_role()
+	{
+		$shift_id = $this->input->post('pk');
+		$this->job_shift_model->update_job_shift($shift_id, array('role_id' => $this->input->post('value')));
+		
+	}
+	function update_shift_start_time()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$new_start_time = strtotime($shift['job_date'] . ' ' . $this->input->post('value') . ':00');
+		if ($new_start_time >= $shift['finish_time'])
+		{
+			$this->output->set_status_header('400');
+			echo 'Start time can be greater than finish time';
+		}
+		
+	}
+	
 	
 	function set_order_param()
 	{

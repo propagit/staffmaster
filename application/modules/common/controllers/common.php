@@ -94,6 +94,10 @@ class Common extends MX_Controller {
 		{
 			echo $a['length']/60 . ' mins';
 		}
+		else
+		{
+			echo 0;
+		}
 	}
 	
 }

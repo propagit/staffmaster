@@ -84,6 +84,8 @@ function finish_loading()
 }
 
 $(function(){
+	//$.fn.editable.defaults.mode = 'popup';
+	
 	$('input[type="checkbox"]').prettyCheckable();
 	$('.selectpicker').selectpicker();
 	

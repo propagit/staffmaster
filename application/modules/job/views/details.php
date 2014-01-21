@@ -56,7 +56,7 @@
 					</div>
 					<div class="form-group" id="f_venue">
 						<label for="venue" class="col-lg-3 control-label">Venue</label>
-						<div class="col-lg-6">
+						<div class="col-lg-9">
 							<?=modules::run('attribute/venue/dropdown', 'venue');?>
 						</div>
 					</div>
@@ -132,13 +132,16 @@ $(function(){
 	});
     
 	$('#start_time').datetimepicker({
-        pickDate: false
+        pickDate: false,
+        minuteStepping: 15,
     });
     $('#finish_time').datetimepicker({
-	    pickDate: false
+	    pickDate: false,
+	    minuteStepping: 15,
     });
     $('#break_start_time').datetimepicker({
-	    pickDate: false
+	    pickDate: false,
+	    minuteStepping: 15,
     });
     $('#btn_create_js').click(function(){
     	$('.form-group').removeClass('has-error');
