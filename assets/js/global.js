@@ -1,8 +1,9 @@
+"use strict";
 /*
  * job_id: (int) 
  * date: (string) YYYY-MM-DD format
  */
-function load_job_shifts(job_id, date=null, scroll=false)
+function load_job_shifts(job_id, date, scroll)
 {
 	if (date)
 	{
@@ -30,7 +31,7 @@ function load_job_shifts(job_id, date=null, scroll=false)
  * job_id: (int)
  * date: (string) YYYY-MM-DD format
  */
-function load_job_calendar(job_id, date=null)
+function load_job_calendar(job_id, date)
 {
 	$.ajax({
 		type: "POST",

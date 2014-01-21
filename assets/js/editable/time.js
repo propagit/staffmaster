@@ -28,22 +28,20 @@ $(function(){
         this.init('time', options, Constructor.defaults);
     };
 
-    $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);
+    $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.text);
 
     $.extend(Constructor.prototype, {
         render: function() {
         	//this.renderClear();
             //this.setClass();
             //this.setAttr('placeholder');
-        	
-        },
-        activate: function(value){
-	        this.$input.datetimepicker(this.options.time);
+        	this.$input.datetimepicker(this.options.time);
+        	alert(this.value);
         }
     });      
 
-    Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        tpl:'<input type="text" class="form-control" />',
+    Constructor.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
+        tpl:'<input type="text" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>',
         /**
         Configuration of datetimepicker itself. 
         [Full list of options](http://eonasdan.github.io/bootstrap-datetimepicker/#options).
