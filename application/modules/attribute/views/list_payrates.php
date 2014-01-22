@@ -1,3 +1,79 @@
+<link href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" media="screen" type="text/css" />
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<style>
+.label-rate
+{
+	float:left;
+	width:80px;
+}
+.input-rate
+{
+	float:left;
+	width:45px;
+	padding-left:5px;
+	border : 1px solid #dbdbdb;
+}
+.selectable .ui-selecting.input-rate.client { background: #FECA40; color: white; }
+.selectable .ui-selecting.input-rate.staff { background: #FECA40; color: white; }
+.selectable .ui-selected.input-rate.client { background: #F39814; color: white; }
+.selectable .ui-selected.input-rate.staff { background: #F39814; color: white; }
+</style>
+ <script>
+$(function() {
+	$( ".selectable" ).selectable();
+	
+	$( ".selectable" )
+	.mouseup(function() {
+		//alert('up');
+		var count = $('.ui-selecting.input-rate.staff').size() + $('.ui-selecting.input-rate.client').size();
+		if(count > 0)
+		{
+			$("#setPayrate").modal('show');
+		}
+		// $(".ui-selectee").each(
+			// function(index)
+			// {
+				// $(this).removeClass('ui-selecting');
+				// $(this).removeClass('ui-selected');
+			// }
+		// )
+	});
+	
+});
+
+function set_payrate()
+{
+	var crate = $('#crate').val() * 1;
+	var srate = $('#srate').val() * 1;
+	var valid = 1;
+	if(isNaN(crate))
+	{
+		alert('Please insert a valid client rate');
+		valid = 0;
+	}
+	
+	if(isNaN(srate))
+	{
+		alert('Please insert a valid staff rate');
+		valid = 0;
+	}
+	
+	if(valid == 1)
+	{
+		$('.ui-selected.input-rate.client').val(crate.toFixed(2));
+		$('.ui-selected.input-rate.staff').val(srate.toFixed(2));
+		
+		$("#setPayrate").modal('hide');
+		$(".ui-selectee").each(
+			 function(index)
+			 {
+				 $(this).removeClass('ui-selected');
+			 }
+		);
+	}
+}
+
+</script>
 <h2>Pay Rates</h2>
 
 <p>Manage your pay rates attribute.</p>
@@ -31,6 +107,111 @@
 	<? } ?>
 </table>
 
+<div class="table-responsive selectable"  id="wrapper-table">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>Monday</th>
+				<th>Tuesday</th>
+				<th>Wednesday</th>
+				<th>Thursday</th>
+				<th>Friday</th>
+				<th>Saturday</th>
+				<th>Sunday</th>
+			</tr>
+		</thead>
+		<tbody >
+			<?php
+			$j = 0;
+			for($i=0;$i<24;$i++)
+			{
+				$ttl = '';
+				if($i == 0)
+				{
+					$ttl = 'Midnight';
+				}
+				else 
+				{
+					if($i<12)
+					{
+						$ttl = $i.':00 AM<br/>('.$i.':00)';
+					}
+					else 
+					{
+						if($i>12) {$j = $i-12;}
+						$ttl = $j.':00 PM<br/>('.$i.':00)';
+					}
+				}
+				
+				?>
+				<tr >
+					<th><?=$ttl?></th>
+					<td >
+						<div class="label-rate">Staff Rate</div>
+						<input type="text" class="input-rate staff" id="monday-<?=$i?>-staff" value="0.00">
+						<div style="clear: both"></div>
+						<div class="label-rate">Client Rate</div>
+						<input type="text" class="input-rate client" id="monday-<?=$i?>-client" value="0.00">
+						<div style="clear: both"></div>
+					</td>
+					<td >
+						<div class="label-rate">Staff Rate</div>
+						<input type="text" class="input-rate staff" id="tuesday-<?=$i?>-staff" value="0.00">
+						<div style="clear: both"></div>
+						<div class="label-rate">Client Rate</div>
+						<input type="text" class="input-rate client" id="tuesday-<?=$i?>-client" value="0.00">
+						<div style="clear: both"></div>
+					</td>
+					<td >
+						<div class="label-rate">Staff Rate</div>
+						<input type="text" class="input-rate staff" id="wednesday-<?=$i?>-staff" value="0.00">
+						<div style="clear: both"></div>
+						<div class="label-rate">Client Rate</div>
+						<input type="text" class="input-rate client" id="wednesday-<?=$i?>-client" value="0.00">
+						<div style="clear: both"></div>
+					</td>
+					<td >
+						<div class="label-rate">Staff Rate</div>
+						<input type="text" class="input-rate staff" id="thursday-<?=$i?>-staff" value="0.00">
+						<div style="clear: both"></div>
+						<div class="label-rate">Client Rate</div>
+						<input type="text" class="input-rate client" id="thursday-<?=$i?>-client" value="0.00">
+						<div style="clear: both"></div>
+					</td>
+					<td >
+						<div class="label-rate">Staff Rate</div>
+						<input type="text" class="input-rate staff" id="friday-<?=$i?>-staff" value="0.00">
+						<div style="clear: both"></div>
+						<div class="label-rate">Client Rate</div>
+						<input type="text" class="input-rate client" id="friday-<?=$i?>-client" value="0.00">
+						<div style="clear: both"></div>
+					</td>
+					<td >
+						<div class="label-rate">Staff Rate</div>
+						<input type="text" class="input-rate staff" id="saturday-<?=$i?>-staff" value="0.00">
+						<div style="clear: both"></div>
+						<div class="label-rate">Client Rate</div>
+						<input type="text" class="input-rate client" id="saturday-<?=$i?>-client" value="0.00">
+						<div style="clear: both"></div>
+					</td>
+					<td >
+						<div class="label-rate">Staff Rate</div>
+						<input type="text" class="input-rate staff" id="sunday-<?=$i?>-staff" value="0.00">
+						<div style="clear: both"></div>
+						<div class="label-rate">Client Rate</div>
+						<input type="text" class="input-rate client" id="sunday-<?=$i?>-client" value="0.00">
+						<div style="clear: both"></div>
+					</td>
+				</tr>
+				<?
+			}
+			?>
+			
+		</tbody>
+	</table>
+</div>
+
 <!-- Add Payrate Modal -->
 <div class="modal fade" id="addPayrate" tabindex="-1" role="dialog" aria-labelledby="addPayrateLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -57,6 +238,49 @@
 			<div class="modal-footer">
 			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
 			<button type="submit" class="btn btn-info">Submit</button>
+			</div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- set Payrate Modal -->
+<div class="modal fade" id="setPayrate" tabindex="-1" role="dialog" aria-labelledby="addPayrateLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Set Pay rate</h4>
+			</div>
+			<form role="form" method="post" action="">
+			<div class="modal-body">
+				<p>Please enter a value for the selected time slots</p>
+				<div class="form-group">
+					<label for="name">Staff Rate</label>
+					<div class="input-group">
+					  <span class="input-group-addon">$</span>
+					  <input type="text" class="form-control" id="srate" placeholder="staff rate">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="name">Client Rate</label>
+					<div class="input-group">
+					  <span class="input-group-addon">$</span>
+					  <input type="text" class="form-control" id="crate" placeholder="client rate">
+					</div>
+				</div>
+				<!-- <div class="form-group">
+					<label for="staff_rate">Staff / Client</label>
+					<select class="form-control" id="setratesfor">
+						<option value="0">Both staff and client</option>
+						<option value="1">Only staff</option>
+						<option value="2">Only client</option>
+					</select>
+				</div> -->
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-info" onclick="set_payrate();">Set</button>
 			</div>
 			</form>
 		</div><!-- /.modal-content -->
