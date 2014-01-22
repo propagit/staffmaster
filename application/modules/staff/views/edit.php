@@ -1,3 +1,38 @@
+<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
+<!-- jQuery files -->
+<!--<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jquery.js"></script>-->
+<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
+<script type="text/javascript">
+var $j = jQuery.noConflict();
+$j(document).ready(function(){
+      // simple jRating call
+     /* $(".basic").jRating();
+ 
+      // more complex jRating call
+      $(".basic").jRating({
+         step:true,
+         length : 20, // nb of stars
+         onSuccess : function(){
+           alert('Success : your rate has been saved :)');
+         }
+       });
+ 
+      // you can rate 3 times ! After, jRating will be disabled
+      $(".basic").jRating({
+         canRateAgain : true,
+         nbRates : 3
+       });
+ */
+      // get the clicked rate !
+      $j(".basic").jRating({
+        onClick : function(element,rate) {
+         //alert(rate);
+		 $j('#rating').val(rate); 
+        }
+      });
+});
+</script>
+
 <h2>Edit Staff</h2>
 <p>Edit staff using below form.</p>
 
@@ -97,13 +132,20 @@
 							<div class="form-group">
 								<label for="rating" class="col-lg-4 control-label">Rating</label>
 								<div class="col-lg-8">
-									<div class="rating pull-left">
+									<!--
+                                    <div class="rating pull-left">
 										<span class="star"></span>
 										<span class="star"></span>
 										<span class="star"></span>
 										<span class="star"></span>
 										<span class="star"></span>
 									</div>
+                                    -->
+                                    <div class="exemple"> 
+                                       <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
+                                       <div class="basic" data-average="<?=$staff['rating']?>" data-id="1"></div>  
+                                       <input type="hidden" name="rating" id="rating" value="<?=$staff['rating']?>">                                   
+                                    </div>
 								</div>
 							</div>
 							<div class="form-group<?=form_error('last_name')? ' has-error' : '';?>">
@@ -293,13 +335,13 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label class="col-lg-3 control-label">Choice of superannuation fund</label>
-								<div class="col-lg-5">
+								<label class="col-lg-4 control-label">Choice of superannuation fund</label>
+								<div class="col-lg-4">
 									<div class="radio">
 										<input type="radio" name="s_choice" value="employer"<?=($staff['s_choice'] == 'employer') ? ' checked' : '';?> /> my employer's superannuation fund
 									</div>
 								</div>
-								<div class="col-lg-5">
+								<div class="col-lg-4">
 									<div class="radio">
 										<input type="radio" name="s_choice" value="own"<?=($staff['s_choice'] == 'own') ? ' checked' : '';?> /> my own choice
 									</div>
@@ -546,27 +588,36 @@
 				<div class="tab-pane" id="location">
 					<div class="row">
 						<div class="col-md-12">
+                        	To add locations that this staff can work in select from the drop down list
+                            <br /><br />
 							<div class="form-group">
-								<label for="title" class="col-lg-2 control-label">Locations</label>
-								<div class="col-lg-10">
-									<? 
+								
+                                <!--<label for="title" class="col-lg-2 control-label">Select Locations</label>-->
+                                
+								<!--<div class="col-lg-10">-->
+
+                                    
+									
+									<?=modules::run('common/dropdown_location', 's_loc', $staff['locations']);?>
+									<? 									
 									$staff_locations = array();
 									if ($staff['locations'])
 									{
 										$staff_locations = json_decode($staff['locations']);
-									}
-									$locations = modules::run('attribute/location/get_locations');
-									for ($i=0; $i<count($locations);$i = $i+2) { ?>
-									<div class="row">
-										<div class="col-md-1"><input type="checkbox" name="locations[]" value="<?=$locations[$i]['location_id'];?>"<?=(in_array($locations[$i]['location_id'], $staff_locations)) ? ' checked' : '';?> /> </div>
-										<div class="col-md-4 label_checkbox"><?=$locations[$i]['state'] . ' - ' . $locations[$i]['name'];?></div>
-										<? if (isset($roles[$i+1])) { ?>
-										<div class="col-md-1"><input type="checkbox" name="locations[]" value="<?=$locations[$i+1]['location_id'];?>"<?=(in_array($locations[$i+1]['location_id'], $staff_locations)) ? ' checked' : '';?> /> </div>
-										<div class="col-md-4 label_checkbox"><?=$locations[$i]['state'] . ' - ' . $locations[$i+1]['name'];?></div>
-										<? } ?>
-									</div>
-									<? }  ?>
-								</div>
+										/*
+										$locations = modules::run('attribute/location/get_locations');
+										for ($i=0; $i<count($locations);$i = $i+2) { ?>
+										<div class="row">
+											<div class="col-md-1"><input type="checkbox" name="locations[]" value="<?=$locations[$i]['location_id'];?>"<?=(in_array($locations[$i]['location_id'], $staff_locations)) ? ' checked' : '';?> /> </div>
+											<div class="col-md-4 label_checkbox"><?=$locations[$i]['state'] . ' - ' . $locations[$i]['name'];?></div>
+											<? if (isset($roles[$i+1])) { ?>
+											<div class="col-md-1"><input type="checkbox" name="locations[]" value="<?=$locations[$i+1]['location_id'];?>"<?=(in_array($locations[$i+1]['location_id'], $staff_locations)) ? ' checked' : '';?> /> </div>
+											<div class="col-md-4 label_checkbox"><?=$locations[$i]['state'] . ' - ' . $locations[$i+1]['name'];?></div>
+											<? } ?>
+										</div>
+										<? } */ ?>
+                                    <? } ?>
+								<!--</div>-->
 							</div>
 						</div>
 					</div>
