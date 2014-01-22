@@ -1,7 +1,3 @@
-<<<<<<< HEAD
 # Ignore files / Folder
 application/config/database.php
-=======
-application/config/database.php
 .project
->>>>>>> 0cb207ba644cc61c61403d034dedfe65a10399f8
