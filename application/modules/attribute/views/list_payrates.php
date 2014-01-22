@@ -9,7 +9,7 @@
 <table class="table table-hover">
 	<thead>
 	<tr class="heading">
-		<td class="left">Name <a href="<?=base_url();?>attribute/payrate/sort"><i class="icon-sort-by-alphabet"></i></a></td>
+		<td class="left">Name123 <a href="<?=base_url();?>attribute/payrate/sort"><i class="icon-sort-by-alphabet"></i></a></td>
 		<td class="center">Staff Rate<!--  <a href="#"><i class="icon-sort-by-alphabet"></i></a> --></td>
 		<td class="center">Client Rate<!--  <a href="#"><i class="icon-sort-by-alphabet"></i></a> --></td>
 		<td class="center"><i class="icon-eye-open"></i> View</td>
