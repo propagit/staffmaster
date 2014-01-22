@@ -10,6 +10,7 @@ class Staff extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('profile/profile_model');
 		$this->load->model('user/user_model');
 		$this->load->model('staff_model');
 	}
@@ -91,6 +92,8 @@ class Staff extends MX_Controller {
 					'phone' => $data['phone']					
 				);
 				$user_id = $this->user_model->insert_user($user_data);
+				
+				$company_profile = $this->profile_model->get_profile();
 				$staff_data = array(
 					'user_id' => $user_id,
 					'external_staff_id' => $data['external_staff_id'],
@@ -99,7 +102,11 @@ class Staff extends MX_Controller {
 					'department_id' => $data['department_id'],
 					'role' => $data['role'],
 					'emergency_contact' => $data['emergency_contact'],
-					'emergency_phone' => $data['emergency_phone']
+					'emergency_phone' => $data['emergency_phone'],
+					's_choice' => 'employer',
+					's_name' =>  $data['first_name'].' '.$data['last_name'],
+					's_fund_name' => $company_profile['super_name']
+					
 				);
 				$staff_id = $this->staff_model->insert_staff($staff_data);
 				redirect('staff/edit/' . $user_id);
@@ -123,7 +130,7 @@ class Staff extends MX_Controller {
 	
 	function edit_staff($user_id)
 	{
-		error_reporting(E_ALL);
+		
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules(array(
 			array('field' => 'title', 'label' => 'Title', 'rules' => ''),
@@ -169,6 +176,7 @@ class Staff extends MX_Controller {
 			);
 			$this->user_model->update_user($user_id,$user_data);
 			$staff_data = array(
+				'rating' => $data['rating'],
 				'external_staff_id' => $data['external_staff_id'],
 				'gender' => $data['gender'],
 				'dob' => $data['dob_day'] . '-' . $data['dob_month'] . '-' . $data['dob_year'],

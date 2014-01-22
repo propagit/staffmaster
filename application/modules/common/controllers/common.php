@@ -99,5 +99,50 @@ class Common extends MX_Controller {
 			echo 0;
 		}
 	}
+	function dropdown_location($field_name, $field_value=null)
+	{
+
+		$data['locations'] = $this->common_model->get_locations();
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('dropdown_location', isset($data) ? $data : NULL);
+	}
 	
+	function dropdown_get_area()
+	{
+		$loc= $this->input->post('loc');
+		$field_name = $this->input->post('field_name');
+		$field_value = $this->input->post('field_value');
+		
+		$areas = $this->common_model->get_locations_child($loc);
+		$detail = $this->common_model->get_locations_detail($loc);
+		$print='';
+		
+		$print='<select data-placeholder="Select Your Area" class="selectMultiple" multiple="multiple" tabindex="6" >
+			<option value=""></option>';
+			if($loc > 0){
+			$print.='<optgroup label="'.$detail['name'].'">';
+			
+				foreach($areas as $area)
+				{
+					$print.='<option value="'.$area['location_id'].'">'.$area['name'].'</option>';
+					
+				}
+			}
+		$print.='</optgroup></select> <script>	$(".select").select2();	$(".selectMultiple").select2();</script>';
+		
+		
+		echo $print;
+	}
+	function define_area()
+	{
+		$loc= $this->input->post('loc');
+		$suburb = $this->input->post('suburb');
+		$suburb = str_replace('&amp;','&',$suburb);
+
+		$detail = $this->common_model->get_locations_byname($loc,$suburb);
+		
+		echo $detail['location_id'].'#';
+		
+	}
 }

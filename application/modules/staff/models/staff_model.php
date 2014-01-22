@@ -21,6 +21,8 @@ class Staff_model extends CI_Model {
 				FROM user_staffs s
 				LEFT JOIN users u ON s.user_id = u.user_id";
 		
+		//if($params['staff_name']){$sql .= ' where s.first_name'}				
+		
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
