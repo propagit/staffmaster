@@ -55,8 +55,9 @@ class Ajax extends MX_Controller {
 				echo json_encode(array('ok' => false, 'error_id' => 'break_start_at'));
 				return;
 			}
-			
-			$filter_data['break_time'] = serialize($break_time);
+			$breaks = array();
+			$breaks[] = $break_time;
+			$filter_data['break_time'] = json_encode($breaks);
 		}
 		if ($data['venue'])
 		{
@@ -238,9 +239,71 @@ class Ajax extends MX_Controller {
 		if ($new_start_time >= $shift['finish_time'])
 		{
 			$this->output->set_status_header('400');
-			echo 'Start time can be greater than finish time';
+			echo 'Start time cannot be greater than finish time';
+		}
+		else
+		{
+			$this->job_shift_model->update_job_shift($shift_id, array('start_time' => $new_start_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_start_time));
+		}
+	}
+	function update_shift_finish_time()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$new_finish_time = strtotime($shift['job_date'] . ' ' . $this->input->post('value') . ':00');
+		if ($new_finish_time <= $shift['start_time'])
+		{
+			$this->output->set_status_header('400');
+			echo 'Finish time cannot be less than start time';
+		}
+		else
+		{
+			$this->job_shift_model->update_job_shift($shift_id, array('finish_time' => $new_finish_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
+		}
+	}
+	
+	function load_shift_breaks()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$data['breaks'] = json_decode($shift['break_time']);
+		$data['shift_id'] = $shift_id;
+		$this->load->view('shift_breaks', isset($data) ? $data : NULL);
+	}
+	function update_job_shift_breaks()
+	{
+		$length = $this->input->post('break_length');
+		$start_at = $this->input->post('break_start_at');
+		$job_shift = $this->job_shift_model->get_job_shift($this->input->post('shift_id'));
+		
+		$breaks = array();
+		$total = 0;
+		foreach($length as $index => $value)
+		{
+			if ($value > 0)
+			{
+				$break_time = array(
+					'length' => $value * 60,
+					'start_at' => strtotime($job_shift['job_date'] . ' ' . $start_at[$index])
+				);
+				
+				if ($break_time['start_at'] < $job_shift['start_time'] || $break_time['start_at'] > $job_shift['finish_time'])
+				{
+					echo json_encode(array('ok' => false, 'number' => $index));
+					return;
+				}
+				$total += $value;
+				$breaks[] = $break_time;
+			}
 		}
 		
+		if ($this->job_shift_model->update_job_shift($job_shift['shift_id'], array('break_time' => json_encode($breaks))))
+		{
+			$minutes = $total . ' mins';
+			echo json_encode(array('ok' => true, 'shift_id' => $job_shift['shift_id'],'minutes' => $minutes));
+		}
 	}
 	
 	

@@ -89,10 +89,16 @@ class Common extends MX_Controller {
 	
 	function break_time($string)
 	{
-		$a = unserialize($string);
-		if ($a['length'] > 0) 
+		$a = json_decode($string);
+		
+		if (count($a) > 0) 
 		{
-			echo $a['length']/60 . ' mins';
+			$total = 0;
+			foreach($a as $break)
+			{
+				$total += $break->length;
+			}
+			echo $total/60 . ' mins';
 		}
 		else
 		{

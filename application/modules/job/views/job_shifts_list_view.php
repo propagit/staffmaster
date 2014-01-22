@@ -71,9 +71,11 @@
 		<td class="center">
 			<a href="#" class="shift_start_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['start_time']);?>"><?=date('H:i', $shift['start_time']);?></a>
 		</td>
-		<td class="center"><?=date('H:i', $shift['finish_time']);?></td>
 		<td class="center">
-			<?=modules::run('common/break_time', $shift['break_time']);?>
+			<a href="#" class="shift_finish_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['finish_time']);?>"><?=date('H:i', $shift['finish_time']);?></a>
+		</td>
+		<td class="center">
+			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
 		<td></td>
 		<td></td>
@@ -85,8 +87,38 @@
 </tbody>
 </table>
 
+<div id="wrapper_shift_break">
+<form role="form" id="form_update_shift_breaks">
+	<div id="list-breaks">
+					
+	</div>
+	<button type="button" class="btn btn-success btn-sm break-add">
+		<i class="glyphicon glyphicon-plus"></i> Add break
+	</button>
+	<button type="button" class="btn btn-primary btn-sm break-submit">
+		<i class="glyphicon glyphicon-ok"></i>
+		</button>
+	<button type="button" class="btn btn-default btn-sm break-cancel">
+		<i class="glyphicon glyphicon-remove"></i>
+	</button>
+</form>
+</div>
+
 <script>
-$(function(){	
+
+$(function(){
+	$('.shift_venue').on('shown', function(e, editable) {
+		$('#wrapper_js').find('.popover-break').hide();
+	});
+	$('.shift_role').on('shown', function(e, editable) {
+		$('#wrapper_js').find('.popover-break').hide();
+	});
+	$('.shift_start_time').on('shown', function(e, editable) {
+		$('#wrapper_js').find('.popover-break').hide();
+	});
+	$('.shift_finish_time').on('shown', function(e, editable) {
+		$('#wrapper_js').find('.popover-break').hide();
+	});
 	$('.shift_venue').editable({
 		title: 'Start typing venue...',
 		name: 'venue',
@@ -127,5 +159,117 @@ $(function(){
 			}
         }
     });
+    $('.shift_finish_time').editable({
+		title: 'Finish time',
+        name: 'finish_time',
+        time: {
+	        pickDate: false,
+	        minuteStepping: 15,
+	        format: "HH:mm"
+        },
+        url: '<?=base_url();?>job/ajax/update_shift_finish_time',
+        success: function(response, newValue)
+        {
+	        if (response.status == 'error')
+			{
+				return response.msg;
+			}
+        }
+    });
+    
+    
+    var tmp = $.fn.popover.Constructor.prototype.show;
+	$.fn.popover.Constructor.prototype.show = function () {
+	  tmp.call(this);
+	  if (this.options.callback) {
+	    this.options.callback();
+	  }
+	}
+	
+	
+	
+
+	$('.shift_breaks').popover({
+		html: true,
+		placement: 'top',
+		trigger: 'manual',
+		selector: false,
+		title: 'Break',
+		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+		content: function(){
+			return $('#wrapper_shift_break').html();
+		},
+		callback: function(){
+			$('.break_start_at').datetimepicker({
+			    pickDate: false,
+			    minuteStepping: 15,
+		    });
+			$('.break-add').click(function(){
+				$(this).parent().find('#list-breaks').append(
+		'<div class="editable-breaks">' + 
+			'<div class="break_length">' + 
+				'<div class="input-group">' + 
+					'<input type="text" class="form-control input_number_only" name="break_length[]" value="0" maxlength="3" />' + 
+					'<span class="input-group-addon">min(s)</span>' + 
+				'</div>' + 
+			'</div>' + 
+			'<div class="break_start_at">' + 
+				'<div class="input-group break_start_at">' + 
+					'<input type="text" class="form-control" name="break_start_at[]" data-format="HH:mm" />' + 
+					'<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>' + 
+				'</div>' + 
+			'</div>' + 
+		'</div>');
+				$('.break_start_at').datetimepicker({
+				    pickDate: false,
+				    minuteStepping: 15,
+			    });
+			});
+			
+			
+			$('.break-submit').click(function(){
+				$.ajax({
+			    	type: "POST",
+			    	url: "<?=base_url();?>job/ajax/update_job_shift_breaks",
+			    	data: $('#form_update_shift_breaks').serialize(),
+					success: function(data)
+					{
+						data = $.parseJSON(data);
+						if (!data.ok)
+						{
+							alert(data.number);
+						}
+						else
+						{
+							$('.shift_breaks').popover('hide');
+							$('#shift_break_' + data.shift_id).html(data.minutes);
+						}
+						
+					}			
+				})
+			})
+			$('.break-cancel').click(function(){
+				$('.shift_breaks').popover('hide');
+			})
+		}
+	});
+	
+	
 })
+function load_shift_breaks(obj)
+{
+	$('#wrapper_js').find('.popover-break').hide();
+	var pk = $(obj).attr('data-pk');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax/load_shift_breaks",
+		data: {pk: pk},
+		success: function(html)
+		{
+			$('#list-breaks').html(html);
+		}
+	}).done(function(){		
+		$(obj).popover('show');
+	})
+}
 </script>

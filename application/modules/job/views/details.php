@@ -154,7 +154,7 @@ $(function(){
 				data = $.parseJSON(data);
 				if (!data.ok)
 				{
-					$('#f_' + data.error_id).addClass('has-error');
+					
 				}
 				else
 				{

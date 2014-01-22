@@ -1,0 +1,26 @@
+#wrapper_shift_break {
+	display: none;
+}
+.popover.popover-break {
+	max-width: 500px;
+}
+.editable-breaks {
+	margin-bottom: 5px;
+	overflow: hidden;
+	clear: both;
+	display: block;
+}
+
+.editable-breaks input.form-control {
+	width: 70px;
+}
+.editable-breaks .break_length {
+	float: left;
+}
+.editable-breaks .break_start_at {
+	float: left;
+	margin: 0 5px;
+}
+.popover-break .btn {
+	margin: 5px 5px 10px 0;
+}
