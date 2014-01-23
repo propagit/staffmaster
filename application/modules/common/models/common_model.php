@@ -41,7 +41,7 @@ class Common_model extends CI_Model {
 	
 	function get_locations_byname($loc,$name)
 	{
-		$this->db->where('parent_id', $loc);
+		//$this->db->where('parent_id', $loc);
 		$this->db->where('name', $name);
 		$query = $this->db->get('attribute_locations');
 		return $query->first_row('array');

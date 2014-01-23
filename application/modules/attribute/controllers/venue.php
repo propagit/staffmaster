@@ -58,7 +58,13 @@ class Venue extends MX_Controller {
 	function add_venue()
 	{
 		$data = $this->input->post();
-		$this->venue_model->insert_venue($data);
+		$this->venue_model->insert_venue(array(
+				'location_id' => $data['location_id'],
+				'name' => $data['name'], 
+				'address' => $data['address'],
+				'suburb' => $data['suburb'],
+				'postcode' => $data['postcode']
+			));
 		redirect('attribute/venue');
 	}
 	

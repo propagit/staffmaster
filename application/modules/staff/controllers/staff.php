@@ -94,6 +94,8 @@ class Staff extends MX_Controller {
 				$user_id = $this->user_model->insert_user($user_data);
 				
 				$company_profile = $this->profile_model->get_profile();
+				
+				
 				$staff_data = array(
 					'user_id' => $user_id,
 					'external_staff_id' => $data['external_staff_id'],
@@ -160,6 +162,7 @@ class Staff extends MX_Controller {
 		else
 		{
 			$data = $this->input->post();
+			
 			$user_data = array(
 				'password' => $data['password'],
 				'title' => $data['title'],
@@ -175,6 +178,15 @@ class Staff extends MX_Controller {
 				'modified_on' => date('Y-m-d H:i:s')	
 			);
 			$this->user_model->update_user($user_id,$user_data);
+			$loc = explode('#',$data['area_code']);
+			$lc=array();
+			foreach($loc as $l)
+			{
+				if(!in_array($l,$lc))
+				{
+					$lc[]=$l;
+				}
+			}
 			$staff_data = array(
 				'rating' => $data['rating'],
 				'external_staff_id' => $data['external_staff_id'],
@@ -214,7 +226,8 @@ class Staff extends MX_Controller {
 				'availability' => isset($data['availability']) ? json_encode($data['availability']) : '',
 				'payrates' => isset($data['payrates']) ? json_encode($data['payrates']) : '',
 				'roles' => isset($data['roles']) ? json_encode($data['roles']) : '',
-				'locations' => isset($data['locations']) ? json_encode($data['locations']) : ''
+				//'locations' => isset($data['locations']) ? json_encode($data['locations']) : ''
+				'locations' => isset($lc) ? json_encode($lc) : ''
 			);
 			$this->staff_model->update_staff($user_id, $staff_data);
 		}

@@ -1,10 +1,10 @@
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
 <!-- jQuery files -->
-<!--<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jquery.js"></script>-->
-<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
+<!--<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jquery.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>-->
 <script type="text/javascript">
-var $j = jQuery.noConflict();
-$j(document).ready(function(){
+//var $j = jQuery.noConflict();
+jQuery(document).ready(function(){
       // simple jRating call
      /* $(".basic").jRating();
  
@@ -24,12 +24,13 @@ $j(document).ready(function(){
        });
  */
       // get the clicked rate !
-      $j(".basic").jRating({
-        onClick : function(element,rate) {
-         //alert(rate);
-		 $j('#rating').val(rate); 
-        }
-      });
+	/*jQuery(".basic").jRating({
+		onClick : function(element,rate) {
+	 	//alert(rate);
+	 	jQuery('#rating').val(rate); 
+		}
+	});*/
+	
 });
 </script>
 
@@ -58,7 +59,7 @@ $j(document).ready(function(){
 		
 		
 		<p>Please note <span class="required">**</span> denotes a required field</p>
-		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>">
+		<form id="edit_form" class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>" onsubmit="">
 		<input type="hidden" name="tab_id" id="tab_id" />
 		<br />
 		

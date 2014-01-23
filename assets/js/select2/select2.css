@@ -23,12 +23,13 @@
     cursor: text;
     height: auto !important;
     margin: 0;
-	marin-left:5px!important;
+	marin-left:15px!important;
     min-height: 26px;
     overflow: hidden;
     padding: 5px;
     position: relative;
     width: 100%;
+	max-width:500px;
 }
 ul {
     list-style: none outside none;

@@ -19,7 +19,7 @@ $menu = array(
 		array('path' => 'attribute/payrate', 'icon' => 'usd', 'title' => 'Pay Rates'),
 		array('path' => 'attribute/department', 'icon' => 'sitemap', 'title' => 'Departments'),
 		array('path' => 'attribute/role', 'icon' => 'star', 'title' => 'Roles'),
-		array('path' => 'attribute/location', 'icon' => 'globe', 'title' => 'Locations'),
+		//array('path' => 'attribute/location', 'icon' => 'globe', 'title' => 'Locations'),
 		array('path' => 'attribute/venue', 'icon' => 'map-marker', 'title' => 'Venues'),
 		array('path' => 'attribute/uniform', 'icon' => 'puzzle-piece', 'title' => 'Uniforms'),	
 		/* array('path' => 'attribute/option', 'icon' => 'question-sign', 'title' => 'Options') */
@@ -47,7 +47,7 @@ $menu = array(
 		array('path' => '#', 'icon' => 'file-alt', 'title' => 'Create Webpage'),
 	)),
 	array('path' => '#', 'icon' => 'gears', 'title' => 'System Settings', 'sub' => array(
-		array('path' => '#', 'icon' => 'flag', 'title' => 'Company Profile'),
+		array('path' => 'profile', 'icon' => 'flag', 'title' => 'Company Profile'),
 		array('path' => '#', 'icon' => 'tint', 'title' => 'System Styles'),
 		array('path' => '#', 'icon' => 'phone', 'title' => 'SMS Message'),
 		array('path' => '#', 'icon' => 'envelope', 'title' => 'eMail Management'),
