@@ -10,16 +10,19 @@
 	clear: both;
 	display: block;
 }
-
 .editable-breaks input.form-control {
 	width: 70px;
 }
-.editable-breaks .break_length {
+.editable-breaks .wp_break_length {
 	float: left;
 }
-.editable-breaks .break_start_at {
+.editable-breaks .wp_break_start_at {
 	float: left;
 	margin: 0 5px;
+}
+.editable-breaks .control-label {
+	float: left;
+	margin: 0 10px;
 }
 .popover-break .btn {
 	margin: 5px 5px 10px 0;

@@ -180,7 +180,7 @@ class Ajax extends MX_Controller {
 			$this->load->view('job_shifts_week_view', isset($data) ? $data : NULL);	
 		} else if ($this->session->userdata('calendar_view') == 'month')
 		{
-			$out[] = array();
+			$out = array();
 			foreach($job_dates as $date)
 			{
 				$out[] = array(
@@ -191,14 +191,7 @@ class Ajax extends MX_Controller {
 					'end' => strtotime($date['job_date']) . '000',
 				);
 			}
-			if (count($job_dates) > 0)
-			{
-				$data['events_source'] = str_replace('[],', '',json_encode($out));	
-			}
-			else
-			{
-				$data['events_source'] = '[]';
-			}
+			$data['events_source'] = json_encode($out);
 			$this->load->view('job_shifts_month_view', isset($data) ? $data : NULL);
 		}
 	}
@@ -301,11 +294,101 @@ class Ajax extends MX_Controller {
 		
 		if ($this->job_shift_model->update_job_shift($job_shift['shift_id'], array('break_time' => json_encode($breaks))))
 		{
-			$minutes = $total . ' mins';
-			echo json_encode(array('ok' => true, 'shift_id' => $job_shift['shift_id'],'minutes' => $minutes));
+			if ($total > 0) {				
+				$minutes = $total . ' mins';
+				echo json_encode(array('ok' => true, 'shift_id' => $job_shift['shift_id'],'minutes' => $minutes));
+			}
+			else
+			{
+				echo json_encode(array('ok' => true, 'shift_id' => $job_shift['shift_id'],'minutes' => 0));
+			}
 		}
 	}
 	
+	/** 
+	*	@desc: ajax function to delete a shift
+	*	@name: Ajax Delete Shift
+	*	@access: public
+	*	@param: null
+	*	@return: json encode {job_id: (int) $job_id, job_date: (YYYY-MM-DD) $job_date}  
+	*/
+	
+	function delete_shift()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$this->job_shift_model->delete_job_shift($shift_id);
+		$result = array('job_id' => $shift['job_id']);
+		if (modules::run('job/count_job_shifts', $shift['job_id'], $shift['job_date']) > 0)
+		{
+			$result['job_date'] = $shift['job_date'];
+		}
+		echo json_encode($result);
+	}
+	
+	/**
+	*	@desc: ajax function to delete all shifts in a day
+	*	@name: Ajax Delete Day Shifts
+	*	@access: public
+	*	@param: null
+	*	@return: json encode {job_id: (int) $job_id}
+	*/
+	
+	function delete_day_shift()
+	{
+		$job_id = $this->input->post('job_id');
+		$job_date = date('Y-m-d', $this->input->post('date'));
+		$this->job_shift_model->delete_job_day_shift($job_id, $job_date);
+		echo json_encode(array('job_id' => $job_id));
+	}
+	
+	function load_shift_copy($shift_id=null)
+	{
+		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
+		$this->load->view('shift_copy', isset($data) ? $data : NULL);
+	}
+	function update_selected_day()
+	{
+		$ts = $this->input->post('ts');
+		$all_ts = $this->session->userdata('all_ts');
+		if (!$all_ts) {
+			$all_ts = array();
+		}
+		$key = array_search($ts, $all_ts);
+		if ($key !== false) {
+			unset($all_ts[$key]);
+		}
+		else
+		{
+			$all_ts[] = $ts;
+		}
+		
+		$this->session->set_userdata('all_ts', $all_ts);	
+	}
+	function get_selected_days()
+	{
+		$all_ts = $this->session->userdata('all_ts');
+		$out = array();
+		
+		if ($all_ts) foreach($all_ts as $ts)
+		{
+			$out[] = array(
+				'class' => 'selected',
+				'start' => $ts . '000',
+				'end' => $ts . '000'
+			);
+		}
+	
+		echo json_encode(array('success' => 1, 'result' => $out));
+	}
+	function clear_selected_days()
+	{
+		$this->session->unset_userdata('all_ts');
+	}
+	function copy_selected_days()
+	{
+		
+	}
 	
 	function set_order_param()
 	{

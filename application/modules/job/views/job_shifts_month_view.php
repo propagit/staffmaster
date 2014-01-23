@@ -18,7 +18,6 @@
 
 <script>
 $(function(){
-
 	var options = {
 		events_source: <?=$events_source;?>,
 		view: 'month',
@@ -40,7 +39,7 @@ $(function(){
 		});
 	});
 	$('*[data-cal-date]').click(function() {
-		load_job_shifts(<?=$job_id;?>, $(this).data('cal-date'), true);
+		load_job_shifts(<?=$job_id;?>, $(this).data('cal-date'));
 		//var view = $(this).data('cal-view');
 		//if(!self.options.views[view].enable) {
 		//	return;

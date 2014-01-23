@@ -1,0 +1,1 @@
+ALTER TABLE `job_shifts`  ADD `status` TINYINT NOT NULL COMMENT '-1: deleted, 0: unconfirmed, 1: confirmed, 2: finished' AFTER `shift_id`

@@ -296,12 +296,14 @@
 .cal-month-day {
   height: 100px;
 }
+.modal-dialog .cal-month-day {
+	height: 70px;
+}
 [class*="cal-cell"]:hover {
   background-color: #ededed;
 }
 .cal-year-box [class*="span"],
 .cal-month-box [class*="cal-cell"] {
-  min-height: 100px;
   border-right: 1px solid #e1e1e1;
   position: relative;
 }
@@ -415,4 +417,10 @@ a.cal-event-week {
 }
 .badge-important {
   background-color: #b94a48;
+}
+.day-selected {
+	background: #ccc;	
+}
+.modal-dialog .cal-month-day {
+	cursor: pointer;
 }

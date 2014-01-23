@@ -792,12 +792,13 @@ if(!String.prototype.format) {
 		$('*[data-toggle="tooltip"]').tooltip({container: 'body'});
 
 		$('*[data-cal-date]').click(function() {
-			var view = $(this).data('cal-view');
-			if(!self.options.views[view].enable) {
-				return;
-			}
-			self.options.day = $(this).data('cal-date');
-			self.view(view);
+			// do not want to switch to day view
+			//var view = $(this).data('cal-view');
+			//if(!self.options.views[view].enable) {
+			//	return;
+			//}
+			//self.options.day = $(this).data('cal-date');
+			//self.view(view);
 		});
 		$('.cal-cell').dblclick(function() {
 			var view = $('[data-cal-date]', this).data('cal-view');
