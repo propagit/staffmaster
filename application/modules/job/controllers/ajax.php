@@ -50,7 +50,7 @@ class Ajax extends MX_Controller {
 				'start_at' => strtotime($filter_data['job_date'] . ' ' . $data['break_start_at'])
 			);
 			
-			if ($break_time['start_at'] < $filter_data['start_time'] || $break_time['start_at'] > $filter_data['finish_time'])
+			if ($break_time['start_at'] <= $filter_data['start_time'] || $break_time['start_at'] >= $filter_data['finish_time'])
 			{
 				echo json_encode(array('ok' => false, 'error_id' => 'break_start_at'));
 				return;
@@ -289,7 +289,7 @@ class Ajax extends MX_Controller {
 					'start_at' => strtotime($job_shift['job_date'] . ' ' . $start_at[$index])
 				);
 				
-				if ($break_time['start_at'] < $job_shift['start_time'] || $break_time['start_at'] > $job_shift['finish_time'])
+				if ($break_time['start_at'] <= $job_shift['start_time'] || $break_time['start_at'] >=$job_shift['finish_time'])
 				{
 					echo json_encode(array('ok' => false, 'number' => $index));
 					return;

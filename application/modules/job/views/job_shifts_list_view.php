@@ -75,13 +75,15 @@
 			<a href="#" class="shift_finish_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['finish_time']);?>"><?=date('H:i', $shift['finish_time']);?></a>
 		</td>
 		<td class="center">
-			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
+			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
 		<td></td>
 		<td></td>
 		<td class="center"><i class="fa fa-edit"></i></td>
 		<td class="center"><i class="fa fa-copy"></i></td>
-		<td class="center"><i class="fa fa-trash-o"></i></td>
+		<td class="center">
+			<a class="shift_delete" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-trash-o"></i></a>
+		</td>
 	</tr>
 	<? } ?>
 </tbody>
@@ -236,8 +238,14 @@ $(function(){
 					{
 						data = $.parseJSON(data);
 						if (!data.ok)
-						{
-							alert(data.number);
+						{	
+							$('.editable-breaks').each(function(i,obj) {
+								$(obj).removeClass('has-error');
+								if (i== data.number)
+								{
+									$(obj).addClass('has-error');
+								}
+							});
 						}
 						else
 						{
@@ -253,7 +261,19 @@ $(function(){
 			})
 		}
 	});
-	
+	$('.shift_delete').click(function(){
+		var pk = $(this).attr('data-pk');
+		if (confirm('Are you sure you want to delete this shift?')) {
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>job/ajax/delete_shift",
+				data: {pk: pk},
+				success: function(html) {
+					//load_job_shifts(job_id, date, false);
+				}
+			})
+		}
+	})
 	
 })
 function load_shift_breaks(obj)
