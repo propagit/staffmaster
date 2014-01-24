@@ -145,12 +145,7 @@ class Ajax extends MX_Controller {
 		
 		$data['job_id'] = $job_id;
 		$data['job_dates'] = $op_job_dates;
-		$job_shifts = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
-		if (count($job_shifts) == 0)
-		{
-			$job_shifts = $this->job_shift_model->get_job_shifts($job_id);
-		}
-		$data['job_shifts'] = $job_shifts;
+		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
 		$this->load->view('job_shifts_list_view', isset($data) ? $data : NULL);
 	}
 	
@@ -310,24 +305,33 @@ class Ajax extends MX_Controller {
 		}
 	}
 	
+	
+	
 	/** 
-	*	@desc: ajax function to delete a shift
-	*	@name: Ajax Delete Shift
+	*	@desc: ajax function to delete shift(s)
+	*	@name: Ajax Delete Shifts
 	*	@access: public
-	*	@param: null
+	*	@param: an array of integers, which are primary keys of shifts
 	*	@return: json encode {job_id: (int) $job_id, job_date: (YYYY-MM-DD) $job_date}  
 	*/
-	
-	function delete_shift()
+	function delete_shifts()
 	{
-		$shift_id = $this->input->post('pk');
-		$shift = $this->job_shift_model->get_job_shift($shift_id);
-		$this->job_shift_model->delete_job_shift($shift_id);
-		$result = array('job_id' => $shift['job_id']);
-		if (modules::run('job/count_job_shifts', $shift['job_id'], $shift['job_date']) > 0)
+		$shifts = $this->input->post('shifts');
+		$shift = null;
+		$result = array();
+		foreach($shifts as $shift_id)
 		{
-			$result['job_date'] = $shift['job_date'];
+			$shift = $this->job_shift_model->get_job_shift($shift_id);
+			$this->job_shift_model->delete_job_shift($shift_id);
 		}
+		if ($shift)
+		{
+			$result['job_id'] = $shift['job_id'];
+			if (modules::run('job/count_job_shifts', $shift['job_id'], strtotime($shift['job_date'])) > 0)
+			{
+				$result['job_date'] = $shift['job_date'];
+			}
+		}		
 		echo json_encode($result);
 	}
 	
@@ -346,11 +350,21 @@ class Ajax extends MX_Controller {
 		echo json_encode(array('job_id' => $job_id));
 	}
 	
-	function load_shift_copy($shift_id=null)
+	/**
+	*	@name: load_shifts_copy
+	*	@desc: ajax function to load the calendar popup for copying shifts across
+	*	@access: public
+	*	@param: string of shift id 1~2~3~4
+	*	@return: calendar view
+	*/
+	function load_shifts_copy($s = '')
 	{
-		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
-		$this->load->view('shift_copy', isset($data) ? $data : NULL);
-	}
+		$shifts = explode('~', $s);
+		
+		$data['shift'] = $this->job_shift_model->get_job_shift($shifts[0]);
+		$data['shifts'] = $shifts;		
+		$this->load->view('shifts_copy', isset($data) ? $data : NULL);
+	}	
 	
 	/**
 	*	@name: update_selected_day
@@ -409,16 +423,29 @@ class Ajax extends MX_Controller {
 	function copy_selected_days()
 	{
 		$all_ts = $this->session->userdata('all_ts');
-		$shift = $this->job_shift_model->get_job_shift($this->input->post('shift_id'));
-		foreach($all_ts as $ts)
+		if ($all_ts)
 		{
-			$new_shift = $shift;
-			unset($new_shift['shift_id']);
-			unset($new_shift['created_on']);
-			$new_shift['job_date'] = date('Y-m-d', $ts);
-			$this->job_shift_model->insert_job_shift($new_shift);
+			$shifts = $this->input->post('shifts');
+			foreach($all_ts as $ts)
+			{
+				foreach($shifts as $shift_id)
+				{
+					$shift = $this->job_shift_model->get_job_shift($shift_id);
+					$new_shift = $shift;
+					unset($new_shift['shift_id']);
+					unset($new_shift['created_on']);
+					$new_shift['job_date'] = date('Y-m-d', $ts);
+					$this->job_shift_model->insert_job_shift($new_shift);
+				}				
+			}
+			$this->session->unset_userdata('all_ts');
+			echo json_encode(array('success' => true));
 		}
-		$this->session->unset_userdata('all_ts');
+		else
+		{
+			echo json_encode(array('success' => false, 'msg' => 'No day selected'));
+		}
+		
 	}
 	
 	function set_order_param()

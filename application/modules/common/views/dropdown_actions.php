@@ -5,8 +5,8 @@
     <span class="sr-only">Toggle Dropdown</span>
   </button>
   <ul class="dropdown-menu" role="menu">
-    <li><a href="#">Copy</a></li>
-    <li><a href="#">Attach Resource</a></li>
-    <li><a href="#">Delete</a></li>
+    <li><a class="menu_attach_<?=$target;?>">Attach Resource</a></li>
+    <li><a class="menu_copy_<?=$target;?>">Copy</a></li>
+    <li><a class="menu_delete_<?=$target;?>">Delete</a></li>
   </ul>
 </div>
