@@ -40,7 +40,7 @@ $(function() {
 	});
 	
 });
-
+var choosen = 0;
 function set_payrate()
 {
 	var crate = $('#crate').val() * 1;
@@ -82,6 +82,8 @@ function set_payrate()
 			 }
 		);
 	}
+	
+	$('#form-payrate-'+choosen).submit();
 }
 
 </script>
@@ -91,6 +93,31 @@ function set_payrate()
 <button class="btn btn-info" type="button" onclick="add_payrate();">Add Pay Rate</button>
 <!-- <a data-toggle="modal" href="#addPayrate" ><i class="icon-plus-sign"></i> Add Pay Rate</a> -->
 <br /><br />
+
+<script>
+
+function build_payrate(id)
+{
+	//alert(id);
+	choosen = id;
+	jQuery.ajax({
+
+	url: '<?=base_url() ?>attribute/payrate/build_payrate',
+
+	type: 'POST',
+
+	data: ({id:id}),
+
+	dataType: "html",
+
+	success: function(html) {
+		//alert(html);
+		$('#payrate-'+id).html(html);
+	}
+
+	})
+}
+</script>
 
 <ul class="nav nav-tabs" id="myTab">
   <!-- <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
@@ -105,13 +132,13 @@ function set_payrate()
 	{
 	$j = $this->session->flashdata('payrate_just_updated');
 	?>
-  	<li <?php if($j==$payrate['payrate_id']){ echo 'class="active"';}?>><a href="#payrate-<?=$payrate['payrate_id'];?>" data-toggle="tab"><?=$payrate['name'];?></a></li>
+  	<li onclick="build_payrate(<?=$payrate['payrate_id'];?>);" <?php if($j==$payrate['payrate_id']){ echo 'class="active"';}?>><a href="#payrate-<?=$payrate['payrate_id'];?>" data-toggle="tab"><?=$payrate['name'];?></a></li>
   	<?	
 	}
 	else
 	{
 	?>
-  	<li <?php if($i==0){ echo 'class="active"';}?>><a href="#payrate-<?=$payrate['payrate_id'];?>" data-toggle="tab"><?=$payrate['name'];?></a></li>
+  	<li onclick="build_payrate(<?=$payrate['payrate_id'];?>);" <?php if($i==0){ echo 'class="active"';}?>><a href="#payrate-<?=$payrate['payrate_id'];?>" data-toggle="tab"><?=$payrate['name'];?></a></li>
   	<?
 	}
   	
@@ -127,8 +154,10 @@ function set_payrate()
   <div class="tab-pane" id="messages">789</div>
   <div class="tab-pane" id="settings">123</div> -->
   <? 
-  $i = 0; 
-  foreach($payrates as $payrate) { 
+  $i = 0;
+  $cur = 0; 
+  foreach($payrates as $payrate) {
+  	if($i == 0){$cur = $payrate['payrate_id'];}
   	$def_staff = number_format($payrate['staff_rate'],2,'.',',');
 	$def_client = number_format($payrate['client_rate'],2,'.',',');
 	$hour_payrate = $payrate['hour_payrate'];
@@ -148,117 +177,30 @@ function set_payrate()
 	<?
 	}
   	?>
-  	
-  		<form method="post" action="<?=base_url()?>attribute/payrate/update_payrate" id="payrate-form-<?=$payrate['payrate_id'];?>">
-  		<input type="hidden" name="id" value="<?=$payrate['payrate_id'];?>">
-  		<div class="table-responsive selectable"  id="wrapper-table">
-			<table class="table">
-				<thead>
-					<tr>
-						<th style="width:12.5%">&nbsp;</th>
-						<th style="width:12.5%">Monday</th>
-						<th style="width:12.5%">Tuesday</th>
-						<th style="width:12.5%">Wednesday</th>
-						<th style="width:12.5%">Thursday</th>
-						<th style="width:12.5%">Friday</th>
-						<th style="width:12.5%">Saturday</th>
-						<th style="width:12.5%">Sunday</th>
-					</tr>
-				</thead>
-				<tbody >
-					<?php
-					$j = 0;
-					for($i=0;$i<24;$i++)
-					{
-						$ttl = '';
-						if($i == 0)
-						{
-							$ttl = 'Midnight';
-						}
-						else 
-						{
-							if($i<12)
-							{
-								$ttl = $i.':00 AM<br/>('.$i.':00)';
-							}
-							else 
-							{
-								if($i>12) {$j = $i-12;}
-								$ttl = $j.':00 PM<br/>('.$i.':00)';
-							}
-						}
-						
-						?>
-						<tr >
-							<th><?=$ttl?></th>
-							<td >
-								<div class="label-rate">Staff Rate</div>
-								<input type="text" class="input-rate staff" id="monday-<?=$i?>-staff" name="monday-<?=$i?>-staff" value="<?php if($hour_payrate){ echo $hp['monday-'.$i.'-staff'];}else{ echo $def_staff;}?>">
-								<div style="clear: both"></div>
-								<div class="label-rate">Client Rate</div>
-								<input type="text" class="input-rate client" id="monday-<?=$i?>-client" name="monday-<?=$i?>-client" value="<?php if($hour_payrate){ echo $hp['monday-'.$i.'-client']; }else{ echo $def_client;}?>">
-								<div style="clear: both"></div>
-							</td>
-							<td >
-								<div class="label-rate">Staff Rate</div>
-								<input type="text" class="input-rate staff" id="tuesday-<?=$i?>-staff" name="tuesday-<?=$i?>-staff" value="<?php if($hour_payrate){ echo $hp['tuesday-'.$i.'-staff'];}else{ echo $def_staff;}?>">
-								<div style="clear: both"></div>
-								<div class="label-rate">Client Rate</div>
-								<input type="text" class="input-rate client" id="tuesday-<?=$i?>-client" name="tuesday-<?=$i?>-client" value="<?php if($hour_payrate){echo $hp['tuesday-'.$i.'-staff'];}else{ echo $def_client;}?>">
-								<div style="clear: both"></div>
-							</td>
-							<td >
-								<div class="label-rate">Staff Rate</div>
-								<input type="text" class="input-rate staff" id="wednesday-<?=$i?>-staff" name="wednesday-<?=$i?>-staff" value="<?php if($hour_payrate){echo $hp['wednesday-'.$i.'-staff'];}else{ echo $def_staff;}?>">
-								<div style="clear: both"></div>
-								<div class="label-rate">Client Rate</div>
-								<input type="text" class="input-rate client" id="wednesday-<?=$i?>-client" name="wednesday-<?=$i?>-client" value="<?php if($hour_payrate){echo $hp['wednesday-'.$i.'-client'];}else{ echo $def_client;}?>">
-								<div style="clear: both"></div>
-							</td>
-							<td >
-								<div class="label-rate">Staff Rate</div>
-								<input type="text" class="input-rate staff" id="thursday-<?=$i?>-staff" name="thursday-<?=$i?>-staff" value="<?php if($hour_payrate){echo $hp['thursday-'.$i.'-staff'];}else{ echo $def_staff;}?>">
-								<div style="clear: both"></div>
-								<div class="label-rate">Client Rate</div>
-								<input type="text" class="input-rate client" id="thursday-<?=$i?>-client" name="thursday-<?=$i?>-client" value="<?php if($hour_payrate){echo $hp['thursday-'.$i.'-client'];}else{ echo $def_client;}?>">
-								<div style="clear: both"></div>
-							</td>
-							<td >
-								<div class="label-rate">Staff Rate</div>
-								<input type="text" class="input-rate staff" id="friday-<?=$i?>-staff" name="friday-<?=$i?>-staff" value="<?php if($hour_payrate){echo $hp['friday-'.$i.'-staff'];}else{ echo $def_staff;}?>">
-								<div style="clear: both"></div>
-								<div class="label-rate">Client Rate</div>
-								<input type="text" class="input-rate client" id="friday-<?=$i?>-client" name="friday-<?=$i?>-client" value="<?php if($hour_payrate){echo $hp['friday-'.$i.'-client'];}else{ echo $def_client;}?>">
-								<div style="clear: both"></div>
-							</td>
-							<td >
-								<div class="label-rate">Staff Rate</div>
-								<input type="text" class="input-rate staff" id="saturday-<?=$i?>-staff" name="saturday-<?=$i?>-staff" value="<?php if($hour_payrate){echo $hp['saturday-'.$i.'-staff'];}else{ echo $def_staff;}?>">
-								<div style="clear: both"></div>
-								<div class="label-rate">Client Rate</div>
-								<input type="text" class="input-rate client" id="saturday-<?=$i?>-client" name="saturday-<?=$i?>-client" value="<?php if($hour_payrate){echo $hp['saturday-'.$i.'-client'];}else{ echo $def_client;}?>">
-								<div style="clear: both"></div>
-							</td>
-							<td >
-								<div class="label-rate">Staff Rate</div>
-								<input type="text" class="input-rate staff" id="sunday-<?=$i?>-staff" name="sunday-<?=$i?>-staff" value="<?php if($hour_payrate){echo $hp['sunday-'.$i.'-staff'];}else{ echo $def_staff;}?>">
-								<div style="clear: both"></div>
-								<div class="label-rate">Client Rate</div>
-								<input type="text" class="input-rate client" id="sunday-<?=$i?>-client" name="sunday-<?=$i?>-client" value="<?php if($hour_payrate){echo $hp['sunday-'.$i.'-client'];}else{ echo $def_client;}?>">
-								<div style="clear: both"></div>
-							</td>
-						</tr>
-						<?
-					}
-					?>
-					
-				</tbody>
-			</table>
-		</div>
-		<button class="btn btn-info" type="button" onclick="$('#payrate-form-<?=$payrate['payrate_id'];?>').submit();">Update Pay Rate</button>
-		</form>
+  		
   	</div>
   <?$i++;}?>
+  
+  <?php 
+  if($this->session->flashdata('payrate_just_updated'))
+  {
+  ?>
+  <script>
+  choosen = <?=$j?>;
+  build_payrate(<?=$j?>);
+  </script>
+  <?
+  }
+  else 
+  {
+  ?>
+  <script>
+  choosen = <?=$cur?>;
+  build_payrate(<?=$cur?>);
+  </script>
+  <?    
+  }
+  ?>
   
 </div>
 

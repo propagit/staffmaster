@@ -5,7 +5,13 @@
 
 <br />
 <div class="table_action">
-	<?=modules::run('common/dropdown_actions','');?>
+	<?=modules::run('common/dropdown_actions','shift', 
+		array(
+			'attach' => 'Attach Resource',
+			'copy' => 'Copy',
+			'delete' => 'Delete'
+			));?>
+	
 	<span onclick="load_job_shifts(<?=$job_id;?>)" class="btn btn-info">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</span>
 	<? foreach($job_dates as $date) { ?>
 	<span onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')" class="btn btn-day<?=($this->session->userdata('job_date') == $date['job_date']) ? '-active': '';?>">
@@ -20,6 +26,7 @@
 	
 	<span class="btn btn-info pull-right"><i class="fa fa-gears"></i> Settings</span>
 </div>
+<!--
 <div class="table_settings">
 	<form class="form-inline pull-left" role="form">
 		<label>Search </label>
@@ -37,14 +44,14 @@
 			</select>
 		</div>
 	</form>
-
 </div>
+-->
                         
                         
 <table class="table table-bordered table-hover" width="100%">
 <thead>
 	<tr>
-		<th class="center" width="5%"><input type="checkbox" /></th>
+		<th class="center" width="5%"><input type="checkbox" id="selected_all_shifts" /></th>
 		<th>Venue</th>
 		<th>Role</th>
 		<th class="center">Start</th>
@@ -60,7 +67,7 @@
 <tbody>
 	<? foreach($job_shifts as $shift) { ?>
 	<tr>
-		<td class="center"><input type="checkbox" /></td>
+		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
 		<td>
 			
 			<a href="#" class="shift_venue" data-type="typeaheadjs" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
@@ -81,7 +88,7 @@
 		<td></td>
 		<td class="center"><i class="fa fa-edit"></i></td>
 		<td class="center">
-			<a class="shift_copy" data-pk="<?=$shift['shift_id'];?>" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shift_copy/<?=$shift['shift_id'];?>"><i class="fa fa-copy"></i></a>
+			<a class="shift_copy" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=$shift['shift_id'];?>"><i class="fa fa-copy"></i></a>
 		</td>
 		<td class="center">
 			<a class="shift_delete" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-trash-o"></i></a>
@@ -92,12 +99,9 @@
 </table>
 
 <div id="wrapper_shift_break"></div>
-<!-- Modal -->
-<div class="modal fade" id="copy_shift" tabindex="-1" role="dialog" aria-hidden="true">
-</div><!-- /.modal -->
+
 
 <script>
-
 $(function(){
 	$('.shift_venue').on('shown', function(e, editable) {
 		$('#wrapper_js').find('.popover-break').hide();
@@ -169,6 +173,7 @@ $(function(){
         }
     });
     
+    
     var tmp = $.fn.popover.Constructor.prototype.show;
 	$.fn.popover.Constructor.prototype.show = function () {
 	  tmp.call(this);
@@ -187,21 +192,47 @@ $(function(){
 			return $('#wrapper_shift_break').html();
 		}
 	});
-	$('.shift_delete').click(function(){
-		var pk = $(this).attr('data-pk');
-		if (confirm('Are you sure you want to delete this shift?')) {
-			$.ajax({
-				type: "POST",
-				url: "<?=base_url();?>job/ajax/delete_shift",
-				data: {pk: pk},
-				success: function(data) {
-					data = $.parseJSON(data);
-					load_job_shifts(data.job_id, data.job_date, false);
-				}
-			})
+	
+    var selected_shifts = new Array();
+    	
+
+	$('#selected_all_shifts').click(function(){
+		$('input.selected_shifts').prop('checked', this.checked);		
+	});
+	$('.shift_delete').confirmModal({
+		confirmTitle: 'Delete this shift',
+		confirmMessage: 'Are you sure you want to delete this shift?',
+		confirmCallback: function(e){
+			selected_shifts.length = 0;
+			selected_shifts.push($(e).attr('data-pk'));
+			delete_shifts(selected_shifts);
 		}
-	});	
+	});
+	$('.menu_delete_shift').confirmModal({
+		confirmTitle: 'Delete selected shifts',
+		confirmMessage: 'Are you sure you want to delete selected shifts?',
+		confirmCallback: function(e) {
+			selected_shifts.length = 0;
+			$('.selected_shifts:checked').each(function(){
+				selected_shifts.push($(this).val());
+			});
+			delete_shifts(selected_shifts);
+		}
+	});
+	$('.menu_copy_shift').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		$('#copy_shift').modal({
+			remote: "<?=base_url();?>job/ajax/load_shifts_copy/" + selected_shifts.join("~"),
+			show: true
+		});
+		
+
+	});
 })
+
 function load_shift_breaks(obj)
 {
 	$('#wrapper_shift_break').html('');

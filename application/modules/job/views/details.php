@@ -123,6 +123,9 @@
 
 <div id="wrapper_js">
 </div>
+<!-- Modal -->
+<div class="modal fade" id="copy_shift" tabindex="-1" role="dialog" aria-hidden="true">
+</div><!-- /.modal -->
 <script>
 $(function(){
 	load_job_shifts(<?=$job['job_id'];?>);
@@ -163,7 +166,10 @@ $(function(){
 				
 			}			
 		})
-    })
+    });
+    $('#copy_shift').on('hidden.bs.modal', function (e) {
+		$(this).removeData('bs.modal');
+	})
 })
 
 </script>

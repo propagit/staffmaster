@@ -224,6 +224,10 @@ span.required {
 .menu ul.dropdown-menu li a:focus {
 	outline: none;
 }
+.dropdown-menu li:hover a {
+	background: #00b1eb;
+	color: #fff;
+}
 
 .form-group .auto-width {
 	width: auto;	

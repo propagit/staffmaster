@@ -77,6 +77,24 @@ function load_week_view(job_id, custom_date)
 		}
 	})
 }
+/*
+ * selected_shifts: array of int
+ */
+
+function delete_shifts(selected_shifts)
+{
+	$.ajax({
+		type: "POST",
+		url: base_url + 'job/ajax/delete_shifts',
+		data: {shifts: selected_shifts},
+		success: function(data) {
+			data = $.parseJSON(data);
+			load_job_shifts(data.job_id, data.job_date, false);
+		}
+	})
+}
+
+
 function start_loading()
 {
 }

@@ -32,10 +32,200 @@ class Payrate extends MX_Controller {
 			case 'sort':
 					$this->sort_payrates();
 				break;
+			case 'build_payrate':
+					$this->build_payrate();
+				break;
 			default:
 					$this->list_payrates();
 				break;
 		}
+	}
+	
+	/**
+	*    @desc This is a function to build the payrate table, to tune the speed of page loading
+	*    @name build_payrate
+	*    @access public
+	*    @param id
+	*    @return built table
+	*    
+	*/
+	
+	function build_payrate()
+	{
+		$id = $_POST['id'];
+		$tbody = '';
+		$payrate = $this->payrate_model->identify($id);
+		$def_staff = number_format($payrate['staff_rate'],2,'.',',');
+		$def_client = number_format($payrate['client_rate'],2,'.',',');
+		$hour_payrate = $payrate['hour_payrate'];
+		$hp = json_decode($hour_payrate,TRUE);
+					$j = 0;
+					for($i=0;$i<24;$i++)
+					{
+						$ttl = '';
+						if($i == 0)
+						{
+							$ttl = 'Midnight';
+						}
+						else 
+						{
+							if($i<12)
+							{
+								$ttl = $i.':00 AM<br/>('.$i.':00)';
+							}
+							else 
+							{
+								if($i>12) {$j = $i-12;}
+								$ttl = $j.':00 PM<br/>('.$i.':00)';
+							}
+						}
+						
+						$mon_staff = $def_staff;
+						$tue_staff = $def_staff;
+						$wed_staff = $def_staff;
+						$thu_staff = $def_staff;
+						$fri_staff = $def_staff;
+						$sat_staff = $def_staff;
+						$sun_staff = $def_staff;
+						
+						$mon_client = $def_client;
+						$tue_client = $def_client;
+						$wed_client = $def_client;
+						$thu_client = $def_client;
+						$fri_client = $def_client;
+						$sat_client = $def_client;
+						$sun_client = $def_client;
+						
+						if($hour_payrate)
+						{
+							$mon_staff = $hp['monday-'.$i.'-staff'];
+							$tue_staff = $hp['tuesday-'.$i.'-staff'];
+							$wed_staff = $hp['wednesday-'.$i.'-staff'];
+							$thu_staff = $hp['thursday-'.$i.'-staff'];
+							$fri_staff = $hp['friday-'.$i.'-staff'];
+							$sat_staff = $hp['saturday-'.$i.'-staff'];
+							$sun_staff = $hp['sunday-'.$i.'-staff'];
+							
+							$mon_client = $hp['monday-'.$i.'-client'];
+							$tue_client = $hp['tuesday-'.$i.'-client'];
+							$wed_client = $hp['wednesday-'.$i.'-client'];
+							$thu_client = $hp['thursday-'.$i.'-client'];
+							$fri_client = $hp['friday-'.$i.'-client'];
+							$sat_client = $hp['saturday-'.$i.'-client'];
+							$sun_client = $hp['sunday-'.$i.'-client'];
+						}
+											
+						$tbody.='
+						<tr >
+							<th>'.$ttl.'</th>
+							<td >
+								<div class="label-rate">Staff Rate</div>
+								<input type="text" class="input-rate staff" id="monday-'.$i.'-staff" name="monday-'.$i.'-staff" value="'.$mon_staff.'">
+								<div style="clear: both"></div>
+								<div class="label-rate">Client Rate</div>
+								<input type="text" class="input-rate client" id="monday-'.$i.'-client" name="monday-'.$i.'-client" value="'.$mon_client.'">
+								<div style="clear: both"></div>
+							</td>
+							<td >
+								<div class="label-rate">Staff Rate</div>
+								<input type="text" class="input-rate staff" id="tuesday-'.$i.'-staff" name="tuesday-'.$i.'-staff" value="'.$tue_staff.'">
+								<div style="clear: both"></div>
+								<div class="label-rate">Client Rate</div>
+								<input type="text" class="input-rate client" id="tuesday-'.$i.'-client" name="tuesday-'.$i.'-client" value="'.$tue_client.'">
+								<div style="clear: both"></div>
+							</td>
+							<td >
+								<div class="label-rate">Staff Rate</div>
+								<input type="text" class="input-rate staff" id="wednesday-'.$i.'-staff" name="wednesday-'.$i.'-staff" value="'.$wed_staff.'">
+								<div style="clear: both"></div>
+								<div class="label-rate">Client Rate</div>
+								<input type="text" class="input-rate client" id="wednesday-'.$i.'-client" name="wednesday-'.$i.'-client" value="'.$wed_client.'">
+								<div style="clear: both"></div>
+							</td>
+							<td >
+								<div class="label-rate">Staff Rate</div>
+								<input type="text" class="input-rate staff" id="thursday-'.$i.'-staff" name="thursday-'.$i.'-staff" value="'.$thu_staff.'">
+								<div style="clear: both"></div>
+								<div class="label-rate">Client Rate</div>
+								<input type="text" class="input-rate client" id="thursday-'.$i.'-client" name="thursday-'.$i.'-client" value="'.$thu_client.'">
+								<div style="clear: both"></div>
+							</td>
+							<td >
+								<div class="label-rate">Staff Rate</div>
+								<input type="text" class="input-rate staff" id="friday-'.$i.'-staff" name="friday-'.$i.'-staff" value="'.$fri_staff.'">
+								<div style="clear: both"></div>
+								<div class="label-rate">Client Rate</div>
+								<input type="text" class="input-rate client" id="friday-'.$i.'-client" name="friday-'.$i.'-client" value="'.$fri_client.'">
+								<div style="clear: both"></div>
+							</td>
+							<td >
+								<div class="label-rate">Staff Rate</div>
+								<input type="text" class="input-rate staff" id="saturday-'.$i.'-staff" name="saturday-'.$i.'-staff" value="'.$sat_staff.'">
+								<div style="clear: both"></div>
+								<div class="label-rate">Client Rate</div>
+								<input type="text" class="input-rate client" id="saturday-'.$i.'-client" name="saturday-'.$i.'-client" value="'.$sat_client.'">
+								<div style="clear: both"></div>
+							</td>
+							<td >
+								<div class="label-rate">Staff Rate</div>
+								<input type="text" class="input-rate staff" id="sunday-'.$i.'-staff" name="sunday-'.$i.'-staff" value="'.$sun_staff.'">
+								<div style="clear: both"></div>
+								<div class="label-rate">Client Rate</div>
+								<input type="text" class="input-rate client" id="sunday-'.$i.'-client" name="sunday-'.$i.'-client" value="'.$sun_client.'">
+								<div style="clear: both"></div>
+							</td>
+						</tr>';
+					}
+		
+					
+		
+		
+		$text = '
+		
+		<form method="post" action="'.base_url().'attribute/payrate/update_payrate" id="form-payrate-'.$payrate['payrate_id'].'">
+  		<input type="hidden" name="id" value="'.$payrate['payrate_id'].'">
+  		<div class="table-responsive selectable"  id="wrapper-table">
+			<table class="table">
+				<thead>
+					<tr>
+						<th style="width:12.5%">&nbsp;</th>
+						<th style="width:12.5%">Monday</th>
+						<th style="width:12.5%">Tuesday</th>
+						<th style="width:12.5%">Wednesday</th>
+						<th style="width:12.5%">Thursday</th>
+						<th style="width:12.5%">Friday</th>
+						<th style="width:12.5%">Saturday</th>
+						<th style="width:12.5%">Sunday</th>
+					</tr>
+				</thead>
+				<tbody >
+					'.$tbody.'
+				</tbody>
+			</table>
+		</div>
+		
+		</form>
+		
+		
+		
+		<script>
+$(function() {
+	$( ".selectable" ).selectable();
+	
+	$( ".selectable" )
+	.mouseup(function() {
+		var count = $(".ui-selecting.input-rate.staff").size() + $(".ui-selecting.input-rate.client").size();
+		if(count > 0)
+		{
+			$("#setPayrate").modal("show");
+		}
+	});
+	
+});</script>
+		';
+		
+		echo $text;
+		exit;
 	}
 	
 	function list_payrates()

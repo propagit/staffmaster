@@ -21,7 +21,9 @@
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.blockUI.js"></script>
+	<script src="<?=base_url();?>assets/js/jquery.json-2.4.min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
+	<script src="<?=base_url();?>assets/js/bootstrap.confirm.js"></script>
 	<script src="<?=base_url();?>assets/js/moment.js"></script>
 	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
 	

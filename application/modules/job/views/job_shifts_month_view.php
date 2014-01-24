@@ -1,7 +1,6 @@
 <h4>Jobs On Month</h4>
 <p>Below you can see a schedule of all the jobs you have on for the month for this job campaign.You can duplicate the months shifts to another month. Unconfirmed and confirmed shifts are indicated by red or green icon. </p>
 <div class="table_action">
-	<?=modules::run('common/dropdown_actions','');?>
 	<div class="btn-group">
 		<a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a>
 		<span type="button" class="btn btn-info" id="header-month"> &nbsp; </span>
@@ -26,8 +25,6 @@ $(function(){
 		day: '<?=date('Y-m-d', $custom_date);?>',
 		onAfterViewLoad: function(view) {
 			$('#header-month').text(this.getTitle());
-			//$('.btn-group button').removeClass('active');
-			//$('button[data-calendar-view="' + view + '"]').addClass('active');
 		},
 	};
 	
@@ -36,16 +33,13 @@ $(function(){
 		var $this = $(this);
 		$this.click(function() {
 			calendar.navigate($this.data('calendar-nav'));
+			$('*[data-cal-date]').parent().click(function() {
+				load_job_shifts(<?=$job_id;?>, $(this).find('[data-cal-date]').data('cal-date'));
+			});
 		});
 	});
-	$('*[data-cal-date]').click(function() {
-		load_job_shifts(<?=$job_id;?>, $(this).data('cal-date'));
-		//var view = $(this).data('cal-view');
-		//if(!self.options.views[view].enable) {
-		//	return;
-		//}
-		//self.options.day = $(this).data('cal-date');
-		//self.view(view);
+	$('*[data-cal-date]').parent().click(function() {
+		load_job_shifts(<?=$job_id;?>, $(this).find('[data-cal-date]').data('cal-date'));
 	});
 	
 	

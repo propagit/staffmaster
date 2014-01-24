@@ -2,8 +2,12 @@
 <p>Below you can see a schedule of all the jobs you have on for the week for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green. </p>
 
 <div class="table_action">
-	
-	<?=modules::run('common/dropdown_actions','');?>
+	<?=modules::run('common/dropdown_actions','shift_day', 
+		array(
+			'attach' => 'Attach Resource',
+			'delete' => 'Delete'
+			));?>
+			
 	<div class="btn-group">
 		<?
 		if (date('D', $custom_date) == 'Mon')
@@ -18,7 +22,7 @@
 		?>
 		
 		<a step="-1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-left"></i></a>
-		<button type="button" class="btn btn-info"><?=date('d M', $start_date);?> - <?=date('d M', $end_date);?></button>
+		<button type="button" class="btn btn-info"><?=date('d M Y', $start_date);?> - <?=date('d M Y', $end_date);?></button>
 		<a step="1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-right"></i></a>
 	</div>
 	
@@ -30,7 +34,7 @@
 <table class="table table-bordered table-hover" width="100%">
 <thead>
 	<tr>
-		<th class="center" width="10%"><input type="checkbox" /></th>
+		<th class="center" width="10%"><input type="checkbox" id="selected_all_days" /></th>
 		<th class="center" width="20%">Date</th>
 		<th class="center">Job shifts</th>
 		<th class="center">Allocated</th>
@@ -42,9 +46,14 @@
 <? for($i=0; $i < 7; $i++) { 
 $date_ts = $start_date + 24*60*60*$i; 
 $shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
+$ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 ?>
-	<tr<? #=($shifts_count > 0) ? ' class="active"' : '';?>>
-		<td class="center"><input type="checkbox" /></td>
+	<tr>
+		<td class="center">
+			<? if ($shifts_count > 0) { ?>
+			<input type="checkbox" class="selected_shift_days" value="<?=implode(',', $ids);?>" />
+			<? } ?>
+		</td>
 		<td>
 			<span onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', <?=($shifts_count > 0) ? 'true' : 'false';?>)" class="btn btn-<?=($shifts_count == 0) ? 'default' : 'day'; ?><?=($this->session->userdata('job_date') == date('Y-m-d',$date_ts) && ($shifts_count != 0)) ? '-active': '';?> btn-block"><?=date('D d M', $date_ts);?></span>
 		</td>
@@ -57,12 +66,12 @@ $shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
 		</td>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
-			<i class="fa fa-copy"></i>
+			<a class="day_shift_copy" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=implode('~', $ids);?>"><i class="fa fa-copy"></i></a>
 			<? } ?>
 		</td>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
-			<a class="day_shift_delete" data-date="<?=$date_ts;?>"><i class="fa fa-trash-o"></i></a>
+			<a class="day_shift_delete" data-shifts="<?=implode(',', $ids);?>"><i class="fa fa-trash-o"></i></a>
 			<? } ?>
 		</td>
 	</tr>
@@ -90,18 +99,29 @@ $(function(){
 	$('.load_week_view').click(function(){
 		load_week_view(<?=$job_id;?>, <?=$custom_date;?>);
 	});
-	$('.day_shift_delete').click(function(){
-		var date = $(this).attr('data-date');
-		if (confirm('Are you sure you want to delele all shifts in this day?')) {
-			$.ajax({
-				type: "POST",
-				url: "<?=base_url();?>job/ajax/delete_day_shift",
-				data: {job_id: <?=$job_id;?>, date: date},
-				success: function(data) {
-					data = $.parseJSON(data);
-					load_job_shifts(data.job_id, data.job_date, false);
-				}
-			})
+	$('.day_shift_delete').confirmModal({
+		confirmTitle: 'Delete this day shifts',
+		confirmMessage: 'Are you sure you want to delete all shifts in this day?',
+		confirmCallback: function(e){
+			var shifts = $(e).attr('data-shifts');
+			delete_shifts(shifts.split(','));
+		}
+	});
+	var selected_shifts_day = new Array();
+	var s = null;
+	$('#selected_all_days').click(function(){
+		$('input.selected_shift_days').prop('checked', this.checked);		
+	});
+	$('.menu_delete_shift_day').confirmModal({
+		confirmTitle: 'Delete days shifts',
+		confirmMessage: 'Are you sure you want to delete all shifts in selected days?',
+		confirmCallback: function(e) {
+			selected_shifts_day.length = 0;
+			$('.selected_shift_days:checked').each(function(){
+				s = $(this).val();
+				selected_shifts_day = $.merge(selected_shifts_day, s.split(','));
+			});
+			delete_shifts(selected_shifts_day);
 		}
 	})
 })
