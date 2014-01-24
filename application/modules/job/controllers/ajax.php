@@ -50,13 +50,14 @@ class Ajax extends MX_Controller {
 				'start_at' => strtotime($filter_data['job_date'] . ' ' . $data['break_start_at'])
 			);
 			
-			if ($break_time['start_at'] < $filter_data['start_time'] || $break_time['start_at'] > $filter_data['finish_time'])
+			if ($break_time['start_at'] <= $filter_data['start_time'] || $break_time['start_at'] >= $filter_data['finish_time'])
 			{
 				echo json_encode(array('ok' => false, 'error_id' => 'break_start_at'));
 				return;
 			}
-			
-			$filter_data['break_time'] = serialize($break_time);
+			$breaks = array();
+			$breaks[] = $break_time;
+			$filter_data['break_time'] = json_encode($breaks);
 		}
 		if ($data['venue'])
 		{
@@ -144,7 +145,12 @@ class Ajax extends MX_Controller {
 		
 		$data['job_id'] = $job_id;
 		$data['job_dates'] = $op_job_dates;
-		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
+		$job_shifts = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
+		if (count($job_shifts) == 0)
+		{
+			$job_shifts = $this->job_shift_model->get_job_shifts($job_id);
+		}
+		$data['job_shifts'] = $job_shifts;
 		$this->load->view('job_shifts_list_view', isset($data) ? $data : NULL);
 	}
 	
@@ -179,7 +185,7 @@ class Ajax extends MX_Controller {
 			$this->load->view('job_shifts_week_view', isset($data) ? $data : NULL);	
 		} else if ($this->session->userdata('calendar_view') == 'month')
 		{
-			$out[] = array();
+			$out = array();
 			foreach($job_dates as $date)
 			{
 				$out[] = array(
@@ -190,14 +196,7 @@ class Ajax extends MX_Controller {
 					'end' => strtotime($date['job_date']) . '000',
 				);
 			}
-			if (count($job_dates) > 0)
-			{
-				$data['events_source'] = str_replace('[],', '',json_encode($out));	
-			}
-			else
-			{
-				$data['events_source'] = '[]';
-			}
+			$data['events_source'] = json_encode($out);
 			$this->load->view('job_shifts_month_view', isset($data) ? $data : NULL);
 		}
 	}
@@ -238,11 +237,189 @@ class Ajax extends MX_Controller {
 		if ($new_start_time >= $shift['finish_time'])
 		{
 			$this->output->set_status_header('400');
-			echo 'Start time can be greater than finish time';
+			echo 'Start time cannot be greater than finish time';
 		}
-		
+		else
+		{
+			$this->job_shift_model->update_job_shift($shift_id, array('start_time' => $new_start_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_start_time));
+		}
+	}
+	function update_shift_finish_time()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$new_finish_time = strtotime($shift['job_date'] . ' ' . $this->input->post('value') . ':00');
+		if ($new_finish_time <= $shift['start_time'])
+		{
+			$this->output->set_status_header('400');
+			echo 'Finish time cannot be less than start time';
+		}
+		else
+		{
+			$this->job_shift_model->update_job_shift($shift_id, array('finish_time' => $new_finish_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
+		}
 	}
 	
+	function load_shift_breaks()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$data['breaks'] = json_decode($shift['break_time']);
+		$data['shift_id'] = $shift_id;
+		$this->load->view('shift_breaks', isset($data) ? $data : NULL);
+	}
+	function update_job_shift_breaks()
+	{
+		$length = $this->input->post('break_length');
+		$start_at = $this->input->post('break_start_at');
+		$job_shift = $this->job_shift_model->get_job_shift($this->input->post('shift_id'));
+		
+		$breaks = array();
+		$total = 0;
+		foreach($length as $index => $value)
+		{
+			if ($value > 0)
+			{
+				$break_time = array(
+					'length' => $value * 60,
+					'start_at' => strtotime($job_shift['job_date'] . ' ' . $start_at[$index])
+				);
+				
+				if ($break_time['start_at'] <= $job_shift['start_time'] || $break_time['start_at'] >=$job_shift['finish_time'])
+				{
+					echo json_encode(array('ok' => false, 'number' => $index));
+					return;
+				}
+				$total += $value;
+				$breaks[] = $break_time;
+			}
+		}
+		
+		if ($this->job_shift_model->update_job_shift($job_shift['shift_id'], array('break_time' => json_encode($breaks))))
+		{
+			if ($total > 0) {				
+				$minutes = $total . ' mins';
+				echo json_encode(array('ok' => true, 'shift_id' => $job_shift['shift_id'],'minutes' => $minutes));
+			}
+			else
+			{
+				echo json_encode(array('ok' => true, 'shift_id' => $job_shift['shift_id'],'minutes' => 0));
+			}
+		}
+	}
+	
+	/** 
+	*	@desc: ajax function to delete a shift
+	*	@name: Ajax Delete Shift
+	*	@access: public
+	*	@param: null
+	*	@return: json encode {job_id: (int) $job_id, job_date: (YYYY-MM-DD) $job_date}  
+	*/
+	
+	function delete_shift()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$this->job_shift_model->delete_job_shift($shift_id);
+		$result = array('job_id' => $shift['job_id']);
+		if (modules::run('job/count_job_shifts', $shift['job_id'], $shift['job_date']) > 0)
+		{
+			$result['job_date'] = $shift['job_date'];
+		}
+		echo json_encode($result);
+	}
+	
+	/**
+	*	@name: delete_day_shift
+	*	@desc: ajax function to delete all shifts in a day
+	*	@access: public
+	*	@param: null
+	*	@return: json encode {job_id: (int) $job_id}
+	*/	
+	function delete_day_shift()
+	{
+		$job_id = $this->input->post('job_id');
+		$job_date = date('Y-m-d', $this->input->post('date'));
+		$this->job_shift_model->delete_job_day_shift($job_id, $job_date);
+		echo json_encode(array('job_id' => $job_id));
+	}
+	
+	function load_shift_copy($shift_id=null)
+	{
+		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
+		$this->load->view('shift_copy', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: update_selected_day
+	*	@desc: ajax function to update selected day (to the sessions of array of all selected days) for copying shift function
+	*	@access: public
+	*	@param: null
+	*	@return: json encode {success: true/false, msg: ''}
+	*/
+	function update_selected_day()
+	{
+		$ts = $this->input->post('ts');
+		$all_ts = $this->session->userdata('all_ts');
+		if (!$all_ts) {
+			$all_ts = array();
+		}
+		$key = array_search($ts, $all_ts);
+		if ($key !== false) {
+			unset($all_ts[$key]);
+		}
+		else
+		{
+			if ($ts > now())
+			{
+				$all_ts[] = $ts;
+			}
+			else
+			{				
+				echo json_encode(array('success' => false, 'msg' => 'Cannot copy to date in the past'));
+				return;
+			}
+		}
+		
+		$this->session->set_userdata('all_ts', $all_ts);
+		echo json_encode(array('success' => true));	
+	}
+	function get_selected_days()
+	{
+		$all_ts = $this->session->userdata('all_ts');
+		$out = array();
+		
+		if ($all_ts) foreach($all_ts as $ts)
+		{
+			$out[] = array(
+				'class' => 'selected',
+				'start' => $ts . '000',
+				'end' => $ts . '000'
+			);
+		}
+	
+		echo json_encode(array('success' => 1, 'result' => $out));
+	}
+	function clear_selected_days()
+	{
+		$this->session->unset_userdata('all_ts');
+	}
+	function copy_selected_days()
+	{
+		$all_ts = $this->session->userdata('all_ts');
+		$shift = $this->job_shift_model->get_job_shift($this->input->post('shift_id'));
+		foreach($all_ts as $ts)
+		{
+			$new_shift = $shift;
+			unset($new_shift['shift_id']);
+			unset($new_shift['created_on']);
+			$new_shift['job_date'] = date('Y-m-d', $ts);
+			$this->job_shift_model->insert_job_shift($new_shift);
+		}
+		$this->session->unset_userdata('all_ts');
+	}
 	
 	function set_order_param()
 	{

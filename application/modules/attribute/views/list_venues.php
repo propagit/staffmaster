@@ -21,8 +21,8 @@
 		<td class="left"><?=$venue['name'];?></td>
 		<td class="left"><?=$venue['address'] . ', ' . $venue['suburb'] . ' ' . $venue['postcode'];?></td>
 		<td class="left"><?=modules::run('attribute/location/display_location', $venue['location_id']);?></td>
-		<td class="center"><a href="javascript:edit_venue(<?=$venue['venue_id'];?>,<?=$venue['location_id'];?>,'<?=$venue['name'];?>','<?=$venue['address'];?>','<?=$venue['suburb'];?>', '<?=$venue['postcode'];?>')"><i class="icon-eye-open icon-large"></i></a></td>
-		<td class="center"><a href="javascript:delete_venue(<?=$venue['venue_id'];?>)"><i class="icon-trash icon-large"></i></a></td>
+		<td class="center"><a href="javascript:edit_venue(<?=$venue['venue_id'];?>,<?=$venue['location_id'];?>,'<?=$venue['name'];?>','<?=$venue['address'];?>','<?=$venue['suburb'];?>', '<?=$venue['postcode'];?>')"><i class="fa fa-eye"></i></a></td>
+		<td class="center"><a href="javascript:delete_venue(<?=$venue['venue_id'];?>)"><i class="fa fa-trash-o"></i></a></td>
 	</tr>
 	<? } ?>
 </table>
@@ -41,6 +41,7 @@
 					<label for="name">Name</label>
 					<input type="text" class="form-control" name="name" id="name" placeholder="Enter venue name">
 				</div>
+                
 				<div class="form-group">
 					<label for="address">Address</label>
 					<input type="text" class="form-control" name="address" id="address" placeholder="Enter venue address">
@@ -55,7 +56,8 @@
 				</div>
 				<div class="form-group">
 					<label>Location</label>
-					<?=modules::run('attribute/location/dropdown', 'location_id');?>
+					<? //=modules::run('attribute/location/dropdown', 'location_id');?>
+                    <?=modules::run('common/dropdown_location_form', 'location_id');?>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -83,8 +85,9 @@
 					<input type="text" class="form-control" name="name" id="name_edit" placeholder="Enter venue name" />
 				</div>
 				<div class="form-group">
-					<label>Location</label>
-					<?=modules::run('attribute/location/dropdown', 'location_id_edit');?>
+					<label>Location</label>					
+                    <?=modules::run('common/dropdown_location_form', 'location_id_edit','');?>
+                    
 				</div>
 				<div class="form-group">
 					<label for="address_edit">Address</label>

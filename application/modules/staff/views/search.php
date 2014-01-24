@@ -39,7 +39,8 @@
 				<div class="form-group">
 					<label for="location" class="col-lg-4 control-label">Location</label>
 					<div class="col-lg-8">
-						<?=modules::run('attribute/location/dropdown', 'location');?>
+						<? //=modules::run('attribute/location/dropdown', 'location');?>
+                        <?=modules::run('common/dropdown_location_form', 'location');?>
 					</div>
 				</div>				
 			</div>

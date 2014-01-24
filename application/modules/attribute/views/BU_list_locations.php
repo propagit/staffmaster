@@ -16,7 +16,15 @@
 		<!-- <td class="center"><i class="icon-check"></i> Check</td> -->
 	</tr>
 	</thead>
-	
+	<? foreach($locations as $location) { ?>
+	<tr>
+		<td class="left"><?=$location['state'];?></td>
+		<td class="left"><?=$location['name'];?></td>
+		<td class="center"><a href="javascript:edit_location(<?=$location['location_id'];?>,'<?=$location['name'];?>','<?=$location['state'];?>')"><i class="icon-eye-open icon-large"></i></a></td>
+		<td class="center"><a href="javascript:delete_location(<?=$location['location_id'];?>)"><i class="icon-trash icon-large"></i></a></td>
+		<!-- <td class="center"><input type="checkbox" /></td> -->
+	</tr>
+	<? } ?>
 </table>
 
 

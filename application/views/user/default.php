@@ -22,6 +22,7 @@
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.blockUI.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
+	<script src="<?=base_url();?>assets/js/bootstrap.confirm.js"></script>
 	<script src="<?=base_url();?>assets/js/moment.js"></script>
 	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
 	
@@ -33,6 +34,8 @@
 	<link href="<?=base_url();?>assets/css/bootstrap-editable.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/js/bootstrap-editable.min.js"></script>
 	<script src="<?=base_url();?>assets/js/editable/time.js"></script>
+	<link href="<?=base_url();?>assets/js/editable/break.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/editable/breaks.js"></script>
 	
 	<!-- select -->
 	<link href="<?=base_url();?>assets/css/bootstrap-select.min.css" rel="stylesheet">

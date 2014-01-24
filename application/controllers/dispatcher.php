@@ -28,7 +28,7 @@ class Dispatcher extends MX_Controller {
 		
 		if ($method == 'ajax')
 		{
-			echo modules::run($controller . '/ajax/' . $param1); exit();
+			echo modules::run($controller . '/ajax/' . $param1, $param2, $param3, $param4); exit();
 		}
 		switch($controller)
 		{

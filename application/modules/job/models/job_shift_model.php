@@ -15,6 +15,7 @@ class Job_shift_model extends CI_Model {
 		{
 			$this->db->where('job_date', $job_date);
 		}
+		$this->db->where('status', 0);
 		$query = $this->db->get('job_shifts');
 		return $query->result_array();
 	}
@@ -23,7 +24,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT count(*) as `count`
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id'";
+				WHERE `job_id` = '$job_id' AND `status` = 0";
 		if ($job_date)
 		{
 			$sql .= " AND `job_date` = '$job_date'";
@@ -36,7 +37,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT DISTINCT(`job_date`)
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id' ORDER BY `job_date` ASC" ;
+				WHERE `job_id` = '$job_id' AND `status` = 0 ORDER BY `job_date` ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -44,18 +45,11 @@ class Job_shift_model extends CI_Model {
 	function get_job_shift($shift_id)
 	{
 		$this->db->where('shift_id', $shift_id);
+		$this->db->where('status', 0);
 		$query = $this->db->get('job_shifts');
 		return $query->first_row('array');
 	}
 	
-	function get_job_shifts_by_month($job_id,$year,$month)
-	{
-		$sql = "SELECT * FROM job_shifts 
-				WHERE job_date LIKE '" . $year . "-" . $month . "%'
-				AND job_id = " . $job_id;
-		$query = $this->db->query($sql);
-		return $query->result_array();
-	}
 	
 	function update_job_shift($shift_id, $data = array())
 	{
@@ -65,5 +59,19 @@ class Job_shift_model extends CI_Model {
 		}
 		$this->db->where('shift_id', $shift_id);
 		return $this->db->update('job_shifts', $data);
+	}
+	
+	
+	function delete_job_shift($shift_id)
+	{
+		$this->db->where('shift_id', $shift_id);
+		return $this->db->update('job_shifts', array('status' => -1));
+	}
+	
+	function delete_job_day_shift($job_id, $job_date)
+	{
+		$this->db->where('job_id', $job_id);
+		$this->db->where('job_date', $job_date);
+		return $this->db->update('job_shifts', array('status' => -1));
 	}
 }

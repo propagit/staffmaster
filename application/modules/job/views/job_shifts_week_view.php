@@ -18,7 +18,7 @@
 		?>
 		
 		<a step="-1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-left"></i></a>
-		<button type="button" class="btn btn-info"><?=date('d M', $start_date);?> - <?=date('d M', $end_date);?></button>
+		<button type="button" class="btn btn-info"><?=date('d M Y', $start_date);?> - <?=date('d M Y', $end_date);?></button>
 		<a step="1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-right"></i></a>
 	</div>
 	
@@ -48,15 +48,23 @@ $shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
 		<td>
 			<span onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', <?=($shifts_count > 0) ? 'true' : 'false';?>)" class="btn btn-<?=($shifts_count == 0) ? 'default' : 'day'; ?><?=($this->session->userdata('job_date') == date('Y-m-d',$date_ts) && ($shifts_count != 0)) ? '-active': '';?> btn-block"><?=date('D d M', $date_ts);?></span>
 		</td>
-		<td class="center"><?=$shifts_count;?></td>
+		<td class="center"><?=($shifts_count > 0) ? $shifts_count : '';?></td>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)"><span class="badge badge-success">0</span> &nbsp; 
 			<span class="badge badge-danger"><?=$shifts_count;?></span></a>
 			<? } ?>
 		</td>
-		<td><i class="fa fa-copy"></i></td>
-		<td><i class="fa fa-trash-o"></i></td>
+		<td class="center">
+			<? if ($shifts_count > 0) { ?>
+			<i class="fa fa-copy"></i>
+			<? } ?>
+		</td>
+		<td class="center">
+			<? if ($shifts_count > 0) { ?>
+			<a class="day_shift_delete" data-date="<?=$date_ts;?>"><i class="fa fa-trash-o"></i></a>
+			<? } ?>
+		</td>
 	</tr>
 <? } ?>
 </tbody>
@@ -81,6 +89,22 @@ $(function(){
 	});
 	$('.load_week_view').click(function(){
 		load_week_view(<?=$job_id;?>, <?=$custom_date;?>);
+	});
+	$('.day_shift_delete').confirmModal({
+		confirmTitle: 'Delete this day shifts',
+		confirmMessage: 'Are you sure you want to delete all shifts in this day?',
+		confirmCallback: function(e){
+			var date = $(e).attr('data-date');
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>job/ajax/delete_day_shift",
+				data: {job_id: <?=$job_id;?>, date: date},
+				success: function(data) {
+					data = $.parseJSON(data);
+					load_job_shifts(data.job_id, data.job_date, false);
+				}
+			})
+		}
 	});
 })
 </script>

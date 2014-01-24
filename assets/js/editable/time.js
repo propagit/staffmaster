@@ -35,13 +35,15 @@ $(function(){
         	//this.renderClear();
             //this.setClass();
             //this.setAttr('placeholder');
-        	this.$input.datetimepicker(this.options.time);
-        	alert(this.value);
+        	
+        },
+        activate: function() {
+	        this.$input.datetimepicker(this.options.time);
         }
     });      
 
     Constructor.defaults = $.extend({}, $.fn.editabletypes.list.defaults, {
-        tpl:'<input type="text" class="form-control" /><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>',
+        tpl:'<input type="text" class="form-control" />',
         /**
         Configuration of datetimepicker itself. 
         [Full list of options](http://eonasdan.github.io/bootstrap-datetimepicker/#options).

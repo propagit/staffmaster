@@ -18,7 +18,6 @@
 
 <script>
 $(function(){
-
 	var options = {
 		events_source: <?=$events_source;?>,
 		view: 'month',
@@ -27,8 +26,6 @@ $(function(){
 		day: '<?=date('Y-m-d', $custom_date);?>',
 		onAfterViewLoad: function(view) {
 			$('#header-month').text(this.getTitle());
-			//$('.btn-group button').removeClass('active');
-			//$('button[data-calendar-view="' + view + '"]').addClass('active');
 		},
 	};
 	
@@ -37,16 +34,13 @@ $(function(){
 		var $this = $(this);
 		$this.click(function() {
 			calendar.navigate($this.data('calendar-nav'));
+			$('*[data-cal-date]').parent().click(function() {
+				load_job_shifts(<?=$job_id;?>, $(this).find('[data-cal-date]').data('cal-date'));
+			});
 		});
 	});
-	$('*[data-cal-date]').click(function() {
-		load_job_shifts(<?=$job_id;?>, $(this).data('cal-date'), true);
-		//var view = $(this).data('cal-view');
-		//if(!self.options.views[view].enable) {
-		//	return;
-		//}
-		//self.options.day = $(this).data('cal-date');
-		//self.view(view);
+	$('*[data-cal-date]').parent().click(function() {
+		load_job_shifts(<?=$job_id;?>, $(this).find('[data-cal-date]').data('cal-date'));
 	});
 	
 	

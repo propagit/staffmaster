@@ -1,22 +1,21 @@
 /**
-Break editable input.
-Internally value stored as {city: "Moscow", street: "Lenina", building: "15"}
+Breaks editable input.
+Internally value stored as 'a:2:{s:6:"length";i:900;s:8:"start_at";i:1390186800;}'
 
-@class address
+@class breaks
 @extends abstractinput
 @final
 @example
-<a href="#" id="address" data-type="address" data-pk="1">awesome</a>
+<a href="#" id="breaks" data-type="breaks" data-pk="1">awesome</a>
 <script>
 $(function(){
-    $('#address').editable({
+    $('#breaks').editable({
         url: '/post',
-        title: 'Enter city, street and building #',
-        value: {
-            city: "Moscow", 
-            street: "Lenina", 
-            building: "15"
-        }
+        title: 'Enter breaks length and start time',
+        value: [
+        	{length: 900, start_at: '9:30'},
+        	{length: 900, start_at: '12:00'} 
+        ]
     });
 });
 </script>
@@ -24,14 +23,14 @@ $(function(){
 (function ($) {
     "use strict";
     
-    var Address = function (options) {
-        this.init('address', options, Address.defaults);
+    var Breaks = function (options) {
+        this.init('breaks', options, Breaks.defaults);
     };
 
     //inherit from Abstract input
-    $.fn.editableutils.inherit(Address, $.fn.editabletypes.abstractinput);
+    $.fn.editableutils.inherit(Breaks, $.fn.editabletypes.abstractinput);
 
-    $.extend(Address.prototype, {
+    $.extend(Breaks.prototype, {
         /**
         Renders input from tpl
 
@@ -39,8 +38,9 @@ $(function(){
         **/        
         render: function() {
            this.$input = this.$tpl.find('input');
+           this.$tpl.find('.editable-add').click(function(){
+           })
         },
-        
         /**
         Default method to show value in element. Can be overwritten by display option.
         
@@ -140,7 +140,7 @@ $(function(){
         @method activate() 
        **/        
        activate: function() {
-            this.$input.filter('[name="city"]').focus();
+       		
        },  
        
        /**
@@ -157,14 +157,45 @@ $(function(){
        }       
     });
 
-    Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        tpl: '<div class="editable-address"><label><span>City: </span><input type="text" name="city" class="input-small"></label></div>'+
-             '<div class="editable-address"><label><span>Street: </span><input type="text" name="street" class="input-small"></label></div>'+
-             '<div class="editable-address"><label><span>Building: </span><input type="text" name="building" class="input-mini"></label></div>',
+    Breaks.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl: '<div class="editable-breaks">' +
+        		'<div class="break_length">' +
+        			'<div class="input-group">' + 
+        				'<input type="text" class="form-control input_number_only" name="break_length" value="0" maxlength="3" />' + 
+        				'<span class="input-group-addon">min(s)</span>' + 
+        			'</div>' + 
+        		'</div>' + 
+        		'<div class="break_start_at">' + 	
+        			'<div class="input-group break_start_at">' +
+        				'<input type="text" class="form-control" name="break_start_at" data-format="HH:mm" />' + 
+        				'<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>' + 
+        			'</div>' + 
+        		'</div>' +         		
+        	'</div>'  + 
+        	'<div class="editable-breaks">' +
+        		'<div class="break_length">' +
+        			'<div class="input-group">' + 
+        				'<input type="text" class="form-control input_number_only" name="break_length" value="0" maxlength="3" />' + 
+        				'<span class="input-group-addon">min(s)</span>' + 
+        			'</div>' + 
+        		'</div>' + 
+        		'<div class="break_start_at">' + 	
+        			'<div class="input-group break_start_at">' +
+        				'<input type="text" class="form-control" name="break_start_at" data-format="HH:mm" />' + 
+        				'<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>' + 
+        			'</div>' + 
+        		'</div>' +         		
+        	'</div>'  + 
+        	'<div class="break_add">' +
+    			'<button type="button" class="btn btn-success btn-sm editable-add">' +
+					'<i class="glyphicon glyphicon-plus"></i> Add break' +
+				'</button>' + 
+    		'</div>',
              
         inputclass: ''
     });
+      
 
-    $.fn.editabletypes.address = Address;
+    $.fn.editabletypes.breaks = Breaks;
 
 }(window.jQuery));

@@ -60,6 +60,7 @@ $route['login'] = 'auth/login_user';
 $route['logout'] = 'auth/logout_user';
 
 $route['staff/(:any)'] = 'dispatcher/user_dispatcher/staff/$1';
+
 $route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
 $route['job/(:any)'] = 'dispatcher/user_dispatcher/job/$1';
 $route['job/(:any)/(:any)'] = 'dispatcher/user_dispatcher/job/$1/$2';
@@ -76,7 +77,7 @@ $route['(privacy-policy|terms-conditions|term-of-use)'] = 'dispatcher/user_dispa
 
 $route['warranty/(:any)'] = 'dispatcher/user_dispatcher/warranty/$1';
 
-$route['profile/(:any)'] = 'dispatcher/user_dispatcher/profile/$1';
+
 $route['(dashboard|product|warranty|job|profile|config|resource)'] = 'dispatcher/user_dispatcher/$1';
 
 $route['admin'] = 'dispatcher/admin_dispatcher';
