@@ -13,9 +13,10 @@ class Common extends MX_Controller {
 		$this->load->model('common_model');
 	}
 	
-	function dropdown_actions($target)
+	function dropdown_actions($target, $actions)
 	{
 		$data['target'] = $target;
+		$data['actions'] = $actions;
 		$this->load->view('dropdown_actions', isset($data) ? $data : NULL);
 	}
 	

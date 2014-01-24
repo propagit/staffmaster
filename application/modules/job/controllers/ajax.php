@@ -336,21 +336,6 @@ class Ajax extends MX_Controller {
 	}
 	
 	/**
-	*	@name: delete_day_shift
-	*	@desc: ajax function to delete all shifts in a day
-	*	@access: public
-	*	@param: null
-	*	@return: json encode {job_id: (int) $job_id}
-	*/	
-	function delete_day_shift()
-	{
-		$job_id = $this->input->post('job_id');
-		$job_date = date('Y-m-d', $this->input->post('date'));
-		$this->job_shift_model->delete_job_day_shift($job_id, $job_date);
-		echo json_encode(array('job_id' => $job_id));
-	}
-	
-	/**
 	*	@name: load_shifts_copy
 	*	@desc: ajax function to load the calendar popup for copying shifts across
 	*	@access: public

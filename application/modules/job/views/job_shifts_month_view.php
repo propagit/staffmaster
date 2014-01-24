@@ -1,7 +1,6 @@
 <h4>Jobs On Month</h4>
 <p>Below you can see a schedule of all the jobs you have on for the month for this job campaign.You can duplicate the months shifts to another month. Unconfirmed and confirmed shifts are indicated by red or green icon. </p>
 <div class="table_action">
-	<?=modules::run('common/dropdown_actions','');?>
 	<div class="btn-group">
 		<a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a>
 		<span type="button" class="btn btn-info" id="header-month"> &nbsp; </span>

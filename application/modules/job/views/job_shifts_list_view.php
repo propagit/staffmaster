@@ -5,7 +5,12 @@
 
 <br />
 <div class="table_action">
-	<?=modules::run('common/dropdown_actions','shift');?>
+	<?=modules::run('common/dropdown_actions','shift', 
+		array(
+			'attach' => 'Attach Resource',
+			'copy' => 'Copy',
+			'delete' => 'Delete'
+			));?>
 	
 	<span onclick="load_job_shifts(<?=$job_id;?>)" class="btn btn-info">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</span>
 	<? foreach($job_dates as $date) { ?>
@@ -83,7 +88,7 @@
 		<td></td>
 		<td class="center"><i class="fa fa-edit"></i></td>
 		<td class="center">
-			<a class="shift_copy" data-pk="<?=$shift['shift_id'];?>" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=$shift['shift_id'];?>"><i class="fa fa-copy"></i></a>
+			<a class="shift_copy" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=$shift['shift_id'];?>"><i class="fa fa-copy"></i></a>
 		</td>
 		<td class="center">
 			<a class="shift_delete" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-trash-o"></i></a>
@@ -94,9 +99,7 @@
 </table>
 
 <div id="wrapper_shift_break"></div>
-<!-- Modal -->
-<div class="modal fade" id="copy_shift" tabindex="-1" role="dialog" aria-hidden="true">
-</div><!-- /.modal -->
+
 
 <script>
 $(function(){
@@ -225,24 +228,11 @@ $(function(){
 			remote: "<?=base_url();?>job/ajax/load_shifts_copy/" + selected_shifts.join("~"),
 			show: true
 		});
-		$('#copy_shift').on('hidden.bs.modal', function (e) {
-			$(this).removeData('bs.modal');
-		})
+		
 
 	});
 })
-function delete_shifts(selected_shifts)
-{
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>job/ajax/delete_shifts",
-		data: {shifts: selected_shifts},
-		success: function(data) {
-			data = $.parseJSON(data);
-			load_job_shifts(data.job_id, data.job_date, false);
-		}
-	})
-}
+
 function load_shift_breaks(obj)
 {
 	$('#wrapper_shift_break').html('');

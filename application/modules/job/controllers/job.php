@@ -66,17 +66,6 @@ class Job extends MX_Controller {
 		$this->load->view('create', isset($data) ? $data : NULL);
 	}
 	
-	
-	function view_shift($shift_id)
-	{
-		$shift = $this->job_shift_model->get_shift($shift_id);
-		$job = $this->job_model->get_job($shift['job_id']);
-		$data['client'] = $this->client_model->get_client_by_client_id($job['client_id']);
-		$data['job'] = $job;
-		$data['shift'] = $shift;
-		$this->load->view('job_card', isset($data) ? $data : NULL);
-	}
-	
 	function job_details($job_id)
 	{
 		$this->session->unset_userdata('job_date');
@@ -88,20 +77,15 @@ class Job extends MX_Controller {
 		$data['job'] = $job;
 		$data['client'] = $this->client_model->get_client_by_client_id($job['client_id']);
 		
-		$this->load->view('details', isset($data) ? $data : NULL);
-		
+		$this->load->view('details', isset($data) ? $data : NULL);		
 	}
-	
-	
-	
+		
 	function search_jobs()
 	{
 		if ($this->input->post())
 		{
 			$data['jobs'] = $this->job_model->search_jobs($this->input->post('keyword'));	
-		}
-
-		
+		}		
 		$this->load->view('search', isset($data) ? $data : NULL);
 	}
 	
@@ -119,6 +103,24 @@ class Job extends MX_Controller {
 			$job_date = date('Y-m-d', $job_date);
 		}
 		echo $this->job_shift_model->count_job_shifts($job_id, $job_date);
+	}
+	/**
+	*	@name: get_day_shifts
+	*	@desc: function to get list of shifts in a day
+	*	@access: public
+	*	@param: (int) $job_id, (int - timestamp) $job_date
+	*	@return: (array)
+	*/
+	function get_day_shifts($job_id, $job_date)
+	{
+		$job_date = date('Y-m-d', $job_date);
+		$shifts = $this->job_shift_model->get_job_shifts($job_id, $job_date);
+		$ids = array();
+		foreach($shifts as $shift)
+		{
+			$ids[] = $shift['shift_id'];
+		}
+		return $ids;
 	}
 	
 	function dropdown_engines($field_name, $field_value=null)
