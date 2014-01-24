@@ -109,6 +109,18 @@ class Dispatcher extends MX_Controller {
 		$this->template->write('content', $content);
 		$this->template->render();
 	}
+	
+	function documentor_dispacher($controller='documentor', $method='', $param1='',$param2='',$param3='',$param4='')
+	{
+		$this->template->set_template('documents');
+		$title = "Staff Master Documentation";
+		$menu = modules::run($controller . '/index', 'get_documentation_nav');
+		$content = modules::run($controller . '/index', $method, $param1,$param2,$param3,$param4);
+		$this->template->write('title', $title);
+		$this->template->write('menu', $menu);
+		$this->template->write('content', $content);
+		$this->template->render();
+	}
 }
 
 /* End of file dispatcher.php */

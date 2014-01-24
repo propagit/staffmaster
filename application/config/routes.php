@@ -87,6 +87,15 @@ $route['admin/logout'] = 'auth/logout_admin';
 
 $route['admin/(:any)'] = 'dispatcher/admin_dispatcher/$1';
 
+
+//documentor
+//$route['documentor'] = 'dispatcher/documentor_dispacher';
+$route['documentor/(:any)'] = 'dispatcher/documentor_dispacher/documentor/$1';
+$route['documentor/(:any)/(:any)'] = 'dispatcher/documentor_dispacher/documentor/$1/$2';
+$route['documentor/(:any)/(:any)/(:any)'] = 'dispatcher/documentor_dispacher/documentor/$1/$2/$3';
+$route['documentor/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/documentor_dispacher/documentor/$1/$2/$3/$4';
+
+
 $route['404_override'] = '';
 
 
