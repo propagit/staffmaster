@@ -145,7 +145,12 @@ class Ajax extends MX_Controller {
 		
 		$data['job_id'] = $job_id;
 		$data['job_dates'] = $op_job_dates;
-		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
+		$job_shifts = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
+		if (count($job_shifts) == 0)
+		{
+			$job_shifts = $this->job_shift_model->get_job_shifts($job_id);
+		}
+		$data['job_shifts'] = $job_shifts;
 		$this->load->view('job_shifts_list_view', isset($data) ? $data : NULL);
 	}
 	
@@ -327,13 +332,12 @@ class Ajax extends MX_Controller {
 	}
 	
 	/**
+	*	@name: delete_day_shift
 	*	@desc: ajax function to delete all shifts in a day
-	*	@name: Ajax Delete Day Shifts
 	*	@access: public
 	*	@param: null
 	*	@return: json encode {job_id: (int) $job_id}
-	*/
-	
+	*/	
 	function delete_day_shift()
 	{
 		$job_id = $this->input->post('job_id');
@@ -347,6 +351,14 @@ class Ajax extends MX_Controller {
 		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
 		$this->load->view('shift_copy', isset($data) ? $data : NULL);
 	}
+	
+	/**
+	*	@name: update_selected_day
+	*	@desc: ajax function to update selected day (to the sessions of array of all selected days) for copying shift function
+	*	@access: public
+	*	@param: null
+	*	@return: json encode {success: true/false, msg: ''}
+	*/
 	function update_selected_day()
 	{
 		$ts = $this->input->post('ts');
@@ -360,10 +372,19 @@ class Ajax extends MX_Controller {
 		}
 		else
 		{
-			$all_ts[] = $ts;
+			if ($ts > now())
+			{
+				$all_ts[] = $ts;
+			}
+			else
+			{				
+				echo json_encode(array('success' => false, 'msg' => 'Cannot copy to date in the past'));
+				return;
+			}
 		}
 		
-		$this->session->set_userdata('all_ts', $all_ts);	
+		$this->session->set_userdata('all_ts', $all_ts);
+		echo json_encode(array('success' => true));	
 	}
 	function get_selected_days()
 	{
@@ -387,7 +408,17 @@ class Ajax extends MX_Controller {
 	}
 	function copy_selected_days()
 	{
-		
+		$all_ts = $this->session->userdata('all_ts');
+		$shift = $this->job_shift_model->get_job_shift($this->input->post('shift_id'));
+		foreach($all_ts as $ts)
+		{
+			$new_shift = $shift;
+			unset($new_shift['shift_id']);
+			unset($new_shift['created_on']);
+			$new_shift['job_date'] = date('Y-m-d', $ts);
+			$this->job_shift_model->insert_job_shift($new_shift);
+		}
+		$this->session->unset_userdata('all_ts');
 	}
 	
 	function set_order_param()

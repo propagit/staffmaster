@@ -18,7 +18,7 @@
 		?>
 		
 		<a step="-1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-left"></i></a>
-		<button type="button" class="btn btn-info"><?=date('d M', $start_date);?> - <?=date('d M', $end_date);?></button>
+		<button type="button" class="btn btn-info"><?=date('d M Y', $start_date);?> - <?=date('d M Y', $end_date);?></button>
 		<a step="1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-right"></i></a>
 	</div>
 	
@@ -90,9 +90,11 @@ $(function(){
 	$('.load_week_view').click(function(){
 		load_week_view(<?=$job_id;?>, <?=$custom_date;?>);
 	});
-	$('.day_shift_delete').click(function(){
-		var date = $(this).attr('data-date');
-		if (confirm('Are you sure you want to delele all shifts in this day?')) {
+	$('.day_shift_delete').confirmModal({
+		confirmTitle: 'Delete this day shifts',
+		confirmMessage: 'Are you sure you want to delete all shifts in this day?',
+		confirmCallback: function(e){
+			var date = $(e).attr('data-date');
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>job/ajax/delete_day_shift",
@@ -103,6 +105,6 @@ $(function(){
 				}
 			})
 		}
-	})
+	});
 })
 </script>

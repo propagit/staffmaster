@@ -187,9 +187,11 @@ $(function(){
 			return $('#wrapper_shift_break').html();
 		}
 	});
-	$('.shift_delete').click(function(){
-		var pk = $(this).attr('data-pk');
-		if (confirm('Are you sure you want to delete this shift?')) {
+	$('.shift_delete').confirmModal({
+		confirmTitle: 'Delete this shift',
+		confirmMessage: 'Are you sure you want to delete this shift?',
+		confirmCallback: function(e){
+			var pk = $(e).attr('data-pk');
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>job/ajax/delete_shift",
@@ -200,7 +202,7 @@ $(function(){
 				}
 			})
 		}
-	});	
+	});
 })
 function load_shift_breaks(obj)
 {

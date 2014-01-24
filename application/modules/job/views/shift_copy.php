@@ -5,12 +5,20 @@
 			<h4 class="modal-title" id="myModalLabel">Copy shift</h4>
 		</div>
 		<div class="modal-body">
+			<div class="shift_brief">
+				<!--
+Venue: 
+				<?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?>
+				(<?=date('H:i', $shift['start_time']);?> - <?=date('H:i', $shift['finish_time']);?>)
+-->
+			</div>
 			<div class="btn-group">
 				<a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a>
 				<span type="button" class="btn btn-info" id="modal-header-month"> &nbsp; </span>
 				<a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a>
 			</div>
 			<div id="calendar-copy"></div>
+			<div class="has-error"><span class="help-block" id="error_day_selected"></span></div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -29,7 +37,7 @@ $(function(){
 	$('.btn-clear-days').click(function(){
 		$.ajax({
 			url: "<?=base_url();?>job/ajax/clear_selected_days",
-			success: function(html) {
+			success: function(data) {
 				load_copy_calendar();
 			}
 		})	
@@ -38,9 +46,9 @@ $(function(){
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>job/ajax/copy_selected_days",
-			data: { },
+			data: {shift_id: <?=$shift['shift_id'];?>},
 			success: function(html) {
-				$('.copy_shift').modal('hide');
+				location.reload();
 			}
 		})
 	})
@@ -50,8 +58,16 @@ function update_selected_days(ts) {
 		type: "POST",
 		url: "<?=base_url();?>job/ajax/update_selected_day",
 		data: {ts: ts},
-		success: function(html) {
-			load_copy_calendar();
+		success: function(data) {
+			data = $.parseJSON(data);
+			if (data.success) {
+				$('#error_day_selected').html('');
+				load_copy_calendar();
+			}
+			else
+			{
+				$('#error_day_selected').html(data.msg);
+			}
 		}
 	})
 }
