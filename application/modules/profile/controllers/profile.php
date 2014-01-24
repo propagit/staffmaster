@@ -34,6 +34,7 @@ class Profile extends MX_Controller {
 	{
 		//$user = $this->session->userdata('user_data');
 		$company = $this->profile_model->get_profile();
+		$company_email = $this->profile_model->get_profile_email_template();
 		if ($this->input->post())
 		{
 			$data = $this->input->post();
@@ -60,6 +61,7 @@ class Profile extends MX_Controller {
 		}
 		$data['states'] = $this->user_model->get_states();
 		$data['company'] = $company;
+		$data['company_email'] = $company_email;
 		//$data['sub_users'] = $this->user_model->get_sub_users($user['user_id']);
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
