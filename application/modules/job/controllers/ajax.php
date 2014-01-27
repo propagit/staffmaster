@@ -305,13 +305,11 @@ class Ajax extends MX_Controller {
 		}
 	}
 	
-	
-	
 	/** 
+	*	@name: delete_shifts
 	*	@desc: ajax function to delete shift(s)
-	*	@name: Ajax Delete Shifts
 	*	@access: public
-	*	@param: an array of integers, which are primary keys of shifts
+	*	@param: an array of integers (via POST), which are primary keys of shifts
 	*	@return: json encode {job_id: (int) $job_id, job_date: (YYYY-MM-DD) $job_date}  
 	*/
 	function delete_shifts()
@@ -339,7 +337,7 @@ class Ajax extends MX_Controller {
 	*	@name: load_shifts_copy
 	*	@desc: ajax function to load the calendar popup for copying shifts across
 	*	@access: public
-	*	@param: string of shift id 1~2~3~4
+	*	@param: string of shift id 1~2~3~4 (via GET)
 	*	@return: calendar view
 	*/
 	function load_shifts_copy($s = '')
