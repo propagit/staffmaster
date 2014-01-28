@@ -32,12 +32,14 @@ $(function(){
 			}
 		}
 	});
-	
+	form_builder.start_prettychecker();
 });//ready
 
 
 var form_builder = {
 	
+	//after dropping to the droppable area bind even triggred function to the clone
+	//add editing class on click so that we know which container to look for
 	bind_with_popover:function(){
 		$('#build').find('.component').addClass('dropped');
 		$('.dropped').on('click',function(event){
@@ -47,16 +49,20 @@ var form_builder = {
 		});
 	},
 	
+	//clean the text so that it can be used for element names and possibly used to populate database fields
 	clean_text:function(text){
 		text = text.toLowerCase();
 		var   spec_chars = {a:/\u00e1/g,e:/u00e9/g,i:/\u00ed/g,o:/\u00f3/g,u:/\u00fa/g,n:/\u00f1/g}
 		for (var i in spec_chars) text = text.replace(spec_chars[i],i);
-		var hyphens = text.replace(/\s/g,'_');
+		var hyphens = text.replace(/\s/g,'');
 		var clean_text = hyphens.replace(/[^a-zA-Z0-9\-]/g,'');
 		clean_text = clean_text.toLowerCase();
+		clean_text = clean_text.replace('-','_')
 		return clean_text;
 	},
 	
+	//open the popover box for editing
+	//each clone has a data attribute which is used as a reference to know which pop over to open
 	open_edit_box:function(){
 		var editing = $('.editing');
 		var popover_id = editing.attr('data');
@@ -64,12 +70,26 @@ var form_builder = {
 		$('#'+popover_id).show();		
 	}, 
 	
+	//close popover
 	close_popover:function(){
 		var editing = $('.editing');
 		editing.removeClass('editing');
 		$('.popover').hide();	
 	},
 	
+	//restart prettycheckable
+	start_prettychecker:function(){
+		$('input[type="radio"]').prettyCheckable();
+		$('input[type="checkbox"]').prettyCheckable();
+	},
+	
+	//restart prettycheckable
+	stop_prettychecker:function(){
+		$('input[type="radio"]').prettyCheckable('destroy');
+		$('input[type="checkbox"]').prettyCheckable('destroy');
+	},
+	
+	//this is used to popupate the edit popover with the currenly active values
 	fillup_editbox:function(container_id){
 		var editing = $('.editing');
 		switch(container_id){
@@ -90,20 +110,46 @@ var form_builder = {
 			case 'popover-radio-checkbox':
 				form_builder.fillup_radio_or_checkbox_values();
 			break;	
+			
+			case 'popover-select':
+				form_builder.fillup_select_values();
+			break;
 		}
 	},
 	
+	//populate radio and checkbox popver
 	fillup_radio_or_checkbox_values:function(){
-		$('#radio-checkbox-values').val('');
+		$('#pop-radio-checkbox-values').val('');
 		var editing = $('.editing');
+		var label = editing.find('#radio-checkbox-title').html();
+		$('#pop-radio-checkbox-label').val(label);
+		
 		var value = '';
 		var count = 0;
 		editing.find('input').each(function(){
-			$('#radio-checkbox-values').val($('#radio-checkbox-values').val()+(count == 0 ? '' : '\n')+$(this).val());
+			$('#pop-radio-checkbox-values').val($('#pop-radio-checkbox-values').val()+(count == 0 ? '' : '\n')+$(this).val());
 			count++;
 		});	
 	},
 	
+	//populate select popover
+	fillup_select_values:function(){
+		$('#pop-select-values').val('');
+		var editing = $('.editing');
+		var label = editing.find('#select-title').html();
+		$('#pop-select-label').val(label);
+		
+		var value = '';
+		var count = 0;
+		editing.find('option').each(function(){
+			$('#pop-select-values').val($('#pop-select-values').val()+(count == 0 ? '' : '\n')+$(this).val());
+			count++;
+			console.log($('#pop-select-values').val());
+		});	
+		console.log(label);
+	},
+	
+	//update textinput with new values
 	update_textinput:function(){
 		var label = $('#pop-textinput').val();
 		var name = form_builder.clean_text(label);
@@ -116,6 +162,7 @@ var form_builder = {
 		form_builder.close_popover();
 	},
 	
+	//update text area with new values
 	update_textarea:function(){
 		var label = $('#pop-textarea').val();
 		var name = form_builder.clean_text(label);
@@ -127,15 +174,16 @@ var form_builder = {
 		form_builder.close_popover();	
 	},
 	
+	//update radio and checkbox with new values
 	update_radio_checkbox:function(){
 		var label = $('#pop-radio-checkbox-label').val();
 		var name = form_builder.clean_text(label);
 		//check if this is inline or multi line radio or checkbox
-		var element_type = $('.editing').find('#radio-checkbox-label').attr('data');
+		var element_type = $('.editing').find('#radio-checkbox-title').attr('data');
 		var values = $('#pop-radio-checkbox-values').val();
 		
 		//put the elements from the text area into an array with newline as break point
-		var lines = values.val().split(/\n/);
+		var lines = values.split(/\n/);
 		var new_values = [];
 		for (var i=0; i < lines.length; i++) {
 		  // only push this line if it contains a non whitespace character.
@@ -145,30 +193,86 @@ var form_builder = {
 		}
 		
 		//set label name
-		$('#radio-checkbox-title').html(label);
+		$('.editing').find('#radio-checkbox-title').html(label);
 		
 		//create new elements
 		var new_elements = '';
+		$('.editing').find('.controls').html('');
 		switch(element_type){
 			case 'multi-radios':
 				new_values.forEach(function(entry){
-					new_elements += '<label class="radio"><input type="radio" name="radios" value="'+entry+'">'+entry+'</label>';
+					new_elements += '<label class="radio"><input type="radio" name="'+name+'" value="'+entry+'">'+entry+'</label>';
 				});
 			break;	
 			
 			case 'inline-radios':
-			
+				new_values.forEach(function(entry){
+					new_elements += '<label class="radio inline"><input type="radio" name="'+name+'" value="'+entry+'">'+entry+'</label>';
+				});
 			break;
 			
 			case 'multi-checkbox':
-			
+				new_values.forEach(function(entry){
+					new_elements += '<label class="checkbox"><input type="checkbox" name="'+name+'" value="'+entry+'">'+entry+'</label>';
+				});
 			break;
 			
 			case 'inline-checkbox':
-			
+				new_values.forEach(function(entry){
+					new_elements += '<label class="checkbox inline"><input type="checkbox" name="'+name+'" value="'+entry+'">'+entry+'</label>';
+				});
 			break;
 		}
+		$('.editing').find('.controls').html(new_elements);
+		form_builder.close_popover();
+		form_builder.start_prettychecker();
+	},
+	
+	//update radio and checkbox with new values
+	update_select:function(){
+		var label = $('#pop-select-label').val();
+		var name = form_builder.clean_text(label);
+		//check if this is inline or multi line radio or checkbox
+		var element_type = $('.editing').find('#select-title').attr('data');
+		var values = $('#pop-select-values').val();
+		
+		//put the elements from the text area into an array with newline as break point
+		var lines = values.split(/\n/);
+		var new_values = [];
+		for (var i=0; i < lines.length; i++) {
+		  // only push this line if it contains a non whitespace character.
+		  if (/\S/.test(lines[i])) {
+			new_values.push($.trim(lines[i]));
+		  }
+		}
+		
+		//set label name
+		$('.editing').find('#select-title').html(label);
+		
+		//create new elements
+		var new_elements = '';
+		var select_options = '';
+		$('.editing').find('.controls').html('');
+		switch(element_type){
+			case 'select-basic':
+				new_values.forEach(function(entry){
+					select_options += '<option value="'+entry+'">'+entry+'</option>';
+				});
+				new_elements = '<select id="select-basic" name="'+name+'" class="form-control">'+select_options+'</select>';
+			break;	
+			
+			case 'select-multi':
+				new_values.forEach(function(entry){
+					select_options += '<option value="'+entry+'">'+entry+'</option>';
+				});
+				new_elements = '<select id="select-basic" name="'+name+'" class="form-control" multiple="multiple">'+select_options+'</select>';
+			break;
+		}
+		$('.editing').find('.controls').html(new_elements);
+		form_builder.close_popover();
+		form_builder.start_prettychecker();
 	}
+	
 	
 };
 
@@ -189,8 +293,18 @@ var form_builder = {
  box-shadow: 10px 10px 5px #dddddd;
 }
 .radio{ margin-bottom:6px;}
-.has-pretty-child{ line-height:30px; float:left; width:100%;}
+.has-pretty-child{ line-height:30px; float:left; width:100%; margin-top:0;}
 .prettycheckbox, .prettyradio{ float:left;}
+.radio.inline, .checkbox.inline {
+display: inline-block;
+padding-top: 5px;
+margin-bottom: 0;
+vertical-align: middle;
+margin-top:0;
+padding-right:10px;
+width:auto;
+}
+.push{ float:left;}
 </style>
 
 <h2>Form Builder</h2>
@@ -237,7 +351,7 @@ var form_builder = {
 </div>
 <!--end textarea popover-->
                
-<!--begin select/checkbox popover-->
+<!--begin radio checkbox popover-->
 <div id="popover-radio-checkbox" class="popover fade right in">
 <div class="arrow"></div>
 <h3 class="popover-title">Radios / Checkboxes</h3>
@@ -253,7 +367,26 @@ var form_builder = {
 
 </div>
 </div>
-<!--end select/checkbox popover-->
+<!--end radio checkbox popover-->
+
+<!--begin select popover-->
+<div id="popover-select" class="popover fade right in">
+<div class="arrow"></div>
+<h3 class="popover-title">Select</h3>
+<div class="popover-content">
+<div class="controls"> 
+<label class="control-label"> Label </label>
+<input class="form-control" data-type="input" type="text" name="label" id="pop-select-label" value="Multiple Radios">
+<label class="control-label"> Options </label>
+<textarea class="form-control" data-type="textarea-split" style="min-height: 200px" id="pop-select-values"></textarea>
+<hr>
+<button id="save" class="btn btn-info" onClick="form_builder.update_select();">Save</button><button id="cancel" class="btn btn-danger" onClick="form_builder.close_popover();">Cancel</button>
+</div>
+
+</div>
+</div>
+<!--end select popover-->
+
         
     </div><!--col-md-6-->
     <div class="col-md-6">
@@ -290,7 +423,7 @@ var form_builder = {
             
             <!--begin radio tab-->
             <div class="tab-pane" id="radioscheckboxes">
-                <div class="component" data="popover-radio-checkbox"><!-- Multiple Radios -->
+                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Radios -->
                     <div class="control-group">
                       <label class="control-label" id="radio-checkbox-title" data="multi-radios">Multiple Radios</label>
                       <div class="controls">
@@ -305,18 +438,18 @@ var form_builder = {
                       </div>
                     </div>
                 </div>
-                <div class="component" data="popover-radio-checkbox"><!-- Multiple Radios (inline) -->
+                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Radios (inline) -->
                     <div class="control-group">
                       <label class="control-label" id="radio-checkbox-title" data="inline-radios">Inline Radios</label>
                       <div class="controls">
                         <label class="radio inline">
-                          <input type="radio" name="radios" value="1234" checked="checked">
+                          <input type="radio" name="radios" value="1234">
                           1234
                         </label>
                       </div>
                     </div>
                 </div>
-                <div class="component" data="popover-radio-checkbox"><!-- Multiple Checkboxes -->
+                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Checkboxes -->
                     <div class="control-group">
                       <label class="control-label" id="radio-checkbox-title" data="multi-checkbox">Multiple Checkboxes</label>
                       <div class="controls">
@@ -331,7 +464,7 @@ var form_builder = {
                       </div>
                     </div>
                 </div>
-                <div class="component" data="popover-radio-checkbox"><!-- Multiple Checkboxes (inline) -->
+                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Checkboxes (inline) -->
                     <div class="control-group">
                       <label class="control-label" id="radio-checkbox-title" data="inline-checkbox">Inline Checkboxes</label>
                       <div class="controls">
@@ -347,24 +480,24 @@ var form_builder = {
             
             <!--begin select-->
             <div class="tab-pane" id="select">
-                <div class="component"><!-- Select Basic -->
+                <div class="component" data="popover-select"><!-- Select Basic -->
                     <div class="control-group">
-                      <label class="control-label">Select Basic</label>
+                      <label class="control-label" id="select-title" data="select-basic">Select Basic</label>
                       <div class="controls">
-                        <select id="selectbasic" name="selectbasic" class="form-control">
-                          <option>Option one</option>
-                          <option>Option two</option>
+                        <select id="select-basic" name="select-basic" class="form-control">
+                          <option value="Option one">Option one</option>
+                          <option value="Option two">Option two</option>
                         </select>
                       </div>
                     </div>
                 </div>
-                <div class="component"><!-- Select Multiple -->
+                <div class="component" data="popover-select"><!-- Select Multiple -->
                      <div class="control-group">
-                  <label class="control-label">Select Multiple</label>
+                  <label class="control-label" id="select-title" data="select-multi">Select Multiple</label>
                   <div class="controls">
-                    <select id="selectmultiple" name="selectmultiple" class="form-control" multiple="multiple">
-                      <option>Option one</option>
-                      <option>Option two</option>
+                    <select id="select-multiple" name="selec-tmultiple" class="form-control" multiple="multiple">
+                      <option value="Option one">Option one</option>
+                      <option value="Option two">Option two</option>
                     </select>
                   </div>
                 </div>
@@ -376,28 +509,11 @@ var form_builder = {
             <div class="tab-pane" id="buttons">
             	<div class="component"><!-- File Button --> 
                 	<div class="control-group">
-                  <label class="control-label" for="filebutton">File Button</label>
+                  <label class="control-label">File Button</label>
                   <div class="controls">
                     <input id="filebutton" name="filebutton" class="input-file" type="file">
                   </div>
                 </div>
-                </div>
-                <div class="component"><!-- Button -->
-                    <div class="control-group">
-                      <label class="control-label" for="singlebutton">Single Button</label>
-                      <div class="controls">
-                        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Button</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="component"><!-- Button (Double) -->
-                    <div class="control-group">
-                      <label class="control-label" for="button1id">Double Button</label>
-                      <div class="controls">
-                        <button id="button1id" name="button1id" class="btn btn-success">Good Button</button>
-                        <button id="button2id" name="button2id" class="btn btn-danger">Scary Button</button>
-                      </div>
-                    </div>
                 </div>
 			</div>
             <!--end button-->
