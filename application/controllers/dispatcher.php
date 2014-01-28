@@ -18,6 +18,13 @@ class Dispatcher extends MX_Controller {
 		$this->user_dispatcher('dashboard');
 	}
 	
+	/**
+	*	@name: user_dispatcher
+	*	@desc: general user dispacher, drive to different portal based on user level
+	*	@access: public
+	*	@param: (uri)
+	*	@return: (void)
+	*/
 	function user_dispatcher($controller='', $method='', $param1='',$param2='',$param3='',$param4='')
 	{
 		$is_user_logged_in = modules::run('auth/is_user_logged_in');
@@ -26,41 +33,53 @@ class Dispatcher extends MX_Controller {
 			redirect('login');
 		}
 		
-		if ($method == 'ajax')
+		$user_data = $this->session->userdata('user_data');
+		
+		# If user is admin, login to admin portal
+		if ($user_data['is_admin'] && !$this->session->userdata('force_staff'))
 		{
-			echo modules::run($controller . '/ajax/' . $param1, $param2, $param3, $param4); exit();
+			$this->admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
 		}
-		switch($controller)
+		else if ($user_data['is_staff'])
 		{
-			case 'dashboard':
-			default:
-					$title = 'Dashboard';
-				break;
-		}
-		if ($controller != 'page')
-		{
-			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
+			$this->staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
 		}
 		
 		
-		$this->template->set_template('user');
+	}
+	
+	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
+	{
 		
-		#$this->template->add_css('user/css');
 		
+		$content = modules::run($controller . '_staff', $method . '_staff', $param1, $param2, $param3, $param4);
+		
+		$content = modules::run($controller . '/' . $controller . '_staff/index', $param1, $param2, $param3, $param4);
+		$title = ucwords($controller);
+		
+		$this->template->set_template('staff');
 		$this->template->write('title', $title);
-		$this->template->write_view('menu', 'user/menu');
+		$this->template->write_view('menu', 'staff/menu');
 		$this->template->write('content', $content);
 		$this->template->render();
 	}
 	
-	function staff_dispatcher($controller='', $method='', $param1='', $param2='', $param3='', $param4='')
+	function admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{
+		if ($method == 'ajax')
+		{
+			echo modules::run($controller . '/ajax/' . $param1, $param2, $param3, $param4); exit();	
+		}
 		
-	}
-	
-	function admin_dispatcher($controller='dashboard', $method='', $param='')
-	{
+		$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
+		$title = ucwords($controller);
 		
+		
+		$this->template->set_template('admin');
+		$this->template->write('title', $title);
+		$this->template->write_view('menu', 'admin/menu');
+		$this->template->write('content', $content);
+		$this->template->render();
 	}
 }
 

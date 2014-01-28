@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title><?=$title;?> &middot; Admin Portal &middot; Staff Master</title>
+	<title><?=$title;?> &middot; Staff Portal &middot; Staff Master</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap -->
 	<link href="<?=base_url();?>assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -18,7 +18,6 @@
 	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
 	<?=$_styles;?>
 	
-	<script src="<?=base_url();?>assets/js/hogan.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.blockUI.js"></script>
@@ -60,28 +59,26 @@
 <div id="wrap">
 	<div id="header">
 		<div class="container">
-			<div class="pull-left">
-				<!--
-<div class="user_avatar">
-					<i class="fa fa-user icon-3x"></i>
+			<!--
+<div class="pull-left">
+				<div class="user_avatar">
+					<i class="icon-user icon-3x"></i>
 				</div>
--->
 			</div>
 			<div class="pull-left">
-				<!--
-<h3><?=$user['first_name'] . ' ' . $user['last_name'];?></h3>
+				<h3><?=$user['first_name'] . ' ' . $user['last_name'];?></h3>
 				<h4>Administrator &middot; Staff ID: <?=$user['user_id'];?></h4>
 				<ul  class="top_nav">
 					<li><a href="#"><i class="icon-pencil"></i> Edit Profile</a></li>
 					<li><a href="#"><i class="icon-upload-alt"></i> Upload Profile Photo</a></li>
 				</ul>
--->
 			</div>
+-->
 			<div class="pull-right">
 				<ul class="top_nav">
 					<li><a href="#"><i class="icon-dashboard"></i> Dashboard</a></li>
 					<li><a href="#"><i class="icon-comments"></i> Messages</a></li>
-					<li><a href="<?=base_url();?>account/staff"><i class="icon-user"></i> Staff Account</a></li>
+					<li><a href="<?=base_url();?>account/admin"><i class="icon-user"></i> Admin Account</a></li>
 					<li><a href="<?=base_url();?>logout"><i class="icon-signout"></i> Logout</a></li>
 				</ul>
 			</div>

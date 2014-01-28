@@ -14,6 +14,20 @@ class Ajax extends MX_Controller {
 		$this->load->model('job_shift_model');
 	}
 	
+	/** 
+	*	@name: search_jobs
+	*	@desc: ajax function to search job(s)
+	*	@access: public
+	*	@param: an array of search parameters (via POST)
+	*	@return: view of list of jobs  
+	*/
+	function search_jobs()
+	{
+		$data = $this->input->post();
+		$data['jobs'] = $this->job_model->search_jobs($data);
+		$this->load->view('jobs_search_list_view', isset($data) ? $data : NULL);
+	}
+	
 	function create_job_shifts()
 	{
 		$data = $this->input->post();
@@ -147,8 +161,7 @@ class Ajax extends MX_Controller {
 		$data['job_dates'] = $op_job_dates;
 		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
 		$this->load->view('job_shifts_list_view', isset($data) ? $data : NULL);
-	}
-	
+	}	
 	function load_month_view()
 	{
 		$this->session->set_userdata('calendar_view', 'month');
@@ -158,8 +171,7 @@ class Ajax extends MX_Controller {
 	{
 		$this->session->set_userdata('calendar_view', 'week');
 		echo date('Y-m-d', $this->input->post('date'));
-	}
-	
+	}	
 	function load_job_calendar()
 	{
 		$job_id = $this->input->post('job_id');
@@ -194,8 +206,7 @@ class Ajax extends MX_Controller {
 			$data['events_source'] = json_encode($out);
 			$this->load->view('job_shifts_month_view', isset($data) ? $data : NULL);
 		}
-	}
-	
+	}	
 	function load_job_week()
 	{
 		$date = $this->input->post('date');
@@ -257,6 +268,16 @@ class Ajax extends MX_Controller {
 		}
 	}
 	
+	function load_shift_staff()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$this->load->model('staff/staff_model');
+		$data['staffs'] = $this->staff_model->search_staffs();
+		$data['shift_id'] = $shift_id;
+		$this->load->view('shift_staff', isset($data) ? $data : NULL);
+	}
+	
 	function load_shift_breaks()
 	{
 		$shift_id = $this->input->post('pk');
@@ -304,6 +325,8 @@ class Ajax extends MX_Controller {
 			}
 		}
 	}
+	
+	
 	
 	/** 
 	*	@name: delete_shifts

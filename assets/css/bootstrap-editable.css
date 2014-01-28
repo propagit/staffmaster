@@ -44,7 +44,9 @@
    zoom: 1; 
    *display: inline;   
 }
-
+.editable-input select {
+	margin-right: 5px;
+}
 .editable-buttons .editable-cancel {
    margin-left: 7px; 
 }
