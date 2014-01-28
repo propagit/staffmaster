@@ -1,3 +1,4 @@
 # Ignore files / Folder
 application/config/database.php
-.project
+application/config/config.php
+#project
