@@ -91,7 +91,14 @@ $template['admin'] = array(
 		'content',
 	)
 );
-
+$template['documents'] = array(
+	'template' => 'documents/default',
+	'regions' => array(
+		'title',
+		'menu',
+		'content',
+	)
+);
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */
