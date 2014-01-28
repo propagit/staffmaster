@@ -59,14 +59,15 @@ $route['default_controller'] = "dispatcher";
 $route['login'] = 'auth/login_user';
 $route['logout'] = 'auth/logout_user';
 
-$route['staff/(:any)'] = 'dispatcher/user_dispatcher/staff/$1';
+
+//$route['staff/(:any)'] = 'dispatcher/user_dispatcher/staff/$1';
 
 $route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
-$route['job/(:any)'] = 'dispatcher/user_dispatcher/job/$1';
-$route['job/(:any)/(:any)'] = 'dispatcher/user_dispatcher/job/$1/$2';
-$route['job/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/job/$1/$2/$3';
-$route['job/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/job/$1/$2/$3/$4';
-$route['job/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/job/$1/$2/$3/$4/$5';
+$route['(job|staff)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
+$route['(job|staff)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
+$route['(job|staff)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
+$route['(job|staff)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+$route['(job|staff)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 $route['attribute/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1';
 $route['attribute/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2';
 $route['attribute/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2/$3';

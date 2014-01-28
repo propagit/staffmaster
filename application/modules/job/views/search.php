@@ -6,13 +6,13 @@
 <div class="panel panel-default">
 	<div class="panel-heading">Search Job</div>
 	<div class="panel-body">
-		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>job/search">
+		<form class="form-horizontal" role="form" id="form_search_jobs">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">
 						<label for="keyword" class="col-lg-2 control-label">Job Group Name</label>
 						<div class="col-lg-10">
-							<input type="text" class="form-control" id="keyword" name="keyword" />
+							<input type="text" class="form-control" id="keyword" name="keywords" placeholder="keywords..." />
 						</div>
 					</div>
 				</div>
@@ -20,24 +20,25 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label for="staff_name" class="col-lg-4 control-label">Client</label>
+						<label for="client_id" class="col-lg-4 control-label">Client</label>
 						<div class="col-lg-8">
 							<?=modules::run('client/dropdown', 'client_id');?>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="department_id" class="col-lg-4 control-label">Status</label>
+						<label for="status" class="col-lg-4 control-label">Status</label>
 						<div class="col-lg-8">
 							<?=modules::run('common/dropdown_status','status');?>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="availability" class="col-lg-4 control-label">Date From</label>
+						<label for="date_from" class="col-lg-4 control-label">Date From</label>
 						<div class="col-lg-8">
-							<div class="input-group">
-								<input type="text" class="form-control" id="date_from" />
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-							</div>
+							<div class='input-group date' id='date_from'>
+			                    <input type='text' class="form-control" name="date_from" data-format="DD-MM-YYYY" />
+			                    <span class="input-group-addon"><span class="fa fa-calendar"></span>
+			                    </span>
+			                </div>
 						</div>
 					</div>			
 				</div>
@@ -55,12 +56,13 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="gender" class="col-lg-4 control-label">Date To</label>
+						<label for="date_to" class="col-lg-4 control-label">Date To</label>
 						<div class="col-lg-8">
-							<div class="input-group">
-								<input type="text" class="form-control" id="date_to" />
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-							</div>
+							<div class='input-group date' id='date_to'>
+			                    <input type='text' class="form-control" name="date_to" data-format="DD-MM-YYYY" />
+			                    <span class="input-group-addon"><span class="fa fa-calendar"></span>
+			                    </span>
+			                </div>
 						</div>
 					</div>
 				</div>
@@ -70,7 +72,8 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<div class="col-lg-offset-4 col-lg-8">
-							<button type="submit" class="btn btn-info"><i class="fa fa-search"></i> Search</button>
+							<button type="button" class="btn btn-info" id="btn_search_jobs"><i class="fa fa-search"></i> Search</button> &nbsp; 
+							<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
 						</div>
 					</div>
 				</div>
@@ -82,52 +85,40 @@
 	</div>
 </div>
 
-<? if (isset($jobs)) { ?>
+<div id="jobs_search_list">
+</div>
 
-<table class="table table-bordered">
-	<thead>
-	<tr class="heading">
-		<td class="left" width="20%"><i class="icon-folder-open"></i> Job Group Name <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
-		<td class="center"><i class="icon-book"></i> Client <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
-		<td class="center"><i class="icon-map-marker"></i> Venue</td>
-		<td class="center" width="10%"><i class="icon-user"></i> Date <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
-		<td class="center" width="10%"><i class="icon-thumb-up"></i> Status</td>
-		<td class="center" width="10%">View Job</td>
-		<td class="center" width="10%">View Group</td>
-	</tr>
-	</thead>
-	<? foreach($jobs as $job) { $client = modules::run('client/get_client', $job['client_id']); ?>
-	<tr>
-		<td class="left">
-			<?=$job['name'];?>
-			<br />
-			
-		</td>
-		<td class="center"><?=$client['company_name'];?></td>
-		<td></td>
-		<td class="center"></td>
-		<td class="center"></td>
-		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="fa fa-eye"></i></a></td>
-		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="icon-list icon-large"></i></a></td>
-	</tr>
-	<? } ?>
-</table>
-
-<? } ?>
 
  <script>
 $(function() {
-	$( "#date_from" ).datepicker({
-		defaultDate: "+1w",
-		onClose: function( selectedDate ) {
-			$( "#date_to" ).datepicker( "option", "minDate", selectedDate );
-		}
+	search_jobs();
+	$('#btn_search_jobs').click(function(){
+		search_jobs();
+		//$('body').scrollTo('#jobs_search_list', 500 );
 	});
-	$( "#date_to" ).datepicker({
-		defaultDate: "+1w",
-		onClose: function( selectedDate ) {
-			$( "#date_from" ).datepicker( "option", "maxDate", selectedDate );
-		}
+	$('#date_from').datetimepicker({
+		pickTime: false
 	});
+	$('#date_to').datetimepicker({
+		pickTime: false
+	});
+	/*
+$("#date_from").on("change.dp",function (e) {
+       $('#date_to').data("DateTimePicker").setStartDate(e.date);
+    });
+    $("#date_to").on("change.dp",function (e) {
+       $('#date_from').data("DateTimePicker").setEndDate(e.date);
+    });
+*/
 });
+function search_jobs(){
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax/search_jobs",
+		data: $('#form_search_jobs').serialize(),
+		success: function(html) {
+			$('#jobs_search_list').html(html);
+		}
+	})
+}
 </script>
