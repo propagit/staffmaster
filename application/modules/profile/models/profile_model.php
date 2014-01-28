@@ -14,5 +14,12 @@ class Profile_model extends CI_Model {
 		$this->db->where('id', $id);
 		return $this->db->update('company_profile', $data);
 	}
-
+	
+	
+	function get_profile_email_template()
+	{
+		$this->db->where('company_profile_id', 1);
+		$query = $this->db->get('company_profile_email_template');
+		return $query->first_row('array');
+	}
 }

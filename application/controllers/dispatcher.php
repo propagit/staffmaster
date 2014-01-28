@@ -53,61 +53,14 @@ class Dispatcher extends MX_Controller {
 		$this->template->render();
 	}
 	
+	function staff_dispatcher($controller='', $method='', $param1='', $param2='', $param3='', $param4='')
+	{
+		
+	}
+	
 	function admin_dispatcher($controller='dashboard', $method='', $param='')
 	{
-		$is_admin_logged_in = modules::run('auth/is_admin_logged_in');
-		if (!$is_admin_logged_in)
-		{
-			redirect('admin/login');
-		}
 		
-		if ($method == 'ajax')
-		{
-			echo modules::run($controller . '/ajax/' . $param); exit();
-		}
-		
-		switch($controller)
-		{
-			case 'product':
-					$title = 'Products Management';
-					switch($method) {
-						case 'category':
-							break;
-						case 'brand':
-							break;
-					}
-				break;
-			case 'user':
-					$title = 'Users Management';
-					switch($method)
-					{
-						case 'create':
-							break;
-						case 'edit':
-							break;
-					}
-				break;
-			case 'order':
-					$title = 'Orders';
-				break;
-			case 'resource':
-					$title = 'Resources';
-				break;
-			case 'page':
-					$title = 'Contents';
-				break;
-			case 'dashboard':
-			default:
-					$title = 'Dashboard';
-				break;
-		}
-		$this->template->set_template('admin');
-		
-		$content = modules::run($controller . '/admin/index', $method, $param);
-		$this->template->write('title', $title);
-		$this->template->write_view('menu', 'admin/menu');
-		$this->template->write('content', $content);
-		$this->template->render();
 	}
 }
 
