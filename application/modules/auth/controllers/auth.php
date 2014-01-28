@@ -49,6 +49,7 @@ class Auth extends MX_Controller {
 		#$this->session->sess_destroy();
 		$this->session->unset_userdata('user_data');
 		$this->session->unset_userdata('is_user_logged_in');
+		$this->session->unset_userdata('force_staff');
 		redirect('');
 	}	
 	

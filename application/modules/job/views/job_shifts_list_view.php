@@ -54,8 +54,7 @@
 		<th class="center" width="5%"><input type="checkbox" id="selected_all_shifts" /></th>
 		<th>Venue</th>
 		<th>Role</th>
-		<th class="center">Start</th>
-		<th class="center">Finish</th>
+		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
 		<th>Staff Assigned</th>
 		<th class="center">Pay rate</th>
@@ -77,14 +76,20 @@
 		</td>
 		<td class="center">
 			<a href="#" class="shift_start_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['start_time']);?>"><?=date('H:i', $shift['start_time']);?></a>
-		</td>
-		<td class="center">
+			-
 			<a href="#" class="shift_finish_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['finish_time']);?>"><?=date('H:i', $shift['finish_time']);?></a>
 		</td>
 		<td class="center">
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
-		<td></td>
+		<td>
+			<a href="#" class="shift_staff" data-type="typeaheadjs2" data-pk="<?=$shift['shift_id'];?>" data-value="">
+			<? if($shift['staff_id']) { ?>
+			<? } else { ?>
+			No Staff Assigned
+			<? } ?>
+			</a>
+		</td>
 		<td></td>
 		<td class="center"><i class="fa fa-edit"></i></td>
 		<td class="center">
@@ -99,7 +104,7 @@
 </table>
 
 <div id="wrapper_shift_break"></div>
-
+<div id="wrapper_shift_staff" class="hide"></div>
 
 <script>
 $(function(){
@@ -132,6 +137,21 @@ $(function(){
 			}
 		}
 	});
+	$('.shift_staff').editable({
+		title: 'Staff Allocated',
+		name: 'staff',
+		typeahead: {
+			name: 'staff',
+			prefetch: '<?=base_url();?>staff/ajax/list_staffs',
+			template: '<p><strong>{{name}}</strong> – {{img}}</p>',
+			engine: Hogan
+		},
+		url: '<?=base_url();?>job/ajax/update_shift_staff',
+		success: function(response, newValue)
+		{
+			
+		}
+	})
 	$('.shift_role').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_role',
 		name: 'role_id',
@@ -192,6 +212,19 @@ $(function(){
 			return $('#wrapper_shift_break').html();
 		}
 	});
+	/*
+$('.shift_staff').popover({
+		html: true,
+		placement: 'top',
+		trigger: 'manual',
+		selector: false,
+		title: 'Staff Allocated',
+		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+		content: function(){
+			return $('#wrapper_shift_staff').html();
+		}
+	})
+*/
 	
     var selected_shifts = new Array();
     	
@@ -232,7 +265,24 @@ $(function(){
 
 	});
 })
-
+function load_shift_staff(obj)
+{
+	$('#wrapper_shift_staff').html('');
+	$('#wrapper_js').find('.popover-break').hide();
+	var pk = $(obj).attr('data-pk');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax/load_shift_staff",
+		data: {pk: pk},
+		success: function(html)
+		{
+			$('#wrapper_shift_staff').html(html);
+		}
+	}).done(function(){
+		$(obj).popover('show');
+	})
+	
+}
 function load_shift_breaks(obj)
 {
 	$('#wrapper_shift_break').html('');

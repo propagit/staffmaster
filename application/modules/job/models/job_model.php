@@ -15,8 +15,12 @@ class Job_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
-	function search_jobs($keyword="")
+	function search_jobs($data = array())
 	{
+		if ($data['client_id'])
+		{
+			$this->db->where('client_id', $data['client_id']);
+		}
 		$query = $this->db->get('jobs');
 		return $query->result_array();
 	}

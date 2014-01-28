@@ -426,7 +426,9 @@ table.calendar tr.date-row td div.date:hover {
 	margin-top: 5px;
 }
 */
-
+.hide {
+	display: none;
+}
 .box {
 	border: 1px solid #ccc;
 	padding: 15px;

@@ -123,6 +123,13 @@ class Job extends MX_Controller {
 		return $ids;
 	}
 	
+	function dropdown_status($field_name, $field_value=null)
+	{
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('dropdown_status', isset($data) ? $data : NULL);
+	}
+	
 	function dropdown_engines($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;

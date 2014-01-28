@@ -15,7 +15,7 @@ class Staff_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
-	function search_staffs($params)
+	function search_staffs($params = array())
 	{
 		$sql = "SELECT s.*, u.*
 				FROM user_staffs s

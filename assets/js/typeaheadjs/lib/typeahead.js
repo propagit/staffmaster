@@ -862,7 +862,6 @@
         }, css = {
             wrapper: {
                 position: "relative",
-                display: "inline-block"
             },
             hint: {
                 position: "absolute",
@@ -878,7 +877,7 @@
             },
             dropdown: {
                 position: "absolute",
-                top: "100%",
+                //top: "100%",
                 left: "0",
                 zIndex: "100",
                 display: "none"

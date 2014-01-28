@@ -91,6 +91,14 @@ $template['admin'] = array(
 		'content',
 	)
 );
+$template['staff'] = array(
+	'template' => 'staff/default',
+	'regions' => array(
+		'title',
+		'menu',
+		'content',
+	)
+);
 
 
 /* End of file template.php */
