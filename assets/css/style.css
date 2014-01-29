@@ -469,7 +469,10 @@ table.calendar tr.date-row td div.date:hover {
 .form-horizontal {
 	margin: 10px 0;
 }
-
+.error {
+	color: #ff0000;
+	font-weight: bold;
+}
 
 .pagination {
 	margin: 5px 0 0 0;

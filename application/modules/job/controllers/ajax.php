@@ -28,12 +28,20 @@ class Ajax extends MX_Controller {
 		$this->load->view('jobs_search_list_view', isset($data) ? $data : NULL);
 	}
 	
+	/**
+	*	@name: create_job_shifts
+	*	@desc: ajax function to create shift(s) to job
+	*	@access: public
+	*	@param: an array of shift parameters (via POST)
+	*	@return: json encode of result {ok: $boolean, error_id: $string}
+	*/
 	function create_job_shifts()
 	{
 		$data = $this->input->post();
 		$filter_data = array();
 		$filter_data['job_id'] = $data['job_id'];
 		$filter_data['job_date'] = date('Y-m-d', strtotime($data['job_date']));
+		
 		if (strtotime($data['job_date']) <= now())
 		{
 			# Job start date can not be in the past
@@ -41,16 +49,12 @@ class Ajax extends MX_Controller {
 			return;
 		}
 		
-		if (!$data['start_time'])
-		{
-			# Start time is required
-			#echo json_encode(array('ok' => false, 'error_id' => 'start_time'));
-			#return;
-		}
-		$filter_data['start_time'] = strtotime($filter_data['job_date'] . ' ' . $data['start_time']);
 		
-		$filter_data['finish_time'] = strtotime($filter_data['job_date'] . ' ' . $data['finish_time']);
-		if ($filter_data['finish_time'] < $filter_data['start_time'])
+		$filter_data['start_time'] = strtotime($data['job_date']);		
+		$filter_data['finish_time'] = strtotime($data['finish_time']);
+				
+		
+		if ($filter_data['finish_time'] <= $filter_data['start_time'])
 		{
 			# Finish time can not be less than start time
 			echo json_encode(array('ok' => false, 'error_id' => 'finish_time'));
@@ -60,8 +64,8 @@ class Ajax extends MX_Controller {
 		if ($data['break_length'] > 0)
 		{
 			$break_time = array(
-				'length' => $data['break_length'] * 60,
-				'start_at' => strtotime($filter_data['job_date'] . ' ' . $data['break_start_at'])
+				'length' => $data['break_length'] * 60, # seconds
+				'start_at' => strtotime($data['break_start_at'])
 			);
 			
 			if ($break_time['start_at'] <= $filter_data['start_time'] || $break_time['start_at'] >= $filter_data['finish_time'])
@@ -239,7 +243,7 @@ class Ajax extends MX_Controller {
 	{
 		$shift_id = $this->input->post('pk');
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
-		$new_start_time = strtotime($shift['job_date'] . ' ' . $this->input->post('value') . ':00');
+		$new_start_time = strtotime($this->input->post('value') . ':00');
 		if ($new_start_time >= $shift['finish_time'])
 		{
 			$this->output->set_status_header('400');
@@ -255,7 +259,7 @@ class Ajax extends MX_Controller {
 	{
 		$shift_id = $this->input->post('pk');
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
-		$new_finish_time = strtotime($shift['job_date'] . ' ' . $this->input->post('value') . ':00');
+		$new_finish_time = strtotime($this->input->post('value') . ':00');
 		if ($new_finish_time <= $shift['start_time'])
 		{
 			$this->output->set_status_header('400');
@@ -278,14 +282,46 @@ class Ajax extends MX_Controller {
 		$this->load->view('shift_staff', isset($data) ? $data : NULL);
 	}
 	
+	/**
+	*	@name: load_shift_breaks
+	*	@desc: ajax function to load all breaks of the shift
+	*	@access: public
+	*	@param: (int) shift_id, via POST
+	*	@return: (view) form with shift break information filled in
+	*/
 	function load_shift_breaks()
 	{
 		$shift_id = $this->input->post('pk');
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
 		$data['breaks'] = json_decode($shift['break_time']);
 		$data['shift_id'] = $shift_id;
+		$data['shift'] = $shift;
 		$this->load->view('shift_breaks', isset($data) ? $data : NULL);
 	}
+	
+	/**
+	*	@name: add_shift_break
+	*	@desc: ajax function to load form view to add new break to the shift
+	*	@access: public
+	*	@param: (int) shift_id, via POST
+	*	@return: (view) form to enter new break for the shift
+	*/
+	function add_shift_break()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$data['shift'] = $shift;
+		$this->load->view('shift_add_break', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: update_job_shift_breaks
+	*	@desc: ajax function to update breaks of the shift
+	*	@access: public
+	*	@param: two arrays of breaks length and start time (via POST)
+	*	@return: json encode - if successful {ok: true, shift_id: (int), minutes: int}
+	*						 - if failed	{ok: false, number: error_number}
+	*/
 	function update_job_shift_breaks()
 	{
 		$length = $this->input->post('break_length');
@@ -300,7 +336,7 @@ class Ajax extends MX_Controller {
 			{
 				$break_time = array(
 					'length' => $value * 60,
-					'start_at' => strtotime($job_shift['job_date'] . ' ' . $start_at[$index])
+					'start_at' => strtotime($start_at[$index])
 				);
 				
 				if ($break_time['start_at'] <= $job_shift['start_time'] || $break_time['start_at'] >=$job_shift['finish_time'])
@@ -325,9 +361,7 @@ class Ajax extends MX_Controller {
 			}
 		}
 	}
-	
-	
-	
+		
 	/** 
 	*	@name: delete_shifts
 	*	@desc: ajax function to delete shift(s)
@@ -422,10 +456,26 @@ class Ajax extends MX_Controller {
 	
 		echo json_encode(array('success' => 1, 'result' => $out));
 	}
+	
+	/**
+	*	@name: clear_selected_days
+	*	@desc: ajax function to clear session of selected days for copy
+	*	@access: public
+	*	@param: (none)
+	*	@return: (void)
+	*/
 	function clear_selected_days()
 	{
 		$this->session->unset_userdata('all_ts');
 	}
+	
+	/**
+	*	@name: copy_selected_days
+	*	@desc: ajax function to copy selected shifts to selected days
+	*	@access: public
+	*	@param: array of shift id
+	*	@return: json encode {success: (boolean), msg: (string)}
+	*/
 	function copy_selected_days()
 	{
 		$all_ts = $this->session->userdata('all_ts');
@@ -441,6 +491,21 @@ class Ajax extends MX_Controller {
 					unset($new_shift['shift_id']);
 					unset($new_shift['created_on']);
 					$new_shift['job_date'] = date('Y-m-d', $ts);
+					$start_time = strtotime(date('Y-m-d', $ts) . ' ' . date('H:i', $shift['start_time']));
+					$finish_time = $start_time + $shift['finish_time'] - $shift['start_time'];
+					$new_shift['start_time'] = $start_time;
+					$new_shift['finish_time'] = $finish_time;
+					
+					$breaks = json_decode($shift['break_time']);
+					$new_breaks = array();
+					foreach($breaks as $break)
+					{
+						$new_breaks[] = array(
+							'length' => $break->length,
+							'start_at' => $start_time + $break->start_at - $shift['start_time']
+						);
+					}
+					$new_shift['break_time'] = json_encode($new_breaks);
 					$this->job_shift_model->insert_job_shift($new_shift);
 				}				
 			}
@@ -450,69 +515,7 @@ class Ajax extends MX_Controller {
 		else
 		{
 			echo json_encode(array('success' => false, 'msg' => 'No day selected'));
-		}
-		
-	}
-	
-	function set_order_param()
-	{
-		$param = $_POST['param'];
-		$this->session->set_userdata('job_sort_key', $param);
-		
-		$value = $this->session->userdata('job_sort_value');
-		$value = ($value == 'ASC') ? 'DESC' : 'ASC';
-		$this->session->set_userdata('job_sort_value', $value);
-	}
-	
-	function sendmail()
-	{
-		if ($this->input->post())
-    	{
-    		$email = $this->input->post('email');
-    		if (!valid_email($email))
-    		{
-	    		echo json_encode(array(
-	    			'result' => false,
-	    			'msg' => 'Invalid email address'
-	    		));
-    		}
-    		else
-    		{
-	    		$order = $this->job_model->get_job($this->input->post('order_id'));
-		    	# Sending email
-				$config = array();
-				$config['useragent']		= "CodeIgniter";
-				$config['mailpath']			= "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
-				$config['protocol']			= "smtp";
-				$config['smtp_host']		= "localhost";
-				$config['smtp_port']		= "25";
-				$config['mailtype'] 		= 'html';
-				$config['charset']  		= 'utf-8';
-				$config['newline']  		= "\r\n";
-				$config['wordwrap'] 		= TRUE;
-				#$config['send_multipart']	= FALSE;
-				
-				$this->load->library('email');
-				
-				$this->email->initialize($config);
-				$user = $this->session->userdata('user_data');
-				
-				$this->email->from($user['company_email'], $user['company_name']);
-				
-				$this->email->subject('Order Confirmation: ' . $order['sys_rma']);
-				$this->email->to($email); 
-				$message = $this->load->view('email_receipt', array('order' => $order, 'user' => $user), true);
-		        $this->email->message($message);
-		        
-				if($this->email->send())
-				{
-					echo json_encode(array(
-						'result' => true
-					));	
-				}
-    		}
-    		
-    	}
+		}		
 	}
 		
 }

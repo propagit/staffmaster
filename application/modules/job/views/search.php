@@ -34,13 +34,13 @@
 					<div class="form-group">
 						<label for="date_from" class="col-lg-4 control-label">Date From</label>
 						<div class="col-lg-8">
-							<div class='input-group date' id='date_from'>
-			                    <input type='text' class="form-control" name="date_from" data-format="DD-MM-YYYY" />
-			                    <span class="input-group-addon"><span class="fa fa-calendar"></span>
-			                    </span>
-			                </div>
+							<div class="input-group date" id="date_from">
+								<input type="text" class="form-control" name="date_from" readonly />
+								<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
 						</div>
-					</div>			
+					</div>		
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
@@ -55,14 +55,15 @@
 							<input type="text" class="form-control" name="job_id" id="job_id" />
 						</div>
 					</div>
+					
 					<div class="form-group">
 						<label for="date_to" class="col-lg-4 control-label">Date To</label>
 						<div class="col-lg-8">
-							<div class='input-group date' id='date_to'>
-			                    <input type='text' class="form-control" name="date_to" data-format="DD-MM-YYYY" />
-			                    <span class="input-group-addon"><span class="fa fa-calendar"></span>
-			                    </span>
-			                </div>
+							<div class="input-group date" id="date_to">
+								<input type="text" class="form-control" name="date_to" readonly />
+								<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -97,19 +98,32 @@ $(function() {
 		//$('body').scrollTo('#jobs_search_list', 500 );
 	});
 	$('#date_from').datetimepicker({
-		pickTime: false
-	});
-	$('#date_to').datetimepicker({
-		pickTime: false
-	});
-	/*
-$("#date_from").on("change.dp",function (e) {
-       $('#date_to').data("DateTimePicker").setStartDate(e.date);
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+        minView: 2,
+		forceParse: 1,
+        format: 'dd-mm-yyyy',
+    }).on('changeDate', function(e) {
+    	var date_from = moment(e.date.valueOf() - 11*60*60*1000);
+    	$('#date_to').datetimepicker('setStartDate', date_from.format("DD-MM-YYYY"));
     });
-    $("#date_to").on("change.dp",function (e) {
-       $('#date_from').data("DateTimePicker").setEndDate(e.date);
+    $('#date_to').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+        minView: 2,
+		forceParse: 1,
+        format: 'dd-mm-yyyy',
+        pickerPosition: 'bottom-left'
+    }).on('changeDate', function(e) {
+    	var date_to = moment(e.date.valueOf() - 11*60*60*1000);
+    	$('#date_from').datetimepicker('setEndDate', date_to.format("DD-MM-YYYY"));
     });
-*/
 });
 function search_jobs(){
 	$.ajax({

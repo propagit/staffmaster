@@ -29,8 +29,8 @@
 	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
 	
 	<!-- datetimepicker (bootstrap 3)  -->
-	<link href="<?=base_url();?>assets/css/bootstrap-datetimepicker.css" rel="stylesheet">
-	<script src="<?=base_url();?>assets/js/bootstrap-datetimepicker.js"></script>
+	<link href="<?=base_url();?>assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 	
 	<!-- x-editable (bootstrap 3) -->
 	<link href="<?=base_url();?>assets/css/bootstrap-editable.css" rel="stylesheet">

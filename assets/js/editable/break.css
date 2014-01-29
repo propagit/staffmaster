@@ -2,7 +2,7 @@
 	display: none;
 }
 .popover.popover-break {
-	max-width: 600px;
+	max-width: 800px;
 }
 .editable-breaks {
 	margin-bottom: 5px;
@@ -11,7 +11,6 @@
 	display: block;
 }
 .editable-breaks input.form-control {
-	width: 70px;
 }
 .editable-breaks .wp_break_length {
 	float: left;
