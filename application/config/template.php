@@ -109,3 +109,4 @@ $template['staff'] = array(
 );
 
 /* End of file template.php */
+/* Location: ./system/application/config/template.php */

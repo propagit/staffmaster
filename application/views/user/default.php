@@ -19,6 +19,8 @@
 	<?=$_styles;?>
 	
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
+    <script src="<?=base_url();?>assets/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.blockUI.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.json-2.4.min.js"></script>

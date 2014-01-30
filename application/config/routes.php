@@ -93,11 +93,13 @@ $route['admin/(:any)'] = 'dispatcher/admin_dispatcher/$1';
 $route['formbuilder'] = 'dispatcher/user_dispatcher/formbuilder';
 
 //documentor
+
 $route['documentor'] = 'document_dispacher';
 $route['documentor/(:any)'] = 'document_dispacher/index/documentor/$1';
 $route['documentor/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2';
 $route['documentor/(:any)/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2/$3';
 $route['documentor/(:any)/(:any)/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2/$3/$4'; 
+
 
 
 $route['404_override'] = '';
