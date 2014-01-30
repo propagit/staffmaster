@@ -78,6 +78,39 @@ i {
 	margin-left: 20px;
 }
 
+
+
+/* begin - custom form builder */
+.form-builder #build{ min-height:400px; border:1px solid #dddddd; border-radius:4px; float:left; width:100%;}
+.form-builder .right{right: -205px;top: -80px;}
+.form-builder .popover{ left:auto;}
+.form-builder #build .component,.tab-pane .component{ padding:10px 0;}
+.form-builder #build .controls,.tab-pane .controls{ margin-left:180px;}
+.form-builder #build .control-group,.tab-pane .control-group{ margin:10px;}
+.form-builder #build .control-label,.tab-pane .control-label{float: left;/* width: 160px; */padding-top: 5px;text-align: right;}
+.form-builder .popover-content .btn{margin-right: 10px;}
+.form-builder .popover-content .control-label{padding:6px 0 3px 0;}
+.form-builder .ui-draggable-helper {
+ border: 1px solid #dddddd;
+ background: #fff;
+ box-shadow: 10px 10px 5px #dddddd;
+}
+.form-builder .radio{ margin-bottom:6px;}
+.form-builder .has-pretty-child{ line-height:30px; float:left; width:100%; margin-top:0;}
+.form-builder .prettycheckbox, .prettyradio{ float:left;}
+.form-builder .radio.inline, .checkbox.inline {
+display: inline-block;
+padding-top: 5px;
+margin-bottom: 0;
+vertical-align: middle;
+margin-top:0;
+padding-right:10px;
+width:auto;
+}
+.form-builder .push{ float:left; width:100%;}
+#custom-form button{ margin-top:10px; float:right;}
+/* end - custom form builder */
+
 /* Lastly, apply responsive CSS fixes as necessary */
 @media (max-width: 767px) {
 	#footer {
