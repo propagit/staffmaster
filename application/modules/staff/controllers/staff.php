@@ -235,6 +235,11 @@ class Staff extends MX_Controller {
 		$data['staff'] = $staff;
 		$this->load->view('edit', isset($data) ? $data : NULL);
 	}
+	
+	function get_staff($user_id)
+	{
+		return $this->staff_model->get_staff($user_id);
+	}
 
 	function delete_client($user_id)
 	{

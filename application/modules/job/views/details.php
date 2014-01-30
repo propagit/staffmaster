@@ -32,7 +32,7 @@
 					</div>
 					
 					
-					<div class="form-group" id="f_break_start_at">
+					<div class="form-group">
 						<label class="col-lg-4 control-label">Break Length</label>
 						<div class="col-lg-4">
 							<div class="input-group date">
@@ -42,7 +42,7 @@
 						</div>
 					</div>
 					
-					<div class="form-group" id="f_break_start_time">
+					<div class="form-group" id="f_break_start_at">
 						<label class="col-lg-4 control-label">Break Start At</label>
 						<div class="col-lg-8">
 							<div class="input-group date" id="break_start_time">

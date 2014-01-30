@@ -83,8 +83,10 @@
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
 		<td>
-			<a href="#" class="shift_staff" data-type="typeaheadjs2" data-pk="<?=$shift['shift_id'];?>" data-value="">
-			<? if($shift['staff_id']) { ?>
+			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff btn btn-<?=modules::run('common/convert_status', $shift['status']);?>" data-pk="<?=$shift['shift_id'];?>">
+			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
+				echo $staff['first_name'] . ' ' . $staff['last_name'];				
+			?>
 			<? } else { ?>
 			No Staff Assigned
 			<? } ?>
@@ -137,21 +139,6 @@ $(function(){
 			}
 		}
 	});
-	$('.shift_staff').editable({
-		title: 'Staff Allocated',
-		name: 'staff',
-		typeahead: {
-			name: 'staff',
-			prefetch: '<?=base_url();?>staff/ajax/list_staffs',
-			template: '<p><strong>{{name}}</strong> – {{img}}</p>',
-			engine: Hogan
-		},
-		url: '<?=base_url();?>job/ajax/update_shift_staff',
-		success: function(response, newValue)
-		{
-			
-		}
-	})
 	$('.shift_role').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_role',
 		name: 'role_id',
@@ -204,10 +191,9 @@ $(function(){
 			return $('#wrapper_shift_break').html();
 		}
 	});
-	/*
-$('.shift_staff').popover({
+	$('.shift_staff').popover({
 		html: true,
-		placement: 'top',
+		placement: 'bottom',
 		trigger: 'manual',
 		selector: false,
 		title: 'Staff Allocated',
@@ -216,7 +202,6 @@ $('.shift_staff').popover({
 			return $('#wrapper_shift_staff').html();
 		}
 	})
-*/
 	
     var selected_shifts = new Array();
     	

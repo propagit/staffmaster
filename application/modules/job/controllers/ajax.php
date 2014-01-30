@@ -272,14 +272,81 @@ class Ajax extends MX_Controller {
 		}
 	}
 	
+	/**
+	*	@name: load_shift_staff
+	*	@desc: ajax function to load view of assign staff to a shift
+	*	@access: public
+	*	@param: (via POST) pk: (int) id of the shift
+	*	@return: (view) form to assign staff to the shift
+	*/
 	function load_shift_staff()
 	{
 		$shift_id = $this->input->post('pk');
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
-		$this->load->model('staff/staff_model');
-		$data['staffs'] = $this->staff_model->search_staffs();
-		$data['shift_id'] = $shift_id;
+		$data['staff'] = modules::run('staff/get_staff', $shift['staff_id']);
+		$data['shift'] = $shift;
 		$this->load->view('shift_staff', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: search_staff_for_shift
+	*	@desc: ajax function to search staffs for a shift
+	*	@access: public
+	*	@param: (via POST) query: (string) keyword for staff name
+	*	@return: (view) of list of searched staffs
+	*/
+	function search_staff_for_shift()
+	{
+		$query = $this->input->post('query');
+		$this->load->model('staff/staff_model');
+		$data['staffs'] = $this->staff_model->search_staffs(array('keyword' => $query, 'limit' => 5));
+		$this->load->view('staffs_for_shift', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: update_shift_staff
+	*	@desc: ajax function to update staff assign / status to the shift
+	*	@access: public
+	*	@param: (via POST)
+	*			- shift_staff_id: (int) id of staff
+	*			- status: (int) 1 assigned / 2 confirmed / 3 rejected
+	*			- shift_staff: (string) staff first name and last name
+	*	@return: json encode
+	*/
+	function update_shift_staff()
+	{
+		$data = $this->input->post();
+		$update_shift_data = array();
+		if ($data['shift_staff'])
+		{
+			$staff = modules::run('staff/get_staff', $data['shift_staff_id']);
+			
+			if ($staff)
+			{
+				$update_shift_data = array(
+					'staff_id' => $data['shift_staff_id'],
+					'status' => $data['status']
+				);
+			}
+			else {
+				echo json_encode(array('ok' => false, 'msg' => 'Staff not found'));
+				return;
+			}
+		}
+		else {
+			$update_shift_data = array(
+				'staff_id' => 0,
+				'status' => 0
+			);
+		}
+		
+		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
+		echo json_encode(array(
+			'ok' => true, 
+			'shift_id' => $data['shift_id'], 
+			'value' => ($data['shift_staff']) ? $data['shift_staff'] : 'No Staff Assigned',
+			'btn_class' => modules::run('common/convert_status', $update_shift_data['status'])
+		));
 	}
 	
 	/**
@@ -490,6 +557,7 @@ class Ajax extends MX_Controller {
 					$new_shift = $shift;
 					unset($new_shift['shift_id']);
 					unset($new_shift['created_on']);
+					unset($new_shift['modified_on']);
 					$new_shift['job_date'] = date('Y-m-d', $ts);
 					$start_time = strtotime(date('Y-m-d', $ts) . ' ' . date('H:i', $shift['start_time']));
 					$finish_time = $start_time + $shift['finish_time'] - $shift['start_time'];

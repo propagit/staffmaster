@@ -10,8 +10,7 @@
 	clear: both;
 	display: block;
 }
-.editable-breaks input.form-control {
-}
+
 .editable-breaks .wp_break_length {
 	float: left;
 }

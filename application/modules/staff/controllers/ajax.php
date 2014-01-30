@@ -13,18 +13,22 @@ class Ajax extends MX_Controller {
 		$this->load->model('staff_model');
 	}
 	
-	function list_staffs()
+	function list_staffs($query='')
 	{
-		$staffs = $this->staff_model->search_staffs();
+		$staffs = $this->staff_model->search_staffs(array('keyword' => $query));
 		$out = array();
 		
 		foreach($staffs as $staff)
 		{
-			$out[] = json_encode(array(
+			$out[] = array(
+				'id' => $staff['user_id'],
 				'name' => $staff['first_name'] . ' ' . $staff['last_name'],
-				'img' => 'test'));
+				'username' => $staff['username']
+			);
 		}
+		//$this->output->set_content_type('application/json');
 		echo json_encode($out);
 	}
+
 	
 }

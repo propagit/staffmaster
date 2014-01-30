@@ -12,7 +12,8 @@ function load_job_shifts(job_id, date, scroll)
 		$('#start_date').datetimepicker('update');
 		$('input[name="finish_time"]').val(job_date + " 12:00");
     	$('#finish_time').datetimepicker('setStartDate', job_date + " 12:00");
-    	
+    	$('input[name="break_start_at"]').val(job_date + " 12:00");
+    	$('#break_start_time').datetimepicker('setStartDate', job_date + " 12:00");
 	}
 	start_loading();
 	$.ajax({
