@@ -15,7 +15,7 @@ class Job_shift_model extends CI_Model {
 		{
 			$this->db->where('job_date', $job_date);
 		}
-		$this->db->where('status', 0);
+		$this->db->where('status !=', -1);
 		$query = $this->db->get('job_shifts');
 		return $query->result_array();
 	}
@@ -24,7 +24,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT count(*) as `count`
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id' AND `status` = 0";
+				WHERE `job_id` = '$job_id' AND `status` != -1";
 		if ($job_date)
 		{
 			$sql .= " AND `job_date` = '$job_date'";
@@ -37,7 +37,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT DISTINCT(`job_date`)
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id' AND `status` = 0 ORDER BY `job_date` ASC";
+				WHERE `job_id` = '$job_id' AND `status` != -1 ORDER BY `job_date` ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -45,7 +45,6 @@ class Job_shift_model extends CI_Model {
 	function get_job_shift($shift_id)
 	{
 		$this->db->where('shift_id', $shift_id);
-		$this->db->where('status', 0);
 		$query = $this->db->get('job_shifts');
 		return $query->first_row('array');
 	}

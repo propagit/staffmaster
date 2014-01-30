@@ -7,8 +7,13 @@ function load_job_shifts(job_id, date, scroll)
 {
 	if (date)
 	{
-		var job_date = moment(date);
-		$('input[name="job_date"]').val(job_date.format("DD-MM-YYYY"));
+		var job_date = moment(date).format("DD-MM-YYYY");                
+		$('input[name="job_date"]').val(job_date + " 12:00");
+		$('#start_date').datetimepicker('update');
+		$('input[name="finish_time"]').val(job_date + " 12:00");
+    	$('#finish_time').datetimepicker('setStartDate', job_date + " 12:00");
+    	$('input[name="break_start_at"]').val(job_date + " 12:00");
+    	$('#break_start_time').datetimepicker('setStartDate', job_date + " 12:00");
 	}
 	start_loading();
 	$.ajax({

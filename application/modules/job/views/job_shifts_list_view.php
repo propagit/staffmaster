@@ -75,16 +75,18 @@
 			<a href="#" class="shift_role" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['role_id'];?>"><?=modules::run('attribute/role/display_role', $shift['role_id']);?></a>
 		</td>
 		<td class="center">
-			<a href="#" class="shift_start_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['start_time']);?>"><?=date('H:i', $shift['start_time']);?></a>
+			<a href="#" class="shift_start_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['start_time']);?>" data-title="Shift start date/time"><?=date('H:i', $shift['start_time']);?></a>
 			-
-			<a href="#" class="shift_finish_time" data-type="time" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('H:i', $shift['finish_time']);?>"><?=date('H:i', $shift['finish_time']);?></a>
+			<a href="#" class="shift_finish_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['finish_time']);?>"><?=date('H:i', $shift['finish_time']);?></a> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="error">*</span>': '';?>
 		</td>
 		<td class="center">
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
 		<td>
-			<a href="#" class="shift_staff" data-type="typeaheadjs2" data-pk="<?=$shift['shift_id'];?>" data-value="">
-			<? if($shift['staff_id']) { ?>
+			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff btn btn-<?=modules::run('common/convert_status', $shift['status']);?>" data-pk="<?=$shift['shift_id'];?>">
+			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
+				echo $staff['first_name'] . ' ' . $staff['last_name'];				
+			?>
 			<? } else { ?>
 			No Staff Assigned
 			<? } ?>
@@ -137,21 +139,6 @@ $(function(){
 			}
 		}
 	});
-	$('.shift_staff').editable({
-		title: 'Staff Allocated',
-		name: 'staff',
-		typeahead: {
-			name: 'staff',
-			prefetch: '<?=base_url();?>staff/ajax/list_staffs',
-			template: '<p><strong>{{name}}</strong> – {{img}}</p>',
-			engine: Hogan
-		},
-		url: '<?=base_url();?>job/ajax/update_shift_staff',
-		success: function(response, newValue)
-		{
-			
-		}
-	})
 	$('.shift_role').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_role',
 		name: 'role_id',
@@ -159,14 +146,10 @@ $(function(){
 		source: [<?=modules::run('attribute/role/get_roles', 'data_source'); ?>]
 	});
 	$('.shift_start_time').editable({
-		title: 'Start time',
-        name: 'start_time',
-        time: {
-	        pickDate: false,
-	        minuteStepping: 15,
-	        format: "HH:mm"
+		combodate: {
+            firstItem: 'name'
         },
-        url: '<?=base_url();?>job/ajax/update_shift_start_time',
+		url: '<?=base_url();?>job/ajax/update_shift_start_time',
         success: function(response, newValue)
         {
 	        if (response.status == 'error')
@@ -176,12 +159,8 @@ $(function(){
         }
     });
     $('.shift_finish_time').editable({
-		title: 'Finish time',
-        name: 'finish_time',
-        time: {
-	        pickDate: false,
-	        minuteStepping: 15,
-	        format: "HH:mm"
+		combodate: {
+            firstItem: 'name'
         },
         url: '<?=base_url();?>job/ajax/update_shift_finish_time',
         success: function(response, newValue)
@@ -203,7 +182,7 @@ $(function(){
 	}
 	$('.shift_breaks').popover({
 		html: true,
-		placement: 'top',
+		placement: 'bottom',
 		trigger: 'manual',
 		selector: false,
 		title: 'Break',
@@ -212,10 +191,9 @@ $(function(){
 			return $('#wrapper_shift_break').html();
 		}
 	});
-	/*
-$('.shift_staff').popover({
+	$('.shift_staff').popover({
 		html: true,
-		placement: 'top',
+		placement: 'bottom',
 		trigger: 'manual',
 		selector: false,
 		title: 'Staff Allocated',
@@ -224,7 +202,6 @@ $('.shift_staff').popover({
 			return $('#wrapper_shift_staff').html();
 		}
 	})
-*/
 	
     var selected_shifts = new Array();
     	
@@ -298,34 +275,18 @@ function load_shift_breaks(obj)
 		}
 	}).done(function(){		
 		$(obj).popover('show');
-		$('.break_start_at').datetimepicker({
-		    pickDate: false,
-		    minuteStepping: 15,
-	    });
 		$('.break-add').click(function(){
-			$(this).parent().find('#list-breaks').append(
-	'<div class="editable-breaks">' + 
-		'<div class="wp_break_length">' + 
-			'<div class="input-group">' + 
-				'<input type="text" class="form-control input_number_only" name="break_length[]" value="0" maxlength="3" />' + 
-				'<span class="input-group-addon">min(s)</span>' + 
-			'</div>' + 
-		'</div>' + 
-		'<label class="control-label">Start At</label>' + 
-		'<div class="wp_break_start_at">' + 
-			'<div class="input-group break_start_at">' + 
-				'<input type="text" class="form-control" name="break_start_at[]" data-format="HH:mm" />' + 
-				'<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>' + 
-			'</div>' + 
-		'</div>' + 
-	'</div>');
-			$('.break_start_at').datetimepicker({
-			    pickDate: false,
-			    minuteStepping: 15,
-		    });
-		});
-		
-		
+			var list_breaks = $(this).parent().find('#list-breaks');
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>job/ajax/add_shift_break",
+				data: {pk: pk},
+				success: function(html)
+				{
+					$(list_breaks).append(html);
+				}
+			})			
+		});		
 		$('.break-submit').click(function(){
 			$.ajax({
 		    	type: "POST",
