@@ -13,7 +13,7 @@ class Dashboard_staff extends MX_Controller {
 	}
 	
 	public function index()
-	{		
+	{
 		$this->load->view('staff/dashboard', isset($data) ? $data : NULL);
 	}
 
