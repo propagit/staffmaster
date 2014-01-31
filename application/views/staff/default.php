@@ -24,6 +24,9 @@
 	
 	
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
+	<script> var base_url = '<?=base_url();?>'; </script>
+	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
+	<script src="<?=base_url();?>assets/js/core.staff.js" type="text/javascript" charset="utf-8"></script>
 	
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -66,5 +69,6 @@
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
+	<script src="<?=base_url();?>assets/js/bootstrap.confirm.js"></script>
 </body>
 </html>

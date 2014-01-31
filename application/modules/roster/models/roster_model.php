@@ -18,6 +18,7 @@ class Roster_model extends CI_Model {
 				FROM `job_shifts` 
 					WHERE `staff_id` = '" . $this->user_id . "'
 					AND `job_date` >= '" . $active_month . "' 
+					AND `status` NOT IN ('-1','-2')
 					GROUP BY `year`, `month`";
 		$query = $this->db->query($sql);
 		$result = $query->result_array();
@@ -34,9 +35,16 @@ class Roster_model extends CI_Model {
 		$sql = "SELECT js.*, j.client_id FROM `job_shifts` js
 				LEFT JOIN `jobs` j ON j.job_id = js.job_id 
 				WHERE js.`staff_id` = '" . $this->user_id . "'
-				AND js.`status` != '-1'
+				AND js.`status` NOT IN ('-1','-2')
 				AND js.`job_date` LIKE '" . $active_month . "%'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+	
+	function update_roster($shift_id, $data)
+	{
+		$this->db->where('shift_id', $shift_id);
+		$this->db->where('staff_id', $this->user_id);
+		return $this->db->update('job_shifts', $data);
 	}
 }
