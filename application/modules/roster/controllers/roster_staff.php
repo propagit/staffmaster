@@ -29,6 +29,5 @@ class Roster_staff extends MX_Controller {
 		
 		$this->load->view('staff/rosters_main_view', isset($data) ? $data : NULL);
 	}
-
 		
 }

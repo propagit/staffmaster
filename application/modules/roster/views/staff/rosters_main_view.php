@@ -8,6 +8,15 @@
 		<span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-print"></i> Print Rosters</span>
 		<span class="btn btn-core pull-right hidden-xs"><i class="fa fa-envelope-o"></i> Email Rosters</span>
 		<span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-download"></i> Download Rosters</span>
+		<ul class="nav nav-tabs nav-action">
+			<li class="dropdown">
+				<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
+				<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
+					<li><a class="multi_confirm">Confirm <i class="fa fa-thumbs-o-up"></i></a></li>
+					<li><a class="multi_reject">Reject <i class="fa fa-thumbs-o-down"></i></a></li>
+				</ul>
+			</li>
+		</ul>
 		<ul class="nav nav-tabs">
 			<? foreach($months as $month) { ?>
 			<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_rosters(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
@@ -16,8 +25,10 @@
 	</div>
 	
 	<div id="list_rosters" class="clear"></div>
-	
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modal_roster" tabindex="-1" role="dialog" aria-hidden="true">
+</div><!-- /.modal -->
 
 <script>
 $(function(){
@@ -26,11 +37,12 @@ $(function(){
 
 function load_rosters()
 {
+	preloading($('#list_rosters'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>roster/ajax/load_rosters",
 		success: function(html) {
-			$('#list_rosters').html(html);
+			loaded($('#list_rosters'),html);
 		}
 	})
 }
