@@ -49,10 +49,11 @@ class Dispatcher extends MX_Controller {
 	}
 	
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
-	{
-		
-		
-		$content = modules::run($controller . '_staff', $method . '_staff', $param1, $param2, $param3, $param4);
+	{		
+		if ($method == 'ajax')
+		{
+			echo modules::run($controller . '/ajax/' . $param1, $param2, $param3, $param4); exit();	
+		}
 		
 		$content = modules::run($controller . '/' . $controller . '_staff/index', $param1, $param2, $param3, $param4);
 		$title = ucwords($controller);
