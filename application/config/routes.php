@@ -63,21 +63,17 @@ $route['logout'] = 'auth/logout_user';
 //$route['staff/(:any)'] = 'dispatcher/user_dispatcher/staff/$1';
 
 $route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
-$route['(job|staff|roster)'] = 'dispatcher/user_dispatcher/$1';
-$route['(job|staff|roster)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
-$route['(job|staff|roster)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
-$route['(job|staff|roster)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
-$route['(job|staff|roster)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
-$route['(job|staff)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
+$route['(job|staff|roster|work)'] = 'dispatcher/user_dispatcher/$1';
+$route['(job|staff|roster|work)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
+$route['(job|staff|roster|work)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
+$route['(job|staff|roster|work)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
+$route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+$route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 $route['attribute/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1';
 $route['attribute/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2';
 $route['attribute/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2/$3';
 
 $route['(privacy-policy|terms-conditions|term-of-use)'] = 'dispatcher/user_dispatcher/page/$1';
-
-
-
-$route['warranty/(:any)'] = 'dispatcher/user_dispatcher/warranty/$1';
 
 
 $route['(dashboard|product|warranty|job|profile|config|resource)'] = 'dispatcher/user_dispatcher/$1';

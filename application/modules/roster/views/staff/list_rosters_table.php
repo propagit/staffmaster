@@ -24,7 +24,7 @@
 			<td><?=date('dS D', $roster['start_time']);?></td>
 			<td><? $client = modules::run('client/get_client', $roster['client_id']); echo $client['company_name']; ?></td>
 			<td>
-				<i class="fa fa-map-marker"></i> &nbsp; <a class="roster_venue" data-toggle="modal" data-target="#modal_roster" href="<?=base_url();?>roster/ajax/load_roster_venue/<?=$roster['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?></a>
+				<i class="fa fa-map-marker"></i> &nbsp; <a class="roster_venue" data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>roster/ajax/load_roster_venue/<?=$roster['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?></a>
 			</td>
 			<td class="center"><?=date('H:i', $roster['start_time']);?></td>
 			<td class="center"><?=date('H:i', $roster['finish_time']);?> <?=(date('d', $roster['finish_time']) != date('d', $roster['start_time'])) ? '<span class="error">*</span>': '';?></td>

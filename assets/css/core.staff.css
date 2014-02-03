@@ -1,0 +1,45 @@
+@import url('core.css');
+
+#list_works .row {
+	border: 1px solid rgb(221, 221, 221);
+	margin: 0;
+	margin-bottom: -1px;
+}
+#list_works .row-open {
+	background: #d6f2dc;
+	/* font-weight: bold; */
+}
+
+#list_works .row-open .wp-job {
+	/* text-align: center; */
+}
+#list_works .table {
+	margin-bottom: 0;
+}
+#list_works .table thead {
+	background: #e1f4e5;
+}
+#list_works .table tbody {
+	background: #eef8f0;
+}
+#list_works .row div {
+	padding: 10px;
+}
+#list_works .wp-date {
+	border-right: 1px solid rgb(221, 221, 221);
+	width: 80px;
+	text-align: center;
+}
+#list_works .row div.wp-arrow {
+	text-align: right;
+	float: right;
+	margin-right: 5px;
+}
+
+
+@media (min-width:768px){
+	#list_works .hidden-xs,
+	#list_works .hidden-sm {
+		display: inline !important;
+	}
+}
