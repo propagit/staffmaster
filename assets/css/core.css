@@ -191,7 +191,11 @@ body {
 	clear: both;
 	border-radius:8px;
 }
-.top-box{ margin-top:45px;}
+.top-box{ 
+	margin-top:45px;
+	overflow: hidden;
+	
+}
 .bottom-box{
 	border-color:rgba(255,255,255,0.5); 
 	border-style: solid; 

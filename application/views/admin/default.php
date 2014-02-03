@@ -28,7 +28,9 @@
 	<script src="<?=base_url();?>assets/js/moment.js"></script>
 	<script src="<?=base_url();?>assets/js/underscore-min.js"></script>
 	
-	
+	<!-- adminflare -->	
+	<link href="<?=base_url();?>assets/css/adminflare.custom.css" rel="stylesheet" media="screen">
+	<script src="<?=base_url();?>assets/js/adminflare.min.js"></script>
 	
 	<!-- datetimepicker (bootstrap 3)  -->
 	<link href="<?=base_url();?>assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">

@@ -1,10 +1,57 @@
 <div class="col-md-12">
 	<div class="box top-box">
-        <h2><?= $job['name']; ?> </h2>
-        <h2><?= $client['company_name']; ?></h2>
-    </div>
+		<div class="col-xs-6 col-md-4">			
+	        <h2><?= $job['name']; ?> </h2>
+	        <h2><?= $client['company_name']; ?></h2>
+		</div>
+		<div class="col-xs-12 col-md-8">
+			<div class="pull-right">
+				<div class="span2 pie-chart">
+					<div id="easy-pie-chart-1" data-percent="58">
+						58%
+					</div>
+					<div class="caption">
+						Shifts Completed
+					</div>
+				</div>
+				<div class="span2 pie-chart">
+					<div id="easy-pie-chart-2" data-percent="84">
+						84%
+					</div>
+					<div class="caption">
+						Shifts Confirmed
+					</div>
+				</div>
+				<div class="span2 pie-chart">
+					<div id="easy-pie-chart-3" data-percent="12">
+						12%
+					</div>
+					<div class="caption">
+						Shifts Unconfirmed
+					</div>
+				</div>
+				<div class="span2 pie-chart">
+					<div id="easy-pie-chart-4" data-percent="16">
+						16%
+					</div>
+					<div class="caption">
+						Shifts Not Filled
+					</div>
+				</div>
+			</div>
+		</div>						
+    </div>       
 </div>
 
+<div class="col-md-12">
+	<div class="box top-box">
+		<div class="col-md-6">dasda
+		</div>
+		<div class="col-md-6">asd
+		</div>
+	</div>
+</div>
+	
 <div class="row">
 	<div class="col-md-6">
 		<h4>Create Job Shifts</h4>
@@ -131,6 +178,28 @@
 </div><!-- /.modal -->
 <script>
 $(function(){
+	// Easy Pie Charts
+	var easyPieChartDefaults = {
+		animate: 2000,
+		scaleColor: false,
+		lineWidth: 10,
+		lineCap: 'square',
+		size: 80,
+		trackColor: '#e5e5e5'
+	}
+	$('#easy-pie-chart-1').easyPieChart($.extend({}, easyPieChartDefaults, {
+		barColor: '#0fb507'
+	}));
+	$('#easy-pie-chart-2').easyPieChart($.extend({}, easyPieChartDefaults, {
+		barColor: '#2ae421'
+	}));
+	$('#easy-pie-chart-3').easyPieChart($.extend({}, easyPieChartDefaults, {
+		barColor: '#e42146'
+	}));
+	$('#easy-pie-chart-4').easyPieChart($.extend({}, easyPieChartDefaults, {
+		barColor: '#f2850f'
+	}));
+			
 	load_job_shifts(<?=$job['job_id'];?>);
 	$('#start_date').datetimepicker({
         weekStart: 1,

@@ -1,28 +1,33 @@
-<div class="box">
-	<h2>Apply For Work</h2>
-	<p>Below you will find a range of jobs that are are currently available. Please apply for any job you would like to work on. Applying for a job doesn’t mean you are automatically placed to work on that shift. Please check your roster to see what jobs you are working on.</p>
-</div>
-
-
-<div class="box">
-	<div class="table_action">		
-		<ul class="nav nav-tabs nav-action">
-			<li class="dropdown">
-				<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
-				<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
-					<li><a class="multi_apply">Apply <i class="fa fa-thumbs-o-up"></i></a></li>
-				</ul>
-			</li>
-		</ul>
-		<ul class="nav nav-tabs">
-			<? foreach($months as $month) { ?>
-			<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_works(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
-			<? } ?>
-		</ul>
+<div class="col-md-12">
+	<div class="box top-box">
+		<h2>Apply For Work</h2>
+		<p>Below you will find a range of jobs that are are currently available. Please apply for any job you would like to work on. Applying for a job doesn’t mean you are automatically placed to work on that shift. Please check your roster to see what jobs you are working on.</p>
 	</div>
 	
-	<div id="list_works" class="clear"></div>
+	<div class="box">
+		<div class="table_action">		
+			<ul class="nav nav-tabs nav-action">
+				<li class="dropdown">
+					<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
+					<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
+						<li><a class="multi_apply">Apply <i class="fa fa-thumbs-o-up"></i></a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav nav-tabs">
+				<? foreach($months as $month) { ?>
+				<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_works(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
+				<? } ?>
+			</ul>
+		</div>
+		
+		<div id="list_works" class="clear"></div>
+	</div>
+
 </div>
+
+
+
 
 <script>
 $(function(){
