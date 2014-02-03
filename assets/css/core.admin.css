@@ -64,7 +64,7 @@ body {
 	.nav .fa{ font-size:16px;}
 }
 
-@media(max-width:992px){
+@media(max-width:1006px){
 	.dropdown .fa{ display:none;}
 	.dropdown-menu{ min-width:155px;}	
 }
@@ -82,7 +82,7 @@ body {
 	.btn-navbar{ float:right; margin-top:8px;}
 	.dropdown .fa{ display:block;}
 	.desktop-hidden .nav ul > li{ float:left; width:100%;}
-	.nav{ padding-bottom:10px;}
+	.nav{ padding-bottom:10px; padding-left:10px;}
 	.nav li a{ font-size:14px;}
 	.desktop-hidden .dropdown-menu{float: left;width: 100%;position: relative;}
 	.desktop-hidden .dropdown{ text-align:left;}

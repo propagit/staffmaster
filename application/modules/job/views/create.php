@@ -1,7 +1,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
         <h2>Create Job</h2>
-        <p><b>Step 1</b> - Create a job folder name to store jobs in and choose a job creation style.</p>
+        <p>To start creating jobs select a client and a campaign name. A campaign name is used for you to find the shifts you create later. A job campaign can contain many shifts across many days, weeks or months.</p>
     </div>
 </div>
 

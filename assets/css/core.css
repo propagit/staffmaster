@@ -91,10 +91,13 @@ a {
 	margin-top: 0;
 	font-size:40px;
 	font-weight:900;
+	font-family:'Lato', sans-serif;
+	letter-spacing:-1px;
 }
 .box p{ 
 	font-size:16px;
 	width:50%;
+	font-family:'Lato', sans-serif;
 }
 .table_action {
 	padding: 0 20px;
