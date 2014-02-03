@@ -19,7 +19,7 @@
 	<![endif]-->
 	
 	<!-- Core styles -->
-	<link href="<?=base_url();?>assets/css/core.css" rel="stylesheet" media="screen">
+	<link href="<?=base_url();?>assets/css/core.staff.css" rel="stylesheet" media="screen">
 	<?=$_styles;?>
 	
 	
@@ -63,7 +63,9 @@
 	
 	</div> <!-- /container -->
 
-
+	<!-- Map Modal -->
+	<div class="modal fade" id="modal_map" tabindex="-1" role="dialog" aria-hidden="true">
+	</div><!-- /.modal -->
 
 	<!-- Bootstrap core JavaScript
 	================================================== -->

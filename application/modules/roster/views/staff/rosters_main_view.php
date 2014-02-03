@@ -26,9 +26,7 @@
 	
 	<div id="list_rosters" class="clear"></div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="modal_roster" tabindex="-1" role="dialog" aria-hidden="true">
-</div><!-- /.modal -->
+
 
 <script>
 $(function(){
