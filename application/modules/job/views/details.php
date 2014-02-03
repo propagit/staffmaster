@@ -1,6 +1,10 @@
-<h2><?= $job['name']; ?>  
-<small><?= $client['company_name']; ?></small></h2>
-<br />
+<div class="col-md-12">
+	<div class="box top-box">
+        <h2><?= $job['name']; ?> </h2>
+        <h2><?= $client['company_name']; ?></h2>
+    </div>
+</div>
+
 <div class="row">
 	<div class="col-md-6">
 		<h4>Create Job Shifts</h4>
