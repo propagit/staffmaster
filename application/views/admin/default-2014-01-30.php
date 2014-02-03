@@ -14,7 +14,7 @@
 	
 	<link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/calendar.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
+	<link href="<?=base_url();?>assets/css/style.css" rel="stylesheet" media="screen">
 	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
 	<?=$_styles;?>
 	
@@ -59,34 +59,76 @@
 </head>
 <body>
 <? $user = $this->session->userdata('user_data'); ?>
-
-<header>
-    <div class="container-fluid">
-       <div class="row profile-bar">
-       		<div class="col-md-4 logo">
-                <img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
-            </div>
-            <div class="col-md-6 pull">
-            	<div class="avatar pull">
-                	<img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />
-                </div>
-            </div>
-       </div> 
-       <?=$menu;?>
-    </div>
-</header>
-
+<div id="wrap">
+	<div id="header">
+		<div class="container">
+			<div class="pull-left">
+				<!--
+<div class="user_avatar">
+					<i class="fa fa-user icon-3x"></i>
+				</div>
+-->
+			</div>
+			<div class="pull-left">
+				<!--
+<h3><?=$user['first_name'] . ' ' . $user['last_name'];?></h3>
+				<h4>Administrator &middot; Staff ID: <?=$user['user_id'];?></h4>
+				<ul  class="top_nav">
+					<li><a href="#"><i class="icon-pencil"></i> Edit Profile</a></li>
+					<li><a href="#"><i class="icon-upload-alt"></i> Upload Profile Photo</a></li>
+				</ul>
+-->
+			</div>
+			<div class="pull-right">
+				<ul class="top_nav">
+					<li><a href="#"><i class="icon-dashboard"></i> Dashboard</a></li>
+					<li><a href="#"><i class="icon-comments"></i> Messages</a></li>
+					<li><a href="<?=base_url();?>account/staff"><i class="icon-user"></i> Staff Account</a></li>
+					<li><a href="<?=base_url();?>logout"><i class="icon-signout"></i> Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="menu">
+		<div class="container">
+			<?=$menu;?>
+		</div>
+	</div>
+	
+	<!--
+<div class="page-title">
+		<div class="shadow_title"></div>
+		<div class="container">
+			<h2><?=$title?></h2>
+		</div>		
+	</div>
+-->
 	
 	<!-- Begin page content -->
-    <div class="container-fluid">
-        <div class="row">
-            <?=$content;?>
-        </div>
-    </div>
-
-
+	<div class="page-content">
+		<div class="container">
+			<!-- <div class="shadow_title"></div> -->
+			<div class="content-inner">
+				<?=$content;?>
+			</div>
+		</div>
+	</div>
+</div>
 <div id="push"></div>
-
+<!--
+<div id="footer">
+	<div class="container">
+		<ul class="pull-right">
+			<li><a href="<?=base_url();?>term-of-use">Term of Use</a></li>
+			<li><a href="<?=base_url();?>privacy-policy">Privacy Policy</a></li>
+			<li><a href="<?=base_url();?>terms-conditions">Terms & Conditions</a></li>
+			<li><a href="<?=base_url();?>logout">Logout</a></li>
+		</ul>
+		<p class="credit">Copyright &copy; <a href="#">Propagate</a> World Wide Pty Ltd</p>
+		
+	</div>
+</div>
+-->
 
 </body>
 </html>
