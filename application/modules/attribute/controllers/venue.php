@@ -92,6 +92,11 @@ class Venue extends MX_Controller {
 		$venue = $this->get_venue($venue_id);
 		echo ($venue) ? $venue['name'] : 'Not Specified';
 	}
+	function display_map($venue_id)
+	{
+		$data['venue'] = $this->venue_model->get_venue($venue_id);
+		$this->load->view('venue_map', isset($data) ? $data : NULL);
+	}
 	function get_venue($venue_id)
 	{
 		return $this->venue_model->get_venue($venue_id);

@@ -15,7 +15,7 @@ $menu = array(
 		//array('path' => 'job/search', 'icon' => 'search', 'title' => 'Search Jobs'),
 		//array('path' => 'job/create', 'icon' => 'plus-sign', 'title' => 'Create Job')
 	)),
-	array('path' => '#', 'icon' => 'thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(		
+	array('path' => 'work', 'icon' => 'thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(		
 		
 	)),
 	array('path' => '#', 'icon' => 'clock-o', 'title' => 'Time Sheets', 'sub' => array(
