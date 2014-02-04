@@ -1,8 +1,9 @@
-<div class="box">
-	<h2>Your Dashboard</h2>
-	<p>Welcome to your Staff Account dashboard. Your Dashboard will give you a quick overview of activity going on within [COMPANY PROFILE NAME]. Check back regularly to keep yourself up to date.</p>
+<div class="col-md-12">
+	<div class="box top-box">
+		<h2>Your Dashboard</h2>
+		<p>Welcome to your Staff Account dashboard. Your Dashboard will give you a quick overview of activity going on within [COMPANY PROFILE NAME]. Check back regularly to keep yourself up to date.</p>
+	</div>
 </div>
-
 
 <div class="row">
 	<div class="col-md-6">

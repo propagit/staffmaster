@@ -36,32 +36,28 @@
 
 </head>
 <body>
-	<!-- Fixed navbar -->
-	<div class="navbar navbar-default navbar-fixed-top navbar-main" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">STAFF MASTER</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<?=$menu;?>
-				</ul>
-			
-			</div><!--/.nav-collapse -->
-		</div>
-	</div>
-	
-	<div class="container">
-	
-		<?=$content;?>
-	
-	</div> <!-- /container -->
+
+<header>
+    <div class="container-fluid">
+       <div class="row profile-bar">
+       		<div class="col-md-4 logo">
+                <img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
+            </div>
+            <div class="col-md-6 pull">
+            	<div class="avatar pull">
+                	<img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />
+                </div>
+            </div>
+       </div> 
+       <?=$menu;?>
+    </div>
+</header>
+
+	<div class="container-fluid">
+        <div class="row">
+            <?=$content;?>
+        </div>
+    </div><!-- /container -->
 
 	<!-- Map Modal -->
 	<div class="modal fade" id="modal_map" tabindex="-1" role="dialog" aria-hidden="true">
