@@ -132,7 +132,7 @@ class Staff extends MX_Controller {
 	
 	function edit_staff($user_id)
 	{
-		error_reporting(E_ALL);
+		//error_reporting(E_ALL);
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules(array(
 			array('field' => 'title', 'label' => 'Title', 'rules' => ''),

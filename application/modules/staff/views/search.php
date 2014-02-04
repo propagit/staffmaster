@@ -107,12 +107,28 @@
 			<li><a href="#">&raquo;</a></li>
 		</ul>
 		<div class="clearfix"></div>
-		<? foreach($staffs as $staff) { ?>
+		<? foreach($staffs as $staff) {
+			$photo = $this->staff_model->get_hero($staff['staff_id']);
+			if(count($photo)>0)
+			{
+				$thumb_src = base_url().'uploads/staff/profile/'.md5($staff['staff_id']).'/thumbnail/'.$photo['name'];
+				$class="resize";
+			}
+			else
+			{
+				$thumb_src = base_url().'assets/img/dummy/default-avatar.png';
+				$photo['name'] = "Use Avatar";
+				$class='normal';
+			}
+		 ?>
 		<div class="staff_search_profile">
-			<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><div class="profile_photo">
-				<i class="icon-user icon-4x"></i>
-			</div></a>
-			<b><?=$staff['first_name'] . '</b><br />' . $staff['last_name'];?>
+			<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>">
+            <div class="profile_photo">
+				<img class="<?=$class?>" src="<?=$thumb_src;?>" title="<?=$staff['first_name'].' '.$staff['last_name']?>" alt="<?=$photo['name']?>" />
+			</div>
+            </a>
+			<b><?=$staff['first_name'] . '</b><br />' . $staff['last_name'];?></b>
+            
 			<div class="rating">
 				<span class="star"></span>
 				<span class="star"></span>

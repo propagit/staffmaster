@@ -269,12 +269,12 @@
 								<label class="col-lg-3 control-label">Employed As</label>
 								<div class="col-lg-3">
 									<div class="radio">
-										<input type="radio" name="f_employed" value="1"<?=($staff['f_employed'] == 1) ? ' checked' : '';?> /> ABN
+										<input type="radio" name="f_employed" value="0"<?=($staff['f_employed'] == 0) ? ' checked' : '';?> /> TFN
 									</div>
 								</div>
 								<div class="col-lg-3">
 									<div class="radio">
-										<input type="radio" name="f_employed" value="0"<?=($staff['f_employed'] == 0) ? ' checked' : '';?> /> TFN
+										<input type="radio" name="f_employed" value="1"<?=($staff['f_employed'] == 1) ? ' checked' : '';?> /> ABN
 									</div>
 								</div>
 							</div>
@@ -302,6 +302,16 @@
 								<div class="col-md-3">
 									<input type="text" class="form-control" id="f_abn_3" name="f_abn_3" tabindex="9" value="<?=$staff['f_abn_3'];?>" />
 								</div>
+							</div>
+                            <div class="form-group" id="f_gst">
+								<label for="f_tfn_1" class="col-lg-3 control-label">Do you require GST?</label>
+								<div class="col-md-6">
+									<select name="f_require_gst" class="form-control auto-width">
+										<option value="0" <?=($staff['f_require_gst']==0) ? ' selected=selected' : '';?>>NO</option>
+										<option value="1" <?=($staff['f_require_gst']==1) ? ' selected=selected' : '';?>>YES</option>
+									</select>
+								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -824,12 +834,14 @@ function load_f_employed()
 	var is_f_empoyed = $('input[name="f_employed"]:checked').val();
 	
 	if (is_f_empoyed == 1) {
-		$('#f_tfn_number').hide();
+		$('#f_tfn_number').show();
 		$('#f_abn_number').show();
+		$('#f_gst').show();
 	} else
 	{
 		$('#f_tfn_number').show();
 		$('#f_abn_number').hide();
+		$('#f_gst').hide();
 	}
 }
 function load_s_choice()

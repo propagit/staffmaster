@@ -53,3 +53,20 @@
 	width: 45px;
 	height: 45px;
 }
+
+/* Styles fdr search staff profile photo */
+.staff_search_profile
+{
+	float:left;
+}
+.profile_photo
+{		
+	margin-right:10px;	
+	width:72px;
+	height:72px;
+}
+
+.resize{
+	width:100%;
+	
+}
