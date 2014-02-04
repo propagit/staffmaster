@@ -1,9 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Controller: Common
- * @author: namnd86@gmail.com
- */
+*    @class_desc    This is common controller to handle common module such as state or country drop down. It will only called the function and can be used in any views/modules
+*    @class_comments Dependent on Common_model. List of common module is: action, status,supers, states, countries, titles, genders, dob, location
+*    
+*/
 
 class Common extends MX_Controller {
 
@@ -24,6 +25,17 @@ class Common extends MX_Controller {
 		$data['field_value'] = $field_value;
 		$this->load->view('dropdown_status', isset($data) ? $data : NULL);
 	}
+	
+	
+	
+	function dropdown_supers($field_name, $field_value=null)
+	{
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$data['supers'] = $this->common_model->get_supers(true);
+		$this->load->view('dropdown_super', isset($data) ? $data : NULL);
+	}
+	
 		
 	function list_supers()
 	{
@@ -105,6 +117,32 @@ class Common extends MX_Controller {
 			echo 0;
 		}
 	}
+	
+	/**
+	*    @desc Show the rating input element
+	*    @name rating
+	*    @access public
+	*    @param $field_name, $field_value=null; 
+	*    @return loads the rating select element	
+	* 
+	*/
+	function select_rating($field_name,$field_value=null)
+	{
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('select_rating', isset($data) ? $data : NULL);
+	}
+	
+	
+	/**
+	*    @desc Show the location that only can be used in staff profile as we have multiselect element
+	*    @name dropdown_location
+	*    @access public
+	*    @param $field_name, $field_value=null; $field_name: name of that element such as location_id or id_location; $field_value: value if the location that need to show
+	*    @return loads the location select element	
+	* 
+	*/
+
 	function dropdown_location($field_name, $field_value=null)
 	{
 
@@ -113,13 +151,7 @@ class Common extends MX_Controller {
 		$data['field_value'] = $field_value;
 		$this->load->view('dropdown_location', isset($data) ? $data : NULL);
 	}
-	function dropdown_location_form($field_name, $field_value=null)
-	{
-		$data['locations'] = $this->common_model->get_locations();
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$this->load->view('dropdown_location_form', isset($data) ? $data : NULL);
-	}
+	
 	function dropdown_get_area()
 	{
 		
@@ -127,10 +159,12 @@ class Common extends MX_Controller {
 		$field_value = $this->input->post('field_value');
 		$staff_locations = json_decode($field_value);
 		$scs = array();
-		foreach($staff_locations as $sc)
-		{
-			if($sc!=''){
-			$scs[] = $sc;}
+		if(isset($staff_locations)){
+			foreach($staff_locations as $sc)
+			{
+				if($sc!=''){
+				$scs[] = $sc;}
+			}
 		}
 		if(!isset($_POST['loc'])){$loc='';}else {$loc= $this->input->post('loc');}
 		if($loc!=''){
@@ -173,6 +207,25 @@ class Common extends MX_Controller {
 		
 		echo $print;
 	}
+	
+	
+	/**
+	*    @desc Show the location that can used in any forms that required location input. such as search staff form or add staff or add venue
+	*    @name dropdown_location_form
+	*    @access public
+	*    @param $field_name, $field_value=null; $field_name: name of that element such as location_id or id_location; $field_value: value if the location that need to show
+	*    @return loads the location select element	
+	* 
+	*/
+	
+	function dropdown_location_form($field_name, $field_value=null)
+	{
+		$data['locations'] = $this->common_model->get_locations();
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('dropdown_location_form', isset($data) ? $data : NULL);
+	}
+	
 	function dropdown_get_area_state()
 	{				
 		$loc= $this->input->post('loc');
@@ -266,5 +319,150 @@ class Common extends MX_Controller {
 		
 		echo $detail['location_id'].'#';
 		
+	}
+	function upload_picture_file($field_name,$field_value=NULL)
+	{
+		$staff_id = $this->input->post('staff_id');
+		$user_id = $this->common_model->get_user($staff_id);
+		
+		$path = "./uploads/staff";
+		$dir = $path;
+		if(!is_dir($dir))
+		{
+		  mkdir($dir);
+		  chmod($dir,0777);
+		  $fp = fopen($dir.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		
+		$path = "./uploads/staff/profile";
+		$dir = $path;
+		if(!is_dir($dir))
+		{
+		  mkdir($dir);
+		  chmod($dir,0777);
+		  $fp = fopen($dir.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		
+		
+		$path = "./uploads/staff/profile";
+		$newfolder = md5($staff_id);
+		$dir = $path."/".$newfolder;
+		if(!is_dir($dir))
+		{
+		  mkdir($dir);
+		  chmod($dir,0777);
+		  $fp = fopen($dir.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		$dirs=$dir.'/thumbnail';
+		if(!is_dir($dirs))
+		{
+		  mkdir($dirs);
+		  chmod($dirs,0777);
+		  $fp = fopen($dirs.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		
+		$config['upload_path'] = $dir;
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '4096'; // 4 MB
+		$config['max_width']  = '2000';
+		$config['max_height']  = '2000';
+		$config['overwrite'] = FALSE;
+		$config['remove_space'] = TRUE;
+	
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());			
+		}	
+		else
+		{
+			$data = array('upload_data' => $this->upload->data());
+			$file_name = $data['upload_data']['file_name'];
+			$width = $data['upload_data']['image_width'];
+			$height = $data['upload_data']['image_height'];
+			$photo = array(
+				'staff_id' => $staff_id,
+				'name' => $file_name,
+				'modified' => date('Y-m-d H:i:s'),
+				'hero' =>0										
+			);
+			$this->common_model->add_picture($photo);
+			$new_width=220;		
+			$new_height=220;		
+			copy($dir.'/'.$file_name, $dirs."/".$file_name);
+			$target = $dirs."/".$file_name;
+			//echo $target.'<br>';
+			$this->scale_image($target,$target,$new_width,$new_height);	
+		}
+		redirect('staff/edit/'.$staff_id);
+	}
+	function upload_picture($field_name,$field_value=NULL)
+	{
+		
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('upload_picture', isset($data) ? $data : NULL);
+		
+		
+		
+	}
+	function scale_image($image,$target,$thumbnail_width,$thumbnail_height)
+	{
+	  if(!empty($image)) //the image to be uploaded is a JPG I already checked this
+	  {		
+		list($width_orig, $height_orig) = getimagesize($image);   
+		$myImage = imagecreatefromjpeg($image);
+		$ratio_orig = $width_orig/$height_orig;
+		echo $ratio_orig;
+		if ($thumbnail_width/$thumbnail_height > $ratio_orig) {
+		   $new_height = $thumbnail_width/$ratio_orig;
+		   $new_width = $thumbnail_width;
+		} else {
+		   $new_width = $thumbnail_height*$ratio_orig;
+		   $new_height = $thumbnail_height;
+		}
+		
+		$x_mid = $new_width/2;  //horizontal middle
+		$y_mid = $new_height/2; //vertical middle
+		
+		$process = imagecreatetruecolor(round($new_width), round($new_height)); 
+		
+		imagecopyresampled($process, $myImage, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
+		$thumb = imagecreatetruecolor($thumbnail_width, $thumbnail_height); 
+		imagecopyresampled($thumb, $process, 0, 0, ($x_mid-($thumbnail_width/2)), ($y_mid-($thumbnail_height/2)), $thumbnail_width, $thumbnail_height, $thumbnail_width, $thumbnail_height);
+		
+		imagedestroy($process);
+		imagedestroy($myImage);
+		imagejpeg($thumb,$target, 100);
+	
+	  }
+	}
+	function setherophoto()
+	{
+		$staff_id = $_POST['staff_id'];
+		$photo_id = $_POST['photo_id'];
+		$this->common_model->update_hero($staff_id,$photo_id);
+	}
+	function deletephoto()
+	{
+		$staff_id = $_POST['staff_id'];
+		$photo_id = $_POST['photo_id'];
+		$this->common_model->delete_photo($staff_id,$photo_id);
+	}
+	
+	function set_availability($field_name,$field_value=NULL)
+	{
+		$data['field_value'] = $field_value;
+
+		$this->load->view('set_availability', isset($data) ? $data : NULL);
 	}
 }

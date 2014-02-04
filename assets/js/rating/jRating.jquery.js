@@ -12,9 +12,9 @@
         $.fn.jRating = function(op) {
                 var defaults = {
                         /** String vars **/
-                        bigStarsPath : '../../assets/js/rating/img/stars.png', // path of the icon stars.png
-                        smallStarsPath : '../../assets/js/rating/img/small.png', // path of the icon small.png
-                        phpPath : '../../assets/js/rating/jRating.php', // path of the php file jRating.php
+                        bigStarsPath : window.location.origin+'/staffmaster/assets/js/rating/img/stars.png', // path of the icon stars.png
+                        smallStarsPath : window.location.origin+'/staffmaster/assets/js/rating/img/small.png', // path of the icon small.png
+                        phpPath : window.location.origin+'/staffmaster/assets/js/rating/jRating.php', // path of the php file jRating.php
                         type : 'big', // can be set to 'small' or 'big'
 
                         /** Boolean vars **/
@@ -26,7 +26,7 @@
 
                         /** Integer vars **/
                         length:5, // number of star to display
-                        decimalLength : 0, // number of decimals.
+                        decimalLength : 1, // number of decimals.
                         rateMax : 5, // maximal rate - integer from 0 to 9999 (or more)
                         rateInfosX : -45, // relative position in X axis of the info box when mouseover
                         rateInfosY : 5, // relative position in Y axis of the info box when mouseover
@@ -154,8 +154,9 @@
 
 
                                         /** ONLY FOR THE DEMO, YOU CAN REMOVE THIS CODE **/
-                                                $('.datasSent p').html('<strong>idBox : </strong>'+idBox+'<br /><strong>rate : </strong>'+rate+'<br /><strong>action :</strong> rating');
-                                                $('.serverResponse p').html('<strong>Loading...</strong>');
+                                               // $('.datasSent p').html('<strong>idBox : </strong>'+idBox+'<br /><strong>rate : </strong>'+rate+'<br /><strong>action :</strong> rating');
+                                                //$('.serverResponse p').html('<strong>Loading...</strong>');
+												$('.rating').val(rate);
                                         /** END ONLY FOR THE DEMO **/
 
                                         if(opts.onClick) opts.onClick( element, rate );

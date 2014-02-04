@@ -132,10 +132,11 @@ class Staff extends MX_Controller {
 	
 	function edit_staff($user_id)
 	{
-		
+		error_reporting(E_ALL);
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules(array(
 			array('field' => 'title', 'label' => 'Title', 'rules' => ''),
+			array('field' => 'rating', 'label' => 'Rating', 'rules' => ''),
 			array('field' => 'first_name', 'label' => 'First Name', 'rules' => 'required'),
 			array('field' => 'last_name', 'label' => 'Last Name', 'rules' => 'required'),
 			array('field' => 'gender', 'label' => 'Gender', 'rules' => 'required'),
@@ -148,6 +149,7 @@ class Staff extends MX_Controller {
 			array('field' => 'state', 'label' => 'State', 'rules' => ''),
 			array('field' => 'country', 'label' => 'Country', 'rules' => ''),
 			array('field' => 'postcode', 'label' => 'Postcode', 'rules' => ''),
+			array('field' => 'email_address', 'label' => 'Email', 'rules' => 'required|valid_email'),			
 			array('field' => 'phone', 'label' => 'Phone', 'rules' => ''),
 			array('field' => 'password', 'label' => 'Password', 'rules' => ''),
 			array('field' => 'department_id', 'label' => 'Department', 'rules' => ''),
@@ -157,11 +159,42 @@ class Staff extends MX_Controller {
 			array('field' => 'emergency_phone', 'label' => 'Emergency Phone', 'rules' => '')
 		));
 		if ($this->form_validation->run($this) == FALSE)
-		{	
+		{
+				
 		}
 		else
 		{
 			$data = $this->input->post();
+			//print_r($data);
+			//$avail = array();
+			//$avail['day'] = 1;
+			$avail = array();
+			$avail[0]['day'] =1;
+			$avail[0]['time'][0] =$data['monday_start_at'].','.$data['monday_finish_at'];
+
+			$avail[1]['day'] =2;
+			$avail[1]['time'][0] =$data['tuesday_start_at'].','.$data['tuesday_finish_at'];
+			
+			$avail[2]['day'] =3;
+			$avail[2]['time'][0] =$data['wednesday_start_at'].','.$data['wednesday_finish_at'];
+			
+			$avail[3]['day'] =4;
+			$avail[3]['time'][0] =$data['thursday_start_at'].','.$data['thursday_finish_at'];
+			
+			$avail[4]['day'] =5;
+			$avail[4]['time'][0] =$data['friday_start_at'].','.$data['friday_finish_at'];
+			
+			$avail[5]['day'] =6;
+			$avail[5]['time'][0] =$data['saturday_start_at'].','.$data['saturday_finish_at'];
+			
+			$avail[6]['day'] =7;
+			$avail[6]['time'][0] =$data['sunday_start_at'].','.$data['sunday_finish_at'];
+
+			
+			
+			
+			
+			//if($data['monday_start_at'] > $data['monday_finish_at']){}
 			
 			$user_data = array(
 				'password' => $data['password'],
@@ -187,6 +220,8 @@ class Staff extends MX_Controller {
 					$lc[]=$l;
 				}
 			}
+			
+			
 			$staff_data = array(
 				'rating' => $data['rating'],
 				'external_staff_id' => $data['external_staff_id'],
@@ -208,6 +243,10 @@ class Staff extends MX_Controller {
 				'f_tfn_1' => $data['f_tfn_1'],
 				'f_tfn_2' => $data['f_tfn_2'],
 				'f_tfn_3' => $data['f_tfn_3'],
+				'f_employed' => $data['f_employed'],
+				'f_abn_1' => $data['f_abn_1'],
+				'f_abn_2' => $data['f_abn_2'],
+				'f_abn_3' => $data['f_abn_3'],
 				's_choice' => isset($data['s_choice']) ? $data['s_choice'] : '',
 				's_name' => $data['s_name'],
 				's_employee_id' => $data['s_employee_id'],
@@ -222,8 +261,9 @@ class Staff extends MX_Controller {
 				's_fund_address' => $data['s_fund_address'],
 				's_fund_suburb' => $data['s_fund_suburb'],
 				's_fund_state' => $data['s_fund_state'],
+				's_fund_postcode' => $data['s_fund_postcode'],
 				's_agree' => isset($data['s_agree']) ? $data['s_agree'] : 0,
-				'availability' => isset($data['availability']) ? json_encode($data['availability']) : '',
+				'availability' => isset($avail) ? json_encode($avail) : '',
 				'payrates' => isset($data['payrates']) ? json_encode($data['payrates']) : '',
 				'roles' => isset($data['roles']) ? json_encode($data['roles']) : '',
 				//'locations' => isset($data['locations']) ? json_encode($data['locations']) : ''
@@ -232,6 +272,10 @@ class Staff extends MX_Controller {
 			$this->staff_model->update_staff($user_id, $staff_data);
 		}
 		$staff = $this->staff_model->get_staff($user_id);
+		$photos = $this->staff_model->get_all_photos($staff['staff_id']);
+		$hero_photo = $this->staff_model->get_hero($staff['staff_id']);
+		$data['hero_photo'] = $hero_photo;
+		$data['photos'] =$photos;
 		$data['staff'] = $staff;
 		$this->load->view('edit', isset($data) ? $data : NULL);
 	}

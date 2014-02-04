@@ -40,11 +40,49 @@ class Common_model extends CI_Model {
 	}
 	
 	function get_locations_byname($loc,$name)
-	{
-		//$this->db->where('parent_id', $loc);
+	{		
 		$this->db->where('name', $name);
 		$query = $this->db->get('attribute_locations');
 		return $query->first_row('array');
 	}
+	function get_user_data($staff_id)
+	{
+		$this->db->where('staff_id', $staff_id);
+		$query = $this->db->get('user');
+		return $query->first_row('array');
+	}
+	function add_picture($data)
+	{
+		$this->db->insert('user_staff_picture', $data);
+		return $this->db->insert_id();
+	}
+	function get_picture($id)
+	{
+
+		$this->db->where('id', $id);
+		$query = $this->db->get('user_staff_picture');
+		return $query->first_row('array');
+	}
+	function update_hero($staff_id,$photo_id)
+	{
+		$data=array('hero' => 0);
+		$this->db->where('staff_id', $staff_id);
+		$this->db->update('user_staff_picture', $data);
 		
+		$data=array('hero' => 1);
+		$this->db->where('staff_id', $staff_id);
+		$this->db->where('id', $photo_id);
+		return $this->db->update('user_staff_picture', $data);
+		
+	}
+	function delete_photo($staff_id,$photo_id)
+	{
+		$image = $this->get_picture($photo_id);
+		unlink('./uploads/staff/profile/'.md5($staff_id).'/'.$image['name']);
+		unlink('./uploads/staff/profile/'.md5($staff_id).'/thumbnail/'.$image['name']);
+		
+		$this->db->where('staff_id', $staff_id);
+		$this->db->where('id', $photo_id);
+		return $this->db->delete('user_staff_picture');
+	}
 }

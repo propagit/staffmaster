@@ -1,5 +1,5 @@
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>-->
 <script src="<?=base_url();?>assets/js/select2/jquery.select2.min.js"></script>
 <script src="<?=base_url();?>assets/js/select2/bootstrap.js"></script>
 <link href="<?=base_url()?>assets/js/select2/select2.css" rel="stylesheet" media="screen">
@@ -152,9 +152,11 @@ function get_area_submit()
 <?
 	$temp_loc = json_decode($field_value);
 	$str='';
-	foreach($temp_loc as $tl)
-	{
-		$str= $str.$tl.'#';
+	if(isset($temp_loc)){
+		foreach($temp_loc as $tl)
+		{
+			$str= $str.$tl.'#';
+		}
 	}
 ?>
 

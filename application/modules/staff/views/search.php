@@ -47,14 +47,8 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label for="rating" class="col-lg-4 control-label">Rating</label>
-					<div class="col-lg-8">
-						<div class="rating pull-left">
-							<span class="star"></span>
-							<span class="star"></span>
-							<span class="star"></span>
-							<span class="star"></span>
-							<span class="star"></span>
-						</div>
+					<div class="col-lg-8">						
+                        <?=modules::run('common/select_rating', 'rating');?>
 					</div>
 				</div>
 				<div class="form-group">
