@@ -33,3 +33,15 @@ function apply_shifts(selected_shifts)
 		}
 	})
 }
+
+function unapply_shift(shift_id)
+{
+	$.ajax({
+		type: "POST",
+		url: base_url + "work/ajax/unapply_shift",
+		data: {shift_id: shift_id},
+		success: function(html) {
+			load_works();
+		}
+	})
+}

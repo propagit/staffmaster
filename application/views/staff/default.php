@@ -62,6 +62,10 @@
 	<!-- Map Modal -->
 	<div class="modal fade" id="modal_map" tabindex="-1" role="dialog" aria-hidden="true">
 	</div><!-- /.modal -->
+	<!-- Brief Modal -->
+	<div class="modal fade" id="modal_brief" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	</div>
+
 
 	<!-- Bootstrap core JavaScript
 	================================================== -->

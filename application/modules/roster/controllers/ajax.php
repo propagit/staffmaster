@@ -23,7 +23,7 @@ class Ajax extends MX_Controller {
 	{
 		$active_month = $this->session->userdata('active_month');
 		$data['rosters'] = $this->roster_model->get_rosters(date('Y-m', $active_month));
-		$this->load->view('staff/list_rosters_table', isset($data) ? $data : NULL);
+		$this->load->view('staff/rosters_list_table', isset($data) ? $data : NULL);
 	}
 	function confirm_rosters()
 	{

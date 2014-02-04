@@ -16,7 +16,7 @@
 							<a class="photo_staff photo_45 pull-left"></a>
 							<a><?=$staff['first_name'];?> <?=$staff['last_name'];?></a>
 						</td>
-						<td width="50"><button class="btn btn-lg btn-core"><i class="fa fa-plus"></i> Add</button></td>
+						<td width="50"><a onclick="assign_new_staff(<?=$staff['user_id'];?>)" class="btn btn-lg btn-core"><i class="fa fa-plus"></i> Add</a></td>
 					</tr>
 					<? } ?>
 				</tbody>
@@ -26,3 +26,17 @@
 		</div>
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
+
+<script>
+function assign_new_staff(user_id)
+{
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax/assign_new_staff",
+		data: {user_id: user_id},
+		success: function(html) {
+			load_job_shifts();
+		}
+	})
+}
+</script>

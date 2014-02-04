@@ -3,14 +3,17 @@
 		<h2>Apply For Work</h2>
 		<p>Below you will find a range of jobs that are are currently available. Please apply for any job you would like to work on. Applying for a job doesn’t mean you are automatically placed to work on that shift. Please check your roster to see what jobs you are working on.</p>
 	</div>
-	
-	<div class="box">
+</div>
+
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
 		<div class="table_action">		
 			<ul class="nav nav-tabs nav-action">
 				<li class="dropdown">
 					<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
 					<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
-						<li><a class="multi_apply">Apply <i class="fa fa-thumbs-o-up"></i></a></li>
+						<li><a class="multi_apply">Apply Selected</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -23,10 +26,8 @@
 		
 		<div id="list_works" class="clear"></div>
 	</div>
-
+	</div>
 </div>
-
-
 
 
 <script>
@@ -38,7 +39,7 @@ $(function(){
 			selected_shifts.push($(this).val());
 		});
 		apply_shifts(selected_shifts);		
-	})
+	});
 })
 
 function load_works()

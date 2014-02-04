@@ -5,9 +5,9 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'user', 'title' => 'Your Profile', 'sub' => array(
 	)),
-	array('path' => 'roster', 'icon' => 'calendar', 'title' => 'Your Roster', 'sub' => array(
-	)),
 	array('path' => 'work', 'icon' => 'thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(		
+	)),
+	array('path' => 'roster', 'icon' => 'calendar', 'title' => 'Your Roster', 'sub' => array(
 	)),
 	array('path' => '#', 'icon' => 'clock-o', 'title' => 'Time Sheets', 'sub' => array(		
 	)),

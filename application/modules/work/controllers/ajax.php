@@ -25,6 +25,11 @@ class Ajax extends MX_Controller {
 		$this->load->view('staff/work_days_list', isset($data) ? $data : NULL);
 	}
 	
+	function load_roster_brief()
+	{
+		$this->load->view('staff/work_brief', isset($data) ? $data : NULL);
+	}
+	
 	function load_day_shifts()
 	{
 		$date = $this->input->post('date');
@@ -56,8 +61,12 @@ class Ajax extends MX_Controller {
 		{
 			$this->work_model->insert_shift_staff_apply($shift_id);
 		}
-		
-		$this->session->unset_userdata('open_days');
+	}
+	
+	function unapply_shift()
+	{
+		$shift_id = $this->input->post('shift_id');
+		$this->work_model->delete_shift_staff($shift_id);
 	}
 	
 	function is_shift_applied($shift_id)

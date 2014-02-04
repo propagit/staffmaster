@@ -20,6 +20,13 @@ class Work_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function delete_shift_staff($shift_id)
+	{
+		$this->db->where('shift_id', $shift_id);
+		$this->db->where('staff_id', $this->user_id);
+		return $this->db->delete('job_shift_staff_apply');
+	}
+	
 	function is_shift_staff_applied($shift_id)
 	{
 		$this->db->where('shift_id', $shift_id);

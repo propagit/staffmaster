@@ -2,7 +2,7 @@
 	<table class="table table-bordered table-hover" width="100%">
 	<thead>
 		<tr>
-			<td class="wp-date"><input type="checkbox" id="select_day_<?=$date;?>" /></td>
+			<td class="wp-date"><input type="checkbox" class="select_day" /></td>
 			<th>Client</th>
 			<th>Role</th>
 			<th>Venue</th>
@@ -20,16 +20,22 @@
 		<td class="wp-date"><input type="checkbox" class="select_shift" value="<?=$shift['shift_id'];?>" /></td>
 		<td><? $client = modules::run('client/get_client', $shift['client_id']); echo $client['company_name']; ?></td>
 		<td><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>
-		<td><i class="fa fa-map-marker"></i> &nbsp; <a data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>roster/ajax/load_roster_venue/<?=$shift['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a></td>
+		<td>
+			<? if ($shift['venue_id']) { ?>
+			<i class="fa fa-map-marker"></i> &nbsp; <a data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>roster/ajax/load_roster_venue/<?=$shift['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
+			<? } else { ?>
+			Not Specified
+			<? } ?>
+		</td>
 		<td class="center"><?=date('H:i', $shift['start_time']);?></td>
 		<td class="center"><?=date('H:i', $shift['finish_time']);?> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="error">*</span>': '';?></td>
 		<td class="center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
 		<td class="center"></td>
-		<td class="center"><a href="#"><i class="fa fa-eye"></i></a></td>
+		<td class="center"><a data-toggle="modal" data-target="#modal_brief" href="<?=base_url();?>work/ajax/load_roster_brief"><i class="fa fa-eye"></i></a></td>
 		<td class="center">
 			<? 
 			if(modules::run('work/ajax/is_shift_applied', $shift['shift_id'])) { ?>			
-			<span class="btn btn-xs btn-success"> <i class="fa fa-thumbs-o-up"></i> Applied</span>
+			<a class="unapply_shift_<?=$date;?> btn btn-xs btn-success" data-shift-id="<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i> Applied</a>
 			<? } else { ?>
 			<a class="apply_shift btn btn-xs btn-core" data-shift-id="<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i> Apply</a>
 			<? } ?>
@@ -46,9 +52,17 @@ $(function(){
 		var selected_shifts = new Array();
 		selected_shifts.push($(this).attr('data-shift-id'));
 		apply_shifts(selected_shifts);
-	})
-	$('#select_day_<?=$date;?>').click(function(){
+	});
+	$('.select_day').click(function(){
 		$(this).parent().parent().parent().parent().find('input.select_shift').prop('checked', this.checked);
+	});
+	$('.unapply_shift_<?=$date;?>').confirmModal({
+		confirmTitle: 'Withdrawl this job',
+		confirmMessage: 'Are you sure you want to withdrawl this job?',
+		confirmCallback: function(e) {
+			var shift_id = $(e).attr('data-shift-id');
+			unapply_shift(shift_id);
+		}
 	})
 })
 </script>

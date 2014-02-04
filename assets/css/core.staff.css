@@ -25,17 +25,55 @@
 #list_works .row div {
 	padding: 10px;
 }
+#list_works .wp-job {
+	margin-top: 4px;
+}
 #list_works .wp-date {
 	border-right: 1px solid rgb(221, 221, 221);
-	width: 80px;
+	width: 70px;
 	text-align: center;
 }
 #list_works .row div.wp-arrow {
 	text-align: right;
 	float: right;
-	margin-right: 5px;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+.wk_date {
+	font-weight: bold;
+	font-size: 1.5em;
+	line-height: 1em;
+	margin-left: 0;
+	margin-top: 1px;
+	display: block;
+	width: 30px;
+}
+.wk_month {
+	text-transform: uppercase;
+	line-height: 1em;
+	margin-left: 0;
+	display: block;
+	width: 30px;
+}
+.wk_day {
+	float: right;
+	width: 10px;
+	word-break: break-all;
+	text-transform: uppercase;
+	font-size: .65em;
+	font-weight: bold;
+	line-height: 1.4em;
+	text-align: center;
 }
 
+.table-middle > thead > tr > th, 
+.table-middle > tbody > tr > th, 
+.table-middle > tfoot > tr > th, 
+.table-middle > thead > tr > td, 
+.table-middle > tbody > tr > td, 
+.table-middle > tfoot > tr > td {
+	vertical-align: middle;
+}
 
 @media (min-width:768px){
 	#list_works .hidden-xs,

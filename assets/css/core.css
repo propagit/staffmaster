@@ -22,6 +22,11 @@ iframe {
 }
 a {
 	cursor: pointer;
+	color: #00bbf8;
+}
+a:hover {
+	color: #0089b5;
+
 }
 
 /* begin - profile bar */
@@ -266,6 +271,8 @@ a {
 	background: #ebebeb;
 	border-color: #ccc;
 	color: #333;
+	border-radius: 5px 5px 0 0;
+	padding: 8px 15px;
 }
 .nav-tabs > li.active a,
 .nav-tabs > li.active a:hover {
@@ -275,6 +282,9 @@ a {
 }
 .nav-tabs.nav-action {
 	float: left;
+}
+.nav-tabs.nav-action .caret {
+	margin-left: 10px;
 }
 .nav-tabs.nav-action > li.active a {
 	background: #ebebeb;
@@ -291,6 +301,7 @@ a {
 .nav-tabs.nav-action .open > a:hover, 
 .nav-tabs.nav-action .open > a:focus {	
 	border-color: #ccc;
+	background: #ebebeb;
 }
 /* Custom style for table */
 .table thead {
@@ -309,20 +320,19 @@ a {
 /* Custom styles for badge */
 .badge {
 	font-weight: normal;
-	border: 1px solid #fff;
-	box-shadow: 0 1px 2px #666;
+	border: 2px solid #fff;
+	box-shadow: 0 2px 5px #999;
 	margin-bottom: 2px;
+	font-size: 1.3em;
+	border-radius: 1.3em;
 }
-.badge-success {
-	background-color: rgb(92, 184, 92);
+.success {
+	background-color: #2cb308;
 }
-.badge-danger {
-	background-color: rgb(217, 83, 79);
+.danger {
+	background-color: #ff0000;
 }
 
-.error {
-	color: red;
-}
 .box {
 	background-color:rgba(255,255,255,0.5);
 	padding: 20px 30px;
@@ -363,7 +373,7 @@ a {
 	color:#3d3d3d;
 }
 .table_action {
-	padding: 0 20px;
+	padding: 0 30px;
 }
 .table_action .nav-tabs {
 	border-bottom: 0;
@@ -373,6 +383,7 @@ a {
 }
 .table_action .btn.pull-right {
 	margin-left: 5px;
+	margin-top: -5px;
 }
 .btn i {
 	margin: 0 3px;
