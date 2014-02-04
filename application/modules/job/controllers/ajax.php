@@ -585,5 +585,17 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('success' => false, 'msg' => 'No day selected'));
 		}		
 	}
+	
+	
+	function search_staffs()
+	{
+		$this->load->view('search_staffs', isset($data) ? $data : NULL);
+	}
+	
+	function applied_staffs($shift_id)
+	{
+		$data['staffs'] = $this->job_shift_model->get_applied_staffs($shift_id);
+		$this->load->view('shift_applied_staffs', isset($data) ? $data : NULL);
+	}
 		
 }

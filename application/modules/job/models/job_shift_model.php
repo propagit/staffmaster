@@ -73,4 +73,15 @@ class Job_shift_model extends CI_Model {
 		$this->db->where('job_date', $job_date);
 		return $this->db->update('job_shifts', array('status' => -1));
 	}
+	
+	function get_applied_staffs($shift_id)
+	{
+		$sql = "SELECT us.*, u.* 
+				FROM user_staffs us, users u, job_shift_staff_apply js
+				WHERE us.user_id = u.user_id
+				AND u.user_id = js.staff_id
+				AND js.shift_id='" . $shift_id . "'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 }

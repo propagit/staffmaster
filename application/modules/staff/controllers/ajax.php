@@ -30,5 +30,4 @@ class Ajax extends MX_Controller {
 		echo json_encode($out);
 	}
 
-	
 }

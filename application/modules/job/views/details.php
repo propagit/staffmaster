@@ -43,14 +43,6 @@
     </div>       
 </div>
 
-<div class="col-md-12">
-	<div class="box top-box">
-		<div class="col-md-6">dasda
-		</div>
-		<div class="col-md-6">asd
-		</div>
-	</div>
-</div>
 	
 <div class="row">
 	<div class="col-md-6">
@@ -171,8 +163,14 @@
 	
 </div>
 
-<div id="wrapper_js">
+
+<div class="col-md-12">
+	<div class="box top-box">
+		<div id="wrapper_js">
+		</div>
+	</div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="copy_shift" tabindex="-1" role="dialog" aria-hidden="true">
 </div><!-- /.modal -->

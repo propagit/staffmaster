@@ -1,5 +1,5 @@
-<h2>Jobs On Date</h2>
-<p>All shifts for this job campaign are displayed below. Using the checkbox to select shifts will allow you to perform group functions such as delete, duplicate, assign staff, assign briefs or surveys and many other functions</p>
+<h2>Day Shifts</h2>
+<p>All shifts for the day on this job campaign are displayed below. Click the columns to perform in-line editing. Using the checkbox to select shifts  will allow you to perform group functions such as deleting and duplicating.</p>
 
 <!-- Split button -->
 
@@ -14,7 +14,7 @@
 	
 	<span onclick="load_job_shifts(<?=$job_id;?>)" class="btn btn-info">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</span>
 	<? foreach($job_dates as $date) { ?>
-	<span onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')" class="btn btn-day<?=($this->session->userdata('job_date') == $date['job_date']) ? '-active': '';?>">
+	<span onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')" class="btn btn-core<?=($this->session->userdata('job_date') == $date['job_date']) ? '-active': '';?>">
 		<?=date('d', strtotime($date['job_date']));?>
 		<span class="month"><?=date('M', strtotime($date['job_date']));?></span>
 		(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']));?>)
@@ -26,41 +26,21 @@
 	
 	<span class="btn btn-info pull-right"><i class="fa fa-gears"></i> Settings</span>
 </div>
-<!--
-<div class="table_settings">
-	<form class="form-inline pull-left" role="form">
-		<label>Search </label>
-		<div class="form-group">
-		<input type="text" class="form-control" placeholder="keywords...">
-		</div>
-	</form>
-
-	<form class="form-inline pull-right" role="form">
-		<label>Show Results</label>
-		<div class="form-group">
-			<select class="form-control">
-				<option>10</option>
-				<option>20</option>
-			</select>
-		</div>
-	</form>
-</div>
--->
                         
-                        
+<div class="table-responsive">                     
 <table class="table table-bordered table-hover" width="100%">
 <thead>
 	<tr>
-		<th class="center" width="5%"><input type="checkbox" id="selected_all_shifts" /></th>
+		<th class="center" width="20"><input type="checkbox" id="selected_all_shifts" /></th>
 		<th>Venue</th>
 		<th>Role</th>
 		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
-		<th>Staff Assigned</th>
 		<th class="center">Pay rate</th>
-		<th class="center">Info</th>
-		<th class="center">Copy</th>
-		<th class="center" width="5%">Delete</th>
+		<th>Staff Assigned</th>
+		<th class="center" colspan="3">Find Staff</th>
+		
+		<th class="center" colspan="2" width="30">Functions</th>
 	</tr>
 </thead>
 <tbody>
@@ -82,8 +62,9 @@
 		<td class="center">
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
+		<td></td>
 		<td>
-			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff btn btn-<?=modules::run('common/convert_status', $shift['status']);?>" data-pk="<?=$shift['shift_id'];?>">
+			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff btn btn-xs btn-<?=modules::run('common/convert_status', $shift['status']);?>" data-pk="<?=$shift['shift_id'];?>">
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
 				echo $staff['first_name'] . ' ' . $staff['last_name'];				
 			?>
@@ -92,18 +73,23 @@
 			<? } ?>
 			</a>
 		</td>
-		<td></td>
-		<td class="center"><i class="fa fa-edit"></i></td>
-		<td class="center">
+
+		<td class="center" width="40"><a data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/search_staffs"><i class="fa fa-search"></i></a></td>
+		<td class="center" width="40"><a data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
+		<td class="center" width="40"><i class="fa fa-globe"></i></td>
+
+		<td class="center" width="40">
 			<a class="shift_copy" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=$shift['shift_id'];?>"><i class="fa fa-copy"></i></a>
 		</td>
-		<td class="center">
+		<td class="center" width="40">
 			<a class="shift_delete" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-trash-o"></i></a>
 		</td>
 	</tr>
 	<? } ?>
 </tbody>
 </table>
+</div>
+
 
 <div id="wrapper_shift_break"></div>
 <div id="wrapper_shift_staff" class="hide"></div>

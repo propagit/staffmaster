@@ -58,6 +58,7 @@
 	<script src="<?=base_url();?>assets/prettyCheckable/prettyCheckable.js" type="text/javascript" charset="utf-8"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/global.js" type="text/javascript" charset="utf-8"></script>
+	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 <? $user = $this->session->userdata('user_data'); ?>
@@ -89,6 +90,9 @@
 
 <div id="push"></div>
 
+<!-- Large modal -->
+<div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
+</div>
 </body>
 </html>
