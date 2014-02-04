@@ -1,104 +1,29 @@
 /* CSS Document */
 @import url("core.css");
-html,
-body {
-	height: 100%;
-	font-family: 'Lato', sans-serif;
-	font-size: 15px;
-	background-image:url(../img/core/body-bg.jpg);
-	background-repeat:repeat;
-}
 
 /* begin - profile bar */
-.profile-bar{ min-height:128px; background-image:url(../img/core/white-glow-under-logo-bg.png); background-repeat:no-repeat; background-position:top left;}
-.logo{ float:left;min-height: 128px;line-height: 120px;}
-.avatar{ line-height:125px;}
-.avatar img{ box-shadow: 0 1px 3px #1e1e1e;-webkit-box-shadow: 0 1px 3px #1e1e1e;-moz-box-shadow: 0 1px 3px #1e1e1e;}
-
-/* begin - nav */
-#nav-wrap{ background-image:url(../img/core/nav-texture-bg.png); background-repeat:repeat; background-color:#00bbf8; min-height:49px; border-bottom:1px solid #2fa5cc;}
-
-/* begin - bootstrap overwrites */
-.nav{ margin-left:-12px;}
-.nav > li > a{ padding:14px 12px 14px 12px; color:#fff;border-radius:0; font-size:14px; font-weight:700;}
-.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{background-color:transparent;}
-.nav .open > a, .nav .open > a:hover{ background-color:#00b1eb;}
-.nav .open > a:focus,.nav > li > a:focus{ background-color: transparent;}
-.nav > li > a:hover{  background-color:#00b1eb;}
-.desktop-visible .nav li:hover .dropdown-menu{ display:block;}
-.nav-pills>li+li{ margin-left:0;}
-.nav a .fa{ font-size:18px; padding-right:10px;float:left;}
-.dropdown{ text-align:center;}
-.dropdown-menu{ margin-top:0; min-width:200px;}
-.dropdown-menu li a{ text-align:left;}
-.dropdown-menu .fa{ min-width:28px;}
-
-.navbar-inverse{ background-color:transparent; border-color:transparent;}
-.desktop-hidden{ display: none;}
-.desktop-visible{ display:block;}
-/* end - bootstrap overwrites */
-
-/* *
-	15 inch screen 
-	make the left and right gutter smaller 
-*/
-
-@media(max-width:1200px){
-	.row{ padding-left:0; padding-right:0;}
-	.profile-bar{ background-position:-25px 0px;}
+.profile-bar{ 
+	min-height:128px; 
+	background-image:url(../img/core/white-glow-under-logo-bg.png); 
+	background-repeat:no-repeat; 
+	background-position:top left;
+}
+.logo{ 
+	float:left;
+	min-height: 128px;
+	line-height: 120px;
+}
+.avatar{ 
+	line-height:125px;
+}
+.avatar img{ 
+	box-shadow: 0 1px 3px #1e1e1e;
+	-webkit-box-shadow: 0 1px 3px #1e1e1e;
+	-moz-box-shadow: 0 1px 3px #1e1e1e;
 }
 
 
-/* * 
-	responsive for nav
-	do not write css for other block here.
-*/
-/* begin - responsive */
-@media(max-width:1200px){
-	.nav-pills > li{ padding-right:0;}
-	.nav li a{ font-size:12px;}
-	#nav-wrap{ min-height:39px;}
-	.nav{ margin-left:-10px;}
-	.nav > li > a{ padding:12px 10px 12px 10px;}
-	.dropdown-menu{ min-width:155px;}	
-	.nav .fa{ font-size:16px;}
-}
 
-@media(max-width:992px){
-	.dropdown .fa{ display:none;}
-	.dropdown-menu{ min-width:155px;}	
-}
-
-
-/* collapse to phone menu */
-@media (max-width:820px){
-	.desktop-hidden{ display: block;}
-	.desktop-visible{ display:none;}
-	.navbar{ margin-bottom:0; min-height:49px;}
-	.navbar .col-md-12{ line-height:49px;}
-	
-	/* mobile nav */
-	span.mob-menu-head{ font-family:'Lato', sans-serif; color:#fff; font-weight:700;}
-	.btn-navbar{ float:right; margin-top:8px;}
-	.dropdown .fa{ display:block;}
-	.desktop-hidden .nav ul > li{ float:left; width:100%;}
-	.nav{ padding-bottom:10px;}
-	.nav li a{ font-size:14px;}
-	.desktop-hidden .dropdown-menu{float: left;width: 100%;position: relative;}
-	.desktop-hidden .dropdown{ text-align:left;}
-	.dropdown-menu{ background-color:rgba(255,255,255,0.7); border: none; box-shadow:none; -webkit-box-shadow:none;margin-bottom: 10px;border-radius: 0;}
-	
-	/* logo */
-	.logo img{ width:80%;}
-}
-
-
-/* end - responsive */
-
-
-/* begin - helpers */
-.pull{ float:right;}
-.push{ float:left;}
 
 /* Styles for job details page */
 .pie-chart {

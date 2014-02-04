@@ -56,7 +56,7 @@ $menu = array(
     	<div class="col-md-12">
             <ul class="nav nav-pills">
             <? foreach($menu as $item) { ?>
-                 <li <?=($page == $item['path']) ? ' class="active"' : '';?> class="dropdown">
+                 <li class="dropdown <?=($page == $item['path']) ? 'active' : '';?>">
                     <a class="dropdown-toggle" data-toggle="dropdown"  href="<?=base_url() . $item['path'];?>">
                       <i class="fa <?=$item['icon'];?>"></i><span class="nav-label"><?=$item['title'];?></span> <span class="caret"></span>
                     </a>
@@ -85,7 +85,7 @@ $menu = array(
             <div class="nav-collapse collapse" id="nav-collapse-header" style="height: auto;">
                 <ul class="nav">
                      <? foreach($menu as $item) { ?>
-                         <li <?=($page == $item['path']) ? ' class="active"' : '';?> class="dropdown">
+                         <li class="dropdown <?=($page == $item['path']) ? 'active' : '';?>">
                             <a class="dropdown-toggle" data-toggle="dropdown"  href="<?=base_url() . $item['path'];?>">
                               <i class="fa <?=$item['icon'];?>"></i><span class="nav-label"><?=$item['title'];?></span> <span class="caret"></span>
                             </a>
