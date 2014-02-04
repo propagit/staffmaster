@@ -1,16 +1,20 @@
-<h2>Search Clients</h2>
-<div class="pull-right">
-	<button type="button" class="btn btn-info"><i class="icon-archive"></i> Activity Log</button>
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Search Clients</h2>
+    	 <p>Search and manage your client list.</p>
+         
+         <div class="pull-right">
+            <button type="button" class="btn btn-info"><i class="icon-archive"></i> Activity Log</button>
+        </div>
+    </div>
 </div>
 
-<p>Search and manage your client list.</p>
-
-<a href="<?=base_url();?>client/add"><i class="fa fa-plus"></i> Add Client</a>
-<br /><br />
-<div class="panel panel-default">
-	<div class="panel-heading">Search Client</div>
-	<div class="panel-body">
-		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/search">
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Search Client</h2>
+            <p>Search and manage your client list.</p>
+            <form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/search">
 			<div class="form-group">
 				<label for="keyword" class="col-lg-2 control-label">Company name</label>
 				<div class="col-lg-8">
@@ -22,36 +26,37 @@
 			</div>
 		
 		</form>
-	</div>
-</div>
-<? if (isset($clients)) { ?>
+            <? if (isset($clients)) { ?>
 
-<table class="table table-hover">
-	<thead>
-	<tr class="heading">
-		<td class="left">Company Name <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
-		<td class="center" width="18%"><i class="icon-map-marker"></i> Jobs <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
-		<td class="center" width="18%"><i class="icon-location-arrow"></i> Jobs This Year <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
-		<td class="center" width="12%"><i class="icon-eye-open"></i> View</td>
-		<td class="center" width="12%"><i class="icon-trash"></i> Delete</td>
-		<td class="center" width="12%"><i class="icon-time"></i> Status</td>
-		<td class="center" width="12%"><i class="icon-check"></i> Check</td>
-	</tr>
-	</thead>
-	<? foreach($clients as $client) { ?>
-	<tr>
-		<td class="left"><?=$client['company_name'];?></td>
-		<td class="center">99 950</td>
-		<td class="center">999 090</td>
-		<td class="center"><a href="<?=base_url();?>client/edit/<?=$client['user_id'];?>"><i class="icon-eye-open icon-large"></i></a></td>
-		<td class="center"><a href="javascript:delete_client(<?=$client['user_id'];?>)"><i class="icon-trash icon-large"></i></a></td>
-		<td class="center"><?=($client['status'] == 1) ? 'Active' : 'Inactive';?></td>
-		<td class="center"><input type="checkbox" /></td>
-	</tr>
-	<? } ?>
-</table>
-
-<? } ?>
+            <table class="table table-hover">
+                <thead>
+                <tr class="heading">
+                    <td class="left">Company Name <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
+                    <td class="center" width="18%"><i class="icon-map-marker"></i> Jobs <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
+                    <td class="center" width="18%"><i class="icon-location-arrow"></i> Jobs This Year <a href="#"><i class="icon-sort-by-alphabet"></i></a></td>
+                    <td class="center" width="12%"><i class="icon-eye-open"></i> View</td>
+                    <td class="center" width="12%"><i class="icon-trash"></i> Delete</td>
+                    <td class="center" width="12%"><i class="icon-time"></i> Status</td>
+                    <td class="center" width="12%"><i class="icon-check"></i> Check</td>
+                </tr>
+                </thead>
+                <? foreach($clients as $client) { ?>
+                <tr>
+                    <td class="left"><?=$client['company_name'];?></td>
+                    <td class="center">99 950</td>
+                    <td class="center">999 090</td>
+                    <td class="center"><a href="<?=base_url();?>client/edit/<?=$client['user_id'];?>"><i class="icon-eye-open icon-large"></i></a></td>
+                    <td class="center"><a href="javascript:delete_client(<?=$client['user_id'];?>)"><i class="icon-trash icon-large"></i></a></td>
+                    <td class="center"><?=($client['status'] == 1) ? 'Active' : 'Inactive';?></td>
+                    <td class="center"><input type="checkbox" /></td>
+                </tr>
+                <? } ?>
+            </table>
+            
+            <? } ?>
+        </div>
+    </div>
+</div>    
 
 <script>
 function delete_client(user_id)

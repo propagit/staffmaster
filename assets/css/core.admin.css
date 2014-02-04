@@ -2,17 +2,6 @@
 @import url("core.css");
 
 /* begin - profile bar */
-.profile-bar{ 
-	min-height:128px; 
-	background-image:url(../img/core/white-glow-under-logo-bg.png); 
-	background-repeat:no-repeat; 
-	background-position:top left;
-}
-.logo{ 
-	float:left;
-	min-height: 128px;
-	line-height: 120px;
-}
 .avatar{ 
 	
 }
@@ -23,7 +12,6 @@
 }
 
 .profile-menu{
-	margin-top:28px;
 	float:right;	
 }
 
@@ -58,7 +46,7 @@
 }
 
 .profile-menu ul.first-child{
-	margin-top:14px;	
+	margin-top:40px;	
 }
 
 .li-seprator{
@@ -70,7 +58,7 @@
 	width:auto; 
 	color:#ff0000;
 	float:right;
-	margin-top:35px;	
+	margin-top:62px;	
 }
 
 

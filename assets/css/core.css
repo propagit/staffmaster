@@ -25,35 +25,26 @@ a {
 }
 
 /* begin - profile bar */
-.profile-bar{ min-height:128px; background-image:url(../img/core/white-glow-under-logo-bg.png); background-repeat:no-repeat; background-position:top left;}
-.logo{ float:left;min-height: 128px;line-height: 120px;}
-.avatar{ line-height:125px;}
-.avatar img{ box-shadow: 0 1px 3px #1e1e1e;-webkit-box-shadow: 0 1px 3px #1e1e1e;-moz-box-shadow: 0 1px 3px #1e1e1e;}
+.profile-bar{ 
+	min-height:128px; 
+	background-image:url(../img/core/white-glow-under-logo-bg.png); 
+	background-repeat:no-repeat; 
+	background-position:top left;
+}
+.logo{ 
+	float:left;
+	min-height: 128px;
+	line-height: 120px;
+}
+.avatar{ 
+	line-height:125px;
+}
+.avatar img{ 
+	box-shadow: 0 1px 3px #1e1e1e;
+	-webkit-box-shadow: 0 1px 3px #1e1e1e;
+	-moz-box-shadow: 0 1px 3px #1e1e1e;
+}
 
-/* begin - nav */
-#nav-wrap{ background-image:url(../img/core/nav-texture-bg.png); background-repeat:repeat; background-color:#00bbf8; min-height:49px; border-bottom:1px solid #2fa5cc;}
-
-/* begin - bootstrap overwrites */
-.nav{ margin-left:-12px;}
-.nav > li > a{ padding:14px 12px 14px 12px; color:#fff;border-radius:0; font-size:14px; font-weight:700;}
-.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{background-color:transparent;}
-.nav .open > a, .nav .open > a:hover{ background-color:#00b1eb;}
-.nav .open > a:focus,.nav > li > a:focus{ background-color: transparent;}
-.nav > li > a:hover{  background-color:#00b1eb;}
-.desktop-visible .nav li:hover .dropdown-menu{ display:block;}
-.nav-pills>li+li{ margin-left:0;}
-.nav a .fa{ font-size:18px; padding-right:10px;float:left;}
-.dropdown{ text-align:center;}
-.dropdown-menu{ margin-top:0; min-width:200px;}
-.dropdown-menu li a{ text-align:left;}
-.dropdown-menu .fa{ min-width:28px;}
-
-.navbar-inverse{ background-color:transparent; border-color:transparent;}
-.desktop-hidden{ display: none;}
-.desktop-visible{ display:block;}
-/* end - bootstrap overwrites */
-
-/* Styles for main navigation */
 
 /* begin - nav */
 #nav-wrap{ 
@@ -338,6 +329,18 @@ a {
 }
 .bottom-box{
 	padding:10px;
+	float:left;
+	width:100%;
+}
+
+.bottom-box .col-md-6:first-child{
+	padding-left:0;
+	padding-right:10px;	
+}
+
+.bottom-box .col-md-6:nth-child(2){
+	padding-left:0;
+	padding-right:0;	
 }
 
 .inner-box{
@@ -410,6 +413,11 @@ a {
 
 }
 @media (max-width: 992px) {
+	
+	.bottom-box .col-md-6:first-child{
+		padding-bottom:10px;
+		padding-right:0;	
+	}
 	
 }
 @media (max-width: 768px) {
