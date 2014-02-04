@@ -233,6 +233,7 @@ a {
 	}
 	.nav li a{ 
 		font-size:14px;
+		padding-left:10px;
 	}
 	.desktop-hidden .dropdown-menu{
 		float: left;
