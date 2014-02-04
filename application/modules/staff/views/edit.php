@@ -1,39 +1,3 @@
-<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
-<!-- jQuery files -->
-<!--<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jquery.js"></script>
-<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>-->
-<script type="text/javascript">
-//var $j = jQuery.noConflict();
-jQuery(document).ready(function(){
-      // simple jRating call
-     /* $(".basic").jRating();
- 
-      // more complex jRating call
-      $(".basic").jRating({
-         step:true,
-         length : 20, // nb of stars
-         onSuccess : function(){
-           alert('Success : your rate has been saved :)');
-         }
-       });
- 
-      // you can rate 3 times ! After, jRating will be disabled
-      $(".basic").jRating({
-         canRateAgain : true,
-         nbRates : 3
-       });
- */
-      // get the clicked rate !
-	/*jQuery(".basic").jRating({
-		onClick : function(element,rate) {
-	 	//alert(rate);
-	 	jQuery('#rating').val(rate); 
-		}
-	});*/
-	
-});
-</script>
-
 <h2>Edit Staff</h2>
 <p>Edit staff using below form.</p>
 
@@ -54,18 +18,17 @@ jQuery(document).ready(function(){
 			<li><a href="#location" data-toggle="tab">Location</a></li>
 			<li><a href="#setting" data-toggle="tab">Settings</a></li>
 			<li><a href="#document" data-toggle="tab">Documents</a></li>
+            <li><a href="#picture" data-toggle="tab">Pictures</a></li>
 		</ul>
-		<br />
+
 		
 		
-		<p>Please note <span class="required">**</span> denotes a required field</p>
-		<form id="edit_form" class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>" onsubmit="">
-		<input type="hidden" name="tab_id" id="tab_id" />
-		<br />
 		
+		<form id="edit_form" class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>" onsubmit="" autocomplete="off" >
+		<input type="hidden" name="tab_id" id="tab_id" />				
 			<div class="tab-content">
 				<div class="tab-pane active" id="personal">
-	
+					<p>Please note <span class="required">**</span> denotes a required field</p>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -104,10 +67,10 @@ jQuery(document).ready(function(){
 									<?=modules::run('common/dropdown_states', 'state', $staff['state']);?>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group<?=form_error('email_address')? ' has-error' : '';?>">
 								<label for="email_address" class="col-lg-4 control-label">Email <span class="required">**</span></label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>" disabled />
+									<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>"/>
 								</div>
 							</div>
 							<div class="form-group">
@@ -132,21 +95,8 @@ jQuery(document).ready(function(){
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="rating" class="col-lg-4 control-label">Rating</label>
-								<div class="col-lg-8">
-									<!--
-                                    <div class="rating pull-left">
-										<span class="star"></span>
-										<span class="star"></span>
-										<span class="star"></span>
-										<span class="star"></span>
-										<span class="star"></span>
-									</div>
-                                    -->
-                                    <div class="exemple"> 
-                                       <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
-                                       <div class="basic" data-average="<?=$staff['rating']?>" data-id="1"></div>  
-                                       <input type="hidden" name="rating" id="rating" value="<?=$staff['rating']?>">                                   
-                                    </div>
+								<div class="col-lg-8">									
+                                    <?=modules::run('common/select_rating', 'rating',($staff['rating']==0) ? '0' : $staff['rating']);?>                                    
 								</div>
 							</div>
 							<div class="form-group<?=form_error('last_name')? ' has-error' : '';?>">
@@ -258,10 +208,10 @@ jQuery(document).ready(function(){
 								<label class="col-lg-5 control-label">Your senior couple status <span class="required">**</span></label>
 								<div class="col-lg-1">
 									<select name="f_senior_status" class="form-control auto-width">
-										<option value="None">None</option>
-										<option value="Member of couple">Member of couple</option>
-										<option value="Member of illness-separated couple">Member of illness-separated couple</option>
-										<option value="Single">Single</option>
+										<option value="None" <?=($staff['f_senior_status']=="None") ? ' selected=selected' : '';?>>None</option>
+										<option value="Member of couple" <?=($staff['f_senior_status']=="Member of couple") ? ' selected=selected' : '';?>>Member of couple</option>
+										<option value="Member of illness-separated couple" <?=($staff['f_senior_status']=="Member of illness-separated couple") ? ' selected=selected' : '';?>>Member of illness-separated couple</option>
+										<option value="Single" <?=($staff['f_senior_status']=="Single") ? ' selected=selected' : '';?>>Single</option>
 									</select>
 								</div>
 							</div>
@@ -284,9 +234,9 @@ jQuery(document).ready(function(){
 								<label class="col-lg-5 control-label">Your HELP variation <span class="required">**</span></label>
 								<div class="col-lg-1">
 									<select name="f_help_variation" class="form-control auto-width">
-										<option value="None">HELP</option>
-										<option value="Member of couple">SFSS</option>
-										<option value="Member of illness-separated couple">HELP + SFSS</option>
+										<option value="HELP" <?=($staff['f_help_variation']=="HELP") ? ' selected=selected' : '';?>>HELP</option>
+										<option value="SFSS" <?=($staff['f_help_variation']=="SFSS") ? ' selected=selected' : '';?>>SFSS</option>
+										<option value="HELP + SFSS" <?=($staff['f_help_variation']=="HELP + SFSS") ? ' selected=selected' : '';?>>HELP + SFSS</option>
 									</select>
 								</div>
 							</div>
@@ -315,7 +265,21 @@ jQuery(document).ready(function(){
 									<input type="text" class="form-control" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" tabindex="3" />
 								</div>
 							</div>
-							<div class="form-group">
+                            <div class="form-group">
+								<label class="col-lg-3 control-label">Employed As</label>
+								<div class="col-lg-3">
+									<div class="radio">
+										<input type="radio" name="f_employed" value="1"<?=($staff['f_employed'] == 1) ? ' checked' : '';?> /> ABN
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="radio">
+										<input type="radio" name="f_employed" value="0"<?=($staff['f_employed'] == 0) ? ' checked' : '';?> /> TFN
+									</div>
+								</div>
+							</div>
+                            
+							<div class="form-group" id="f_tfn_number">
 								<label for="f_tfn_1" class="col-lg-3 control-label">TFN Number</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control" id="f_tfn_1" name="f_tfn_1" tabindex="4" value="<?=$staff['f_tfn_1'];?>" />
@@ -325,6 +289,18 @@ jQuery(document).ready(function(){
 								</div>
 								<div class="col-md-3">
 									<input type="text" class="form-control" id="f_tfn_3" name="f_tfn_3" tabindex="6" value="<?=$staff['f_tfn_3'];?>" />
+								</div>
+							</div>
+                            <div class="form-group" id="f_abn_number">
+								<label for="f_tfn_1" class="col-lg-3 control-label">ABN Number</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control" id="f_abn_1" name="f_abn_1" tabindex="7" value="<?=$staff['f_abn_1'];?>" />
+								</div>
+								<div class="col-md-3">
+									<input type="text" class="form-control" id="f_abn_2" name="f_abn_2" tabindex="8" value="<?=$staff['f_abn_2'];?>" />
+								</div>
+								<div class="col-md-3">
+									<input type="text" class="form-control" id="f_abn_3" name="f_abn_3" tabindex="9" value="<?=$staff['f_abn_3'];?>" />
 								</div>
 							</div>
 						</div>
@@ -375,13 +351,13 @@ jQuery(document).ready(function(){
 							<div class="form-group">
 								<label for="s_tfn_1" class="col-lg-3 control-label">TFN Number</label>
 								<div class="col-md-2">
-									<input type="text" class="form-control" id="s_tfn_1" name="s_tfn_1" value="<?=$staff['s_tfn_1'];?>" />
+									<input type="text" class="form-control" id="s_tfn_1" name="s_tfn_1" value="<?=($staff['s_tfn_1'] == '') ? $staff['f_tfn_1'] : $staff['s_tfn_1'];?>" />
 								</div>
 								<div class="col-md-2">
-									<input type="text" class="form-control" id="s_tfn_2" name="s_tfn_2" value="<?=$staff['s_tfn_2'];?>" />
+									<input type="text" class="form-control" id="s_tfn_2" name="s_tfn_2" value="<?=($staff['s_tfn_2'] == '') ? $staff['f_tfn_2'] : $staff['s_tfn_2'];?>" />
 								</div>
 								<div class="col-md-2">
-									<input type="text" class="form-control" id="s_tfn_3" name="s_tfn_3" value="<?=$staff['s_tfn_3'];?>" />
+									<input type="text" class="form-control" id="s_tfn_3" name="s_tfn_3" value="<?=($staff['s_tfn_3'] == '') ? $staff['f_tfn_3'] : $staff['s_tfn_3'];?>" />
 								</div>
 							</div>
 						</div>
@@ -389,15 +365,17 @@ jQuery(document).ready(function(){
 					<br />
 					<div class="row">
 						<div class="col-md-6">
-							<div class="form-group<? if(modules::run('common/check_super', $staff['s_fund_name'])) { echo ' has-success'; } else { echo '  has-warning'; } ?>">
+							<div class="form-group<? //if(modules::run('common/check_super', $staff['s_fund_name'])) { echo ' has-success'; } else { echo '  has-warning'; } ?>">
 								<label for="s_fund_name" class="col-lg-4 control-label">Super Fund Name</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" id="s_fund_name" name="s_fund_name" value="<?=$staff['s_fund_name'];?>" />
+									<!--<input type="text" class="form-control" id="s_fund_name" name="s_fund_name" value="<?=$staff['s_fund_name'];?>" />-->
+                                    <?=modules::run('common/dropdown_supers', 's_fund_name',$staff['s_fund_name']);?>
+
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
-							<? if(!modules::run('common/check_super', $staff['s_fund_name'])) { echo '<span class="help-block"> &nbsp; &nbsp; Super fund name not found in our system</span>'; } ?>
+							<? //if(!modules::run('common/check_super', $staff['s_fund_name'])) { echo '<span class="help-block"> &nbsp; &nbsp; Super fund name not found in our system</span>'; } ?>
 						</div>
 					</div>
 					<div class="row" id="employer_choice">
@@ -499,26 +477,12 @@ jQuery(document).ready(function(){
 				<div class="tab-pane" id="availability">
 					<div class="row">
 						<div class="col-md-12">
-							<div class="form-group">
-								<label for="title" class="col-lg-2 control-label">Availability</label>
-								<div class="col-lg-10">
-									<? 
-									$staff_avail = array();
-									if ($staff['availability'])
-									{
-										$staff_avail = json_decode($staff['availability']);
-									}
-									$avail = modules::run('attribute/availability/get_availability');
-									foreach($avail as $one) { ?>
-									<div class="row">
-										<div class="col-md-1"><input type="checkbox" name="availability[]" value="<?=$one['availability_id'];?>"<?=(in_array($one['availability_id'], $staff_avail)) ? ' checked' : '';?> /> </div>
-										<div class="col-md-11 label_checkbox"><?=$one['name'];?></div>
-										
-										
-									</div>
-									<? } ?>
-								</div>
-							</div>
+							<h2> Your Availability </h2>
+                            <p> Please let us know the times that you are available for work</p>
+                            
+                           <? echo '<pre>'.print_r($staff['availability'],true).'</pre>';?>
+                            
+                            <?=modules::run('common/set_availability','availability',$staff['availability']);?>
 						</div>
 					</div>
 				</div>
@@ -672,6 +636,7 @@ jQuery(document).ready(function(){
 					</div>
 				</div>
 				
+                
 				<div class="tab-pane" id="document">
 					<div class="row">
 						<div class="col-md-12">
@@ -685,34 +650,118 @@ jQuery(document).ready(function(){
 					</div>
 					
 				</div>
+                
+                <div class="tab-pane" id="picture">
+					<div class="row">
+						<div class="col-md-12">
+                        	<h2> Your Images </h2>
+                            <p> Upload photos of yourself so we have a visual refferance of you. 
+                            	<br />Set your <b>primary profile image</b> by rolling over the images in your gallery and clicking the <i class="fa fa-heart"></i>
+								<br />To <b>delete images</b>  roll over one of the images in your gallery and click the <i class="fa fa-times"></i>                        	
+							</p>
+
+                            <button type="button" class="btn btn-info" onclick="add_image(<?=$staff['staff_id']?>)"><i class="fa fa-upload"></i> Upload Image</button>
+                            <br />
+                            <br />
+                            <div class="row">
+                            	<div class="col-md-4">
+                                	<i class="fa fa-heart"></i> Profile Image <br />
+                                    <div style="border:1px solid #cdcdcd; padding:8px;border-radius:4px; background:#fff;width:-moz-max-content">
+                                    <? if($hero_photo){?> <img src="<?=base_url()?>uploads/staff/profile/<?=md5($staff['staff_id'])?>/thumbnail/<?=$hero_photo['name']?>"><? }else{?>
+                                            <div style="width:75px; height:75px; border:1px solid #000; color:#000; background:#c3c3c3; text-align:center; line-height:75px;">
+                                                No Photo
+                                            </div>
+                                    <? } ?>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-8">
+                                	<i class="fa fa-picture-o"></i> Your Gallery <br />
+                                    <div id="carousel" class="flexslider" style="border:1px solid #cdcdcd; padding:8px; padding-left:15px; padding-right:15px; border-radius:4px;">
+                                      <ul class="slides popup-gallery">
+                                        <? if($photos){
+                                            foreach($photos as $photo){
+                                                $photo_src_full = base_url().'uploads/staff/profile/'.md5($staff['staff_id']).'/'.$photo['name'];                                    
+                                                $thumb_src = base_url().'uploads/staff/profile/'.md5($staff['staff_id']).'/thumbnail/'.$photo['name'];
+                                            ?>
+                                                <li >
+                                                	<a title="<?=$photo['name'];?>" href="<?=$photo_src_full?>"><img style="width:auto!important;" src="<?=$thumb_src;?>" /></a>
+                                                	<div align="center" class="action_image" > <a href="#" onclick="set_hero(<?=$photo['id']?>)"><i class="fa fa-heart" <? if($photo['hero']==1){echo "style='color:#f00;'";}?> ></i></a> <a href="#" onclick="delete_photo(<?=$photo['id']?>)"><i class="fa fa-times"></i> </a></div>
+                                                </li>
+                                            <?
+                                            }
+                                         }?>
+                                        <!-- items mirrored twice, total of 12 -->
+                                      </ul>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+						</div>
+					</div>
+					
+				</div>
 				
 			</div>
 			
-			<!-- Submit button -->
-			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group">
-						<div class="col-lg-offset-4 col-lg-8">
-							<button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Update Staff</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-		
-		</form>			
+                    <!-- Submit button -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-lg-offset-4 col-lg-8">
+                                    <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Update Staff</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                
+                </form>			
+			
   
 	</div>
 </div>
 
+
+<style>
+.action_image{
+	
+}
+</style>
+
+<!-- Add Image Modal -->
+<div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="editVenueLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Add Image</h4>
+			</div>
+			
+			<div class="modal-body">
+				<?=modules::run('common/upload_picture', 'staff_id',$staff['staff_id']);?>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+			
+			</div>
+			
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script>
-$(function(){
-	 var availableTags = [
-	<?=modules::run('common/list_supers');?>
-	];
-	$( "#s_fund_name" ).autocomplete({
-		source: availableTags
-	});
+$(function(){		
+	
+	$('#carousel').flexslider({
+		animation: "slide",
+		controlNav: false,
+		animationLoop: false,
+		slideshow: false,
+		itemWidth: 230,
+		itemMargin: 5,
+		asNavFor: '#slider'
+    });
 	
 	$('#navStaff a').click(function (e) {
 		e.preventDefault()
@@ -720,9 +769,13 @@ $(function(){
 	});
 	// $('#navStaff a[href="#super"]').tab('show');
 	
+	
+	
+	
 	load_s_choice();
 	load_senior_couple_status();
 	load_help_variation();
+	load_f_employed();
 	$('input[name="s_choice"]').change(function(){
 		load_s_choice();
 	});
@@ -732,6 +785,16 @@ $(function(){
 	$('input[name="f_help_debt"]').change(function(){
 		load_help_variation();
 	})
+	$('input[name="f_employed"]').change(function(){
+		load_f_employed();
+	})
+	
+	//$( "#s_fund_name" ).autocomplete({
+		//source: availableTags
+	//});
+	//var availableTags = [
+	//<? //=modules::run('common/list_supers');?>
+	//];
 });
 
 function load_senior_couple_status()
@@ -756,6 +819,19 @@ function load_help_variation()
 		$('#f_help_variation').hide();
 	}
 }
+function load_f_employed()
+{
+	var is_f_empoyed = $('input[name="f_employed"]:checked').val();
+	
+	if (is_f_empoyed == 1) {
+		$('#f_tfn_number').hide();
+		$('#f_abn_number').show();
+	} else
+	{
+		$('#f_tfn_number').show();
+		$('#f_abn_number').hide();
+	}
+}
 function load_s_choice()
 {
 	var s_choice = $('input[name="s_choice"]:checked').val();
@@ -770,4 +846,47 @@ function load_s_choice()
 	}
 }
 
+function set_hero(id)
+{
+	$.ajax({
+		url: '<?=base_url()?>common/setherophoto/',
+		type: 'POST',
+		data: ({staff_id:<?=$staff['staff_id']?>,photo_id:id}),
+		dataType: "html",
+		success: function(html) {			
+			location.reload();
+		}
+	})		
+}
+
+function delete_photo(id)
+{
+
+	$.ajax({
+		url: '<?=base_url()?>common/deletephoto/',
+		type: 'POST',
+		data: ({staff_id:<?=$staff['staff_id']?>,photo_id:id}),
+		dataType: "html",
+		success: function(html) {			
+			location.reload();
+		}
+	})		
+}
+function add_image()
+{
+	$('#addImage').modal('show');
+}
 </script>
+
+<link rel="stylesheet" href="<?=base_url()?>assets/js/flexjs/flexslider.css" type="text/css" media="screen" />
+<script src="<?=base_url()?>assets/js/flexjs/modernizr.js"></script>
+<script defer src="<?=base_url()?>assets/js/flexjs/jquery.flexslider.js"></script>             
+<!-- Syntax Highlighter -->
+<script type="text/javascript" src="<?=base_url()?>assets/js/flexjs/shCore.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/js/flexjs/shBrushXml.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/js/flexjs/shBrushJScript.js"></script>
+
+<!-- Optional FlexSlider Additions -->
+<script src="<?=base_url()?>assets/js/flexjs/jquery.easing.js"></script>
+<script src="<?=base_url()?>assets/js/flexjs/jquery.mousewheel.js"></script>
+<!--<script defer src="<?=base_url()?>assets/js/flexjs/demo.js"></script>   -->
