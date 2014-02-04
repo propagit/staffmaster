@@ -1,12 +1,19 @@
-<h2>Edit Client</h2>
-<p>Update clients using below form.</p>
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Edit Client</h2>
+		 <p>Update clients using below form.</p>
+    </div>
+</div>
 
-<a href="<?=base_url();?>client/search"><i class="icon-plus-sign"></i> Search Clients</a>
-<br /><br />
-<div class="panel">
-	<div class="panel-heading">Edit Client</div>
-	<div class="panel-body">
-		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/edit/<?=$client['user_id'];?>">
+
+
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Edit Client</h2>
+            <p>Update clients using below form.</p>
+            
+            <form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/edit/<?=$client['user_id'];?>">
 			<div class="form-group<?=form_error('company_name')? ' has-error' : '';?>">
 				<label for="company_name" class="col-lg-2 control-label">Company Name <span class="required">**</span></label>
 				<div class="col-lg-10">
@@ -115,7 +122,7 @@
 				</div>
 			</div>
 		</form>
-
-
-	</div>
+           
+        </div>
+    </div>
 </div>

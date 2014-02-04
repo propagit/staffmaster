@@ -1,13 +1,17 @@
-<h2>Add Client</h2>
-<p>Add clients using below form or import multiple clients.</p>
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Add Client</h2>
+    	 <p>Add clients using below form or import multiple clients.</p>
+    </div>
+</div>
 
-
-<a href="<?=base_url();?>client/search"><i class="fa fa-search"></i> Search Clients</a>
-<br /><br />
-<div class="panel panel-default">
-	<div class="panel-heading">Add New Client</div>
-	<div class="panel-body">
-		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/add">
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Add New Client</h2>
+            <p>Add clients using below form or import multiple clients</p>
+            
+            <form class="form-horizontal" role="form" method="post" action="<?=base_url();?>client/add">
 			<div class="form-group<?=form_error('company_name')? ' has-error' : '';?>">
 				<label for="company_name" class="col-lg-2 control-label">Company Name <span class="required">**</span></label>
 				<div class="col-lg-10">
@@ -116,7 +120,9 @@
 				</div>
 			</div>
 		</form>
-
-
+		</div>
 	</div>
 </div>
+
+
+
