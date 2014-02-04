@@ -13,20 +13,7 @@ class Common extends MX_Controller {
 		parent::__construct();
 		$this->load->model('common_model');
 	}
-	
-	function convert_status($status)
-	{
-		$btn = 'default';
-		switch($status) {
-			case 1: $btn = 'warning'; break;
-			case 2: $btn = 'success' ; break;
-			case 3: $btn = 'danger'; break;
-			case 0:
-			default: $btn = 'default'; break;
-		}
-		return $btn;
-	}
-	
+		
 	function dropdown_actions($target, $actions)
 	{
 		$data['target'] = $target;

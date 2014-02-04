@@ -3,8 +3,11 @@
 		<h2>Your Roster</h2>
 	<p>Your roster is displayed below. Please confirm or reject shifts we have planned for you. Please read the job details carefully and check back regularly for updates to your roster.</p>
 	</div>
-	
-	<div class="box">
+</div>
+
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
 		<div class="table_action">		
 			<span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-print"></i> Print Rosters</span>
 			<span class="btn btn-core pull-right hidden-xs"><i class="fa fa-envelope-o"></i> Email Rosters</span>
@@ -13,8 +16,8 @@
 				<li class="dropdown">
 					<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
 					<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
-						<li><a class="multi_confirm">Confirm <i class="fa fa-thumbs-o-up"></i></a></li>
-						<li><a class="multi_reject">Reject <i class="fa fa-thumbs-o-down"></i></a></li>
+						<li><a class="multi_confirm">Confirm Selected</a></li>
+						<li><a class="multi_reject">Reject Selected</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -27,7 +30,9 @@
 		
 		<div id="list_rosters" class="clear"></div>
 	</div>
+	</div>
 </div>
+
 
 <script>
 $(function(){
