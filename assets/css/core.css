@@ -318,6 +318,14 @@ a:hover {
 	text-align: center;
 }
 
+.table-middle > thead > tr > th, 
+.table-middle > tbody > tr > th, 
+.table-middle > tfoot > tr > th, 
+.table-middle > thead > tr > td, 
+.table-middle > tbody > tr > td, 
+.table-middle > tfoot > tr > td {
+	vertical-align: middle;
+}
 /* Custom styles for badge */
 .badge {
 	font-weight: normal;

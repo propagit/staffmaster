@@ -31,7 +31,7 @@
 	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
 
 </div>
-<table class="table table-bordered table-hover" width="100%">
+<table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
 		<th class="center" width="10%"><input type="checkbox" id="selected_all_days" /></th>
@@ -60,8 +60,8 @@ $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 		<td class="center"><?=($shifts_count > 0) ? $shifts_count : '';?></td>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
-			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)"><span class="badge badge-success">0</span> &nbsp; 
-			<span class="badge badge-danger"><?=$shifts_count;?></span></a>
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)"><span class="badge success">0</span> &nbsp; 
+			<span class="badge danger"><?=$shifts_count;?></span></a>
 			<? } ?>
 		</td>
 		<td class="center">
