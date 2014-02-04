@@ -45,18 +45,22 @@ class Common extends MX_Controller {
 		foreach($supers as $super) { echo '"' . $super['name'] . '",'; } 
 	}
 	
-	function check_super($name)
+	function check_super()
 	{
+		
+		$name = $this->input->post('super_value');
 		$supers = $this->common_model->get_supers();
-		$found = false;
+		$found = 1;
 		foreach($supers as $super)
 		{
 			if ($super['name'] == $name)
 			{
-				$found = true;
+				$found = 0;
 			}
 		}
-		return $found;
+		echo $found;
+		//return $found;
+		
 	}
 	
 	function dropdown_states($field_name, $field_value=null)
