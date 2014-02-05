@@ -422,7 +422,6 @@ a:hover {
 .table_action {
 	padding: 0 30px;
 	clear: both;
-	overflow: hidden;
 }
 .table_action .nav-tabs {
 	border-bottom: 0;

@@ -137,4 +137,23 @@ class Job extends MX_Controller {
 		$this->load->view('dropdown_engines', isset($data) ? $data : NULL);
 	}
 	
+	
+	function status_to_class($status)
+	{
+		$class = '';
+		switch($status)
+		{
+			case 1: $class = 'active';
+				break;
+			case 2: $class = 'success';
+				break;
+			case 3: $class = 'danger';
+				break;
+			case 0:
+			default: $class = '';
+				break;
+		}
+		return $class;
+	}
+	
 }

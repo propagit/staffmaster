@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Controller: Product
- * @author: namnd86@gmail.com
+ *	@desc: ajax controller, provides ajax functions for Job module
+ *	@author: namnd86@gmail.com
  */
 
 class Ajax extends MX_Controller {
@@ -18,8 +18,8 @@ class Ajax extends MX_Controller {
 	*	@name: search_jobs
 	*	@desc: ajax function to search job(s)
 	*	@access: public
-	*	@param: an array of search parameters (via POST)
-	*	@return: view of list of jobs  
+	*	@param: an array of search parameters (POST)
+	*	@return: view of list of jobs
 	*/
 	function search_jobs()
 	{
@@ -29,13 +29,15 @@ class Ajax extends MX_Controller {
 	}
 	
 	/**
-	*	@name: create_job_shifts
-	*	@desc: ajax function to create shift(s) to job
+	*	@name: create_shifts
+	*	@desc: ajax function to create shift(s) for a job
 	*	@access: public
-	*	@param: an array of shift parameters (via POST)
-	*	@return: json encode of result {ok: $boolean, error_id: $string}
+	*	@param: an array of shift parameters (POST)
+	*	@return: json encode of result
+	*			- failed: {ok: false, error_id: (string)}
+	*			- success: {ok: true, job_date: (string) YYYY-DD-MM
 	*/
-	function create_job_shifts()
+	function create_shifts()
 	{
 		$data = $this->input->post();
 		$filter_data = array();
@@ -47,8 +49,7 @@ class Ajax extends MX_Controller {
 			# Job start date can not be in the past
 			echo json_encode(array('ok' => false, 'error_id' => 'start_date'));
 			return;
-		}
-		
+		}	
 		
 		$filter_data['start_time'] = strtotime($data['job_date']);		
 		$filter_data['finish_time'] = strtotime($data['finish_time']);
@@ -112,51 +113,100 @@ class Ajax extends MX_Controller {
 			$this->job_shift_model->insert_job_shift($filter_data);
 		}
 		echo json_encode(array('ok' => true, 'job_date' => $filter_data['job_date']));
-		
-		
 	}
 	
 	/**
-	*	@name: load_job_shifts
-	*	@desc: ajax function to load list view of shifts in a job
+	*	@name: sort_shifts
+	*	@desc: ajax function to set sort key & value when getting shifts
 	*	@access: public
-	*	@param: (via POST) (int) job_id, (string: YYYY-MM-DD) job_date
-	*	@return: list view (table) of shifts
+	*	@param: (POST) 'key'
+	*	@return: (void)
 	*/
-	function load_job_shifts()
+	function sort_shifts()
 	{
-		$job_id = $this->input->post('job_id');
-		$job_dates = $this->job_shift_model->get_job_dates($job_id);
-		$date = $this->input->post('date');
-		$this->session->set_userdata('job_date', $date);
-		
-		$data['total_date'] = count($job_dates);
-		$key = 0;
-		foreach($job_dates as $index => $value)
+		$key = $this->input->post('key');
+		$shifts_sort_value = 'asc';
+		$shifts_sort_key = $this->session->userdata('shifts_sort_key');
+		if ($shifts_sort_key == $key)
 		{
-			if ($value['job_date'] == $this->session->userdata('job_date'))
+			# Change sort value
+			$shifts_sort_value = $this->session->userdata('shifts_sort_value');
+			if ($shifts_sort_value == 'asc')
 			{
-				$key = $index;
+				$shifts_sort_value = 'desc';
+			} else
+			{
+				$shifts_sort_value = 'asc';
 			}
-		}
-		
-		
-		if ($key == 0)
-		{
-			$right_index = 2;
-			$left_index = 0;
-		}
-		else if ($key == count($job_dates) - 1)
-		{
-			$right_index = $key;
-			$left_index = $key - 2;
 		}
 		else
 		{
+			# Init sort key & value
+			$shifts_sort_key = $key;
+		}
+		$this->session->set_userdata('shifts_sort_key', $shifts_sort_key);
+		$this->session->set_userdata('shifts_sort_value', $shifts_sort_value);
+	}
+	
+	/**
+	*	@name: load_day_shifts
+	*	@desc: ajax function to load list view of shifts by day
+	*	@access: public
+	*	@param: (POST) (int) job_id, (string: YYYY-MM-DD) job_date
+	*	@return: list view (table) of shifts
+	*/
+	function load_day_shifts()
+	{
+		$job_id = $this->input->post('job_id');
+		# Get all dates of the job
+		$job_dates = $this->job_shift_model->get_job_dates($job_id);
+		
+		# Get selected date from POST request first
+		$date = $this->input->post('date');
+		
+		# Then check the session
+		if (!$date)
+		{
+			$date = $this->session->userdata('job_date');
+		}
+		
+		# Otherwise, get the very next day
+		if (!$date) {
+			foreach($job_dates as $job_date)
+			{
+				if (strtotime($job_date['job_date']) >= strtotime(date('Y-m-d', now())))
+				{
+					$date = $job_date['job_date'];
+					break;
+				}
+			}
+		}
+		
+		$this->session->set_userdata('job_date', $date);
+		
+		$data['total_date'] = count($job_dates);
+		
+		# Get previous and next days
+		$key = 0;
+		foreach($job_dates as $index => $value)
+		{
+			if ($value['job_date'] == $date)
+			{
+				$key = $index;
+			}
+		}		
+		if ($key == 0) {
+			$right_index = 2;
+			$left_index = 0;
+		} else if ($key == count($job_dates) - 1) {
+			$right_index = $key;
+			$left_index = $key - 2;
+		} else {
 			$right_index = $key + 1;
 			$left_index = $key - 1;
 		}
 		
+		# Optimized job dates array
 		$op_job_dates = array();
 		foreach($job_dates as $index => $value)
 		{
@@ -166,23 +216,47 @@ class Ajax extends MX_Controller {
 			}
 		}
 		
-		
 		$data['job_id'] = $job_id;
 		$data['job_dates'] = $op_job_dates;
-		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
-		$this->load->view('shifts_list_view', isset($data) ? $data : NULL);
+		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $date,
+						$this->session->userdata('shifts_sort_key'),
+						$this->session->userdata('shifts_sort_value'));
+		$this->load->view('shifts_day_view', isset($data) ? $data : NULL);
 	}
 	
+	/**
+	*	@name: load_month_view
+	*	@desc: ajax function to set calendar_view to month
+	*	@access: public
+	*	@param: (POST) (int) 'date' timestamp
+	*	@return: (string) YYYY-MM-DD
+	*/
 	function load_month_view()
 	{
 		$this->session->set_userdata('calendar_view', 'month');
 		echo date('Y-m-d', $this->input->post('date'));
 	}
+	
+	/**
+	*	@name: load_week_view
+	*	@desc: ajax function to set calendar_view to week
+	*	@access: public
+	*	@param: (POST) (int) 'date' timestamp
+	*	@return: (string) YYYY-MM-DD
+	*/
 	function load_week_view()
 	{
 		$this->session->set_userdata('calendar_view', 'week');
 		echo date('Y-m-d', $this->input->post('date'));
-	}	
+	}
+	
+	/**
+	*	@name: load_job_calendar
+	*	@desc: ajax function to load calendar view (month/week) of shifts
+	*	@access: public
+	*	@param: (POST) (int) 'job_id'
+	*	@return: (view) calendar view
+	*/
 	function load_job_calendar()
 	{
 		$job_id = $this->input->post('job_id');
@@ -196,13 +270,16 @@ class Ajax extends MX_Controller {
 		{
 			$data['custom_date'] = strtotime($this->input->post('date'));
 		}
+		if ($data['custom_date'] < now())
+		{
+			$data['custom_date'] = now();
+		}
 		$data['job_id'] = $job_id;
 		
-		if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week')
-		{
+		if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week') {
 			$this->load->view('shifts_week_view', isset($data) ? $data : NULL);	
-		} else if ($this->session->userdata('calendar_view') == 'month')
-		{
+		} 
+		else if ($this->session->userdata('calendar_view') == 'month') {
 			$out = array();
 			foreach($job_dates as $date)
 			{
@@ -217,7 +294,8 @@ class Ajax extends MX_Controller {
 			$data['events_source'] = json_encode($out);
 			$this->load->view('shifts_month_view', isset($data) ? $data : NULL);
 		}
-	}	
+	}
+	
 	function load_job_week()
 	{
 		$date = $this->input->post('date');
@@ -352,7 +430,7 @@ class Ajax extends MX_Controller {
 			'ok' => true, 
 			'shift_id' => $data['shift_id'], 
 			'value' => ($data['shift_staff']) ? $data['shift_staff'] : 'No Staff Assigned',
-			'btn_class' => modules::run('common/convert_status', $update_shift_data['status'])
+			'class_name' => modules::run('job/status_to_class', $update_shift_data['status'])
 		));
 	}
 	
@@ -592,6 +670,7 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('success' => false, 'msg' => 'No day selected'));
 		}		
 	}
+	
 	
 	
 	function search_staffs()

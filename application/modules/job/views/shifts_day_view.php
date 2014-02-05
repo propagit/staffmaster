@@ -13,7 +13,7 @@
 	<ul class="nav nav-tabs">
 		<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
 		<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
-		<li<?=(!$this->session->userdata('job_date')) ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>)">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
+		<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
 		<? foreach($job_dates as $date) { ?>
 		<li<?=($this->session->userdata('job_date') == $date['job_date']) ? ' class="active"' : '';?>>
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')">
@@ -31,13 +31,13 @@
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_shifts" /></th>
-		<th class="center">Date</th>
-		<th>Venue</th>
-		<th>Role</th>
+		<th class="center">Date &nbsp; <a onclick="sort_shifts('date')"><i class="fa fa-sort"></i></a></th>
+		<th>Venue &nbsp; <a onclick="sort_shifts('venue')"><i class="fa fa-sort"></i></a></th>
+		<th>Role &nbsp; <a onclick="sort_shifts('role')"><i class="fa fa-sort"></i></a></th>
 		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
 		<th class="center">Pay rate</th>
-		<th>Staff Assigned</th>
+		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
 		<th class="center" colspan="3">Find Staff</th>
 		
 		<th class="center" colspan="2" width="30">Functions</th>
@@ -45,7 +45,7 @@
 </thead>
 <tbody>
 	<? foreach($job_shifts as $shift) { ?>
-	<tr>
+	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>">
 		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
 		<td class="wp-date" width="70">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
@@ -69,7 +69,7 @@
 		</td>
 		<td></td>
 		<td>
-			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff btn btn-xs btn-<?=modules::run('common/convert_status', $shift['status']);?>" data-pk="<?=$shift['shift_id'];?>">
+			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
 				echo $staff['first_name'] . ' ' . $staff['last_name'];				
 			?>

@@ -34,8 +34,8 @@
 		<th class="center" width="70">Date</th>
 		<th class="center">Shifts</th>
 		<th class="center">Unassigned</th>
-		<th class="center">Confirmed Shifts</th>
-		<th class="center">Unconfirmed Shifts</th>
+		<th class="center">Confirmed</th>
+		<th class="center">Unconfirmed</th>
 		<th class="center" colspan="2">Functions</th>
 	</tr>
 </thead>

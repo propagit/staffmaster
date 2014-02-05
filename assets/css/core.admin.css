@@ -101,6 +101,7 @@ a.default {
 	height: 45px;
 }
 
+
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 
