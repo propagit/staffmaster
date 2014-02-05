@@ -1,37 +1,37 @@
-<h2>Day Shifts</h2>
-<p>All shifts for the day on this job campaign are displayed below. Click the columns to perform in-line editing. Using the checkbox to select shifts  will allow you to perform group functions such as deleting and duplicating.</p>
-
-<!-- Split button -->
-
-<br />
 <div class="table_action">
-	<?=modules::run('common/dropdown_actions','shift', 
-		array(
-			'attach' => 'Attach Resource',
-			'copy' => 'Copy',
-			'delete' => 'Delete'
-			));?>
 	
-	<span onclick="load_job_shifts(<?=$job_id;?>)" class="btn btn-info">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</span>
-	<? foreach($job_dates as $date) { ?>
-	<span onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')" class="btn btn-core<?=($this->session->userdata('job_date') == $date['job_date']) ? '-active': '';?>">
-		<?=date('d', strtotime($date['job_date']));?>
-		<span class="month"><?=date('M', strtotime($date['job_date']));?></span>
-		(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']));?>)
-	</span>
-	<? } ?>
-	
-	<a type="button" class="btn btn-primary load_week_view"><i class="fa fa-list"></i></a>
-	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
-	
-	<span class="btn btn-info pull-right"><i class="fa fa-gears"></i> Settings</span>
+	<ul class="nav nav-tabs nav-action">
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
+			<ul class="dropdown-menu" role="menu">
+				<li><a class="multi_apply">Attach Resource</a></li>
+				<li><a class="multi_copy">Copy</a></li>
+				<li><a class="multi_delete">Delete</a></li>
+			</ul>
+		</li>
+	</ul>
+	<ul class="nav nav-tabs">
+		<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
+		<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
+		<li<?=(!$this->session->userdata('job_date')) ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>)">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
+		<? foreach($job_dates as $date) { ?>
+		<li<?=($this->session->userdata('job_date') == $date['job_date']) ? ' class="active"' : '';?>>
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')">
+				<?=date('d', strtotime($date['job_date']));?>
+				<span class="month"><?=date('M', strtotime($date['job_date']));?></span>
+				(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']));?>)
+			</a>
+		</li>
+		<? } ?>
+	</ul>
 </div>
                         
-<div class="table-responsive">                     
-<table class="table table-bordered table-hover" width="100%">
+<div class="table-responsive">
+<table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_shifts" /></th>
+		<th class="center">Date</th>
 		<th>Venue</th>
 		<th>Role</th>
 		<th class="center">Start - Finish</th>
@@ -47,6 +47,11 @@
 	<? foreach($job_shifts as $shift) { ?>
 	<tr>
 		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
+		<td class="wp-date" width="70">
+			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
+			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
+			<span class="wk_month"><?=date('M', strtotime($shift['job_date']));?></span>
+		</td>
 		<td>
 			
 			<a href="#" class="shift_venue" data-type="typeaheadjs" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
@@ -57,7 +62,7 @@
 		<td class="center">
 			<a href="#" class="shift_start_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['start_time']);?>" data-title="Shift start date/time"><?=date('H:i', $shift['start_time']);?></a>
 			-
-			<a href="#" class="shift_finish_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['finish_time']);?>"><?=date('H:i', $shift['finish_time']);?></a> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="error">*</span>': '';?>
+			<a href="#" class="shift_finish_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['finish_time']);?>"><?=date('H:i', $shift['finish_time']);?></a> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-danger">*</span>': '';?>
 		</td>
 		<td class="center">
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
@@ -204,7 +209,7 @@ $(function(){
 			delete_shifts(selected_shifts);
 		}
 	});
-	$('.menu_delete_shift').confirmModal({
+	$('.multi_delete').confirmModal({
 		confirmTitle: 'Delete selected shifts',
 		confirmMessage: 'Are you sure you want to delete selected shifts?',
 		confirmCallback: function(e) {
@@ -215,7 +220,7 @@ $(function(){
 			delete_shifts(selected_shifts);
 		}
 	});
-	$('.menu_copy_shift').click(function(){
+	$('.multi_copy').click(function(){
 		selected_shifts.length = 0;
 		$('.selected_shifts:checked').each(function(){
 			selected_shifts.push($(this).val());
