@@ -77,21 +77,21 @@ $menu = array(
     <div class="row desktop-hidden">
         <div class="navbar navbar-inverse">
             <div class="col-md-12">
-                <span class="mob-menu-head">MENU</span>
                 <button class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse" type="button">
                    <i class="fa fa-align-justify"></i>
                 </button>
+                <span class="mob-menu-head">MENU <i class="fa fa-angle-right"></i></span>
             </div>
             <div class="nav-collapse collapse" id="nav-collapse-header" style="height: auto;">
                 <ul class="nav">
                      <? foreach($menu as $item) { ?>
                          <li class="dropdown <?=($page == $item['path']) ? 'active' : '';?>">
                             <a class="dropdown-toggle" data-toggle="dropdown"  href="<?=base_url() . $item['path'];?>">
-                              <i class="fa <?=$item['icon'];?>"></i><span class="nav-label"><?=$item['title'];?></span> <span class="caret"></span>
+                              <i class="fa <?=$item['icon'];?>"></i><span class="nav-label"><?=$item['title'];?></span> <i class="fa fa-caret-down pull"></i><i class="fa fa-angle-down pull"></i>
                             </a>
                             <ul class="dropdown-menu">
                               <? foreach($item['sub'] as $sub_item) { ?>
-                                <li><a href="<?=base_url() . $sub_item['path'];?>"><i class="fa <?=$sub_item['icon'];?>"></i><span class="nav-label"><?=$sub_item['title'];?></span></a></li>
+                                <li><a href="<?=base_url() . $sub_item['path'];?>"><i class="fa">-</i><span class="nav-label"><?=$sub_item['title'];?></span></a></li>
                               <? } ?>
                             </ul>
                           </li>

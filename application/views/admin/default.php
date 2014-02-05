@@ -66,22 +66,26 @@
 <header>
     <div class="container-fluid">
        <div class="row profile-bar">
-       		<div class="col-md-4 logo">
-                <img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
-            </div>
-            <div class="col-md-8 profile-menu">
-            	<div class="avatar pull">
-                	<img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />
+       		<div class="col-md-12">
+            	<div class="logo">
+                	<img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
                 </div>
-            	<ul class="first-child">
-                	<li><a title="Dashboard" href=""><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li><li class="li-seprator">|</li>
-                    <li><a title="Logout" href=""><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
-                    <li><a title="Message" href=""><i class="fa fa-comments"></i> <span>Message</span></a></li><li class="li-seprator">|</li>
-                    <li><a title="Staff Account" href=""><i class="fa fa-user"></i> <span>Staff Account</span></a></li>
-                </ul>
-                <div class="message-badge">
-                    <span class="badge danger">1</span>
-                    <i class="fa fa-caret-right"></i>
+
+                <div class="profile-menu">
+                    <div class="avatar pull">
+                        <img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />
+                    </div>
+                    <ul>
+                        <li><a title="Dashboard" href=""><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li><li class="li-seprator">|</li>
+                        <li><a title="Staff Account" href=""><i class="fa fa-user"></i> <span>Staff Account</span></a></li>
+                        <li><a title="Message" href=""><i class="fa fa-comments"></i> <span>Message</span></a></li><li class="li-seprator">|</li>
+                        <li><a title="Logout" href=""><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
+                    </ul>
+                    <div class="message-badge">
+                        <span class="badge danger">1</span>
+                        <i class="fa fa-caret-right"></i>
+                        <i class="fa fa-caret-down"></i>
+                    </div>
                 </div>
             </div>
        </div> 
