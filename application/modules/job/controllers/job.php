@@ -77,7 +77,7 @@ class Job extends MX_Controller {
 		$data['job'] = $job;
 		$data['client'] = $this->client_model->get_client_by_client_id($job['client_id']);
 		
-		$this->load->view('details', isset($data) ? $data : NULL);		
+		$this->load->view('job_details', isset($data) ? $data : NULL);		
 	}
 		
 	function search_jobs()
@@ -86,7 +86,7 @@ class Job extends MX_Controller {
 		{
 			$data['jobs'] = $this->job_model->search_jobs($this->input->post('keyword'));	
 		}		
-		$this->load->view('search', isset($data) ? $data : NULL);
+		$this->load->view('jobs_search', isset($data) ? $data : NULL);
 	}
 	
 	/**

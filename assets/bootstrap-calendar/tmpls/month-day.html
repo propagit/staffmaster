@@ -5,9 +5,9 @@
 			<% _.each(events, function(event) { %>
 				<a onclick="load_job_shifts(<%= event.title %>, '<%= event.url %>', true)">
 				
-				<span class="badge badge-success">0</span><br />
+				<span class="badge badge-xs success">0</span><br />
 				
-				<span class="badge badge-danger"><%= event.id %></span>
+				<span class="badge badge-xs danger"><%= event.id %></span>
 				</a>
 				<!--
 <a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" data-event-class="<%= event['class'] %>"

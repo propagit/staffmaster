@@ -128,7 +128,9 @@ a:hover {
 .desktop-visible{ 
 	display:block;
 }
-
+.form-horizontal .control-label {
+	text-align: left;
+}
 
 /* end - bootstrap overwrites */
 
@@ -271,10 +273,33 @@ a:hover {
 	color: #fff;
 	background: #00b1eb;
 	border-color: #00b1eb;
+	cursor: pointer;
 }
 .nav-tabs.nav-action {
 	float: left;
 }
+.nav-tabs.nav-group {
+	float: left;
+	margin-left: 5px;
+}
+.nav-tabs.nav-group li {
+	margin: 0;
+	padding: 0;
+}
+.nav-tabs.nav-group li a {
+	border-radius: 0;
+	margin: 0;
+}
+.nav-tabs.nav-group li:first-child a {
+	margin-right: 0;
+	border-top-left-radius: 5px;
+	border-right: 1px solid #fff;
+}
+.nav-tabs.nav-group li:last-child a {
+	border-top-right-radius: 5px;
+	border-left: 1px solid #fff;
+}
+
 .nav-tabs.nav-action .caret {
 	margin-left: 10px;
 }
@@ -325,6 +350,11 @@ a:hover {
 	margin-bottom: 2px;
 	font-size: 1.3em;
 	border-radius: 1.3em;
+	text-align: center;
+}
+.badge.badge-xs {
+	font-size: .9em;
+	border-radius: .9em;
 }
 .success {
 	background-color: #2cb308;
@@ -378,7 +408,7 @@ a:hover {
 	letter-spacing:-1px;
 	color:#3d3d3d;
 }
-.box p{ 
+.top-box p{ 
 	font-size:16px;
 	width:50%;
 	font-family:'Lato', sans-serif;
@@ -386,12 +416,23 @@ a:hover {
 }
 .table_action {
 	padding: 0 30px;
+	clear: both;
+	overflow: hidden;
 }
 .table_action .nav-tabs {
 	border-bottom: 0;
 }
+.table_action .nav-tabs i {
+	margin:0 -10px 0 0;
+}
 .table_action .nav-tabs > li {
 	margin-right: 5px;
+}
+.table_action .nav-group {
+	margin-bottom: -1px;
+}
+.table_action .nav-group > li {
+	margin-right: 0;
 }
 .table_action .btn.pull-right {
 	margin-left: 5px;
@@ -408,7 +449,35 @@ a:hover {
 	background: #00b1eb;
 	color: #fff;
 }
-
+.wp-date a:hover {
+	text-decoration: none;
+}
+.wk_date {
+	font-weight: bold;
+	font-size: 1.5em;
+	line-height: 1em;
+	margin-left: 0;
+	margin-top: 1px;
+	display: block;
+	width: 30px;
+}
+.wk_month {
+	text-transform: uppercase;
+	line-height: 1em;
+	margin-left: 0;
+	display: block;
+	width: 30px;
+}
+.wk_day {
+	float: right;
+	width: 9px;
+	word-break: break-all;
+	text-transform: uppercase;
+	font-size: .65em;
+	font-weight: bold;
+	line-height: 1.4em;
+	text-align: center;
+}
 #wrapper_loading {
 	background: url('../img/loading-bg.png');
 	width: 100%;

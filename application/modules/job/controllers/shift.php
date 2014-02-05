@@ -5,15 +5,18 @@
  * @author: namnd86@gmail.com
  */
 
-class Job extends MX_Controller {
+class Shift extends MX_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('job_model');
-		$this->load->model('job_shift_model');
-		$this->load->model('client/client_model');
 	}
 	
+	
+	function form_create($job_id)
+	{
+		$data['job_id'] = $job_id;
+		$this->load->view('shift_create_form', isset($data) ? $data : NULL);
+	}
 
 }

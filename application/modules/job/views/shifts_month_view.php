@@ -1,16 +1,18 @@
-<h4>Jobs On Month</h4>
-<p>Below you can see a schedule of all the jobs you have on for the month for this job campaign.You can duplicate the months shifts to another month. Unconfirmed and confirmed shifts are indicated by red or green icon. </p>
 <div class="table_action">
-	<div class="btn-group">
-		<a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a>
-		<span type="button" class="btn btn-info" id="header-month"> &nbsp; </span>
-		<a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a>
-	</div>
+	<ul class="nav nav-tabs pull-right">
+		<li><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
+		<li><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
+	</ul>
 	
-	<a data-calendar-nav="today" type="button" class="btn btn-primary">Today</a>
-	<a type="button" class="btn btn-primary load_week_view"><i class="fa fa-list"></i></a>
-	<a type="button" class="btn btn-primary load_month_view"><i class="fa fa-calendar"></i></a>
-
+	<ul class="nav nav-tabs nav-action">
+		<li><a class="active" data-calendar-nav="today">Today</a></li>
+	</ul>
+	
+	<ul class="nav nav-tabs nav-group">
+		<li class="active"><a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
+		<li class="active"><a id="header-month"> &nbsp; </a></li>
+		<li class="active"><a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>
+	</ul>
 </div>
 <div id="calendar"></div>
 

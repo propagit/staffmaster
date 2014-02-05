@@ -116,7 +116,13 @@ class Ajax extends MX_Controller {
 		
 	}
 	
-	
+	/**
+	*	@name: load_job_shifts
+	*	@desc: ajax function to load list view of shifts in a job
+	*	@access: public
+	*	@param: (via POST) (int) job_id, (string: YYYY-MM-DD) job_date
+	*	@return: list view (table) of shifts
+	*/
 	function load_job_shifts()
 	{
 		$job_id = $this->input->post('job_id');
@@ -130,7 +136,7 @@ class Ajax extends MX_Controller {
 		{
 			if ($value['job_date'] == $this->session->userdata('job_date'))
 			{
-				$key = $index;	
+				$key = $index;
 			}
 		}
 		
@@ -164,8 +170,9 @@ class Ajax extends MX_Controller {
 		$data['job_id'] = $job_id;
 		$data['job_dates'] = $op_job_dates;
 		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $this->session->userdata('job_date'));
-		$this->load->view('job_shifts_list_view', isset($data) ? $data : NULL);
-	}	
+		$this->load->view('shifts_list_view', isset($data) ? $data : NULL);
+	}
+	
 	function load_month_view()
 	{
 		$this->session->set_userdata('calendar_view', 'month');
@@ -193,7 +200,7 @@ class Ajax extends MX_Controller {
 		
 		if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week')
 		{
-			$this->load->view('job_shifts_week_view', isset($data) ? $data : NULL);	
+			$this->load->view('shifts_week_view', isset($data) ? $data : NULL);	
 		} else if ($this->session->userdata('calendar_view') == 'month')
 		{
 			$out = array();
@@ -208,7 +215,7 @@ class Ajax extends MX_Controller {
 				);
 			}
 			$data['events_source'] = json_encode($out);
-			$this->load->view('job_shifts_month_view', isset($data) ? $data : NULL);
+			$this->load->view('shifts_month_view', isset($data) ? $data : NULL);
 		}
 	}	
 	function load_job_week()

@@ -75,6 +75,16 @@
 	margin-right: 15px;
 }
 
+/* Style for calendar / week view */
+a.default {
+	color: rgb(61, 61, 61);
+}
+
+/* Style for calendar / month view */
+#wrapper_calendar #calendar {
+	margin-top: -10px;
+}
+
 /* Styles for staff profile photo */
 .photo_staff {
 	border: 1px solid #ccc;
