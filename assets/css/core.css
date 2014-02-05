@@ -342,6 +342,11 @@ a:hover {
 .table-middle > tfoot > tr > td {
 	vertical-align: middle;
 }
+
+/* Custom styles for typeahead */
+.tt-hint {
+	display: none;
+}
 /* Custom styles for badge */
 .badge {
 	font-weight: normal;

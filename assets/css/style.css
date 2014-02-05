@@ -525,9 +525,7 @@ hr {
 /* Typeahead styles */
 .tt-dropdown-menu {
 }
-.tt-hint {
-	display: none;
-}
+
 #form_update_shift_staff input.form-control {
 	width: 150px;
 	margin-right: 10px;
