@@ -175,8 +175,30 @@ a.default {
 		padding-left:5px;	
 	}
 	.message-badge{
-		right:58px;	
+		right:55px;	
 	}
+}
+
+@media (max-width:320px){
+	.avatar{
+		display:none;	
+	}
+	.message-badge{
+		margin-top:10px;	
+	}
+	.profile-menu ul{
+		margin-top:52px;	
+	}
+	
+	.logo{
+		min-height: 92px;
+		line-height: 92px;	
+	}
+
+	.profile-menu ul li a .fa{
+		padding-left:2px;	
+	}
+
 }	
 /* end responsive */
 
