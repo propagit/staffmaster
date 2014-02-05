@@ -5,7 +5,7 @@
 	<input type="hidden" name="job_id" value="<?=$job_id;?>" />
 	<div class="form-group" id="f_start_date">
 		<label class="col-lg-3 control-label">Start Date/Time</label>
-		<div class="col-lg-9">
+		<div class="col-lg-6">
 			<div class="input-group date" id="start_date">
 				<input type="text" class="form-control" name="job_date" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
@@ -16,7 +16,7 @@
 	
 	<div class="form-group" id="f_finish_time">
 		<label class="col-lg-3 control-label">Finish Date/Time</label>
-		<div class="col-lg-9">
+		<div class="col-lg-6">
 			<div class="input-group date" id="finish_time">
 				<input type="text" class="form-control" name="finish_time" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
@@ -38,7 +38,7 @@
 	
 	<div class="form-group" id="f_break_start_at">
 		<label class="col-lg-3 control-label">Break Start At</label>
-		<div class="col-lg-9">
+		<div class="col-lg-6">
 			<div class="input-group date" id="break_start_time">
 				<input type="text" class="form-control" name="break_start_at" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
@@ -95,8 +95,15 @@
 	</div>
 	
 	<div class="form-group">
+		<label for="supervisor_id" class="col-lg-3 control-label">Supervisor</label>
+		<div class="col-lg-6">
+			<input type="text" class="form-control" name="supervisor_id" id="supervisor_id" />
+		</div>
+	</div>	
+	
+	<div class="form-group">
 		<div class="col-lg-offset-3 col-lg-8">
-			<a class="btn btn-core" id="btn_create_js"><i class="fa fa-plus-circle"></i> Create Job Shifts</a>
+			<a class="btn btn-core" id="btn_create_js"><i class="fa fa-plus-circle"></i> Create Shifts</a>
 			&nbsp; 
 			<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset Form</button>
 		</div>
@@ -156,7 +163,7 @@ $(function(){
     	$('.form-group').removeClass('has-error');
 	    $.ajax({
 	    	type: "POST",
-	    	url: "<?=base_url();?>job/ajax/create_job_shifts",
+	    	url: "<?=base_url();?>job/ajax/create_shifts",
 	    	data: $('#form_create_js').serialize(),
 			success: function(data)
 			{
@@ -167,7 +174,7 @@ $(function(){
 				}
 				else
 				{
-					load_job_shifts(<?=$job_id;?>);
+					load_job_shifts(<?=$job_id;?>, data.job_date);
 				}
 				
 			}			

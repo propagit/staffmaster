@@ -56,7 +56,8 @@ $(function(){
 					$('#shift_staff_' + data.shift_id).removeClass(function (index, css) {
 					    return (css.match (/\bbtn-\S+/g) || []).join(' ');
 					});
-					$('#shift_staff_' + data.shift_id).addClass('btn-xs btn-' + data.btn_class);
+					$('#shift_staff_' + data.shift_id).parent().parent().removeClass();
+					$('#shift_staff_' + data.shift_id).parent().parent().addClass(data.class_name);
 				}
 			}
 		})

@@ -14,6 +14,7 @@
 		<li class="active"><a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>
 	</ul>
 </div>
+<div class="clearfix"></div>
 <div id="calendar"></div>
 
 

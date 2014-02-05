@@ -13,6 +13,8 @@ class Common extends MX_Controller {
 		parent::__construct();
 		$this->load->model('common_model');
 	}
+	
+	
 		
 	function dropdown_actions($target, $actions)
 	{

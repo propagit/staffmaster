@@ -1,11 +1,10 @@
 "use strict";
-/*
- * job_id: (int) 
- * date: (string) YYYY-MM-DD format
+/**
+ * job_id: (int), date: (string) YYYY-MM-DD format
  */
 function load_job_shifts(job_id, date, scroll)
 {
-	if (date)
+	if (date && date != 'all')
 	{
 		var job_date = moment(date).format("DD-MM-YYYY");                
 		$('input[name="job_date"]').val(job_date + " 12:00");
@@ -18,7 +17,7 @@ function load_job_shifts(job_id, date, scroll)
 	preloading($('#wrapper_js'));
 	$.ajax({
 		type: "POST",
-		url: base_url + 'job/ajax/load_job_shifts',
+		url: base_url + 'job/ajax/load_day_shifts',
 		data: { job_id: job_id, date: date },
 		success: function(html)
 		{
@@ -49,15 +48,15 @@ function load_job_calendar(job_id, date)
 	})
 }
 /* 
- * job_id: (int)
- * custom_date: (int) timestamp format
+ * job_id: (int) 
+ * date: (int) timestamp format
  */
-function load_month_view(job_id, custom_date)
+function load_month_view(job_id, date)
 {
 	$.ajax({
 		type: "POST",
 		url: base_url + 'job/ajax/load_month_view',
-		data: { date: custom_date},
+		data: { date: date},
 		success: function(html)
 		{
 			$('body').scrollTo('#wrapper_calendar', 500 );
@@ -67,14 +66,14 @@ function load_month_view(job_id, custom_date)
 }
 /* 
  * job_id: (int)
- * custom_date: (int) timestamp format
+ * date: (int) timestamp format
  */
-function load_week_view(job_id, custom_date)
+function load_week_view(job_id, date)
 {
 	$.ajax({
 		type: "POST",
 		url: base_url + 'job/ajax/load_week_view',
-		data: { date: custom_date},
+		data: { date: date},
 		success: function(html)
 		{
 			$('body').scrollTo('#wrapper_calendar', 500 );

@@ -8,15 +8,37 @@ class Job_shift_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
-	function get_job_shifts($job_id, $job_date=null)
+	function get_job_shifts($job_id, $job_date=null, $sort_key='date', $sort_value='asc')
 	{
-		$this->db->where('job_id', $job_id);
-		if ($job_date)
+		$sql = "SELECT js.*, v.name as venue_name, r.name as role_name 
+				FROM `job_shifts` js
+					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
+					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id 
+				WHERE js.job_id = '" . $job_id . "'
+				AND js.status != -1";
+		if ($job_date && $job_date != 'all')
 		{
-			$this->db->where('job_date', $job_date);
+			$sql .= " AND js.job_date = '" . $job_date . "'";
 		}
-		$this->db->where('status !=', -1);
-		$query = $this->db->get('job_shifts');
+		if ($sort_key == 'date')
+		{
+			$sql .= " ORDER BY js.job_date";
+		}
+		if ($sort_key == 'venue')
+		{
+			$sql .= " ORDER BY venue_name";
+		}
+		if ($sort_key == 'role')
+		{
+			$sql .= " ORDER BY role_name";
+		}
+		if ($sort_key == 'status')
+		{
+			$sql .= " ORDER BY js.status";
+		}
+		$sql .= " " . $sort_value;		
+			
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	
