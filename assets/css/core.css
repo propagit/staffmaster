@@ -31,7 +31,7 @@ a:hover {
 
 /* begin - profile bar */
 .profile-bar{ 
-	min-height:128px; 
+	/* min-height:128px;  */
 	background-image:url(../img/core/white-glow-under-logo-bg.png); 
 	background-repeat:no-repeat; 
 	background-position:top left;
@@ -482,7 +482,6 @@ a:hover {
 .table_action {
 	padding: 0 30px;
 	clear: both;
-	overflow: hidden;
 }
 .table_action .nav-tabs {
 	border-bottom: 0;
