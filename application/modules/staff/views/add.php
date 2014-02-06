@@ -1,13 +1,20 @@
-<h2>Add Staff</h2>
-<p>Add staff using below form or import multiple staff.</p>
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Add Staff</h2>
+		 <p>Add staff using below form or import multiple staff.</p>
+    </div>
+</div>
+<!--end top box-->
 
-
-<a href="<?=base_url();?>staff/search"><i class="fa fa-search"></i> Search Staff</a>
-<br /><br />
-<div class="panel panel-default">
-	<div class="panel-heading">Add New Staff</div>
-	<div class="panel-body">
-		<ul class="nav nav-pills">
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Add New Staff</h2>
+			<p>Add staff using below form or import multiple staff.</p>
+            
+            <ul class="nav nav-pills">
 			<li class="active"><a href="#">Personal Details</a></li>
 			<li class="disabled"><a href="#">Financial Details</a></li>
 			<li class="disabled"><a href="#">Super Details</a></li>
@@ -19,7 +26,8 @@
 			<li class="disabled"><a href="#">Settings</a></li>
 			<li class="disabled"><a href="#">Documents</a></li>
 		</ul>
-		<br />
+        
+        <br />
 		<p>Please note <span class="required">**</span> denotes a required field</p>
 		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/add">
 		<br />
@@ -168,5 +176,8 @@
 		
 		
 		</form>
-	</div>
+        </div>
+    </div>
 </div>
+<!--end bottom box -->
+

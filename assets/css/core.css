@@ -83,7 +83,7 @@ a:hover {
 	min-height:49px; 
 	border-bottom:1px solid #2fa5cc;
 }
-.nav{ 
+#nav-wrap .nav{ 
 	margin-left:-10px;
 }
 .nav > li > a{ 
@@ -212,11 +212,11 @@ a:hover {
 	.desktop-visible{ 
 		display:none;
 	}
-	.navbar{ 
+	#nav-wrap .navbar{ 
 		margin-bottom:0; 
 		min-height:49px;
 	}
-	.navbar .col-md-12{ 
+	#nav-wrap .navbar .col-md-12{ 
 		line-height:49px;
 		float:left; 
 		width:100%;
@@ -258,16 +258,16 @@ a:hover {
 		float:left; 
 		width:100%;
 	}
-	.nav{ 
+	#nav-wrap .nav{ 
 		padding-left:10px;
 	}
-	.nav li a{ 
+	#nav-wrap .nav li a{ 
 		font-size:20px;
 		padding-left:20px;
 		font-weight:100;
 		line-height:20px;
 	}
-	.nav a .fa{ 
+	#nav-wrap .nav a .fa{ 
 		font-size:20px;
 		padding-right:18px;
 	}
@@ -297,16 +297,16 @@ a:hover {
 		margin-bottom: 10px;
 		border-radius: 0;
 	}
-	.nav .open > a{
+	#nav-wrap .nav .open > a{
 		background-color:rgba(255,255,255,0.25) !important; 	
 	}
-	.nav .fa-angle-down{
+	#nav-wrap .nav .fa-angle-down{
 		display:none;
 	}
-	.nav .open .fa-angle-down{
+	#nav-wrap .nav .open .fa-angle-down{
 		display:block;
 	}
-	.nav .open .fa-caret-down{
+	#nav-wrap .nav .open .fa-caret-down{
 		display:none;	
 	}
 	.dropdown-menu > li > a{
@@ -331,7 +331,6 @@ a:hover {
 	border-color: #ccc;
 	color: #333;
 	border-radius: 5px 5px 0 0;
-	padding: 8px 15px;
 }
 .nav-tabs > li.active a,
 .nav-tabs > li.active a:hover {
@@ -446,12 +445,12 @@ a:hover {
 	width:100%;
 }
 
-.bottom-box .col-md-6:first-child{
+.bottom-box .white-box:first-child{
 	padding-left:0;
 	padding-right:10px;	
 }
 
-.bottom-box .col-md-6:nth-child(2){
+.bottom-box .white-box:nth-child(2){
 	padding-left:0;
 	padding-right:0;	
 }
@@ -551,6 +550,72 @@ a:hover {
 }
 
 
+/** 
+	Responsive tabs - when the page has a lot of tabs such that it no longer fits or responds properly
+	add this class to the tab .tab-respond
+ */
+.tab-respond li{
+	padding-top:5px;	
+}
+.tab-respond li a{
+	padding-left:10px;
+	padding-right:10px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+.tab-pane p:first-child{
+	margin-top:10px;	
+}
+
+/**
+	Form elements
+*/
+.form-group{
+	min-height: 35px;
+}
+.form-control{
+	border-radius:0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-webkit-transition: none;
+	transition: none;
+}
+.input-group-addon{
+	border-radius:0;	
+}
+.select-addon{
+	width: auto;
+	float: left;
+	margin-left: -34px;
+	line-height: 20px;
+	border:1px solid #ccc !important;
+}
+.addon-dob{
+	margin-left:-42px;	
+}
+.select-addon .fa{
+		
+}
+.custom-select{
+	float:left;
+}
+
+.col-dob{
+	margin-right:8px;
+}
+
+.dob-day{
+	width:20%;	
+}
+.dob-mth{
+	width:20%;	
+}
+.dob-year{
+	width:25%;	
+}
+
+
+
 @media(max-width:1200px){
 	.box p{ 
 		font-size:16px;
@@ -566,13 +631,23 @@ a:hover {
 }
 @media (max-width: 992px) {
 	
-	.bottom-box .col-md-6:first-child{
+	.bottom-box .white-box:first-child{
 		padding-bottom:10px;
 		padding-right:0;	
 	}
+	.tab-respond li{
+		text-align:center;
+	}
 	
+	.tab-respond li a{
+		
+	}
 }
 @media (max-width: 768px) {
+	.dob-day,.dob-mth,.dob-year{
+		width:30%;	
+	}
+
 }
 
 
@@ -584,4 +659,7 @@ a:hover {
 }
 .push{ 
 	float:left !important;
+}
+.no-rt-border{
+	border-right:none !important;	
 }

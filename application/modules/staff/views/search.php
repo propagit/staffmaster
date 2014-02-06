@@ -1,15 +1,20 @@
-<h2>Search Staff</h2>
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Search Staff</h2>
+		 <p>Find your staff to communicate with them or view and edit their profile.</p>
+    </div>
+</div>
+<!--end top box-->
 
-<p>Find your staff to communicate with them or view and edit their profile.</p>
-
-<a href="<?=base_url();?>job/search"><i class="fa fa-search"></i> Search Jobs</a>
-&nbsp; &nbsp; &nbsp;
-<a href="<?=base_url();?>staff/add"><i class="fa fa-plus"></i> Add Staff</a>
-<br /><br />
-<div class="panel panel-default">
-	<div class="panel-heading">Search Staff</div>
-	<div class="panel-body">
-		<form class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/search">
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Search Staff</h2>
+		 	<p>Find your staff to communicate with them or view and edit their profile.</p>
+            
+            <form class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/search">
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
@@ -90,8 +95,8 @@
 		
 		
 		</form>
-	</div>
-	<? if(isset($staffs)) { ?>
+           
+            <? if(isset($staffs)) { ?>
 	<div class="panel-heading panel-heading-mid">Your Search Returned: <?=count($staffs);?> Results</div>
 	<div class="panel-body">
 		<div class="pull-right">
@@ -141,4 +146,7 @@
 		<div class="clearfix"></div>
 	</div>
 	<? } ?>
+        </div>
+    </div>
 </div>
+<!--end bottom box -->

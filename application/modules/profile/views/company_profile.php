@@ -18,20 +18,35 @@ $('#cPicker').ColorPicker({
 	
 	$('#flatPicker').ColorPicker({flat: true});
 </script>
-<h2>Manage Company Profile</h2>
-<p>Your company profile information is used in various areas of the system such as email corospondance,<br />
-your invoices, your quotes and login screen, Please ensure the below information is accurate.</p>
-<br />
-<div class="panel panel-default">
-	<div class="panel-heading">Company Profile</div>
-	<div class="panel-body">
-    	<ul class="nav nav-tabs" id="navCompany">
-			<li class="active"><a href="#profile" data-toggle="tab">Company Information</a></li>
-			<li><a href="#logo" data-toggle="tab">Your Company Logo</a></li>
-            <li><a href="#emailtemplate" data-toggle="tab">Your Email Signature</a></li>			
-		</ul>
-        
-        <div class="tab-content">
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Manage Company Profile</h2>
+		 <p>
+         	Your company profile information is used in various areas of the system such as email corospondance
+			your invoices, your quotes and login screen, Please ensure the below information is accurate.
+         </p>
+    </div>
+</div>
+<!--end top box-->
+
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Manage Company Profile</h2>
+		 	<p>
+               Your company profile information is used in various areas of the system such as email corospondance
+			   your invoices, your quotes and login screen, Please ensure the below information is accurate.
+         	</p>
+            
+          	 <ul class="nav nav-tabs" id="navCompany">
+                <li class="active"><a href="#profile" data-toggle="tab">Company Information</a></li>
+                <li><a href="#logo" data-toggle="tab">Your Company Logo</a></li>
+                <li><a href="#emailtemplate" data-toggle="tab">Your Email Signature</a></li>			
+			 </ul> 
+              
+             <div class="tab-content">
             <div class="tab-pane active" id="profile">
             	<h2>Company Profile</h2>
         		<p>Enter your company information in the below form</p>
@@ -376,5 +391,7 @@ your invoices, your quotes and login screen, Please ensure the below information
                 </div>
             </div>
         </div>
+        </div>
     </div>
 </div>
+<!--end bottom box -->

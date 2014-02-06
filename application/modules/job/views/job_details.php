@@ -47,13 +47,13 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     
-    	<div class="col-md-6">
+    	<div class="col-md-6 white-box">
             <div class="inner-box">
                 <?=modules::run('job/shift/form_create', $job['job_id']);?>
             </div>
         </div>
         
-        <div class="col-md-6">
+        <div class="col-md-6 white-box">
             <div class="inner-box">
             	<h2>Weeks - Months Shifts</h2>
             	<p>Below you can see a schedule of all the jobs you have on for the week - month for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green.</p>

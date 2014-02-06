@@ -1,6 +1,27 @@
+========================
+6 Feb, 2014
 
+core.css
 
-
+	changed the css class name
+	.nav{ 
+		margin-left:-10px;
+	}
+	to
+	.nav-push-left{ 
+		margin-left:-10px;
+	}
+	and added this new class to the nav
+	this will eliminate further conflicts when using .nav class
+	
+	changed css modification to .col-md-6 for white box and added new class .white-box
+	This will eliminate css conflict while using .col-md-6
+	
+	See file "boxes-template.html" in updates folder for how to use the new class
+	
+	
+	.no-rt-border // this will remove the right border from an element, use when using with input-addon-group
+	
 ======================
 24 Jan, 2014
 
