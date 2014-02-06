@@ -40,12 +40,13 @@
 <header>
     <div class="container-fluid">
        <div class="row profile-bar">
-       		<div class="col-md-4 logo">
-                <img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
-            </div>
-            <div class="col-md-6 pull">
-            	<div class="avatar pull">
-                	<img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />
+       		<div class="col-md-12">
+            	<div class="logo">
+                	<img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
+                </div>
+
+                <div class="profile-menu">
+                    <?=modules::run('account/menu');?>
                 </div>
             </div>
        </div> 

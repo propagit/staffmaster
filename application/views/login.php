@@ -18,7 +18,7 @@
 		<input type="text" name="username"  class="form-control" placeholder="Username">
 		<input type="password" name="password" class="form-control" placeholder="Password">
 		<?=$msg_error;?>
-		<button class="btn btn-large btn-info" type="submit"><i class="icon-signin"></i> Login</button>
+		<button class="btn btn-large btn-info" type="submit"><i class="fa fa-sign-in"></i> Login</button>
 		
 	</form>
 </div>
