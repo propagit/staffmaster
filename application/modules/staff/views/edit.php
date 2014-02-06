@@ -28,6 +28,7 @@
 		<input type="hidden" name="tab_id" id="tab_id" />				
 			<div class="tab-content">
 				<div class="tab-pane active" id="personal">
+                	<br />
 					<p>Please note <span class="required">**</span> denotes a required field</p>
 					<div class="row">
 						<div class="col-md-6">
@@ -159,7 +160,7 @@
 				</div>
 				
 				<div class="tab-pane" id="financial">
-				
+					<br />
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -318,7 +319,7 @@
 				</div>
 				
 				<div class="tab-pane" id="super">
-				
+					<br />
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -393,14 +394,14 @@
 							<div class="form-group">
 								<label for="s_product_id" class="col-lg-4 control-label">Super Product ID</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" id="s_product_id" name="s_product_id" value="<?=$staff['s_product_id'];?>" />
+									<input type="text" class="form-control" id="s_product_id" name="s_product_id" value="<?=$staff['s_product_id'];?>" readonly="readonly"/>
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label for="s_fund_phone" class="col-lg-4 control-label">Super Phone</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" id="s_fund_phone" name="s_fund_phone" value="<?=$staff['s_fund_phone'];?>" />
+									<input type="text" class="form-control" id="s_fund_phone" name="s_fund_phone" value="<?=$staff['s_fund_phone'];?>" readonly="readonly" />
 								</div>
 							</div>			
 						</div>
@@ -408,7 +409,7 @@
 							<div class="form-group">
 								<label for="s_fund_website" class="col-lg-4 control-label">Super Fund Website</label>
 								<div class="col-lg-8">
-									<input type="text" class="form-control" id="s_fund_website" name="s_fund_website" value="<?=$staff['s_fund_website'];?>" />
+									<input type="text" class="form-control" id="s_fund_website" name="s_fund_website" value="<?=$staff['s_fund_website'];?>" readonly="readonly" />
 								</div>
 							</div>
 						</div>						
@@ -485,20 +486,21 @@
 				</div>
 				
 				<div class="tab-pane" id="availability">
-					<div class="row">
+					<br />
+                    <div class="row">
 						<div class="col-md-12">
 							<h2> Your Availability </h2>
                             <p> Please let us know the times that you are available for work</p>
                             
-                           <? echo '<pre>'.print_r($staff['availability'],true).'</pre>';?>
+                           <? //echo '<pre>'.print_r($staff_availability,true).'</pre>';?>
                             
-                            <?=modules::run('common/set_availability','availability',$staff['availability']);?>
+                            <?=modules::run('common/set_availability','availability',$staff_availability);?>
 						</div>
 					</div>
 				</div>
 				
 				<div class="tab-pane" id="roles">
-					
+					<br />
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -529,7 +531,7 @@
 				</div>
 				
 				<div class="tab-pane" id="payrate">
-					
+					<br />
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -557,11 +559,13 @@
 				</div>
 				
 				<div class="tab-pane" id="option">
-					Options
+					<br />
+                    Options
 				</div>
 				
 				<div class="tab-pane" id="location">
-					<div class="row">
+					<br />
+                    <div class="row">
 						<div class="col-md-12">
                         	To add locations that this staff can work in select from the drop down list
                             <br /><br />
@@ -599,7 +603,8 @@
 				</div>
 				
 				<div class="tab-pane" id="setting">
-					<div class="row">
+					<br />
+                    <div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="title" class="col-lg-4 control-label">Level Access</label>
@@ -648,7 +653,8 @@
 				
                 
 				<div class="tab-pane" id="document">
-					<div class="row">
+					<br />
+                    <div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="title" class="col-lg-2 control-label">Document Name</label>
@@ -674,38 +680,44 @@
                             <br />
                             <br />
                             <div class="row">
-                            	<div class="col-md-4">
-                                	<i class="fa fa-heart"></i> Profile Image <br />
-                                    <div style="border:1px solid #cdcdcd; padding:8px;border-radius:4px; background:#fff;width:-moz-max-content">
+                            	<div class="col-md-2" style="padding-left:0px;">
+                                	<i class="fa fa-heart"></i> Profile Image <br /><br />
+                                    <div class="profile_border">
                                     <? if($hero_photo){?> <img src="<?=base_url()?>uploads/staff/profile/<?=md5($staff['staff_id'])?>/thumbnail/<?=$hero_photo['name']?>"><? }else{?>
-                                            <div style="width:75px; height:75px; border:1px solid #000; color:#000; background:#c3c3c3; text-align:center; line-height:75px;">
+                                            <div class="no_photo">
                                                 No Photo
                                             </div>
                                     <? } ?>
                                     </div>
                                     
                                 </div>
-                                <div class="col-md-8">
-                                	<i class="fa fa-picture-o"></i> Your Gallery <br />
-                                    <div id="carousel" class="flexslider" style="border:1px solid #cdcdcd; padding:8px; padding-left:15px; padding-right:15px; border-radius:4px;">
+                                <div class="col-md-10">
+                                	<i class="fa fa-picture-o"></i> Your Gallery <br /><br />
+                                     <? if($photos){?>
+                                    <div id="carousel" class="flexslider gallery_staff">
                                       <ul class="slides popup-gallery">
-                                        <? if($photos){
+                                       <?
                                             foreach($photos as $photo){
                                                 $photo_src_full = base_url().'uploads/staff/profile/'.md5($staff['staff_id']).'/'.$photo['name'];                                    
                                                 $thumb_src = base_url().'uploads/staff/profile/'.md5($staff['staff_id']).'/thumbnail/'.$photo['name'];
                                             ?>
                                                 <li >
                                                 	<a title="<?=$photo['name'];?>" href="<?=$photo_src_full?>"><img style="width:auto!important;" src="<?=$thumb_src;?>" /></a>
-                                                	<div align="center" class="action_image" > <a href="#" onclick="set_hero(<?=$photo['id']?>)"><i class="fa fa-heart" <? if($photo['hero']==1){echo "style='color:#f00;'";}?> ></i></a> <a href="#" onclick="delete_photo(<?=$photo['id']?>)"><i class="fa fa-times"></i> </a></div>
+                                                	<div align="center" class="action_image" > 
+                                                    	<a href="#" onclick="set_hero(<?=$photo['id']?>)"><div class="action_icon"><i class="fa fa-heart" <? if($photo['hero']==1){echo "style='color:#f00;'";}?> ></i></div></a>
+                                                        <a href="#" onclick="delete_photo(<?=$photo['id']?>)"><div class="action_icon"><i class="fa fa-times"></i></div> </a>
+                                                    </div>
                                                 </li>
                                             <?
-                                            }
-                                         }?>
+                                            }?>
+                                         
                                         <!-- items mirrored twice, total of 12 -->
                                       </ul>
                                     </div>
-                                    
+                                    <? }?>
+                                    <div style="clear:both;"></div>
                                 </div>
+                                
                             </div>
                             
 						</div>
@@ -736,8 +748,14 @@
 
 <style>
 .action_image{
-	
+	height: 220px;position: absolute;top: 0px;width: 220px;background:#000; opacity:0.5; display:none;
 }
+.action_image :hover{display:block;line-height:35px;}
+.gallery_staff{border:1px solid #cdcdcd; padding:10px!important; padding-left:25px!important; padding-right:25px!important; border-radius:4px; margin-bottom:20px!important;}
+.profile_border{border:1px solid #cdcdcd; padding:10px;border-radius:4px; background:#fff;width:-moz-max-content}
+.no_photo{width:200px; height:200px; border:1px solid #000; color:#000; background:#c3c3c3; text-align:center; line-height:200px;}
+.popup-gallery li:hover .action_image{ display:block;}
+.action_icon{border:1px solid #ccc;background:#f9f9f9;width:35px; height:35px;text-align:center;line-height:35px; float:right;}
 </style>
 
 <!-- Add Image Modal -->
@@ -849,11 +867,13 @@ function load_s_choice()
 	var s_choice = $('input[name="s_choice"]:checked').val();
 	if (s_choice == "own") {
 		$('#own_choice').show();
+		$('input[name="s_fund_name"]').prop('readonly',false);
 		$('#employer_choice').hide();
 	}
 	else
 	{		
 		$('#employer_choice').show();
+		$('input[name="s_fund_name"]').attr('readonly','readonly');
 		$('#own_choice').hide();
 	}
 }

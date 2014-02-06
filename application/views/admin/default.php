@@ -61,14 +61,19 @@
 	<script src="<?=base_url();?>assets/js/core.admin.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-<? $user = $this->session->userdata('user_data'); ?>
+<? $user = $this->session->userdata('user_data');?>
 
 <header>
     <div class="container-fluid">
        <div class="row profile-bar">
-       		<div class="col-md-12">
-            	<div class="logo">
-                	<img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
+       		<div class="col-md-4 logo">
+                <img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
+            </div>
+            <div class="col-md-8 profile-menu">
+            	<div class="avatar pull">
+                	
+                    <? //=modules::run('common/profile_picture', 'profile', $user['user_id']);?>
+
                 </div>
 
                 <div class="profile-menu">
