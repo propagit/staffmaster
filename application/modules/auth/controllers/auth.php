@@ -38,7 +38,7 @@ class Auth extends MX_Controller {
 					redirect('');
 				}
 			}
-			$this->template->write('msg_error', '<div class="alert alert-error">Wrong username/password</div>');
+			$this->template->write('msg_error', '<div class="alert alert-danger">Wrong username/password</div>');
 			
 		}
 		$this->template->render();
