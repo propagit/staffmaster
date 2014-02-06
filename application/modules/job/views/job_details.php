@@ -119,7 +119,7 @@ $(function(){
 			
 	load_job_shifts(<?=$job['job_id'];?>);
 })
-function  sort_shifts(key) {
+function sort_shifts(key) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>job/ajax/sort_shifts",

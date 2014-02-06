@@ -198,4 +198,8 @@ a.default {
 }
 
 
+/* Styles for Job board / popover */
+#form_update_shift_staff #f_shift_staff {
+	margin-right: 10px;
+}
 

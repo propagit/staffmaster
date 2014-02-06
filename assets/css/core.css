@@ -83,9 +83,6 @@ a:hover {
 	min-height:49px; 
 	border-bottom:1px solid #2fa5cc;
 }
-.nav{ 
-	margin-left:-10px;
-}
 .nav > li > a{ 
 	padding:14px 10px 14px 10px; 
 	color:#fff;
@@ -325,6 +322,9 @@ a:hover {
 
 
 /* Custom styles for nav tab */
+.nav-tabs > li {
+	margin-right: 5px;
+}
 .nav-tabs > li a,
 .nav-tabs > li a:hover {
 	background: #ebebeb;
@@ -477,6 +477,9 @@ a:hover {
 	font-family:'Lato', sans-serif;
 	letter-spacing:-1px;
 	color:#3d3d3d;
+}
+.box h2.lg {
+	padding: 20px 0;
 }
 .top-box p{ 
 	font-size:16px;
