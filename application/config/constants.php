@@ -43,5 +43,11 @@ define('COLOR_HILI', '#ffffff');
 define('COLOR_MIDT', '#8799a3');
 define('COLOR_DARK', '#000000');
 
+define('SHIFT_DELETED', -2);
+define('SHIFT_REJECTED', -1);
+define('SHIFT_UNASSIGNED', 0);
+define('SHIFT_UNCONFIRMED', 1);
+define('SHIFT_CONFIRMED', 2);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

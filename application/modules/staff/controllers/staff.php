@@ -164,37 +164,100 @@ class Staff extends MX_Controller {
 		}
 		else
 		{
+			
+			$staff = $this->staff_model->get_staff($user_id);
 			$data = $this->input->post();
-			//print_r($data);
-			//$avail = array();
-			//$avail['day'] = 1;
-			$avail = array();
-			$avail[0]['day'] =1;
-			$avail[0]['time'][0] =$data['monday_start_at'].','.$data['monday_finish_at'];
-
-			$avail[1]['day'] =2;
-			$avail[1]['time'][0] =$data['tuesday_start_at'].','.$data['tuesday_finish_at'];
 			
-			$avail[2]['day'] =3;
-			$avail[2]['time'][0] =$data['wednesday_start_at'].','.$data['wednesday_finish_at'];
+			$mon = $this->input->post('monday_time');
+			$mons = explode('#',$mon);
+			$monday = array();
+			foreach($mons as $mn)
+			{
+				if($mn!="" && $mn!=" ")
+				{
+					$monday[] = $mn;
+				}
+			}
 			
-			$avail[3]['day'] =4;
-			$avail[3]['time'][0] =$data['thursday_start_at'].','.$data['thursday_finish_at'];
+			$tue = $this->input->post('tuesday_time');
+			$tues = explode('#',$tue);
+			$tuesday = array();
+			foreach($tues as $tu)
+			{
+				if($tu!="" && $tu!=" ")
+				{
+					$tuesday[] = $tu;
+				}
+			}
 			
-			$avail[4]['day'] =5;
-			$avail[4]['time'][0] =$data['friday_start_at'].','.$data['friday_finish_at'];
+			$wed = $this->input->post('wednesday_time');
+			$weds = explode('#',$wed);
+			$wednesday = array();
+			foreach($weds as $we)
+			{
+				if($we!="" && $we!=" ")
+				{
+					$wednesday[] = $we;
+				}
+			}
 			
-			$avail[5]['day'] =6;
-			$avail[5]['time'][0] =$data['saturday_start_at'].','.$data['saturday_finish_at'];
+			$thu = $this->input->post('thursday_time');
+			$thurs = explode('#',$thu);
+			$thursday = array();
+			foreach($thurs as $th)
+			{
+				if($th!="" && $th!=" ")
+				{
+					$thursday[] = $th;
+				}
+			}
 			
-			$avail[6]['day'] =7;
-			$avail[6]['time'][0] =$data['sunday_start_at'].','.$data['sunday_finish_at'];
-
+			$fri = $this->input->post('friday_time');
+			$frid = explode('#',$fri);
+			$friday = array();
+			foreach($frid as $fr)
+			{
+				if($fr!="" && $fr!=" ")
+				{
+					$friday[] = $fr;
+				}
+			}
+			
+			$sat = $this->input->post('saturday_time');
+			$satu = explode('#',$sat);
+			$saturday = array();
+			foreach($satu as $st)
+			{
+				if($st!="" && $st!=" ")
+				{
+					$saturday[] = $st;
+				}
+			}
+			
+			$sun = $this->input->post('sunday_time');
+			$sund = explode('#',$sun);
+			$sunday = array();
+			foreach($sund as $su)
+			{
+				if($su!="" && $su!=" ")
+				{
+					$sunday[] = $su;
+				}
+			}
+			
+			$availability_data = array(
+				'monday' => json_encode($monday),
+				'tuesday' => json_encode($tuesday),
+				'wednesday' => json_encode($wednesday),
+				'thursday' => json_encode($thursday),
+				'friday' => json_encode($friday),
+				'saturday' => json_encode($saturday),
+				'sunday' => json_encode($sunday),
+				'staff_id' => $staff['staff_id'],
+			);
+			$this->staff_model->update_user_availability($staff['staff_id'],$availability_data);
 			
 			
-			
-			
-			//if($data['monday_start_at'] > $data['monday_finish_at']){}
 			
 			$user_data = array(
 				'password' => $data['password'],
@@ -263,7 +326,7 @@ class Staff extends MX_Controller {
 				's_fund_state' => $data['s_fund_state'],
 				's_fund_postcode' => $data['s_fund_postcode'],
 				's_agree' => isset($data['s_agree']) ? $data['s_agree'] : 0,
-				'availability' => isset($avail) ? json_encode($avail) : '',
+				//'availability' => isset($avail) ? json_encode($avail) : '',
 				'payrates' => isset($data['payrates']) ? json_encode($data['payrates']) : '',
 				'roles' => isset($data['roles']) ? json_encode($data['roles']) : '',
 				//'locations' => isset($data['locations']) ? json_encode($data['locations']) : ''
@@ -272,11 +335,14 @@ class Staff extends MX_Controller {
 			$this->staff_model->update_staff($user_id, $staff_data);
 		}
 		$staff = $this->staff_model->get_staff($user_id);
+		$staff_availability = $this->staff_model->get_staff_availability($staff['staff_id']);
+		if(count($staff_availability)==0){$staff_availability='';}
 		$photos = $this->staff_model->get_all_photos($staff['staff_id']);
 		$hero_photo = $this->staff_model->get_hero($staff['staff_id']);
 		$data['hero_photo'] = $hero_photo;
 		$data['photos'] =$photos;
 		$data['staff'] = $staff;
+		$data['staff_availability'] = $staff_availability;
 		$this->load->view('edit', isset($data) ? $data : NULL);
 	}
 	

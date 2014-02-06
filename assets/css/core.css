@@ -49,6 +49,68 @@ a:hover {
 	-webkit-box-shadow: 0 1px 3px #1e1e1e;
 	-moz-box-shadow: 0 1px 3px #1e1e1e;
 }
+/* begin - profile bar */
+.avatar{ 
+	
+}
+.avatar img{ 
+	box-shadow: 0 1px 3px #1e1e1e;
+	-webkit-box-shadow: 0 1px 3px #1e1e1e;
+	-moz-box-shadow: 0 1px 3px #1e1e1e;
+}
+
+.profile-menu{
+	float:right;	
+}
+
+.profile-menu ul{
+	text-align:left;
+	width:330px;
+	list-style:none;
+	float:right;
+	display:block;
+	padding-top:0;
+	padding-bottom:0;
+	padding-left:10px;
+	padding-right:0;
+	margin-top:40px;	
+}
+
+
+.profile-menu ul li{	
+	float:left;
+	width:140px;
+	font-size:16px;
+	color:#00bbf8;
+}
+
+.profile-menu ul li a{
+	font-size:16px;
+	color:#00bbf8;
+	font-weight:600;
+}
+.profile-menu ul li a .fa{
+	padding-right:10px;
+	font-size:20px;
+}
+
+.li-seprator{
+	padding-right: 28px;
+	width: 10px !important;
+}
+
+.message-badge{
+	width:auto; 
+	color:#ff0000;
+	float:right;
+	margin-top:60px;	
+	position: absolute;
+	margin-left: -40px;
+}
+
+.message-badge .fa-caret-down{
+		display:none;	
+}
 
 /* begin - bootstrap overwrites */
 
@@ -82,9 +144,6 @@ a:hover {
 	background-color:#00b1eb;
 	min-height:49px; 
 	border-bottom:1px solid #2fa5cc;
-}
-.nav{ 
-	margin-left:-10px;
 }
 .nav > li > a{ 
 	padding:14px 10px 14px 10px; 
@@ -325,6 +384,9 @@ a:hover {
 
 
 /* Custom styles for nav tab */
+.nav-tabs > li {
+	margin-right: 5px;
+}
 .nav-tabs > li a,
 .nav-tabs > li a:hover {
 	background: #ebebeb;
@@ -477,6 +539,9 @@ a:hover {
 	font-family:'Lato', sans-serif;
 	letter-spacing:-1px;
 	color:#3d3d3d;
+}
+.box h2.lg {
+	padding: 20px 0;
 }
 .top-box p{ 
 	font-size:16px;

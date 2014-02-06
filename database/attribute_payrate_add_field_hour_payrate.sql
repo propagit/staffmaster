@@ -1,1 +1,0 @@
-ALTER TABLE `attribute_payrates` ADD `hour_payrate` LONGTEXT NOT NULL ;

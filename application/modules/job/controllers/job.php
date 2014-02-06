@@ -7,6 +7,7 @@
 
 class Job extends MX_Controller {
 
+	var $user = null;
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +15,7 @@ class Job extends MX_Controller {
 		$this->load->model('job_model');
 		$this->load->model('job_shift_model');
 		$this->load->model('client/client_model');
+		$this->user = $this->session->userdata('user_data');
 	}
 	
 	public function index($method='', $param1='', $param2='', $param3='',$param4='')
@@ -60,18 +62,22 @@ class Job extends MX_Controller {
 		else
 		{
 			$data = $this->input->post();
+			$data['user_id'] = $this->user['user_id'];
 			$job_id = $this->job_model->insert_job($data);
 			redirect('job/details/' . $job_id);
 		}
 		$this->load->view('create', isset($data) ? $data : NULL);
 	}
 	
-	function job_details($job_id)
+	function job_details($job_id, $job_date = '')
 	{
 		$this->session->unset_userdata('job_date');
 		if (!$job_id)
 		{
 			redirect('job');
+		}
+		if ($job_date) {
+			$this->session->set_userdata('job_date', $job_date);
 		}
 		$job = $this->job_model->get_job($job_id);
 		$data['job'] = $job;
@@ -85,8 +91,8 @@ class Job extends MX_Controller {
 		if ($this->input->post())
 		{
 			$data['jobs'] = $this->job_model->search_jobs($this->input->post('keyword'));	
-		}		
-		$this->load->view('jobs_search', isset($data) ? $data : NULL);
+		}
+		$this->load->view('jobs_search_form', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -96,13 +102,13 @@ class Job extends MX_Controller {
 	*	@param: (int) $job_id, (int - timestamp) $job_date
 	*	@return: (int)
 	*/
-	function count_job_shifts($job_id, $job_date = null)
+	function count_job_shifts($job_id, $job_date = null, $status = null)
 	{
 		if ($job_date)
 		{
 			$job_date = date('Y-m-d', $job_date);
 		}
-		echo $this->job_shift_model->count_job_shifts($job_id, $job_date);
+		echo $this->job_shift_model->count_job_shifts($job_id, $job_date, $status);
 	}
 	/**
 	*	@name: get_day_shifts
@@ -137,19 +143,30 @@ class Job extends MX_Controller {
 		$this->load->view('dropdown_engines', isset($data) ? $data : NULL);
 	}
 	
+	function get_job_start_date($job_id)
+	{
+		return $this->job_model->get_job_start_date($job_id);
+	}
+	
+	function get_job_finish_date($job_id)
+	{
+		return $this->job_model->get_job_finish_date($job_id);
+	}
+
+	
 	
 	function status_to_class($status)
 	{
 		$class = '';
 		switch($status)
 		{
-			case 1: $class = 'active';
+			case SHIFT_UNCONFIRMED: $class = 'active';
 				break;
-			case 2: $class = 'success';
+			case SHIFT_CONFIRMED: $class = 'success';
 				break;
-			case 3: $class = 'danger';
+			case SHIFT_REJECTED: $class = 'danger';
 				break;
-			case 0:
+			case SHIFT_UNASSIGNED:
 			default: $class = '';
 				break;
 		}

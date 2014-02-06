@@ -25,7 +25,16 @@ class Ajax extends MX_Controller {
 	{
 		$data = $this->input->post();
 		$data['jobs'] = $this->job_model->search_jobs($data);
-		$this->load->view('jobs_search_list_view', isset($data) ? $data : NULL);
+		$this->load->view('jobs_search_results_view', isset($data) ? $data : NULL);
+	}
+	
+	function search_shifts()
+	{
+		$data = $this->input->post();
+		$data['shifts'] = $this->job_shift_model->search_shifts($data,
+						$this->session->userdata('shifts_sort_key'),
+						$this->session->userdata('shifts_sort_value'));
+		$this->load->view('shifts_search_results_view', isset($data) ? $data : NULL);
 	}
 	
 	/**

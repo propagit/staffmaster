@@ -1,68 +1,6 @@
 /* CSS Document */
 @import url("core.css");
 
-/* begin - profile bar */
-.avatar{ 
-	
-}
-.avatar img{ 
-	box-shadow: 0 1px 3px #1e1e1e;
-	-webkit-box-shadow: 0 1px 3px #1e1e1e;
-	-moz-box-shadow: 0 1px 3px #1e1e1e;
-}
-
-.profile-menu{
-	float:right;	
-}
-
-.profile-menu ul{
-	text-align:left;
-	width:330px;
-	list-style:none;
-	float:right;
-	display:block;
-	padding-top:0;
-	padding-bottom:0;
-	padding-left:10px;
-	padding-right:0;
-	margin-top:40px;	
-}
-
-
-.profile-menu ul li{	
-	float:left;
-	width:140px;
-	font-size:16px;
-	color:#00bbf8;
-}
-
-.profile-menu ul li a{
-	font-size:16px;
-	color:#00bbf8;
-	font-weight:600;
-}
-.profile-menu ul li a .fa{
-	padding-right:10px;
-	font-size:20px;
-}
-
-.li-seprator{
-	padding-right: 28px;
-	width: 10px !important;
-}
-
-.message-badge{
-	width:auto; 
-	color:#ff0000;
-	float:right;
-	margin-top:55px;	
-	position: absolute;
-	margin-left: -40px;
-}
-
-.message-badge .fa-caret-down{
-		display:none;	
-}
 
 
 /* Styles for job details page */
@@ -220,4 +158,8 @@ a.default {
 }
 
 
+/* Styles for Job board / popover */
+#form_update_shift_staff #f_shift_staff {
+	margin-right: 10px;
+}
 

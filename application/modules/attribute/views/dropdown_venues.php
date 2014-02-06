@@ -7,7 +7,7 @@
 	$data_source = implode(",", $data_source);
 ?>
 
-<input type="text" name="<?=$field_name;?>" class="typeahead-devs form-control" />
+<input type="text" name="<?=$field_name;?>" class="typeahead-devs form-control" placeholder="enter venue name..." />
 
 <script>
 $(function(){
