@@ -48,7 +48,7 @@ class Common_model extends CI_Model {
 	function get_user_data($staff_id)
 	{
 		$this->db->where('staff_id', $staff_id);
-		$query = $this->db->get('user');
+		$query = $this->db->get('user_staffs');
 		return $query->first_row('array');
 	}
 	function add_picture($data)

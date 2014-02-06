@@ -7,16 +7,27 @@
 	$data_source = implode(",", $data_source);
 ?>
 
-<input type="text" name="<?=$field_name;?>" class="typeahead-devs form-control"  value="<?=$field_value?>" onfocus="check_super(this)"/>
+<input type="text" name="<?=$field_name;?>" class="typeahead-devs form-control"  value="<?=$field_value?>" />
 
 <script>
+var myData=[<?=$data_source;?>];
 $(function(){
+	
+	
 	$('input.typeahead-devs').typeahead({
 		name: '<?=$field_name;?>',
-		local: [<?=$data_source;?>]
-	});
+		local: [<?=$data_source;?>],
+		source: [<?=$data_source;?>]
+	}).blur(validateSelection);
 	
 })
+function validateSelection() {
+    if ($.inArray($(this).val(), myData) === -1) {
+        alert('Sorry, the super name is not available in our system');
+		
+	}
+		
+}
 function check_super(e)
 {
 	var super_name = e.value;
@@ -26,10 +37,7 @@ function check_super(e)
 		data: ({super_value:super_name}),
 		dataType: "html",
 		success: function(html) {
-			if(html==1)
-			{
-				//alert('Sorry, we dont have your super name at our database. Please choose other and fill in your super');
-			}
+			alert(html);
 		}
 	})		
 }

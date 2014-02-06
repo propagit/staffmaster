@@ -12,6 +12,7 @@ class Common extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('common_model');
+		$this->load->model('staff/staff_model');
 	}
 		
 	function dropdown_actions($target, $actions)
@@ -329,7 +330,7 @@ class Common extends MX_Controller {
 	function upload_picture_file($field_name,$field_value=NULL)
 	{
 		$staff_id = $this->input->post('staff_id');
-		$user_id = $this->common_model->get_user($staff_id);
+		$user_id = $this->common_model->get_user_data($staff_id);
 		
 		$path = "./uploads/staff";
 		$dir = $path;
@@ -409,7 +410,7 @@ class Common extends MX_Controller {
 			//echo $target.'<br>';
 			$this->scale_image($target,$target,$new_width,$new_height);	
 		}
-		redirect('staff/edit/'.$staff_id);
+		redirect('staff/edit/'.$user_id['user_id']);
 	}
 	function upload_picture($field_name,$field_value=NULL)
 	{
@@ -467,8 +468,57 @@ class Common extends MX_Controller {
 	
 	function set_availability($field_name,$field_value=NULL)
 	{
-		$data['field_value'] = $field_value;
-
+	
+		if($field_value==''){
+			$data['monday'] = '';
+			$data['tuesday'] = '';
+			$data['wednesday'] = '';
+			$data['thursday'] = '';
+			$data['friday'] = '';
+			$data['saturday'] = '';
+			$data['sunday'] = '';
+		}else{
+			$data['monday'] = json_decode($field_value['monday']);
+			$data['tuesday'] = json_decode($field_value['tuesday']);
+			$data['wednesday'] = json_decode($field_value['wednesday']);
+			$data['thursday'] = json_decode($field_value['thursday']);
+			$data['friday'] = json_decode($field_value['friday']);
+			$data['saturday'] = json_decode($field_value['saturday']);
+			$data['sunday'] = json_decode($field_value['sunday']);
+		}
+		$data['num'] = 0;
 		$this->load->view('set_availability', isset($data) ? $data : NULL);
+	}
+	
+	function add_availability()
+	{
+		$from_day = $this->input->post('from_day');
+		$to_day = $this->input->post('to_day');
+		$start_time = $this->input->post('start_time');
+		$finish_time = $this->input->post('finish_time');
+		$num = $this->input->post('num');
+		$data['from_day'] = $from_day;
+		$data['to_day'] = $to_day;
+		$data['start_time'] = $start_time;
+		$data['finish_time'] = $finish_time;
+		$data['num'] = $num;
+		$this->load->view('dropdown_availability', isset($data) ? $data : NULL);
+	}
+	/**
+	*    @desc To display profile picture based on user_id
+	*   
+	*    @param $field_name, $field_value=null; $field_name: name of that element such as location_id or id_location; $field_value: value if the location that need to show
+	*    @return loads the profile picture
+	* 
+	*/
+	function profile_picture($field_name, $field_value=NULL)
+	{		
+		
+		$staff = $this->staff_model->get_staff($field_value);
+		$photo = $this->staff_model->get_hero($staff['staff_id']);
+		$data['staff'] = $staff;
+		$data['photo'] = $photo;
+
+		$this->load->view('admin_profile_picture', isset($data) ? $data : NULL);
 	}
 }

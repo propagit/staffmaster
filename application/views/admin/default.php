@@ -61,7 +61,9 @@
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-<? $user = $this->session->userdata('user_data'); ?>
+<? $user = $this->session->userdata('user_data'); 
+
+?>
 
 <header>
     <div class="container-fluid">
@@ -71,7 +73,8 @@
             </div>
             <div class="col-md-8 profile-menu">
             	<div class="avatar pull">
-                	<img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />
+                	<!--<img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />-->
+                    <?=modules::run('common/profile_picture', 'profile', $user['user_id']);?>
                 </div>
             	<ul class="first-child">
                 	<li><a title="Dashboard" href=""><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li><li class="li-seprator">|</li>

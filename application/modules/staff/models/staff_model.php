@@ -42,7 +42,7 @@ class Staff_model extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		return $this->db->update('user_staffs', $data);
 	}
-	
+		
 	function delete_staff($user_id)
 	{
 		$this->db->where('user_id', $user_id);
@@ -61,5 +61,27 @@ class Staff_model extends CI_Model {
 		$this->db->where('hero', 1);
 		$query = $this->db->get('user_staff_picture');
 		return $query->first_row('array');
+	}
+	function update_user_availability($staff_id, $data)
+	{		
+		$this->db->where('staff_id', $staff_id);
+		$query = $this->db->get('user_staff_availability');
+		$check = $query->first_row('array');
+		
+		if(count($check)>0){
+			$this->db->where('staff_id', $staff_id);
+			return $this->db->update('user_staff_availability', $data);
+		}else
+		{
+			$this->db->insert('user_staff_availability', $data);
+			return $this->db->insert_id();
+		}
+	}
+	
+	function get_staff_availability($staff_id)
+	{
+		$this->db->where('staff_id', $staff_id);
+		$query = $this->db->get('user_staff_availability');
+		return  $query->first_row('array');
 	}
 }
