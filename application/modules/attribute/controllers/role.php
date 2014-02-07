@@ -103,12 +103,17 @@ class Role extends MX_Controller {
 		return $this->role_model->get_role($role_id);
 	}
 	
-	function dropdown($field_name, $field_value=null)
+	function field_select($field_name, $field_value=null)
 	{
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$data['roles'] = $this->role_model->get_roles();
-		$this->load->view('dropdown_roles', isset($data) ? $data : NULL);
-	}
-	
+		$roles = $this->role_model->get_roles();
+		$array = array();
+		foreach($roles as $role)
+		{
+			$array[] = array(
+				'value' => $role['role_id'],
+				'label' => $role['name']
+			);
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}	
 }

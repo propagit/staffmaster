@@ -1,8 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-*    @class_desc    This is common controller to handle common module such as state or country drop down. It will only called the function and can be used in any views/modules
-*    @class_comments Dependent on Common_model. List of common module is: action, status,supers, states, countries, titles, genders, dob, location
+*    @class_desc: controller to handle common module such as field_select and can be used in any views/modules
 *    
 */
 
@@ -15,8 +14,126 @@ class Common extends MX_Controller {
 		$this->load->model('staff/staff_model');
 	}
 	
+	/**
+	*	@name: field_select
+	*	@desc: custom select input field
+	*	@access: public
+	*	@param: - $array: an array of field value/label pairs
+	*			- $field_name: string of field name
+	*			- $field_value (optional): selected value of field
+	*			- $size (optional): size 
+	*	@return: custom view of select input field
+	*/
+	function field_select($array, $field_name, $field_value=null, $size=null) {
+		$data = array(
+			'data' => $array,
+			'field_name' => $field_name,
+			'field_value' => $field_value,
+			'size' => $size
+		);
+		$this->load->view('field_select', isset($data) ? $data : NULL);
+	}
 	
-		
+	/**
+	*	@name: field_select_states
+	*	@desc: custom select states field
+	*	@access: public
+	*	@param: - $field_name: string of field name
+	*			- $field_value (optional): selected state code
+	*			- $size (optional): size 
+	*	@return: custom view of select states field
+	*/
+	function field_select_states($field_name, $field_value=null, $size=null) {
+		$states = $this->common_model->get_states();
+		$array = array();
+		foreach($states as $state)
+		{
+			$array[] = array(
+				'value' => $state['code'],
+				'label' => $state['name']
+			);
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+	
+	/**
+	*	@name: field_select_countries
+	*	@desc: custom select countries field
+	*	@access: public
+	*	@param: - $field_name: string of field name
+	*			- $field_value (optional): selected country code
+	*			- $size (optional): size 
+	*	@return: custom view of select states field
+	*/
+	function field_select_countries($field_name, $field_value=null, $size=null) {
+		$countries = $this->common_model->get_countries();
+		if ($field_value == null || $field_value=='')
+		{
+			$field_value = 'AU';
+		}
+		$array = array();
+		foreach($countries as $country)
+		{
+			$array[] = array(
+				'value' => $country['code'],
+				'label' => $country['name']
+			);
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+	
+	/**
+	*	@name: field_select_genders
+	*	@desc: custom select genders field
+	*	@access: public
+	*	@param: - $field_name: string of field name
+	*			- $field_value (optional): selected gender value
+	*			- $size (optional): size
+	*	@return: custom select gender field
+	*/
+	function field_select_genders($field_name, $field_value=null, $size=null) {
+		$array = array(
+			array('value' => GENDER_MALE, 'label' => 'Male'),
+			array('value' => GENDER_FEMALE, 'label' => 'Female')
+		);
+		return $this->field_select($array, $field_name, $field_value);
+	}
+	
+	/**
+	*	@name: field_select_title
+	*	@desc: custom select title field
+	*	@access: public
+	*	@param: - $field_name: string of field name
+	*			- $field_value (optional): selected gender value
+	*			- $size (optional): size
+	*	@return: custom select title field
+	*/
+	function field_select_title($field_name, $field_value=null, $size=null) {
+		$array = array(
+			array('value' => 'Mr', 'label' => 'Mr'),
+			array('value' => 'Miss', 'label' => 'Miss'),
+			array('value' => 'Mrs', 'label' => 'Mrs')
+		);
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+	
+	/**
+	*    @name: field_rating
+	*    @desc: custom input field for rating
+	*    @access public
+	*    @param: - $field_name
+	*			- $field_value (optional) 
+	*    @return: custom input field for rating 
+	*/
+	function field_rating($field_name,$field_value=null) {
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('field_rating', isset($data) ? $data : NULL);
+	}
+	
+	
+	
+	
 	function dropdown_actions($target, $actions)
 	{
 		$data['target'] = $target;
@@ -66,40 +183,7 @@ class Common extends MX_Controller {
 		
 	}
 	
-	function dropdown_states($field_name, $field_value=null)
-	{
-		$data['states'] = $this->common_model->get_states();
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$this->load->view('dropdown_states', isset($data) ? $data : NULL);
-	}
-	
-	function dropdown_countries($field_name, $field_value=null)
-	{
-		$data['countries'] = $this->common_model->get_countries();
-		$data['field_name'] = $field_name;
-		if ($field_value == null || $field_value=='')
-		{
-			$field_value = 'AU';
-		}
-		$data['field_value'] = $field_value;
-		$this->load->view('dropdown_countries', isset($data) ? $data : NULL);
-	}
-	
-	function dropdown_titles($field_name, $field_value=null)
-	{
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$this->load->view('dropdown_titles', isset($data) ? $data : NULL);
-	}
-	
-	function dropdown_genders($field_name, $field_value=null)
-	{
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$this->load->view('dropdown_genders', isset($data) ? $data : NULL);
-	}
-	
+		
 	function dropdown_dob($day=null, $month=null, $year=null)
 	{
 		$data['day'] = $day;
@@ -127,20 +211,7 @@ class Common extends MX_Controller {
 		}
 	}
 	
-	/**
-	*    @desc Show the rating input element
-	*    @name rating
-	*    @access public
-	*    @param $field_name, $field_value=null; 
-	*    @return loads the rating select element	
-	* 
-	*/
-	function select_rating($field_name,$field_value=null)
-	{
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$this->load->view('select_rating', isset($data) ? $data : NULL);
-	}
+	
 	
 	
 	/**

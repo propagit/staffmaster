@@ -43,6 +43,16 @@ define('COLOR_HILI', '#ffffff');
 define('COLOR_MIDT', '#8799a3');
 define('COLOR_DARK', '#000000');
 
+
+
+define('STAFF_DELETED', -2);
+define('STAFF_INACTIVE', -1);
+define('STAFF_PENDING', 0);
+define('STAFF_ACTIVE', 2);
+
+define('GENDER_MALE', 'm');
+define('GENDER_FEMALE', 'f');
+
 define('SHIFT_DELETED', -2);
 define('SHIFT_REJECTED', -1);
 define('SHIFT_UNASSIGNED', 0);

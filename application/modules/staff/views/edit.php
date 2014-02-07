@@ -14,7 +14,7 @@
             <h2>Edit Staff</h2>
 			<p>Edit staff using below form.</p>
             
-            <ul class="nav nav-tabs" id="navStaff">
+            <ul class="nav nav-tabs tab-respond" id="navStaff">
 			<li class="active"><a href="#personal" data-toggle="tab">Personal Details</a></li>
 			<li><a href="#financial" data-toggle="tab">Financial Details</a></li>
 			<li><a href="#super" data-toggle="tab">Super Details</a></li>

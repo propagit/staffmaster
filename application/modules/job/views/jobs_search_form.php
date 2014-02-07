@@ -109,7 +109,7 @@
 						<div class="form-group">
 							<label for="position" class="col-md-2 control-label">Role</label>
 							<div class="col-md-4">
-								<?=modules::run('attribute/role/dropdown', 'role_id');?>
+								<?=modules::run('attribute/role/field_select', 'role_id');?>
 							</div>
 							<label for="payrate" class="col-md-2 control-label">Payrate</label>
 							<div class="col-md-4">
@@ -160,7 +160,6 @@
 
  <script>
 $(function() {
-	$('#tab-search a[href="#find-a-shift"]').tab('show');
 	$('#btn_search_jobs').click(function(){
 		search_jobs();
 		$('body').scrollTo('#form_search_jobs', 500 );

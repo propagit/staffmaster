@@ -13,6 +13,5 @@ jQuery(document).ready(function(){
 	 	jQuery('#rating').val(rate); 
 		}
 	});
-	
 });
 </script>
