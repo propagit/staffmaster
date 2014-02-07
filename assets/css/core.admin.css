@@ -99,6 +99,9 @@ a.default {
 	.message-badge .fa-caret-down{
 		display:block;	
 	}
+	.logo img{
+		padding-left: 10px;	
+	}
 }
 
 @media (max-width:480px){
@@ -106,7 +109,6 @@ a.default {
 		width:100%;
 		vertical-align: bottom;
 		margin-bottom: 15px;
-		padding-left: 10px;	
 	}
 	.profile-menu ul li a .fa{
 		font-size:26px;
