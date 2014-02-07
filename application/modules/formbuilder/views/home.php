@@ -1,13 +1,27 @@
-<h2>Form Builder</h2>
-<p>Find your staff to communicate with them or view and edit their profile.</p>
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Form Builder</h2>
+		 <p>Find your staff to communicate with them or view and edit their profile.</p>
+    </div>
+</div>
+<!--end top box-->
 
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Form Builder</h2>
+			<p>Find your staff to communicate with them or view and edit their profile.</p>
+            
+            
 <div class="row form-builder">
 	<div class="col-md-6">
     	<form id="custom-form">
     	<div id="build">
         	<?=modules::run('formbuilder/existing_form_elements');?>
         </div><!-- build -->
-        <button type="button" class="btn btn-info" onclick="form_builder.save_form();">Save</button>
+        <button type="button" class="btn btn-info form-builder-save-btn" onclick="form_builder.save_form();">Save</button>
         </form>
 <!--begin inputtext popover-->
 <div id="popover-textinput" class="popover fade right in">
@@ -95,7 +109,7 @@
     </div><!--col-md-6-->
     
     <div class="col-md-6">
-        <ul class="nav nav-tabs" id="myTab">
+        <ul class="nav nav-tabs tab-respond" id="myTab">
             <li class="active"><a href="#input" data-toggle="tab">Input</a></li>
             <li><a href="#radioscheckboxes" data-toggle="tab">Radios / Checkboxes</a></li>
             <li><a href="#select" data-toggle="tab">Select</a></li>
@@ -234,34 +248,30 @@
         </div><!--end tab-content-->
     </div><!--col-md-6-->
 </div><!--row-->
+           
+        </div>
+    </div>
+</div>
+<!--end bottom box -->
+
+
+
+<div style="display:none;">
+<form id="final_form" method="post" action="<?=base_url();?>formbuilder/add_form">
+	<input id="final_textinput" name="final_textinput" />
+    <input id="final_textarea" name="final_textarea" />
+    <input id="final_multi_radio" name="final_multi_radio" />
+    <input id="final_inline_radio" name="final_inline_radio" />
+    <input id="final_multi_checkbox" name="final_multi_checkbox" />
+    <input id="final_inline_checkbox" name="final_inline_checkbox" />
+    <input id="final_basic_select" name="final_basic_select" />
+    <input id="final_multi_select" name="final_multi_select" />
+    <input id="final_filebutton" name="final_filebutton" />
+    <input id="sort-order" name="sort_order" />
+</form>
+</div>
 <style>
-#build{ min-height:400px; border:1px solid #dddddd; border-radius:4px;}
-.right{right: -205px;top: -80px;}
-.popover{ left:auto;}
-#build .component,.tab-pane .component{ padding:10px 0;}
-#build .controls,.tab-pane .controls{ margin-left:180px;}
-#build .control-group,.tab-pane .control-group{ margin:10px;}
-#build .control-label,.tab-pane .control-label{float: left;/* width: 160px; */padding-top: 5px;text-align: right;}
-.popover-content .btn{margin-right: 10px;}
-.popover-content .control-label{padding:6px 0 3px 0;}
-.ui-draggable-helper {
- border: 1px solid #dddddd;
- background: #fff;
- box-shadow: 10px 10px 5px #dddddd;
-}
-.radio{ margin-bottom:6px;}
-.has-pretty-child{ line-height:30px; float:left; width:100%; margin-top:0;}
-.prettycheckbox, .prettyradio{ float:left;}
-.radio.inline, .checkbox.inline {
-display: inline-block;
-padding-top: 5px;
-margin-bottom: 0;
-vertical-align: middle;
-margin-top:0;
-padding-right:10px;
-width:auto;
-}
-.push{ float:left;}
+
 </style>
 <script src="<?=base_url();?>assets/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 <script>
@@ -277,7 +287,10 @@ $(function(){
 		$(ui.helper).addClass('ui-draggable-helper');	
 	},
 
-    stop: function (event, ui) {form_builder.bind_with_popover();}
+    stop: function (event, ui) {
+		form_builder.bind_with_popover();
+		$('.drag-icon-box').remove();	
+	}
 
 	}).mousedown(function () {});
 	
@@ -842,18 +855,5 @@ var form_builder = {
 };
 
 </script>
-<div style="display:none;">
-<form id="final_form" method="post" action="<?=base_url();?>formbuilder/add_form">
-	<input id="final_textinput" name="final_textinput" />
-    <input id="final_textarea" name="final_textarea" />
-    <input id="final_multi_radio" name="final_multi_radio" />
-    <input id="final_inline_radio" name="final_inline_radio" />
-    <input id="final_multi_checkbox" name="final_multi_checkbox" />
-    <input id="final_inline_checkbox" name="final_inline_checkbox" />
-    <input id="final_basic_select" name="final_basic_select" />
-    <input id="final_multi_select" name="final_multi_select" />
-    <input id="final_filebutton" name="final_filebutton" />
-    <input id="sort-order" name="sort_order" />
-</form>
-</div>
+
 

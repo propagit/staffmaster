@@ -99,19 +99,27 @@
 			<div class="form-group">
 				<label for="address" class="col-lg-2 control-label">Auto Send Invoices</label>
 				<div class="col-lg-10">
-					<select name="invoice_auto_send" class="form-control auto-width">
+					<select name="invoice_auto_send" class="form-control auto-width custom-select auto-invoice">
 						<option value="0">No</option>
 						<option value="1"<?=(set_value('invoice_auto_send') == 1) ? ' selected' : '';?>>Yes</option>
 					</select>
+                    <span class="input-group-addon select-addon" onclick="help.open_select('.auto-invoice');"><i class="fa fa-unsorted"></i></span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="address" class="col-lg-2 control-label">Account Status</label>
 				<div class="col-lg-10">
-					<select name="status" class="form-control auto-width">
+					<select name="status" class="form-control auto-width custom-select account-status">
 						<option value="1">Active</option>
 						<option value="0"<?=(set_value('status') === 0) ? ' selected' : '';?>>Inactive</option>
 					</select>
+                    <span class="input-group-addon select-addon" onclick="help.open_select('.account-status');"><i class="fa fa-unsorted"></i></span>
+				</div>
+			</div>
+            <div class="form-group">
+				<label for="address" class="col-lg-2 control-label">Departments</label>
+				<div class="col-lg-10">
+					<input type="input" class="form-control sml-input" name="departments[]" value="" />
 				</div>
 			</div>
 			<div class="form-group">
@@ -123,6 +131,36 @@
 		</div>
 	</div>
 </div>
+
+<script>
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
