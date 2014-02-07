@@ -10,25 +10,9 @@ class Location_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
-	function get_locations($sort_location_state=false, $sort_location_name=false)
+	function get_locations($parent_id=0)
 	{
-		if ($sort_location_state)
-		{
-			#$this->db->order_by('state', 'desc');
-		}
-		else
-		{
-			#$this->db->order_by('state', 'asc');
-		}
-		
-		if ($sort_location_name)
-		{
-			$this->db->order_by('name', 'desc');
-		}
-		else
-		{
-			$this->db->order_by('name', 'asc');
-		}
+		$this->db->where('parent_id', $parent_id);		
 		$query = $this->db->get('attribute_locations');
 		return $query->result_array();
 	}

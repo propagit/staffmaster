@@ -91,17 +91,17 @@ class Location extends MX_Controller {
 		return $output;
 	}
 	
-	function get_locations()
+	function get_locations($parent_id=null)
 	{
-		return $this->location_model->get_locations();
+		return $this->location_model->get_locations($parent_id);
 	}
 	
-	function dropdown($field_name, $field_value=null)
+	function field_select($field_name, $field_value=null, $size=null)
 	{
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
-		$data['locations'] = $this->location_model->get_locations();
-		$this->load->view('dropdown_locations', isset($data) ? $data : NULL);
+		$data['size'] = $size;
+		$data['parents'] = $this->location_model->get_locations(0);
+		$this->load->view('location/field_select', isset($data) ? $data : NULL);
 	}
-	
 }

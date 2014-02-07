@@ -120,18 +120,19 @@ class Staff extends MX_Controller {
 		$this->load->view('add', isset($data) ? $data : NULL);
 	}
 	
-	function search_staffs()
+	/**
+	*	@name: search_staffs
+	*	@desc: function to load search staffs form
+	*	@access: private
+	*	@param: (POST) array of search parameters
+	*	@return: (void) load search staffs form
+	*/
+	private function search_staffs()
 	{
-		if ($this->input->post())
-		{
-			$data['staffs'] = $this->staff_model->search_staffs($this->input->post());
-		}
-		
-		$this->load->view('search', isset($data) ? $data : NULL);
+		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
 	
-	function edit_staff($user_id)
-	{
+	function edit_staff($user_id) {
 		//error_reporting(E_ALL);
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules(array(
@@ -346,6 +347,7 @@ class Staff extends MX_Controller {
 		$this->load->view('edit', isset($data) ? $data : NULL);
 	}
 	
+	
 	function get_staff($user_id)
 	{
 		return $this->staff_model->get_staff($user_id);
@@ -356,5 +358,25 @@ class Staff extends MX_Controller {
 		$this->client_model->delete_client($user_id);
 		$this->user_model->delete_user($user_id);
 		redirect('client/search');
+	}
+	
+	/**
+	*	@name: field_select_status
+	*	@desc: custom select staff status field
+	*	@access: public
+	*	@param: - $field_name
+	*			- $field_value (optional)
+	*			- $size (optional)
+	*	@return: custom select staff status field
+	*/
+	function field_select_status($field_name, $field_value=null, $size=null)
+	{
+		$array = array(
+			array('value' => STAFF_ACTIVE, 'label' => 'Active'),
+			array('value' => STAFF_PENDING, 'label' => 'Pending'),
+			array('value' => STAFF_INACTIVE, 'label' => 'Inactive')
+		);
+		
+		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
 }

@@ -260,7 +260,8 @@ a.default {
 	width:100%;
 	
 }
-
+#wp_field_select_areas {
+}
 
 /* Styles for Job board / popover */
 #form_update_shift_staff #f_shift_staff {

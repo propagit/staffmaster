@@ -13,6 +13,17 @@ class Ajax extends MX_Controller {
 		$this->load->model('staff_model');
 	}
 	
+	function search_staffs()
+	{
+		$data['staffs'] = $this->staff_model->search_staffs($this->input->post());
+		$this->load->view('search_results', isset($data) ? $data : NULL);		
+	}
+	
+	function add_staff()
+	{
+		
+	}
+	
 	function list_staffs($query='')
 	{
 		$staffs = $this->staff_model->search_staffs(array('keyword' => $query));
