@@ -59,4 +59,36 @@ class Client_model extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		return $this->db->delete('user_clients');
 	}
+	
+	/**
+	*	@desc Inserts client departments into user_client_departments table
+	*
+	*   @name insert_client_departments
+	*	@access public
+	*	@param array(department name, user_client_id)
+	*	@return insert id
+	*	@author kaushtuv
+	*/
+	function insert_client_departments($data){
+		$data = $this->prepare_client_data($data);
+		$this->db->insert('user_clients_departments', $data);
+		return $this->db->insert_id();
+	}
+	
+	/**
+	*	@desc Returns client departments based on client id
+	*
+	*   @name get_client_departments_by_user_id
+	*	@access public
+	*	@param int(user id)
+	*	@return Client departments if they exist
+	*	@author kaushtuv
+	*/
+	function get_client_departments($client_id){
+		$client_departments = $this->db->select('user_clients_departments_id,department_name')->where('client_id',$client_id)->get('user_clients_departments')->result_array();
+		if($client_departments){
+			return $client_departments;	
+		}
+		return false;
+	}
 }
