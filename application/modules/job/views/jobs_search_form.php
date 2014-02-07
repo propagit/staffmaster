@@ -13,7 +13,7 @@
     	<div class="inner-box">    		
             <ul class="nav nav-tabs" id="tab-search">
 				<li class="active"><a href="#search-campaigns" data-toggle="tab">Search Campaigns</a></li>
-				<li><a href="#find-a-shift" data-toggle="tab">Find A Shift</a></li>
+				<li><a href="#find-shifts" data-toggle="tab">Find Shifts</a></li>
 			</ul>
 			
 			
@@ -78,8 +78,8 @@
 				</div><!-- end tab search campaigns -->
 				
 				<!-- begin tab search shifts -->
-				<div class="tab-pane" id="find-a-shift">
-					<h2 class="lg">Find A Shift</h2>
+				<div class="tab-pane" id="find-shifts">
+					<h2 class="lg">Find Shifts</h2>
 					<form class="form-horizontal" role="form" id="form_search_shifts">
 					<div class="row">
 						<div class="form-group">
@@ -109,7 +109,7 @@
 						<div class="form-group">
 							<label for="position" class="col-md-2 control-label">Role</label>
 							<div class="col-md-4">
-								<?=modules::run('attribute/role/dropdown', 'role_id');?>
+								<?=modules::run('attribute/role/field_select', 'role_id');?>
 							</div>
 							<label for="payrate" class="col-md-2 control-label">Payrate</label>
 							<div class="col-md-4">
@@ -160,7 +160,6 @@
 
  <script>
 $(function() {
-	$('#tab-search a[href="#find-a-shift"]').tab('show');
 	$('#btn_search_jobs').click(function(){
 		search_jobs();
 		$('body').scrollTo('#form_search_jobs', 500 );
