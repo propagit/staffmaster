@@ -123,7 +123,7 @@ function get_area_submit()
 <label for="title" class="col-lg-2 control-label">Select Locations</label>
                                 
 <div class="col-lg-10">
-    <select name="<?=$field_name;?>" class="form-control auto-width" id="<?=$field_name;?>" onchange="change_area(this)">
+    <select name="<?=$field_name;?>" class="form-control auto-width custom-select select-locations" id="<?=$field_name;?>" onchange="change_area(this)">
         <option value="">Select Location</option>
         <? foreach($locations as $loc){?>
                <option value="<?=$loc['location_id'];?>"<?=($field_value == $loc['location_id']) ? ' selected' : '';?>><b><?=$loc['name'];?></b></option>
@@ -135,6 +135,7 @@ function get_area_submit()
             ?>
         <? }?>
     </select>
+    <span class="input-group-addon select-addon" onclick="help.open_select('.select-locations');"><i class="fa fa-unsorted"></i></span>
 </div>
 
 <div style="clear:both; height:20px;"></div>

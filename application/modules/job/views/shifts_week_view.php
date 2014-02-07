@@ -1,7 +1,7 @@
 <div class="table_action">
 	<ul class="nav nav-tabs pull-right">
-		<li><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
-		<li><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
+		<li><a class="load_week_view push"><i class="fa fa-list"></i></a></li>
+		<li><a class="load_month_view push"><i class="fa fa-calendar"></i></a></li>
 	</ul>
 	<ul class="nav nav-tabs nav-action">
 		<li class="dropdown">

@@ -42,6 +42,108 @@ a.default {
 	height: 45px;
 }
 
+/* Styles for form builder */
+.form-builder .col-md-6{
+	padding-left:0;	
+}
+#build{ 
+	min-height:400px;
+	border:1px solid #dddddd;
+	border-radius:4px;
+}
+#build .dropped{
+	float:left;
+	width:100%;	
+}
+.right{
+	right: -205px;
+	top: -80px;
+}
+.popover{ 
+	left:auto;
+}
+#build .component,.tab-pane .component{ 
+	padding:10px 0;
+	float:left;
+	width:100%;
+}
+#build .controls,.tab-pane .controls{ 
+	width:75%;
+	float:left;
+}
+#build .control-group,.tab-pane .control-group{ 
+	margin:10px;
+}
+#build .control-label,.tab-pane .control-label{
+	float: left;
+	padding-top: 5px;
+	text-align: left;
+	width:25%;
+	float:left;
+}
+.popover-content .btn{
+	margin-right: 10px;
+}
+.popover-content .control-label{
+	padding:6px 0 3px 0;
+}
+.ui-draggable-helper {
+	 border: 1px solid #dddddd;
+	 background: #fff;
+	 box-shadow: 10px 10px 5px #dddddd;
+}
+.radio{ 
+	 margin-bottom:6px;
+}
+.has-pretty-child{ 
+	line-height:30px;
+	float:left;
+	width:100%;
+	margin-top:0;
+}
+.prettycheckbox, .prettyradio{
+	float:left;
+}
+.radio.inline, .checkbox.inline {
+	display: inline-block;
+	padding-top: 5px;
+	margin-bottom: 0;
+	vertical-align: middle;
+	margin-top:0;
+	padding-right:10px;
+	width:auto;
+}
+.form-builder-save-btn{
+	margin-top:10px;
+	float:right;	
+}
+
+.drag-icon-box{
+	float:left;
+	min-height:398px;
+	background-color:#f1f1f1;
+	width:100%;
+}
+.drag-icon-box .drag-icons{
+	float:left;
+	width:100%;
+	text-align:center;
+	margin-top:155px;
+}
+.drag-icon-box .drag-icons .fa{
+	color:#969696;
+	font-size:46px;
+	padding:0 5px;
+}
+.drag-icon-box span{
+	display:block;
+	font-size:16px;
+	color:#969696;
+	width: 100%;
+	float: left;
+	text-align: center;
+}
+
 
 /* begin responsive */
 @media(max-width:1200px){
@@ -99,6 +201,9 @@ a.default {
 	.message-badge .fa-caret-down{
 		display:block;	
 	}
+	.logo img{
+		padding-left: 10px;	
+	}
 }
 
 @media (max-width:480px){
@@ -106,15 +211,36 @@ a.default {
 		width:100%;
 		vertical-align: bottom;
 		margin-bottom: 15px;
-		padding-left: 10px;	
 	}
 	.profile-menu ul li a .fa{
 		font-size:26px;
 		padding-left:5px;	
 	}
 	.message-badge{
-		right:58px;	
+		right:55px;	
 	}
+}
+
+@media (max-width:320px){
+	.avatar{
+		display:none;	
+	}
+	.message-badge{
+		margin-top:10px;	
+	}
+	.profile-menu ul{
+		margin-top:52px;	
+	}
+	
+	.logo{
+		min-height: 92px;
+		line-height: 92px;	
+	}
+
+	.profile-menu ul li a .fa{
+		padding-left:2px;	
+	}
+
 }	
 /* end responsive */
 

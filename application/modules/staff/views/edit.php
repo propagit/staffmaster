@@ -1,30 +1,34 @@
-<h2>Edit Staff</h2>
-<p>Edit staff using below form.</p>
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Edit Staff</h2>
+		 <p>Edit staff using below form.</p>
+    </div>
+</div>
+<!--end top box-->
 
-
-<a href="<?=base_url();?>staff/search"><i class="fa fa-search"></i> Search Staff</a>
-<br /><br />
-<div class="panel panel-default">
-	<div class="panel-heading">Edit Staff</div>
-	<div class="panel-body">
-		<ul class="nav nav-tabs" id="navStaff">
-			<li class="active"><a href="#personal" data-toggle="tab">Personal Details</a></li>
-			<li><a href="#financial" data-toggle="tab">Financial Details</a></li>
-			<li><a href="#super" data-toggle="tab">Super Details</a></li>
-			<li><a href="#availability" data-toggle="tab">Availability</a></li>
-			<li><a href="#roles" data-toggle="tab">Roles</a></li>
-			<li><a href="#payrate" data-toggle="tab">Pay Rate</a></li>
-			<li><a href="#option" data-toggle="tab">Options</a></li>
-			<li><a href="#location" data-toggle="tab">Location</a></li>
-			<li><a href="#setting" data-toggle="tab">Settings</a></li>
-			<li><a href="#document" data-toggle="tab">Documents</a></li>
-            <li><a href="#picture" data-toggle="tab">Pictures</a></li>
-		</ul>
-
-		
-		
-		
-		<form id="edit_form" class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>" onsubmit="" autocomplete="off" >
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Edit Staff</h2>
+			<p>Edit staff using below form.</p>
+            
+            <ul class="nav nav-tabs tab-respond" id="navStaff">
+                <li class="active"><a href="#personal" data-toggle="tab">Personal Details</a></li>
+                <li><a href="#financial" data-toggle="tab">Financial Details</a></li>
+                <li><a href="#super" data-toggle="tab">Super Details</a></li>
+                <li><a href="#availability" data-toggle="tab">Availability</a></li>
+                <li><a href="#roles" data-toggle="tab">Roles</a></li>
+                <li><a href="#payrate" data-toggle="tab">Pay Rate</a></li>
+                <li><a href="#option" data-toggle="tab">Options</a></li>
+                <li><a href="#location" data-toggle="tab">Location</a></li>
+                <li><a href="#setting" data-toggle="tab">Settings</a></li>
+                <li><a href="#document" data-toggle="tab">Documents</a></li>
+                <li><a href="#picture" data-toggle="tab">Pictures</a></li>
+			</ul>
+           
+           	<form id="edit_form" class="form-horizontal" role="form" method="post" action="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>" onsubmit="" autocomplete="off" >
 		<input type="hidden" name="tab_id" id="tab_id" />				
 			<div class="tab-content">
 				<div class="tab-pane active" id="personal">
@@ -739,11 +743,13 @@
                     </div>
                 
                 
-                </form>			
-			
-  
-	</div>
+                </form>
+        </div>
+    </div>
 </div>
+<!--end bottom box -->
+
+
 
 
 <style>
@@ -780,6 +786,9 @@
 </div><!-- /.modal -->
 <script>
 $(function(){		
+	
+	//respond nav tabs		
+	help.respond_nav_tab('.tab-respond li',992);
 	
 	$('#carousel').flexslider({
 		animation: "slide",
@@ -824,6 +833,10 @@ $(function(){
 	//<? //=modules::run('common/list_supers');?>
 	//];
 });
+
+$(window).resize(function(){
+	help.respond_nav_tab('.tab-respond li',992);	
+});//resize
 
 function load_senior_couple_status()
 {

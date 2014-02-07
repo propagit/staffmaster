@@ -1,13 +1,27 @@
-<h2>Form Builder</h2>
-<p>Find your staff to communicate with them or view and edit their profile.</p>
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Form Builder</h2>
+		 <p>Find your staff to communicate with them or view and edit their profile.</p>
+    </div>
+</div>
+<!--end top box-->
 
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Form Builder</h2>
+			<p>Find your staff to communicate with them or view and edit their profile.</p>
+            
+            
 <div class="row form-builder">
 	<div class="col-md-6">
     	<form id="custom-form">
     	<div id="build">
         	<?=modules::run('formbuilder/existing_form_elements');?>
         </div><!-- build -->
-        <button type="button" class="btn btn-info" onclick="form_builder.save_form();">Save</button>
+        <button type="button" class="btn btn-info form-builder-save-btn" onclick="form_builder.save_form();">Save</button>
         </form>
 <!--begin inputtext popover-->
 <div id="popover-textinput" class="popover fade right in">
@@ -95,7 +109,7 @@
     </div><!--col-md-6-->
     
     <div class="col-md-6">
-        <ul class="nav nav-tabs" id="myTab">
+        <ul class="nav nav-tabs tab-respond" id="myTab">
             <li class="active"><a href="#input" data-toggle="tab">Input</a></li>
             <li><a href="#radioscheckboxes" data-toggle="tab">Radios / Checkboxes</a></li>
             <li><a href="#select" data-toggle="tab">Select</a></li>
@@ -234,7 +248,32 @@
         </div><!--end tab-content-->
     </div><!--col-md-6-->
 </div><!--row-->
->>>>>>> Form-Builder---Custom-Attributes
+           
+        </div>
+    </div>
+</div>
+<!--end bottom box -->
+
+
+
+<div style="display:none;">
+<form id="final_form" method="post" action="<?=base_url();?>formbuilder/add_form">
+	<input id="final_textinput" name="final_textinput" />
+    <input id="final_textarea" name="final_textarea" />
+    <input id="final_multi_radio" name="final_multi_radio" />
+    <input id="final_inline_radio" name="final_inline_radio" />
+    <input id="final_multi_checkbox" name="final_multi_checkbox" />
+    <input id="final_inline_checkbox" name="final_inline_checkbox" />
+    <input id="final_basic_select" name="final_basic_select" />
+    <input id="final_multi_select" name="final_multi_select" />
+    <input id="final_filebutton" name="final_filebutton" />
+    <input id="sort-order" name="sort_order" />
+</form>
+</div>
+<style>
+
+</style>
+<script src="<?=base_url();?>assets/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 <script>
 $(function(){
 	$('.component').draggable({
@@ -247,11 +286,12 @@ $(function(){
     start: function (e,ui) {
 		$(ui.helper).addClass('ui-draggable-helper');	
 	},
-<<<<<<< HEAD
-    stop: function (event, ui) { form_builder.bind_with_popover();}
-=======
-    stop: function (event, ui) {form_builder.bind_with_popover();}
->>>>>>> Form-Builder---Custom-Attributes
+
+    stop: function (event, ui) {
+		form_builder.bind_with_popover();
+		$('.drag-icon-box').remove();	
+	}
+
 	}).mousedown(function () {});
 	
 	var removeItem = false;
@@ -273,25 +313,16 @@ $(function(){
 		}
 	});
 	form_builder.start_prettychecker();
-<<<<<<< HEAD
-});//ready
-
-
-=======
 	form_builder.bind_with_popover();
 });//ready
 
->>>>>>> Form-Builder---Custom-Attributes
+
 var form_builder = {
 	
 	//after dropping to the droppable area bind even triggred function to the clone
 	//add editing class on click so that we know which container to look for
 	bind_with_popover:function(){
-<<<<<<< HEAD
-		$('#build').find('.component').addClass('dropped');
-=======
 		$('#build').find('.component').addClass('dropped').removeClass('component');
->>>>>>> Form-Builder---Custom-Attributes
 		$('.dropped').on('click',function(event){
 			event.stopImmediatePropagation();
 			$(this).addClass('editing');
@@ -364,16 +395,13 @@ var form_builder = {
 			case 'popover-select':
 				form_builder.fillup_select_values();
 			break;
-<<<<<<< HEAD
-=======
+
 			
 			case 'popover-button':
 				var label = editing.find('#filebutton-label').html();
-				
 				//populate edit box
 				$('#pop-button').val(label);
 			break;
->>>>>>> Form-Builder---Custom-Attributes
 		}
 	},
 	
@@ -381,25 +409,17 @@ var form_builder = {
 	fillup_radio_or_checkbox_values:function(){
 		$('#pop-radio-checkbox-values').val('');
 		var editing = $('.editing');
-<<<<<<< HEAD
-		var label = editing.find('#radio-checkbox-title').html();
-=======
 		var label = editing.find('#radio-checkbox-label').html();
->>>>>>> Form-Builder---Custom-Attributes
+
 		$('#pop-radio-checkbox-label').val(label);
 		
 		var value = '';
 		var count = 0;
 		editing.find('input').each(function(){
-<<<<<<< HEAD
-			$('#pop-radio-checkbox-values').val($('#pop-radio-checkbox-values').val()+(count == 0 ? '' : '\n')+$(this).val());
-			count++;
-=======
 			if(!$(this).hasClass('sort-index')){
 				$('#pop-radio-checkbox-values').val($('#pop-radio-checkbox-values').val()+(count == 0 ? '' : '\n')+$(this).val());
 				count++;
 			}
->>>>>>> Form-Builder---Custom-Attributes
 		});	
 	},
 	
@@ -407,11 +427,9 @@ var form_builder = {
 	fillup_select_values:function(){
 		$('#pop-select-values').val('');
 		var editing = $('.editing');
-<<<<<<< HEAD
-		var label = editing.find('#select-title').html();
-=======
+
 		var label = editing.find('#select-label').html();
->>>>>>> Form-Builder---Custom-Attributes
+
 		$('#pop-select-label').val(label);
 		
 		var value = '';
@@ -434,10 +452,7 @@ var form_builder = {
 		var editing = $('.editing');
 		editing.find('#textinput-label').html(label);
 		editing.find('#textinput').attr('name',name).attr('placeholder',placeholder);
-<<<<<<< HEAD
-=======
 		editing.find('.sort-index').attr('data',name);
->>>>>>> Form-Builder---Custom-Attributes
 		form_builder.close_popover();
 	},
 	
@@ -450,10 +465,7 @@ var form_builder = {
 		var editing = $('.editing');
 		editing.find('#textarea-label').html(label);
 		editing.find('#textarea').attr('name',name);
-<<<<<<< HEAD
-=======
 		editing.find('.sort-index').attr('data',name);
->>>>>>> Form-Builder---Custom-Attributes
 		form_builder.close_popover();	
 	},
 	
@@ -462,11 +474,8 @@ var form_builder = {
 		var label = $('#pop-radio-checkbox-label').val();
 		var name = form_builder.clean_text(label);
 		//check if this is inline or multi line radio or checkbox
-<<<<<<< HEAD
-		var element_type = $('.editing').find('#radio-checkbox-title').attr('data');
-=======
 		var element_type = $('.editing').find('#radio-checkbox-label').attr('data');
->>>>>>> Form-Builder---Custom-Attributes
+
 		var values = $('#pop-radio-checkbox-values').val();
 		
 		//put the elements from the text area into an array with newline as break point
@@ -480,11 +489,8 @@ var form_builder = {
 		}
 		
 		//set label name
-<<<<<<< HEAD
-		$('.editing').find('#radio-checkbox-title').html(label);
-=======
+
 		$('.editing').find('#radio-checkbox-label').html(label);
->>>>>>> Form-Builder---Custom-Attributes
 		
 		//create new elements
 		var new_elements = '';
@@ -515,10 +521,8 @@ var form_builder = {
 			break;
 		}
 		$('.editing').find('.controls').html(new_elements);
-<<<<<<< HEAD
-=======
 		$('.editing').find('.sort-index').attr('data',name);
->>>>>>> Form-Builder---Custom-Attributes
+
 		form_builder.close_popover();
 		form_builder.start_prettychecker();
 	},
@@ -528,11 +532,7 @@ var form_builder = {
 		var label = $('#pop-select-label').val();
 		var name = form_builder.clean_text(label);
 		//check if this is inline or multi line radio or checkbox
-<<<<<<< HEAD
-		var element_type = $('.editing').find('#select-title').attr('data');
-=======
 		var element_type = $('.editing').find('#select-label').attr('data');
->>>>>>> Form-Builder---Custom-Attributes
 		var values = $('#pop-select-values').val();
 		
 		//put the elements from the text area into an array with newline as break point
@@ -546,11 +546,7 @@ var form_builder = {
 		}
 		
 		//set label name
-<<<<<<< HEAD
-		$('.editing').find('#select-title').html(label);
-=======
 		$('.editing').find('#select-label').html(label);
->>>>>>> Form-Builder---Custom-Attributes
 		
 		//create new elements
 		var new_elements = '';
@@ -572,259 +568,6 @@ var form_builder = {
 			break;
 		}
 		$('.editing').find('.controls').html(new_elements);
-<<<<<<< HEAD
-		form_builder.close_popover();
-		form_builder.start_prettychecker();
-	}
-	
-	
-};
-
-</script>
-<style>
-#build{ min-height:400px; border:1px solid #dddddd; border-radius:4px;}
-.right{right: -205px;top: -80px;}
-.popover{ left:auto;}
-#build .component,.tab-pane .component{ padding:10px 0;}
-#build .controls,.tab-pane .controls{ margin-left:180px;}
-#build .control-group,.tab-pane .control-group{ margin:10px;}
-#build .control-label,.tab-pane .control-label{float: left;/* width: 160px; */padding-top: 5px;text-align: right;}
-.popover-content .btn{margin-right: 10px;}
-.popover-content .control-label{padding:6px 0 3px 0;}
-.ui-draggable-helper {
- border: 1px solid #dddddd;
- background: #fff;
- box-shadow: 10px 10px 5px #dddddd;
-}
-.radio{ margin-bottom:6px;}
-.has-pretty-child{ line-height:30px; float:left; width:100%; margin-top:0;}
-.prettycheckbox, .prettyradio{ float:left;}
-.radio.inline, .checkbox.inline {
-display: inline-block;
-padding-top: 5px;
-margin-bottom: 0;
-vertical-align: middle;
-margin-top:0;
-padding-right:10px;
-width:auto;
-}
-.push{ float:left;}
-</style>
-
-<h2>Form Builder</h2>
-<p>Find your staff to communicate with them or view and edit their profile.</p>
-
-<div class="row">
-	<div class="col-md-6">
-    	<div id="build">
-        
-        
-        
-        
-        </div><!-- build -->
-        
-<!--begin inputtext popover-->
-<div id="popover-textinput" class="popover fade right in">
-<div class="arrow"></div>
-<h3 class="popover-title">Text Input</h3>
-<div class="popover-content">
-<div class="controls">
-<label class="control-label"> Label </label>
-<input class="form-control" type="text" id="pop-textinput" value="Text Input">
-<label class="control-label"> Placeholder </label>
-<input class="form-control" type="text"  id="pop-placeholder" value="placeholder">       
-<hr>
-<button class="btn btn-info" onClick="form_builder.update_textinput();">Save</button><button class="btn btn-danger" onClick="form_builder.close_popover();">Cancel</button>
-</div>
-</div>
-</div>
-<!--end inputtext popover-->
-
-<!--begin textarea popover-->
-<div id="popover-textarea" class="popover fade right in">
-<div class="arrow"></div>
-<h3 class="popover-title">Text Area</h3>
-<div class="popover-content">
-<div class="controls">
-<label class="control-label"> Label </label>
-<input class="form-control" type="text" id="pop-textarea" value="Text Area">     
-<hr>
-<button class="btn btn-info" onClick="form_builder.update_textarea();">Save</button><button class="btn btn-danger" onClick="form_builder.close_popover();">Cancel</button>
-</div>
-</div>
-</div>
-<!--end textarea popover-->
-               
-<!--begin radio checkbox popover-->
-<div id="popover-radio-checkbox" class="popover fade right in">
-<div class="arrow"></div>
-<h3 class="popover-title">Radios / Checkboxes</h3>
-<div class="popover-content">
-<div class="controls"> 
-<label class="control-label"> Label </label>
-<input class="form-control" data-type="input" type="text" name="label" id="pop-radio-checkbox-label" value="Multiple Radios">
-<label class="control-label"> Options </label>
-<textarea class="form-control" data-type="textarea-split" style="min-height: 200px" id="pop-radio-checkbox-values"></textarea>
-<hr>
-<button id="save" class="btn btn-info" onClick="form_builder.update_radio_checkbox();">Save</button><button id="cancel" class="btn btn-danger" onClick="form_builder.close_popover();">Cancel</button>
-</div>
-
-</div>
-</div>
-<!--end radio checkbox popover-->
-
-<!--begin select popover-->
-<div id="popover-select" class="popover fade right in">
-<div class="arrow"></div>
-<h3 class="popover-title">Select</h3>
-<div class="popover-content">
-<div class="controls"> 
-<label class="control-label"> Label </label>
-<input class="form-control" data-type="input" type="text" name="label" id="pop-select-label" value="Multiple Radios">
-<label class="control-label"> Options </label>
-<textarea class="form-control" data-type="textarea-split" style="min-height: 200px" id="pop-select-values"></textarea>
-<hr>
-<button id="save" class="btn btn-info" onClick="form_builder.update_select();">Save</button><button id="cancel" class="btn btn-danger" onClick="form_builder.close_popover();">Cancel</button>
-</div>
-
-</div>
-</div>
-<!--end select popover-->
-
-        
-    </div><!--col-md-6-->
-    <div class="col-md-6">
-        <ul class="nav nav-tabs" id="myTab">
-            <li class="active"><a href="#input" data-toggle="tab">Input</a></li>
-            <li><a href="#radioscheckboxes" data-toggle="tab">Radios / Checkboxes</a></li>
-            <li><a href="#select" data-toggle="tab">Select</a></li>
-            <li><a href="#buttons" data-toggle="tab">Buttons</a></li>
-        </ul>
-        
-        <div class="tab-content">
-        
-            <!--begin textinput tab-->
-            <div class="tab-pane active" id="input">
-                <div class="component" data="popover-textinput">
-                    <div class="control-group">
-                      <label class="control-label" id="textinput-label">Text Input</label>
-                      <div class="controls">
-                        <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="form-control" >
-                      </div>
-                    </div>
-                </div>
-    
-                <div class="component" data="popover-textarea"><!-- Textarea -->
-                     <div class="control-group">
-                        <label class="control-label" id="textarea-label">Text Area</label>
-                        <div class="controls">                     
-                          <textarea id="textarea" name="textarea" class="form-control"></textarea>
-                        </div>
-                      </div>
-                </div>
-            </div>
-            <!--end textinput tab-->
-            
-            <!--begin radio tab-->
-            <div class="tab-pane" id="radioscheckboxes">
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Radios -->
-                    <div class="control-group">
-                      <label class="control-label" id="radio-checkbox-title" data="multi-radios">Multiple Radios</label>
-                      <div class="controls">
-                        <label class="radio">
-                          <input type="radio" name="radios" value="Option one" checked="checked">
-                          Option one
-                        </label>
-                        <label class="radio">
-                          <input type="radio" name="radios" value="Option two">
-                          Option two
-                        </label>
-                      </div>
-                    </div>
-                </div>
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Radios (inline) -->
-                    <div class="control-group">
-                      <label class="control-label" id="radio-checkbox-title" data="inline-radios">Inline Radios</label>
-                      <div class="controls">
-                        <label class="radio inline">
-                          <input type="radio" name="radios" value="1234">
-                          1234
-                        </label>
-                      </div>
-                    </div>
-                </div>
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Checkboxes -->
-                    <div class="control-group">
-                      <label class="control-label" id="radio-checkbox-title" data="multi-checkbox">Multiple Checkboxes</label>
-                      <div class="controls">
-                        <label class="checkbox">
-                          <input type="checkbox" name="checkboxes" value="Option one">
-                          Option one
-                        </label>
-                        <label class="checkbox">
-                          <input type="checkbox" name="checkboxes" value="Option two">
-                          Option two
-                        </label>
-                      </div>
-                    </div>
-                </div>
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Checkboxes (inline) -->
-                    <div class="control-group">
-                      <label class="control-label" id="radio-checkbox-title" data="inline-checkbox">Inline Checkboxes</label>
-                      <div class="controls">
-                        <label class="checkbox inline">
-                          <input type="checkbox" name="checkboxes" value="1234">
-                          1234
-                        </label>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <!--end radio tab-->
-            
-            <!--begin select-->
-            <div class="tab-pane" id="select">
-                <div class="component" data="popover-select"><!-- Select Basic -->
-                    <div class="control-group">
-                      <label class="control-label" id="select-title" data="select-basic">Select Basic</label>
-                      <div class="controls">
-                        <select id="select-basic" name="select-basic" class="form-control">
-                          <option value="Option one">Option one</option>
-                          <option value="Option two">Option two</option>
-                        </select>
-                      </div>
-                    </div>
-                </div>
-                <div class="component" data="popover-select"><!-- Select Multiple -->
-                     <div class="control-group">
-                  <label class="control-label" id="select-title" data="select-multi">Select Multiple</label>
-                  <div class="controls">
-                    <select id="select-multiple" name="selec-tmultiple" class="form-control" multiple="multiple">
-                      <option value="Option one">Option one</option>
-                      <option value="Option two">Option two</option>
-                    </select>
-                  </div>
-                </div>
-                </div>
-			</div>
-            <!--end select-->
-        
-        	<!--begin button-->
-            <div class="tab-pane" id="buttons">
-            	<div class="component"><!-- File Button --> 
-                	<div class="control-group">
-                  <label class="control-label">File Button</label>
-                  <div class="controls">
-                    <input id="filebutton" name="filebutton" class="input-file" type="file">
-                  </div>
-                </div>
-                </div>
-			</div>
-            <!--end button-->
-        </div><!--end tab-content-->
-    </div><!--col-md-6-->
-</div><!--row-->
-=======
 		$('.editing').find('.sort-index').attr('data',name);
 		form_builder.close_popover();
 		form_builder.start_prettychecker();
@@ -1112,18 +855,5 @@ width:auto;
 };
 
 </script>
-<div style="display:none;">
-<form id="final_form" method="post" action="<?=base_url();?>formbuilder/add_form">
-	<input id="final_textinput" name="final_textinput" />
-    <input id="final_textarea" name="final_textarea" />
-    <input id="final_multi_radio" name="final_multi_radio" />
-    <input id="final_inline_radio" name="final_inline_radio" />
-    <input id="final_multi_checkbox" name="final_multi_checkbox" />
-    <input id="final_inline_checkbox" name="final_inline_checkbox" />
-    <input id="final_basic_select" name="final_basic_select" />
-    <input id="final_multi_select" name="final_multi_select" />
-    <input id="final_filebutton" name="final_filebutton" />
-    <input id="sort-order" name="sort_order" />
-</form>
-</div>
->>>>>>> Form-Builder---Custom-Attributes
+
+

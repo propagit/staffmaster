@@ -1,12 +1,22 @@
-<h2>Departments</h2>
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Departments</h2>
+		 <p>Manage your departments attribute.</p>
+    </div>
+</div>
+<!--end top box-->
 
-<p>Manage your departments attribute.</p>
-
-<a data-toggle="modal" href="#addDepartment" ><i class="icon-plus-sign"></i> Add Department</a>
-<br /><br />
-
-
-<table class="table table-hover">
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <h2>Departments</h2>
+		 	<p>Manage your departments attribute.</p>
+            <a data-toggle="modal" href="#addDepartment" ><i class="icon-plus-sign"></i> Add Department</a>
+			<br /><br />
+           
+            <table class="table table-hover">
 	<thead>
 	<tr class="heading">
 		<td class="left">Department <a href="<?=base_url();?>attribute/department/sort"><i class="icon-sort-by-alphabet"></i></a></td>
@@ -24,6 +34,17 @@
 	</tr>
 	<? } ?>
 </table>
+        </div>
+    </div>
+</div>
+<!--end bottom box -->
+
+
+
+
+
+
+
 
 <!-- Add Role Modal -->
 <div class="modal fade" id="addDepartment" tabindex="-1" role="dialog" aria-labelledby="addDepartmentLabel" aria-hidden="true">
