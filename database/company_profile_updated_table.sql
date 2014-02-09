@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 23, 2014 at 07:55 AM
+-- Generation Time: Feb 10, 2014 at 12:17 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `company_profile` (
 --
 
 INSERT INTO `company_profile` (`id`, `company_name`, `company_address`, `company_suburb`, `company_postcode`, `company_state`, `company_country`, `company_email`, `company_website`, `company_phone`, `company_fax`, `company_abn`, `company_account_name`, `company_account_no`, `company_bsb`, `super_name`, `super_product_id`, `super_fund_phone`, `super_fund_website`) VALUES
-(1, 'Staff Master', '', '', '', '', '', '', '', '', '', '', '', '', '', 'HOST Plus', '', '', '');
+(1, 'Staff Master', '20a Macquarie Street', 'Prahran', '3181', 'VIC', 'AU', 'team@staffmaster.com', 'http://www.staffmaster.com.au', '03 852 456 897', '03 852 456 898', '123456789', 'Staff Master', '123456789', '122345678', 'HOST Plus', '-', '-', '-');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
