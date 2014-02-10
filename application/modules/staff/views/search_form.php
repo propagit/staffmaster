@@ -83,7 +83,6 @@
 $(function(){
 	$('#btn_search_staffs').click(function(){
 		search_staffs();
-		$('body').scrollTo('#form_search_staffs', 500 );
 	})
 })
 function search_staffs() {
@@ -94,6 +93,7 @@ function search_staffs() {
 		data: $('#form_search_staffs').serialize(),
 		success: function(html) {
 			loaded($('#staffs_search_results'), html);
+			$('body').scrollTo('#form_search_staffs', 500 );
 		}
 	})
 }

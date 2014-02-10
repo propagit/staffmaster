@@ -16,12 +16,11 @@
 		</div>
 	</div>
 </div>
-</form>
-
 <div class="row">
 	<div class="col-md-offset-2 col-md-10" id="staff_locations">
 	</div>
 </div>
+</form>
 
 <script>
 $(function(){
@@ -38,10 +37,7 @@ $(function(){
 				{
 					$('#f_staff_location').addClass('has-error');
 				}
-				else
-				{
-					load_staff_locations();
-				}				
+				load_staff_locations();				
 			}
 		})
 	})
