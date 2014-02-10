@@ -117,7 +117,7 @@ class Staff extends MX_Controller {
 		
 		$data['states'] = $this->user_model->get_states();
 		$data['countries'] = $this->user_model->get_countries();
-		$this->load->view('add', isset($data) ? $data : NULL);
+		$this->load->view('add_form', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -132,7 +132,13 @@ class Staff extends MX_Controller {
 		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
 	
-	function edit_staff($user_id) {
+	function edit_staff($user_id)
+	{
+		$data['staff'] = $this->staff_model->get_staff($user_id);
+		$this->load->view('edit_form', isset($data) ? $data :NULL);
+	}
+	
+	function edit_staff_backup($user_id) {
 		//error_reporting(E_ALL);
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules(array(

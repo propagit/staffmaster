@@ -18,7 +18,6 @@
 				<li class="disabled"><a>Super Details</a></li>
 				<li class="disabled"><a>Availability</a></li>
 				<li class="disabled"><a>Roles</a></li>
-				<li class="disabled"><a>Pay Rate</a></li>
 				<li class="disabled"><a>Options</a></li>
 				<li class="disabled"><a>Location</a></li>
 				<li class="disabled"><a>Settings</a></li>
@@ -152,17 +151,16 @@
 			</div>
 						
 			<div class="row">
-					<div class="form-group">
-						<div class="col-md-offset-2 col-md-4">
-							<button type="button" class="btn btn-core" id="btn_add_staff"><i class="fa fa-plus"></i> Add Staff</button>
-						</div>
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-4">
+						<button type="button" class="btn btn-core" id="btn_add_staff"><i class="fa fa-plus"></i> Add Staff</button>
 					</div>
 				</div>
 			</div>
 		
 		
-		</form>
-        </div>
+			</form>
+    	</div>
     </div>
 </div>
 <!--end bottom box -->
