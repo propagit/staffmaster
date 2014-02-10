@@ -400,7 +400,8 @@ a:hover {
 	border-radius: 5px 5px 0 0;
 }
 .nav-tabs > li.active a,
-.nav-tabs > li.active a:hover {
+.nav-tabs > li.active a:hover,
+.nav-tabs > li.active a:focus {
 	color: #fff;
 	background: #00b1eb;
 	border-color: #00b1eb;

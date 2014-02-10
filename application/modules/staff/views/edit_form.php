@@ -27,13 +27,13 @@
 			</ul>
 			
 			<div class="tab-content">
-				<div class="tab-pane" id="personal"></div>				
+				<div class="tab-pane active" id="personal"></div>				
 				<div class="tab-pane" id="financial"></div>
 				<div class="tab-pane" id="super"></div>
 				<div class="tab-pane" id="availability"></div>
 				<div class="tab-pane" id="roles"></div>
 				<div class="tab-pane" id="option"></div>
-				<div class="tab-pane active" id="location"></div>
+				<div class="tab-pane" id="location"></div>
 				<div class="tab-pane" id="settings"></div>
 				<div class="tab-pane" id="documents"></div>
 				<div class="tab-pane" id="picture"></div>

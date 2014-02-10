@@ -121,52 +121,7 @@
 					</div>
 				</div>
 				<div class="tab-pane" id="setting">
-					<br />
-                    <div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="title" class="col-lg-4 control-label">Level Access</label>
-								<div class="col-lg-8">
-									<select class="form-control">
-										<option>Staff</option>
-										<option>Admin</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="title" class="col-lg-4 control-label">Conversations</label>
-								<div class="col-lg-8">
-									<select class="form-control">
-										<option>Invited Conversations Only</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label for="title" class="col-lg-2 control-label">Induction Status</label>
-								<div class="col-lg-10">
-									<div class="alert alert-success media">
-										<div class="pull-left">
-											<i class="icon-ok"></i>
-										</div>
-										<div class="pull-right">
-											<select class="form-control">
-												<option>Induction Completed</option>
-											</select>
-										</div>
-										<div class="media-body">
-											<h4>Induction Completed</h4>
-											<h6>Induction completed on 24/03/2013</h6>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 				<div class="tab-pane" id="document">
 					

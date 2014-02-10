@@ -4,7 +4,7 @@ $menu = array(
 	array('path' => '#', 'icon' => 'fa-users', 'title' => 'Manage Staff', 'sub' => array(
 		array('path' => 'staff/search', 'icon' => 'fa-search', 'title' => 'Search Staff'),
 		array('path' => 'staff/add', 'icon' => 'fa-plus', 'title' => 'Add Staff'),
-		array('path' => '#', 'icon' => 'fa-magnet', 'title' => 'Assign Assets')
+		#array('path' => '#', 'icon' => 'fa-magnet', 'title' => 'Assign Assets')
 	)),
 	array('path' => '#', 'icon' => 'fa-book', 'title' => 'Manage Clients', 'sub' => array(
 		array('path' => 'client/search', 'icon' => 'fa-search', 'title' => 'Search Client'),
