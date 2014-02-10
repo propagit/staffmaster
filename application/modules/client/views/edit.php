@@ -116,9 +116,28 @@
 					</select>
 				</div>
 			</div>
+            <div class="form-group">
+				<label for="address" class="col-lg-2 control-label">Add New Departments</label>
+				<div class="col-lg-10" id="appending">
+                	<div class="appended-element-box">
+					<input type="input" class="form-control input-sml push" name="departments[]" value="" maxlength="255" /><i class="fa fa-plus-square append-element-controls" onclick="append_element();"></i>
+                    </div>
+				</div>
+			</div>
+           
+            <div class="form-group">
+				<label for="address" class="col-lg-2 control-label">Existing Departments</label>
+				<div class="col-lg-10">
+                    <div class="appended-element-box">
+                    <?=modules::run('client/dropdown_client_departments',$client['client_id'], 'client_departments');?>
+                    </div>
+                </div>
+			</div>
+
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
 					<button type="submit" class="btn btn-info"><i class="icon-save"></i> Update Client</button>
+                    <input type="hidden" value="<?=$client['client_id'];?>" name="client_edit_id" />
 				</div>
 			</div>
 		</form>
@@ -126,3 +145,56 @@
         </div>
     </div>
 </div>
+
+
+<!-- Edit Venue Modal -->
+<div class="modal fade" id="editDepartment" tabindex="-1" role="dialog" aria-labelledby="editDepartmentLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Edit Department</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="name_edit">Department</label>
+					<input type="text" class="form-control" name="name" id="name_edit"  />
+				</div>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-info">Submit</button>
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script>
+$(function(){
+	$('#client_departments').on('change',function(){
+		toggle_edit_dep_buttons($('#client_departments').val());
+	});	
+})
+
+function toggle_edit_dep_buttons(option){
+	if(option){
+		$('.custom-hidden').show();	
+	}else{
+		$('.custom-hidden').hide();		
+	}
+}
+
+var elem_count = 0;
+function append_element() {
+	elem_count++;
+	$('#appending').append('<div class="appended-element-box" id="addon-elem-'+elem_count+'"><input type="input" class="form-control input-sml push appended-element" name="departments[]" value="" maxlength="255" /><i class="fa fa-minus-square append-element-controls" onclick="remove_element('+elem_count+');"></i></div>');
+}
+
+function remove_element(n) {
+	$('#addon-elem-' + n).remove();
+} 
+
+</script>
