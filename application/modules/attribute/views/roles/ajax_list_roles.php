@@ -13,7 +13,7 @@
         <td class="left"><?=$role['name'];?></td>
         <td class="center"><?=$this->role_model->get_role_frequency($role['role_id']);?></td>
         <td class="center"><a href="javascript:open_edit_modal(<?=$role['role_id'];?>,'<?=$role['name'];?>')"><i class="fa fa-pencil"></i></a></td>
-        <td class="center"><a href="javascript:delete_role(<?=$role['role_id'];?>)"><i class="fa fa-times"></i></a></td>
+        <td class="center"><a href="javascript:confirm_delete(<?=$role['role_id'];?>)"><i class="fa fa-times"></i></a></td>
         
     </tr>
     <? } ?>

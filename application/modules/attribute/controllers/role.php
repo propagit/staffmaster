@@ -40,12 +40,6 @@ class Role extends MX_Controller {
 		$this->load->view('roles/list_roles', isset($data) ? $data : NULL);
 	}
 	
-	function delete_role($role_id)
-	{
-		$this->role_model->delete_role($role_id);
-		redirect('attribute/role');
-	}
-	
 	function get_roles($format=null)
 	{
 		$roles = $this->role_model->get_roles();
