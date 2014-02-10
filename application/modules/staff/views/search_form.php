@@ -83,6 +83,7 @@
 $(function(){
 	$('#btn_search_staffs').click(function(){
 		search_staffs();
+		$('body').scrollTo('#form_search_staffs', 500 );
 	})
 })
 function search_staffs() {

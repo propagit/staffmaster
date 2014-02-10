@@ -96,7 +96,7 @@ class Common extends MX_Controller {
 			array('value' => GENDER_MALE, 'label' => 'Male'),
 			array('value' => GENDER_FEMALE, 'label' => 'Female')
 		);
-		return $this->field_select($array, $field_name, $field_value);
+		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 	
 	/**
