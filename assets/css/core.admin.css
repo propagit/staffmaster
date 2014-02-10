@@ -62,7 +62,7 @@ a.default {
 .popover{ 
 	left:auto;
 }
-#build .component,
+.component,
 #build .tab-pane .component{ 
 	padding:10px 0;
 	float:left;
