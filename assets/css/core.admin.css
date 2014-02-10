@@ -62,19 +62,23 @@ a.default {
 .popover{ 
 	left:auto;
 }
-#build .component,.tab-pane .component{ 
+#build .component,
+#build .tab-pane .component{ 
 	padding:10px 0;
 	float:left;
 	width:100%;
 }
-#build .controls,.tab-pane .controls{ 
+#build .controls,
+#build .tab-pane .controls{ 
 	width:75%;
 	float:left;
 }
-#build .control-group,.tab-pane .control-group{ 
+#build .control-group,
+#build .tab-pane .control-group{ 
 	margin:10px;
 }
-#build .control-label,.tab-pane .control-label{
+#build .control-label,
+#build .tab-pane .control-label{
 	float: left;
 	padding-top: 5px;
 	text-align: left;

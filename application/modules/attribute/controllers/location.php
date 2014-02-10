@@ -91,6 +91,11 @@ class Location extends MX_Controller {
 		return $output;
 	}
 	
+	function get_location($location_id)
+	{
+		return $this->location_model->get_location($location_id);
+	}
+	
 	function get_locations($parent_id=null)
 	{
 		return $this->location_model->get_locations($parent_id);
