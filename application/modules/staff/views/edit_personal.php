@@ -34,6 +34,7 @@
 		
 		<label for="dob" class="col-md-2 control-label">D.O.B(dd/mm/yy)</label>
 		<div class="col-md-4">
+			<?=modules::run('common/field_select_dob', 'dob');?>
 			<? #=modules::run('common/dropdown_dob', set_value('dob_day'), set_value('dob_month'), set_value('dob_year'));?>
 		</div>	
 	</div>

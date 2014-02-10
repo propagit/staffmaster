@@ -23,7 +23,7 @@
                 <li><a href="#location" data-toggle="tab">Location</a></li>
                 <li><a href="#settings" data-toggle="tab">Settings</a></li>
                 <li><a href="#documents" data-toggle="tab">Documents</a></li>
-                <li><a href="#picture" data-toggle="tab">Pictures</a></li>
+                <li><a href="#pictures" data-toggle="tab">Pictures</a></li>
 			</ul>
 			
 			<div class="tab-content">
@@ -36,7 +36,7 @@
 				<div class="tab-pane" id="location"></div>
 				<div class="tab-pane" id="settings"></div>
 				<div class="tab-pane" id="documents"></div>
-				<div class="tab-pane" id="picture"></div>
+				<div class="tab-pane" id="pictures"></div>
 			</div>
 		 </div>
     </div>
