@@ -149,6 +149,21 @@ var help = {
 			help.custom_select_open = true;
 		}
 
+	},
+	
+	//load content by ajax
+	//a generalized function to load ajax content
+	//does not have a call back and does not handle json output
+	load_content:function(params){
+		preloading($(params.output_container));
+		$.ajax({
+			type: params.type,
+			url: params.url,
+			data:{params:params.data},
+			success: function(html) {
+				$(params.output_container).html(html);
+			}
+		})		
 	}
 	
 	
