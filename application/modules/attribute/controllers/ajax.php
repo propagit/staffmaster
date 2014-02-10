@@ -83,6 +83,13 @@ class Ajax extends MX_Controller {
 		$this->role_model->update_role($edit_id, $data);
 		echo 'success';
 	}
+	
+	function delete_role()
+	{
+		$role_id = $this->input->post('role_id',true);
+		$this->role_model->delete_role($role_id);
+		echo 'success';
+	}
 	 
 	
 	

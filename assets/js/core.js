@@ -164,6 +164,13 @@ var help = {
 				$(params.output_container).html(html);
 			}
 		})		
+	},
+	
+	//a generalized function for confirm delete modal
+	confirm_delete:function(call_back,message){
+		var delete_modal = '<div class="modal fade" id="confirm_delete_modal" tabindex="-1" role="dialog" aria-labelledby="editRoleLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button><h4 class="modal-title">Confirm Delete</h4></div><input type="hidden" name="role_id" id="role_id" /><div class="col-md-12"><div class="modal-body"><div id="modal-delete-msg">'+message+'</div></div></div><div class="modal-footer"><button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button><button '+call_back+' type="button" class="btn btn-info">Delete</button></div></div></div></div>';
+		$('body').append(delete_modal);
+		$('#confirm_delete_modal').modal('show');
 	}
 	
 	

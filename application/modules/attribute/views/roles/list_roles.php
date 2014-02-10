@@ -111,6 +111,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
 <script>
 
 var params = {
@@ -158,11 +159,23 @@ function add_role(){
 }
 
 
+function confirm_delete(role_id){
+	
+	var call_back_function = 'onclick="delete_role('+role_id+')"';
+	var delete_message = 'You are about to delete this Role. Confirm Delete?';
+	help.confirm_delete(call_back_function,delete_message);
+}
+
 function delete_role(role_id){
-	if(confirm('Are you sure you want to delete this role?'))
-	{
-		window.location = '<?=base_url();?>attribute/role/delete/' + role_id;
-	}
+	$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>attribute/ajax/delete_role',
+		data:{role_id:role_id},
+		success: function(html) {
+			help.load_content(params);
+			$('#confirm_delete_modal').modal('hide');
+		}
+	});	 
 }
 
 function open_edit_modal(role_id, name){
