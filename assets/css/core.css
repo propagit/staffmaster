@@ -489,31 +489,38 @@ a:hover {
 	text-align: center;
 }
 
-.table-middle > thead > tr > th, 
-.table-middle > tbody > tr > th, 
-.table-middle > tfoot > tr > th, 
-.table-middle > thead > tr > td, 
-.table-middle > tbody > tr > td, 
-.table-middle > tfoot > tr > td {
+.table-middle>thead>tr>th, 
+.table-middle>tbody>tr>th, 
+.table-middle>tfoot>tr>th, 
+.table-middle>thead>tr>td, 
+.table-middle>tbody>tr>td, 
+.table-middle>tfoot>tr>td {
 	vertical-align: middle;
 }
-.table>thead>tr>th{
+.table-expanded>thead>tr>th{
 	padding-top:12px;
 	padding-bottom:12px;
 	font-size:14px;
 	font-weight:600;	
 }
-.table>tbody>tr>th, 
-.table>tfoot>tr>th, 
-.table>thead>tr>td, 
-.table>tbody>tr>td, 
-.table>tfoot>tr>td{
+.table-expanded>tbody>tr>th, 
+.table-expanded>tfoot>tr>th, 
+.table-expanded>thead>tr>td, 
+.table-expanded>tbody>tr>td, 
+.table-expanded>tfoot>tr>td{
+	padding-top:16px;
+	padding-bottom:16px;
 	font-size:13px;	
 }
 .table-bordered{
 	border:1px solid #cccccc;
 }
-.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td{
+.table-bordered>thead>tr>th, 
+.table-bordered>tbody>tr>th, 
+.table-bordered>tfoot>tr>th, 
+.table-bordered>thead>tr>td, 
+.table-bordered>tbody>tr>td, 
+.table-bordered>tfoot>tr>td{
 	border:1px solid #cccccc;
 }
 

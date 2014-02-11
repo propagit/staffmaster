@@ -1,4 +1,4 @@
-<table class="table table-bordered table-hover table-middle">
+<table class="table table-bordered table-hover table-middle table-expanded">
     <thead>
         <tr>
             <th class="left">Role <i class="fa fa-sort" onclick="sort_list('name');"></i></th>
