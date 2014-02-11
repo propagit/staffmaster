@@ -16,8 +16,7 @@ class Ajax extends MX_Controller {
 		$this->load->model('payrate_model');
 	}
 		
-	function add_payrate()
-	{
+	function add_payrate() {
 		$payrate_id = $this->payrate_model->insert_payrate(array('name' => $this->input->post('name')));
 		$rate = array();
 		$rate[0] = $this->input->post('staff_rate');
@@ -37,6 +36,12 @@ class Ajax extends MX_Controller {
 			}
 		}
 		echo $payrate_id;
+	}
+	
+	function load_nav_payrates() {
+		$data['payrates'] = $this->payrate_model->get_payrates();
+		$data['payrate_id'] = $this->input->post('payrate_id');
+		$this->load->view('payrate/nav', isset($data) ? $data : NULL);
 	}
 	
 	function load_payrates()

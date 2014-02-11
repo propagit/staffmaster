@@ -20,11 +20,9 @@
             <div id="menu_payrates">
             	
             </div>
-            	<ul class="nav nav-tabs tab-respond">
-            		<? foreach($payrates as $payrate) { ?>
-            		<li id="payrate-<?=$payrate['payrate_id'];?>"><a onclick="load_pay_rates(<?=$payrate['payrate_id'];?>)"><?=$payrate['name'];?></a></li>
-            		<? } ?>
-            	</ul>
+            <div id="nav_payrates">
+            	
+            </div>
             <div id="list_payrates"></div>
     	</div>
 	</div>
@@ -87,24 +85,44 @@ $(function(){
 			url: "<?=base_url();?>attribute/ajax/add_payrate",
 			data: $('#form_add_payrate').serialize(),
 			success: function(html) {
-				
+				$('#add-payrate-modal').modal('hide');
+				load_nav_payrates(html);
 			}
 		})
 	});
-	load_pay_rates(<?=$payrates[0]['payrate_id'];?>);
+	<? if (count($payrates) > 0) { ?>
+	load_nav_payrates(<?=$payrates[0]['payrate_id'];?>);
+	<? } else { ?>
+	load_nav_payrates();
+	<? } ?>
 	
 });
 function load_pay_rates(payrate_id)
 {
 	preloading($('#list_payrates'));
-	$('li[id^=payrate]').removeClass();
+	//$('li[id^=payrate]').removeClass();
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>attribute/ajax/load_payrates",
 		data: {payrate_id: payrate_id},
 		success: function(html) {
-			$('#payrate-' + payrate_id).addClass('active');
+			//$('#payrate-' + payrate_id).addClass('active');
 			loaded($('#list_payrates'), html);
+		}
+	})
+}
+function load_nav_payrates(payrate_id)
+{
+	preloading($('#nav_payrates'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>attribute/ajax/load_nav_payrates",
+		data: {payrate_id: payrate_id},
+		success: function(html) {
+			loaded($('#nav_payrates'), html);
+			if (html) {
+				load_pay_rates(payrate_id);
+			}			
 		}
 	})
 }
