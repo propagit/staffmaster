@@ -56,7 +56,7 @@
 	<div class="form-group">
 		<label for="position" class="col-lg-3 control-label">Role</label>
 		<div class="col-lg-6">
-			<?=modules::run('attribute/role/dropdown', 'role_id');?>
+			<?=modules::run('attribute/role/field_select', 'role_id');?>
 		</div>
 	</div>
 	<div class="form-group" id="f_count">
@@ -77,20 +77,8 @@
 	
 	<div class="form-group">
 		<label for="payrate" class="col-lg-3 control-label">Payrate</label>
-		<div class="col-lg-4">
+		<div class="col-lg-6">
 			<?=modules::run('attribute/payrate/dropdown', 'payrate_id');?>
-		</div>
-		<div class="col-lg-4">
-				<div class="col-lg-5">
-					<div class="radio">
-						<input type="radio" checked name="payrate_type" value="tfn" /> TFN
-					</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="radio">
-						<input type="radio" name="payrate_type" value="abn" /> ABN
-					</div>
-				</div>
 		</div>
 	</div>
 	

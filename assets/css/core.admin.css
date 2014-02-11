@@ -26,6 +26,28 @@ a.default {
 	margin-top: -10px;
 }
 
+/* Style for pay rate table */
+#payrate_data th.odd {
+	background: #fff;
+}
+#payrate_data .input-group-addon {
+	padding: 6px;
+}
+#payrate_data .input-sm {
+	padding: 5px;
+	text-align: center;
+	min-width: 50px;
+}
+.input-staff {
+	background: #deffd5;
+}
+.selectable .ui-selecting.input-sm,
+.selectable .ui-selected.input-sm {
+	background: #666;
+	border-color: #666; 
+	color: white; 
+}
+
 /* Styles for staff profile photo */
 .photo_staff {
 	border: 1px solid #ccc;

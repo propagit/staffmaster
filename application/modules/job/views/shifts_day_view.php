@@ -1,6 +1,6 @@
 <div class="table_action">
 	
-	<ul class="nav nav-tabs nav-action">
+	<ul class="nav nav-tabs nav-action tab-respond">
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
 			<ul class="dropdown-menu" role="menu">
@@ -10,7 +10,7 @@
 			</ul>
 		</li>
 	</ul>
-	<ul class="nav nav-tabs">
+	<ul class="nav nav-tabs tab-respond">
 		<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
 		<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
 		<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
