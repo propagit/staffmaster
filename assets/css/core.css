@@ -508,8 +508,6 @@ a:hover {
 .table>thead>tr>td, 
 .table>tbody>tr>td, 
 .table>tfoot>tr>td{
-	padding-top:16px;
-	padding-bottom:16px;
 	font-size:13px;	
 }
 .table-bordered{
