@@ -13,7 +13,7 @@
     	<div class="inner-box">
             <h2>Add - Edit Roles</h2>
 			<p>Add new roles by clicking the "Add New Roles" button or manage your existing roles via the below table.</p>
-            <button class="btn btn-info" data-toggle="modal" href="#addRole" ><i class="fa fa-plus"></i> Add Role</button>
+            <button class="btn btn-info" data-toggle="modal" href="#addRole" ><i class="fa fa-plus"></i> Add New Role</button>
             <br /><br />
            
            
@@ -41,30 +41,20 @@
                 <p>
                 The Role name should represent the job the staff will perform whilst performing this role such as "Junior Bar Staff" as example.
                 </p>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="name">Name</label>
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" name="name" id="name" placeholder="Enter role name">
                     </div>
                 </div>
-                <div class="col-md-10">
-                	<div class="form-group">
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Enter role name">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="name">&nbsp;</label>
-                    </div>
-                </div>
-                <div class="col-md-10">
-                	<div class="form-group">
-                        <button type="button" class="btn btn-info" onclick="add_role();"><i class="fa fa-plus"></i> Add Role</button>
+                <div class="form-group">
+                	 <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
+                    <div class="col-sm-10">
+                      <button type="button" class="btn btn-info" onclick="add_role();"><i class="fa fa-plus"></i> Add Role</button>
                     </div>
                 </div>
 			</div>
             </div>
-			<div class="modal-footer">
-			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -82,31 +72,20 @@
 			<input type="hidden" name="role_id" id="role_id" />
             <div class="col-md-12">
                 <div class="modal-body">           
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                        </div>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="form-group">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
                             <input type="text" class="form-control" name="name" id="name_edit" placeholder="Enter role name">
                         </div>
                     </div>
-                    
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="name">&nbsp;</label>
+                    <div class="form-group">
+                        <label for="edit-button" class="col-sm-2 control-label">&nbsp;</label>
+                        <div class="col-sm-10">
+                          	<button type="button" class="btn btn-info" onclick="edit_role();"><i class="fa fa-plus"></i> Edit Role</button>
                         </div>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="form-group">
-                            <button type="button" class="btn btn-info" onclick="edit_role();"><i class="fa fa-plus"></i> Edit Role</button>
-                        </div>
-                    </div>
+               		</div>
                 </div>
             </div>
-			<div class="modal-footer">
-			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -125,7 +104,6 @@ var sort_type = {
 	'name_sort':'name_asc',
 	'frequency_sort':'frequency_asc'	
 };
-
 
 $(function(){
 	help.load_content(params);
@@ -158,12 +136,10 @@ function add_role(){
 	});	 
 }
 
-
 function confirm_delete(role_id){
-	
 	var call_back_function = 'onclick="delete_role('+role_id+')"';
 	var delete_message = 'You are about to delete this Role. Confirm Delete?';
-	help.confirm_delete(call_back_function,delete_message);
+	help.confirm_delete(call_back_function,delete_message); 
 }
 
 function delete_role(role_id){
