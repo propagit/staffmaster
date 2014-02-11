@@ -2,16 +2,8 @@
 
 class Payrate_model extends CI_Model {
 	
-	function get_payrates($sort_payrate=false)
+	function get_payrates()
 	{
-		if ($sort_payrate)
-		{
-			$this->db->order_by('name', 'desc');
-		}
-		else
-		{
-			$this->db->order_by('name', 'asc');
-		}
 		$query = $this->db->get('attribute_payrates');
 		return $query->result_array();
 	}
@@ -39,6 +31,38 @@ class Payrate_model extends CI_Model {
 	{
 		$this->db->where('payrate_id', $payrate_id);
 		return $this->db->delete('attribute_payrates');
+	}
+	
+	function get_payrate_data($payrate_id, $type, $day, $hour)
+	{
+		$this->db->where('payrate_id', $payrate_id);
+		$this->db->where('type', $type);
+		$this->db->where('day', $day);
+		$this->db->where('hour', $hour);
+		$query = $this->db->get('attribute_payrate_data');
+		$result = $query->first_row('array');
+		return $result['value'];
+	}
+	
+	function update_payrate_data($payrate_id, $type, $day, $hour, $value)
+	{
+		$this->db->where('payrate_id', $payrate_id);
+		$this->db->where('type', $type);
+		$this->db->where('day', $day);
+		$this->db->where('hour', $hour);
+		return $this->db->update('attribute_payrate_data', array('value' => $value));
+	}
+	
+	function insert_payrate_data($payrate_id, $data)
+	{
+		$this->db->insert('attribute_payrate_data', $data);
+		return $this->db->insert_id();
+	}
+	
+	function clean_payrate_data($payrate_id)
+	{
+		$this->db->where('payrate_id', $payrate_id);
+		return $this->db->delete('attribute_payrate_data');
 	}
 	
 }

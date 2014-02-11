@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Controller: Common
+ * Controller: Attribute Pay Rate
  * @author: namnd86@gmail.com
  */
 
@@ -230,9 +230,13 @@ $(function() {
 	
 	function list_payrates()
 	{
-		$sort_payrate = (bool) $this->session->userdata('sort_payrate');
-		$data['payrates'] = $this->payrate_model->get_payrates($sort_payrate);
-		$this->load->view('list_payrates', isset($data) ? $data : NULL);
+		$data['payrates'] = $this->payrate_model->get_payrates();
+		$this->load->view('payrate/main_view', isset($data) ? $data : NULL);
+	}
+	
+	function get_payrate_data($payrate_id, $type, $day, $hour)
+	{
+		return $this->payrate_model->get_payrate_data($payrate_id, $type, $day, $hour);
 	}
 	
 	function sort_payrates()

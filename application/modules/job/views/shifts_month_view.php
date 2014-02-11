@@ -1,14 +1,14 @@
 <div class="table_action">
-	<ul class="nav nav-tabs pull-right">
+	<ul class="nav nav-tabs tab-respond pull-right">
 		<li><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
 		<li><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
 	</ul>
 	
-	<ul class="nav nav-tabs nav-action">
+	<ul class="nav nav-tabs nav-action tab-respond">
 		<li><a class="active" data-calendar-nav="today">Today</a></li>
 	</ul>
 	
-	<ul class="nav nav-tabs nav-group">
+	<ul class="nav nav-tabs nav-group tab-respond">
 		<li class="active"><a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
 		<li class="active"><a id="header-month"> &nbsp; </a></li>
 		<li class="active"><a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>

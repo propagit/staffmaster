@@ -20,7 +20,7 @@ class Role_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
-	function get_roles($params)
+	function get_roles($params='')
 	{
 		switch($params){
 			case 'name_desc':

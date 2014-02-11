@@ -1,9 +1,9 @@
 <div class="table_action">
-	<ul class="nav nav-tabs pull-right">
+	<ul class="nav nav-tabs tab-respond pull-right">
 		<li><a class="load_week_view push"><i class="fa fa-list"></i></a></li>
 		<li><a class="load_month_view push"><i class="fa fa-calendar"></i></a></li>
 	</ul>
-	<ul class="nav nav-tabs nav-action">
+	<ul class="nav nav-tabs tab-respond nav-action">
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
 			<ul class="dropdown-menu" role="menu">
@@ -12,7 +12,7 @@
 			</ul>
 		</li>
 	</ul>
-	<ul class="nav nav-tabs nav-group">
+	<ul class="nav nav-tabs nav-group tab-respond">
 		<li class="active"><a step="-1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
 		<?
 		if (date('D', $custom_date) == 'Mon') {

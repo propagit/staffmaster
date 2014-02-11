@@ -39,13 +39,13 @@
 			<div class="form-group">
 				<label for="state" class="col-lg-2 control-label">State</label>
 				<div class="col-lg-10">
-					<?=modules::run('common/dropdown_states', 'state', set_value('state'));?>
+					<?=modules::run('common/field_select_states', 'state', set_value('state'));?>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="country" class="col-lg-2 control-label">Country</label>
 				<div class="col-lg-10">
-					<?=modules::run('common/dropdown_countries', 'country', set_value('country'));?>
+					<?=modules::run('common/field_select_countries', 'country', set_value('country'));?>
 				</div>
 			</div>
 			<div class="form-group<?=form_error('postcode')? ' has-error' : '';?>">
