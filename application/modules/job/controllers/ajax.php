@@ -108,7 +108,7 @@ class Ajax extends MX_Controller {
 		$filter_data['role_id'] = $data['role_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
 		$filter_data['payrate_id'] = $data['payrate_id'];
-		$filter_data['payrate_type'] = $data['payrate_type'];
+		#$filter_data['payrate_type'] = $data['payrate_type'];
 		
 		$count = $data['count'];
 		if ($count < 1)
