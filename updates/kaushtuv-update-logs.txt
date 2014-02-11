@@ -1,4 +1,21 @@
 ========================
+11 Feb, 2014
+
+Login form
+System right hand side fixed buttons
+	- go to top button - working
+	- logout button - working
+	- settings button - not working
+	
+Cleaned up the Modal CSS
+Cleaned up the logo white glow behind the logo
+Fixed some issues with nav
+Fixed gutter width for various screen size
+
+Downloaded new css - bootstrap-social.css
+	- use this to created social buttons
+
+========================
 6 Feb, 2014
 
 core.css

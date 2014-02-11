@@ -122,7 +122,7 @@ var help = {
 	//scrolls to the top of the page
 	go_to_top:function(selector){			
 		$(window).scroll(function(){
-			$(window).scrollTop() ? $(selector).removeClass('hidden')  : $(selector).addClass('hidden');
+			$(window).scrollTop() ? $(selector).removeClass('custom-hidden')  : $(selector).addClass('custom-hidden');
 		});
 		
 		$(selector).click(function(){
@@ -172,8 +172,8 @@ var help = {
 		$('body').append(delete_modal);
 		$('#confirm_delete_modal').modal('show');
 	}
-	
-	
-	
-	
 };
+
+$(function(){
+	help.go_to_top('#go-to-top');	
+});

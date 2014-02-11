@@ -7,13 +7,6 @@ body {
 	background-image:url(../img/core/body-bg.jpg);
 	background-repeat:repeat;
 }
-.modal-content {
-	background: url('../img/bg-title.jpg');
-	border: 0;
-}
-.modal-dialog.modal-lg {
-	width: 800px;
-}
 iframe {
 	border: 1px solid #ccc;
 	height: 100%;
@@ -210,6 +203,31 @@ a:hover {
 
 /* end - bootstrap overwrites */
 
+/** 
+	Button styles 
+	To quickly change button color edit these rules
+	
+	.btn-info{
+		background-color:#00b1eb;
+	}
+	
+	.btn-info:hover{
+		background-color:#00b1eb;
+	}
+
+*/
+.btn-info{
+	background-repeat:repeat;
+	background-color:#00b1eb !important;
+	background-image:url(../img/core/nav-texture-bg.png); 
+	border-color:rgba(255,255,255,0.25);
+}
+
+.btn-info:hover{
+	background-image:none;
+	border-color:rgba(255,255,255,0.25);
+}
+
 /* begin - responsive */
 
 /* *
@@ -219,11 +237,8 @@ a:hover {
 
 @media(max-width:1200px){
 	.row{ 
-		padding-left:0; 
-		padding-right:0;
-	}
-	.profile-bar{ 
-		background-position:-25px 0px;
+		padding-left:15px; 
+		padding-right:15px;
 	}
 }
 
@@ -247,7 +262,7 @@ a:hover {
 		margin-left:-10px;
 	}
 	.nav > li > a{ 
-		padding:12px 10px 12px 10px;
+		padding:12px 7px 12px 7px;
 	}
 	.dropdown-menu{ 
 		min-width:175px;
@@ -270,6 +285,11 @@ a:hover {
 
 /* collapse to phone menu */
 @media (max-width:820px){
+	.row{ 
+		padding-left:0; 
+		padding-right:0;
+	}
+	
 	.desktop-hidden{ 
 		display: block;
 	}
@@ -476,6 +496,27 @@ a:hover {
 .table-middle > tfoot > tr > td {
 	vertical-align: middle;
 }
+.table>thead>tr>th{
+	padding-top:12px;
+	padding-bottom:12px;
+	font-size:14px;
+	font-weight:600;	
+}
+.table>tbody>tr>th, 
+.table>tfoot>tr>th, 
+.table>thead>tr>td, 
+.table>tbody>tr>td, 
+.table>tfoot>tr>td{
+	padding-top:16px;
+	padding-bottom:16px;
+	font-size:13px;	
+}
+.table-bordered{
+	border:1px solid #cccccc;
+}
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td{
+	border:1px solid #cccccc;
+}
 
 /* Custom styles for typeahead */
 .tt-hint {
@@ -552,7 +593,7 @@ a:hover {
 }
 .top-box p{ 
 	font-size:16px;
-	width:50%;
+	width:60%;
 	font-family:'Lato', sans-serif;
 	color:#3d3d3d;
 }
@@ -718,8 +759,24 @@ a:hover {
 }
 
 /* modal */
+.modal-content {
+	background: url('../img/bg-title.jpg');
+	border: 0;
+	float:left;
+	width:100%;
+}
+.modal-dialog.modal-lg {
+	width: 800px;
+}
 .modal-header{
-	border-bottom:1px solid #d3d3d3;
+	border-bottom:none;
+	padding:12px 15px;
+	border-bottom:1px solid #cccccc;
+	float:left;
+	width:100%;
+}
+.modal-header .fa-times{
+	margin-top:6px;
 }
 .modal-body-title,
 .modal-title{
@@ -727,6 +784,7 @@ a:hover {
 	font-weight:900;
 	font-family:'Lato', sans-serif;
 	color:#3d3d3d;
+	margin-top:0;
 }
 .modal-title .close{
 	
@@ -735,11 +793,17 @@ a:hover {
 	background-color:rgba(255,255,255,0.8);	
 	width:100%;
 	border-radius: 6px;
-	border: 1px solid #d3d3d3;
+	border: 1px solid #cccccc;
 	float:left;
 }
-.modal-body .col-md-2,
-.modal-body .col-md-10{
+.modal-body p{
+	padding-bottom:10px;	
+}
+.modal-body .form-group label{
+	font-weight:100;	
+}
+.modal-body .col-sm-2,
+.modal-body .col-sm-10{
 	padding-left:0;
 }
 .modal-content .col-md-12{
@@ -747,7 +811,9 @@ a:hover {
 }
 .modal-footer{
 	margin-top:0;	
-	border-top:1px solid #d3d3d3;
+	border-top:1px solid #cccccc;
+	float:left;
+	width:100%;
 }
 
 @media(max-width:1200px){
