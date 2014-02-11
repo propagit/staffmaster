@@ -1,6 +1,6 @@
 <p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>
-<form class="form-horizontal" role="form">
-
+<form class="form-horizontal" role="form" id="form_update_staff_personal">
+<input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">
 	<div class="form-group">
 		<label for="title" class="col-md-2 control-label">Title</label>
@@ -8,8 +8,8 @@
 			<?=modules::run('common/field_select_title', 'title', $staff['title']);?>
 		</div>
 		<label for="rating" class="col-md-2 control-label">Rating</label>
-		<div class="col-md-4">
-            <?=modules::run('common/field_rating', 'rating');?>
+		<div class="col-md-4" id="wp_rating">
+            <?=modules::run('common/field_rating', 'rating', $staff['rating']);?>
 		</div>
 	</div>	
 </div>
@@ -34,6 +34,7 @@
 		
 		<label for="dob" class="col-md-2 control-label">D.O.B(dd/mm/yy)</label>
 		<div class="col-md-4">
+			<?=modules::run('common/field_select_dob', 'dob');?>
 			<? #=modules::run('common/dropdown_dob', set_value('dob_day'), set_value('dob_month'), set_value('dob_year'));?>
 		</div>	
 	</div>
@@ -105,17 +106,13 @@
 		<div class="col-md-4">
 			<?=modules::run('attribute/group/field_select','group_id', $staff['group_id']);?>
 		</div>
-		<label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=$staff['emergency_contact'];?>" tabindex="18" />
-		</div>
 	</div>				
 </div>
 <div class="row">
 	<div class="form-group">
-		<label for="role" class="col-md-2 control-label">Role</label>
+		<label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="role" name="role" value="<?=$staff['role'];?>" tabindex="17" />
+			<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=$staff['emergency_contact'];?>" tabindex="18" />
 		</div>
 		<label for="emergency_phone" class="col-md-2 control-label">Emergency Phone</label>
 		<div class="col-md-4">
@@ -126,11 +123,30 @@
 			
 <div class="row">
 	<div class="form-group">
-		<div class="col-md-offset-2 col-md-4">
-			<button type="button" class="btn btn-core" id="btn_add_staff"><i class="fa fa-plus"></i> Add Staff</button>
+		<div class="col-md-offset-2 col-md-10">
+			<div class="alert alert-success hide" id="msg-update-personal"><i class="fa fa-check"></i> &nbsp; Staff personal details has been updated successfully!</div>
+			<button type="button" class="btn btn-core" id="btn_update_personal"><i class="fa fa-save"></i> Update Personal Details</button>
 		</div>
 	</div>
 </div>
 
 
 </form>
+<script>
+$(function(){
+	$('#btn_update_personal').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>staff/ajax/update_personal",
+			data: $('#form_update_staff_personal').serialize(),
+			success: function(html) {
+				$('#wp_rating').html(html);
+				$('#msg-update-personal').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-update-personal').addClass('hide');
+				}, 2000);
+			}	
+		})
+	})
+})
+</script>

@@ -400,7 +400,8 @@ a:hover {
 	border-radius: 5px 5px 0 0;
 }
 .nav-tabs > li.active a,
-.nav-tabs > li.active a:hover {
+.nav-tabs > li.active a:hover,
+.nav-tabs > li.active a:focus {
 	color: #fff;
 	background: #00b1eb;
 	border-color: #00b1eb;
@@ -454,6 +455,9 @@ a:hover {
 /* Custom style for table */
 .table thead {
 	background: #ededed;
+}
+.table th.left {
+	padding-left: 20px;
 }
 .table td.left {
 	padding-left: 20px;
@@ -576,6 +580,16 @@ a:hover {
 	margin-left: 5px;
 	margin-top: -5px;
 }
+
+/* table font awesome icons */
+.table .fa{
+	padding-left:5px;
+	cursor:pointer;
+	color:#3d3d3d;
+}
+
+
+
 .btn i {
 	margin: 0 3px;
 }
@@ -688,8 +702,54 @@ a:hover {
 .dob-year{
 	width:25%;	
 }
+.input-sml{
+	width:50%;	
+}
+.select-sml{
+	width:50%;	
+}
+.appended-element-box{
+	float:left;
+	width:100%;	
+	margin-top:15px;	
+}
+.append-element-controls{
+	padding:10px 20px;
+	cursor:pointer;
+}
 
-
+/* modal */
+.modal-header{
+	border-bottom:1px solid #d3d3d3;
+}
+.modal-body-title,
+.modal-title{
+	font-size:20px;
+	font-weight:900;
+	font-family:'Lato', sans-serif;
+	color:#3d3d3d;
+}
+.modal-title .close{
+	
+}
+.modal-body{
+	background-color:rgba(255,255,255,0.8);	
+	width:100%;
+	border-radius: 6px;
+	border: 1px solid #d3d3d3;
+	float:left;
+}
+.modal-body .col-md-2,
+.modal-body .col-md-10{
+	padding-left:0;
+}
+.modal-content .col-md-12{
+	padding:20px;
+}
+.modal-footer{
+	margin-top:0;	
+	border-top:1px solid #d3d3d3;
+}
 
 @media(max-width:1200px){
 	.box p{ 
@@ -737,5 +797,8 @@ a:hover {
 }
 .no-rt-border{
 	border-right:none !important;	
+}
+.custom-hidden{
+	display:none;	
 }
 

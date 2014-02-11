@@ -62,7 +62,7 @@ a.default {
 .popover{ 
 	left:auto;
 }
-#build .component,
+.component,
 #build .tab-pane .component{ 
 	padding:10px 0;
 	float:left;
@@ -147,7 +147,7 @@ a.default {
 	float: left;
 	text-align: center;
 }
-
+/* style for staff availability */
 
 /* begin responsive */
 @media(max-width:1200px){

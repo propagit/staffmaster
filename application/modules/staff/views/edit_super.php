@@ -31,13 +31,7 @@
 	<div class="form-group">
 		<label for="s_tfn_1" class="col-md-2 control-label">TFN Number</label>
 		<div class="col-md-1">
-			<input type="text" class="form-control" id="s_tfn_1" name="s_tfn_1" value="<?=($staff['s_tfn_1'] == '') ? $staff['f_tfn_1'] : $staff['s_tfn_1'];?>" />
-		</div>
-		<div class="col-md-1">
-			<input type="text" class="form-control" id="s_tfn_2" name="s_tfn_2" value="<?=($staff['s_tfn_2'] == '') ? $staff['f_tfn_2'] : $staff['s_tfn_2'];?>" />
-		</div>
-		<div class="col-md-1">
-			<input type="text" class="form-control" id="s_tfn_3" name="s_tfn_3" value="<?=($staff['s_tfn_3'] == '') ? $staff['f_tfn_3'] : $staff['s_tfn_3'];?>" />
+			<input type="text" class="form-control" id="s_tfn_1" name="s_tfn_1" value="<?=($staff['s_tfn'] == '') ? $staff['f_tfn'] : $staff['s_tfn'];?>" />
 		</div>
 	</div>
 	

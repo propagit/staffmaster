@@ -1,5 +1,6 @@
 <br />
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" id="form_update_staff_roles">
+<input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">
 	<div class="form-group">
 		<label for="title" class="col-md-2 control-label">Roles</label>
@@ -26,3 +27,16 @@
 	</div>
 </div>
 </form>
+<script>
+$(function(){
+	$('#form_update_staff_roles input[type="checkbox"]').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>staff/ajax/update_roles",
+			data: $('#form_update_staff_roles').serialize(),
+			success: function(html) {
+			}
+		})
+	})
+})
+</script>

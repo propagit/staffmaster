@@ -118,8 +118,34 @@
 			</div>
             <div class="form-group">
 				<label for="address" class="col-lg-2 control-label">Departments</label>
-				<div class="col-lg-10">
-					<input type="input" class="form-control sml-input" name="departments[]" value="" />
+				<div class="col-lg-10" id="appending">
+                	<?php 
+						$dep_count = 0;
+						if(isset($departments) && $departments){
+							foreach($departments as $dep){
+								if($dep_count == 0){
+					?>
+                    		<div class="appended-element-box">
+                           		 <input type="input" class="form-control input-sml push" name="departments[]" value="<?=$dep;?>" maxlength="255" /><i class="fa fa-plus-square append-element-controls" onclick="append_element('<?=$dep_count;?>');"></i>
+                            </div>
+                    <?	
+								}else{
+					?>
+                    		<div class="appended-element-box" id="addon-elem-<?=$dep_count;?>">
+                           		 <input type="input" class="form-control input-sml push" name="departments[]" value="<?=$dep;?>" maxlength="255" /><i class="fa fa-minus-square append-element-controls" onclick="remove_element('<?=$dep_count;?>');"></i>
+                            </div>
+                    <?
+								}
+								$dep_count++;
+							}
+						}else{
+					?>
+                	<div class="appended-element-box">
+					<input type="input" class="form-control input-sml push" name="departments[]" value="" maxlength="255" /><i class="fa fa-plus-square append-element-controls" onclick="append_element();"></i>
+                    </div>
+                    <?php
+					}
+					?>
 				</div>
 			</div>
 			<div class="form-group">
@@ -133,7 +159,15 @@
 </div>
 
 <script>
+var elem_count = <?=$dep_count;?>;
+function append_element() {
+	elem_count++;
+	$('#appending').append('<div class="appended-element-box" id="addon-elem-'+elem_count+'"><input type="input" class="form-control input-sml push appended-element" name="departments[]" value="" maxlength="255" /><i class="fa fa-minus-square append-element-controls" onclick="remove_element('+elem_count+');"></i></div>');
+}
 
+function remove_element(n) {
+	$('#addon-elem-' + n).remove();
+} 
 
 </script>
 

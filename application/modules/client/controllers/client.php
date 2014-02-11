@@ -30,6 +30,9 @@ class Client extends MX_Controller {
 			case 'delete':
 					$this->delete_client($param);
 				break;
+			case 'dropdown_client_departments':
+				$this->dropdown_client_departments($param);
+				break;
 			default:
 					echo 'do nothing';
 				break;
@@ -58,7 +61,10 @@ class Client extends MX_Controller {
 			array('field' => 'status', 'label' => 'Status', 'rules' => '')
 		));
 		if ($this->form_validation->run($this) == FALSE)
-		{				
+		{	
+			if($this->input->post('departments',true)){
+				$data['departments'] = $this->input->post('departments',true);			
+			}
 		}
 		else
 		{
@@ -95,6 +101,17 @@ class Client extends MX_Controller {
 					'abn' => $data['abn']
 				);
 				$client_id = $this->client_model->insert_client($client_data);
+				if($data['departments'] && $client_id){
+					foreach($data['departments'] as $department){
+						if(trim($department)){
+							$client_dep_data = array(
+												'client_id' => $client_id,
+												'department_name' => $department
+											 );	
+							$this->client_model->insert_client_departments($client_dep_data);
+						}
+					}
+				}
 				redirect('client/search');
 			}			
 		}
@@ -160,6 +177,17 @@ class Client extends MX_Controller {
 				'abn' => $data['abn']
 			);
 			$this->client_model->update_client($user_id, $client_data);
+			if($data['departments']&& $data['client_edit_id']){
+					foreach($data['departments'] as $department){
+						if(trim($department)){
+							$client_dep_data = array(
+												'client_id' => $data['client_edit_id'],
+												'department_name' => $department
+											 );	
+							$this->client_model->insert_client_departments($client_dep_data);
+						}
+					}
+			}
 		}
 		$client = $this->client_model->get_client($user_id);
 		$data['client'] = $client;
@@ -184,5 +212,13 @@ class Client extends MX_Controller {
 		$data['field_value'] = $field_value;
 		$data['clients'] = $this->client_model->search_clients();
 		$this->load->view('dropdown', isset($data) ? $data : NULL);
+	}
+	
+	function dropdown_client_departments($client_id,$field_name, $field_value = NULL)
+	{
+		$data['departments'] = $this->client_model->get_client_departments($client_id);
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('dropdown_departments', isset($data) ? $data : NULL);
 	}
 }

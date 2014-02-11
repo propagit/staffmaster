@@ -37,42 +37,7 @@ class Role extends MX_Controller {
 	
 	function list_roles()
 	{
-		$sort_role = (bool) $this->session->userdata('sort_role');
-		$data['roles'] = $this->role_model->get_roles($sort_role);
-		$this->load->view('list_roles', isset($data) ? $data : NULL);
-	}
-	
-	function sort_roles()
-	{
-		if (!$this->session->userdata('sort_role'))
-		{
-			$this->session->set_userdata('sort_role', 1);
-		}
-		else
-		{
-			$this->session->unset_userdata('sort_role');
-		}
-		redirect('attribute/role');
-	}
-
-	function add_role()
-	{
-		$data = $this->input->post();
-		$this->role_model->insert_role($data);
-		redirect('attribute/role');
-	}
-	
-	function edit_role()
-	{
-		$data = $this->input->post();
-		$this->role_model->update_role($data['role_id'], $data);
-		redirect('attribute/role');
-	}
-	
-	function delete_role($role_id)
-	{
-		$this->role_model->delete_role($role_id);
-		redirect('attribute/role');
+		$this->load->view('roles/list_roles', isset($data) ? $data : NULL);
 	}
 	
 	function get_roles($format=null)

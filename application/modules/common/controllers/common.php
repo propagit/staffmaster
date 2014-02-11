@@ -99,6 +99,38 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 	
+	
+	function field_select_dob($field_name, $field_value=null, $size=null) {
+		$day_array = array();
+		$month_array = array();
+		$year_array = array();
+		for($i=1; $i<=30; $i++) {
+			$x = sprintf('%02d',$i);
+			$day_array[] = array('value' => $x, 'label' => $x);
+		}
+		for($i=1; $i<=12; $i++) {
+			$x = sprintf('%02d',$i);
+			$month_array[] = array('value' => $x, 'label' => $x);
+		}
+		for($i=2012; $i>=1990;$i--) {
+			$year_array[] = array('value' => $i, 'label' => $i);
+		}
+		$field_day = null;
+		$field_month = null;
+		$field_year = null;
+		if ($field_value) {
+			$fields = explode('-', $field_value);
+			if (isset($fields[0])) { $field_day = $fields[0]; }
+			if (isset($fields[1])) { $field_month = $fields[1]; }
+			if (isset($fields[2])) { $field_year = $fields[2]; }
+		}
+		$output = $this->field_select($day_array, $field_name . '-day', $field_day);
+		return $output;
+		$output .= $this->field_select($month_array, $field_name . '-mth', $field_month);
+		$output .= $this->field_select($year_array, $field_name . '-year', $field_year);
+		return $output;
+	}
+	
 	/**
 	*	@name: field_select_title
 	*	@desc: custom select title field
@@ -130,7 +162,6 @@ class Common extends MX_Controller {
 		$data['field_value'] = $field_value;
 		$this->load->view('field_rating', isset($data) ? $data : NULL);
 	}
-	
 	
 	
 	

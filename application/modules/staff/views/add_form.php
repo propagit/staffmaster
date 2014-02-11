@@ -131,17 +131,13 @@
 					<div class="col-md-4">
 						<?=modules::run('attribute/group/field_select','group_id', set_value('group_id'));?>
 					</div>
-					<label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
-					<div class="col-md-4">
-						<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=set_value('emergency_contact');?>" tabindex="18" />
-					</div>
 				</div>				
 			</div>
 			<div class="row">
 				<div class="form-group">
-					<label for="role" class="col-md-2 control-label">Role</label>
+					<label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" id="role" name="role" value="<?=set_value('role');?>" tabindex="17" />
+						<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=set_value('emergency_contact');?>" tabindex="18" />
 					</div>
 					<label for="emergency_phone" class="col-md-2 control-label">Emergency Phone</label>
 					<div class="col-md-4">
