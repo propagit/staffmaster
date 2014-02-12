@@ -120,8 +120,14 @@ $(function(){
 	$('#btn_update_payrate').click(function(){
 		var staff_rate = $('#staff_rate').val();
 		var client_rate = $('#client_rate').val();
-		$('.ui-selected.input-staff').val(staff_rate);
-		$('.ui-selected.input-client').val(client_rate);
+		if (staff_rate)
+		{
+			$('.ui-selected.input-staff').val(staff_rate);
+		}
+		if (client_rate)
+		{
+			$('.ui-selected.input-client').val(client_rate);
+		}
 		$('#update-payrate-modal').modal('hide');
 		$.ajax({
 			type: "POST",
