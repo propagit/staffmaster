@@ -1,7 +1,7 @@
-<br />
-<h2> Your Availability </h2>
-<p> Please let us know the times that you are available for work</p>
-
+<div class="staff-profile-detail-box">
+	<h2> Your Availability </h2>
+	<p> Please let us know the times that you are available for work</p>
+</div>
 <div id="list_availability"></div>
 
 

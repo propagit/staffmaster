@@ -1,27 +1,31 @@
+<div class="staff-profile-detail-box">
+	<h2> Financial Details </h2>
+	<p> Staff can choose the "Financial" </p>
+</div>
 <p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>
 <form class="form-horizontal" role="form" id="form_update_staff_financial">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">
 	<div class="form-group">
-		<label for="f_acc_name" class="col-md-2 control-label">Account Name</label>
+		<label for="f_acc_name" class="col-md-4 control-label">Account Name</label>
 		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_acc_name" name="f_acc_name" value="<?=$staff['f_acc_name'];?>" tabindex="1" />
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="f_bsb" class="col-md-2 control-label">BSB</label>
-		<div class="col-md-2">
+		<label for="f_bsb" class="col-md-4 control-label">BSB</label>
+		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'];?>" tabindex="2" />
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="f_acc_number" class="col-md-2 control-label">Account Number</label>
+		<label for="f_acc_number" class="col-md-4 control-label">Account Number</label>
 		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" tabindex="3" />
 		</div>
 	</div>
     <div class="form-group">
-		<label class="col-md-2 control-label">Employed As</label>
+		<label class="col-md-4 control-label">Employed As</label>
 		<div class="col-md-1">
 			<div class="radio">
 				<input type="radio" name="f_employed" value="0"<?=($staff['f_employed'] == 0) ? ' checked' : '';?> /> TFN
@@ -36,20 +40,20 @@
 </div>
 <div class="row">                     
 	<div class="form-group" id="f_tfn_number">
-		<label for="f_tfn_1" class="col-md-2 control-label">TFN Number</label>
-		<div class="col-md-2">
+		<label for="f_tfn_1" class="col-md-4 control-label">TFN Number</label>
+		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_tfn" name="f_tfn" tabindex="4" value="<?=$staff['f_tfn'];?>" />
 		</div>
 	</div>
     <div class="form-group" id="f_abn_number">
-		<label for="f_tfn_1" class="col-md-2 control-label">ABN Number</label>
-		<div class="col-md-2">
+		<label for="f_tfn_1" class="col-md-4 control-label">ABN Number</label>
+		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_abn" name="f_abn" tabindex="7" value="<?=$staff['f_abn'];?>" />
 		</div>
 	</div>
     <div class="form-group" id="f_gst">
-		<label for="f_tfn_1" class="col-md-2 control-label">Do you require GST?</label>
-		<div class="col-md-2">
+		<label for="f_tfn_1" class="col-md-4 control-label">Do you require GST?</label>
+		<div class="col-md-3">
 			<?
 				$array = array(
 					array('value' => '0', 'label' => 'No'),
@@ -63,7 +67,7 @@
 </div>
 <div class="row">
 	<div class="form-group">
-		<label class="col-lg-5 control-label">Are you an Australian Resident?</label>
+		<label class="col-lg-4 control-label">Are you an Australian Resident?</label>
 		<div class="col-lg-1">
 			<div class="radio">
 				<input type="radio" name="f_aus_resident" value="1"<?=($staff['f_aus_resident']) ? ' checked' : '';?> /> Yes
@@ -77,7 +81,7 @@
 	</div>
 							
 	<div class="form-group">
-		<label class="col-lg-5 control-label">Do you want to claim the tax free threshold?</label>
+		<label class="col-lg-4 control-label">Do you want to claim the tax free threshold?</label>
 		<div class="col-lg-1">
 			<div class="radio">
 				<input type="radio" name="f_tax_free_threshold" value="1"<?=($staff['f_tax_free_threshold']) ? ' checked' : '';?> /> Yes
@@ -91,7 +95,7 @@
 	</div>
 							
 	<div class="form-group">
-		<label class="col-lg-5 control-label">Do you want to claim the Senior Australian Tax offset?</label>
+		<label class="col-lg-4 control-label">Do you want to claim the Senior Australian Tax offset?</label>
 		<div class="col-lg-1">
 			<div class="radio">
 				<input type="radio" name="f_tax_offset" value="1"<?=($staff['f_tax_offset']) ? ' checked' : '';?> /> Yes
@@ -105,7 +109,7 @@
 	</div>
 							
 	<div class="form-group" id="f_senior_status">
-		<label class="col-lg-5 control-label">Your senior couple status <span class="required">**</span></label>
+		<label class="col-lg-4 control-label">Your senior couple status <span class="required">**</span></label>
 		<div class="col-lg-3">
 			<?
 				$array = array(
@@ -120,7 +124,7 @@
 	</div>
 							
 	<div class="form-group">
-		<label class="col-lg-5 control-label">Do you have a HELP (higher education loan program) debt?</label>
+		<label class="col-lg-4 control-label">Do you have a HELP (higher education loan program) debt?</label>
 		<div class="col-lg-1">
 			<div class="radio">
 				<input type="radio" name="f_help_debt" value="1"<?=($staff['f_help_debt']) ? ' checked' : '';?> /> Yes
@@ -134,7 +138,7 @@
 	</div>
 							
 	<div class="form-group" id="f_help_variation">
-		<label class="col-lg-5 control-label">Your HELP variation <span class="required">**</span></label>
+		<label class="col-lg-4 control-label">Your HELP variation <span class="required">**</span></label>
 		<div class="col-lg-3">
 			<?
 				$array = array(
@@ -211,7 +215,7 @@ function load_f_employed()
 	var is_f_empoyed = $('input[name="f_employed"]:checked').val();
 	
 	if (is_f_empoyed == 1) {
-		$('#f_tfn_number').hide();
+		$('#f_tfn_number').show();
 		$('#f_abn_number').show();
 		$('#f_gst').show();
 	} else

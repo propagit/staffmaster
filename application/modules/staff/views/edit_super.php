@@ -1,14 +1,17 @@
-<br />
+<div class="staff-profile-detail-box">
+	<h2> Super Details </h2>
+	<p> Staff can choose the "Super" </p>
+</div>
 <form class="form-horizontal" role="form">
 <div class="row">
 	<div class="form-group">
-		<label class="col-md-3 control-label">Choice of superannuation fund</label>
-		<div class="col-md-3">
+		<label class="col-md-2 control-label">Choice of superannuation fund</label>
+		<div class="col-md-2">
 			<div class="radio">
 				<input type="radio" name="s_choice" value="employer"<?=($staff['s_choice'] == 'employer') ? ' checked' : '';?> /> my employer's superannuation fund
 			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-2">
 			<div class="radio">
 				<input type="radio" name="s_choice" value="own"<?=($staff['s_choice'] == 'own') ? ' checked' : '';?> /> my own choice
 			</div>
@@ -30,7 +33,7 @@
 
 	<div class="form-group">
 		<label for="s_tfn_1" class="col-md-2 control-label">TFN Number</label>
-		<div class="col-md-1">
+		<div class="col-md-4">
 			<input type="text" class="form-control" id="s_tfn_1" name="s_tfn_1" value="<?=($staff['s_tfn'] == '') ? $staff['f_tfn'] : $staff['s_tfn'];?>" />
 		</div>
 	</div>
@@ -106,7 +109,7 @@
 	<div class="form-group">
 		<label for="title" class="col-md-2 control-label">I have attached</label>
 		<div class="col-md-10">
-			<ol type="a">
+			<ol type="a" class="super_attached">
 			<li>A letter from the trustee stating that this is a complying fund or retirement savings account (RSA) or, for a self managed superannuation fund, a copy of documentation from the ATO confirming the fund is regulated</li>
 			<li>written evidence from the fund stating that they will accept contributions from my employer, and</li>
 			<li>details about how my employer can make contributions to this fund.</li>
@@ -116,10 +119,11 @@
 </div>
 <div class="row">
 	<div class="form-group">
-		<div class="col-md-offset-2 col-md-1">
-			<input type="checkbox" name="s_agree" value="1"<?=($staff['s_agree']) ? ' checked' : '';?> /> 
+		<div class="col-md-offset-2 col-md-3">
+        	<div class="checkbox">
+				<input type="checkbox" name="s_agree" value="1"<?=($staff['s_agree']) ? ' checked' : '';?> /> I have read and agreed to the above statements.
+            </div>
 		</div>
-		<div class="col-md-8 label_checkbox">I have read and agreed to the above statements.</div>		
 	</div>					
 </div>
 <script>

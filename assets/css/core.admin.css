@@ -170,7 +170,14 @@ a.default {
 	text-align: center;
 }
 
-/* style for staff availability */
+/* style for staff profile */
+.staff-profile-detail-box{
+	margin-top:30px;
+	margin-bottom:30px;
+}
+.super_attached{
+	padding-left:20px;
+}
 
 /* begin responsive */
 @media(max-width:1200px){
@@ -311,5 +318,8 @@ a.default {
 /* Styles for Job board / popover */
 #form_update_shift_staff #f_shift_staff {
 	margin-right: 10px;
+}
+.error{
+	border-color:#F00;	
 }
 

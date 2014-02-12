@@ -1,4 +1,7 @@
-<br />
+<div class="staff-profile-detail-box">
+	<h2> Locations </h2>
+	<p> Staff can choose the "Locations" they would like to work in. When searching for staff you can search by location. <br />Staff will only be able to apply for shifts in locations they can work in.</p>
+</div>
 <form class="form-horizontal" role="form" id="form_add_staff_location">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">

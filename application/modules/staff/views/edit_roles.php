@@ -1,4 +1,8 @@
-<br />
+<div class="staff-profile-detail-box">
+	<h2> Roles </h2>
+	<p> Roles can be created in the edit attributes section. Assigning roles to your staff will allow you to search for staff by role. <br />Staff can also apply for jobs for roles they are allocated to below. </p>
+</div>
+
 <form class="form-horizontal" role="form" id="form_update_staff_roles">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">

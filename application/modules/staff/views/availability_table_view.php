@@ -43,17 +43,17 @@
 	<tr>
 		<th class="center" width="100">Time</th>
 		<? foreach($days as $key => $label) { ?>
-		<th class="center<?=($key%2==1) ? ' odd' : '';?>"><?=$label;?></th>
+		<th class="center<?=($key%2==1) ? ' odd' : '';?>"><?=$label;?><input type="checkbox" class="form-control checkbox-sm input-staff" name="check-day-all" value="day<?=$key?>"/></th>
 		<? } ?>
 	</tr>
 </thead>
 <tbody>
 	<? foreach($hours as $key_hour => $label_hour) { ?>
 	<tr>
-		<td class="center"><?=$label_hour;?></td>
+		<td class="center"><input type="checkbox" class="form-control checkbox-sm input-staff" name="check-time-all" value="hour<?=$key_hour;?>"/> <?=$label_hour;?></td>
 		<? foreach($days as $key_day => $label_day) { ?>
 		<td>
-			<input type="checkbox" class="form-control input-sm input-staff" name="av-<?=$key_day;?>-<?=$key_hour;?>" value="1" <?=( modules::run('staff/get_availability_data', $user_id, $key_day, $key_hour) == 1) ? ' checked=checked' : '';?> />
+			<input type="checkbox" class="form-control input-sm input-staff day<?=$key_day;?> hour<?=$key_hour;?>" name="av-<?=$key_day;?>-<?=$key_hour;?>" value="1" <?=( modules::run('staff/get_availability_data', $user_id, $key_day, $key_hour) == 1) ? ' checked=checked' : '';?> />
             
 		</td>
 		
@@ -79,4 +79,13 @@ $(function(){
 			}
 		})
 	})	
+	
+	$('#form_update_availability .checkbox-sm').change(function(){
+		var $this = $(this);
+		if($(this).is(':checked')){var check=true;}else{var check=false;}
+		var value = $(this).val();
+		$('.'+value).each(function(){
+			this.checked = check;
+		});
+	});
 });

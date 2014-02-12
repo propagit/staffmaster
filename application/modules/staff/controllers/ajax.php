@@ -47,8 +47,7 @@ class Ajax extends MX_Controller {
 			'first_name' => $data['first_name'],
 			'last_name' => $data['last_name'],
 			'address' => $data['address'],
-			'suburb' => $data['suburb'],
-			'city' => $data['city'],
+			'suburb' => $data['suburb'],			
 			'state' => $data['state'],
 			'postcode' => $data['postcode'],
 			'country' => $data['country'],
@@ -57,11 +56,10 @@ class Ajax extends MX_Controller {
 		);
 		$this->user_model->update_user($data['user_id'], $user_data);
 		$staff_data = array(
-			'rating' => $data['rating'],
 			'external_staff_id' => $data['external_staff_id'],
+			'rating' => $data['rating'],
 			'gender' => $data['gender'],
 			#'dob' => $data['dob_day'] . '-' . $data['dob_month'] . '-' . $data['dob_year'],
-			'group_id' => $data['group_id'],
 			'emergency_contact' => $data['emergency_contact'],
 			'emergency_phone' => $data['emergency_phone'],
 		);

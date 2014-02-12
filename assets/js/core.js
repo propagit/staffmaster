@@ -76,7 +76,8 @@ var help = {
 		});
 		
 		if(valid){
-			$('#'+form_id).submit();	
+			//$('#'+form_id).submit();	
+			return valid;
 		}
 		
 	},
