@@ -23,7 +23,7 @@
             	<table class="table table-bordered table-hover table-middle table-expanded">
                     <thead>
                     <tr class="heading">
-                        <th class="left">Uniform <i class="fa fa-sort sort-uniform" sort-by="name" sort-order="desc"></i></a></th>
+                        <th class="left">Uniform <i class="fa fa-sort sort-table" sort-by="name" sort-order="desc"></i></a></th>
                         <th class="center col-md-1">Edit Uniform</th>
                         <th class="center col-md-1">Delete Uniform</th>
                     </tr>
@@ -101,32 +101,17 @@ var params = {
 	'url': '<?=base_url();?>attribute/ajax/get_uniforms',
 	'output_container':'#load-uniforms',
 	'type':'POST',
-	'data':JSON.stringify(sort_data)
+	'data':JSON.stringify({"sort_by":"name","sort_order":"asc"})
 };
 
-
-
-var location_parent_complete = false;
 
 $(function(){
 	help.load_content(params);
 	
 	//sort data
-	sort_list();
+	help.sort_list('.sort-table');
 });
 
-
-function sort_list(obj){
-	$('.sort-uniform').on('click',function(){
-		var sort_order = $(this).attr('sort-order');
-		sort_data.sort_by = $(this).attr('sort-by');
-		sort_data.sort_order = sort_order;
-		//toggle sort order data for next sort
-		(sort_order == 'asc' ? $(this).attr('sort-order','desc'): $(this).attr('sort-order','asc'));			
-		help.load_content(params);
-	});
-} 
- 
 
 </script>
 <script>

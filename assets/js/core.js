@@ -76,8 +76,7 @@ var help = {
 		});
 		
 		if(valid){
-			//$('#'+form_id).submit();	
-			return valid;
+			$('#'+form_id).submit();	
 		}
 		
 	},
@@ -176,7 +175,20 @@ var help = {
 			callback(true);
 			$('#confirm_delete_modal').modal('hide');
 		});
-	}
+	},
+	
+	//sort table
+	sort_list:function(selector){
+	$(selector).on('click',function(){
+		var sort_order = $(this).attr('sort-order');
+		sort_data.sort_by = $(this).attr('sort-by');
+		sort_data.sort_order = sort_order;
+		//toggle sort order data for next sort
+		(sort_order == 'asc' ? $(this).attr('sort-order','desc'): $(this).attr('sort-order','asc'));	
+		params.data	= JSON.stringify(sort_data);	
+		help.load_content(params);
+	});
+}  
 };
 
 $(function(){
