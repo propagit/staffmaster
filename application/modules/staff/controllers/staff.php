@@ -27,7 +27,7 @@ class Staff extends MX_Controller {
 				break;
 			case 'edit':
 					$this->edit_staff($param);
-				break;
+				break;			
 			default:
 					echo 'do nothing';
 				break;
@@ -384,5 +384,17 @@ class Staff extends MX_Controller {
 		);
 		
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
+	}
+	
+	/**
+	*	@name: get_availability_data
+	*	@desc: function to return value of availability of user based on day and time
+	*	@access: public
+	*	@param: (via parameter) (int) user_id, day, hour
+	*	@return: (int) value of staff availability
+	*/
+	function get_availability_data($user_id, $day, $hour)
+	{
+		return $this->staff_model->get_availability_data($user_id, $day, $hour);
 	}
 }

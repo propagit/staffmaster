@@ -239,5 +239,53 @@ class Ajax extends MX_Controller {
 		//$this->output->set_content_type('application/json');
 		echo json_encode($out);
 	}
-
+	
+	/**
+	*	@name: load_availability
+	*	@desc: ajax function to load staff availability view
+	*	@access: public
+	*	@param: (via POST) (int) user_id
+	*	@return: (view) staff availability
+	*/
+	function load_availability()
+	{
+		$user_id = $this->input->post('user_id');
+		$data['availability'] = $this->staff_model->get_availability($user_id);
+		if(count($data['availability'])<=0){
+			$this->initiate_availability($user_id);
+			$data['availability'] = $this->staff_model->get_availability($user_id);
+		}
+		$data['user_id'] = $user_id;
+		$this->load->view('staff/availability_table_view', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@name: initiate_availability
+	*	@desc: initiate value of staff availability time, if there is no data yet. It will be initiated as available all days and all times
+	*	@access: public
+	*	@param: (via parameter) (int) user_id
+	*	
+	*/
+	function initiate_availability($user_id)
+	{				
+		for($day=1; $day <=7; $day++) {
+			for($hour=0; $hour <=23; $hour++) {
+				$data = array(
+					'user_id' => $user_id,
+					'day' => $day,
+					'hour' => $hour,
+					'value' => 1
+				);
+				$this->staff_model->insert_availability_data($user_id, $data);
+			}
+		}				
+	}
+	function update_availability()
+	{
+		$value = $this->input->post('value');
+		$name = $this->input->post('name');
+		$fields = explode('-', $name);		
+		$day = $fields[1];
+		$hour = $fields[2];
+		$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
+	}
 }

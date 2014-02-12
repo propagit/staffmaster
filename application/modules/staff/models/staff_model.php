@@ -49,6 +49,39 @@ class Staff_model extends CI_Model {
 		return $this->db->delete('user_staffs');
 	}
 	
+	
+	function insert_availability_data($user_id,$data)
+	{
+		$this->db->insert('user_staff_availability', $data);
+		return $this->db->insert_id();
+	}
+	
+	function get_availability($user_id)
+	{
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get('user_staff_availability');
+		return $query->result_array();
+	}
+	
+	function get_availability_data($user_id,$day,$hour)
+	{
+		$this->db->where('user_id', $user_id);
+		$this->db->where('day', $day);
+		$this->db->where('hour', $hour);
+		$query = $this->db->get('user_staff_availability');
+		$result =$query->first_row('array');
+		return $result['value'];
+	}
+	
+	function update_available_data($user_id,$day,$hour)
+	{
+		$this->db->where('user_id', $user_id);		
+		$this->db->where('day', $day);
+		$this->db->where('hour', $hour);
+		return $this->db->update('user_staff_availability', array('value' => $value));
+	}
+	
+	
 	function get_all_photos($staff_id)
 	{
 		$this->db->where('staff_id', $staff_id);
@@ -62,26 +95,5 @@ class Staff_model extends CI_Model {
 		$query = $this->db->get('user_staff_picture');
 		return $query->first_row('array');
 	}
-	function update_user_availability($staff_id, $data)
-	{		
-		$this->db->where('staff_id', $staff_id);
-		$query = $this->db->get('user_staff_availability');
-		$check = $query->first_row('array');
-		
-		if(count($check)>0){
-			$this->db->where('staff_id', $staff_id);
-			return $this->db->update('user_staff_availability', $data);
-		}else
-		{
-			$this->db->insert('user_staff_availability', $data);
-			return $this->db->insert_id();
-		}
-	}
 	
-	function get_staff_availability($staff_id)
-	{
-		$this->db->where('staff_id', $staff_id);
-		$query = $this->db->get('user_staff_availability');
-		return  $query->first_row('array');
-	}
 }
