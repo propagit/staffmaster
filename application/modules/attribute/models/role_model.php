@@ -20,6 +20,16 @@ class Role_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	
+	/**
+	*	@desc This function queries the database and returns the list of roles based on the sort parameter. The roles are sorted in the ascending order of their name by default.
+	*
+	*   @name get_roles
+	*	@access public
+	*	@param string(sort parameter)
+	*	@return Returns array of avaliable roles
+	*	
+	*/
 
 	function get_roles($params = '')
 	{
@@ -29,6 +39,10 @@ class Role_model extends CI_Model {
 			break;	
 			
 			case 'name_asc':
+				$this->db->order_by('name', 'asc');
+			break;
+			
+			default:
 				$this->db->order_by('name', 'asc');
 			break;
 		}

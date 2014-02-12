@@ -16,18 +16,65 @@ class Venue_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
-	function get_venues($sort_venue=false)
+	/**
+	*	@desc This function queries the database and returns the list of roles based on the sort parameter. The roles are sorted in the ascending order of their name by default.
+	*
+	*   @name get_roles
+	*	@access public
+	*	@param string(sort parameter)
+	*	@return Returns array of avaliable roles
+	*	
+	*/
+
+	function get_venues($params = '')
 	{
-		if ($sort_venue)
-		{
-			$this->db->order_by('name', 'desc');
+		$sql = "select attribute_venues.*,
+				attribute_locations.location_id as location_id,
+				attribute_locations.parent_id as location_parent_id, 
+				attribute_locations.name as location_name 
+				from
+				attribute_venues, attribute_locations where attribute_venues.location_id = attribute_locations.location_id ";
+
+		switch($params){
+			case 'name_desc':
+				$sql .= "order by attribute_venues.name desc";
+				$this->db->order_by('name', 'desc');
+			break;	
+			
+			case 'name_asc':
+				$sql .= "order by attribute_venues.name asc";
+			break;
+			
+			case 'suburb_desc':
+				$sql .= "order by attribute_venues.suburb desc";
+			break;	
+			
+			case 'suburb_asc':
+				$sql .= "order by attribute_venues.suburb asc";
+			break;
+			
+			case 'postcode_desc':
+				$sql .= "order by attribute_venues.postcode desc";
+			break;	
+			
+			case 'postcode_asc':
+				$sql .= "order by attribute_venues.postcode asc";
+			break;
+			
+			case 'location_name_desc':
+				$sql .= "order by attribute_locations.name desc";
+			break;
+			
+			case 'location_name_asc':
+				$sql .= "order by attribute_locations.name asc";
+			break;
+			
+			default:
+				$sql .= "order by attribute_venues.name asc";
+			break;
+			
 		}
-		else
-		{
-			$this->db->order_by('name', 'asc');
-		}
-		
-		$query = $this->db->get('attribute_venues');
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	

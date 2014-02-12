@@ -17,18 +17,6 @@ class Role extends MX_Controller {
 	{
 		switch($method)
 		{
-			case 'add':
-					$this->add_role();
-				break;
-			case 'edit':
-					$this->edit_role();
-				break;
-			case 'delete':
-					$this->delete_role($param);
-				break;
-			case 'sort':
-					$this->sort_roles();
-				break;
 			default:
 					$this->list_roles();
 				break;

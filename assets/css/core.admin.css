@@ -170,6 +170,7 @@ a.default {
 	text-align: center;
 }
 
+
 /* style for staff profile */
 .staff-profile-detail-box{
 	margin-top:30px;
@@ -178,6 +179,12 @@ a.default {
 .super_attached{
 	padding-left:20px;
 }
+
+.attr-list-wrap{
+	margin-top:20px;	
+}
+
+/* style for staff availability */
 
 /* begin responsive */
 @media(max-width:1200px){

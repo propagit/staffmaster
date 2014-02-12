@@ -1,4 +1,19 @@
-========================
+==================================================================================================================
+12 Feb, 2014
+
+Attributes
+Role
+ - Javascript in attributes are pretty common, will make it into simpler function and a generalized functions
+   so that it is easier to use.
+
+Venues
+ - Ask Nam about how the map is working and add that in the venue
+ - Fix location not loading while editing venues. Quick solution will be to do an ajax request for the modal data.
+
+
+
+
+==================================================================================================================
 11 Feb, 2014
 
 Login form
@@ -14,8 +29,8 @@ Fixed gutter width for various screen size
 
 Downloaded new css - bootstrap-social.css
 	- use this to created social buttons
-
-========================
+	
+==================================================================================================================
 6 Feb, 2014
 
 core.css
@@ -39,7 +54,7 @@ core.css
 	
 	.no-rt-border // this will remove the right border from an element, use when using with input-addon-group
 	
-======================
+==================================================================================================================
 24 Jan, 2014
 
 Documentor module
