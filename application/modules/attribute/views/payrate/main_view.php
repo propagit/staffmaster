@@ -100,13 +100,11 @@ $(function(){
 function load_pay_rates(payrate_id)
 {
 	preloading($('#list_payrates'));
-	//$('li[id^=payrate]').removeClass();
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>attribute/ajax/load_payrates",
 		data: {payrate_id: payrate_id},
 		success: function(html) {
-			//$('#payrate-' + payrate_id).addClass('active');
 			loaded($('#list_payrates'), html);
 		}
 	})

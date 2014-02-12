@@ -410,7 +410,21 @@ a:hover {
 
 /* end - responsive */
 
-
+/* Custom styles for button */
+.btn-group.btn-nav {
+	margin-bottom: -1px;
+}
+.btn-group.btn-nav .btn:first-child {
+	border-bottom-left-radius: 0;
+}
+.btn-group.btn-nav .btn.dropdown-toggle {
+	border-bottom-right-radius: 0;
+}
+.btn-group.btn-nav .dropdown-menu {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	margin-top: -1px;
+}
 /* Custom styles for nav tab */
 .nav-tabs > li {
 	margin-right: 5px;
@@ -454,7 +468,6 @@ a:hover {
 	border-top-right-radius: 5px;
 	border-left: 1px solid #fff;
 }
-
 .nav-tabs.nav-action .caret {
 	margin-left: 10px;
 }
