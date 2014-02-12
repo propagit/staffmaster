@@ -37,9 +37,7 @@ class Venue extends MX_Controller {
 	
 	function list_venues()
 	{
-		$sort_venue = (bool) $this->session->userdata('sort_venue');
-		$data['venues'] = $this->venue_model->get_venues($sort_venue);
-		$this->load->view('list_venues', isset($data) ? $data : NULL);
+		$this->load->view('venues/list_venues', isset($data) ? $data : NULL);
 	}
 	
 	function sort_venues()
@@ -52,38 +50,6 @@ class Venue extends MX_Controller {
 		{
 			$this->session->unset_userdata('sort_venue');
 		}
-		redirect('attribute/venue');
-	}
-	
-	function add_venue()
-	{
-		$data = $this->input->post();
-		$this->venue_model->insert_venue(array(
-				'location_id' => $data['location_id'],
-				'name' => $data['name'], 
-				'address' => $data['address'],
-				'suburb' => $data['suburb'],
-				'postcode' => $data['postcode']
-			));
-		redirect('attribute/venue');
-	}
-	
-	function edit_venue()
-	{
-		$data = $this->input->post();
-		$this->venue_model->update_venue($data['venue_id'], array(
-				'location_id' => $data['location_id_edit'],
-				'name' => $data['name'], 
-				'address' => $data['address'],
-				'suburb' => $data['suburb'],
-				'postcode' => $data['postcode']
-			));
-		redirect('attribute/venue');
-	}
-	
-	function delete_venue($venue_id)
-	{
-		$this->venue_model->delete_venue($venue_id);
 		redirect('attribute/venue');
 	}
 	

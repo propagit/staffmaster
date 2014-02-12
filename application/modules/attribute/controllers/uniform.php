@@ -39,20 +39,7 @@ class Uniform extends MX_Controller {
 	{
 		$sort_uniform = (bool) $this->session->userdata('sort_uniform');
 		$data['uniforms'] = $this->uniform_model->get_uniforms($sort_uniform);
-		$this->load->view('list_uniforms', isset($data) ? $data : NULL);
-	}
-	
-	function sort_uniforms()
-	{
-		if (!$this->session->userdata('sort_uniform'))
-		{
-			$this->session->set_userdata('sort_uniform', 1);
-		}
-		else
-		{
-			$this->session->unset_userdata('sort_uniform');
-		}
-		redirect('attribute/uniform');
+		$this->load->view('uniform/list_uniforms', isset($data) ? $data : NULL);
 	}
 	
 	function add_uniform()

@@ -14,6 +14,8 @@ class Ajax extends MX_Controller {
 		$this->load->model('location_model');
 		$this->load->model('role_model');
 		$this->load->model('payrate_model');
+		$this->load->model('venue_model');
+		$this->load->model('uniform_model');
 	}
 		
 	function add_payrate() {
@@ -108,13 +110,15 @@ class Ajax extends MX_Controller {
 	}
 	
 	
+	// begin roles
+	
 	/**
-	*	@desc Get the roles in the system
+	*	@desc Displayes all the available roles in the system. The user can then sort the data based on Name or Frequency.
 	*
 	*   @name get_roles
 	*	@access public
-	*	@param null
-	*	@return list of roles
+	*	@param Post data - gets sort paramater
+	*	@return Lists all roles
 	*	
 	*/
 	function get_roles()
@@ -125,11 +129,11 @@ class Ajax extends MX_Controller {
 	}
 	
 	/**
-	*	@desc Add new role
+	*	@desc Adds new role
 	*
 	*   @name add_role
 	*	@access public
-	*	@param null
+	*	@param Post data - name of the new role
 	*	@return 
 	*	
 	*/
@@ -145,7 +149,7 @@ class Ajax extends MX_Controller {
 	*
 	*   @name edit_role
 	*	@access public
-	*	@param null
+	*	@param Post data - updated name of the role
 	*	@return 
 	*	
 	*/
@@ -157,13 +161,123 @@ class Ajax extends MX_Controller {
 		echo 'success';
 	}
 	
+	/**
+	*	@desc Delete roles
+	*	@comments Removes roles assigned to staff as well.
+	*   @name delete_role
+	*	@access public
+	*	@param null
+	*	@return 
+	*	@action_required Create staff and role relationship table
+	*	
+	*/
 	function delete_role()
 	{
 		$role_id = $this->input->post('role_id',true);
 		$this->role_model->delete_role($role_id);
 		echo 'success';
 	}
-	 
+	
+	// end roles 
+	
+	// begin venues
+	
+	/**
+	*	@desc Displayes all the available venues in the system. The user can then sort the data based on Name or Frequency.
+	*
+	*   @name get_roles
+	*	@access public
+	*	@param Post data - gets sort paramater
+	*	@return Lists all roles
+	*	
+	*/
+	function get_venues()
+	{
+		$params = $this->input->post('params',true);
+		$data['venues'] = $this->venue_model->get_venues($params);
+		$this->load->view('venues/ajax_list_venues', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@desc Adds new venue
+	*
+	*   @name add_role
+	*	@access public
+	*	@param Post data - venue data, this includes name, address, suburb, postcode, location details
+	*	@return 
+	*	
+	*/
+	function add_venue()
+	{
+		$data = $this->input->post();
+		$this->venue_model->insert_venue(array(
+				'location_id' => $data['location_id'],
+				'name' => $data['name'], 
+				'address' => $data['address'],
+				'suburb' => $data['suburb'],
+				'postcode' => $data['postcode']
+			));
+		echo 'success';
+	}
+	/**
+	*	@desc Edit Venue
+	*
+	*   @name edit_role
+	*	@access public
+	*	@param Post data - updated name of the role
+	*	@return 
+	*	
+	*/
+	function edit_venue()
+	{
+		$data = $this->input->post();
+		$this->venue_model->update_venue($data['venue_id'], array(
+				'location_id' => $data['location_id_edit'],
+				'name' => $data['name'], 
+				'address' => $data['address'],
+				'suburb' => $data['suburb'],
+				'postcode' => $data['postcode']
+			));
+		echo 'success';
+	}
+	
+	/**
+	*	@desc Delete roles
+	*	@comments Removes roles assigned to staff as well.
+	*   @name delete_role
+	*	@access public
+	*	@param null
+	*	@return 
+	*	@action_required Create staff and role relationship table
+	*	
+	*/
+	function delete_venue()
+	{
+		$venue_id = $this->input->post('venue_id',true);
+		$this->venue_model->delete_venue($venue_id);
+		echo 'success';
+	}
+	
+	// end venue
+	
+	// begin uniform
+	/**
+	*	@desc Displayes all the available uniform in the system. The user can then sort the data based on Name.
+	*
+	*   @name get_uniforms
+	*	@access public
+	*	@param Post data - gets sort paramater
+	*	@return Lists all uniforms
+	*	
+	*/
+	function get_uniforms()
+	{
+		$params = $this->input->post('params',true);
+		$data['uniforms'] = $this->uniform_model->get_uniforms($params);
+		$this->load->view('uniform/ajax_list_uniforms', isset($data) ? $data : NULL);
+	}
+	
+	//end uniform
+
 	
 	
 }

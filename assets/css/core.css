@@ -227,6 +227,9 @@ a:hover {
 	background-image:none;
 	border-color:rgba(255,255,255,0.25);
 }
+.btn-rt-margin{
+	margin-right:15px;	
+}
 
 /* begin - responsive */
 

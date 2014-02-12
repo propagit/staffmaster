@@ -16,11 +16,11 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-key', 'title' => 'Edit Attributes', 'sub' => array(		
 		array('path' => 'attribute/payrate', 'icon' => 'fa-usd', 'title' => 'Pay Rates'),
-		array('path' => 'attribute/department', 'icon' => 'fa-sitemap', 'title' => 'Departments'),
 		array('path' => 'attribute/role', 'icon' => 'fa-star', 'title' => 'Roles'),
 		array('path' => 'attribute/venue', 'icon' => 'fa-map-marker', 'title' => 'Venues'),
 		array('path' => 'attribute/uniform', 'icon' => 'fa-puzzle-piece', 'title' => 'Uniforms'),
-		array('path' => 'formbuilder', 'icon' => 'fa-pencil', 'title' => 'Custom Attributes')
+		array('path' => 'formbuilder', 'icon' => 'fa-pencil', 'title' => 'Custom Attributes'),
+		array('path' => 'attribute/group', 'icon' => 'fa-sitemap', 'title' => 'Groups')
 	)),
 	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
 		array('path' => '#', 'icon' => 'fa-dashboard', 'title' => 'Accounts Dashboard'),

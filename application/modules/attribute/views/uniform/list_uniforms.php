@@ -2,7 +2,10 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Uniforms</h2>
-		 <p>Manage your uniform attribute.</p>
+		 <p>
+         	Uniforms can be added to job details when you create jobs. 
+            Add common dress attire your staff will be required to wear when working on jobs.
+         </p>
     </div>
 </div>
 <!--end top box-->
@@ -11,30 +14,25 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="inner-box">
-            <h2>Uniforms</h2>
-			<p>Manage your uniform attribute.</p>
+            <h2>Add - Edit Uniforms</h2>
+			<p>Add new uniforms by clicking the "Add New Uniforms" button or manage your existing uniforms via the below table.</p>
             
-            
-            <a data-toggle="modal" href="#addUniform" ><i class="icon-plus-sign"></i> Add Uniform</a>
-            <br /><br />
-            <table class="table table-hover">
-                <thead>
-                <tr class="heading">
-                    <td class="left">Name <a href="<?=base_url();?>attribute/uniform/sort"><i class="icon-sort-by-alphabet"></i></a></td>
-                    <td class="center"><i class="icon-eye-open"></i> View</td>
-                    <td class="center"><i class="icon-trash"></i> Delete</td>
-                    <!-- <td class="center"><i class="icon-check"></i> Check</td> -->
-                </tr>
-                </thead>
-                <? foreach($uniforms as $uniform) { ?>
-                <tr>
-                    <td class="left"><?=$uniform['name'];?></td>
-                    <td class="center"><a href="javascript:edit_uniform(<?=$uniform['uniform_id'];?>, '<?=$uniform['name'];?>')"><i class="icon-eye-open icon-large"></i></a></td>
-                    <td class="center"><a href="javascript:delete_uniform(<?=$uniform['uniform_id'];?>)"><i class="icon-trash icon-large"></i></a></td>
-                    <!-- <td class="center"><input type="checkbox" /></td> -->
-                </tr>
-                <? } ?>
-            </table>
+            <button class="btn btn-info" data-toggle="modal" href="#addUniform" ><i class="fa fa-plus"></i> Add New Uniform</button>
+
+            <div class="attr-list-wrap">
+            	<table class="table table-bordered table-hover table-middle table-expanded">
+                    <thead>
+                    <tr class="heading">
+                        <th class="left">Uniform <i class="fa fa-sort sort-uniform" sort-by="name" sort-order="desc"></i></a></th>
+                        <th class="center col-md-1">Edit Uniform</th>
+                        <th class="center col-md-1">Delete Uniform</th>
+                    </tr>
+                    </thead>
+                    <tbody id="load-uniforms">
+                    
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -91,7 +89,46 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script>
 
+
+var sort_data = {
+	'sort_by':'name',
+	'sort_order':'asc'
+};
+
+var params = {
+	'url': '<?=base_url();?>attribute/ajax/get_uniforms',
+	'output_container':'#load-uniforms',
+	'type':'POST',
+	'data':JSON.stringify(sort_data)
+};
+
+
+
+var location_parent_complete = false;
+
+$(function(){
+	help.load_content(params);
+	
+	//sort data
+	sort_list();
+});
+
+
+function sort_list(obj){
+	$('.sort-uniform').on('click',function(){
+		var sort_order = $(this).attr('sort-order');
+		sort_data.sort_by = $(this).attr('sort-by');
+		sort_data.sort_order = sort_order;
+		//toggle sort order data for next sort
+		(sort_order == 'asc' ? $(this).attr('sort-order','desc'): $(this).attr('sort-order','asc'));			
+		help.load_content(params);
+	});
+} 
+ 
+
+</script>
 <script>
 function delete_uniform(uniform_id)
 {

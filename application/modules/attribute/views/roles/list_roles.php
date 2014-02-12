@@ -13,11 +13,9 @@
     	<div class="inner-box">
             <h2>Add - Edit Roles</h2>
 			<p>Add new roles by clicking the "Add New Roles" button or manage your existing roles via the below table.</p>
-            <button class="btn btn-info" data-toggle="modal" href="#addRole" ><i class="fa fa-plus"></i> Add New Role</button>
-            <br /><br />
+            <button class="btn btn-info" data-toggle="modal" href="#addRole" ><i class="fa fa-plus"></i> Add New Role</button>           
            
-           
-           	<div id="load-roles"></div>
+           	<div id="load-roles" class="attr-list-wrap"></div>
            
         </div>
     </div>
@@ -50,7 +48,7 @@
                 <div class="form-group">
                 	 <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
                     <div class="col-sm-10">
-                      <button type="button" class="btn btn-info" onclick="add_role();"><i class="fa fa-plus"></i> Add Role</button>
+                      <button id="add-role" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add Role</button>
                     </div>
                 </div>
 			</div>
@@ -81,7 +79,7 @@
                     <div class="form-group">
                         <label for="edit-button" class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-10">
-                          	<button type="button" class="btn btn-info" onclick="edit_role();"><i class="fa fa-plus"></i> Edit Role</button>
+                          	<button id="edit-role" type="button" class="btn btn-info">Edit Role</button>
                         </div>
                		</div>
                 </div>
@@ -107,6 +105,14 @@ var sort_type = {
 
 $(function(){
 	help.load_content(params);
+	
+	$('#add-role').on('click',function(){
+		add_role();
+	});
+	
+	$('#edit-role').on('click',function(){
+		edit_role();
+	});
 });
 
  
@@ -119,6 +125,15 @@ function sort_list(sort_data){
 				sort_type.name_sort = 'name_asc';	
 			}
 			params.data = sort_type.name_sort; 	
+		break;
+		
+		case 'frequency':
+			if(sort_type.frequency_sort == 'frequency_asc'){
+				sort_type.frequency_sort = 'frequency_desc';	
+			}else{
+				sort_type.frequency_sort = 'frequency_asc';	
+			}
+			params.data = sort_type.frequency_sort; 	
 		break;
 	}
 	help.load_content(params);
@@ -134,12 +149,6 @@ function add_role(){
 			$('#addRole').modal('hide');
 		}
 	});	 
-}
-
-function confirm_delete(role_id){
-	var call_back_function = 'onclick="delete_role('+role_id+')"';
-	var delete_message = 'You are about to delete this Role. Confirm Delete?';
-	help.confirm_delete(call_back_function,delete_message); 
 }
 
 function delete_role(role_id){

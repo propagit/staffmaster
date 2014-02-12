@@ -170,6 +170,10 @@ a.default {
 	text-align: center;
 }
 
+.attr-list-wrap{
+	margin-top:20px;	
+}
+
 /* style for staff availability */
 
 /* begin responsive */
