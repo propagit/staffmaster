@@ -25,7 +25,7 @@ a client will be able to filter jobs associated to them by the client department
                         <div class="form-group<?=form_error('client_id')? ' has-error' : '';?>">
                             <label for="client_id" class="col-lg-2 control-label">Client</label>
                             <div class="col-lg-4">
-                                <?=modules::run('client/dropdown', 'client_id', set_value('client_id'));?>
+                                <?=modules::run('client/field_select', 'client_id', set_value('client_id'));?>
                             </div>
                             <div class="col-lg-4">
                             	<span class="help-block"><a><i class="fa fa-plus"></i></a> &nbsp; <a href="#">Create New Client</a></span>

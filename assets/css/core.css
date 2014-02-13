@@ -443,6 +443,7 @@ a:hover {
 	background: #00b1eb;
 	border-color: #00b1eb;
 	cursor: pointer;
+	outline: none;
 }
 .nav-tabs.nav-action {
 	float: left;

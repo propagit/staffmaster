@@ -11,7 +11,7 @@
 	<div class="box bottom-box">
 		<!-- begin inner box -->
     	<div class="inner-box">    		
-            <ul class="nav nav-tabs" id="tab-search">
+            <ul class="nav nav-tabs tab-respond" id="tab-search">
 				<li class="active"><a href="#search-campaigns" data-toggle="tab">Search Campaigns</a></li>
 				<li><a href="#find-shifts" data-toggle="tab">Find Shifts</a></li>
 			</ul>
@@ -34,7 +34,7 @@
 						<div class="form-group">
 							<label for="client_id" class="col-md-2 control-label">Client</label>
 							<div class="col-md-4">
-								<?=modules::run('client/dropdown', 'client_id');?>
+								<?=modules::run('client/field_select', 'client_id');?>
 							</div>
 							<label for="client_id" class="col-md-2 control-label">Department</label>
 							<div class="col-md-4">
@@ -62,12 +62,10 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<div class="col-lg-offset-4 col-lg-8">
-									<button type="button" class="btn btn-core" id="btn_search_jobs"><i class="fa fa-search"></i> Search</button> &nbsp; 
-									<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
-								</div>
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-8">
+								<button type="button" class="btn btn-core" id="btn_search_jobs"><i class="fa fa-search"></i> Search</button> &nbsp; 
+								<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
 							</div>
 						</div>
 					</div>	

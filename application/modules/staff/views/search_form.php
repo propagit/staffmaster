@@ -65,8 +65,10 @@
 			</div>
 			<div class="row">
 				<div class="form-group">
-					<div class="col-md-offset-2 col-lg-4">
+					<div class="col-md-offset-2 col-md-4">
 						<button type="button" class="btn btn-core" id="btn_search_staffs"><i class="fa fa-search"></i> Search Staff</button>
+						&nbsp;
+						<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
 					</div>
 				</div>
 			</div>			
