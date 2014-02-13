@@ -91,4 +91,26 @@ class Ajax extends MX_Controller {
 		$this->client_model->update_client($data['user_id'], $client_data);
 		
 	}
+	
+	function add_department()
+	{
+		$data = $this->input->post();
+		$this->client_model->insert_client_department($data);
+	}
+	
+	function list_departments()
+	{
+		$user_id = $this->input->post('user_id');
+		$data['departments'] = $this->client_model->get_client_departments($user_id);
+		$this->load->view('deparments_list', isset($data) ? $data : NULL);
+	}
+	
+	function edit_department($department_id) {
+		$data['department'] = $this->client_model->get_client_department($department_id);
+		$this->load->view('department_edit_form', isset($data) ? $data : NULL);
+	}
+	function update_department() {
+		$data = $this->input->post();
+		$this->client_model->update_department($data['department_id'], $data);
+	}
 }
