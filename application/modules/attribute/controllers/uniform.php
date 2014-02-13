@@ -42,26 +42,26 @@ class Uniform extends MX_Controller {
 		$this->load->view('uniform/list_uniforms', isset($data) ? $data : NULL);
 	}
 	
-	function add_uniform()
+	/* function add_uniform()
 	{
 		$data = $this->input->post();
 		$this->uniform_model->insert_uniform($data);
 		redirect('attribute/uniform');
-	}
+	} */
 	
-	function edit_uniform()
+	/* function edit_uniform()
 	{
 		$data = $this->input->post();
 		$this->uniform_model->update_uniform($data['uniform_id'], $data);
 		redirect('attribute/uniform');
-	}
+	} */
 	
-	function delete_uniform($uniform_id)
+	/* function delete_uniform($uniform_id)
 	{
 		$this->uniform_model->delete_uniform($uniform_id);
 		redirect('attribute/uniform');
 	}
-	
+	 */
 	function dropdown($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;

@@ -275,6 +275,51 @@ class Ajax extends MX_Controller {
 		$data['uniforms'] = $this->uniform_model->get_uniforms($params);
 		$this->load->view('uniform/ajax_list_uniforms', isset($data) ? $data : NULL);
 	}
+	/**
+	*	@desc Adds new uniform
+	*
+	*   @name add_uniform
+	*	@access public
+	*	@param Post data - New uniform details
+	*	@return 
+	*	
+	*/
+	function add_uniform()
+	{
+		$data = $this->input->post();
+		$this->uniform_model->insert_uniform($data);
+		echo 'success';
+	}
+	/**
+	*	@desc Edit Uniform
+	*
+	*   @name edit_uniform
+	*	@access public
+	*	@param Post data - updated uniform data
+	*	@return 
+	*	
+	*/
+	function edit_uniform()
+	{
+		$data = $this->input->post();
+		$this->uniform_model->update_uniform($data['uniform_id'], $data);
+		echo 'success';
+	}
+	/**
+	*	@desc Delete Uniform
+	*	@comments Removes uniform 
+	*   @name delete_uniform
+	*	@access public
+	*	@param null
+	*	@return 
+	*	
+	*/
+	function delete_uniform()
+	{
+		$uniform_id = $this->input->post('delete_id',true);
+		$this->uniform_model->delete_uniform($uniform_id);
+		echo 'success';
+	}
 	
 	//end uniform
 

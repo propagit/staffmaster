@@ -178,17 +178,47 @@ var help = {
 	},
 	
 	//sort table
-	sort_list:function(selector){
-	$(selector).on('click',function(){
-		var sort_order = $(this).attr('sort-order');
-		sort_data.sort_by = $(this).attr('sort-by');
-		sort_data.sort_order = sort_order;
-		//toggle sort order data for next sort
-		(sort_order == 'asc' ? $(this).attr('sort-order','desc'): $(this).attr('sort-order','asc'));	
-		params.data	= JSON.stringify(sort_data);	
-		help.load_content(params);
-	});
-}  
+	//uses help.load_content
+	sort_list:function(selector,load_params){
+		$(selector).on('click',function(){
+			var sort_order = $(this).attr('sort-order');
+			sort_data.sort_by = $(this).attr('sort-by');
+			sort_data.sort_order = sort_order;
+			//toggle sort order data for next sort
+			(sort_order == 'asc' ? $(this).attr('sort-order','desc'): $(this).attr('sort-order','asc'));	
+			load_params.data = JSON.stringify(sort_data);	
+			help.load_content(load_params);
+		});
+	} ,
+	
+	//add - edit throught ajax
+ 	update_form_data:function(params,callback){
+		$.ajax({
+			type: params.type,
+			url: params.url,
+			data:$('#'+params.form_id).serialize(),
+			success: function(html) {
+				callback(true);
+			}
+		});	
+	},
+	
+	//delete data and returns true on success
+	delete_data:function(params,callback){
+		$.ajax({
+			type: params.type,
+			url: params.url,
+			data:{delete_id:params.delete_id},
+			success: function(html) {
+				callback(true);
+			}
+		});		
+	}
+
+	
+	
+	
+	 
 };
 
 $(function(){

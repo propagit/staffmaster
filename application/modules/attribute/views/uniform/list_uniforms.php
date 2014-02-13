@@ -38,9 +38,6 @@
 </div>
 <!--end bottom box -->
 
-
-
-
 <!-- Modal -->
 <div class="modal fade" id="addUniform" tabindex="-1" role="dialog" aria-labelledby="addUniformLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -49,18 +46,29 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Add Uniform</h4>
 			</div>
-			<form role="form" method="post" action="<?=base_url();?>attribute/uniform/add">
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="name">Name</label>
-					<input type="text" class="form-control" name="name" id="name" placeholder="Enter uniform name">
-				</div>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-info">Submit</button>
-			</div>
-			</form>
+            <div class="col-md-12">
+                <form id="add-uniform-form">
+                <div class="modal-body">
+                    <h4 class="modal-body-title">Enter Uniform Name</h4>
+                    <p>
+                    The Uniform.
+                    </p>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                             <input type="text" class="form-control" name="name" id="name" placeholder="Enter uniform name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        	 <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
+                        <div class="col-sm-10">
+                          	<button id="add-new-uniform-btn" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add Uniform</button>
+                        </div>
+                    </div>
+                </div>
+                
+                </form>
+            </div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -73,19 +81,25 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Edit Uniform</h4>
 			</div>
-			<form role="form" method="post" action="<?=base_url();?>attribute/uniform/edit">
-			<input type="hidden" name="uniform_id" id="uniform_id" />
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="name_edit">Name</label>
-					<input type="text" class="form-control" name="name" id="name_edit" placeholder="Enter uniform name">
-				</div>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-info">Submit</button>
-			</div>
-			</form>
+            <div class="col-md-12">
+                <form id="edit-uniform-form">
+                <input type="hidden" name="uniform_id" id="uniform_id" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name_edit" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                        	<input type="text" class="form-control" name="name" id="name_edit" placeholder="Enter uniform name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        	 <label for="update-button" class="col-sm-2 control-label">&nbsp;</label>
+                        <div class="col-sm-10">
+                          	<button id="edit-new-uniform-btn" type="button" class="btn btn-info">Update Uniform</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -104,26 +118,52 @@ var params = {
 	'data':JSON.stringify({"sort_by":"name","sort_order":"asc"})
 };
 
+var add_uniform_params = {
+	'url': '<?=base_url();?>attribute/ajax/add_uniform',
+	'type':'POST',
+	'form_id':'add-uniform-form'	
+};
+
+var edit_uniform_params = {
+	'url': '<?=base_url();?>attribute/ajax/edit_uniform',
+	'type':'POST',
+	'form_id':'edit-uniform-form'
+};
+
+var delete_uniform_params = {
+	'url': '<?=base_url();?>attribute/ajax/delete_uniform',
+	'type':'POST',
+	'delete_id':''
+}
 
 $(function(){
 	help.load_content(params);
 	
 	//sort data
-	help.sort_list('.sort-table');
+	help.sort_list('.sort-table',params);
+	
+	//add new uniform
+	$('#add-new-uniform-btn').on('click',function(){
+		 help.update_form_data(add_uniform_params,function(added){
+			 if(added){
+				$('#addUniform').modal('hide'); 
+				help.load_content(params);
+			 }
+		 });
+	});
+	
+	//edit uniform
+	$('#edit-new-uniform-btn').on('click',function(){
+		 help.update_form_data(edit_uniform_params,function(updated){
+			 if(updated){
+				$('#editUniform').modal('hide'); 
+				help.load_content(params);
+			 }
+		 });
+	});
 });
 
-
-</script>
-<script>
-function delete_uniform(uniform_id)
-{
-	if(confirm('Are you sure you want to delete this uniform?'))
-	{
-		window.location = '<?=base_url();?>attribute/uniform/delete/' + uniform_id;
-	}
-}
-function edit_uniform(uniform_id, name)
-{
+function open_edit_modal(uniform_id, name){
 	$('#uniform_id').val(uniform_id);
 	$('#name_edit').val(name);
 	$('#editUniform').modal('show');

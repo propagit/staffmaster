@@ -17,7 +17,25 @@
             <button class="btn btn-info btn-rt-margin" data-toggle="modal" href="#addVenue" ><i class="fa fa-plus"></i> Add New Venue</button>
 			<button class="btn btn-info"><i class="fa fa-upload"></i> Import Venues</button>
             
-            <div id="load-venues" class="attr-list-wrap"></div>
+            <div class="attr-list-wrap">
+                <table class="table table-bordered table-hover table-middle table-expanded">
+                    <thead>
+                    <tr class="heading">
+                        <th class="left col-md-2">Venue Name <i class="fa fa-sort sort-table" sort-by="attribute_venues.name" sort-order="desc"></i></th>
+                        <th class="left col-md-3">Address</th>
+                        <th class="left col-md-1">Suburb <i class="fa fa-sort sort-table" sort-by="attribute_venues.suburb" sort-order="desc"></i></th>
+                        <th class="center col-md-1">Post Code <i class="fa fa-sort sort-table" sort-by="attribute_venues.postcode" sort-order="desc"></i></th>
+                        <th class="left col-md-2">Location <i class="fa fa-sort sort-table" sort-by="attribute_locations.name" sort-order="desc"></i></th>
+                        <th class="center col-md-1">View Map</th>
+                        <th class="center col-md-1">Edit Venue</th>
+                        <th class="center col-md-1">Delete Venue</th>
+                    </tr>
+                    </thead>
+                    <tbody id="load-venues">
+                   
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -63,7 +81,7 @@
 			</div>
 			<div class="modal-footer">
 			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			<button id="add-venue" type="button" class="btn btn-info">Add Venue</button>
+			<button id="add-venue" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add Venue</button>
 			</div>
 			</form>
 		</div><!-- /.modal-content -->
@@ -111,26 +129,28 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
 <script>
+var sort_data = {
+	'sort_by':'name',
+	'sort_order':'asc'
+};
 
 var params = {
 	'url': '<?=base_url();?>attribute/ajax/get_venues',
 	'output_container':'#load-venues',
 	'type':'POST',
-	'data':'name_asc'
+	'data':JSON.stringify({"sort_by":"name","sort_order":"asc"})
 };
 
-var sort_type = {
-	'name_sort':'name_asc',
-	'suburb_sort':'suburb_asc',
-	'postcode_sort':'postcode_asc',
-	'location_sort':'location_name_asc'	
-};
 
 var location_parent_complete = false;
 
 $(function(){
 	help.load_content(params);
+	
+	help.sort_list('.sort-table',params);
 	
 	$('#add-venue').on('click',function(){
 		add_venue();
@@ -140,48 +160,6 @@ $(function(){
 		edit_venue();
 	});
 });
-
- 
-function sort_list(sort_data){
-	switch(sort_data){
-		case 'name':
-			if(sort_type.name_sort == 'name_asc'){
-				sort_type.name_sort = 'name_desc';	
-			}else{
-				sort_type.name_sort = 'name_asc';	
-			}
-			params.data = sort_type.name_sort; 	
-		break;
-		
-		case 'suburb':
-			if(sort_type.suburb_sort == 'suburb_asc'){
-				sort_type.suburb_sort = 'suburb_desc';	
-			}else{
-				sort_type.suburb_sort = 'suburb_asc';	
-			}
-			params.data = sort_type.suburb_sort; 	
-		break;
-		
-		case 'postcode':
-			if(sort_type.postcode_sort == 'postcode_asc'){
-				sort_type.postcode_sort = 'postcode_desc';	
-			}else{
-				sort_type.postcode_sort = 'postcode_asc';	
-			}
-			params.data = sort_type.postcode_sort; 	
-		break;
-		
-		case 'location':
-			if(sort_type.location_sort == 'location_name_asc'){
-				sort_type.location_sort = 'location_name_desc';	
-			}else{
-				sort_type.location_sort = 'location_name_asc';	
-			}
-			params.data = sort_type.location_sort; 	
-		break;
-	}
-	help.load_content(params);
-} 
 
 function add_venue(){
 	$.ajax({
