@@ -560,6 +560,13 @@ a:hover {
 	font-size: .9em;
 	border-radius: .9em;
 }
+.disabled {
+	background: rgb(223, 240, 216);
+	cursor: not-allowed;
+}
+.disabled a {
+	cursor: not-allowed;
+}
 .success {
 	background-color: #2cb308;
 }

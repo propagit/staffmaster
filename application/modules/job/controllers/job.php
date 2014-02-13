@@ -164,6 +164,8 @@ class Job extends MX_Controller {
 				break;
 			case SHIFT_CONFIRMED: $class = 'success';
 				break;
+			case SHIFT_FINISHED: $class = 'disabled';
+				break;
 			case SHIFT_REJECTED: $class = 'danger';
 				break;
 			case SHIFT_UNASSIGNED:

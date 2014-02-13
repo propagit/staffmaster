@@ -11,6 +11,7 @@ class Timesheet extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('timesheet_model');
+		$this->load->model('job/job_shift_model');
 	}
 	
 	
@@ -40,6 +41,7 @@ class Timesheet extends MX_Controller {
 		$shifts = $this->timesheet_model->get_finished_shifts();
 		foreach($shifts as $shift)
 		{
+			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));
 			unset($shift['status']);
 			unset($shift['created_on']);
 			unset($shift['modified_on']);

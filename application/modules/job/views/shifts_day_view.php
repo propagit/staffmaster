@@ -101,6 +101,7 @@
 
 <script>
 $(function(){
+	$('.disabled').prop('disabled', true);
 	$('.shift_venue').on('shown', function(e, editable) {
 		$('#wrapper_js').find('.popover-break').hide();
 	});
