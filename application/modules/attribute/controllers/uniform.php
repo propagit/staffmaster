@@ -62,6 +62,20 @@ class Uniform extends MX_Controller {
 		redirect('attribute/uniform');
 	}
 	 */
+	 
+	function field_select($field_name, $field_value=null)
+	{
+		$uniforms = $this->uniform_model->get_uniforms(false);
+		$array = array();
+		foreach($uniforms as $uniform) {
+			$array[] = array(
+				'value' => $uniform['uniform_id'],
+				'label' => $uniform['name']
+			);
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
 	function dropdown($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;

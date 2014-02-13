@@ -330,9 +330,15 @@ class Ajax extends MX_Controller {
 	function update_shift_role()
 	{
 		$shift_id = $this->input->post('pk');
-		$this->job_shift_model->update_job_shift($shift_id, array('role_id' => $this->input->post('value')));
-		
+		$this->job_shift_model->update_job_shift($shift_id, array('role_id' => $this->input->post('value')));	
 	}
+	
+	function update_shift_payrate()
+	{
+		$shift_id = $this->input->post('pk');
+		$this->job_shift_model->update_job_shift($shift_id, array('payrate_id' => $this->input->post('value')));
+	}
+	
 	function update_shift_start_time()
 	{
 		$shift_id = $this->input->post('pk');

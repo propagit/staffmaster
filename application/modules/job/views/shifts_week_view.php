@@ -1,7 +1,7 @@
 <div class="table_action">
 	<ul class="nav nav-tabs tab-respond pull-right">
-		<li><a class="load_week_view push"><i class="fa fa-list"></i></a></li>
-		<li><a class="load_month_view push"><i class="fa fa-calendar"></i></a></li>
+		<li><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
+		<li><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
 	</ul>
 	<ul class="nav nav-tabs tab-respond nav-action">
 		<li class="dropdown">
@@ -43,6 +43,9 @@
 <? for($i=0; $i < 7; $i++) { 
 $date_ts = $start_date + 24*60*60*$i; 
 $shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
+$unassign = modules::run('job/count_job_shifts', $job_id, $date_ts, '0');
+$unconfirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, 1);
+$confirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, 2);
 $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 ?>
 	<tr>
@@ -62,17 +65,17 @@ $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 		<td class="center"><?=($shifts_count > 0) ? $shifts_count : '';?></td>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
-			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge">0</a>
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge"><?=$unassign;?></a>
 			<? } ?>
 		</td>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
-			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge success">0</a> 
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge success"><?=$confirmed;?></a> 
 			<? } ?>
 		</td>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
-			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge danger"><?=$shifts_count;?></a>
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge danger"><?=$unconfirmed;?></a>
 			<? } ?>
 		</td>
 		<td class="center" width="40">

@@ -50,13 +50,19 @@
 	<div class="form-group" id="f_venue">
 		<label for="venue" class="col-lg-3 control-label">Venue</label>
 		<div class="col-lg-6">
-			<?=modules::run('attribute/venue/dropdown', 'venue');?>
+			<?=modules::run('attribute/venue/field_input', 'venue');?>
+		</div>
+		<div class="col-lg-3 help-block">
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/venue/create" target="_blank">Create Venue</a>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="position" class="col-lg-3 control-label">Role</label>
 		<div class="col-lg-6">
 			<?=modules::run('attribute/role/field_select', 'role_id');?>
+		</div>
+		<div class="col-lg-3 help-block">
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/role" target="_blank">Create Role</a>
 		</div>
 	</div>
 	<div class="form-group" id="f_count">
@@ -71,14 +77,20 @@
 	<div class="form-group">
 		<label for="uniform_id" class="col-lg-3 control-label">Uniform</label>
 		<div class="col-lg-6">
-			<?=modules::run('attribute/uniform/dropdown', 'uniform_id');?>
+			<?=modules::run('attribute/uniform/field_select', 'uniform_id');?>
+		</div>
+		<div class="col-lg-3 help-block">
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/uniform" target="_blank">Create Uniform</a>
 		</div>
 	</div>
 	
 	<div class="form-group">
 		<label for="payrate" class="col-lg-3 control-label">Payrate</label>
 		<div class="col-lg-6">
-			<?=modules::run('attribute/payrate/dropdown', 'payrate_id');?>
+			<?=modules::run('attribute/payrate/field_select', 'payrate_id');?>
+		</div>
+		<div class="col-lg-3 help-block">
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/payrate" target="_blank">Create Payrate</a>
 		</div>
 	</div>
 	

@@ -24,7 +24,7 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
 		array('path' => '#', 'icon' => 'fa-dashboard', 'title' => 'Accounts Dashboard'),
-		array('path' => '#', 'icon' => 'fa-thumbs-up', 'title' => 'Approve Shifts'),
+		array('path' => 'timesheet', 'icon' => 'fa-thumbs-up', 'title' => 'Time Sheets'),
 		array('path' => '#', 'icon' => 'fa-search', 'title' => 'Search Accounts'),
 		array('path' => '#', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Staff'),
 		array('path' => '#', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),

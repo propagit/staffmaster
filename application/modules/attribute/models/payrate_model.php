@@ -2,6 +2,13 @@
 
 class Payrate_model extends CI_Model {
 	
+	function get_payrate($payrate_id)
+	{
+		$this->db->where('payrate_id', $payrate_id);
+		$query = $this->db->get('attribute_payrates');
+		return $query->first_row('array');
+	}
+	
 	function get_payrates()
 	{
 		$query = $this->db->get('attribute_payrates');

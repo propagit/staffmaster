@@ -103,7 +103,7 @@ function delete_shifts(selected_shifts)
 $(function(){
 	//$.fn.editable.defaults.mode = 'popup';
 	
-	$('input[type="checkbox"]').prettyCheckable();
+	//$('input[type="checkbox"]').prettyCheckable();
 	$('.selectpicker').selectpicker();
 	
 	$('.input_number_only').keydown(function(event) {
