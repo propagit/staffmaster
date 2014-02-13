@@ -21,14 +21,14 @@ class Job_shift_model extends CI_Model {
 	function delete_job_shift($shift_id)
 	{
 		$this->db->where('shift_id', $shift_id);
-		return $this->db->update('job_shifts', array('status' => -1));
+		return $this->db->update('job_shifts', array('status' => -2));
 	}
 	
 	function delete_job_day_shift($job_id, $job_date)
 	{
 		$this->db->where('job_id', $job_id);
 		$this->db->where('job_date', $job_date);
-		return $this->db->update('job_shifts', array('status' => -1));
+		return $this->db->update('job_shifts', array('status' => -2));
 	}
 	
 	function search_shifts($data, $sort_key='date', $sort_value='asc')
@@ -97,7 +97,7 @@ class Job_shift_model extends CI_Model {
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id 
 				WHERE js.job_id = '" . $job_id . "'
-				AND js.status != -1";
+				AND js.status > -2";
 		if ($job_date && $job_date != 'all')
 		{
 			$sql .= " AND js.job_date = '" . $job_date . "'";
@@ -127,7 +127,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT count(*) as `count`
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id' AND `status` != -1";
+				WHERE `job_id` = '$job_id' AND `status` > -2";
 		if ($job_date)
 		{
 			$sql .= " AND `job_date` = '$job_date'";
@@ -144,7 +144,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT DISTINCT(`job_date`)
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id' AND `status` != -1 ORDER BY `job_date` ASC";
+				WHERE `job_id` = '$job_id' AND `status` > -2 ORDER BY `job_date` ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

@@ -46,6 +46,11 @@ class Venue_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function all_venues() {
+		$query = $this->db->get('attribute_venues');
+		return $query->result_array();
+	}
+	
 	function insert_venue($data)
 	{
 		$this->db->insert('attribute_venues', $data);

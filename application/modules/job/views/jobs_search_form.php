@@ -95,7 +95,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Venue</label>
 							<div class="col-md-4">
-								<?=modules::run('attribute/venue/dropdown', 'venue');?>
+								<?=modules::run('attribute/venue/field_input', 'venue');?>
 							</div>
 							<label class="col-md-2 control-label">Staff Name</label>
 							<div class="col-md-4">
@@ -111,7 +111,7 @@
 							</div>
 							<label for="payrate" class="col-md-2 control-label">Payrate</label>
 							<div class="col-md-4">
-								<?=modules::run('attribute/payrate/dropdown', 'payrate_id');?>
+								<?=modules::run('attribute/payrate/field_select', 'payrate_id');?>
 							</div>
 						</div>
 					</div>
@@ -136,12 +136,10 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<div class="col-lg-offset-4 col-lg-8">
-									<button type="button" class="btn btn-core" id="btn_search_shifts"><i class="fa fa-search"></i> Search</button> &nbsp; 
-									<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
-								</div>
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-8">
+								<button type="button" class="btn btn-core" id="btn_search_shifts"><i class="fa fa-search"></i> Search</button> &nbsp; 
+								<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
 							</div>
 						</div>
 					</div>

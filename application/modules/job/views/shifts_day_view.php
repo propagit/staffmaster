@@ -36,7 +36,7 @@
 		<th>Role &nbsp; <a onclick="sort_shifts('role')"><i class="fa fa-sort"></i></a></th>
 		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
-		<th class="center">Pay rate</th>
+		<th>Pay rate</th>
 		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
 		<th class="center" colspan="3">Find Staff</th>
 		
@@ -47,7 +47,7 @@
 	<? foreach($job_shifts as $shift) { ?>
 	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>">
 		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
-		<td class="wp-date" width="70">
+		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
 			<span class="wk_month"><?=date('M', strtotime($shift['job_date']));?></span>
@@ -67,7 +67,7 @@
 		<td class="center">
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
-		<td></td>
+		<td><a href="#" class="shift_payrate" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['payrate_id'];?>"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
 		<td>
 			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
@@ -107,6 +107,9 @@ $(function(){
 	$('.shift_role').on('shown', function(e, editable) {
 		$('#wrapper_js').find('.popover-break').hide();
 	});
+	$('.shift_payrate').on('shown', function(e, editable) {
+		$('#wrapper_js').find('.popover-break').hide();
+	});
 	$('.shift_start_time').on('shown', function(e, editable) {
 		$('#wrapper_js').find('.popover-break').hide();
 	});
@@ -135,6 +138,12 @@ $(function(){
 		name: 'role_id',
 		title: 'Select role',
 		source: [<?=modules::run('attribute/role/get_roles', 'data_source'); ?>]
+	});
+	$('.shift_payrate').editable({
+		url: '<?=base_url();?>job/ajax/update_shift_payrate',
+		name: 'payrate_id',
+		title: 'Select Pay Rate',
+		source: [<?=modules::run('attribute/payrate/get_payrates', 'data_source');?>]
 	});
 	$('.shift_start_time').editable({
 		combodate: {

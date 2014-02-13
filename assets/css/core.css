@@ -451,6 +451,7 @@ a:hover {
 .nav-tabs.nav-group {
 	float: left;
 	margin-left: 5px;
+	margin-top: 5px;
 }
 .nav-tabs.nav-group li {
 	margin: 0;
