@@ -33,10 +33,9 @@ class Venue_model extends CI_Model {
 				attribute_locations.parent_id as location_parent_id, 
 				attribute_locations.name as location_name 
 				from
-				attribute_venues, attribute_locations where attribute_venues.location_id = attribute_locations.location_id ";
+				attribute_venues, attribute_locations where attribute_venues.location_id = attribute_locations.location_id";
 		if($params){
 			$sort_param = json_decode($params);	
-			//$this->db->order_by($sort_param->sort_by,$sort_param->sort_order);
 			$sql .= " order by $sort_param->sort_by $sort_param->sort_order";
 		}else{
 			$sql .= " order by name asc";

@@ -38,12 +38,10 @@ class Group extends MX_Controller {
 	
 	function list_groups()
 	{
-		$sort_group = (bool) $this->session->userdata('sort_group');
-		$data['groups'] = $this->group_model->get_groups($sort_group);
-		$this->load->view('list_groups', isset($data) ? $data : NULL);
+		$this->load->view('groups/list_groups', isset($data) ? $data : NULL);
 	}
 	
-	function sort_groups()
+	/* function sort_groups()
 	{
 		if (!$this->session->userdata('sort_group'))
 		{
@@ -61,20 +59,20 @@ class Group extends MX_Controller {
 		$data = $this->input->post();
 		$this->group_model->insert_group($data);
 		redirect('attribute/group');
-	}
+	} */
 	
-	function edit_group()
+	/* function edit_group()
 	{
 		$data = $this->input->post();
 		$this->group_model->update_group($data['group_id'], $data);
 		redirect('attribute/group');
-	}
+	} */
 	
-	function delete_group($group_id)
+	/* function delete_group($group_id)
 	{
 		$this->group_model->delete_group($group_id);
 		redirect('attribute/group');
-	}
+	} */
 		
 	function field_select($field_name, $field_value=null)
 	{

@@ -2,17 +2,17 @@
 
 class Group_model extends CI_Model {
 	
-	function get_groups($sort_group=false)
+	function get_groups($params = '')
 	{
-		if ($sort_group)
-		{
-			$this->db->order_by('name', 'desc');
+		$sql = "select * from attribute_groups";
+		if($params){
+			$sort_param = json_decode($params);	
+			$sql .= " order by $sort_param->sort_by $sort_param->sort_order";
+		}else{
+			$sql .= " order by name asc";
 		}
-		else
-		{
-			$this->db->order_by('name', 'asc');
-		}
-		$query = $this->db->get('attribute_groups');
+
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	

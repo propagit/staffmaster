@@ -17,18 +17,6 @@ class Uniform extends MX_Controller {
 	{
 		switch($method)
 		{
-			case 'add':
-					$this->add_uniform();
-				break;
-			case 'edit':
-					$this->edit_uniform();
-				break;
-			case 'delete':
-					$this->delete_uniform($param);
-				break;
-			case 'sort':
-					$this->sort_uniforms();
-				break;
 			default:
 					$this->list_uniforms();
 				break;
@@ -41,27 +29,6 @@ class Uniform extends MX_Controller {
 		$data['uniforms'] = $this->uniform_model->get_uniforms($sort_uniform);
 		$this->load->view('uniform/list_uniforms', isset($data) ? $data : NULL);
 	}
-	
-	/* function add_uniform()
-	{
-		$data = $this->input->post();
-		$this->uniform_model->insert_uniform($data);
-		redirect('attribute/uniform');
-	} */
-	
-	/* function edit_uniform()
-	{
-		$data = $this->input->post();
-		$this->uniform_model->update_uniform($data['uniform_id'], $data);
-		redirect('attribute/uniform');
-	} */
-	
-	/* function delete_uniform($uniform_id)
-	{
-		$this->uniform_model->delete_uniform($uniform_id);
-		redirect('attribute/uniform');
-	}
-	 */
 	 
 	function field_select($field_name, $field_value=null)
 	{
@@ -75,7 +42,7 @@ class Uniform extends MX_Controller {
 		}
 		return modules::run('common/field_select', $array, $field_name, $field_value);
 	}
-	
+
 	function dropdown($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;

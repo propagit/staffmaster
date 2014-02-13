@@ -17,24 +17,8 @@
             <button class="btn btn-info btn-rt-margin" data-toggle="modal" href="#addVenue" ><i class="fa fa-plus"></i> Add New Venue</button>
 			<button class="btn btn-info"><i class="fa fa-upload"></i> Import Venues</button>
             
-            <div class="attr-list-wrap">
-                <table class="table table-bordered table-hover table-middle table-expanded">
-                    <thead>
-                    <tr class="heading">
-                        <th class="left col-md-2">Venue Name <i class="fa fa-sort sort-table" sort-by="attribute_venues.name" sort-order="desc"></i></th>
-                        <th class="left col-md-3">Address</th>
-                        <th class="left col-md-1">Suburb <i class="fa fa-sort sort-table" sort-by="attribute_venues.suburb" sort-order="desc"></i></th>
-                        <th class="center col-md-1">Post Code <i class="fa fa-sort sort-table" sort-by="attribute_venues.postcode" sort-order="desc"></i></th>
-                        <th class="left col-md-2">Location <i class="fa fa-sort sort-table" sort-by="attribute_locations.name" sort-order="desc"></i></th>
-                        <th class="center col-md-1">View Map</th>
-                        <th class="center col-md-1">Edit Venue</th>
-                        <th class="center col-md-1">Delete Venue</th>
-                    </tr>
-                    </thead>
-                    <tbody id="load-venues">
-                   
-                    </tbody>
-                </table>
+            <div id="load-venues" class="attr-list-wrap">
+               
             </div>
         </div>
     </div>
@@ -52,37 +36,51 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
 				<h4 class="modal-title">Add Venue</h4>
 			</div>
 			<form id="add-new-venue-form">
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="name">Name</label>
-					<input type="text" class="form-control" name="name" id="name" placeholder="Enter venue name">
-				</div>
-                
-				<div class="form-group">
-					<label for="address">Address</label>
-					<input type="text" class="form-control" name="address" id="address" placeholder="Enter venue address">
-				</div>
-				<div class="form-group">
-					<label for="suburb">Suburb</label>
-					<input type="text" class="form-control" name="suburb" id="suburb" placeholder="Enter venue suburb">
-				</div>
-				<div class="form-group">
-					<label for="postcode">Postcode</label>
-					<input type="text" class="form-control auto-width" name="postcode" id="postcode" placeholder="Enter venue postcode">
-				</div>
-				<div class="form-group">
-					<label>Location</label>
-                    <?=modules::run('common/dropdown_location_form', 'location_id');?>
-				</div>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			<button id="add-venue" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add Venue</button>
-			</div>
+            <div class="col-md-12">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter venue name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="address" id="address" placeholder="Enter venue address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="suburb" class="col-sm-2 control-label">Suburb</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="suburb" id="suburb" placeholder="Enter venue suburb">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="postcode" class="col-sm-2 control-label">Postcode</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control auto-width" name="postcode" id="postcode" placeholder="Enter venue postcode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="col-sm-2 control-label">Location</label>
+                        <div class="col-sm-10 select-btm-margin">
+                            <?=modules::run('attribute/location/field_select','parent_location_id');?>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                               <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
+                          <div class="col-sm-10">
+                              <button id="add-venue" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add Venue</button>
+                          </div>
+                      </div>
+                </div>
+            </div>
 			</form>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -93,38 +91,51 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
 				<h4 class="modal-title">Edit Venue</h4>
 			</div>
 			<form id="edit-new-venue-form">
-			<input type="hidden" name="venue_id" id="venue_id" />
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="name_edit">Name</label>
-					<input type="text" class="form-control" name="name" id="name_edit" placeholder="Enter venue name" />
-				</div>
-				<div class="form-group">
-					<label for="address_edit">Address</label>
-					<input type="text" class="form-control" name="address" id="address_edit" placeholder="Enter venue address">
-				</div>
-				<div class="form-group">
-					<label for="suburb_edit">Suburb</label>
-					<input type="text" class="form-control" name="suburb" id="suburb_edit" placeholder="Enter venue suburb">
-				</div>
-				<div class="form-group">
-					<label for="postcode_edit">Postcode</label>
-					<input type="text" class="form-control auto-width" name="postcode" id="postcode_edit" placeholder="Enter venue postcode">
-				</div>
-                <div class="form-group">
-					<label>Location</label>					
-                    <?=modules::run('common/dropdown_location_form', 'location_id_edit','');?>
-                    
-				</div>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			<button  id="edit-venue" type="button" class="btn btn-info">Edit Venue</button>
-			</div>
+            <div class="col-md-12">
+                <input type="hidden" name="venue_id" id="venue_id" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name_edit" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                        	<input type="text" class="form-control" name="name" id="name_edit" placeholder="Enter venue name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address_edit" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                        	<input type="text" class="form-control" name="address" id="address_edit" placeholder="Enter venue address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="suburb_edit" class="col-sm-2 control-label">Suburb</label>
+                        <div class="col-sm-10">
+                        	<input type="text" class="form-control" name="suburb" id="suburb_edit" placeholder="Enter venue suburb">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="postcode_edit" class="col-sm-2 control-label">Postcode</label>
+                        <div class="col-sm-10">
+                        	<input type="text" class="form-control auto-width" name="postcode" id="postcode_edit" placeholder="Enter venue postcode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="col-sm-2 control-label">Location</label>
+                        <div id="load-current-location" class="col-sm-10 select-btm-margin">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                           <label for="edit-button" class="col-sm-2 control-label">&nbsp;</label>
+                          <div class="col-sm-10">
+                              <button  id="edit-venue" type="button" class="btn btn-info">Edit Venue</button>
+                          </div>
+                    </div>
+                </div>
+            </div>
 			</form>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -141,7 +152,7 @@ var params = {
 	'url': '<?=base_url();?>attribute/ajax/get_venues',
 	'output_container':'#load-venues',
 	'type':'POST',
-	'data':JSON.stringify({"sort_by":"name","sort_order":"asc"})
+	'data':JSON.stringify(sort_data)
 };
 
 
@@ -149,8 +160,6 @@ var location_parent_complete = false;
 
 $(function(){
 	help.load_content(params);
-	
-	help.sort_list('.sort-table',params);
 	
 	$('#add-venue').on('click',function(){
 		add_venue();
@@ -195,12 +204,17 @@ function open_edit_modal(venue_id,location_id,location_parent_id, name, address,
 	
 	//update location
 	//run this on a delay to make sure this block of code runs
-	setTimeout(function(){
-		$('#location_id_edit').val(location_parent_id).trigger('change');
-	},200,function(){
-		//$('#area_location_state').val(location_id).trigger('change');
-	});
+	$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>attribute/ajax/load_current_locations',
+		data:{location_id:location_id, location_parent_id:location_parent_id},
+		success: function(html){
+			$('#load-current-location').html(html);
+			load_areas();
+		}
+	});	
 }
+
 
 function edit_venue(){
 	$.ajax({

@@ -101,10 +101,11 @@ class Location extends MX_Controller {
 		return $this->location_model->get_locations($parent_id);
 	}
 	
-	function field_select($field_name, $field_value=null, $size=null)
+	function field_select($field_name, $field_value=null,$child_value=null, $size=null)
 	{
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
+		$data['child_value'] = $child_value;
 		$data['size'] = $size;
 		$data['parents'] = $this->location_model->get_locations(0);
 		$this->load->view('location/field_select', isset($data) ? $data : NULL);

@@ -184,6 +184,7 @@ a.default {
 .attr-list-wrap{
 	margin-top:20px;	
 }
+
 .checkbox-sm{
 	margin-right:5px!important;
 }
@@ -193,6 +194,12 @@ a.default {
 .unavailable-color{
 	background:#F2DEDE;
 }
+
+
+
+/* style for staff availability */
+
+
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 
