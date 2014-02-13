@@ -240,7 +240,7 @@ class Ajax extends MX_Controller {
 	
 	/**
 	*	@name: load_availability
-	*	@desc: ajax function to load staff availability view
+	*	@desc: ajax function to load staff availability view. If staff doesn't have availability, the funcition will create avaiability record as available all days all times
 	*	@access: public
 	*	@param: (via POST) (int) user_id
 	*	@return: (view) staff availability
@@ -248,12 +248,13 @@ class Ajax extends MX_Controller {
 	function load_availability()
 	{
 		$user_id = $this->input->post('user_id');
-		$data['availability'] = $this->staff_model->get_availability($user_id);
-		if(count($data['availability'])<=0){
+		$availability = $this->staff_model->get_availability($user_id);
+		if(count($availability)<=0){
 			$this->initiate_availability($user_id);
-			$data['availability'] = $this->staff_model->get_availability($user_id);
+			$availability = $this->staff_model->get_availability($user_id);
 		}
 		$data['user_id'] = $user_id;
+		$data['availability'] = $availability;
 		$this->load->view('staff/availability_table_view', isset($data) ? $data : NULL);
 	}
 	/**
@@ -277,9 +278,16 @@ class Ajax extends MX_Controller {
 			}
 		}				
 	}
+	/**
+	*	@name: update_availability
+	*	@desc: update value of staff availability time
+	*	@access: public
+	*	@param: (via POST) (int) user_id,name,value
+	*	
+	*/
 	function update_availability()
 	{
-		$value = $this->input->post('value');
+		$value = $this->input->post('value_avail');
 		$name = $this->input->post('name');
 		$fields = explode('-', $name);		
 		$day = $fields[1];

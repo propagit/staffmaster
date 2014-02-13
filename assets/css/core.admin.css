@@ -180,12 +180,19 @@ a.default {
 	padding-left:20px;
 }
 
+/* style for staff availability */
 .attr-list-wrap{
 	margin-top:20px;	
 }
-
-/* style for staff availability */
-
+.checkbox-sm{
+	margin-right:5px!important;
+}
+.available-color{
+	background:#DFF0D8;
+}
+.unavailable-color{
+	background:#F2DEDE;
+}
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 

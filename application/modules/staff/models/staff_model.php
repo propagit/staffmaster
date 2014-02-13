@@ -73,7 +73,7 @@ class Staff_model extends CI_Model {
 		return $result['value'];
 	}
 	
-	function update_available_data($user_id,$day,$hour)
+	function update_available_data($user_id,$day,$hour,$value)
 	{
 		$this->db->where('user_id', $user_id);		
 		$this->db->where('day', $day);
