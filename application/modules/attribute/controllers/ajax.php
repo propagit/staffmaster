@@ -16,6 +16,7 @@ class Ajax extends MX_Controller {
 		$this->load->model('payrate_model');
 		$this->load->model('venue_model');
 		$this->load->model('uniform_model');
+		$this->load->model('group_model');
 	}
 		
 	function add_payrate() {
@@ -94,6 +95,8 @@ class Ajax extends MX_Controller {
 	function get_locations()
 	{
 		$locations = $this->location_model->get_locations($this->input->post('location_id'));
+		$location_id = $this->input->post('location_id');
+		$child_selected = $this->input->post('child_selected');
 		if ($this->input->post('location_id') && count($locations) > 0)
 		{
 			$array = array();
@@ -104,7 +107,7 @@ class Ajax extends MX_Controller {
 					'label' => $location['name']
 				);
 			}
-			echo modules::run('common/field_select', $array, 'location_id');
+			echo modules::run('common/field_select', $array, 'location_id', $child_selected);
 		}
 		
 	}
@@ -210,7 +213,7 @@ class Ajax extends MX_Controller {
 	{
 		$data = $this->input->post();
 		$this->venue_model->insert_venue(array(
-				'location_id' => $data['location_id'],
+				'location_id' => isset($data['location_id']) ? $data['location_id'] : $data['parent_location_id'],
 				'name' => $data['name'], 
 				'address' => $data['address'],
 				'suburb' => $data['suburb'],
@@ -231,12 +234,12 @@ class Ajax extends MX_Controller {
 	{
 		$data = $this->input->post();
 		$this->venue_model->update_venue($data['venue_id'], array(
-				'location_id' => $data['location_id_edit'],
+				'location_id' => isset($data['location_id']) ? $data['location_id'] : $data['parent_location_id_editing'],
 				'name' => $data['name'], 
 				'address' => $data['address'],
 				'suburb' => $data['suburb'],
 				'postcode' => $data['postcode']
-			));
+			)); 
 		echo 'success';
 	}
 	
@@ -255,6 +258,27 @@ class Ajax extends MX_Controller {
 		$venue_id = $this->input->post('venue_id',true);
 		$this->venue_model->delete_venue($venue_id);
 		echo 'success';
+	}
+	/**
+	*	@desc Load current locations while editing venues
+	*   @name load_current_locations
+	*	@access public
+	*	@param null
+	*	@return 
+	*	
+	*/
+	function load_current_locations()
+	{
+		$location_parent_id = $this->input->post('location_parent_id',true);
+		$location_id = $this->input->post('location_id',true);
+		if($location_parent_id == 1 || $location_parent_id == 2){
+			$parent_selected = $location_id;
+			$child_selected = 0;
+		}else{
+			$parent_selected = $location_parent_id;	
+			$child_selected = $location_id;
+		}
+		echo modules::run('attribute/location/field_select','parent_location_id_editing',$parent_selected,$child_selected);	
 	}
 	
 	// end venue
@@ -322,7 +346,72 @@ class Ajax extends MX_Controller {
 	}
 	
 	//end uniform
-
+	
+	
+	//begin groups
+	
+	/**
+	*	@desc Displayes all the available groups in the system. The user can then sort the data based on Name or Frequency.
+	*
+	*   @name get_roles
+	*	@access public
+	*	@param Post data - gets sort paramater
+	*	@return Lists all roles
+	*	
+	*/
+	function get_groups()
+	{
+		$params = $this->input->post('params',true);
+		$data['groups'] = $this->group_model->get_groups($params);
+		$this->load->view('groups/ajax_list_groups', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@desc Adds new group
+	*
+	*   @name add_role
+	*	@access public
+	*	@param Post data - name of the new group
+	*	@return 
+	*	
+	*/
+	function add_group()
+	{
+		$data = $this->input->post();
+		$this->group_model->insert_group($data);
+		echo 'success';
+	}
+	/**
+	*	@desc Edit new group
+	*
+	*   @name add_role
+	*	@access public
+	*	@param Post data - name of the new group
+	*	@return 
+	*	
+	*/
+	function edit_group()
+	{
+		$data = $this->input->post();
+		$this->group_model->update_group($data['group_id'], $data);
+		echo 'success';
+	}
+	/**
+	*	@desc Delete Group
+	*	@comments Removes Group 
+	*   @name delete_group
+	*	@access public
+	*	@param null
+	*	@return 
+	*	
+	*/
+	function delete_group()
+	{
+		$group_id = $this->input->post('delete_id',true);
+		$this->group_model->delete_group($group_id);
+		echo 'success';
+	} 
+	//end groups
 	
 	
 }

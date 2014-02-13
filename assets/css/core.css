@@ -838,6 +838,11 @@ a:hover {
 	width:100%;
 }
 
+/* style for select under this class */
+.select-btm-margin .custom-select{
+	margin-bottom:15px;	
+}
+
 @media(max-width:1200px){
 	.box p{ 
 		font-size:16px;

@@ -17,18 +17,6 @@ class Venue extends MX_Controller {
 	{
 		switch($method)
 		{
-			case 'add':
-					$this->add_venue();
-				break;
-			case 'edit':
-					$this->edit_venue();
-				break;
-			case 'delete':
-					$this->delete_venue($param);
-				break;
-			case 'sort':
-					$this->sort_venues();
-				break;
 			default:
 					$this->list_venues();
 				break;
@@ -39,20 +27,7 @@ class Venue extends MX_Controller {
 	{
 		$this->load->view('venues/list_venues', isset($data) ? $data : NULL);
 	}
-	
-	function sort_venues()
-	{
-		if (!$this->session->userdata('sort_venue'))
-		{
-			$this->session->set_userdata('sort_venue', 1);
-		}
-		else
-		{
-			$this->session->unset_userdata('sort_venue');
-		}
-		redirect('attribute/venue');
-	}
-	
+
 	function display_venue($venue_id)
 	{
 		$venue = $this->get_venue($venue_id);

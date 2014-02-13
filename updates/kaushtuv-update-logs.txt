@@ -1,4 +1,18 @@
 ==================================================================================================================
+13 Feb, 2014
+
+Attributes
+
+ - Get back to it to make the edit and add page in a separate file.
+ - Add and edit pop up text missing for following
+ 	- Venue
+	- Uniform
+	- Groups
+
+
+
+
+==================================================================================================================
 12 Feb, 2014
 
 Attributes

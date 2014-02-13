@@ -19,19 +19,8 @@
             
             <button class="btn btn-info" data-toggle="modal" href="#addUniform" ><i class="fa fa-plus"></i> Add New Uniform</button>
 
-            <div class="attr-list-wrap">
-            	<table class="table table-bordered table-hover table-middle table-expanded">
-                    <thead>
-                    <tr class="heading">
-                        <th class="left">Uniform <i class="fa fa-sort sort-table" sort-by="name" sort-order="desc"></i></a></th>
-                        <th class="center col-md-1">Edit Uniform</th>
-                        <th class="center col-md-1">Delete Uniform</th>
-                    </tr>
-                    </thead>
-                    <tbody id="load-uniforms">
-                    
-                    </tbody>
-                </table>
+            <div id="load-uniforms" class="attr-list-wrap">
+            	
             </div>
         </div>
     </div>
@@ -43,11 +32,11 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
 				<h4 class="modal-title">Add Uniform</h4>
 			</div>
             <div class="col-md-12">
-                <form id="add-uniform-form">
+                <form id="add-uniform-form" data-url="<?=base_url();?>attribute/ajax/add_uniform">
                 <div class="modal-body">
                     <h4 class="modal-body-title">Enter Uniform Name</h4>
                     <p>
@@ -62,7 +51,7 @@
                     <div class="form-group">
                         	 <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-10">
-                          	<button id="add-new-uniform-btn" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add Uniform</button>
+                          	<button id="add-new-uniform-btn" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add New Uniform</button>
                         </div>
                     </div>
                 </div>
@@ -78,11 +67,11 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
 				<h4 class="modal-title">Edit Uniform</h4>
 			</div>
             <div class="col-md-12">
-                <form id="edit-uniform-form">
+                <form id="edit-uniform-form" data-url="<?=base_url();?>attribute/ajax/edit_uniform">
                 <input type="hidden" name="uniform_id" id="uniform_id" />
                 <div class="modal-body">
                     <div class="form-group">
@@ -94,7 +83,7 @@
                     <div class="form-group">
                         	 <label for="update-button" class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-10">
-                          	<button id="edit-new-uniform-btn" type="button" class="btn btn-info">Update Uniform</button>
+                          	<button id="edit-uniform-btn" type="button" class="btn btn-info">Update Uniform</button>
                         </div>
                     </div>
                 </div>
@@ -115,28 +104,16 @@ var params = {
 	'url': '<?=base_url();?>attribute/ajax/get_uniforms',
 	'output_container':'#load-uniforms',
 	'type':'POST',
-	'data':JSON.stringify({"sort_by":"name","sort_order":"asc"})
-};
-
-var add_uniform_params = {
-	'url': '<?=base_url();?>attribute/ajax/add_uniform',
-	'type':'POST',
-	'form_id':'add-uniform-form'	
-};
-
-var edit_uniform_params = {
-	'url': '<?=base_url();?>attribute/ajax/edit_uniform',
-	'type':'POST',
-	'form_id':'edit-uniform-form'
+	'data':JSON.stringify(sort_data)
 };
 
 var delete_uniform_params = {
 	'url': '<?=base_url();?>attribute/ajax/delete_uniform',
-	'type':'POST',
 	'delete_id':''
 }
 
 $(function(){
+	//load params
 	help.load_content(params);
 	
 	//sort data
@@ -144,21 +121,21 @@ $(function(){
 	
 	//add new uniform
 	$('#add-new-uniform-btn').on('click',function(){
-		 help.update_form_data(add_uniform_params,function(added){
-			 if(added){
-				$('#addUniform').modal('hide'); 
+		 help.submit_form_data('add-uniform-form',function(success){
+			if(success){
+				$('#addUniform').modal('hide');
 				help.load_content(params);
-			 }
+			}
 		 });
 	});
 	
 	//edit uniform
-	$('#edit-new-uniform-btn').on('click',function(){
-		 help.update_form_data(edit_uniform_params,function(updated){
-			 if(updated){
-				$('#editUniform').modal('hide'); 
+	$('#edit-uniform-btn').on('click',function(){
+		 help.submit_form_data('edit-uniform-form',function(success){
+			if(success){
+				$('#editUniform').modal('hide');
 				help.load_content(params);
-			 }
+			}
 		 });
 	});
 });
