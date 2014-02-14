@@ -18,5 +18,6 @@ class Shift extends MX_Controller {
 		$data['job_id'] = $job_id;
 		$this->load->view('shift_create_form', isset($data) ? $data : NULL);
 	}
-
+	
+	
 }

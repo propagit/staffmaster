@@ -54,12 +54,19 @@ define('STAFF_ACTIVE', 1);
 define('GENDER_MALE', 'm');
 define('GENDER_FEMALE', 'f');
 
+define('JOB_DELETED', -1);
+define('JOB_COMPLETED', 1);
+
 define('SHIFT_DELETED', -2);
 define('SHIFT_REJECTED', -1);
 define('SHIFT_UNASSIGNED', 0);
 define('SHIFT_UNCONFIRMED', 1);
 define('SHIFT_CONFIRMED', 2);
 define('SHIFT_FINISHED', 3);
+
+define('TIMESHEET_SUBMITTED', 1);
+define('TIMESHEET_APPROVED', 2);
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

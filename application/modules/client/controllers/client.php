@@ -63,7 +63,7 @@ class Client extends MX_Controller {
 	
 	function get_client($client_id)
 	{
-		return $this->client_model->get_client_by_client_id($client_id);
+		return $this->client_model->get_client($client_id);
 	}
 
 	function delete_client($user_id)

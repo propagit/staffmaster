@@ -51,9 +51,30 @@
 		<td class="center"><span class="badge success"><?=$confirmed;?></span></td>
 		<td></td>
 		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="fa fa-eye"></i></a></td>
-		<td class="center"><a><i class="fa fa-trash-o"></i></a></td>
+		<td class="center">
+			<a onclick="delete_job(<?=$job['job_id'];?>)"><i class="fa fa-times"></i></a>
+		</td>
 	</tr>
 	<? } ?>
 </table>
 </div>
 <? } ?>
+
+<script>
+function delete_job(job_id) {
+	var title = 'Delete Job';
+	var message ='All shifts and timesheet within this job will be deleted completely. Are you sure you want to delete this job?';
+	help.confirm_delete(title,message,function(confirmed){
+		if(confirmed){
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>job/ajax/delete_job",
+				data: {job_id: job_id},
+				success: function(html) {
+					search_jobs();
+				}
+			})
+		}
+	});
+}
+</script>

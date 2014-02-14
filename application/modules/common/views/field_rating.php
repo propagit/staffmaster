@@ -6,6 +6,13 @@
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
 <script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
 <script type="text/javascript">
+<? if ($disabled) { ?>
+$(function(){
+	$(".basic").jRating({
+		isDisabled: true
+	});
+})
+<? } else { ?>
 jQuery(document).ready(function(){
       // get the clicked rate !
 	jQuery(".basic").jRating({
@@ -14,4 +21,5 @@ jQuery(document).ready(function(){
 		}
 	});
 });
+<? } ?>
 </script>

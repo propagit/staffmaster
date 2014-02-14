@@ -157,9 +157,10 @@ class Common extends MX_Controller {
 	*			- $field_value (optional) 
 	*    @return: custom input field for rating 
 	*/
-	function field_rating($field_name,$field_value=null) {
+	function field_rating($field_name,$field_value=null,$disabled=false) {
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
+		$data['disabled'] = $disabled;
 		$this->load->view('field_rating', isset($data) ? $data : NULL);
 	}
 	

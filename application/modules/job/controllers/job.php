@@ -81,7 +81,7 @@ class Job extends MX_Controller {
 		}
 		$job = $this->job_model->get_job($job_id);
 		$data['job'] = $job;
-		$data['client'] = $this->client_model->get_client_by_client_id($job['client_id']);
+		$data['client'] = $this->client_model->get_client($job['client_id']);
 		
 		$this->load->view('job_details', isset($data) ? $data : NULL);		
 	}
@@ -153,7 +153,6 @@ class Job extends MX_Controller {
 		return $this->job_model->get_job_finish_date($job_id);
 	}
 
-	
 	
 	function status_to_class($status)
 	{

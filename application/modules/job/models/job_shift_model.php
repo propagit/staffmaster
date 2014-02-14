@@ -18,18 +18,10 @@ class Job_shift_model extends CI_Model {
 		return $this->db->update('job_shifts', $data);
 	}	
 	
-	function delete_job_shift($shift_id)
-	{
-		$this->db->where('shift_id', $shift_id);
-		return $this->db->update('job_shifts', array('status' => -2));
-	}
 	
-	function delete_job_day_shift($job_id, $job_date)
-	{
-		$this->db->where('job_id', $job_id);
-		$this->db->where('job_date', $job_date);
-		return $this->db->update('job_shifts', array('status' => -2));
-	}
+	
+	
+	
 	
 	function search_shifts($data, $sort_key='date', $sort_value='asc')
 	{
@@ -166,5 +158,26 @@ class Job_shift_model extends CI_Model {
 				AND js.shift_id='" . $shift_id . "'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+	
+	
+	
+	function delete_job_shift($shift_id)
+	{
+		$this->db->where('shift_id', $shift_id);
+		return $this->db->delete('job_shifts');
+	}
+	
+	function delete_job_shifts($job_id)
+	{
+		$this->db->where('job_id', $job_id);
+		return $this->db->delete('job_shifts');		
+	}
+	
+	function delete_job_day_shift($job_id, $job_date)
+	{
+		$this->db->where('job_id', $job_id);
+		$this->db->where('job_date', $job_date);
+		return $this->db->delete('job_shifts');
 	}
 }

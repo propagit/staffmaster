@@ -60,6 +60,7 @@ class Work_model extends CI_Model {
 		$sql = "SELECT `job_date`, count(*) as `shifts_count` FROM `job_shifts`
 				WHERE `job_date` LIKE '" . $active_month . "%'
 				AND `status` NOT IN (-1,-2,2)
+				AND `job_date` > '" . date('Y-m-d') . "'
 				GROUP BY `job_date`";
 		$query = $this->db->query($sql);
 		return $query->result_array();

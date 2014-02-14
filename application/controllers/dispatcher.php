@@ -50,9 +50,9 @@ class Dispatcher extends MX_Controller {
 	
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{		
-		if ($method == 'ajax')
+		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run($controller . '/ajax/' . $param1, $param2, $param3, $param4); exit();	
+			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
 		}
 		
 		$content = modules::run($controller . '/' . $controller . '_staff/index', $param1, $param2, $param3, $param4);
@@ -67,9 +67,9 @@ class Dispatcher extends MX_Controller {
 	
 	function admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{
-		if ($method == 'ajax')
+		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run($controller . '/ajax/' . $param1, $param2, $param3, $param4); exit();	
+			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
 		}
 		
 		$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
