@@ -64,7 +64,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-				<h4 class="modal-title">Edit Department</h4>
+				<h4 class="modal-title">Edit Group</h4>
 			</div>
             <div class="col-md-12">
                 <form id="edit-group-form" data-url="<?=base_url();?>attribute/ajax/edit_group">
@@ -79,7 +79,7 @@
                     <div class="form-group">
                         	 <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-10">
-                          	<button id="edit-group-btn" type="button" class="btn btn-info">Update Uniform</button>
+                          	<button id="edit-group-btn" type="button" class="btn btn-info">Update Group</button>
                         </div>
                     </div>
                 </div>

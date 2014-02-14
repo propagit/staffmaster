@@ -207,39 +207,6 @@
 
 
 
-
-<style>
-.action_image{
-	height: 220px;position: absolute;top: 0px;width: 220px;background:#000; opacity:0.5; display:none;
-}
-.action_image :hover{display:block;line-height:35px;}
-.gallery_staff{border:1px solid #cdcdcd; padding:10px!important; padding-left:25px!important; padding-right:25px!important; border-radius:4px; margin-bottom:20px!important;}
-.profile_border{border:1px solid #cdcdcd; padding:10px;border-radius:4px; background:#fff;width:-moz-max-content}
-.no_photo{width:200px; height:200px; border:1px solid #000; color:#000; background:#c3c3c3; text-align:center; line-height:200px;}
-.popup-gallery li:hover .action_image{ display:block;}
-.action_icon{border:1px solid #ccc;background:#f9f9f9;width:35px; height:35px;text-align:center;line-height:35px; float:right;}
-</style>
-
-<!-- Add Image Modal -->
-<div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="editVenueLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Add Image</h4>
-			</div>
-			
-			<div class="modal-body">
-				<?=modules::run('common/upload_picture', 'staff_id',$staff['staff_id']);?>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			
-			</div>
-			
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <script>
 $(function(){		
 	

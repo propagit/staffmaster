@@ -42,6 +42,10 @@
 			<form id="add-new-venue-form">
             <div class="col-md-12">
                 <div class="modal-body">
+                	<h4 class="modal-body-title">Enter Venue Name</h4>
+                    <p>
+                    Venues are the location your jobs are held at. When creating jobs you will need to add a venue the job is taking place in.
+                    </p>
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">

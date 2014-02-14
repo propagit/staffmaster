@@ -34,7 +34,7 @@ class Ajax extends MX_Controller {
 	*/
 	function update_staff($user_id, $tab)
 	{
-		$data['staff'] = $this->staff_model->get_staff($user_id);
+		$data['staff'] = $this->staff_model->get_staff($user_id);		
 		$this->load->view('edit_' . $tab, isset($data) ? $data : NULL);
 	}
 	
@@ -293,5 +293,25 @@ class Ajax extends MX_Controller {
 		$day = $fields[1];
 		$hour = $fields[2];
 		$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
+	}
+	
+	/**
+	*	@name: load_picture
+	*	@desc: show the profile picture and gallery
+	*	@access: public
+	*	@param: (via POST) (int) user_id
+	*	
+	*/
+	function load_picture()
+	{
+		$user_id = $this->input->post('user_id',true);
+		$photos = $this->staff_model->get_all_photos($user_id);
+		$hero_photo = $this->staff_model->get_hero($user_id);	
+		$data['hero_photo'] = $hero_photo;
+		$data['photos'] = $photos;
+		$data['user_id'] = $user_id;
+		//error_reporting(E_ALL);
+		
+		$this->load->view('staff/list_photo', isset($data) ? $data : NULL);
 	}
 }

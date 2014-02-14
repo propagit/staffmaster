@@ -433,8 +433,8 @@ class Common extends MX_Controller {
 	}
 	function upload_picture_file($field_name,$field_value=NULL)
 	{
-		$staff_id = $this->input->post('staff_id');
-		$user_id = $this->common_model->get_user_data($staff_id);
+		$user_id = $this->input->post('user_id');
+		//$user_id = $this->common_model->get_user_data($staff_id);
 		
 		$path = "./uploads/staff";
 		$dir = $path;
@@ -460,7 +460,7 @@ class Common extends MX_Controller {
 		
 		
 		$path = "./uploads/staff/profile";
-		$newfolder = md5($staff_id);
+		$newfolder = md5($user_id);
 		$dir = $path."/".$newfolder;
 		if(!is_dir($dir))
 		{
@@ -501,7 +501,7 @@ class Common extends MX_Controller {
 			$width = $data['upload_data']['image_width'];
 			$height = $data['upload_data']['image_height'];
 			$photo = array(
-				'staff_id' => $staff_id,
+				'user_id' => $user_id,
 				'name' => $file_name,
 				'modified' => date('Y-m-d H:i:s'),
 				'hero' =>0										
@@ -514,7 +514,7 @@ class Common extends MX_Controller {
 			//echo $target.'<br>';
 			$this->scale_image($target,$target,$new_width,$new_height);	
 		}
-		redirect('staff/edit/'.$user_id['user_id']);
+		redirect('staff/edit/'.$user_id);
 	}
 	function upload_picture($field_name,$field_value=NULL)
 	{

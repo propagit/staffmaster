@@ -63,14 +63,14 @@ class Common_model extends CI_Model {
 		$query = $this->db->get('user_staff_picture');
 		return $query->first_row('array');
 	}
-	function update_hero($staff_id,$photo_id)
+	function update_hero($user_id,$photo_id)
 	{
 		$data=array('hero' => 0);
-		$this->db->where('staff_id', $staff_id);
+		$this->db->where('user_id', $user_id);
 		$this->db->update('user_staff_picture', $data);
 		
 		$data=array('hero' => 1);
-		$this->db->where('staff_id', $staff_id);
+		$this->db->where('user_id', $user_id);
 		$this->db->where('id', $photo_id);
 		return $this->db->update('user_staff_picture', $data);
 		
@@ -78,10 +78,10 @@ class Common_model extends CI_Model {
 	function delete_photo($staff_id,$photo_id)
 	{
 		$image = $this->get_picture($photo_id);
-		unlink('./uploads/staff/profile/'.md5($staff_id).'/'.$image['name']);
-		unlink('./uploads/staff/profile/'.md5($staff_id).'/thumbnail/'.$image['name']);
+		unlink('./uploads/staff/profile/'.md5($user_id).'/'.$image['name']);
+		unlink('./uploads/staff/profile/'.md5($user_id).'/thumbnail/'.$image['name']);
 		
-		$this->db->where('staff_id', $staff_id);
+		$this->db->where('staff_id', $user_id);
 		$this->db->where('id', $photo_id);
 		return $this->db->delete('user_staff_picture');
 	}
