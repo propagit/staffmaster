@@ -1,3 +1,7 @@
+<?php
+	$group_params = json_decode($params);
+	$total_active_staffs = $group_params->total_active_staffs;	
+?>
 <table class="table table-bordered table-hover table-middle table-expanded">
 	<thead>
 	<tr class="heading">
@@ -11,7 +15,7 @@
 	<? foreach($groups as $group) { ?>
 	<tr>
 		<td class="left"><?=$group['name'];?></td>
-        <td class="center">0</td>
+        <td class="center"><?=$group['frequency'];?>/<?=$total_active_staffs;?></td>
 		<td class="center"><a class="edit-group" edit-data-id="<?=$group['group_id'];?>" edit-data-name="<?=$group['name'];?>"><i class="fa fa-pencil"></i></a></td>
 		<td class="center"><a class="delete-group" delete-data-id="<?=$group['group_id'];?>"><i class="fa fa-times"></i></a></td>
 	</tr>

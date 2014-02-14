@@ -90,18 +90,20 @@
 
 
 <script>
+var sort_data = {
+	'sort_by':'name',
+	'sort_order':'asc',
+	'total_active_staffs':<?=modules::run('staff/get_total_staffs');?>	
+};
 
 var params = {
 	'url': '<?=base_url();?>attribute/ajax/get_roles',
 	'output_container':'#load-roles',
 	'type':'POST',
-	'data':'name_asc'
+	'data':JSON.stringify(sort_data)
 };
 
-var sort_type = {
-	'name_sort':'name_asc',
-	'frequency_sort':'frequency_asc'	
-};
+
 
 $(function(){
 	help.load_content(params);
@@ -114,30 +116,6 @@ $(function(){
 		edit_role();
 	});
 });
-
- 
-function sort_list(sort_data){
-	switch(sort_data){
-		case 'name':
-			if(sort_type.name_sort == 'name_asc'){
-				sort_type.name_sort = 'name_desc';	
-			}else{
-				sort_type.name_sort = 'name_asc';	
-			}
-			params.data = sort_type.name_sort; 	
-		break;
-		
-		case 'frequency':
-			if(sort_type.frequency_sort == 'frequency_asc'){
-				sort_type.frequency_sort = 'frequency_desc';	
-			}else{
-				sort_type.frequency_sort = 'frequency_asc';	
-			}
-			params.data = sort_type.frequency_sort; 	
-		break;
-	}
-	help.load_content(params);
-} 
 
 function add_role(){
 	$.ajax({

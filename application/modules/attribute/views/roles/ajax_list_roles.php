@@ -1,8 +1,12 @@
+<?php
+	$role_params = json_decode($params);
+	$total_active_staffs = $role_params->total_active_staffs;	
+?>
 <table class="table table-bordered table-hover table-middle table-expanded">
     <thead>
         <tr>
-            <th class="left">Role <i class="fa fa-sort sort-roles" sort-data="name"></i></th>
-            <th class="center col-md-2">Staff Assigned To Role <i class="fa fa-sort sort-roles" sort-data="frequency"></i></th>
+            <th class="left">Role <i class="fa fa-sort sort-table" sort-by="name"></i></th>
+            <th class="center col-md-2">Staff Assigned To Role <i class="fa fa-sort sort-table" sort-by="frequency"></i></th>
             <th class="center col-md-1">Edit Role</th>
             <th class="center col-md-1">Delete Role</th>
         </tr>
@@ -11,7 +15,7 @@
     <? foreach($roles as $role) { ?>
     <tr>
         <td class="left"><?=$role['name'];?></td>
-        <td class="center"><?=$this->role_model->get_role_frequency($role['role_id']);?></td>
+        <td class="center"><?=$role['frequency'];?>/<?=$total_active_staffs;?></td>
         <td class="center"><a class="edit-role" edit-data-id="<?=$role['role_id'];?>" edit-data-name="<?=$role['name'];?>"><i class="fa fa-pencil"></i></a></td>
         <td class="center"><a class="delete-role" delete-data-id="<?=$role['role_id'];?>"><i class="fa fa-times"></i></a></td>
         
@@ -21,9 +25,8 @@
 </table>
 <script>
 $(function(){
-	$('.sort-roles').on('click',function(){
-		sort_list($(this).attr('sort-data'));
-	});
+	//sort data
+	help.sort_list('.sort-table',params);
 	
 	$('.edit-role').on('click',function(){
 		var role_id = $(this).attr('edit-data-id');

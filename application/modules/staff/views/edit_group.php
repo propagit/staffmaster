@@ -3,11 +3,26 @@
 	<p> Staff can choose the "Groups" </p>
 </div>
 
-<div class="row">
-	<div class="form-group">
-		<label for="department_id" class="col-md-2 control-label">Group</label>
-		<div class="col-md-4">
-			<?=modules::run('attribute/group/field_select','group_id', $staff['group_id']);?>
-		</div>
-	</div>				
-</div>
+<div id="load-groups" class="attr-list-wrap"></div>
+<script>
+var sort_data = {
+	'sort_by':'name',
+	'sort_order':'asc',
+	'user_staff_id':<?=$staff['user_id'];?>,
+	'total_active_staffs':<?=modules::run('staff/get_total_staffs');?>
+};
+
+var params = {
+	'url': '<?=base_url();?>attribute/ajax/get_staffs_groups',
+	'output_container':'#load-groups',
+	'type':'POST',
+	'data':JSON.stringify(sort_data)
+};
+
+
+
+$(function(){
+	help.load_content(params);
+
+});
+</script>

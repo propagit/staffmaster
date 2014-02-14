@@ -19,7 +19,7 @@ class Role extends MX_Controller {
 		{
 			default:
 					$this->list_roles();
-				break;
+			break;
 		}
 	}
 	

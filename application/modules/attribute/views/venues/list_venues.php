@@ -23,7 +23,6 @@
         </div>
     </div>
 </div>
-<!--end bottom box -->
 
 <!-- Add Venue Modal -->
 <div class="modal fade" id="addVenue" tabindex="-1" role="dialog" aria-labelledby="addVenueLabel" aria-hidden="true">

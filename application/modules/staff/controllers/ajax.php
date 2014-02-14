@@ -87,11 +87,21 @@ class Ajax extends MX_Controller {
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 	}
 	
+	/**
+	*	@name: update_roles
+	*	@desc: ajax function to add or delete roles 
+	*	@access: public
+	*	@param: (via POST) 
+	*			- (int) user_id
+	*			- (int) role_id
+	*/
 	function update_roles()
 	{
-		$user_id = $this->input->post('user_id');
-		$roles = $this->input->post('roles');
-		$this->staff_model->update_staff($user_id, array('roles' => json_encode($roles)));
+		$user_id = $this->input->post('staff_id');
+		$role_id = $this->input->post('role_id');
+		if($this->staff_model->update_staff_role($user_id,$role_id)){
+			echo 'success';	
+		}
 	}
 	
 	/**
@@ -293,5 +303,22 @@ class Ajax extends MX_Controller {
 		$day = $fields[1];
 		$hour = $fields[2];
 		$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
+	}
+	
+	/**
+	*	@name: update_groups
+	*	@desc: ajax function to add or delete groups 
+	*	@access: public
+	*	@param: (via POST) 
+	*			- (int) user_id
+	*			- (int) group_id
+	*/
+	function update_groups()
+	{
+		$user_id = $this->input->post('staff_id');
+		$group_id = $this->input->post('group_id');
+		if($this->staff_model->update_staff_group($user_id,$group_id)){
+			echo 'success';	
+		}
 	}
 }

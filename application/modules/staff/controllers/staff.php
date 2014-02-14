@@ -385,7 +385,42 @@ class Staff extends MX_Controller {
 		
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
-	
+	/**
+	*	@desc Checks if a staff has been assigned this role.
+	*
+	*   @name check_staff_has_role
+	*	@access public
+	*	@param null
+	*	@return Returns is based on the return_bool value. If it is true or empty it return true or false, if it is false it 
+	*	
+	*/
+	function check_staff_has_role($staff_user_id,$role_id)
+	{
+		$has = $this->staff_model->staff_has_role($staff_user_id,$role_id);
+		if($has){
+			return true;
+		}else{
+			return false;
+		}
+	}	
+	/**
+	*	@desc Checks if a staff has been assigned this role.
+	*
+	*   @name check_staff_has_role
+	*	@access public
+	*	@param null
+	*	@return Returns is based on the return_bool value. If it is true or empty it return true or false, if it is false it 
+	*	
+	*/
+	function check_staff_has_group($staff_user_id,$group_id)
+	{
+		$has = $this->staff_model->staff_has_group($staff_user_id,$group_id);
+		if($has){
+			return true;
+		}else{
+			return false;
+		}
+	}	
 	/**
 	*	@name: get_availability_data
 	*	@desc: function to return value of availability of user based on day and time
@@ -396,5 +431,16 @@ class Staff extends MX_Controller {
 	function get_availability_data($user_id, $day, $hour)
 	{
 		return $this->staff_model->get_availability_data($user_id, $day, $hour);
+	}
+	/**
+	*	@name: get_total_staffs
+	*	@desc: Returns total staff based on status. If status is not passed it returns the total staffs
+	*	@access: public
+	*	@param: string, int status
+	*	@return: (int) total staff
+	*/
+	function get_total_staffs($status='')
+	{
+		return $this->staff_model->get_total_staffs_count($status);
 	}
 }
