@@ -85,7 +85,9 @@ class Location extends MX_Controller {
 		if ($location['parent_id'] != 0)
 		{
 			$parent = $this->location_model->get_location($location['parent_id']);
-			$output .= ' - ' . $parent['name'];
+			if(trim($parent['name']) != 'Major Cities' &&  trim($parent['name']) != 'Regional'){
+				$output .= ' - ' . $parent['name'];
+			}
 		}
 		
 		return $output;

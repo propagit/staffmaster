@@ -1,0 +1,1 @@
+ALTER TABLE  `attribute_groups` CHANGE  `group_id`  `group_id` INT( 11 ) NOT NULL AUTO_INCREMENT ;

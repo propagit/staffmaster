@@ -212,8 +212,17 @@ class Ajax extends MX_Controller {
 	function add_venue()
 	{
 		$data = $this->input->post();
+		if(isset($data['location_id'])){
+			if($data['location_id'] != ''){
+				$location_id = $data['location_id'];	
+			}else{
+				$location_id = $data['parent_location_id'];	
+			}
+		}else{
+			$location_id = $data['parent_location_id'];	
+		}
 		$this->venue_model->insert_venue(array(
-				'location_id' => isset($data['location_id']) ? $data['location_id'] : $data['parent_location_id'],
+				'location_id' => $location_id,
 				'name' => $data['name'], 
 				'address' => $data['address'],
 				'suburb' => $data['suburb'],
@@ -233,8 +242,17 @@ class Ajax extends MX_Controller {
 	function edit_venue()
 	{
 		$data = $this->input->post();
+		if(isset($data['location_id'])){
+			if($data['location_id'] != ''){
+				$location_id = $data['location_id'];	
+			}else{
+				$location_id = $data['parent_location_id_editing'];	
+			}
+		}else{
+			$location_id = $data['parent_location_id_editing'];	
+		}
 		$this->venue_model->update_venue($data['venue_id'], array(
-				'location_id' => isset($data['location_id']) ? $data['location_id'] : $data['parent_location_id_editing'],
+				'location_id' => $location_id,
 				'name' => $data['name'], 
 				'address' => $data['address'],
 				'suburb' => $data['suburb'],

@@ -14,7 +14,7 @@
             <h2>Add - Edit Venues</h2>
 			<p>Add new venues by clicking the "Add New Venue" button or manage your existing venues via the below table.</p>
             
-            <button class="btn btn-info btn-rt-margin" data-toggle="modal" href="#addVenue" ><i class="fa fa-plus"></i> Add New Venue</button>
+            <button id="open-add-venue-modal" class="btn btn-info btn-rt-margin"><i class="fa fa-plus"></i> Add New Venue</button>
 			<button class="btn btn-info"><i class="fa fa-upload"></i> Import Venues</button>
             
             <div id="load-venues" class="attr-list-wrap">
@@ -24,12 +24,6 @@
     </div>
 </div>
 <!--end bottom box -->
-
-
-
-
-
-
 
 <!-- Add Venue Modal -->
 <div class="modal fade" id="addVenue" tabindex="-1" role="dialog" aria-labelledby="addVenueLabel" aria-hidden="true">
@@ -69,8 +63,8 @@
                     </div>
                     <div class="form-group">
                         <label for="location" class="col-sm-2 control-label">Location</label>
-                        <div class="col-sm-10 select-btm-margin">
-                            <?=modules::run('attribute/location/field_select','parent_location_id');?>
+                        <div id="load-current-location-add" class="col-sm-10 select-btm-margin">
+                            <? //modules::run('attribute/location/field_select','parent_location_id');?>
                         </div>
                     </div>
                      <div class="form-group">
@@ -124,7 +118,7 @@
                     </div>
                     <div class="form-group">
                         <label for="location" class="col-sm-2 control-label">Location</label>
-                        <div id="load-current-location" class="col-sm-10 select-btm-margin">
+                        <div id="load-current-location-edit" class="col-sm-10 select-btm-margin">
                             
                         </div>
                     </div>
@@ -160,6 +154,22 @@ var location_parent_complete = false;
 
 $(function(){
 	help.load_content(params);
+	
+	//open add venue modal
+	$('#open-add-venue-modal').on('click',function(){
+		//remove location from edit modal as this will create conflict
+		$('#load-current-location-edit').html('');
+		$('#addVenue').modal('show');
+		$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>attribute/ajax/load_current_locations',
+		data:'',
+		success: function(html){
+			$('#load-current-location-add').html(html);
+			load_areas();
+			}
+		});	
+	});
 	
 	$('#add-venue').on('click',function(){
 		add_venue();
@@ -201,6 +211,9 @@ function open_edit_modal(venue_id,location_id,location_parent_id, name, address,
 	$('#suburb_edit').val(suburb);
 	$('#postcode_edit').val(postcode);
 	$('#editVenue').modal('show');
+	//remove location from add modal as this will create conflict
+	$('#load-current-location-add').html('');
+	
 	
 	//update location
 	//run this on a delay to make sure this block of code runs
@@ -209,7 +222,7 @@ function open_edit_modal(venue_id,location_id,location_parent_id, name, address,
 		url: '<?=base_url();?>attribute/ajax/load_current_locations',
 		data:{location_id:location_id, location_parent_id:location_parent_id},
 		success: function(html){
-			$('#load-current-location').html(html);
+			$('#load-current-location-edit').html(html);
 			load_areas();
 		}
 	});	
