@@ -5,7 +5,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Manage Pay Rates</h2>
-		 <p>Add pay rates to assign your staff working on jobs. An hourly client charge out rate and a staff pay rate can be set. Penalty rates can be applied based on the time and the day.</p>
+		 <p>Add pay rates to assign your staff working on jobs. An hourly client charge out rate and a staff pay rate can be set. <br />Penalty rates can be applied based on the time and the day.</p>
 		 <button class="btn btn-core" type="button" data-toggle="modal" data-target="#add-payrate-modal"><i class="fa fa-plus"></i> Add Pay Rate</button>
     </div>
 </div>
@@ -38,6 +38,10 @@
 			</div>
 	        <div class="col-md-12">
 				<div class="modal-body">          
+                	<h4 class="modal-body-title">Enter Pay Rate Name</h4>
+                    <p>
+                    The "Pay Rate Name" should be a name that is easily identifiable. The pay rate name is used when assigning a pay rate to jobs you create. 
+                    </p>
 		            <form class="form-horizontal" role="form" id="form_add_payrate">
 					<div class="form-group">
 						<label for="inputEmail3" class="col-sm-3 control-label">Name</label>

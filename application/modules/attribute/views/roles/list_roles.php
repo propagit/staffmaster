@@ -37,7 +37,7 @@
 				<div class="modal-body">
             	<h4 class="modal-body-title">Enter Role Name</h4>
                 <p>
-                The Role name should represent the job the staff will perform whilst performing this role such as "Junior Bar Staff" as example.
+                The "Role Name" should represent the activity the staff will perform on a job.
                 </p>
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Name</label>

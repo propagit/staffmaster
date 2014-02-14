@@ -82,15 +82,15 @@ class Staff_model extends CI_Model {
 	}
 	
 	
-	function get_all_photos($staff_id)
+	function get_all_photos($user_id)
 	{
-		$this->db->where('staff_id', $staff_id);
-		$query = $this->db->get('user_staff_picture');
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get('user_staff_picture');		
 		return $query->result_array();
 	}
-	function get_hero($staff_id)
+	function get_hero($user_id)
 	{
-		$this->db->where('staff_id', $staff_id);
+		$this->db->where('user_id', $user_id);
 		$this->db->where('hero', 1);
 		$query = $this->db->get('user_staff_picture');
 		return $query->first_row('array');

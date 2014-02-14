@@ -195,7 +195,18 @@ a.default {
 	background:#F2DEDE;
 }
 
-
+/*style for staff picture */
+.action_image{
+	height: 220px;position: absolute;top: 0px;width: 220px;background:#000; opacity:0.5; display:none;
+}
+.action_image :hover{display:block;line-height:35px;}
+.gallery_staff{border:1px solid #cdcdcd; padding:10px!important; padding-left:25px!important; padding-right:25px!important; border-radius:4px; margin-bottom:20px!important;}
+.profile_border{border:1px solid #cdcdcd; padding:10px;border-radius:4px; background:#fff;width:-moz-max-content}
+.no_photo{width:200px; height:200px; border:1px solid #000; color:#000; background:#c3c3c3; text-align:center; line-height:200px;}
+.popup-gallery li:hover .action_image{ display:block;}
+.action_icon{border:1px solid #ccc;background:#f9f9f9;width:35px; height:35px;text-align:center;line-height:35px; float:right;}
+.fileupload-staff{ border: 1px solid #CCCCCC;    float: left;    width: 100%;}
+.picture-box{padding-left:0px!important;}
 
 /* style for staff availability */
 
