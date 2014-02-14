@@ -10,6 +10,9 @@
 			</ul>
 		</li>
 	</ul>
+	
+	
+	
 	<ul class="nav nav-tabs tab-respond">
 		<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
 		<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
@@ -101,7 +104,12 @@
 
 <script>
 $(function(){
-	$('.disabled').prop('disabled', true);
+	$.each($('tr.disabled'), function() {
+		$(this).find('input').remove();
+		disabled($(this));
+		var pk = $(this).find('.shift_delete').attr('data-pk');
+		$(this).find('.content-disabled').html('<a class="btn btn-default" onclick="unlock_shift(' + pk + ')"><i class="fa fa-lock"></i></a>');
+	});
 	$('.shift_venue').on('shown', function(e, editable) {
 		$('#wrapper_js').find('.popover-break').hide();
 	});
@@ -243,6 +251,18 @@ $(function(){
 
 	});
 })
+function unlock_shift(pk)
+{
+	 $.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax/unlock_shift",
+		data: {pk: pk},
+		success: function(html) {
+			load_job_shifts(<?=$job_id;?>);
+		}
+	})
+	
+}
 function load_shift_staff(obj)
 {
 	$('#wrapper_shift_staff').html('');

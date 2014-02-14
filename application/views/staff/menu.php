@@ -9,7 +9,7 @@ $menu = array(
 	)),
 	array('path' => 'roster', 'icon' => 'calendar', 'title' => 'Your Roster', 'sub' => array(
 	)),
-	array('path' => '#', 'icon' => 'clock-o', 'title' => 'Time Sheets', 'sub' => array(		
+	array('path' => 'timesheet', 'icon' => 'clock-o', 'title' => 'Time Sheets', 'sub' => array(		
 	)),
 	array('path' => '#', 'icon' => 'book', 'title' => 'Training Centre', 'sub' => array(		
 	)),

@@ -560,13 +560,6 @@ a:hover {
 	font-size: .9em;
 	border-radius: .9em;
 }
-.disabled {
-	background: rgb(223, 240, 216);
-	cursor: not-allowed;
-}
-.disabled a {
-	cursor: not-allowed;
-}
 .success {
 	background-color: #2cb308;
 }
@@ -656,7 +649,6 @@ a:hover {
 .table .fa{
 	padding-left:5px;
 	cursor:pointer;
-	color:#3d3d3d;
 }
 
 
@@ -850,6 +842,20 @@ a:hover {
 /* style for select under this class */
 .select-btm-margin .custom-select{
 	margin-bottom:15px;	
+}
+
+
+/* style for disabled */
+.wrapper_disabled {
+	background: url('../img/bg_disabled.png');
+	text-align: right;
+	position: absolute;
+	z-index: 100;
+}
+.wrapper_disabled a.btn {
+	margin-right: 15px;
+	margin-top: -3px;
+	width: 55px;
 }
 
 @media(max-width:1200px){

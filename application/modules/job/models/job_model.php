@@ -60,4 +60,11 @@ class Job_model extends CI_Model {
 		$result = $query->first_row('array');
 		return $result['finish_time'];
 	}
+	
+	
+	function delete_job($job_id)
+	{
+		$this->db->where('job_id', $job_id);
+		return $this->db->delete('jobs');
+	}
 }

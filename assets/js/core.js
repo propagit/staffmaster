@@ -11,6 +11,13 @@ function loaded(obj,html)
 		$(obj).html(html);
 	}, 200);
 }
+/* Disable element */
+function disabled(obj)
+{
+	var w = $(obj).width();
+	var h = $(obj).height();
+	$(obj).append('<div class="wrapper_disabled" style="height:' + h + 'px;width:' + w + 'px;margin-left:-' + (w - 1) + 'px;line-height:' + h + 'px;"><div class="content-disabled"></div></div>');
+}
 
 /* Reset modal popup */
 $(document).on('hidden.bs.modal', function (e) {

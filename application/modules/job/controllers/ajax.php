@@ -28,6 +28,17 @@ class Ajax extends MX_Controller {
 		$this->load->view('jobs_search_results_view', isset($data) ? $data : NULL);
 	}
 	
+	function delete_job()
+	{
+		$job_id = $this->input->post('job_id');
+		# Delete all shift in that job
+		$this->job_shift_model->delete_job_shifts($job_id);
+		# Delete all timesheet in that job
+		
+		# Delete job
+		$this->job_model->delete_job($job_id);
+	}
+	
 	function search_shifts()
 	{
 		$data = $this->input->post();
@@ -312,6 +323,16 @@ class Ajax extends MX_Controller {
 		echo date('Y-m-d', $date);	
 	}
 	
+	function unlock_shift()
+	{
+		$shift_id = $this->input->post('pk');
+		$this->load->model('timesheet/timesheet_model');
+		# First delete the timesheet
+		$this->timesheet_model->delete_timesheet($shift_id);
+		# Then update shift status
+		$this->job_shift_model->update_job_shift($shift_id, array('status' => SHIFT_CONFIRMED));
+	}
+	
 	function update_shift_venue()
 	{
 		$shift_id = $this->input->post('pk');
@@ -408,6 +429,7 @@ class Ajax extends MX_Controller {
 	*	@desc: ajax function to update staff assign / status to the shift
 	*	@access: public
 	*	@param: (via POST)
+	*			- shift_id
 	*			- shift_staff_id: (int) id of staff
 	*			- status: (int) 1 assigned / 2 confirmed / 3 rejected
 	*			- shift_staff: (string) staff first name and last name
@@ -696,6 +718,7 @@ class Ajax extends MX_Controller {
 	function applied_staffs($shift_id)
 	{
 		$data['staffs'] = $this->job_shift_model->get_applied_staffs($shift_id);
+		$data['shift_id'] = $shift_id;
 		$this->load->view('shift_applied_staffs', isset($data) ? $data : NULL);
 	}
 		

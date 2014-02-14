@@ -50,9 +50,32 @@ class Timesheet extends MX_Controller {
 		}
 		redirect('timesheet');
 	}
+	
+	
 	function truncate() {
+		$shifts = $this->timesheet_model->get_timesheets();
+		foreach($shifts as $shift)
+		{
+			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_CONFIRMED));
+		}
 		$this->timesheet_model->truncate();
 		redirect('timesheet');
+	}
+	
+	function status_to_class($status)
+	{
+		$class = '';
+		switch($status)
+		{
+			case TIMESHEET_SUBMITTED: $class = 'warning';
+				break;
+			case TIMESHEET_APPROVED: $class = 'success';
+				break;
+			case SHIFT_UNASSIGNED:
+			default: $class = '';
+				break;
+		}
+		return $class;
 	}
 
 }
