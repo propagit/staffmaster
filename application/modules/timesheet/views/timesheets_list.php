@@ -1,3 +1,7 @@
+<hr />
+<h2>Search Results</h2>
+<p>Your search returned <b><?=count($timesheets);?></b> results</p>
+<? if (count($timesheets) > 0) { ?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
@@ -11,7 +15,7 @@
 		<th>Pay rate</th>
 		<th>Staff Assigned</th>
 		<th class="center">Expenses</th>
-		<th class="center">Approve</th>
+		<th class="center" width="40">Batch</th>
 		<th class="center" width="40">View</th>
 		<th class="center" width="40">Delete</th>
 	</tr>
@@ -34,7 +38,7 @@
 		<td><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
 		<td><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td>
 		<td class="center"><a href="#"><i class="fa fa-dollar"></i></a></td>
-		<td class="center"><a class="" onclick="approve_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-check"></i></a></td>
+		<td class="center"><a class="" onclick="batch_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-share-square-o"></i></a></td>
 		<td class="center"><a href="#"><i class="fa fa-eye"></i></a></td>
 		<td class="center"><a onclick="delete_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a></td>
 	</tr>
@@ -43,10 +47,11 @@
 </table>
 
 <script>
-function approve_timesheet(timesheet_id) {
+function batch_timesheet(timesheet_id) {	
+	preloading($('#list_timesheets'));
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>timesheet/ajax/approve_timesheet",
+		url: "<?=base_url();?>timesheet/ajax/batch_timesheet",
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
 			list_timesheets();
@@ -70,3 +75,5 @@ function delete_timesheet(timesheet_id) {
 	});
 }
 </script>
+
+<? } ?>
