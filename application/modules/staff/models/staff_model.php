@@ -296,4 +296,20 @@ class Staff_model extends CI_Model {
 		return $this->db->where('user_id',$user_id)->where('attribute_name',$attribute_name)->get('staffs_custom_attributes')->row();
 	}
 	
+	function get_staff_custom_attribute_by_id($staffs_custom_attributes_id)
+	{
+		return $this->db->where('staffs_custom_attributes_id',$staffs_custom_attributes_id)->get('staffs_custom_attributes')->row();
+	}
+	/**
+	*	@name: delete_staff_custom_attributes_by_id
+	*	@desc: Delete custom attributes of a staff by delete_staff_custom_attributes_by_id
+	*	@access: public
+	*	@param: (int) delete_staff_custom_attributes_by_id
+	*	@return: null
+	*/
+	function delete_staff_custom_attributes_by_id($staffs_custom_attributes_id)
+	{
+		$sql = "delete from staffs_custom_attributes where staffs_custom_attributes_id = ".$staffs_custom_attributes_id;
+		return $this->db->query($sql);
+	}
 }

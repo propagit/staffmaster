@@ -376,4 +376,7 @@ class Ajax extends MX_Controller {
 		}
 		echo 'success';
 	}
+	
+
+	
 }

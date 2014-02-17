@@ -178,7 +178,10 @@ a.default {
 	float: left;
 	text-align: center;
 }
-
+.custom-file-delete{
+	padding-left:10px;
+	cursor:pointer;	
+}
 
 /* style for staff profile */
 .staff-profile-detail-box{

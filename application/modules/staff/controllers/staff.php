@@ -27,7 +27,13 @@ class Staff extends MX_Controller {
 				break;
 			case 'edit':
 					$this->edit_staff($param);
-				break;			
+				break;	
+			case 'upload_custom_document':
+					$this->upload_custom_document();
+				break;	
+			case 'delete_custom_document':
+					$this->delete_custom_document($param);
+				break;	
 			default:
 					echo 'do nothing';
 				break;
@@ -460,13 +466,120 @@ class Staff extends MX_Controller {
 		if($staff_attribute){
 			if($has_multiple_value){
 				$data['attributes'] = json_decode($staff_attribute->attributes);
+				$data['staffs_custom_attributes_id'] = $staff_attribute->staffs_custom_attributes_id;
 				$data['has_multi'] = true;
 			}else{
 				$data['attributes'] = $staff_attribute->attributes;	
+				$data['staffs_custom_attributes_id'] = $staff_attribute->staffs_custom_attributes_id;
 			}
 		}else{
-			$data['attributes'] = '';	
+			$data['attributes'] = '';
+			$data['staffs_custom_attributes_id'] = '';	
 		}
 		return $data;
+	}
+	
+		/**
+	
+	*/
+	function upload_custom_document()
+	{
+		$user_staff_id = $this->input->post('user_staff_id',true);
+		$salt = 'custom_files'.$user_staff_id;
+		$file_path = './uploads/staff/custom_attributes';
+		//create folder
+		$folder_name = $this->_create_folders('./uploads/staff/custom_attributes',$salt);
+		$this->load->library('upload');
+		foreach($_FILES as $key => $val){
+			if ($_FILES[$key]['name']){
+			//image upload
+			$config['upload_path'] = $file_path."/".$folder_name;	
+			$config['allowed_types'] = 'gif|jpg|png|jpeg|doc|docx|pdf';
+			$config['max_size']	= '4096'; // 4 MB
+			$config['max_width']  = '4000';
+			$config['max_height']  = '4000';
+			$config['overwrite'] = FALSE;
+			$config['remove_space'] = TRUE;
+			
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload($key)) {
+					//image upload filed abort file upload
+					$data['upload_error'] = $this->upload->display_errors();
+					$valid_upload = false;
+				}
+				else
+				{
+					$data = array('upload_data' => $this->upload->data());
+					$file_name = $data['upload_data']['file_name'];
+	
+					//update database
+					$custom_file = array(
+										'user_id' => $user_staff_id,
+										'attribute_name' => $key,
+										'attributes' => $file_name,
+										'file_upload' => 'yes'
+									);										
+					$this->staff_model->insert_staff_custom_attributes($custom_file);
+				}
+			}
+		}
+		$this->session->set_flashdata('load_document_tab',true);
+		redirect('staff/edit/'.$user_staff_id);
+	}
+	
+	function delete_custom_document($staffs_custom_attributes_id)
+	{
+		$file_details = $this->staff_model->get_staff_custom_attribute_by_id($staffs_custom_attributes_id);
+		$file_name = $file_details->attributes;	
+		$staff_user_id = $file_details->user_id;
+		$folder =  md5('custom_files'.$staff_user_id);
+		$this->_delete_document($folder,$file_name);
+		$this->staff_model->delete_staff_custom_attributes_by_id($staffs_custom_attributes_id);
+		$this->session->set_flashdata('load_document_tab',true);
+		redirect('staff/edit/'.$staff_user_id);
+	}
+	
+	function _create_folders($path,$salt,$subfolders = null)
+	{
+		if($path && $salt){
+			$newfolder = md5($salt);
+			$dir = $path."/".$newfolder;
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			
+			$sub_dir = '';
+			if($subfolders){
+				foreach($subfolders as $folder){
+					$sub_dir = $dir.'/'.$folder;	
+					if(!is_dir($sub_dir))
+					{
+					  mkdir($sub_dir);
+					  chmod($sub_dir,0777);
+					  $fp = fopen($sub_dir.'/index.html', 'w');
+					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+					  fclose($fp);
+					}		
+				}
+			}
+			return $newfolder;
+		}
+		
+	}
+	
+	function _delete_document($folder,$document_name)
+	{
+		if($document_name && $folder){
+			$main_path = "./uploads/staff/custom_attributes/".$folder;
+			//delete doc
+			if(file_exists($main_path.'/'.$document_name)){
+				unlink($main_path.'/'.$document_name);
+			}
+		}
 	}
 }

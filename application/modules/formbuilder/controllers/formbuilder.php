@@ -366,5 +366,5 @@ class Formbuilder extends MX_Controller {
 		return  ($attribute_info->multi_select == 'yes' ? true : false);
 
 	}
-	
+
 }
