@@ -16,13 +16,13 @@
         <i class="fa fa-picture-o"></i> Your Gallery <br /><br />
          <?  if(isset($photos) && $photos != NULL){?>
         <div id="carousel" class="flexslider gallery_staff">
-          <ul class="slides popup-gallery">
+          <ul class="slides popup-gallery staff-photos">
            <?
                 foreach($photos as $photo){
                     $photo_src_full = base_url().'uploads/staff/profile/'.md5($user_id).'/'.$photo['name'];                                    
                     $thumb_src = base_url().'uploads/staff/profile/'.md5($user_id).'/thumbnail/'.$photo['name'];
                 ?>
-                    <li >
+                    <li>
                         <a title="<?=$photo['name'];?>" href="<?=$photo_src_full?>"><img style="width:auto!important;" src="<?=$thumb_src;?>" /></a>
                         <div align="center" class="action_image" > 
                             <a href="#" onclick="set_hero(<?=$photo['id']?>)"><div class="action_icon"><i class="fa fa-heart" <? if($photo['hero']==1){echo "style='color:#f00;'";}?> ></i></div></a>
