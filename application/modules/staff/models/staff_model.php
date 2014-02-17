@@ -282,7 +282,7 @@ class Staff_model extends CI_Model {
 	*/
 	function insert_staff_custom_attributes($data)
 	{
-		$this->db->insert('staffs_custom_attributes', $data);
+		$this->db->insert('staffs_custom_attributes',$data);
 	}
 	/**
 	*	@name: get_staff_custom_attribute

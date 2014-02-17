@@ -358,7 +358,7 @@ class Ajax extends MX_Controller {
 		foreach($post_data as $key => $val){
 			if($key != 'user_staff_id'){
 				//for checkbox and multi select 
-				if(modules::run('formbuilder/custom_attributes_for_staff_profile',$key)){
+				if(modules::run('formbuilder/has_multiple_value',$key)){
 					$custom_attr = array(
 										'user_id' => $user_id,
 										'attribute_name' => $key,
