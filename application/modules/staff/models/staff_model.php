@@ -269,7 +269,7 @@ class Staff_model extends CI_Model {
 	*/
 	function delete_staff_custom_attributes($user_staff_id)
 	{
-		$sql = "delete from staffs_custom_attributes where file_type != 'no' and user_id = ".$user_staff_id;
+		$sql = "delete from staffs_custom_attributes where file_upload != 'no' and user_id = ".$user_staff_id;
 		return $this->db->query($sql);
 	}
 	
