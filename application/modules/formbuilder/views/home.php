@@ -1,8 +1,17 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Form Builder</h2>
-		 <p>Find your staff to communicate with them or view and edit their profile.</p>
+   		 <h2>Manage Custom Attributes</h2>
+		 <p class="desktop-visible">
+         Add custom attributes that can be assigned to your staff profiles.<br  />
+         Drag and drop questions from the menu on the right to create custom attributes.<br  />
+		 After dragging the questions to the form box click the attribute to edit the question. 
+         </p>
+         <p class="desktop-hidden">
+         Add custom attributes that can be assigned to your staff profiles.
+         Drag and drop questions from the menu on the right to create custom attributes.
+		 After dragging the questions to the form box click the attribute to edit the question. 
+         </p>
     </div>
 </div>
 <!--end top box-->
@@ -11,17 +20,17 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="inner-box">
-            <h2>Form Builder</h2>
-			<p>Find your staff to communicate with them or view and edit their profile.</p>
+            <h2>Custom Attributes</h2>
+			<p>Drag questions to the form box, after draggin the question click to edit the attribute</p>
             
             
 <div class="row form-builder">
-	<div class="col-md-6">
+	<div class="col-md-6 custom-attributes">
     	<form id="custom-form">
     	<div id="build">
         	<?=modules::run('formbuilder/existing_form_elements');?>
         </div><!-- build -->
-        <button type="button" class="btn btn-info form-builder-save-btn" onclick="form_builder.save_form();">Save</button>
+        <button type="button" class="btn btn-info form-builder-save-btn" onclick="form_builder.save_form();"><i class="fa fa-plus"></i> Save Custom Attributes</button>
         </form>
 <!--begin inputtext popover-->
 <div id="popover-textinput" class="popover fade right in">
@@ -108,7 +117,7 @@
         
     </div><!--col-md-6-->
     
-    <div class="col-md-6">
+    <div class="col-md-6 custom-attributes">
         <ul class="nav nav-tabs tab-respond" id="myTab">
             <li class="active"><a href="#input" data-toggle="tab">Input</a></li>
             <li><a href="#radioscheckboxes" data-toggle="tab">Radios / Checkboxes</a></li>
@@ -312,7 +321,7 @@ $(function(){
 			}
 		}
 	});
-	form_builder.start_prettychecker();
+	//form_builder.start_prettychecker();
 	form_builder.bind_with_popover();
 });//ready
 
@@ -524,7 +533,7 @@ var form_builder = {
 		$('.editing').find('.sort-index').attr('data',name);
 
 		form_builder.close_popover();
-		form_builder.start_prettychecker();
+		//form_builder.start_prettychecker();
 	},
 	
 	//update radio and checkbox with new values
@@ -570,7 +579,7 @@ var form_builder = {
 		$('.editing').find('.controls').html(new_elements);
 		$('.editing').find('.sort-index').attr('data',name);
 		form_builder.close_popover();
-		form_builder.start_prettychecker();
+		//form_builder.start_prettychecker();
 	},
 	
 	update_button:function(){

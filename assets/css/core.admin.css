@@ -78,40 +78,47 @@ a.default {
 	width:100%;	
 }
 .right{
-	right: -205px;
+	right: -235px;
 	top: -80px;
 }
 .popover{ 
 	left:auto;
 }
-.component,
-#build .tab-pane .component{ 
+
+.custom-attributes .tab-pane .component{ 
 	padding:10px 0;
 	float:left;
 	width:100%;
 }
-#build .controls,
-#build .tab-pane .controls{ 
+.custom-attributes .controls,
+.custom-attributes .tab-pane .controls{ 
 	width:75%;
 	float:left;
 }
-#build .control-group,
-#build .tab-pane .control-group{ 
+.custom-attributes .control-group,
+.custom-attributes .tab-pane .control-group{ 
 	margin:10px;
 }
-#build .control-label,
-#build .tab-pane .control-label{
+.custom-attributes .control-label,
+.custom-attributes .tab-pane .control-label{
 	float: left;
 	padding-top: 5px;
 	text-align: left;
 	width:25%;
 	float:left;
 }
-.popover-content .btn{
+.custom-attributes .popover{
+	max-width:240px;	
+}
+.custom-attributes .popover-content .btn{
 	margin-right: 10px;
 }
-.popover-content .control-label{
+.custom-attributes .popover-content .control-label{
 	padding:6px 0 3px 0;
+}
+.custom-attributes .popover-content .controls{
+	width:100%;
+	float:none;	
 }
 .ui-draggable-helper {
 	 border: 1px solid #dddddd;
