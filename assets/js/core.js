@@ -176,12 +176,12 @@ var help = {
 	
 	//a generalized function for confirm delete modal
 	confirm_delete:function(title,message,callback){
-		var delete_modal = '<div class="modal fade" id="confirm_delete_modal" tabindex="-1" role="dialog" aria-labelledby="editRoleLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button><h4 class="modal-title">'+title+'</h4></div><input type="hidden" name="role_id" id="role_id" /><div class="col-md-12"><div class="modal-body"><div id="modal-delete-msg">'+message+'</div></div></div><div class="modal-footer"><button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-info confirm-delete">Delete</button></div></div></div></div>';
+		var delete_modal = '<div class="modal fade" id="confirm_action_modal" tabindex="-1" role="dialog" aria-labelledby="editRoleLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button><h4 class="modal-title">'+title+'</h4></div><input type="hidden" name="role_id" id="role_id" /><div class="col-md-12"><div class="modal-body"><div id="modal-delete-msg">'+message+'</div></div></div><div class="modal-footer"><button type="button" class="btn btn-info" data-dismiss="modal">No</button><button type="button" class="btn btn-info confirm-action">Yes</button></div></div></div></div>';
 		$('body').append(delete_modal);
-		$('#confirm_delete_modal').modal('show');
-		$('.confirm-delete').on('click',function(){
+		$('#confirm_action_modal').modal('show');
+		$('.confirm-action').on('click',function(){
 			callback(true);
-			$('#confirm_delete_modal').modal('hide');
+			$('#confirm_action_modal').modal('hide');
 		});
 	},
 	

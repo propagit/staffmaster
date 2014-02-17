@@ -10,7 +10,7 @@
 <!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
-    	<div class="inner-box">
+    	<div class="inner-box push full-width">
 			
 			<ul class="nav nav-tabs tab-respond" id="nav-staff-profile">
                 <li class="active"><a href="#personal" data-toggle="tab">Personal Details</a></li>

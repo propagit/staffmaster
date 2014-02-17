@@ -341,4 +341,39 @@ class Ajax extends MX_Controller {
 		
 		$this->load->view('staff/list_photo', isset($data) ? $data : NULL);
 	}
+	
+	/**
+	*	@name: update_custom_attributes
+	*	@desc: Update custom attribute of a staff
+	*	@access: public
+	*	@param: (via POST) custom attributes data
+	*	
+	*/
+	function update_custom_attributes()
+	{
+		$post_data = $this->input->post();
+		$user_id = $this->input->post('user_staff_id',true);
+		//delete existing data
+		$this->staff_model->delete_staff_custom_attributes($user_id);
+		foreach($post_data as $key => $val){
+			if($key != 'user_staff_id'){
+				//for checkbox and multi select 
+				if(modules::run('formbuilder/custom_attributes_for_staff_profile',$key)){
+					$custom_attr = array(
+										'user_id' => $user_id,
+										'attribute_name' => $key,
+										'attributes' => json_encode($val)
+									);
+				}else{
+					$custom_attr = array(
+										'user_id' => $user_id,
+										'attribute_name' => $key,
+										'attributes' => $val
+									);	
+				}
+				$this->staff_model->insert_staff_custom_attributes($custom_attr);
+			}
+		}
+		echo 'success';
+	}
 }

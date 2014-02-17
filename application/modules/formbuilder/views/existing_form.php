@@ -63,7 +63,7 @@
 ?>
 			<div class="push dropped" data="popover-radio-checkbox">
                 <div class="control-group" type="<?=($elem->inline_element == 'no' ? 'multi-checkbox' : 'inline-checkbox' );?>">
-                  <label class="control-label" id="radio-checkbox-label" data="<?=($elem->inline_element == 'no' ? 'multi-checkbox' : 'inline-checkbox' );?>">Multiple Checkboxes</label>
+                  <label class="control-label" id="radio-checkbox-label" data="<?=($elem->inline_element == 'no' ? 'multi-checkbox' : 'inline-checkbox' );?>"><?=$elem->label;?></label>
                   <div class="controls">
                    <?php
 				   		$attrs = json_decode($elem->attributes);
@@ -72,7 +72,7 @@
 				   ?>
                     <label class="checkbox <?=($elem->inline_element == 'yes' ? 'inline' : '' );?>">
                       <input type="checkbox" name="<?=$elem->name;?>" value="<?=$attr->value;?>">
-                      Option one
+                      <?=$attr->value;?>
                     </label>
                     <?php
 							}

@@ -43,16 +43,53 @@ class Formbuilder extends MX_Controller {
 	*	@comments Build by taking reference from http://minikomi.github.io/Bootstrap-Form-Builder. However it should be noted that the similarity is only limited to the UI and the actual functions are custom build.
 	*	@author kaushtuv
 	*/
-	
 	function home()
 	{
 		$this->load->view('home');	
 	}
 	
+	/**
+	*	@desc Shows the existing form for custom attributes.
+	*
+	*   @name existing_form_elements
+	*	@access public
+	*	@param null
+	*	@return Loads existing form elements for custom attributes.
+	*/
 	function existing_form_elements()
 	{
 		$data['existing_elements'] = $this->formbuilder_model->get_form_elements();
 		$this->load->view('existing_form',isset($data) ? $data : NULL);	
+	}
+	
+	/**
+	*	@desc Shows the existing form for custom attributes in staff profile.
+	*
+	*   @name custom_attributes_for_staff_profile
+	*	@access public
+	*	@param (int) user id of staff
+	*	@return Loads existing form elements for custom attributes in staff profile.
+	*/
+	function custom_attributes_for_staff_profile($staff_user_id)
+	{
+		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(true);
+		$data['user_id'] = $staff_user_id;
+		$this->load->view('custom_attributes_for_staff_profile',isset($data) ? $data : NULL);	
+	}
+	
+	/**
+	*	@desc Shows the existing form for custom attributes in staff profile.
+	*
+	*   @name custom_file_uploads_for_staff_profile
+	*	@access public
+	*	@param (int) user id of staff
+	*	@return Loads existing file upload form elements for custom attributes in staff profile.
+	*/
+	function custom_file_uploads_for_staff_profile($staff_user_id)
+	{
+		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(false);
+		$data['user_id'] = $staff_user_id;
+		$this->load->view('custom_upload_fields_for_staff_profile',isset($data) ? $data : NULL);	
 	}
 	
 	/**
@@ -155,12 +192,26 @@ class Formbuilder extends MX_Controller {
 				break;
 				
 				case 'radio':
+					foreach($decoded_array as $arr){
+						$data = array(
+							'type' => $type,
+							'label' => $arr['attr']->label,
+							'name' => $arr['attr']->name,
+							'inline_element' => $inline_multi,
+							'attributes' => json_encode($arr['values']),
+							'order' => $this->_get_element_order($decoded_sort_order,$arr['attr']->name)
+							);	
+						$this->formbuilder_model->insert_form($data);
+					}
+				break;
+				
 				case 'checkbox':
 					foreach($decoded_array as $arr){
 						$data = array(
 							'type' => $type,
 							'label' => $arr['attr']->label,
 							'name' => $arr['attr']->name,
+							'multi_select' => 'yes',
 							'inline_element' => $inline_multi,
 							'attributes' => json_encode($arr['values']),
 							'order' => $this->_get_element_order($decoded_sort_order,$arr['attr']->name)
@@ -299,6 +350,21 @@ class Formbuilder extends MX_Controller {
 		}
 		return $final_arr;
 		
+	}
+	
+	/**
+	*	@desc Checks if an attribute can have multiple value
+	*
+	*   @name has_multiple_value
+	*	@access public
+	*	@param (string) name of the attribute
+	*	@return return true if an attribute can have multiple value otherwise it returns false
+	*/
+	function has_multiple_value($attribute_name)
+	{
+		$attribute_info = $this->formbuilder_model->get_attribute_info($attribute_name);
+		return  ($attribute_info->multi_select == 'yes' ? true : false);
+
 	}
 	
 }

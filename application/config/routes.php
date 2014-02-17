@@ -88,7 +88,6 @@ $route['admin/(:any)'] = 'dispatcher/admin_dispatcher/$1';
 
 //form builder
 $route['formbuilder'] = 'dispatcher/user_dispatcher/formbuilder';
-
 //documentor
 
 $route['documentor'] = 'document_dispacher';

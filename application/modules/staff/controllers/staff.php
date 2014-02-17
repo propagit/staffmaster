@@ -443,4 +443,30 @@ class Staff extends MX_Controller {
 	{
 		return $this->staff_model->get_total_staffs_count($status);
 	}
+	
+	/**
+	*	@name: get_staff_custom_attribute
+	*	@desc: Get custom attribute of a staff member if it has been set
+	*	@access: public
+	*	@param: (int) user id of staff, (string) the name of the custom attribute
+	*	@return: (int) total staff
+	*/
+	function get_staff_custom_attribute($staff_user_id,$attribute_name)
+	{
+		//first get attribute type
+		$has_multiple_value = modules::run('formbuilder/has_multiple_value',$attribute_name);
+		$staff_attribute = $this->staff_model->get_staff_custom_attribute($staff_user_id,$attribute_name);
+		$data['has_multi'] = false;
+		if($staff_attribute){
+			if($has_multiple_value){
+				$data['attributes'] = json_decode($staff_attribute->attributes);
+				$data['has_multi'] = true;
+			}else{
+				$data['attributes'] = $staff_attribute->attributes;	
+			}
+		}else{
+			$data['attributes'] = '';	
+		}
+		return $data;
+	}
 }

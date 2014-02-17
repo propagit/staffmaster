@@ -72,6 +72,8 @@ a.default {
 	min-height:400px;
 	border:1px solid #dddddd;
 	border-radius:4px;
+	float: left;
+	padding-bottom: 20px;
 }
 #build .dropped{
 	float:left;
