@@ -73,7 +73,7 @@ a.default {
 	border:1px solid #dddddd;
 	border-radius:4px;
 	float: left;
-	padding-bottom: 20px;
+	width:100%;
 }
 #build .dropped{
 	float:left;

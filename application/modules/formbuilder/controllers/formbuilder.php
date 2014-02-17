@@ -15,7 +15,7 @@ class Formbuilder extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('formbuilder_model');
-		error_reporting(E_ALL);
+		//error_reporting(E_ALL);
 	}
 	
 	function index($method='', $param1='', $param2='', $param3='',$param4='')
@@ -339,7 +339,7 @@ class Formbuilder extends MX_Controller {
 		$separator = ',';
 		if($data){	
 			$temp_arr = explode($separator,$data);
-			echo '<pre>'.print_r($temp_arr,true).'</pre>';
+			//echo '<pre>'.print_r($temp_arr,true).'</pre>';
 			$multi_arr = array();
 			foreach($temp_arr as $arr){
 				$multi_arr = json_decode($arr);
