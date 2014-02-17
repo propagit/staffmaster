@@ -541,7 +541,10 @@ a:hover {
 .table-bordered>tfoot>tr>td{
 	border:1px solid #cccccc;
 }
-
+.table tr.row-open,
+.table tr.row-open:hover td {
+	background: #c5fcb4;
+}
 /* Custom styles for typeahead */
 .tt-hint {
 	display: none;

@@ -21,11 +21,15 @@ class Ajax extends MX_Controller {
 		$this->load->view('timesheets_list', isset($data) ? $data : NULL);
 	}
 	
-	function approve_timesheet()
+	function batch_timesheet()
 	{
 		$timesheet_id = $this->input->post('timesheet_id');
-		$this->timesheet_model->update_timesheet($timesheet_id, array('status' => TIMESHEET_APPROVED));
+		modules::run('timesheet/update_timesheet_hour_rate', $timesheet_id);
+		$this->timesheet_model->update_timesheet($timesheet_id, array('status' => TIMESHEET_BATCHED));
 	}
+	
+	
+	
 	
 	function delete_timesheet()
 	{
