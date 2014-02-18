@@ -17,7 +17,13 @@ class Ajax extends MX_Controller {
 	
 	function list_timesheets()
 	{
-		$data['timesheets'] = $this->timesheet_model->get_timesheets();
+		$params = $this->input->post('params',true);
+		$sort_params = '';
+		if($params){
+			$sort_params = $params;	
+		}
+		
+		$data['timesheets'] = $this->timesheet_model->get_timesheets($sort_params);
 		$this->load->view('timesheets_list', isset($data) ? $data : NULL);
 	}
 	

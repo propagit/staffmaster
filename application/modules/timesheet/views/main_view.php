@@ -97,6 +97,10 @@
 <!--end bottom box -->
 
 <script>
+var sort_data = {
+	'sort_by':'t.job_date',
+	'sort_order':'desc'
+};
 $(function(){
 	list_timesheets();
 })
@@ -105,6 +109,7 @@ function list_timesheets() {
 	preloading($('#list_timesheets'));
 	$.ajax({
 		type: "POST",
+		data:{params:JSON.stringify(sort_data)},
 		url: "<?=base_url();?>timesheet/ajax/list_timesheets",
 		success: function(html) {
 			loaded($('#list_timesheets'), html);

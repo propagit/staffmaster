@@ -29,13 +29,20 @@ class Timesheet_model extends CI_Model {
 	*	@param:
 	*	@return:
 	*/
-	function get_timesheets() {
+	function get_timesheets($sort_params = '') {
+		$params = '';
+		if($sort_params){
+			$params = json_decode($sort_params);	
+		}
 		$sql = "SELECT t.*, j.name as job_name, j.client_id, v.name as venue_name, r.name as role_name
 				FROM `job_shift_timesheets` t
 					LEFT JOIN `attribute_venues` v ON v.venue_id = t.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = t.role_id
 					LEFT JOIN `jobs` j ON j.job_id = t.job_id
 				WHERE t.status < 3";
+		if($params){
+			$sql .= " order by $params->sort_by $params->sort_order";	
+		}
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
