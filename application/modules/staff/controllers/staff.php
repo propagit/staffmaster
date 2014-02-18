@@ -638,6 +638,25 @@ class Staff extends MX_Controller {
 			return $staff['gender'];	
 		}
 	}
-	
+	/**
+	*	@name: delete_files
+	*	@desc: Deletes file from server
+	*	@access: private
+	*	@param: (string) path to the main folder, (string) name of the file, (array) sub folder names
+	*	@return: null
+	*/
+	function delete_files($path,$file_name,$sub_folders = array())
+	{
+		if(file_exists($path.'/'.$file_name)){
+			unlink($path.'/'.$file_name);
+		}
+		if($sub_folders){
+			foreach($sub_folders as $folder){
+				if(file_exists($path.'/'.$folder.'/'.$file_name)){
+					unlink($path.'/'.$folder.'/'.$file_name);
+				}	
+			}
+		}
+	}
 	
 }

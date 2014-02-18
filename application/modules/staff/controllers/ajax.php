@@ -529,4 +529,19 @@ class Ajax extends MX_Controller {
 		echo modules::run('common/profile_picture','',$staff_user_id);
 	}
 	
+	function delete_photo()
+	{
+		$photo_id = $this->input->post('photo_id',true);
+		$photo = $this->staff_model->get_user_staff_photo_by_photo_id($photo_id);
+		$path = './uploads/staff/profile/'.md5($photo->user_id);
+		$sub_folders = array('thumbnail','thumbnail2');
+		$file_name = $photo->name;
+		modules::run('staff/delete_files',$path,$file_name,$sub_folders);
+		if($this->staff_model->delete_photo($photo_id)){
+			echo 'success';
+		}else{
+			echo 'failed';
+		}
+	}
+	
 }

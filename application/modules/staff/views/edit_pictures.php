@@ -84,6 +84,17 @@ function update_staff_edit_page_avatar(user_staff_id)
 		}
 	});	
 }
+function delete_photo(photo_id){
+	$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>staff/ajax/delete_photo',
+		data:{photo_id:photo_id},
+		success: function(html) {
+			update_avatars();
+		}
+	});	 
+}
+
 function update_avatars()
 {
 	load_picture(<?=$staff['user_id'];?>);

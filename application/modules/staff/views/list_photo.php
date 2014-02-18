@@ -25,7 +25,7 @@
                         <a title="<?=$photo['name'];?>" href="<?=$photo_src_full?>"><img style="width:auto!important;" src="<?=$thumb_src;?>" /></a>
                         <div align="center" class="action_image" > 
                            <div class="action_icon"><i onclick="set_hero(<?=$photo['id'];?>)" class="fa fa-heart" <? if($photo['hero']==1){echo "style='color:#f00;'";}?> ></i></div>
-                            <a onclick="delete_photo(<?=$photo['id']?>)"><div class="action_icon"><i class="fa fa-times"></i></div> </a>
+                           <div class="action_icon delete-photo" delete-data-id="<?=$photo['id'];?>"><i class="fa fa-times"></i></div>
                         </div>
                     </li>
                 <?
@@ -40,4 +40,18 @@
         <div style="clear:both;"></div>
     </div>
 </div>
+<script>
+$(function(){
+	$('.delete-photo').on('click',function(){
+		var title = 'Delete Photo';
+		var message ='Are you sure you would like to delete this "Photo"';
+		var photo_id = $(this).attr('delete-data-id');
+		help.confirm_delete(title,message,function(confirmed){
+			 if(confirmed){
+				 delete_photo(photo_id);
 
+			 }
+		});
+	});
+});
+</script>

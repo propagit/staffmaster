@@ -103,6 +103,17 @@ class Staff_model extends CI_Model {
 		}
 		return false;
 	}
+	function get_user_staff_photo_by_photo_id($photo_id)
+	{
+		$this->db->where('id',$photo_id);
+		$query = $this->db->get('user_staff_picture');
+		return $query->row();
+	}
+	function delete_photo($photo_id)
+	{
+		$this->db->where('id',$photo_id);
+		return $this->db->delete('user_staff_picture');
+	}
 	/**
 	*	@name: get_total_staffs_count
 	*	@desc: Returns total staff based on status. If status is not passed it returns the total staffs
