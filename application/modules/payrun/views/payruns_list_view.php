@@ -26,8 +26,6 @@
 
 <script>
 var previous_user_id = null;
-$(function(){
-})
 function refresh_row_timesheets_staff(user_id) {
 	$.ajax({
 		type: "POST",
@@ -38,6 +36,7 @@ function refresh_row_timesheets_staff(user_id) {
 		}
 	})
 }
+
 function process_staff_payruns(user_id) {
 	$.ajax({
 		type: "POST",
@@ -98,7 +97,7 @@ function unprocess_payrun(obj,timesheet_id,user_id) {
 function expand_staff_timehsheets(user_id) {
 	if (previous_user_id)
 	{
-		collapse_staff_timesheets(previous_user_id);
+		//collapse_staff_timesheets(previous_user_id);
 	}
 	$('.timesheets_staff_' + user_id).html('');	
 	$.ajax({

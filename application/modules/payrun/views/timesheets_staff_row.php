@@ -34,7 +34,9 @@
 		</div>
 	</td>
 	<td class="center">
+		<? if($timesheet['status'] == TIMESHEET_BATCHED) { ?>
 		<a onclick="revert_payrun(<?=$timesheet['staff_id'];?>,<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a>
+		<? } ?>
 	</td>
 	<td></td>
 	

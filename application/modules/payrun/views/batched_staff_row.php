@@ -48,9 +48,14 @@ foreach($staff_timesheets as $timesheet) {
 		</div>
 	</td>
 	<td class="center">
+		<? if($processed == 0) { ?>
 		<a onclick="revert_staff_payruns(<?=$staff['user_id'];?>)"><i class="fa fa-times"></i></a>
+		<? } ?>
 	</td>
 	<td class="center">
+		<? if ($expanded) { ?>
+		<a class="wp-arrow" onclick="collapse_staff_timesheets(<?=$staff['user_id'];?>)"><i class="fa fa-minus-square-o fa-1x"></i></a>
+		<? } else { ?>
 		<a class="wp-arrow" onclick="expand_staff_timehsheets(<?=$staff['user_id'];?>)"><i class="fa fa-plus-square-o fa-1x"></i></a>
+		<? } ?>
 	</td>
-	

@@ -48,6 +48,12 @@ class Payrun_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_timesheet($timesheet_id) {
+		$this->db->where('timesheet_id', $timesheet_id);
+		$query = $this->db->get('job_shift_timesheets');
+		return $query->first_row('array');
+	}
+	
 	function get_staff_timesheets($user_id)
 	{
 		$this->db->where('staff_id', $user_id);

@@ -22,19 +22,23 @@
 					<p>All the below time sheets have been approved and are ready for processing. To create your "Pay Run" change the status of the time sheets to "Pay Now" then filter the list by status. Choose export selected from the action menu to export time sheets to your favourite accounts package. Setting the status of the time sheets as "Paid" will remove them from the list, archive the records and update your accounts dashboard and statistical reports in the system</p>
 				</div>
 				<div class="col-md-5">
+					<!-- Pay Run stats -->
 					<div class="pull-right box-rounded" id="payrun-stats">
 						
-					</div>
+					</div><!-- End Pay Run stats -->
 				</div>
 			</div>
 			<br />
+			<!-- Filter Menus -->
 			<div id="nav_payruns">
 				<?=modules::run('payrun/menu_dropdown_actions', 'action', 'Actions');?>
 				<?=modules::run('common/menu_dropdown_states', 'state', 'Location: Any');?>
 				<?=modules::run('payrun/menu_dropdown', 'status', 'Pay Run: Any');?>				
 				<?=modules::run('staff/menu_dropdown_tfn', 'tfn', 'Employed: Any');?>				
-			</div>
-			<div id="list_payruns"></div>
+			</div><!-- End Filter Menus -->
+			
+			<!-- List Pay Runs -->
+			<div id="list_payruns"></div><!-- End List Pay Runs -->
 		</div>
 	</div>
 </div>
