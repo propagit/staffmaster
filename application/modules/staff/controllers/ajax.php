@@ -322,6 +322,123 @@ class Ajax extends MX_Controller {
 		}
 	}
 	
+	
+	function upload_photo()
+	{
+		$user_id = $this->input->post('user_id');
+		
+		$path = "./uploads/staff";
+		$dir = $path;
+		if(!is_dir($dir))
+		{
+		  mkdir($dir);
+		  chmod($dir,0777);
+		  $fp = fopen($dir.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		
+		$path = "./uploads/staff/profile";
+		$dir = $path;
+		if(!is_dir($dir))
+		{
+		  mkdir($dir);
+		  chmod($dir,0777);
+		  $fp = fopen($dir.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		
+		
+		$path = "./uploads/staff/profile";
+		$newfolder = md5($user_id);
+		$dir = $path."/".$newfolder;
+		if(!is_dir($dir))
+		{
+		  mkdir($dir);
+		  chmod($dir,0777);
+		  $fp = fopen($dir.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		$dirs=$dir.'/thumbnail';
+		if(!is_dir($dirs))
+		{
+		  mkdir($dirs);
+		  chmod($dirs,0777);
+		  $fp = fopen($dirs.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		
+		$config['upload_path'] = $dir;
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '4096'; // 4 MB
+		$config['max_width']  = '2000';
+		$config['max_height']  = '2000';
+		$config['overwrite'] = FALSE;
+		$config['remove_space'] = TRUE;
+	
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());			
+		}	
+		else
+		{
+			$data = array('upload_data' => $this->upload->data());
+			$file_name = $data['upload_data']['file_name'];
+			$width = $data['upload_data']['image_width'];
+			$height = $data['upload_data']['image_height'];
+			$photo = array(
+				'user_id' => $user_id,
+				'name' => $file_name,
+				'modified' => date('Y-m-d H:i:s'),
+				'hero' =>0										
+			);
+			$this->load->model('common/common_model');
+			$this->common_model->add_picture($photo);
+			$new_width=220;		
+			$new_height=220;		
+			copy($dir.'/'.$file_name, $dirs."/".$file_name);
+			$target = $dirs."/".$file_name;
+			//echo $target.'<br>';
+			$this->scale_image($target,$target,$new_width,$new_height);	
+		}
+	}
+	function scale_image($image,$target,$thumbnail_width,$thumbnail_height)
+	{
+	  if(!empty($image)) //the image to be uploaded is a JPG I already checked this
+	  {		
+		list($width_orig, $height_orig) = getimagesize($image);   
+		$myImage = imagecreatefromjpeg($image);
+		$ratio_orig = $width_orig/$height_orig;
+		echo $ratio_orig;
+		if ($thumbnail_width/$thumbnail_height > $ratio_orig) {
+		   $new_height = $thumbnail_width/$ratio_orig;
+		   $new_width = $thumbnail_width;
+		} else {
+		   $new_width = $thumbnail_height*$ratio_orig;
+		   $new_height = $thumbnail_height;
+		}
+		
+		$x_mid = $new_width/2;  //horizontal middle
+		$y_mid = $new_height/2; //vertical middle
+		
+		$process = imagecreatetruecolor(round($new_width), round($new_height)); 
+		
+		imagecopyresampled($process, $myImage, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
+		$thumb = imagecreatetruecolor($thumbnail_width, $thumbnail_height); 
+		imagecopyresampled($thumb, $process, 0, 0, ($x_mid-($thumbnail_width/2)), ($y_mid-($thumbnail_height/2)), $thumbnail_width, $thumbnail_height, $thumbnail_width, $thumbnail_height);
+		
+		imagedestroy($process);
+		imagedestroy($myImage);
+		imagejpeg($thumb,$target, 100);
+	
+	  }
+	}
+	
 	/**
 	*	@name: load_picture
 	*	@desc: show the profile picture and gallery

@@ -539,6 +539,8 @@ class Common extends MX_Controller {
 		}
 		redirect('staff/edit/'.$user_id);
 	}
+	
+	
 	function upload_picture($field_name,$field_value=NULL)
 	{
 		
