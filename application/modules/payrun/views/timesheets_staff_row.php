@@ -22,11 +22,21 @@
 	<td class="center">
 		<a href="#"><i class="fa fa-eye"></i></a>
 	</td>
-	<td></td>
 	<td class="center">
+		<div class="btn-group">
+			<? if ($timesheet['status'] == TIMESHEET_PROCESSING) { ?>
+			<button type="button" onclick="process_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-success btn-yes">Yes</button>
+			<button type="button" onclick="unprocess_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-default btn-no">No</button>
+			<? } else { ?>
+			<button type="button" onclick="process_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-default btn-yes">Yes</button>
+			<button type="button" onclick="unprocess_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-danger btn-no">No</button>
+			<? } ?>
+		</div>
 	</td>
 	<td class="center">
 		<a onclick="revert_payrun(<?=$timesheet['staff_id'];?>,<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a>
 	</td>
+	<td></td>
+	
 </tr>
 <? } ?>

@@ -552,6 +552,9 @@ a:hover {
 .table-bordered>tfoot>tr>td{
 	border:1px solid #cccccc;
 }
+.table-topless {
+	margin-bottom: 0;
+}
 .table-topless>tbody>tr>th {
 	border-top: 0;
 }

@@ -177,6 +177,7 @@ class Common extends MX_Controller {
 	function menu_dropdown_states($id, $label) {
 		$states = $this->common_model->get_states();
 		$array = array();
+		$array[] = array('value' => '', 'label' => 'Any');
 		foreach($states as $state)
 		{
 			$array[] = array(
