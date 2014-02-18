@@ -13,8 +13,8 @@
     	<div class="inner-box push full-width">
 			
 			<ul class="nav nav-tabs tab-respond" id="nav-staff-profile">
-                <li <?=$this->session->flashdata('load_document_tab') ? '' : 'class="active"';?>><a href="#personal" data-toggle="tab">Personal Details</a></li>
-                <li><a href="#pictures" data-toggle="tab">Pictures</a></li>
+                <li><a href="#personal" data-toggle="tab">Personal Details</a></li>
+                <li class="active"><a href="#pictures" data-toggle="tab">Pictures</a></li>
                 <li><a href="#financial" data-toggle="tab">Financial Details</a></li>
                 <li><a href="#super" data-toggle="tab">Super Details</a></li>
                 <li><a href="#roles" data-toggle="tab">Roles</a></li>
@@ -22,13 +22,13 @@
                 <li><a href="#location" data-toggle="tab">Locations</a></li>
                 <li><a href="#group" data-toggle="tab">Groups</a></li>
                 <li><a href="#attribute" data-toggle="tab">Attributes</a></li>
-                <li <?=$this->session->flashdata('load_document_tab') ? 'class="active"' : '';?>><a href="#documents" data-toggle="tab">Documents</a></li>
+                <li><a href="#documents" data-toggle="tab">Documents</a></li>
                 <li><a href="#settings" data-toggle="tab">Settings</a></li>                                
 			</ul>
 			
 			<div class="tab-content">
-				<div class="tab-pane <?=$this->session->flashdata('load_document_tab') ? '' : 'active';?>" id="personal"></div>	
-                <div class="tab-pane" id="pictures"></div>			
+				<div class="tab-pane" id="personal"></div>	
+                <div class="tab-pane active" id="pictures"></div>			
 				<div class="tab-pane" id="financial"></div>
 				<div class="tab-pane" id="super"></div>
                 <div class="tab-pane" id="roles"></div>
@@ -36,7 +36,7 @@
 				<div class="tab-pane" id="location"></div>
                 <div class="tab-pane" id="group"></div>
         		<div class="tab-pane" id="attribute"></div>				
-				<div class="tab-pane <?=$this->session->flashdata('load_document_tab') ? 'active' : '';?>" id="documents"></div>
+				<div class="tab-pane" id="documents"></div>
                 <div class="tab-pane" id="settings"></div>
 				
 			</div>

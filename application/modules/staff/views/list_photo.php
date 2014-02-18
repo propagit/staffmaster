@@ -41,23 +41,3 @@
     
 </div>
 
-<!-- Add Image Modal -->
-<div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="editVenueLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Add Image</h4>
-			</div>
-			
-			<div class="modal-body">				
-                <?=modules::run('common/upload_picture', 'user_id',$user_id);?>				
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			
-			</div>
-			
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
