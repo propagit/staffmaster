@@ -10,9 +10,9 @@
 		<th class="center">Total Hours</th>
 		<th class="center">Amount</th>
 		<th class="center">Time Sheets</th>
-		<th class="center">Expand</th>
 		<th class="center">Add to Pay Run</th>
 		<th class="center" width="40">Revert</th>
+		<th class="center" width="40">Expand</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -25,20 +25,94 @@
 </table>
 
 <script>
+var previous_user_id = null;
 $(function(){
 })
+function refresh_row_timesheets_staff(user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/row_timesheets_staff",
+		data: {user_id: user_id},
+		success: function(html) {
+			$('#timesheets_staff_' + user_id).html(html);
+		}
+	})
+}
+function process_staff_payruns(user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/process_staff_payruns",
+		data: {user_id: user_id},
+		success: function(html) {			
+			$('#timesheets_staff_' + user_id).find('.btn-yes').addClass('btn-success');
+			$('#timesheets_staff_' + user_id).find('.btn-no').removeClass('btn-danger');
+			$('#timesheets_staff_' + user_id).find('.btn-no').addClass('btn-default');
+			refresh_row_timesheets_staff(user_id);
+			get_payrun_stats();
+		}
+	})
+}
+function process_payrun(obj,timesheet_id,user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/process_payrun",
+		data: {timesheet_id: timesheet_id},
+		success: function(html) {
+			$(obj).addClass('btn-success');
+			$(obj).parent().find('.btn-no').removeClass('btn-danger');
+			$(obj).parent().find('.btn-no').addClass('btn-default');
+			refresh_row_timesheets_staff(user_id);
+			get_payrun_stats();
+		}
+	})
+}
+function unprocess_staff_payruns(user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/unprocess_staff_payruns",
+		data: {user_id: user_id},
+		success: function(html) {
+			$('#timesheets_staff_' + user_id).find('.btn-no').addClass('btn-danger');
+			$('#timesheets_staff_' + user_id).find('.btn-yes').removeClass('btn-success');
+			$('#timesheets_staff_' + user_id).find('.btn-yes').addClass('btn-default');
+			refresh_row_timesheets_staff(user_id);
+			get_payrun_stats();
+		}
+	})
+	
+}
+function unprocess_payrun(obj,timesheet_id,user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/unprocess_payrun",
+		data: {timesheet_id: timesheet_id},
+		success: function(html) {
+			$(obj).addClass('btn-danger');
+			$(obj).parent().find('.btn-yes').removeClass('btn-success');
+			$(obj).parent().find('.btn-yes').addClass('btn-default');
+			refresh_row_timesheets_staff(user_id);
+			get_payrun_stats();
+		}
+	})
+}
 function expand_staff_timehsheets(user_id) {
-	$('.timesheets_staff_' + user_id).html('');
+	if (previous_user_id)
+	{
+		collapse_staff_timesheets(previous_user_id);
+	}
+	$('.timesheets_staff_' + user_id).html('');	
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/expand_staff_timehsheets",
 		data: {user_id: user_id},
 		success: function(data) {
+			$('body').scrollTo('#timesheets_staff_' + user_id, 500 );
+			previous_user_id = user_id;
 			var data = $.parseJSON(data);
 			if (!data.children) {
 				$('#timesheets_staff_' + user_id).remove();
 				$('.timesheets_staff_' + user_id).remove();
-			} else {				
+			} else {
 				$('#timesheets_staff_' + user_id).addClass('row-open');
 				$('#timesheets_staff_' + user_id).html(data.parent);
 				$('#timesheets_staff_' + user_id).after(data.children);
@@ -66,6 +140,7 @@ function revert_staff_payruns(user_id) {
 				url: "<?=base_url();?>payrun/ajax/revert_staff_payruns",
 				data: {user_id: user_id},
 				success: function(html) {
+					unprocess_payrun(user_id);
 					$('#timesheets_staff_' + user_id).remove();
 				}
 			})

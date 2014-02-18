@@ -43,6 +43,29 @@ class Payrun extends MX_Controller {
 	}
 	
 	function menu_dropdown($id, $label) {
-		
+		$data = array(
+			array('value' => '', 'label' => 'Any'),
+			array('value' => TIMESHEET_PROCESSING, 'label' => 'Yes'),
+			array('value' => TIMESHEET_BATCHED, 'label' => 'No')
+		);
+		return modules::run('common/menu_dropdown', $data, $id, $label);
+	}
+	function menu_dropdown_actions($id, $label) {
+		$data = array(
+			array('value' => 'process', 'label' => 'Set Yes for Pay Run'),
+			array('value' => 'unprocess', 'label' => 'Set No for Pay Run'),
+			array('value' => 'revert', 'label' => 'Revert Selected'),
+			array('value' => 'archive', 'label' => 'Archive Selected'),
+			array('value' => 'export', 'label' => 'Export Selected')
+		);
+		return modules::run('common/menu_dropdown', $data, $id, $label);
+	}
+	
+	function count_staff($tfn) {
+		return $this->payrun_model->count_staff($tfn);
+	}
+	
+	function get_total_amount($tfn) {
+		return $this->payrun_model->get_total_amount($tfn);
 	}
 }

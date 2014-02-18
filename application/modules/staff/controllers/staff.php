@@ -394,8 +394,9 @@ class Staff extends MX_Controller {
 	
 	function menu_dropdown_tfn($id, $label) {
 		$array = array(
-			array('value' => STAFF_TFN, 'label' => 'TFN Staff'),
-			array('value' => STAFF_ABN, 'label' => 'ABN Staff')
+			array('value' => '', 'label' => 'Any'),
+			array('value' => STAFF_TFN, 'label' => 'TFN'),
+			array('value' => STAFF_ABN, 'label' => 'ABN')
 		);
 		return modules::run('common/menu_dropdown', $array, $id, $label);
 	}
