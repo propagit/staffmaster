@@ -122,7 +122,7 @@
             <li class="active"><a href="#input" data-toggle="tab">Input</a></li>
             <li><a href="#radioscheckboxes" data-toggle="tab">Radios / Checkboxes</a></li>
             <li><a href="#select" data-toggle="tab">Select</a></li>
-            <li><a href="#buttons" data-toggle="tab">Buttons</a></li>
+            <li><a href="#fileupload" data-toggle="tab">File Upload</a></li>
         </ul>
         
         <div class="tab-content">
@@ -153,7 +153,7 @@
             
             <!--begin radio tab-->
             <div class="tab-pane" id="radioscheckboxes">
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Radios -->
+                <div class="component" data="popover-radio-checkbox"><!-- Multiple Radios -->
                     <div class="control-group" type="multi-radios">
                       <label class="control-label" id="radio-checkbox-label" data="multi-radios">Multiple Radios</label>
                       <div class="controls">
@@ -169,7 +169,7 @@
                       <input class="sort-index" type="hidden" value="0" data="radios"  />
                     </div>
                 </div>
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Radios (inline) -->
+                <div class="component" data="popover-radio-checkbox"><!-- Multiple Radios (inline) -->
                     <div class="control-group" type="inline-radios">
                       <label class="control-label" id="radio-checkbox-label" data="inline-radios">Inline Radios</label>
                       <div class="controls">
@@ -181,7 +181,7 @@
                       <input class="sort-index" type="hidden" value="0" data="radios"  />
                     </div>
                 </div>
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Checkboxes -->
+                <div class="component" data="popover-radio-checkbox"><!-- Multiple Checkboxes -->
                     <div class="control-group" type="multi-checkbox">
                       <label class="control-label" id="radio-checkbox-label" data="multi-checkbox">Multiple Checkboxes</label>
                       <div class="controls">
@@ -197,7 +197,7 @@
                       <input class="sort-index" type="hidden" value="0" data="checkboxes"  />
                     </div>
                 </div>
-                <div class="component push" data="popover-radio-checkbox"><!-- Multiple Checkboxes (inline) -->
+                <div class="component" data="popover-radio-checkbox"><!-- Multiple Checkboxes (inline) -->
                     <div class="control-group" type="inline-checkbox">
                       <label class="control-label" id="radio-checkbox-label" data="inline-checkbox">Inline Checkboxes</label>
                       <div class="controls">
@@ -214,7 +214,7 @@
             
             <!--begin select-->
             <div class="tab-pane" id="select">
-                <div class="component push" data="popover-select"><!-- Select Basic -->
+                <div class="component" data="popover-select"><!-- Select Basic -->
                     <div class="control-group" type="select-basic">
                       <label class="control-label" id="select-label" data="select-basic">Select Basic</label>
                       <div class="controls">
@@ -226,7 +226,7 @@
                       <input class="sort-index" type="hidden" value="0" data="select-basic"  />
                     </div>
                 </div>
-                <div class="component push" data="popover-select"><!-- Select Multiple -->
+                <div class="component" data="popover-select"><!-- Select Multiple -->
                  <div class="control-group" type="select-multi">
                   <label class="control-label" id="select-label" data="select-multi">Select Multiple</label>
                   <div class="controls">
@@ -242,8 +242,8 @@
             <!--end select-->
         
         	<!--begin button-->
-            <div class="tab-pane" id="buttons">
-            	<div class="component push" data="popover-button"><!-- File Button --> 
+            <div class="tab-pane" id="fileupload">
+            	<div class="component" data="popover-button"><!-- File Button --> 
                 <div class="control-group" type="filebutton">
                   <label class="control-label" id="filebutton-label">File Button</label>
                   <div class="controls">
@@ -299,6 +299,7 @@ $(function(){
     stop: function (event, ui) {
 		form_builder.bind_with_popover();
 		$('.drag-icon-box').remove();	
+		$('#build').addClass('build-bottom-padding');
 	}
 
 	}).mousedown(function () {});

@@ -128,6 +128,18 @@
 			break;				
 		}		
 	}//foreach
+?>
+		<div class="form-group">
+            <div class="col-md-12">
+                <div class="alert alert-success hide" id="msg-update-custom-attributes"><i class="fa fa-check"></i> &nbsp; Custom attributes successfully updated</div>
+                <button type="button" class="btn btn-core" id="update-custom-attributes"><i class="fa fa-save"></i> Update Custom Attributes</button>
+            </div>
+		</div>
+<?php
+	}else{
+		if(modules::run('auth/is_admin')){
+			echo 'You have not created any custom attributes yet. To create custom attributes go to "Edit Attributes" and then "Custom Attributes"';
+		}
 	}
 
 ?>

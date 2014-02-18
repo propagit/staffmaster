@@ -75,6 +75,9 @@ a.default {
 	float: left;
 	width:100%;
 }
+.build-bottom-padding{
+	padding-bottom:20px;	
+}
 #build .dropped{
 	float:left;
 	width:100%;	
@@ -107,7 +110,6 @@ a.default {
 	padding-top: 5px;
 	text-align: left;
 	width:25%;
-	float:left;
 }
 .custom-attributes .popover{
 	max-width:240px;
@@ -139,6 +141,10 @@ a.default {
 	 border: 1px solid #dddddd;
 	 background: #fff;
 	 box-shadow: 10px 10px 5px #dddddd;
+	 float:left;
+	 width:100%;
+	 display:block;
+	 min-height:100px;
 }
 .radio{ 
 	 margin-bottom:6px;
@@ -160,6 +166,9 @@ a.default {
 	margin-top:0;
 	padding-right:10px;
 	width:auto;
+	float:left;
+	line-height:30px;
+	width:100%;
 }
 .form-builder-save-btn{
 	margin-top:10px;
@@ -195,6 +204,7 @@ a.default {
 	padding-left:10px;
 	cursor:pointer;	
 }
+
 
 /* style for staff profile */
 .staff-profile-detail-box{

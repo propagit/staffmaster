@@ -20,6 +20,12 @@ class Auth extends MX_Controller {
 		return $this->session->userdata('is_user_logged_in');
 	}
 	
+	function is_admin()
+	{
+		$user = $this->session->userdata('user_data');
+		return $user['is_admin'];
+	}
+	
 	function login_user()
 	{
 		$this->template->write('title', 'Staff Master');

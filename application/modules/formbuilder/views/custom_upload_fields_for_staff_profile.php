@@ -11,7 +11,7 @@
                 	<?php 
 						if($staff_custom_attribute['attributes']!=''){
 					?>
-                    	<a href="<?=base_url();?>uploads/staff/custom_attributes/<?=md5('custom_files'.$user_id);?>/<?=$staff_custom_attribute['attributes'];?>"><?=$staff_custom_attribute['attributes'];?></a>
+                    	<a target="_blank" href="<?=base_url();?>uploads/staff/custom_attributes/<?=md5('custom_files'.$user_id);?>/<?=$staff_custom_attribute['attributes'];?>"><?=$staff_custom_attribute['attributes'];?></a>
                         <i title="Delete Document" class="fa fa-times custom-file-delete" delete-data-id="<?=$staff_custom_attribute['staffs_custom_attributes_id'];?>"></i>
                     <?php			
 						}else{ 
@@ -24,9 +24,21 @@
 			break;					
 		}		
 	}//foreach
+?>
+		<div class="form-group">
+			<div class="col-md-12">
+            	<button type="submit" class="btn btn-core" ><i class="fa fa-save"></i> Upload Documents</button>
+			</div>
+		</div>
+<?php
+	}else{
+		if(modules::run('auth/is_admin')){
+			echo 'You have not created any document upload requirements yet. To create documentation for you staff go to "Edit Attributes" and then "Custom Attributes" and then add a "File Upload"';	
+		}
 	}
 
 ?>
+
 <script>
 $('.custom-file-delete').on('click',function(){
 		var title = 'Delete Document';
