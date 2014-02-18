@@ -165,6 +165,28 @@ class Common extends MX_Controller {
 	}
 	
 	
+	function menu_dropdown($array, $id, $label) {
+		$data = array(
+			'data' => $array,
+			'id' => $id,
+			'label' => $label
+		);
+		$this->load->view('menu_dropdown', isset($data) ? $data : NULL);
+	}
+	
+	function menu_dropdown_states($id, $label) {
+		$states = $this->common_model->get_states();
+		$array = array();
+		foreach($states as $state)
+		{
+			$array[] = array(
+				'value' => $state['code'],
+				'label' => $state['name']
+			);
+		}
+		return $this->menu_dropdown($array, $id, $label);
+	}
+	
 	
 	function dropdown_actions($target, $actions)
 	{

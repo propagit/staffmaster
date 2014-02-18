@@ -11,7 +11,7 @@
 		<th class="center">Amount</th>
 		<th class="center">Time Sheets</th>
 		<th class="center">Expand</th>
-		<th class="center">Status</th>
+		<th class="center">Add to Pay Run</th>
 		<th class="center" width="40">Revert</th>
 	</tr>
 	</thead>
@@ -25,6 +25,8 @@
 </table>
 
 <script>
+$(function(){
+})
 function expand_staff_timehsheets(user_id) {
 	$('.timesheets_staff_' + user_id).html('');
 	$.ajax({

@@ -541,6 +541,9 @@ a:hover {
 .table-bordered>tfoot>tr>td{
 	border:1px solid #cccccc;
 }
+.table-topless>tbody>tr>th {
+	border-top: 0;
+}
 .table tr.row-open,
 .table tr.row-open:hover td {
 	background: #c5fcb4;
@@ -603,7 +606,12 @@ a:hover {
 	background-color:rgba(255,255,255,0.8);	
 	border-radius:8px;	
 }
-
+.box-rounded {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 15px;
+}
 .clear {
 	clear: both;
 }

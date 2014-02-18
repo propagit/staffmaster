@@ -41,4 +41,8 @@ class Payrun extends MX_Controller {
 		$data['timesheets'] = $this->payrun_model->get_staff_timesheets($user_id);
 		return $this->load->view('timesheets_staff_row', isset($data) ? $data : NULL, true);
 	}
+	
+	function menu_dropdown($id, $label) {
+		
+	}
 }

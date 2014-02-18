@@ -71,6 +71,9 @@ define('TIMESHEET_BATCHED', 3);
 define('TIMESHEET_PROCESSING', 4);
 define('TIMESHEET_PAID', 5);
 
+define('STAFF_TFN', 0);
+define('STAFF_ABN', 1);
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

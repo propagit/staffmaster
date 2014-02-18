@@ -33,6 +33,10 @@ foreach($staff_timesheets as $timesheet) {
 		<a class="wp-arrow" onclick="expand_staff_timehsheets(<?=$staff['user_id'];?>)"><i class="fa fa-plus-square-o fa-1x"></i></a>
 	</td>
 	<td class="center">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default">Yes</button>
+			<button type="button" class="btn btn-danger">No</button>
+		</div>
 	</td>
 	<td class="center">
 		<a onclick="revert_staff_payruns(<?=$staff['user_id'];?>)"><i class="fa fa-times"></i></a>
