@@ -13,8 +13,8 @@
     	<div class="inner-box push full-width">
 			
 			<ul class="nav nav-tabs tab-respond" id="nav-staff-profile">
-                <li><a href="#personal" data-toggle="tab">Personal Details</a></li>
-                <li class="active"><a href="#pictures" data-toggle="tab">Pictures</a></li>
+                <li class="active"><a href="#personal" data-toggle="tab">Personal Details</a></li>
+                <li><a href="#pictures" data-toggle="tab">Pictures</a></li>
                 <li><a href="#financial" data-toggle="tab">Financial Details</a></li>
                 <li><a href="#super" data-toggle="tab">Super Details</a></li>
                 <li><a href="#roles" data-toggle="tab">Roles</a></li>
@@ -27,8 +27,8 @@
 			</ul>
 			
 			<div class="tab-content">
-				<div class="tab-pane" id="personal"></div>	
-                <div class="tab-pane active" id="pictures"></div>			
+				<div class="tab-pane active" id="personal"></div>	
+                <div class="tab-pane" id="pictures"></div>			
 				<div class="tab-pane" id="financial"></div>
 				<div class="tab-pane" id="super"></div>
                 <div class="tab-pane" id="roles"></div>
