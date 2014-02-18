@@ -391,6 +391,14 @@ class Staff extends MX_Controller {
 		
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
+	
+	function menu_dropdown_tfn($id, $label) {
+		$array = array(
+			array('value' => STAFF_TFN, 'label' => 'TFN Staff'),
+			array('value' => STAFF_ABN, 'label' => 'ABN Staff')
+		);
+		return modules::run('common/menu_dropdown', $array, $id, $label);
+	}
 	/**
 	*	@desc Checks if a staff has been assigned this role.
 	*

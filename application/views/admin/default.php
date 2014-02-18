@@ -52,6 +52,7 @@
 	<script src="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js"></script>
 	<script src="<?=base_url();?>assets/js/typeaheadjs/typeaheadjs.js"></script>
 	
+
 	
 	<script src="<?=base_url();?>assets/js/bootstrap-fileupload.min.js"></script>
 	<script src="<?=base_url();?>assets/js/calendar.js"></script>
