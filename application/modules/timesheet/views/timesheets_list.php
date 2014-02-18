@@ -7,9 +7,9 @@
 <thead>
 	<tr>
 		<th class="center" width="20"></th>
-		<th class="center">Date</th>
+		<th class="center">Date <i class="fa fa-sort sort-data" sort-by="t.job_date"></i></th>
+		<th>Client</th>
 		<th>Campaign Name</th>
-		<th>Venue</th>
 		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
 		<th>Pay rate</th>
@@ -74,6 +74,17 @@ function delete_timesheet(timesheet_id) {
 		 }
 	});
 }
+
+$(function(){
+	$('.sort-data').on('click',function(){
+			sort_data.sort_by = $(this).attr('sort-by');
+			//toggle sort order data for next sort
+			(sort_data.sort_order == 'asc' ? sort_data.sort_order = 'desc' : sort_data.sort_order = 'asc');	
+			list_timesheets();
+		});
+});
+
+
 </script>
 
 <? } ?>
