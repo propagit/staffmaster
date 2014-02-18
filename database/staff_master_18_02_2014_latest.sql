@@ -2528,7 +2528,7 @@ INSERT INTO `user_staff_availability` (`user_id`, `day`, `hour`, `value`) VALUES
 
 CREATE TABLE IF NOT EXISTS `user_staff_picture` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `staff_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `hero` int(11) NOT NULL,
   `modified` datetime NOT NULL,

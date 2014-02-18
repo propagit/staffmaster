@@ -1,14 +1,13 @@
 <div class="row">
-    <div class="col-md-2 picture-box">
+    <div class="col-md-2 remove-left-gutter">
         <i class="fa fa-heart"></i> Profile Image <br /><br />
-        <div class="profile_border">
-        <? 
-		
-		if(isset($hero_photo) && $hero_photo != NULL){?> <img src="<?=base_url()?>uploads/staff/profile/<?=md5($user_id)?>/thumbnail/<?=$hero_photo['name']?>"><? }else{?>
-                <div class="no_photo">
-                    No Photo
-                </div>
-        <? } ?>
+        <div class="picture-box">
+            <div class="profile-picture">
+            <? 
+            if(isset($hero_photo) && $hero_photo != NULL){?> <img src="<?=base_url()?>uploads/staff/profile/<?=md5($user_id)?>/thumbnail/<?=$hero_photo['name']?>"><? }else{?>
+                    <i class="fa <?=(modules::run('staff/get_staff_gender',$user_id) == 'm' ? 'fa-male': 'fa-female');?> default-profile-photo"></i>
+            <? } ?>
+            </div>
         </div>
         
     </div>
@@ -25,12 +24,14 @@
                     <li>
                         <a title="<?=$photo['name'];?>" href="<?=$photo_src_full?>"><img style="width:auto!important;" src="<?=$thumb_src;?>" /></a>
                         <div align="center" class="action_image" > 
-                            <a href="#" onclick="set_hero(<?=$photo['id']?>)"><div class="action_icon"><i class="fa fa-heart" <? if($photo['hero']==1){echo "style='color:#f00;'";}?> ></i></div></a>
-                            <a href="#" onclick="delete_photo(<?=$photo['id']?>)"><div class="action_icon"><i class="fa fa-times"></i></div> </a>
+                           <div class="action_icon"><i onclick="set_hero(<?=$photo['id'];?>)" class="fa fa-heart" <? if($photo['hero']==1){echo "style='color:#f00;'";}?> ></i></div>
+                            <a onclick="delete_photo(<?=$photo['id']?>)"><div class="action_icon"><i class="fa fa-times"></i></div> </a>
                         </div>
                     </li>
                 <?
-                }?>
+                }
+				?>
+                
              
             <!-- items mirrored twice, total of 12 -->
           </ul>
@@ -38,6 +39,5 @@
         <? }?>
         <div style="clear:both;"></div>
     </div>
-    
 </div>
 

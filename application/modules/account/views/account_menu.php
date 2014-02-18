@@ -1,5 +1,10 @@
 <div class="avatar pull">
-    <img src="<?=base_url();?>assets/img/dummy/default-avatar.png" title="User Avatar" alt="user-avatar.jpg" />
+	<?php
+		$user_data = $this->session->userdata('user_data');
+	?>
+    <div id="profile-bar-avatar">
+		<?=modules::run('common/profile_picture','',$user_data['user_id']);?>
+    </div>
 </div>
 <ul>
     <li><a title="Dashboard" href=""><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li><li class="li-seprator">|</li>

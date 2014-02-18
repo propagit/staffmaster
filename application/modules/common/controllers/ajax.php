@@ -20,4 +20,10 @@ class Ajax extends MX_Controller {
 		$data['venue'] = modules::run('attribute/venue/get_venue', $venue_id);
 		$this->load->view('map', isset($data) ? $data : NULL);
 	}
+	
+	function reload_avatar()
+	{
+		$loggedin_user = $this->session->userdata('user_data');
+		echo modules::run('common/profile_picture','',$loggedin_user['user_id']);	
+	}
 }

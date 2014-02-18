@@ -13,13 +13,13 @@
 <div id="picture_photo"></div>
 
 
-<!-- Add Venue Modal -->
+<!-- Add Staff Picture Modal -->
 <div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="addImageLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-				<h4 class="modal-title">Add Venue</h4>
+				<h4 class="modal-title">Add Photo</h4>
 			</div>
             <div class="col-md-12">
                 <div class="modal-body">
@@ -44,9 +44,50 @@ function load_picture(user_id)
 		type: "POST",
 		url: "<?=base_url();?>staff/ajax/load_picture",
 		data: {user_id: user_id},
-		success: function(html) {			
+		success: function(html) {		
 			loaded($('#picture_photo'), html);
 		}
 	})
+}
+
+function update_avatar(user_id)
+{
+	$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>common/ajax/reload_avatar',
+		data:{user_id:user_id},
+		success: function(html) {
+			$('#profile-bar-avatar').html(html);
+		}
+	});		
+}
+
+function set_hero(photo_id)
+{
+	$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>staff/ajax/set_hero_photo',
+		data:{user_staff_picture_id:photo_id,user_id:<?=$staff['user_id'];?>},
+		success: function(html) {
+			update_avatars();
+		}
+	});		
+}
+function update_staff_edit_page_avatar(user_staff_id)
+{
+	$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>staff/ajax/reload_staff_edit_page_avatar',
+		data:{user_id:user_staff_id},
+		success: function(html) {
+			$('#staff-edit-page-avatar').html(html);
+		}
+	});	
+}
+function update_avatars()
+{
+	load_picture(<?=$staff['user_id'];?>);
+	update_avatar(<?=$staff['user_id'];?>);
+	update_staff_edit_page_avatar(<?=$staff['user_id'];?>);	
 }
 </script>

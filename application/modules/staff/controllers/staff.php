@@ -495,8 +495,12 @@ class Staff extends MX_Controller {
 	
 	
 	
-		/**
-	
+	/**
+	*	@name: upload_custom_document
+	*	@desc: Uploads document that has been created using the custom attributes.
+	*	@access: public
+	*	@param: (file) data is posted 
+	*	@return: redirect to staff profile 
 	*/
 	function upload_custom_document()
 	{
@@ -543,6 +547,13 @@ class Staff extends MX_Controller {
 		redirect('staff/edit/'.$user_staff_id);
 	}
 	
+	/**
+	*	@name: delete_custom_document
+	*	@desc: Delete custom documents
+	*	@access: public
+	*	@param: int(staff custom attribute id)
+	*	@return: redirect to staff profile 
+	*/
 	function delete_custom_document($staffs_custom_attributes_id)
 	{
 		$file_details = $this->staff_model->get_staff_custom_attribute_by_id($staffs_custom_attributes_id);
@@ -554,9 +565,16 @@ class Staff extends MX_Controller {
 		$this->session->set_flashdata('load_document_tab',true);
 		redirect('staff/edit/'.$staff_user_id);
 	}
-	
+	/**
+	*	@name: _create_folders
+	*	@desc: Creates folder for documents
+	*	@access: private
+	*	@param: (string) path of the folder, (string) salt, (array) array of subfolders if applicable
+	*	@return: returns the folder name to the control that called this function
+	*/
 	function _create_folders($path,$salt,$subfolders = null)
-	{
+	{	
+		//create staff specific folders
 		if($path && $salt){
 			$newfolder = md5($salt);
 			$dir = $path."/".$newfolder;
@@ -587,7 +605,13 @@ class Staff extends MX_Controller {
 		}
 		
 	}
-	
+	/**
+	*	@name: _delete_document
+	*	@desc: Deletes custom documents
+	*	@access: private
+	*	@param: (string) folder name, (string) file name
+	*	@return: null
+	*/
 	function _delete_document($folder,$document_name)
 	{
 		if($document_name && $folder){
@@ -598,4 +622,22 @@ class Staff extends MX_Controller {
 			}
 		}
 	}
+	
+	/**
+	*	@name:get_staff_gender
+	*	@desc: Returns the gender of the staff
+	*	@access: public
+	*	@param: (int) user id
+	*	@returns (string) m or f
+	*		
+	*/
+	function get_staff_gender($user_id)
+	{
+		$staff = $this->staff_model->get_staff($user_id);	
+		if($staff){
+			return $staff['gender'];	
+		}
+	}
+	
+	
 }

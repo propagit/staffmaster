@@ -370,6 +370,15 @@ class Ajax extends MX_Controller {
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
+		$dirs_thumb2 = $dir.'/thumbnail2';
+		if(!is_dir($dirs_thumb2))
+		{
+		  mkdir($dirs_thumb2);
+		  chmod($dirs_thumb2,0777);
+		  $fp = fopen($dirs_thumb2.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
 		
 		$config['upload_path'] = $dir;
 		$config['allowed_types'] = 'gif|jpg|png';
@@ -395,16 +404,21 @@ class Ajax extends MX_Controller {
 				'user_id' => $user_id,
 				'name' => $file_name,
 				'modified' => date('Y-m-d H:i:s'),
-				'hero' =>0										
+				'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)									
 			);
 			$this->load->model('common/common_model');
 			$this->common_model->add_picture($photo);
-			$new_width=220;		
-			$new_height=220;		
+			$new_width=216;		
+			$new_height=216;		
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;
-			//echo $target.'<br>';
 			$this->scale_image($target,$target,$new_width,$new_height);	
+			//create thumbnail 2 
+			$thumb2_width = 72;
+			$thumb2_height = 72;
+			copy($dir.'/'.$file_name, $dirs_thumb2."/".$file_name);
+			$target_thumb2 = $dirs_thumb2."/".$file_name;
+			$this->scale_image($target_thumb2,$target_thumb2,$thumb2_width,$thumb2_height);
 		}
 	}
 	function scale_image($image,$target,$thumbnail_width,$thumbnail_height)
@@ -494,6 +508,25 @@ class Ajax extends MX_Controller {
 		echo 'success';
 	}
 	
-
+	/**
+	*	@name: set_hero
+	*	@desc: Set hero image
+	*	@access: public
+	*	@param: (via POST) user_staff_picture_id
+	*	
+	*/
+	function set_hero_photo()
+	{
+		$user_staff_picture_id = $this->input->post('user_staff_picture_id',true);
+		$user_id = $this->input->post('user_id',true);
+		$this->staff_model->uset_hero($user_id);
+		echo $this->staff_model->update_user_staff_picture($user_staff_picture_id,array('hero'=> 1));
+	}
+	
+	function reload_staff_edit_page_avatar()
+	{
+		$staff_user_id = $this->input->post('user_id',true);
+		echo modules::run('common/profile_picture','',$staff_user_id);
+	}
 	
 }

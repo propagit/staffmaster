@@ -27,10 +27,11 @@
 <script>
 $(function(){
 	$('#uploadForm').submit(function(){
-		$(this).ajaxSubmit();
+		$(this).ajaxSubmit(function(){
+			update_avatars();		
+		});
 		$('#addImage').modal('hide');		
-		load_picture(<?=$user_id;?>);
 		return false;
-	})
+	});
 })
 </script>

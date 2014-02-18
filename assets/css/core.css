@@ -41,16 +41,27 @@ a:hover {
 	box-shadow: 0 1px 3px #1e1e1e;
 	-webkit-box-shadow: 0 1px 3px #1e1e1e;
 	-moz-box-shadow: 0 1px 3px #1e1e1e;
+	border-radius: 4px;
 }
-/* begin - profile bar */
-.avatar{ 
-	
-}
-.avatar img{ 
+.default-avatar-photo{ 
 	box-shadow: 0 1px 3px #1e1e1e;
 	-webkit-box-shadow: 0 1px 3px #1e1e1e;
 	-moz-box-shadow: 0 1px 3px #1e1e1e;
+	height: 72px;
+	width: 72px;
+	margin-top: 28px;
+	text-align: center;
+	line-height: 72px;
+	background-color:#fff;
 }
+.default-avatar-photo > .fa{ 
+	line-height: 72px;
+	color: #00bbf8;
+	text-align: center;
+	display: inline-block;
+	font-size: 48px;
+}
+
 
 .profile-menu{
 	float:right;	
@@ -868,7 +879,6 @@ a:hover {
 	margin-top: -3px;
 	width: 55px;
 }
-
 
 
 @media(max-width:1200px){

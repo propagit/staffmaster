@@ -644,7 +644,7 @@ class Common extends MX_Controller {
 	{		
 		
 		$staff = $this->staff_model->get_staff($field_value);
-		$photo = $this->staff_model->get_hero($staff['staff_id']);
+		$photo = $this->staff_model->get_hero($field_value);
 		$data['staff'] = $staff;
 		$data['photo'] = $photo;
 

@@ -1,8 +1,15 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Edit Staff</h2>
-		 <p>Edit staff using below form.</p>
+    	 <div id="staff-edit-page-avatar">
+			<?=modules::run('common/profile_picture','',$staff['user_id']);?>
+   		 </div>
+         <div class="staff-profile-bar-box">
+             <h2><?=$staff['title'].'. '.$staff['first_name'].' '.$staff['last_name'];?></h2>
+             <div id="wp_rating">
+                <?=modules::run('common/field_rating', 'rating', $staff['rating']);?>
+             </div>
+        </div>
     </div>
 </div>
 <!--end top box-->

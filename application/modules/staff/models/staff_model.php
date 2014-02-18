@@ -95,6 +95,14 @@ class Staff_model extends CI_Model {
 		$query = $this->db->get('user_staff_picture');
 		return $query->first_row('array');
 	}
+	function has_hero_image($user_id)
+	{
+		$hero = $this->get_hero($user_id);
+		if($hero){
+			return true;	
+		}
+		return false;
+	}
 	/**
 	*	@name: get_total_staffs_count
 	*	@desc: Returns total staff based on status. If status is not passed it returns the total staffs
@@ -311,5 +319,20 @@ class Staff_model extends CI_Model {
 	{
 		$sql = "delete from staffs_custom_attributes where staffs_custom_attributes_id = ".$staffs_custom_attributes_id;
 		return $this->db->query($sql);
+	}
+	/**
+	*	@name: delete_staff_custom_attributes_by_id
+	*	@desc: Delete custom attributes of a staff by delete_staff_custom_attributes_by_id
+	*	@access: public
+	*	@param: (int) delete_staff_custom_attributes_by_id
+	*	@return: null
+	*/
+	function update_user_staff_picture($user_staff_picture_id,$data)
+	{
+		return $this->db->where('id',$user_staff_picture_id)->update('user_staff_picture',$data);	
+	}
+	function uset_hero($user_id)
+	{
+		$this->db->where('user_id',$user_id)->update('user_staff_picture',array('hero' => 0));
 	}
 }
