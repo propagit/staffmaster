@@ -2,7 +2,7 @@
 <table class="table table-bordered table-hover table-middle">
 	<thead>
 	<tr>
-		<th class="center" width="20"><input type="checkbox" /></th>
+		<th class="center" width="20"><input type="checkbox" id="select_all_checkboxes" /></th>
 		<th class="center" width="65">From</th>
 		<th class="center" width="65">To</th>
 		<th colspan="3">Staff</th>
@@ -26,40 +26,61 @@
 
 <script>
 var previous_user_id = null;
+var payrun_staffs = new Array();
+$(function(){
+	$('#select_all_checkboxes').click(function(){
+		payrun_staffs.length = 0;
+		$('input[type="checkbox"]').prop('checked', this.checked);
+		$('input[name="payrun_staff"]').each(function(i, e) {
+			payrun_staffs.push($(this).val());
+		});
+		select_payrun_staffs(payrun_staffs);
+	});
+})
+function select_payrun_staffs(payrun_staffs) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/select_payrun_staffs",
+		data: {payrun_staffs: payrun_staffs},
+		success: function(html) {
+			alert(html);
+		}
+	})
+}
 function refresh_row_timesheets_staff(user_id) {
+	var expanded = 0;
+	if ($('.timesheets_staff_' + user_id).length) {
+		expanded = 1;
+	}
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/row_timesheets_staff",
-		data: {user_id: user_id},
+		data: {user_id: user_id,expanded: expanded},
 		success: function(html) {
 			$('#timesheets_staff_' + user_id).html(html);
 		}
 	})
 }
-
+function refresh_row_timesheet(timesheet_id, user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/row_timesheet",
+		data: {timesheet_id: timesheet_id, user_id: user_id},
+		success: function(html) {
+			$('#timesheet_' + timesheet_id).replaceWith(html);
+		}
+	})
+}
 function process_staff_payruns(user_id) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/process_staff_payruns",
 		data: {user_id: user_id},
-		success: function(html) {			
-			$('#timesheets_staff_' + user_id).find('.btn-yes').addClass('btn-success');
-			$('#timesheets_staff_' + user_id).find('.btn-no').removeClass('btn-danger');
-			$('#timesheets_staff_' + user_id).find('.btn-no').addClass('btn-default');
-			refresh_row_timesheets_staff(user_id);
-			get_payrun_stats();
-		}
-	})
-}
-function process_payrun(obj,timesheet_id,user_id) {
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>payrun/ajax/process_payrun",
-		data: {timesheet_id: timesheet_id},
-		success: function(html) {
-			$(obj).addClass('btn-success');
-			$(obj).parent().find('.btn-no').removeClass('btn-danger');
-			$(obj).parent().find('.btn-no').addClass('btn-default');
+		success: function(data) {
+			data = $.parseJSON(data);
+			for(var i=0; i < data.length; i++) {
+				refresh_row_timesheet(data[i], user_id);
+			}
 			refresh_row_timesheets_staff(user_id);
 			get_payrun_stats();
 		}
@@ -70,26 +91,36 @@ function unprocess_staff_payruns(user_id) {
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/unprocess_staff_payruns",
 		data: {user_id: user_id},
-		success: function(html) {
-			$('#timesheets_staff_' + user_id).find('.btn-no').addClass('btn-danger');
-			$('#timesheets_staff_' + user_id).find('.btn-yes').removeClass('btn-success');
-			$('#timesheets_staff_' + user_id).find('.btn-yes').addClass('btn-default');
+		success: function(data) {
+			data = $.parseJSON(data);
+			for(var i=0; i < data.length; i++) {
+				refresh_row_timesheet(data[i], user_id);
+			}
 			refresh_row_timesheets_staff(user_id);
 			get_payrun_stats();
 		}
 	})
-	
 }
-function unprocess_payrun(obj,timesheet_id,user_id) {
+function process_payrun(timesheet_id,user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/process_payrun",
+		data: {timesheet_id: timesheet_id},
+		success: function(html) {
+			refresh_row_timesheets_staff(user_id);
+			refresh_row_timesheet(timesheet_id, user_id);
+			get_payrun_stats();
+		}
+	})
+}
+function unprocess_payrun(timesheet_id,user_id) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/unprocess_payrun",
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
-			$(obj).addClass('btn-danger');
-			$(obj).parent().find('.btn-yes').removeClass('btn-success');
-			$(obj).parent().find('.btn-yes').addClass('btn-default');
 			refresh_row_timesheets_staff(user_id);
+			refresh_row_timesheet(timesheet_id, user_id);
 			get_payrun_stats();
 		}
 	})
@@ -97,7 +128,7 @@ function unprocess_payrun(obj,timesheet_id,user_id) {
 function expand_staff_timehsheets(user_id) {
 	if (previous_user_id)
 	{
-		//collapse_staff_timesheets(previous_user_id);
+		collapse_staff_timesheets(previous_user_id);
 	}
 	$('.timesheets_staff_' + user_id).html('');	
 	$.ajax({
@@ -122,7 +153,6 @@ function expand_staff_timehsheets(user_id) {
 		}
 	});
 }
-
 function collapse_staff_timesheets(user_id) {
 	$('.timesheets_staff_' + user_id).remove();
 	$('#timesheets_staff_' + user_id).removeClass('row-open');
@@ -139,8 +169,8 @@ function revert_staff_payruns(user_id) {
 				url: "<?=base_url();?>payrun/ajax/revert_staff_payruns",
 				data: {user_id: user_id},
 				success: function(html) {
-					unprocess_payrun(user_id);
 					$('#timesheets_staff_' + user_id).remove();
+					$('.timesheets_staff_' + user_id).remove();
 				}
 			})
 		 }
@@ -157,7 +187,8 @@ function revert_payrun(user_id,timesheet_id) {
 				url: "<?=base_url();?>payrun/ajax/revert_payrun",
 				data: {timesheet_id: timesheet_id},
 				success: function(html) {
-					expand_staff_timehsheets(user_id);
+					$('#timesheets_' + timesheet_id).remove();
+					refresh_row_timesheets_staff(user_id);
 				}
 			})
 		 }

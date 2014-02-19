@@ -52,6 +52,20 @@ class Payrun extends MX_Controller {
 	}
 	
 	/**
+	*	@name: row_timesheet
+	*	@desc: load the row (tr) of single timesheet
+	*	@access: public
+	*	@param: (int) $timesheet_id
+	*			(int) $user_id
+	*	@return: (html) row (tr) content of single timesheet
+	*/
+	function row_timesheet($timesheet_id, $user_id) {
+		$data['timesheet'] = $this->payrun_model->get_timesheet($timesheet_id);
+		$data['user_id'] = $user_id;
+		$this->load->view('timesheet_row', isset($data) ? $data : NULL);
+	}
+	
+	/**
 	*	@name: row_timesheets_staff
 	*	@desc: load the rows (tr) of all timesheets of a specified staff
 	*	@access: public
@@ -60,9 +74,10 @@ class Payrun extends MX_Controller {
 	*/
 	function row_timesheets_staff($user_id) 
 	{
-		$data['user_id'] = $user_id;
-		$data['timesheets'] = $this->payrun_model->get_staff_timesheets($user_id);
-		return $this->load->view('timesheets_staff_row', isset($data) ? $data : NULL, true);
+		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
+		foreach($timesheets as $timesheet) {
+			$this->row_timesheet($timesheet['timesheet_id'], $user_id);
+		}
 	}
 	
 	/**

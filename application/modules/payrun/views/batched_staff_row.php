@@ -20,7 +20,7 @@ foreach($staff_timesheets as $timesheet) {
 		$processed++;
 	}
 } ?>
-	<td class="center"><input type="checkbox" /></td>
+	<td class="center"><input type="checkbox" name="payrun_staff" value="<?=$staff['user_id'];?>" /></td>
 	<td class="wp-date" width="70">
 		<span class="wk_day"><?=date('D', $from_date);?></span>
 		<span class="wk_date"><?=date('d', $from_date);?></span>
@@ -35,7 +35,16 @@ foreach($staff_timesheets as $timesheet) {
 	<td class="center"><?=$staff['state'];?></td>
 	<td class="center"><?=$total_minutes / 60;?></td>
 	<td class="center">$<?=$total_amount;?></td>
-	<td class="center"><?=count($staff_timesheets);?> (<?=$processed;?>)</td>
+	<td class="center">
+		<? if (count($staff_timesheets) == $processed) { ?>
+		<span class="badge success"><?=$processed;?></span>
+		<? } else if($processed == 0) { ?>
+		<span class="badge danger"><?=count($staff_timesheets);?></span> 
+		<? } else { ?>
+		<span class="badge danger"><?=count($staff_timesheets) - $processed;?></span> 
+		<span class="badge success"><?=$processed;?></span>
+		<? } ?>
+	</td>
 	<td class="center">
 		<div class="btn-group">
 		<? if ($processing) { ?>

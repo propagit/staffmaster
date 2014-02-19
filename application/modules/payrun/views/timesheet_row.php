@@ -1,6 +1,5 @@
-<? foreach($timesheets as $timesheet) { ?>
-<tr class="success timesheets_staff_<?=$user_id;?>">
-	<td class="center"><input type="checkbox" /></td>
+<tr class="success timesheets_staff_<?=$user_id;?>" id="timesheet_<?=$timesheet['timesheet_id'];?>">
+	<td class="center"><input type="checkbox" name="payrun_timesheet" value="<?=$timesheet['timesheet_id'];?>" /></td>
 	<td class="wp-date" width="70">
 		<span class="wk_day"><?=date('D', $timesheet['start_time']);?></span>
 		<span class="wk_date"><?=date('d', $timesheet['start_time']);?></span>
@@ -25,11 +24,11 @@
 	<td class="center">
 		<div class="btn-group">
 			<? if ($timesheet['status'] == TIMESHEET_PROCESSING) { ?>
-			<button type="button" onclick="process_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-success btn-yes">Yes</button>
-			<button type="button" onclick="unprocess_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-default btn-no">No</button>
+			<button type="button" onclick="process_payrun(<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-success btn-yes">Yes</button>
+			<button type="button" onclick="unprocess_payrun(<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-default btn-no">No</button>
 			<? } else { ?>
-			<button type="button" onclick="process_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-default btn-yes">Yes</button>
-			<button type="button" onclick="unprocess_payrun(this,<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-danger btn-no">No</button>
+			<button type="button" onclick="process_payrun(<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-default btn-yes">Yes</button>
+			<button type="button" onclick="unprocess_payrun(<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-danger btn-no">No</button>
 			<? } ?>
 		</div>
 	</td>
@@ -38,7 +37,5 @@
 		<a onclick="revert_payrun(<?=$timesheet['staff_id'];?>,<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a>
 		<? } ?>
 	</td>
-	<td></td>
-	
+	<td></td>	
 </tr>
-<? } ?>
