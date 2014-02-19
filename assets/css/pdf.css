@@ -1,0 +1,49 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic);
+html,
+body {
+	height: 100%;
+	font-family: 'Lato', sans-serif;
+	font-size: 10px;
+}
+
+h1{font-size:22px;font-weight:900!important;font-family: 'Lato', sans-serif;}
+h2{font-size:18px;font-weight:700!important;;font-family: 'Lato', sans-serif;}
+.line{ 
+	
+	border-bottom: 1px dashed #231F20;   
+	height : 1px;
+	margin-bottom:20px;
+}
+.black{
+	font-weight:900;font-family: 'Lato', sans-serif;
+}
+.bold{
+	font-weight:700;font-family: 'Lato', sans-serif;
+}
+.padding-left-15{
+	padding-left:15px;
+}
+.padding-left-10{
+	padding-left:12px;
+}
+.charge-box-header{
+	background-color:#0AC0F1;
+}
+.charge-box-header-td{
+	height:40px; line-height:40px; width:450px;text-align:left;color:#fff; padding-left:15px;
+}
+.charge-box-detail{
+	background-color:#CCC;height:200px;width:450px;
+}
+.charge-box-detail-td{
+	padding:12px; color:#4D4D4F;
+}
+.charge-box-line{
+border-top:1px dashed #231F20;border-bottom:1px dashed #231F20;  padding-top:10px;padding-bottom:10px;
+}
+table{
+	font-family: 'Lato', sans-serif;
+}
+.expense-break{
+	padding-top:5px; padding-bottom:5px;
+}

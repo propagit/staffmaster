@@ -98,4 +98,42 @@ class Profile extends MX_Controller {
 		$this->user_model->delete_user($user_id);
 		redirect('profile');
 	}
+	
+	/**
+	*	@name: create_pdf
+	*	@desc: function to create pdf for invoice - templating stage
+	*	@access: public
+	*	@param: 
+	*	@return: .pdf 
+	*/
+	function create_pdf()
+	{
+		//http://davidsimpson.me/2013/05/19/using-mpdf-with-codeigniter/
+		// As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
+		$filename="invoice";
+		$pdfFilePath = "./uploads/pdf/$filename.pdf";
+		
+		$data['page_title'] = 'Hello world'; // pass data to the view
+		 
+		if (file_exists($pdfFilePath) == FALSE)
+		{
+			ini_set('memory_limit','32M'); // boost the memory limit if it's low 
+			$html = $this->load->view('pdf_report', $data, true); // render the view into HTML
+			$html_footer = $this->load->view('pdf_report_footer', $data, true); 
+			$html_page2 = $this->load->view('pdf_report_page2', $data, true); 
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load(); 
+			//$pdf->SetFooter('|{PAGENO}|'.date(DATE_RFC822)); // Add a footer for measurement control
+			//$pdf->SetHTMLFooter($html_footer);
+			$stylesheet = file_get_contents('./assets/css/pdf.css');
+			$pdf->WriteHTML($stylesheet,1);
+			$pdf->WriteHTML($html,2);
+			//$pdf->AddPage();
+			//$pdf->WriteHTML($html_page2,3);
+			$pdf->Output($pdfFilePath, 'F'); // save to file 
+		}
+		 
+		redirect("./uploads/pdf/$filename.pdf"); 
+	}
+	
 }
