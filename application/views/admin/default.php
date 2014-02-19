@@ -61,6 +61,19 @@
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<?=base_url();?>assets/js/core.admin.js" type="text/javascript" charset="utf-8"></script>
+    
+    <!--flex slider2-->
+    <link href="<?=base_url();?>assets/flex-slider/flexslider.css" rel="stylesheet" media="screen" type="text/css" />
+	<script src="<?=base_url();?>assets/flex-slider/jquery.flexslider-min.js"></script>
+    
+    <!--magnific popup-->
+    <link href="<?=base_url()?>assets/lightbox/magnific-popup.css" rel="stylesheet" media="screen">
+    <script src="<?=base_url()?>assets/lightbox/jquery.magnific-popup.min.js"></script>
+    
+    <!--jrating-->
+    <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
+	<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
+
 </head>
 <body>
 <header>

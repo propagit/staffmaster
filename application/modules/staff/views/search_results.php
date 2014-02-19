@@ -2,52 +2,60 @@
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($staffs);?></b> results</p>
 <? if(isset($staffs)) { ?>
-	<div class="panel-heading panel-heading-mid"></div>
-	<div class="panel-body">
-		<div class="pull-right">
-			<a href="#"><b><i class="icon-sort-by-alphabet"></i> Sort By Name</b></a>
-		</div>
-		<ul class="pagination">
-			<li><a href="#">&laquo;</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li><a href="#">&raquo;</a></li>
-		</ul>
-		<div class="clearfix"></div>
-		<? foreach($staffs as $staff) {
-			$photo = $this->staff_model->get_hero($staff['staff_id']);
-			if(count($photo)>0)
-			{
-				$thumb_src = base_url().'uploads/staff/profile/'.md5($staff['staff_id']).'/thumbnail/'.$photo['name'];
-				$class="resize";
-			}
-			else
-			{
-				$thumb_src = base_url().'assets/img/dummy/default-avatar.png';
-				$photo['name'] = "Use Avatar";
-				$class='normal';
-			}
-		 ?>
-		<div class="staff_search_profile">
-			<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>">
-            <div class="profile_photo">
-				<img class="<?=$class?>" src="<?=$thumb_src;?>" title="<?=$staff['first_name'].' '.$staff['last_name']?>" alt="<?=$photo['name']?>" />
-			</div>
-            </a>
-			<b><?=$staff['first_name'] . '</b><br />' . $staff['last_name'];?></b>
-            
-			<div class="rating">
-				<span class="star"></span>
-				<span class="star"></span>
-				<span class="star"></span>
-				<span class="star"></span>
-				<span class="star"></span>
-			</div>
-		</div>
-		<? } ?>
-		<div class="clearfix"></div>
-	</div>
-	<? } ?>
+
+	 <table class="table table-bordered table-hover table-middle">
+        <thead>
+        <tr class="heading">
+            <th class="center"><input type="checkbox" /></th>
+            <th class="center">Photo</th>
+            <th class="left col-md-2">Name</th>
+            <th class="left col-md-2">Group</th>
+            <th class="center col-md-1">State</th>
+            <th class="center col-md-1">Rating</th>
+            <th class="center col-md-2">Hours Worked (week)</th>
+			<th class="center col-md-2">Hours Worked (all)</th>
+            <th class="center col-md-1">Status</th>
+            <th class="center col-md-1">View</th>
+        	<th class="center col-md-1">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+            <? 
+				foreach($staffs as $staff) {
+				$photo = $this->staff_model->get_hero($staff['user_id']);
+			 ?>
+            <tr>
+                <td class="center"><input type="checkbox" /></td>
+                <td class="center">
+                <a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>">
+                <div class="search-staff-avatar-img">
+                	<?=modules::run('common/profile_picture','',$staff['user_id']);?>
+                 </div>    
+                </a>
+            	</td>
+                <td class="left"><?=$staff['first_name'].' '.$staff['last_name'];?></td>
+                <td class="left">Group</td>
+                <td class="center">State</td>
+                <td class="center">
+                <?php
+					$rating_class = 'wp-rating-'.$staff['user_id'];
+					$selector = 'basic-'.$staff['user_id'];
+				?>
+                <div class="<?=$rating_class;?>">
+                <?=modules::run('common/field_rating', 'rating_'.$staff['user_id'], $staff['rating'],false,$selector,$rating_class,true,$staff['user_id']);?>
+                </div>
+                </td>
+                <td class="center">Hours Worked (week)</td>
+                <td class="center">Hours Worked (all)</td>
+                <td class="center">Status</td>
+                <td class="center"><a  href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><i class="fa fa-eye"></i></a></td>
+                <td class="center"><i class="fa fa-times"></i></td>
+            </tr>
+            <? } }?>
+        </tbody>
+    </table>
+
+
+
+
+	

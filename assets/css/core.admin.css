@@ -47,7 +47,15 @@ a.default {
 	border-color: #666; 
 	color: white; 
 }
-
+.flexslider{
+	padding:10px !important;	
+}
+.flex-li{
+	cursor:pointer;
+}
+.staff-profile-hero-wrap{
+	margin-bottom:20px;	
+}
 /* Styles for staff profile photo */
 .photo_staff {
 	border: 1px solid #ccc;
@@ -240,7 +248,12 @@ a.default {
 	opacity:0.5; 
 	display:none;
 }
-.action_image :hover{display:block;line-height:35px;}
+.action_image :hover{
+	color: #00bbf8;	
+}
+.hero-img{
+	color:#f00;	
+}
 .gallery_staff{
 	border:1px solid #cdcdcd;
     padding:15px;
@@ -291,7 +304,7 @@ a.default {
 	display:inline-block;
 	float:left;	
 }
-#staff-edit-page-avatar .profile_photo img{
+.profile_photo img{
 	box-shadow:3px 3px 3px #ccc;
 	-webkit-box-shadow: 3px 3px 3px #ccc;
 	-moz-box-shadow: 3px 3px 3px #ccc;
@@ -307,6 +320,15 @@ a.default {
 	-moz-box-shadow: 3px 3px 3px #ccc;
 	border-radius: 4px;	
 	margin-top:0;
+}
+.picture-box:hover .action_image{
+	display:block;
+}
+.grey-star .jStar{
+	background-image:url(../js/rating/img/stars-grey.png) !important;	
+}
+.grey-star .basic{
+	background-color:#fff;	
 }
 
 /* style for staff availability */
@@ -404,6 +426,9 @@ a.default {
 	.message-badge{
 		right:55px;	
 	}
+	.mobile-tab{
+		width:100%;	
+	}
 }
 
 @media (max-width:320px){
@@ -455,4 +480,22 @@ a.default {
 .error{
 	border-color:#F00;	
 }
-
+.search-staff-avatar-img .profile_photo{
+	width:45px;
+	height:45px;
+	margin-right:0;	
+}
+.search-staff-avatar-img img{
+	height:45px;
+	width:45px;
+}
+.search-staff-avatar-img .default-avatar-photo{
+	height:45px;
+	width:45px;
+	margin-top:0;
+	line-height:45px;
+}
+.search-staff-avatar-img .default-avatar-photo .fa{
+	font-size: 35px;
+	line-height: 45px;	
+}

@@ -57,14 +57,15 @@ class Ajax extends MX_Controller {
 		$this->user_model->update_user($data['user_id'], $user_data);
 		$staff_data = array(
 			'external_staff_id' => $data['external_staff_id'],
-			'rating' => $data['rating'],
+			'rating' => $data['profile_rating'],
 			'gender' => $data['gender'],
 			#'dob' => $data['dob_day'] . '-' . $data['dob_month'] . '-' . $data['dob_year'],
 			'emergency_contact' => $data['emergency_contact'],
 			'emergency_phone' => $data['emergency_phone'],
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
-		echo modules::run('common/field_rating', 'rating', $data['rating']);
+		//echo modules::run('common/field_rating', 'rating', $data['rating']);
+		echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],false,'basic','wp-rating',true,$data['user_id']);
 	}
 	
 	function update_financial()
@@ -523,12 +524,38 @@ class Ajax extends MX_Controller {
 		echo $this->staff_model->update_user_staff_picture($user_staff_picture_id,array('hero'=> 1));
 	}
 	
+	/**
+	*	@name: set_hero
+	*	@desc: Set hero image
+	*	@access: public
+	*	@param: (via POST) user id
+	*	
+	*/
+	function unset_hero_photo()
+	{
+		$user_id = $this->input->post('user_id',true);
+		$this->staff_model->uset_hero($user_id);
+		echo $this->staff_model->update_user_staff_picture($user_staff_picture_id,array('hero'=> 1));
+	}
+	/**
+	*	@name: reload_staff_edit_page_avatar
+	*	@desc: Reloads profile avatars whenever an update to profile image is made
+	*	@access: public
+	*	@param: (via POST) user id
+	*	@return: Reloads staff profile avatars
+	*/
 	function reload_staff_edit_page_avatar()
 	{
 		$staff_user_id = $this->input->post('user_id',true);
 		echo modules::run('common/profile_picture','',$staff_user_id);
 	}
-	
+	/**
+	*	@name: delete_photo
+	*	@desc: Delete staff photo
+	*	@access: public
+	*	@param: (via POST) photo id
+	*	
+	*/
 	function delete_photo()
 	{
 		$photo_id = $this->input->post('photo_id',true);
@@ -542,6 +569,25 @@ class Ajax extends MX_Controller {
 		}else{
 			echo 'failed';
 		}
+	}
+	/**
+	*	@name: update_ratings
+	*	@desc: Update rating
+	*	@access: public
+	*	@param: (via POST) field name of the rating to populate back, user id, ajax reload container, new rating
+	*	
+	*/
+	function update_ratings()
+	{
+		$field_name = $this->input->post('field_name',true);
+		$user_id = $this->input->post('user_id',true);
+		$ajax_reload_container = $this->input->post('ajax_reload_container',true);
+		$selector = $this->input->post('selector',true);
+		$new_rating = $this->input->post('new_rating',true);
+		$data = array('rating' => $new_rating);
+		$this->staff_model->update_staff($user_id,$data);
+		
+		echo modules::run('common/field_rating', $field_name, $new_rating,false,$selector,$ajax_reload_container,true,$user_id);
 	}
 	
 }
