@@ -12,7 +12,9 @@
 		<th class="center">Time Sheets</th>
 		<th class="center">Add to Pay Run</th>
 		<th class="center" width="40">Revert</th>
-		<th class="center" width="40">Expand</th>
+		<th class="center" width="40">
+			<a onclick="expand_all(this)"><i class="fa fa-plus-square-o"></i></a>
+		</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -25,25 +27,35 @@
 </table>
 
 <script>
-var previous_user_id = null;
-var payrun_staffs = new Array();
 $(function(){
 	$('#select_all_checkboxes').click(function(){
-		payrun_staffs.length = 0;
 		$('input[type="checkbox"]').prop('checked', this.checked);
-		$('input[name="payrun_staff"]').each(function(i, e) {
-			payrun_staffs.push($(this).val());
-		});
-		select_payrun_staffs(payrun_staffs);
+		$('input.payrun_staff').each(function(i, e) {
+			select_payrun_staff($(this).val(), this.checked);
+		});		
 	});
+	
+	$('.payrun_staff').click(function(){
+		var user_id = $(this).val();
+		var checked = $(this).is(':checked');
+		$('.timesheets_staff_' + user_id).find('.payrun_timesheet').prop('checked', this.checked);
+		select_payrun_staff(user_id, checked);
+	})
 })
-function select_payrun_staffs(payrun_staffs) {
+
+function select_payrun_staff(user_id, checked) {
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>payrun/ajax/select_payrun_staffs",
-		data: {payrun_staffs: payrun_staffs},
+		url: "<?=base_url();?>payrun/ajax/select_payrun_staff/" + user_id + "/" + checked,
 		success: function(html) {
-			alert(html);
+		}
+	})
+}
+function select_payrun_timesheet(timesheet_id, checked) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/select_payrun_timesheet/" + timesheet_id + "/" + checked,
+		success: function(html) {
 		}
 	})
 }
@@ -59,7 +71,13 @@ function refresh_row_timesheets_staff(user_id) {
 		success: function(html) {
 			$('#timesheets_staff_' + user_id).html(html);
 		}
-	})
+	}).done(function() {
+		$('.payrun_staff').click(function(){
+			var user_id = $(this).val();
+			alert(user_id);
+			$('.timesheets_staff_' + user_id).find('.payrun_timesheet').prop('checked', this.checked);
+		})
+	});
 }
 function refresh_row_timesheet(timesheet_id, user_id) {
 	$.ajax({
@@ -125,19 +143,29 @@ function unprocess_payrun(timesheet_id,user_id) {
 		}
 	})
 }
+function expand_all(obj) {
+	<? foreach($staffs as $staff) { ?>
+	expand_staff_timehsheets(<?=$staff['user_id'];?>);
+	<? } ?>
+	$('body').scrollTo('#timesheets_staff_' + <?=$staffs[0]['user_id'];?>, 500 );
+	$(obj).attr('onclick','collapse_all(this)');
+	$(obj).html('<i class="fa fa-minus-square-o"></i>');
+}
+function collapse_all(obj) {
+	<? foreach($staffs as $staff) { ?>
+	collapse_staff_timesheets(<?=$staff['user_id'];?>);
+	<? } ?>
+	$(obj).attr('onclick','expand_all(this)');
+	$(obj).html('<i class="fa fa-plus-square-o"></i>');
+}
 function expand_staff_timehsheets(user_id) {
-	if (previous_user_id)
-	{
-		collapse_staff_timesheets(previous_user_id);
-	}
 	$('.timesheets_staff_' + user_id).html('');	
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/expand_staff_timehsheets",
 		data: {user_id: user_id},
 		success: function(data) {
-			$('body').scrollTo('#timesheets_staff_' + user_id, 500 );
-			previous_user_id = user_id;
+			
 			var data = $.parseJSON(data);
 			if (!data.children) {
 				$('#timesheets_staff_' + user_id).remove();
@@ -151,8 +179,19 @@ function expand_staff_timehsheets(user_id) {
 			}
 			
 		}
+	}).done(function(data) {
+		$('input.payrun_timesheet').click(function(){
+			select_payrun_timesheet($(this).val(), $(this).is(':checked'));
+		});
+		$('.payrun_staff').click(function(){
+			var user_id = $(this).val();
+			var checked = $(this).is(':checked');
+			$('.timesheets_staff_' + user_id).find('.payrun_timesheet').prop('checked', this.checked);
+			select_payrun_staff(user_id, checked);
+		})
 	});
 }
+	
 function collapse_staff_timesheets(user_id) {
 	$('.timesheets_staff_' + user_id).remove();
 	$('#timesheets_staff_' + user_id).removeClass('row-open');

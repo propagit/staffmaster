@@ -49,8 +49,26 @@ class Ajax extends MX_Controller {
 		$this->session->set_userdata('prf_' . $this->input->post('name'), $this->input->post('value'));
 	}
 	
-	function select_payrun_staffs() {
-		$this->session->set_userdata('payrun_staffs', $this->input->post());
+	function select_payrun_staff($user_id, $checked) {
+		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
+		foreach($timesheets as $timesheet) {
+			$this->select_payrun_timesheet($timesheet['timesheet_id'], $checked);
+		}
+	}
+	
+	function select_payrun_timesheet($timesheet_id, $checked) {
+		$timesheets = $this->session->userdata('payrun_timesheets');
+		if ($checked == "true") {
+			if (!in_array($timesheet_id, $timesheets)) {
+				$timesheets[] = $timesheet_id;
+			}
+		}
+		else {
+			if (in_array($timesheet_id, $timesheets)) {
+				unset($timesheets[array_search($timesheet_id, $timesheets)]);
+			}
+		}
+		$this->session->set_userdata('payrun_timesheets', $timesheets);
 	}
 	
 	/**

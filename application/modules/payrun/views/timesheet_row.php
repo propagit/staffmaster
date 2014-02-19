@@ -1,5 +1,7 @@
 <tr class="success timesheets_staff_<?=$user_id;?>" id="timesheet_<?=$timesheet['timesheet_id'];?>">
-	<td class="center"><input type="checkbox" name="payrun_timesheet" value="<?=$timesheet['timesheet_id'];?>" /></td>
+	<td class="center">
+		<input type="checkbox" class="payrun_timesheet" name="payrun_timesheets[]" value="<?=$timesheet['timesheet_id'];?>" <?=($checked) ? 'checked' : '';?> />
+	</td>
 	<td class="wp-date" width="70">
 		<span class="wk_day"><?=date('D', $timesheet['start_time']);?></span>
 		<span class="wk_date"><?=date('d', $timesheet['start_time']);?></span>

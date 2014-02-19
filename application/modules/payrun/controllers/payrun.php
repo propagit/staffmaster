@@ -45,9 +45,21 @@ class Payrun extends MX_Controller {
 	*	@return: (html) row (tr) content of batched timesheets of a specified staff
 	*/
 	function row_batched_staff($user_id, $expanded = false) {
-		$data['staff_timesheets'] = $this->payrun_model->get_staff_timesheets($user_id);
+		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
+		$data['staff_timesheets'] = $timesheets;
 		$data['staff'] = $this->staff_model->get_staff($user_id);
 		$data['expanded'] = $expanded;
+		$checked = false;
+		$payrun_timesheets = $this->session->userdata('payrun_timesheets');
+		if (is_array($payrun_timesheets)) {
+			foreach($timesheets as $timesheet) {
+				if (in_array($timesheet['timesheet_id'], $payrun_timesheets)) {
+					$checked = true;
+				}
+			}
+		}	
+		
+		$data['checked'] = $checked;
 		return $this->load->view('batched_staff_row', isset($data) ? $data : NULL, true);
 	}
 	
@@ -62,6 +74,14 @@ class Payrun extends MX_Controller {
 	function row_timesheet($timesheet_id, $user_id) {
 		$data['timesheet'] = $this->payrun_model->get_timesheet($timesheet_id);
 		$data['user_id'] = $user_id;
+		$payrun_timesheets = $this->session->userdata('payrun_timesheets');
+		$checked = false;
+		if (is_array($payrun_timesheets)) {
+			if (in_array($timesheet_id, $payrun_timesheets)) {
+				$checked = true;
+			}
+		}
+		$data['checked'] = $checked;
 		$this->load->view('timesheet_row', isset($data) ? $data : NULL);
 	}
 	
@@ -109,9 +129,8 @@ class Payrun extends MX_Controller {
 		$data = array(
 			array('value' => 'process', 'label' => 'Set Yes for Pay Run'),
 			array('value' => 'unprocess', 'label' => 'Set No for Pay Run'),
-			array('value' => 'revert', 'label' => 'Revert Selected'),
-			array('value' => 'archive', 'label' => 'Archive Selected'),
-			array('value' => 'export', 'label' => 'Export Selected')
+			array('value' => 'archive', 'label' => 'Set as Paid & Archive'),
+			array('value' => 'revert', 'label' => 'Revert Selected')
 		);
 		return modules::run('common/menu_dropdown', $data, $id, $label);
 	}
