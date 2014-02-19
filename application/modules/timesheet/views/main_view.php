@@ -90,6 +90,7 @@
 				</div>
 			</div>	
 			</form>
+			
 			<div id="list_timesheets"></div>
 		</div>
 	</div>

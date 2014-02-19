@@ -1,6 +1,12 @@
 <hr />
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($timesheets);?></b> results</p>
+
+<!-- Filter Menus -->
+<div id="nav_payruns">
+	<?=modules::run('timesheet/menu_dropdown_actions', 'action', 'Actions');?>			
+</div><!-- End Filter Menus -->
+
 <? if (count($timesheets) > 0) { ?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
@@ -39,7 +45,7 @@
 		<td><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td>
 		<td class="center"><a href="#"><i class="fa fa-dollar"></i></a></td>
 		<td class="center"><a class="" onclick="batch_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-share-square-o"></i></a></td>
-		<td class="center"><a href="#"><i class="fa fa-eye"></i></a></td>
+		<td class="center"><a data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/load_timesheet/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a></td>
 		<td class="center"><a onclick="delete_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a></td>
 	</tr>
 	<? } ?>
@@ -83,8 +89,5 @@ $(function(){
 			list_timesheets();
 		});
 });
-
-
 </script>
-
 <? } ?>

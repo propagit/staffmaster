@@ -47,10 +47,17 @@ class Venue extends MX_Controller {
 		return $this->venue_model->get_venue_by_name($name);
 	}
 	
-	function field_input($field_name)
+	function field_input($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;
 		$data['venues'] = $this->venue_model->all_venues();
+		if ($field_value) {
+			$venue = $this->venue_model->get_venue($field_value);
+			if ($venue) {
+				$field_value = $venue['name'];
+			}
+		}
+		$data['field_value'] = $field_value;
 		$this->load->view('venues/field_input', isset($data) ? $data : NULL);
 	}
 	

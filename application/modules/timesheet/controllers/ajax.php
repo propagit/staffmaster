@@ -34,7 +34,10 @@ class Ajax extends MX_Controller {
 		$this->timesheet_model->update_timesheet($timesheet_id, array('status' => TIMESHEET_BATCHED));
 	}
 	
-	
+	function load_timesheet($timesheet_id) {
+		$data['timesheet'] = $this->timesheet_model->get_timesheet($timesheet_id);
+		$this->load->view('timesheet_details_modal', isset($data) ? $data : NULL);
+	}
 	
 	
 	function delete_timesheet()

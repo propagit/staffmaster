@@ -124,6 +124,23 @@ class Timesheet extends MX_Controller {
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
 	
+	/**
+	*	@name: menu_dropdown_actions
+	*	@desc: generate the dropdown menu of actions
+	*	@access: public
+	*	@param: (string) $id
+	*			(string) $label
+	*	@return: (html) dropdown menu of actions
+	*/
+	function menu_dropdown_actions($id, $label) {
+		$data = array(
+			array('value' => 'batch', 'label' => 'Batch Selected'),
+			array('value' => 'revert', 'label' => 'Revert Selected'),
+			array('value' => 'delete', 'label' => 'Delete Selected')
+		);
+		return modules::run('common/menu_dropdown', $data, $id, $label);
+	}
+	
 	function status_to_class($status)
 	{
 		$class = '';

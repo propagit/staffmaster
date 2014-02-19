@@ -814,7 +814,8 @@ a:hover {
 	width:100%;
 }
 .modal-dialog.modal-lg {
-	width: 800px;
+	max-width: 100%;
+	min-width: 800px;
 }
 .modal-header{
 	border-bottom:none;
@@ -850,6 +851,27 @@ a:hover {
 .modal-body .form-group label{
 	font-weight:100;	
 }
+
+#modal-timesheet {
+	max-height: 80%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+#modal-timesheet .form-group {
+	margin-bottom: 5px;
+}
+#modal-timesheet p{
+	padding-bottom:0;	
+}
+#modal-timesheet .col-left {
+	float: left;
+	width: 450px;
+}
+#modal-timesheet .col-right {
+	float: right;
+	width: 200px;
+}
+
 .modal-body .col-sm-2,
 .modal-body .col-sm-10{
 	padding-left:0;
