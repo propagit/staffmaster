@@ -32,7 +32,6 @@
 </div><!-- /.modal -->
 
 
-
 <script>
 $(function(){
 	load_picture(<?=$staff['user_id']?>);
@@ -73,6 +72,16 @@ function set_hero(photo_id)
 		}
 	});		
 }
+function uset_hero(){
+	$.ajax({
+		type: 'POST',
+		url: '<?=base_url();?>staff/ajax/unset_hero_photo',
+		data:{user_id:<?=$staff['user_id'];?>},
+		success: function(html) {
+			update_avatars();
+		}
+	});	
+}
 function update_staff_edit_page_avatar(user_staff_id)
 {
 	$.ajax({
@@ -100,5 +109,26 @@ function update_avatars()
 	load_picture(<?=$staff['user_id'];?>);
 	update_avatar(<?=$staff['user_id'];?>);
 	update_staff_edit_page_avatar(<?=$staff['user_id'];?>);	
+}
+
+function respond_staff_profile_pictures()
+{
+	var ideal_width = 1715;
+	var profile_pic_fallback_width = 285;
+	var innerbox_width = $('.inner-box').width();
+	var gallery_width = '';
+	if(innerbox_width < 1715){
+		if(innerbox_width < 886){
+			gallery_width = '';
+		}else{
+			gallery_width = innerbox_width - (profile_pic_fallback_width);
+		}
+	}else{
+		profile_pic_fallback_width = '';	
+	}
+	
+	
+	$('.staff-profile-hero-wrap').css({'width':profile_pic_fallback_width});
+	$('.staff-profile-gallery-wrap').css({'width':gallery_width});	
 }
 </script>

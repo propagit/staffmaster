@@ -157,10 +157,14 @@ class Common extends MX_Controller {
 	*			- $field_value (optional) 
 	*    @return: custom input field for rating 
 	*/
-	function field_rating($field_name,$field_value=null,$disabled=false) {
+	function field_rating($field_name,$field_value=null,$disabled=false,$selector='basic',$ajax_reload_container = 'wp-rating',$ajax_update=false,$user_id = false) {
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$data['disabled'] = $disabled;
+		$data['selector'] = $selector;
+		$data['ajax_reload_container'] = $ajax_reload_container;
+		$data['ajax_update'] = $ajax_update;
+		$data['user_id'] = $user_id;
 		$this->load->view('field_rating', isset($data) ? $data : NULL);
 	}
 	

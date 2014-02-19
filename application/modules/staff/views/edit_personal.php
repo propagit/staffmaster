@@ -37,8 +37,8 @@
 			<? #=modules::run('common/dropdown_dob', set_value('dob_day'), set_value('dob_month'), set_value('dob_year'));?>
 		</div>	
         <label for="rating" class="col-md-2 control-label">Rating</label>
-		<div class="col-md-4" id="wp_rating">
-            <?=modules::run('common/field_rating', 'rating', $staff['rating']);?>
+		<div class="col-md-4 wp-rating" id="wp_rating">
+            <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],false,'basic','wp-rating',true,$staff['user_id']);?>
 		</div>
         
 	</div>
