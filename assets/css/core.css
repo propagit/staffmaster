@@ -21,6 +21,21 @@ a:hover {
 	color: #0089b5;
 
 }
+/* style for staff availability */
+.attr-list-wrap{
+	margin-top:20px;	
+}
+
+.checkbox-sm{
+	margin-right:5px!important;
+}
+.available-color{
+	background:#DFF0D8;
+}
+.unavailable-color{
+	background:#F2DEDE;
+}
+
 .staff-profile-detail-box{
 	margin-top:30px;
 	margin-bottom:30px;
