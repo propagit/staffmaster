@@ -24,7 +24,7 @@
 					<label for="rating" class="col-md-2 control-label">Rating</label>
 					<div class="col-md-4">
                         <? //modules::run('common/field_rating', 'rating');?>
-                        <?=modules::run('common/field_rating', 'rating', 5,'basic-search-form','wp-rating-0','no-user',false,false);?>
+                        <?=modules::run('common/field_rating', 'rating', 0,'basic-search-form','wp-rating-0','no-user',false,false);?>
 					</div>
 				</div>
 			</div>
@@ -154,6 +154,15 @@ $(function(){
 	$('#btn_search_staffs').click(function(){
 		search_staffs();
 	})
+	
+	//prevent form sumbit on enter and instead do ajax search
+	$('#form_search_staffs').bind("keyup keypress", function(e) {
+		  var code = e.keyCode || e.which; 
+		  if (code  == 13) {               
+			e.preventDefault();
+			search_staffs();
+		  }
+	});
 })
 function search_staffs() {
 	preloading($('#staffs_search_results'));

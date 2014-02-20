@@ -21,7 +21,11 @@ class Staff_model extends CI_Model {
 				FROM user_staffs s 
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status != 2";
 		
-		if(isset($params['keyword'])) { $sql .= " AND (u.first_name LIKE '%" . $params['keyword'] . "%' OR u.last_name LIKE '%" . $params['keyword'] . "%' OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $params['keyword'] . "%')"; }
+		if(isset($params['keyword']) && $params['keyword'] != '') { $sql .= " AND (u.first_name LIKE '%" . $params['keyword'] . "%' OR u.last_name LIKE '%" . $params['keyword'] . "%' OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $params['keyword'] . "%')"; }
+		if(isset($params['rating']) && $params['rating'] != ''){ $sql .= " AND s.rating >= ".$params['rating'];}
+		if(isset($params['status']) && $params['status'] != ''){ $sql .= " AND u.status = ".$params['status'];}
+		if(isset($params['gender']) && $params['gender'] != ''){ $sql .= " AND s.gender = '".$params['gender']."'";}
+		if(isset($params['state']) && $params['state'] != ''){ $sql .= " AND u.state = '".$params['state']."'";}
 		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}				
 		if(isset($params['limit'])) { $sql .= " LIMIT " . $params['limit']; }
 		$query = $this->db->query($sql);
