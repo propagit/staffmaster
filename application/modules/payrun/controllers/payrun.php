@@ -111,8 +111,7 @@ class Payrun extends MX_Controller {
 	function menu_dropdown($id, $label) {
 		$data = array(
 			array('value' => '', 'label' => 'Any'),
-			array('value' => TIMESHEET_PROCESSING, 'label' => 'Yes'),
-			array('value' => TIMESHEET_BATCHED, 'label' => 'No')
+			array('value' => PAYRUN_READY, 'label' => 'Yes')
 		);
 		return modules::run('common/menu_dropdown', $data, $id, $label);
 	}

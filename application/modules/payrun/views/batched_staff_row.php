@@ -4,7 +4,7 @@ $total_amount = 0;
 $from_date = 100000000000;
 $to_date = 0;
 $processing = true;
-$processed = 0;
+$total_ready = 0;
 foreach($staff_timesheets as $timesheet) {
 	$total_minutes += $timesheet['total_minutes'];
 	$total_amount += $timesheet['total_amount_staff'];
@@ -14,10 +14,10 @@ foreach($staff_timesheets as $timesheet) {
 	if ($to_date <= $timesheet['finish_time']) {
 		$to_date = $timesheet['finish_time'];
 	}
-	if ($timesheet['status'] != TIMESHEET_PROCESSING) {
-		$processing = false;
+	if ($timesheet['status_payrun_staff'] == PAYRUN_READY) {
+		$total_ready++;
 	} else {
-		$processed++;
+		$processing = false;
 	}
 } ?>
 	<td class="center"><input type="checkbox" class="payrun_staff" name="payrun_staffs[]" value="<?=$staff['user_id'];?>" <?=($checked) ? 'checked' : '';?> /></td>
@@ -34,15 +34,15 @@ foreach($staff_timesheets as $timesheet) {
 	<td colspan="3"><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td>
 	<td class="center"><?=$staff['state'];?></td>
 	<td class="center"><?=$total_minutes / 60;?></td>
-	<td class="center">$<?=$total_amount;?></td>
+	<td class="center">$<?=money_format('%i', $total_amount);?></td>
 	<td class="center">
-		<? if (count($staff_timesheets) == $processed) { ?>
-		<span class="badge success"><?=$processed;?></span>
-		<? } else if($processed == 0) { ?>
+		<? if (count($staff_timesheets) == $total_ready) { ?>
+		<span class="badge success"><?=$total_ready;?></span>
+		<? } else if($total_ready == 0) { ?>
 		<span class="badge danger"><?=count($staff_timesheets);?></span> 
 		<? } else { ?>
-		<span class="badge danger"><?=count($staff_timesheets) - $processed;?></span> 
-		<span class="badge success"><?=$processed;?></span>
+		<span class="badge danger"><?=count($staff_timesheets) - $total_ready;?></span> 
+		<span class="badge success"><?=$total_ready;?></span>
 		<? } ?>
 	</td>
 	<td class="center">
@@ -57,7 +57,7 @@ foreach($staff_timesheets as $timesheet) {
 		</div>
 	</td>
 	<td class="center">
-		<? if($processed == 0) { ?>
+		<? if($total_ready == 0) { ?>
 		<a onclick="revert_staff_payruns(<?=$staff['user_id'];?>)"><i class="fa fa-times"></i></a>
 		<? } ?>
 	</td>

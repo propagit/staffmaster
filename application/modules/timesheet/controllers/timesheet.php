@@ -51,6 +51,8 @@ class Timesheet extends MX_Controller {
 			unset($shift['created_on']);
 			unset($shift['modified_on']);
 			unset($shift['payrate_type']);
+			$job = modules::run('job/get_job', $shift['job_id']);
+			$shift['client_id'] = $job['client_id'];
 			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
 			$this->update_timesheet_hour_rate($timesheet_id);
 		}

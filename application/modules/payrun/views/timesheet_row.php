@@ -25,7 +25,7 @@
 	</td>
 	<td class="center">
 		<div class="btn-group">
-			<? if ($timesheet['status'] == TIMESHEET_PROCESSING) { ?>
+			<? if ($timesheet['status_payrun_staff'] == PAYRUN_READY) { ?>
 			<button type="button" onclick="process_payrun(<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-success btn-yes">Yes</button>
 			<button type="button" onclick="unprocess_payrun(<?=$timesheet['timesheet_id'];?>,<?=$user_id;?>)" class="btn btn-default btn-no">No</button>
 			<? } else { ?>

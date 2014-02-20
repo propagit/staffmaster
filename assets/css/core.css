@@ -548,6 +548,17 @@ a:hover {
 	border-top-right-radius: 0;
 	margin-top: -1px;
 }
+.menu-with-tab .pagination {
+	margin: 0;
+}
+.menu-with-tab .btn-group {
+	float: left;
+	margin-right: 10px;
+	margin-top: 8px;
+}
+.menu-with-tab .nav-tabs {
+	margin-bottom: -1px;
+}
 /* Custom styles for nav tab */
 .nav-tabs > li {
 	margin-right: 5px;
@@ -673,6 +684,20 @@ a:hover {
 .table tr.row-open,
 .table tr.row-open:hover td {
 	background: #c5fcb4;
+}
+
+#wp-job-in-table {
+	margin: -9px;
+}
+#wp-job-in-table .pagination {
+	margin: 0;
+	margin-bottom: -6px;
+}
+#wp-job-in-table .pagination li a {
+	border-radius: 0;
+}
+#wp-job-in-table .table {
+	margin-bottom: 0;
 }
 /* Custom styles for typeahead */
 .tt-hint {

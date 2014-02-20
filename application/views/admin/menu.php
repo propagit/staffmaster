@@ -25,10 +25,10 @@ $menu = array(
 	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
 		array('path' => '#', 'icon' => 'fa-dashboard', 'title' => 'Accounts Dashboard'),
 		array('path' => 'timesheet', 'icon' => 'fa-thumbs-up', 'title' => 'Time Sheets'),
-		array('path' => '#', 'icon' => 'fa-search', 'title' => 'Search Accounts'),
-		array('path' => '#', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Staff'),
-		array('path' => '#', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
+		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
+		array('path' => 'payrun', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Run'),
 		array('path' => '#', 'icon' => 'fa-plus', 'title' => 'Create Invoices'),
+		array('path' => '#', 'icon' => 'fa-search', 'title' => 'Search Accounts'),
 		array('path' => '#', 'icon' => 'fa-gears', 'title' => 'Accounts Settings'),
 		array('path' => '#', 'icon' => 'fa-credit-card', 'title' => 'Pay Bills'),
 		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Buy SMS Credits')
