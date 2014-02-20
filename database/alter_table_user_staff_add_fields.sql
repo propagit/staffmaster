@@ -1,0 +1,2 @@
+ALTER TABLE  `user_staffs` ADD  `last_worked_date` DATETIME NOT NULL COMMENT  'the last date the staff worked on a job',
+ADD  `time_sheets_in_payrun` INT NOT NULL COMMENT  'number of unpaid time sheet in the payrun';

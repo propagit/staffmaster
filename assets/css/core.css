@@ -21,7 +21,10 @@ a:hover {
 	color: #0089b5;
 
 }
-
+.staff-profile-detail-box{
+	margin-top:30px;
+	margin-bottom:30px;
+}
 /* begin - profile bar */
 .profile-bar{ 
 	/* min-height:128px;  */

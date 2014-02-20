@@ -587,7 +587,56 @@ class Ajax extends MX_Controller {
 		$data = array('rating' => $new_rating);
 		$this->staff_model->update_staff($user_id,$data);
 		
-		echo modules::run('common/field_rating', $field_name, $new_rating,false,$selector,$ajax_reload_container,true,$user_id);
+		echo modules::run('common/field_rating', $field_name, $new_rating,$selector,$ajax_reload_container,$user_id,true,false);
 	}
-	
+	/**
+	*	@name: delete_staff
+	*	@desc: Delete single staff
+	*	@access: public
+	*	@param: (via POST) user id
+	*	
+	*/
+	function delete_staff()
+	{
+		$user_id = $this->input->post('user_id',true);
+		return $this->user_model->update_user($user_id,array('status' => 2));	
+	}
+	/**
+	*	@name: delete_staff
+	*	@desc: Delete multiple staff
+	*	@access: public
+	*	@param: (via POST) user id
+	*	
+	*/
+	function delete_multi_staffs()
+	{
+		$user_ids = $this->input->post('user_staff_selected_user_id');
+		return $this->user_model->delete_multi_users(implode(',',$user_ids));
+	}
+	/**
+	*	@name: update_rating_multi_staffs
+	*	@desc: Update rating for multiple staff
+	*	@access: public
+	*	@param: (via POST) user id and new rating
+	*	
+	*/
+	function update_rating_multi_staffs()
+	{
+		$user_ids = $this->input->post('user_staff_selected_user_id',true);
+		$new_rating = $this->input->post('multi_rating',true);
+		return $this->staff_model->update_rating_multi_staffs(implode(',',$user_ids),$new_rating);
+	}
+	/**
+	*	@name: update_status_multi_staffs
+	*	@desc: Update status for multiple staff
+	*	@access: public
+	*	@param: (via POST) user id and new stats
+	*	
+	*/
+	function update_status_multi_staffs()
+	{
+		$user_ids = $this->input->post('user_staff_selected_user_id',true);
+		$new_status = $this->input->post('new_multi_status',true);
+		return $this->user_model->update_status_multi_users(implode(',',$user_ids),$new_status);
+	}
 }

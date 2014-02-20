@@ -219,6 +219,17 @@ var help = {
 				help.load_content(load_params);
 			}
 		});		
+	},
+	
+	//check uncheck all checkbox
+	toggle_checkboxes:function(master,slaves){
+		$(master).on('change',function(){
+			if ($(master).is(':checked')) {
+            	$(slaves).prop("checked", true);
+       		 } else {
+            	$(slaves).prop("checked", false);
+        	}	
+		});	
 	}
 
 	

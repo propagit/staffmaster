@@ -5,7 +5,7 @@ if(count($photo)>0)
 	$class="resize";
 ?>
 <div class="profile_photo">
-	<img class="<?=$class?>" src="<?=$thumb_src;?>" title="<?=$staff['first_name'].' '.$staff['last_name']?>" alt="<?=$photo['name']?>" />
+	<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><img class="<?=$class?>" src="<?=$thumb_src;?>" title="<?=$staff['first_name'].' '.$staff['last_name']?>" alt="<?=$photo['name']?>" /></a>
 </div>
 <?php
 }
@@ -16,9 +16,9 @@ else
 	$class='normal'; */
 ?>
 <div class="profile_photo">
-	<div class="default-avatar-photo">
+	<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><div class="default-avatar-photo">
 		<i class="fa <?=(modules::run('staff/get_staff_gender',$staff['user_id']) == 'm' ? 'fa-male': 'fa-female');?>"></i>
-    </div>
+    </div></a>
 </div>
 <?php
 }

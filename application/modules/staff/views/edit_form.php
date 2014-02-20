@@ -7,7 +7,7 @@
          <div class="staff-profile-bar-box">
              <h2><?=$staff['title'].'. '.$staff['first_name'].' '.$staff['last_name'];?></h2>
              <div class="wp-rating grey-star">
-                <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],false,'basic','wp-rating',true,$staff['user_id']);?>
+                <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],'basic','wp-rating',$staff['user_id'],true,false);?>
              </div>
         </div>
     </div>

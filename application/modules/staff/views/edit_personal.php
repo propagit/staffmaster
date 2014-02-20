@@ -38,7 +38,7 @@
 		</div>	
         <label for="rating" class="col-md-2 control-label">Rating</label>
 		<div class="col-md-4 wp-rating" id="wp_rating">
-            <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],false,'basic','wp-rating',true,$staff['user_id']);?>
+            <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],'basic','wp-rating',$staff['user_id'],true,false);?>
 		</div>
         
 	</div>

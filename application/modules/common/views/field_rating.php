@@ -1,11 +1,10 @@
 <div> 
    <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
-   <div class="<?=$selector;?>" data-average="<?=$field_value?>" data-id="1"></div>               
+   <div class="<?=$selector;?>" data-average="<?=$field_value?>" data-id="<?=$user_id;?>"></div>               
    <input type="hidden" name="<?=$field_name?>" id="<?=$field_name?>" class="rating" value="<?=$field_value?>"> 
 </div>
 
 <script type="text/javascript">
-var ajax_update = <?=$ajax_update;?>;
 <? if ($disabled) { ?>
 $(function(){
 	$(".<?=$selector;?>").jRating({
@@ -16,16 +15,19 @@ $(function(){
 jQuery(document).ready(function(){
       // get the clicked rate !
 	jQuery(".<?=$selector;?>").jRating({
+		canRateAgain : true,
+		nbRates:10000,
 		onSuccess:function(){
-		 	if(ajax_update){
-				update_rating();	
-			} 
+			<?php if($ajax_update){ ?>
+				update_rating_<?=$user_id?>();	
+			<? } ?>
 		}
 	});
 });
 <? } ?>
 
-function update_rating()
+<?php if($ajax_update) { ?>
+function update_rating_<?=$user_id?>()
 {
 	$.ajax({
 		type: "POST",
@@ -36,4 +38,5 @@ function update_rating()
 			}
 		});
 }
+<?php } ?>
 </script>
