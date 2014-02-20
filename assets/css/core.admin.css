@@ -215,10 +215,6 @@ a.default {
 
 
 /* style for staff profile */
-.staff-profile-detail-box{
-	margin-top:30px;
-	margin-bottom:30px;
-}
 .super_attached{
 	padding-left:20px;
 }
@@ -498,4 +494,10 @@ a.default {
 .search-staff-avatar-img .default-avatar-photo .fa{
 	font-size: 35px;
 	line-height: 45px;	
+}
+#menu-search-staff-result-action{
+	top:41px;	
+}
+#form_search_staffs .custom-select{
+	margin-bottom:15px;	
 }

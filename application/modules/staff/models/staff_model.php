@@ -18,10 +18,11 @@ class Staff_model extends CI_Model {
 	function search_staffs($params = array())
 	{
 		$sql = "SELECT s.*, u.*
-				FROM user_staffs s
-				LEFT JOIN users u ON s.user_id = u.user_id";
+				FROM user_staffs s 
+				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status != 2";
 		
-		if(isset($params['keyword'])) { $sql .= " WHERE u.first_name LIKE '%" . $params['keyword'] . "%'"; }				
+		if(isset($params['keyword'])) { $sql .= " AND (u.first_name LIKE '%" . $params['keyword'] . "%' OR u.last_name LIKE '%" . $params['keyword'] . "%' OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $params['keyword'] . "%')"; }
+		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}				
 		if(isset($params['limit'])) { $sql .= " LIMIT " . $params['limit']; }
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -342,8 +343,25 @@ class Staff_model extends CI_Model {
 	{
 		return $this->db->where('id',$user_staff_picture_id)->update('user_staff_picture',$data);	
 	}
+	/**
+	*	@name: uset_hero
+	*	@desc: Unset hero image
+	*	@access: public
+	*	@param: (int) user id
+	*/
 	function uset_hero($user_id)
 	{
 		$this->db->where('user_id',$user_id)->update('user_staff_picture',array('hero' => 0));
+	}
+	/**
+	*	@name: update_rating_multi_staffs
+	*	@desc: Update rating of multiple staff at once
+	*	@access: public
+	*	@param: (int) user ids of staff and new rating
+	*/
+	function update_rating_multi_staffs($user_ids,$new_rating)
+	{
+		$sql = "UPDATE user_staffs SET rating = ".$new_rating." WHERE user_id IN (".$user_ids.")";
+		return $this->db->query($sql);
 	}
 }

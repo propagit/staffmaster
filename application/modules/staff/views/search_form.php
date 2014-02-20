@@ -17,13 +17,14 @@
 			<form class="form-horizontal" id="form_search_staffs" role="form">
 			<div class="row">
 				<div class="form-group">
-					<label for="staff_name" class="col-md-2 control-label">Staff Name</label>
+					<label for="staff_name" class="col-md-2 control-label">Name (Keyword):</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" id="staff_name" name="staff_name" tabindex="2" />
+						<input type="text" class="form-control" id="keyword" name="keyword" tabindex="2" />
 					</div>
 					<label for="rating" class="col-md-2 control-label">Rating</label>
 					<div class="col-md-4">
-                        <?=modules::run('common/field_rating', 'rating');?>
+                        <? //modules::run('common/field_rating', 'rating');?>
+                        <?=modules::run('common/field_rating', 'rating', 5,'basic-search-form','wp-rating-0','no-user',false,false);?>
 					</div>
 				</div>
 			</div>
@@ -68,11 +69,12 @@
 					<div class="col-md-offset-2 col-md-4">
 						<button type="button" class="btn btn-core" id="btn_search_staffs"><i class="fa fa-search"></i> Search Staff</button>
 						&nbsp;
-						<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
+						<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset Form</button>
 					</div>
 				</div>
 			</div>			
-		
+			<input type="hidden" name="sort_by" id="sort-by" value="first_name" />
+            <input type="hidden" name="sort_order" id="sort-order" value="asc" />
 			</form>
 			
 			<div id="staffs_search_results"></div>
@@ -80,6 +82,72 @@
 	</div>
 </div>
 <!--end bottom box -->
+
+
+<!-- Multi Rating Modal-->
+<div class="modal fade" id="updateMultiRating" tabindex="-1" role="dialog" aria-labelledby="updateRatingLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+				<h4 class="modal-title">Update Selected Rating</h4>
+			</div>
+			<form id="add-new-venue-form">
+            <div class="col-md-12">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">Ratings</label>
+                        <div class="col-sm-10">
+                            <?=modules::run('common/field_rating', 'rating_multiple', 5,'basic-staff-multi-rating','wp-rating-multi','no-user',false,false);?>
+                        </div>
+                    </div>
+                    
+                   
+                     <div class="form-group">
+                               <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
+                          <div class="col-sm-10">
+                              <button onclick="update_multiple_selected_rating();" type="button" class="btn btn-info"><i class="fa fa-save"></i> Update Ratings</button>
+                          </div>
+                      </div>
+                </div>
+            </div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- Multi Status Modal-->
+<div class="modal fade" id="updateMultiStatus" tabindex="-1" role="dialog" aria-labelledby="updateStatusLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+				<h4 class="modal-title">Update Selected Rating</h4>
+			</div>
+			<form id="add-new-venue-form">
+            <div class="col-md-12">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">Ratings</label>
+                        <div class="col-sm-10">
+                            <?=modules::run('staff/field_select_status', 'multi_status_update');?>
+                        </div>
+                    </div>
+                    
+                   
+                     <div class="form-group">
+                               <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
+                          <div class="col-sm-10">
+                              <button onclick="update_multiple_selected_status();"  type="button" class="btn btn-info"><i class="fa fa-save"></i> Update Status</button>
+                          </div>
+                      </div>
+                </div>
+            </div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script>
 $(function(){
@@ -98,5 +166,84 @@ function search_staffs() {
 			$('body').scrollTo('#form_search_staffs', 500 );
 		}
 	})
+}
+function delete_staff(user_id){
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>staff/ajax/delete_staff",
+		data: {user_id:user_id},
+		success: function(html) {
+			$('#search-result-tr-'+user_id).remove();
+		}
+	})
+}
+function perform_multi_update(action){
+	switch(action){
+		case 'contact-multi-staff':
+			
+		break;
+		case 'delete-multi-staff':
+			delete_multi_staff();
+		break;
+		case 'update-multi-rating':
+			$('#updateMultiRating').modal('show');
+		break;
+		case 'change-multi-status':
+			$('#updateMultiStatus').modal('show');
+		break;
+		case 'export-staff':
+		
+		break;	
+	}
+}
+
+function delete_multi_staff(){
+		var title = 'Delete Staffs';
+		var message ='Are you sure you would like to delete these "Staffs"';
+		var user_id = $(this).attr('delete-data-id');
+		help.confirm_delete(title,message,function(confirmed){
+			 if(confirmed){
+				$.ajax({
+						type: "POST",
+						url: "<?=base_url();?>staff/ajax/delete_multi_staffs",
+						data: $('#staff-search-results-form').serialize(),
+						success: function(html) {
+							//console.log(html);
+							search_staffs();
+						}
+					});
+			 }
+		});
+}
+
+function update_multiple_selected_rating()
+{
+	var new_rating = $('#rating_multiple').val();
+	$('#staff-search-results-form').append('<input type="hidden" name="multi_rating" value="'+new_rating+'" />');
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>staff/ajax/update_rating_multi_staffs",
+		  data: $('#staff-search-results-form').serialize(),
+		  success: function(html) {
+			  $('#updateMultiRating').modal('hide');
+			  search_staffs();
+		  }
+	  }); 
+}
+
+
+function update_multiple_selected_status()
+{
+	var new_status = $('#multi_status_update').val();
+	$('#staff-search-results-form').append('<input type="hidden" name="new_multi_status" value="'+new_status+'" />');	
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>staff/ajax/update_status_multi_staffs",
+		  data: $('#staff-search-results-form').serialize(),
+		  success: function(html) {
+			  $('#updateMultiStatus').modal('hide');
+			  search_staffs();
+		  }
+	  });
 }
 </script>
