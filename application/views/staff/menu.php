@@ -3,7 +3,7 @@ $page = $this->uri->segment(1) ? $this->uri->segment(1) : 'dashboard';
 $menu = array(
 	array('path' => 'dashboard', 'icon' => 'dashboard', 'title' => 'Dashboard', 'sub' => array(
 	)),
-	array('path' => '#', 'icon' => 'user', 'title' => 'Your Profile', 'sub' => array(
+	array('path' => 'staff', 'icon' => 'user', 'title' => 'Your Profile', 'sub' => array(
 	)),
 	array('path' => 'work', 'icon' => 'thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(		
 	)),
