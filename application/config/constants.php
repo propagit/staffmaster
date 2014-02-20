@@ -71,6 +71,13 @@ define('TIMESHEET_BATCHED', 3);
 define('TIMESHEET_PROCESSING', 4);
 define('TIMESHEET_PAID', 5);
 
+define('PAYRUN_PENDING', 0);
+define('PAYRUN_READY', 1);
+define('PAYRUN_PAID', 2);
+define('INVOICE_PENDING', 0);
+define('INVOICE_READY', 1);
+define('INVOICE_PAID', 2);
+
 define('STAFF_TFN', 1);
 define('STAFF_ABN', 2);
 

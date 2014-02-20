@@ -13,6 +13,7 @@
 		<div class="inner-box">
 			<ul class="nav nav-tabs tab-respond">
 				<li><a href="<?=base_url();?>timesheet">Time Sheets</a></li>
+				<li><a href="<?=base_url();?>invoice">Client Invoices</a></li>
 				<li class="active"><a>Pay Run</a></li>
 			</ul>
 			<br />

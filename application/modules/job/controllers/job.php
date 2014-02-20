@@ -129,6 +129,11 @@ class Job extends MX_Controller {
 		return $ids;
 	}
 	
+	function get_job($job_id)
+	{
+		return $this->job_model->get_job($job_id);
+	}
+	
 	function dropdown_status($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;

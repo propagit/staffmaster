@@ -29,6 +29,13 @@ class Client_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_client_total_jobs($client_id) {
+		$this->db->where('client_id', $client_id);
+		$query = $this->db->get('jobs');
+		return $query->num_rows();
+	}
+
+	
 	function get_client($user_id)
 	{
 		$sql = "SELECT c.*, u.*

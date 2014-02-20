@@ -65,6 +65,15 @@ class Client extends MX_Controller {
 	{
 		return $this->client_model->get_client($client_id);
 	}
+	
+	function get_clients()
+	{
+		return $this->client_model->search_clients();
+	}
+	
+	function total_jobs($user_id) {
+		return $this->client_model->get_client_total_jobs($user_id);
+	}
 
 	function delete_client($user_id)
 	{

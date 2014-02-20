@@ -25,6 +25,7 @@
 	<? } ?>
 	</tbody>
 </table>
+</div>
 
 <script>
 $(function(){
@@ -174,7 +175,7 @@ function expand_staff_timehsheets(user_id) {
 				$('#timesheets_staff_' + user_id).addClass('row-open');
 				$('#timesheets_staff_' + user_id).html(data.parent);
 				$('#timesheets_staff_' + user_id).after(data.children);
-				$('#timesheets_staff_' + user_id).find('.wp-arrow').html('<i class="fa fa-minus-square-o"></i></a>');
+				$('#timesheets_staff_' + user_id).find('.wp-arrow').html('<i class="fa fa-minus-square-o"></i>');
 				$('#timesheets_staff_' + user_id).find('.wp-arrow').attr('onclick', 'collapse_staff_timesheets(' + user_id + ')');
 			}
 			
@@ -195,7 +196,7 @@ function expand_staff_timehsheets(user_id) {
 function collapse_staff_timesheets(user_id) {
 	$('.timesheets_staff_' + user_id).remove();
 	$('#timesheets_staff_' + user_id).removeClass('row-open');
-	$('#timesheets_staff_' + user_id).find('.wp-arrow').html('<i class="fa fa-plus-square-o"></i></a>');
+	$('#timesheets_staff_' + user_id).find('.wp-arrow').html('<i class="fa fa-plus-square-o"></i>');
 	$('#timesheets_staff_' + user_id).find('.wp-arrow').attr('onclick', 'expand_staff_timehsheets(' + user_id + ')');
 }
 function revert_staff_payruns(user_id) {
