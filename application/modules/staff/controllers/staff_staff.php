@@ -31,8 +31,7 @@ class Staff_staff extends MX_Controller {
 	
 	function edit_staff()
 	{		
-		$data['staff'] = $this->staff_model->get_staff($this->user_id);
-		$data['staff_account']=1;
+		$data['staff'] = $this->staff_model->get_staff($this->user_id);		
 		$this->load->view('edit_form', isset($data) ? $data :NULL);
 	}
 	
