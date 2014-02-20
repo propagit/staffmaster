@@ -23,7 +23,7 @@ class Invoice_model extends CI_Model {
 	
 	function get_jobs($user_id) {
 		$sql_select_job_id = "SELECT job_id FROM `job_shift_timesheets` GROUP BY job_id";
-		$sql = "SELECT * FROM jobs WHERE job_id IN ($sql_select_job_id)";
+		$sql = "SELECT * FROM jobs WHERE client_id = " . $user_id . " AND job_id IN ($sql_select_job_id)";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

@@ -32,7 +32,6 @@
 $(function() {
 	list_clients();
 	list_invoices();
-	load_job_timesheets(6);
 })
 function list_clients() {
 	preloading($('#list_clients'));

@@ -34,11 +34,11 @@ foreach($timesheets as $timesheet) {
 	<td class="center">
 		<div class="btn-group">
 		<? if ($processing) { ?>
-			<button type="button" onclick="add_job_to_invoice(<?=$job['job_id'];?>)" class="btn btn-success btn-yes">Yes</button>
-			<button type="button" onclick="remove_job_from_invoice(<?=$job['job_id'];?>)" class="btn btn-default btn-no">No</button>
+			<button type="button" onclick="add_job_to_invoice(<?=$job['job_id'];?>, true)" class="btn btn-success btn-yes">Yes</button>
+			<button type="button" onclick="remove_job_from_invoice(<?=$job['job_id'];?>, true)" class="btn btn-default btn-no">No</button>
 		<? } else { ?>
-			<button type="button" onclick="add_job_to_invoice(<?=$job['job_id'];?>)" class="btn btn-default btn-yes">Yes</button>
-			<button type="button" onclick="remove_job_from_invoice(<?=$job['job_id'];?>)" class="btn btn-danger btn-no">No</button>
+			<button type="button" onclick="add_job_to_invoice(<?=$job['job_id'];?>, true)" class="btn btn-default btn-yes">Yes</button>
+			<button type="button" onclick="remove_job_from_invoice(<?=$job['job_id'];?>, true)" class="btn btn-danger btn-no">No</button>
 		<? } ?>
 		</div>
 	</td>

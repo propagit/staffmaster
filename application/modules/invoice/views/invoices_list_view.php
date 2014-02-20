@@ -7,9 +7,9 @@
 	<tr>
 		<th class="center" width="20"></th>
 		<th>Client</th>
-		<th class="center">Time Sheets</th>
-		<th class="center">Expenses</th>
-		<th class="center">Amount</th>
+		<th class="center" width="200">Time Sheets</th>
+		<th class="center" width="120">Expenses</th>
+		<th class="center" width="120">Amount</th>
 		<th class="center" width="40">Preview</th>
 		<th class="center" width="40">Generate</th>
 	</tr>
@@ -22,8 +22,8 @@
 		<td class="center"><?=$invoice['total_timesheets'];?></td>
 		<td class="center"></td>
 		<td class="center">$<?=money_format('%i', $invoice['total_amount']);?></td>
-		<td class="center"><i class="fa fa-eye"></i></td>
-		<td class="center"><i class="fa fa-check"></i></td> 
+		<td class="center" width="80"><i class="fa fa-eye"></i></td>
+		<td class="center" width="80"><i class="fa fa-check"></i></td> 
 	</tr>
 	<? } ?>
 	</tbody>

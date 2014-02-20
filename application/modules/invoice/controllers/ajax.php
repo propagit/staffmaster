@@ -48,6 +48,15 @@ class Ajax extends MX_Controller {
 	function add_job_to_invoice() {
 		$job_id = $this->input->post('job_id');
 		$this->invoice_model->add_job_to_invoice($job_id);
+		if ($this->input->post('apply_all')) {
+			$timesheets = $this->invoice_model->get_timesheets($job_id);
+			$output = array();
+			foreach($timesheets as $timesheet) {
+				$output[] = $timesheet['timesheet_id'];
+			}
+			echo json_encode($output);
+		}
+		
 	}
 	
 	function add_timesheet_to_invoice() {
@@ -58,6 +67,14 @@ class Ajax extends MX_Controller {
 	function remove_job_from_invoice() {
 		$job_id = $this->input->post('job_id');
 		$this->invoice_model->remove_job_from_invoice($job_id);
+		if ($this->input->post('apply_all')) {
+			$timesheets = $this->invoice_model->get_timesheets($job_id);
+			$output = array();
+			foreach($timesheets as $timesheet) {
+				$output[] = $timesheet['timesheet_id'];
+			}
+			echo json_encode($output);
+		}
 	}
 	
 	function remove_timesheet_from_invoice() {

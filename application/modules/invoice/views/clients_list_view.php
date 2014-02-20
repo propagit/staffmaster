@@ -7,7 +7,7 @@
 	<thead>
 	<tr>
 		<th class="center" width="20"></th>
-		<th colspan="4">Client Name</th>
+		<th colspan="5">Client Name</th>
 		<th class="center">Campaigns</th>
 		<th class="center" width="40">
 		</th>
@@ -17,7 +17,7 @@
 	<? foreach($clients as $client) { ?>
 	<tr id="jobs_client_<?=$client['user_id'];?>">
 		<td><input type="checkbox" /></td>
-		<td colspan="4"><?=$client['company_name'];?></td>
+		<td colspan="5"><?=$client['company_name'];?></td>
 		<td class="center"><?=$client['total_jobs'];?></td>
 		<td>
 			<a class="wp-arrow" onclick="load_client_jobs(<?=$client['user_id'];?>)"><i class="fa fa-plus-square-o"></i></a>
@@ -30,7 +30,7 @@
 
 <script>
 $(function(){
-	load_client_jobs(<?=$clients[0]['user_id'];?>);
+	//load_client_jobs(<?=$clients[0]['user_id'];?>);
 });
 
 function load_client_jobs(user_id) {
@@ -61,23 +61,33 @@ function refresh_row_client_job(job_id) {
 		}
 	})
 }
-function add_job_to_invoice(job_id) {
+function add_job_to_invoice(job_id, apply_all=false) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>invoice/ajax/add_job_to_invoice",
-		data: {job_id: job_id},
-		success: function(html) {
+		data: {job_id: job_id, apply_all: apply_all},
+		success: function(data) {
 			refresh_row_client_job(job_id);
+			data = $.parseJSON(data);
+			for(var i=0; i < data.length; i++) {
+				refresh_row_timesheet(data[i]);
+			}
+			refresh_row_timesheets_job(job_id);
 		}
 	})
 }
-function remove_job_from_invoice(job_id) {
+function remove_job_from_invoice(job_id, apply_all=false) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>invoice/ajax/remove_job_from_invoice",
-		data: {job_id: job_id},
-		success: function(html) {
+		data: {job_id: job_id, apply_all: apply_all},
+		success: function(data) {
 			refresh_row_client_job(job_id);
+			data = $.parseJSON(data);
+			for(var i=0; i < data.length; i++) {
+				refresh_row_timesheet(data[i]);
+			}
+			refresh_row_timesheets_job(job_id);
 		}
 	})
 }

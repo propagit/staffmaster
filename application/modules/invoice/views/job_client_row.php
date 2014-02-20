@@ -2,10 +2,12 @@
 $total_amount = 0;
 $total_ready = 0;
 $processing = true;
-foreach($timesheets as $timesheet) {
-	$total_amount += $timesheet['total_amount_client'];
+$billable = 0;
+foreach($timesheets as $timesheet) {	
+	$billable += $timesheet['total_amount_client'];
 	if ($timesheet['status_invoice_client'] == INVOICE_READY) {
 		$total_ready++;
+		$total_amount += $timesheet['total_amount_client'];
 	} else {
 		$processing = false;
 	}
@@ -14,6 +16,7 @@ foreach($timesheets as $timesheet) {
 
 	<td width="20"><input type="checkbox" /></td>
 	<td><?=$job['name'];?></td>
+	<td class="center">$<?=money_format('%i', $billable);?></td>
 	<td class="center">
 		<? if (count($timesheets) == $total_ready) { ?>
 		<span class="badge success"><?=$total_ready;?></span>
