@@ -33,6 +33,23 @@
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 	<![endif]-->
+	
+    <!-- typeaheadjs -->
+	<link href="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js"></script>
+	<script src="<?=base_url();?>assets/js/typeaheadjs/typeaheadjs.js"></script>
+    
+    <!--flex slider2-->
+    <link href="<?=base_url();?>assets/flex-slider/flexslider.css" rel="stylesheet" media="screen" type="text/css" />
+	<script src="<?=base_url();?>assets/flex-slider/jquery.flexslider-min.js"></script>
+    
+    <!--magnific popup-->
+    <link href="<?=base_url()?>assets/lightbox/magnific-popup.css" rel="stylesheet" media="screen">
+    <script src="<?=base_url()?>assets/lightbox/jquery.magnific-popup.min.js"></script>
+    
+    <!--jrating-->
+    <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
+	<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
 
 </head>
 <body>

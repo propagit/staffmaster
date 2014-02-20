@@ -88,6 +88,28 @@ class Ajax extends MX_Controller {
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 	}
 	
+	function update_super()
+	{
+		$data = $this->input->post();
+		$staff_data = array(
+			's_choice' => isset($data['s_choice']) ? $data['s_choice'] : '',
+			's_name' => $data['s_name'],
+			's_employee_id' => $data['s_employee_id'],
+			's_tfn' => $data['s_tfn'],			
+			's_fund_name' => $data['s_fund_name'],
+			's_fund_website' => $data['s_fund_website'],
+			's_product_id' => $data['s_product_id'],
+			's_fund_phone' => $data['s_fund_phone'],
+			's_membership' => $data['s_membership'],
+			's_fund_address' => $data['s_fund_address'],
+			's_fund_suburb' => $data['s_fund_suburb'],
+			's_fund_state' => $data['s_fund_state'],
+			's_fund_postcode' => $data['s_fund_postcode'],
+			's_agree' => isset($data['s_agree']) ? $data['s_agree'] : 0,
+		);
+		$this->staff_model->update_staff($data['user_id'], $staff_data);
+	}
+	
 	/**
 	*	@name: update_roles
 	*	@desc: ajax function to add or delete roles 

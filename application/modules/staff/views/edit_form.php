@@ -24,12 +24,12 @@
                 <li class="mobile-tab"><a href="#pictures" data-toggle="tab">Pictures</a></li>
                 <li class="mobile-tab"><a href="#financial" data-toggle="tab">Financial Details</a></li>
                 <li class="mobile-tab"><a href="#super" data-toggle="tab">Super Details</a></li>
-                <? if(!isset($staff_account)){ ?>
+                <? if(! modules::run('account/is_staff','','')){ ?>
                 <li class="mobile-tab"><a href="#roles" data-toggle="tab">Roles</a></li>
                 <? } ?>
                 <li class="mobile-tab"><a href="#availability" data-toggle="tab">Availability</a></li>                
                 <li class="mobile-tab"><a href="#location" data-toggle="tab">Locations</a></li>
-                <? if(!isset($staff_account)){ ?>
+                <? if(! modules::run('account/is_staff','','')){ ?>
                 <li class="mobile-tab"><a href="#group" data-toggle="tab">Groups</a></li>
                 <? } ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>

@@ -2,7 +2,8 @@
 	<h2> Super Details </h2>
 	<p> Staff can choose the "Super" </p>
 </div>
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" id="form_update_staff_super">
+<input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">
 	<div class="form-group">
 		<label class="col-md-2 control-label">Choice of superannuation fund</label>
@@ -34,7 +35,7 @@
 	<div class="form-group">
 		<label for="s_tfn_1" class="col-md-2 control-label">TFN Number</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_tfn_1" name="s_tfn_1" value="<?=($staff['s_tfn'] == '') ? $staff['f_tfn'] : $staff['s_tfn'];?>" />
+			<input type="text" class="form-control" id="s_tfn" name="s_tfn" value="<?=($staff['s_tfn'] == '') ? $staff['f_tfn'] : $staff['s_tfn'];?>" />
 		</div>
 	</div>
 	
@@ -126,6 +127,14 @@
 		</div>
 	</div>					
 </div>
+<div class="row">
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<div class="alert alert-success hide" id="msg-update-super"><i class="fa fa-check"></i> &nbsp; Staff super details has been updated successfully!</div>
+			<button type="button" class="btn btn-core" id="btn_update_super"><i class="fa fa-save"></i> Update Super Details</button>
+		</div>
+	</div>
+</div>
 <script>
 $(function(){
 	load_s_choice();
@@ -133,6 +142,20 @@ $(function(){
 	$('input[name="s_choice"]').change(function(){
 		load_s_choice();
 	});
+	
+	$('#btn_update_super').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>staff/ajax/update_super",
+			data: $('#form_update_staff_super').serialize(),
+			success: function(html) {
+				$('#msg-update-super').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-update-super').addClass('hide');
+				}, 2000);
+			}
+		})
+	})
 })
 function load_s_choice()
 {
