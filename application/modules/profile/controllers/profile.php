@@ -102,8 +102,7 @@ class Profile extends MX_Controller {
 	/**
 	*	@name: create_pdf
 	*	@desc: function to create pdf for invoice - templating stage
-	*	@access: public
-	*	@param: 
+	*	@access: public	
 	*	@return: .pdf 
 	*/
 	function create_pdf()
@@ -119,17 +118,12 @@ class Profile extends MX_Controller {
 		{
 			ini_set('memory_limit','32M'); // boost the memory limit if it's low 
 			$html = $this->load->view('pdf_report', $data, true); // render the view into HTML
-			$html_footer = $this->load->view('pdf_report_footer', $data, true); 
-			$html_page2 = $this->load->view('pdf_report_page2', $data, true); 
+			$html_footer = $this->load->view('pdf_report_footer', $data, true); 			
 			$this->load->library('pdf');
-			$pdf = $this->pdf->load(); 
-			//$pdf->SetFooter('|{PAGENO}|'.date(DATE_RFC822)); // Add a footer for measurement control
-			//$pdf->SetHTMLFooter($html_footer);
+			$pdf = $this->pdf->load(); 			
 			$stylesheet = file_get_contents('./assets/css/pdf.css');
 			$pdf->WriteHTML($stylesheet,1);
 			$pdf->WriteHTML($html,2);
-			//$pdf->AddPage();
-			//$pdf->WriteHTML($html_page2,3);
 			$pdf->Output($pdfFilePath, 'F'); // save to file 
 		}
 		 

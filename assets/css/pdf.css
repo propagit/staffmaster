@@ -4,27 +4,55 @@ body {
 	height: 100%;
 	font-family: 'Lato', sans-serif;
 	font-size: 10px;
+	color:#4D4D4F;
 }
 
-h1{font-size:22px;font-weight:900!important;font-family: 'Lato', sans-serif;}
-h2{font-size:18px;font-weight:700!important;;font-family: 'Lato', sans-serif;}
+h1{font-size:22px;font-weight:bold;font-family: 'Lato', sans-serif;}
+h2{font-size:18px;font-weight:bold;font-family: 'Lato', sans-serif;}
 .line{ 
 	
 	border-bottom: 1px dashed #231F20;   
 	height : 1px;
 	margin-bottom:20px;
+	margin-top:5px;
 }
-.black{
-	font-weight:900;font-family: 'Lato', sans-serif;
+.bordernone{
+	border:none; border-collapse:collapse;
 }
-.bold{
-	font-weight:700;font-family: 'Lato', sans-serif;
+.bottom-10{
+	margin-bottom:10px;
 }
+.top-20{
+	margin-top:20px;
+}
+
 .padding-left-15{
 	padding-left:15px;
 }
-.padding-left-10{
-	padding-left:12px;
+.padding-bottom-15{
+	padding-bottom:15px;
+}
+.padding-top-10{
+	padding-top:10px;
+}
+.padding-top-20{
+	padding-top:20px;
+}
+.padding-top-5{
+	padding-top:5px;
+}
+.padding-top-15{
+	padding-top:15px;
+}
+.break-15{
+	height:15px;
+}
+.charge-first-width{
+	width:300px;
+}
+.padding-gst{
+	padding-top:30px;
+	padding-bottom:10px;
 }
 .charge-box-header{
 	background-color:#0AC0F1;
@@ -33,17 +61,21 @@ h2{font-size:18px;font-weight:700!important;;font-family: 'Lato', sans-serif;}
 	height:40px; line-height:40px; width:450px;text-align:left;color:#fff; padding-left:15px;
 }
 .charge-box-detail{
-	background-color:#CCC;height:200px;width:450px;
+	background-color:#e9e8e8;height:400px;width:450px;
 }
 .charge-box-detail-td{
 	padding:12px; color:#4D4D4F;
 }
 .charge-box-line{
-border-top:1px dashed #231F20;border-bottom:1px dashed #231F20;  padding-top:10px;padding-bottom:10px;
+border-top:1px dashed #231F20;border-bottom:1px dashed #231F20;  padding-top:12px;padding-bottom:12px;
 }
 table{
 	font-family: 'Lato', sans-serif;
+	border:none; border-collapse:collapse;
 }
 .expense-break{
 	padding-top:5px; padding-bottom:5px;
+}
+.ccard{
+	width:30px;
 }
