@@ -5,14 +5,14 @@
  * @author: namnd86@gmail.com
  */
 
-class Profile extends MX_Controller {
+class Staff_staff extends MX_Controller {
 
 	var $user = null;
 	function __construct()
 	{
 		parent::__construct();		
-		$this->load->model('user/user_model');
-		$this->load->model('staff/staff_model');
+
+		$this->load->model('staff_model');
 		$user = $this->session->userdata('user_data');
 		$this->user_id = $user['user_id'];
 	}
@@ -33,7 +33,7 @@ class Profile extends MX_Controller {
 	{		
 		$data['staff'] = $this->staff_model->get_staff($this->user_id);
 		$data['staff_account']=1;
-		$this->load->view('staff/edit_form', isset($data) ? $data :NULL);
+		$this->load->view('edit_form', isset($data) ? $data :NULL);
 	}
 	
 	
