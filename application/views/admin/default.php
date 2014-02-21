@@ -20,6 +20,7 @@
 	
 	<script src="<?=base_url();?>assets/js/hogan.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
+	<script src="<?=base_url();?>assets/js/jquery.sortable.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.form.js"></script> 
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.blockUI.js"></script>
