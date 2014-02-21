@@ -52,6 +52,18 @@
 					</div>
 				</div>
 			</div>
+            <div class="row">
+				<div class="form-group">
+					<label for="location" class="col-md-2 control-label">Availability</label>
+					<div class="col-md-4">
+						<?=modules::run('common/field_select',$weekdays, 'availability');?>
+					</div>
+					<label for="position" class="col-md-2 control-label">Age</label>
+					<div class="col-md-4">
+						<?=modules::run('common/field_select',$age_groups, 'age_groups');?>
+					</div>
+				</div>				
+			</div>
 			<div class="row">
 				<div class="form-group">
 					<label for="location" class="col-md-2 control-label">Location</label>
@@ -60,21 +72,23 @@
 					</div>
 					<label for="position" class="col-md-2 control-label">Role</label>
 					<div class="col-md-4">
-						<?=modules::run('attribute/role/field_select', 'position');?>
+						<?=modules::run('attribute/role/field_select', 'role_id');?>
 					</div>
 				</div>				
 			</div>
+            
 			<div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
 						<button type="button" class="btn btn-core" id="btn_search_staffs"><i class="fa fa-search"></i> Search Staff</button>
 						&nbsp;
-						<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset Form</button>
+						<button type="reset" id="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset Form</button>
 					</div>
 				</div>
 			</div>			
 			<input type="hidden" name="sort_by" id="sort-by" value="first_name" />
             <input type="hidden" name="sort_order" id="sort-order" value="asc" />
+            <input type="hidden" name="current_page"  id="current_page" value="1"  />
 			</form>
 			
 			<div id="staffs_search_results"></div>
@@ -150,9 +164,20 @@
 </div><!-- /.modal -->
 
 <script>
+var scroll_to_form = true;
 $(function(){
+	//reset ratings
+	$('#reset').click(function(){
+		$('.basic-search-form .jRatingAverage').css({'width':0});
+		$('#rating').val(0);
+		reset_page();
+	});
+	
+	
 	$('#btn_search_staffs').click(function(){
+		reset_page();
 		search_staffs();
+		scroll_to_form = true;
 	})
 	
 	//prevent form sumbit on enter and instead do ajax search
@@ -160,10 +185,17 @@ $(function(){
 		  var code = e.keyCode || e.which; 
 		  if (code  == 13) {               
 			e.preventDefault();
+			reset_page();
 			search_staffs();
 		  }
 	});
 })
+
+function reset_page()
+{
+	$('#current_page').val(1);
+}
+
 function search_staffs() {
 	preloading($('#staffs_search_results'));
 	$.ajax({
@@ -172,7 +204,11 @@ function search_staffs() {
 		data: $('#form_search_staffs').serialize(),
 		success: function(html) {
 			loaded($('#staffs_search_results'), html);
-			$('body').scrollTo('#form_search_staffs', 500 );
+			if(scroll_to_form){
+				setTimeout(function(){
+					$('body').scrollTo('#form_search_staffs', 500 );
+				},200);
+			}
 		}
 	})
 }
@@ -255,4 +291,5 @@ function update_multiple_selected_status()
 		  }
 	  });
 }
+
 </script>

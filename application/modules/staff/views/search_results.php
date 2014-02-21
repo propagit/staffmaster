@@ -1,14 +1,8 @@
 <hr />
 <h2>Search Results</h2>
-<p>Your search returned <b><?=count($staffs);?></b> results</p>
+<p>Your search returned <b><?=count($total_staff);?></b> results</p>
 <ul class="pagination pull">
-    <li><a href="#">&laquo;</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">&raquo;</a></li>
+<?=modules::run('common/create_pagination',count($total_staff),5,$current_page)?>
 </ul>
 <?php
 	$array = array(
@@ -26,7 +20,7 @@
 ?>
 <? if(isset($staffs)) { ?>
 
-	 <table class="table table-bordered table-hover table-middle">
+	 <table class="table table-bordered table-hover table-middle staff-search-result-table">
         <thead>
         <tr class="heading">
             <th class="center"><input type="checkbox" id="master-checkbox" /></th>
@@ -80,7 +74,6 @@
             </tr>
             <? } }?>
         </tbody>
-        
         </form>
     </table>
 
@@ -112,6 +105,15 @@
 			var action = $(this).attr('data-value');
 			perform_multi_update(action);
 		})
+		
+		//go to page
+		$('.pagination li').on('click',function(e){
+			e.preventDefault();
+			scroll_to_form = false;
+			var clicked_page = $(this).attr('data-page-no');
+			$('#current_page').val(clicked_page);
+			search_staffs();
+		});
 	
 		
 	});//ready

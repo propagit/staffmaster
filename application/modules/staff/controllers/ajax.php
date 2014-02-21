@@ -17,6 +17,8 @@ class Ajax extends MX_Controller {
 	function search_staffs()
 	{
 		$data['staffs'] = $this->staff_model->search_staffs($this->input->post());
+		$data['total_staff'] = $this->staff_model->search_staffs($this->input->post(),true);
+		$data['current_page'] = $this->input->post('current_page',true);
 		$this->load->view('search_results', isset($data) ? $data : NULL);		
 	}
 	
@@ -59,7 +61,7 @@ class Ajax extends MX_Controller {
 			'external_staff_id' => $data['external_staff_id'],
 			'rating' => $data['profile_rating'],
 			'gender' => $data['gender'],
-			#'dob' => $data['dob_day'] . '-' . $data['dob_month'] . '-' . $data['dob_year'],
+			'dob' => date('Y-m-d',strtotime($data['dob_year'].'-'.$data['dob_month']. '-'.$data['dob_day'])),
 			'emergency_contact' => $data['emergency_contact'],
 			'emergency_phone' => $data['emergency_phone'],
 		);
@@ -298,18 +300,16 @@ class Ajax extends MX_Controller {
 	*	
 	*/
 	function initiate_availability($user_id)
-	{				
+	{
+		$values = '';			
 		for($day=1; $day <=7; $day++) {
 			for($hour=0; $hour <=23; $hour++) {
-				$data = array(
-					'user_id' => $user_id,
-					'day' => $day,
-					'hour' => $hour,
-					'value' => 1
-				);
-				$this->staff_model->insert_availability_data($user_id, $data);
+				$values .= '('.$user_id.','.$day.','.$hour.',1),'; 		
 			}
-		}				
+		}  
+		$values = rtrim($values,',');
+		$sql = "INSERT INTO `user_staff_availability` (`user_id`, `day`, `hour`, `value`) VALUES ".$values;
+		$this->db->query($sql);
 	}
 	/**
 	*	@name: update_availability

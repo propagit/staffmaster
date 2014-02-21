@@ -393,6 +393,9 @@ a.default {
 #menu-search-staff-result-action{
 	top:41px;	
 }
-#form_search_staffs .custom-select{
+.select-location_parent_id{
 	margin-bottom:15px;	
+}
+.staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
+	background-color:transparent;	
 }
