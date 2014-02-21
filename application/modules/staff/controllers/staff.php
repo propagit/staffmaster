@@ -106,7 +106,7 @@ class Staff extends MX_Controller {
 					'user_id' => $user_id,
 					'external_staff_id' => $data['external_staff_id'],
 					'gender' => $data['gender'],
-					'dob' => $data['dob_day'] . '-' . $data['dob_month'] . '-' . $data['dob_year'],
+					'dob' => date('Y-m-d',strtotime($data['dob_year'].'-'.$data['dob_month']. '-'.$data['dob_day'])),
 					'department_id' => $data['department_id'],
 					'role' => $data['role'],
 					'emergency_contact' => $data['emergency_contact'],
@@ -135,6 +135,21 @@ class Staff extends MX_Controller {
 	*/
 	private function search_staffs()
 	{
+		$data['weekdays'] = array(
+							array('value' => 1, 'label' => 'Monday'),
+							array('value' => 2, 'label' => 'Tuesday'),
+							array('value' => 3, 'label' => 'Wednesday'),
+							array('value' => 4, 'label' => 'Thursday'),
+							array('value' => 5, 'label' => 'Friday'),
+							array('value' => 6, 'label' => 'Saturday'),
+							array('value' => 7, 'label' => 'Sunday')
+							);
+		$data['age_groups'] = array(
+							array('value' => '0-17', 'label' => 'Under 18 Years Old'),
+							array('value' => '18-25', 'label' => '18 - 25 Years Old'),
+							array('value' => '26-35', 'label' => '26 - 35 Years Old'),
+							array('value' => '36-100', 'label' => '35+ Years Old')
+							);
 		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
 	

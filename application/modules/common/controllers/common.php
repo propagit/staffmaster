@@ -655,4 +655,12 @@ class Common extends MX_Controller {
 
 		$this->load->view('admin_profile_picture', isset($data) ? $data : NULL);
 	}
+	
+	function create_pagination($total_records,$records_per_page = 6,$current_page = 1)
+	{
+		$data['total_records'] = $total_records;
+		$data['records_per_page'] = $records_per_page;
+		$data['current_page'] = $current_page;
+		$this->load->view('pagination',isset($data) ? $data : NULL);
+	}
 }

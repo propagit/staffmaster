@@ -15,9 +15,10 @@ class Staff_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
-	function search_staffs($params = array())
+	function search_staffs($params = array(),$total=false)
 	{
-		$sql = "SELECT s.*, u.*
+		$records_per_page = 5;
+		$sql = "SELECT s.*, u.* 
 				FROM user_staffs s 
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status != 2";
 		
@@ -26,8 +27,52 @@ class Staff_model extends CI_Model {
 		if(isset($params['status']) && $params['status'] != ''){ $sql .= " AND u.status = ".$params['status'];}
 		if(isset($params['gender']) && $params['gender'] != ''){ $sql .= " AND s.gender = '".$params['gender']."'";}
 		if(isset($params['state']) && $params['state'] != ''){ $sql .= " AND u.state = '".$params['state']."'";}
+		
+		// Group
+		if(isset($params['group_id']) && $params['group_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staffs_groups.user_id as sg_uid from attribute_groups, staffs_groups WHERE  attribute_groups.group_id = staffs_groups.attribute_group_id AND group_id = ".$params['group_id'].")";}
+		
+		//Role
+		if(isset($params['role_id']) && $params['role_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staffs_roles.user_id as sr_uid from attribute_roles, staffs_roles WHERE  attribute_roles.role_id = staffs_roles.attribute_role_id AND role_id = ".$params['role_id'].")";}	
+		
+		//Location	
+		//if location id is set use this to filter the search
+		if(isset($params['location_id']) && $params['location_id'] != ''){ 
+			$sql .= " AND s.locations LIKE '%".$params['location_id']."%'";
+		}else{
+			//if location id is not set use parent location id from posted data to filter the search
+			if(isset($params['location_parent_id']) && $params['location_parent_id'] != ''){
+				$sql .= " AND s.locations LIKE '%".$params['location_parent_id']."%'";
+			}
+		}
+		
+		//Availability
+		if(isset($params['availability']) && $params['availability'] != ''){ $sql .= " AND s.user_id IN (SELECT user_staff_availability.user_id as usa_uid FROM user_staff_availability WHERE day = ".$params['availability']." AND value = 1 GROUP BY user_id)";}
+		
+		//Age
+		if(isset($params['age_groups']) && $params['age_groups'] != ''){ 
+			$cur_date = date('Y-m-d');
+			switch($params['age_groups']){
+				case '0-17':
+					$sql .= " AND s.dob > '".date('Y-m-d',strtotime('-18 years',strtotime($cur_date)))."'";
+				break;	
+				case '18-25':
+					$sql .= " AND s.dob BETWEEN '".date('Y-m-d',strtotime('-25 years',strtotime($cur_date)))."' AND '".date('Y-m-d',strtotime('-18 years',strtotime($cur_date)))."'";
+				break;	
+				case '26-35':
+					$sql .= " AND s.dob BETWEEN '".date('Y-m-d',strtotime('-35 years',strtotime($cur_date)))."' AND '".date('Y-m-d',strtotime('-26 years',strtotime($cur_date)))."'";
+				break;	
+				case '36-100':
+					$sql .= " AND s.dob BETWEEN '".date('Y-m-d',strtotime('-100 years',strtotime($cur_date)))."' AND '".date('Y-m-d',strtotime('-36 years',strtotime($cur_date)))."'";
+				break;	
+			}
+		}
+		
+		
 		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}				
-		if(isset($params['limit'])) { $sql .= " LIMIT " . $params['limit']; }
+		//if(isset($params['limit'])) { $sql .= " LIMIT " . $params['limit']; }
+		if(!$total){
+			$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
+		}
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

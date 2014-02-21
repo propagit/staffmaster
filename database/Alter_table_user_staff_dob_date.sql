@@ -1,0 +1,1 @@
+ALTER TABLE  `user_staffs` CHANGE  `dob`  `dob` DATE NOT NULL ;

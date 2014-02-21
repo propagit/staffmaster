@@ -33,8 +33,7 @@
 	<div class="form-group">				
 		<label for="dob" class="col-md-2 control-label">D.O.B(dd/mm/yy)</label>
 		<div class="col-md-4">
-			<?=modules::run('common/field_select_dob', 'dob');?>
-			<? #=modules::run('common/dropdown_dob', set_value('dob_day'), set_value('dob_month'), set_value('dob_year'));?>
+			<?=modules::run('common/dropdown_dob', date('d',strtotime($staff['dob'])), date('m',strtotime($staff['dob'])),date('Y',strtotime($staff['dob'])));?>
 		</div>	
         <label for="rating" class="col-md-2 control-label">Rating</label>
 		<div class="col-md-4 wp-rating" id="wp_rating">
