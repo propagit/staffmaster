@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Controller: Common
+ * Controller: Attribute
  * @author: namnd86@gmail.com
  */
 

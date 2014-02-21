@@ -24,12 +24,13 @@ class Common extends MX_Controller {
 	*			- $size (optional): size 
 	*	@return: custom view of select input field
 	*/
-	function field_select($array, $field_name, $field_value=null, $size=null) {
+	function field_select($array, $field_name, $field_value=null, $size=null, $title = true) {
 		$data = array(
 			'data' => $array,
 			'field_name' => $field_name,
 			'field_value' => $field_value,
-			'size' => $size
+			'size' => $size,
+			'title' => $title
 		);
 		$this->load->view('field_select', isset($data) ? $data : NULL);
 	}

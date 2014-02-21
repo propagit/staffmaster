@@ -46,6 +46,7 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
 		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
+		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
 		array('path' => '#', 'icon' => 'fa-tint', 'title' => 'System Styles'),
 		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'SMS Message'),
 		array('path' => '#', 'icon' => 'fa-envelope', 'title' => 'eMail Management'),
