@@ -24,9 +24,20 @@ class Setting extends MX_Controller {
 					$this->delete_sub_user($param);
 				break;
 			default:
-					$this->update_profile();
+					$this->company();
 			break;
 		}
+	}
+	
+	function company()
+	{
+		$company = $this->setting_model->get_profile();
+		//$company_email = $this->setting_model->get_profile_email_template();
+		$data['states'] = $this->user_model->get_states();
+		$data['company'] = $company;
+		//$data['company_email'] = $company_email;
+		//$data['sub_users'] = $this->user_model->get_sub_users($user['user_id']);
+		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
 	
 	function update_profile()
@@ -60,7 +71,7 @@ class Setting extends MX_Controller {
 		}
 		$data['states'] = $this->user_model->get_states();
 		$data['company'] = $company;
-		$data['company_email'] = $company_email;
+		//$data['company_email'] = $company_email;
 		//$data['sub_users'] = $this->user_model->get_sub_users($user['user_id']);
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}

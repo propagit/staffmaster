@@ -15,6 +15,11 @@ class Setting_model extends CI_Model {
 		return $this->db->update('company_profile', $data);
 	}
 	
+	function create_company_profile($data)
+	{
+		$this->db->insert('company_profile', $data);
+		return $this->db->insert_id();
+	}
 	
 	function get_profile_email_template()
 	{

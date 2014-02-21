@@ -45,7 +45,7 @@ $menu = array(
 		array('path' => '#', 'icon' => 'fa-file-o', 'title' => 'Create Webpage'),
 	)),
 	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
-		array('path' => 'profile', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
+		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
 		array('path' => '#', 'icon' => 'fa-tint', 'title' => 'System Styles'),
 		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'SMS Message'),
 		array('path' => '#', 'icon' => 'fa-envelope', 'title' => 'eMail Management'),
