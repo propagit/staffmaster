@@ -2,7 +2,8 @@
 <h2>Your Email Signature</h2>
 <p>Your email signature will be attached to the base of every email sent from the sytem</p>
 </div>
-
+<button type="button" class="btn btn-info" id="button_trial_email"><i class="fa fa-envelope-o"></i> Send Email</button>
+<br /><br />
 <form class="form-horizontal" role="form" id="form_update_company_signature">
 <input type="hidden" name="company_id" value="<?=(isset($company['id'])) ? $company['id'] : 0 ?>" />
 <div class="row">	
@@ -139,53 +140,23 @@
 
 <div class="row" >
     <div class="col-md-12" style="padding-left:0px!important; margin-left:0px!important">                
-        <div id="template_email" style="border:1px solid #dfdfdf;background:#fbfbfb; border-radius:3px; padding:15px;">
-            <div id="template_email_inside" style="background:#00bbf8; padding:15px;color:#fff;float:none;">
-                <div style="float:left;width:40%;font-size:11px;">
-                <?=(isset($company['email_c_name'])) ? $company['email_c_name'] : 'Company Name';?><br />
-                <?=(isset($company['email_c_address'])) ? $company['email_c_address'] : 'Address';?><br />
-                <?=(isset($company['email_c_state'])) ? $company['email_c_state'] : 'State';?>&nbsp; 
-                <?=(isset($company['email_c_country'])) ? $company['email_c_country'] : 'Country';?> &nbsp;
-                <?=(isset($company['email_c_postcode'])) ? $company['email_c_postcode'] : 'Postcode';?><br />
-                <br />
-                T: <?=(isset($company['email_c_phone'])) ? $company['email_c_phone'] : 'Phone';?> <br />
-                F: <?=(isset($company['email_c_fax'])) ? $company['email_c_fax'] : 'Fax';?> <br />
-                E: <?=(isset($company['email_c_email'])) ? $company['email_c_email'] : 'Email';?> <br />
-                W: <?=(isset($company['email_c_website'])) ? $company['email_c_website'] : 'Website';?> <br />
-                </div>
-                <div style="float:right;width:60%; text-align:right;">
-                    <table>
-                    <tr><td>
-                    <?=(isset($company['email_company_login_button'])) ?  '<div id="login_button">Login To Your Account</div>' : ''; ?>
-                    </td></tr>
-                    <tr>
-                        <td><table align="right"><tr>
-                        <?=(isset($company['email_s_facebook'])) ? '<td><i class="fa fa-facebook-square"></i></td>' : ''; ?> 
-                        <?=(isset($company['email_s_twitter'])) ? '<td><i class="fa fa-twitter-square"></i></td>' : ''; ?> 
-                        <?=(isset($company['email_s_linkedin'])) ? '<td><i class="fa fa-linkedin-square"></i></td>' : ''; ?> 
-                        <?=(isset($company['email_s_googleplus'])) ?  '<td><i class="fa fa-google-plus-square"></i></td>' : ''; ?> 
-                        <?=(isset($company['email_s_youtube'])) ? '<td><i class="fa fa-youtube-square"></i></td>' : ''; ?> 
-                        </tr></table></td>
-                    </tr>
-                    <tr><td>
-                    <p style="font-size:10px;">
-                        <?=(isset($company['email_company_text'])) ? $company['email_company_text'] : '';?>                                            
-                    </p>
-                    </td></tr>
-                    </table>
-                </div>   
-                <div style="clear:both;"></div>                                  
-            </div>
-               
-        </div>
+    	<div id="template_footer"></div>
+        
         <br />
         <h4>Colour & Fonts </h4>
-        Background Colour<div class="cPicker" id="cPicker"><div style="background-color: #e62e90"></div><span>Choose color...</span></div>
-        <div class="cPicker" id="flatPicker"></div>
-        Font Colour
-        Font
-        <br><br>
-        
+    </div>
+</div>
+<div class="row">
+	<div class="form-group">
+    	<div class="col-md-3"> 
+        	<div style="float:left">Background Colour </div><div style="float:left; margin-left:10px;"class="cPicker" id="cPicker"><div style="background-color:#09F;"></div><span>Choose color...</span></div>
+        </div>
+		<div class="col-md-3">
+			<div style="float:left">Font Colour </div><div style="float:left; margin-left:10px;" class="cPicker" id="FontcPicker"><div style="background-color:#09C;"></div><span>Choose color...</span></div>
+		</div>  
+        <div class="col-md-3">
+			Font 
+		</div>    	        
     </div>
 </div>
 <div class="row">
@@ -196,6 +167,63 @@
 		</div>
 	</div>
 </div>
-
-
 </form>
+
+<script>
+$(function(){	
+	update_email_template('#fbfbfb');
+	
+	$('#cPicker').ColorPicker({
+		color: '#e62e90',
+		onShow: function (colpkr) {
+			$(colpkr).fadeIn(500);
+			return false;
+		},
+		onHide: function (colpkr) {
+			$(colpkr).fadeOut(500);
+			return false;
+		},
+		onChange: function (hsb, hex, rgb) {
+			$('#cPicker div').css('backgroundColor', '#' + hex);			
+		}
+	});
+		
+	
+	$('#FontcPicker').ColorPicker({
+		color: '#e62e90',
+		onShow: function (colpkr) {
+			$(colpkr).fadeIn(500);
+			return false;
+		},
+		onHide: function (colpkr) {
+			$(colpkr).fadeOut(500);
+			return false;
+		},
+		onChange: function (hsb, hex, rgb) {
+			$('#FontcPicker div').css('backgroundColor', '#' + hex);
+			update_email_template(hex);
+		}
+	});
+		
+	
+	$('#button_trial_email').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>setting/ajax/send_email",			
+			success: function(html) {				
+			}
+		})
+	})
+})
+function update_email_template(color)
+{
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>setting/ajax/get_template_footer",	
+		data:{color: color},
+		success: function(html) {				
+			$('#template_footer').html(html);
+		}
+	})
+}
+</script>

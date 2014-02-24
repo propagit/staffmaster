@@ -28,21 +28,27 @@ class Setting extends MX_Controller {
 			break;
 		}
 	}
-	
+	/**
+	*	@name: company
+	*	@desc: function to call the view of one of company profile 
+	*	@access: public	
+	*	@return: view based on tab
+	*/
 	function company()
 	{
-		$company = $this->setting_model->get_profile();
-		//$company_email = $this->setting_model->get_profile_email_template();
+		$company = $this->setting_model->get_profile();		
 		$data['states'] = $this->user_model->get_states();
 		$data['company'] = $company;
-		//$data['company_email'] = $company_email;
-		//$data['sub_users'] = $this->user_model->get_sub_users($user['user_id']);
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
-	
+	/**
+	*	@name: update_profile
+	*	@desc: function to update company profile
+	*	@access: public	
+	*	@return: view based on tab
+	*/
 	function update_profile()
 	{
-		//$user = $this->session->userdata('user_data');
 		$company = $this->setting_model->get_profile();
 		$company_email = $this->setting_model->get_profile_email_template();
 		if ($this->input->post())
@@ -70,45 +76,25 @@ class Setting extends MX_Controller {
 			));
 		}
 		$data['states'] = $this->user_model->get_states();
-		$data['company'] = $company;
-		//$data['company_email'] = $company_email;
-		//$data['sub_users'] = $this->user_model->get_sub_users($user['user_id']);
+		$data['company'] = $company;		
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
 	
 	
-	
-	function edit_sub_user()
+	function form_upload_photo($company_id)
 	{
-		$user_id = $this->input->post('sub_user_id');
-		$data = array(
-			'company_email' => $this->input->post('sub_email'),
-			'password' => $this->input->post('sub_password'),
-			'first_name' => $this->input->post('sub_first_name'),
-			'last_name' => $this->input->post('sub_last_name')
-		);
-		if ($this->user_model->update_user($user_id, $data))
-		{
-			redirect('profile');
-		}
-	
+		$data['company_id'] = $company_id;
+		$this->load->view('upload_logo_form', isset($data) ? $data : NULL);	
 	}
 	
-	function delete_sub_user($user_id)
+	function superinformasi($field_name='',$field_value='')
 	{
-		$user = $this->user_model->get_user($user_id);
-		if (!$user)
+		$company = $this->setting_model->get_profile();
+		if(isset($company))
 		{
-			redirect('profile');
+			echo $company[$field_name];
 		}
-		if (file_exists('./uploads/logos/' . $user['logo_url']))
-		{
-			unlink('./uploads/logos/' . $user['logo_url']);
-		}
-		$this->user_model->delete_user($user_id);
-		redirect('profile');
 	}
-	
 	/**
 	*	@name: create_pdf
 	*	@desc: function to create pdf for invoice - templating stage

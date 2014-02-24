@@ -11,6 +11,7 @@ class Common extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('common_model');
+		$this->load->model('setting/setting_model');
 		$this->load->model('staff/staff_model');
 	}
 	
@@ -601,44 +602,7 @@ class Common extends MX_Controller {
 		$this->common_model->delete_photo($staff_id,$photo_id);
 	}
 	
-	function set_availability($field_name,$field_value=NULL)
-	{
 	
-		if($field_value==''){
-			$data['monday'] = '';
-			$data['tuesday'] = '';
-			$data['wednesday'] = '';
-			$data['thursday'] = '';
-			$data['friday'] = '';
-			$data['saturday'] = '';
-			$data['sunday'] = '';
-		}else{
-			$data['monday'] = json_decode($field_value['monday']);
-			$data['tuesday'] = json_decode($field_value['tuesday']);
-			$data['wednesday'] = json_decode($field_value['wednesday']);
-			$data['thursday'] = json_decode($field_value['thursday']);
-			$data['friday'] = json_decode($field_value['friday']);
-			$data['saturday'] = json_decode($field_value['saturday']);
-			$data['sunday'] = json_decode($field_value['sunday']);
-		}
-		$data['num'] = 0;
-		$this->load->view('set_availability', isset($data) ? $data : NULL);
-	}
-	
-	function add_availability()
-	{
-		$from_day = $this->input->post('from_day');
-		$to_day = $this->input->post('to_day');
-		$start_time = $this->input->post('start_time');
-		$finish_time = $this->input->post('finish_time');
-		$num = $this->input->post('num');
-		$data['from_day'] = $from_day;
-		$data['to_day'] = $to_day;
-		$data['start_time'] = $start_time;
-		$data['finish_time'] = $finish_time;
-		$data['num'] = $num;
-		$this->load->view('dropdown_availability', isset($data) ? $data : NULL);
-	}
 	/**
 	*    @desc To display profile picture based on user_id
 	*   
@@ -663,5 +627,12 @@ class Common extends MX_Controller {
 		$data['records_per_page'] = $records_per_page;
 		$data['current_page'] = $current_page;
 		$this->load->view('pagination',isset($data) ? $data : NULL);
+	}
+	
+	
+	function company_logo()
+	{
+		$data['company'] = $this->setting_model->get_profile();;
+		$this->load->view('company_logo', isset($data) ? $data : NULL);
 	}
 }

@@ -9,12 +9,12 @@
 		<label class="col-md-2 control-label">Choice of superannuation fund</label>
 		<div class="col-md-2">
 			<div class="radio">
-				<input type="radio" name="s_choice" value="employer"<?=($staff['s_choice'] == 'employer') ? ' checked' : '';?> /> my employer's superannuation fund
+				<input type="radio" name="s_choice" id="employer" value="employer"<?=($staff['s_choice'] == 'employer') ? ' checked' : '';?> /> my employer's superannuation fund
 			</div>
 		</div>
 		<div class="col-md-2">
 			<div class="radio">
-				<input type="radio" name="s_choice" value="own"<?=($staff['s_choice'] == 'own') ? ' checked' : '';?> /> my own choice
+				<input type="radio" name="s_choice" id="own" value="own"<?=($staff['s_choice'] == 'own') ? ' checked' : '';?> /> my own choice
 			</div>
 		</div>
 	</div>
@@ -41,9 +41,8 @@
 	
 	<div class="form-group<? //if(modules::run('common/check_super', $staff['s_fund_name'])) { echo ' has-success'; } else { echo '  has-warning'; } ?>">
 		<label for="s_fund_name" class="col-md-2 control-label">Super Fund Name</label>
-		<div class="col-md-4">
-			<!--<input type="text" class="form-control" id="s_fund_name" name="s_fund_name" value="<?=$staff['s_fund_name'];?>" />-->
-            <?=modules::run('common/dropdown_supers', 's_fund_name',$staff['s_fund_name']);?>
+		<div class="col-md-4">			
+            <?=modules::run('common/dropdown_supers', 's_fund_name',($staff['s_choice'] == 'own') ? $staff['s_fund_name'] : modules::run('setting/superinformasi', 'super_fund_name',''));?>
 
 		</div>
 		<div class="col-md-6">
@@ -57,18 +56,18 @@
 	<div class="form-group">
 		<label for="s_product_id" class="col-md-2 control-label">Super Product ID</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_product_id" name="s_product_id" value="<?=$staff['s_product_id'];?>" readonly="readonly"/>
+			<input type="text" class="form-control" id="s_product_id" name="s_product_id" value="<?=modules::run('setting/superinformasi', 'super_product_id','');?>" readonly="readonly"/>
 		</div>
 		<label for="s_fund_website" class="col-md-2 control-label">Super Fund Website</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_fund_website" name="s_fund_website" value="<?=$staff['s_fund_website'];?>" readonly="readonly" />
+			<input type="text" class="form-control" id="s_fund_website" name="s_fund_website" value="<?=modules::run('setting/superinformasi', 'super_fund_website','');?>" readonly="readonly" />
 		</div>
 	</div>
 		
 	<div class="form-group">
 		<label for="s_fund_phone" class="col-md-2 control-label">Super Phone</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_fund_phone" name="s_fund_phone" value="<?=$staff['s_fund_phone'];?>" readonly="readonly" />
+			<input type="text" class="form-control" id="s_fund_phone" name="s_fund_phone" value="<?=modules::run('setting/superinformasi', 'super_fund_phone','');?>" readonly="readonly" />
 		</div>
 	</div>						
 </div>
@@ -163,12 +162,14 @@ function load_s_choice()
 	if (s_choice == "own") {
 		$('#own_choice').show();
 		$('input[name="s_fund_name"]').prop('readonly',false);
+		$('#own').prop('checked',true);
 		$('#employer_choice').hide();
 	}
 	else
 	{		
 		$('#employer_choice').show();
 		$('input[name="s_fund_name"]').attr('readonly','readonly');
+		$('#employer').prop('checked',true);
 		$('#own_choice').hide();
 	}
 }

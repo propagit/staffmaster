@@ -74,17 +74,20 @@
     <!--jrating-->
     <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
 	<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
-
+    
+	<!-- Color Picker -->
+    <link rel="stylesheet" media="screen" type="text/css" href="<?=base_url()?>assets/js/colorpicker/colorpicker.css" />  
+	<script type="text/javascript" src="<?=base_url()?>assets/js/colorpicker/colorpicker.js"></script>
+    
 </head>
 <body>
 <header>
     <div class="container-fluid">
        <div class="row profile-bar">
-          <div class="col-md-12">
+         <div class="col-md-12">
              	<div class="logo">
-                	<img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
-                </div>
-
+					<?=modules::run('common/company_logo');?>
+				</div>
                 <div class="profile-menu">
                     <?=modules::run('account/menu');?>
                 </div>
