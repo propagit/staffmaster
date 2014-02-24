@@ -74,7 +74,13 @@ class Staff_model extends CI_Model {
 			
 			if(isset($custom_attrs['normal_elements']) && $custom_attrs['normal_elements'] != ''){
 				foreach($custom_attrs['normal_elements'] as $key => $val){
-					$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes = '".$val."'))";
+					if(is_array($val)){
+						foreach($val as $v){
+							$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes like '%".$v."%'))";	
+						}
+					}else{
+						$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes = '".$val."'))";
+					}
 				}
 			}
 			//file uploads
