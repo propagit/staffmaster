@@ -84,15 +84,18 @@
 <script>
 $(function(){
 	$('#btn_add_payrate').click(function(){
+		preloading($('#add-payrate-modal .modal-content'));
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>attribute/ajax/add_payrate",
 			data: $('#form_add_payrate').serialize(),
 			success: function(html) {
+				$('#wrapper_loading').remove();
 				$('#add-payrate-modal').modal('hide');
 				load_nav_payrates(html);
+				
 			}
-		})
+		}) 
 	});
 	<? if (count($payrates) > 0) { ?>
 	load_nav_payrates(<?=$payrates[0]['payrate_id'];?>);

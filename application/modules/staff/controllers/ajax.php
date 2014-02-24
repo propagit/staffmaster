@@ -69,7 +69,7 @@ class Ajax extends MX_Controller {
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 		//echo modules::run('common/field_rating', 'rating', $data['rating']);
-		echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],false,'basic','wp-rating',true,$data['user_id']);
+		echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
 	}
 	
 	function update_financial()

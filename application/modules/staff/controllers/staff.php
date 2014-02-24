@@ -35,6 +35,9 @@ class Staff extends MX_Controller {
 			case 'delete_custom_document':
 					$this->delete_custom_document($param);
 				break;	
+			case 'send_email':
+					$this->send_email();
+				break;	
 			default:
 					echo 'do nothing';
 				break;
@@ -719,7 +722,14 @@ class Staff extends MX_Controller {
 		$data['existing_elements'] = $this->formbuilder_model->get_form_elements();
 		$this->load->view('custom_attributes_search_form',isset($data) ? $data : NULL);	
 	}
-	
+	/**
+	*	@desc This function gets all the posted value from the search staff page then filters and returns only the custom attributes search parameters to the calling method.
+	*
+	*   @name get_custom_attrs
+	*	@access public
+	*	@param (via POST) gets posted data from the search staff page
+	*	@return Returns the custom attributes only values from all the posted data 
+	*/
 	function get_custom_attrs($search_params)
 	{
 		$custom_attrs = array();
@@ -741,6 +751,41 @@ class Staff extends MX_Controller {
 		}
 		return $custom_attrs;
 	
+	}
+	
+	
+	/**
+	*	@desc Test function to send email from localhost
+	*
+	*   @name send_email
+	*	@access public
+	*	
+	*/
+	function send_email()
+	{
+		$config = Array(
+		  'protocol' => 'smtp',
+		  'smtp_host' => 'ssl://smtp.googlemail.com',
+		  'smtp_port' => 465,
+		  'smtp_user' => 'your@gmail.com', // change it to yours
+		  'smtp_pass' => 'yourpassword', // change it to yours
+		  'mailtype' => 'html',
+		  'charset' => 'iso-8859-1',
+		  'wordwrap' => TRUE
+		);
+		
+		$message = 'Test message';
+		$this->load->library('email', $config);
+		$this->email->set_newline("\r\n");
+		$this->email->from('kaushtuvgurung@gmail.com'); // change it to yours
+		$this->email->to('rseptiane@gmail.com');// change it to yours
+		$this->email->subject('Testing Email from localhost');
+		$this->email->message($message);
+		if($this->email->send()){
+		  echo 'Email sent.';
+		}else{
+			show_error($this->email->print_debugger());
+		}
 	}
 	
 }

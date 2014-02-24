@@ -23,11 +23,11 @@
           <ul class="slides popup-gallery staff-photos">
            <?
                 foreach($photos as $photo){
-                    $photo_src_full = base_url().'uploads/staff/profile/'.md5($user_id).'/'.$photo['name'];                                    
+                    $photo_src_full = base_url().'uploads/staff/profile/'.md5($user_id).'/'.$photo['name'];                                
                     $thumb_src = base_url().'uploads/staff/profile/'.md5($user_id).'/thumbnail/'.$photo['name'];
                 ?>
                     <li class="flex-li" style="width:232px !important;">
-                        <img style="width:auto!important;" src="<?=$thumb_src;?>" />
+                        <img style="width:auto!important; height:216px;" src="<?=$thumb_src;?>" />
                         <div align="center" class="action_image popup-gallery-images" title="<?=$photo['name'];?>" href="<?=$photo_src_full?>"> 
                            <div class="action_icon set-hero" data-photo-id="<?=$photo['id'];?>"><i class="fa fa-heart <?=($photo['hero'] == 1 ? 'hero-img' : '' );?>" title="Set this picture as your profile picture"></i></div>
                            <div class="action_icon delete-photo" delete-data-id="<?=$photo['id'];?>"><i class="fa fa-times" title="Delete this picture"></i></div>

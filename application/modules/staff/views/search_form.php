@@ -80,7 +80,7 @@
             <div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
-                    	<a class="toggle-custom-attrs"><i class="fa fa-plus-square"></i> Custom Attributes</a>
+                    	<a class="toggle-custom-attrs"><i id="toggle-custom-attrs-fa" class="fa fa-plus-square"></i> Custom Attributes</a>
 					</div>
 				</div>
 			</div>
@@ -209,6 +209,11 @@ $(function(){
 	//toggle custom attr search
 	$('.toggle-custom-attrs').on('click',function(){
 		$('#custom-attr-search').toggle();
+		if($('#toggle-custom-attrs-fa').hasClass('fa-plus-square')){
+			$('#toggle-custom-attrs-fa').removeClass('fa-plus-square').addClass('fa-minus-square');	
+		}else{
+			$('#toggle-custom-attrs-fa').removeClass('fa-minus-square').addClass('fa-plus-square');	
+		}
 	});
 })
 
@@ -225,11 +230,11 @@ function search_staffs() {
 		data: $('#form_search_staffs').serialize(),
 		success: function(html) {
 			loaded($('#staffs_search_results'), html);
-			if(scroll_to_form){
+			/* if(scroll_to_form){
 				setTimeout(function(){
 					$('body').scrollTo('#form_search_staffs', 500 );
 				},200);
-			}
+			} */
 		}
 	})
 }

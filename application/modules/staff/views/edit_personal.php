@@ -145,7 +145,7 @@ $(function(){
 				url: "<?=base_url();?>staff/ajax/update_personal",
 				data: $('#form_update_staff_personal').serialize(),
 				success: function(html) {
-					$('#wp_rating').html(html);
+					$('#wp-rating').html(html);
 					$('#msg-update-personal').removeClass('hide');
 					setTimeout(function(){
 						$('#msg-update-personal').addClass('hide');

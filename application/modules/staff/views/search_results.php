@@ -83,6 +83,7 @@
 			var sort_order = $('#sort-order').val();
 			$('#sort-order').val(sort_order == 'asc' ? 'desc' : 'asc');
 			$('#sort-by').val($(this).attr('sort-by'));
+			reset_page();
 			search_staffs();
 		});	
 		
