@@ -77,6 +77,18 @@
 				</div>				
 			</div>
             
+            <div class="row">
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-4">
+                    	<a class="toggle-custom-attrs"><i class="fa fa-plus-square"></i> Custom Attributes</a>
+					</div>
+				</div>
+			</div>
+            
+            <div id="custom-attr-search" class="custom-hidden">
+            	<?=modules::run('staff/custom_attributes');?>
+            </div>
+            
 			<div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
@@ -85,7 +97,11 @@
 						<button type="reset" id="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset Form</button>
 					</div>
 				</div>
-			</div>			
+			</div>
+            
+          
+            
+            			
 			<input type="hidden" name="sort_by" id="sort-by" value="first_name" />
             <input type="hidden" name="sort_order" id="sort-order" value="asc" />
             <input type="hidden" name="current_page"  id="current_page" value="1"  />
@@ -188,6 +204,11 @@ $(function(){
 			reset_page();
 			search_staffs();
 		  }
+	});
+	
+	//toggle custom attr search
+	$('.toggle-custom-attrs').on('click',function(){
+		$('#custom-attr-search').toggle();
 	});
 })
 

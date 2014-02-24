@@ -13,12 +13,12 @@
 	</thead>
     <tbody>
 	<? foreach($groups as $group) { 
-	   $has_role = modules::run('staff/check_staff_has_group',$staff_id,$group['group_id']);
+	   $has_group = modules::run('staff/check_staff_has_group',$staff_id,$group['group_id']);
 	?>
 	<tr>
 		<td class="left"><?=$group['name'];?></td>
         <td class="center"><?=$group['frequency'];?>/<?=$total_active_staffs;?></td>
-		<td class="center <?=($has_role ? 'available-color': '');?>"><input class="groups-checkbox" type="checkbox" <?=($has_role ? 'checked="checked"': '');?> value="<?=$group['group_id'];?>"  /></td>
+		<td class="center <?=($has_group ? 'available-color': '');?>"><input class="groups-checkbox" type="checkbox" <?=($has_group ? 'checked="checked"': '');?> value="<?=$group['group_id'];?>"  /></td>
 	</tr>
 	<? } ?>
     </tbody>

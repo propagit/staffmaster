@@ -13,7 +13,7 @@ var sort_data = {
 };
 
 var params = {
-	'url': '<?=base_url();?>attribute/ajax/get_staffs_groups',
+	'url': '<?=base_url();?>staff/ajax/get_staffs_groups',
 	'output_container':'#load-groups',
 	'type':'POST',
 	'data':JSON.stringify(sort_data)

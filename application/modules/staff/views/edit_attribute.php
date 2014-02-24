@@ -4,7 +4,7 @@
 </div>
 <form class="form-horizontal" role="form" id="staff-custom-attributes-form">
 <input type="hidden" name="user_staff_id" value="<?=$staff['user_id'];?>" />
-	<?=modules::run('formbuilder/custom_attributes_for_staff_profile',$staff['user_id']);?>
+	<?=modules::run('staff/custom_attributes_for_staff_profile',$staff['user_id']);?>
 </form>
 <script>
 $(function(){

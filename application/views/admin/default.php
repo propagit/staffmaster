@@ -80,9 +80,9 @@
 <header>
     <div class="container-fluid">
        <div class="row profile-bar">
-         <div class="col-md-12">
-             <div class="logo">
-                <img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
+          <div class="col-md-12">
+             	<div class="logo">
+                	<img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />
                 </div>
 
                 <div class="profile-menu">

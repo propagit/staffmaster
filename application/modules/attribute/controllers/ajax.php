@@ -133,23 +133,6 @@ class Ajax extends MX_Controller {
 	}
 	
 	/**
-	*	@desc Displayes all the available roles in the system and the roles that has been asigned to the staff.
-	*
-	*   @name get_staffs_roles
-	*	@access public
-	*	@param Post data - sort parameter and user id (staff id)
-	*	@return Lists all roles with roles that has been assigned to staffs checked
-	*	
-	*/
-	function get_staffs_roles()
-	{
-		$params = $this->input->post('params',true);
-		$data['roles'] = $this->role_model->get_roles($params);
-		$data['params'] = $params;
-		$this->load->view('roles/ajax_list_roles_staff_profile', isset($data) ? $data : NULL);
-	}
-	
-	/**
 	*	@desc Adds new role
 	*
 	*   @name add_role
@@ -401,22 +384,6 @@ class Ajax extends MX_Controller {
 		$data['groups'] = $this->group_model->get_groups($params);
 		$data['params'] = $params;
 		$this->load->view('groups/ajax_list_groups', isset($data) ? $data : NULL);
-	}
-	/**
-	*	@desc Displayes all the available groups in the system and the roles that has been asigned to the staff.
-	*
-	*   @name get_staffs_roles
-	*	@access public
-	*	@param Post data - sort parameter and user id (staff id)
-	*	@return Lists all roles with roles that has been assigned to staffs checked
-	*	
-	*/
-	function get_staffs_groups()
-	{
-		$params = $this->input->post('params',true);
-		$data['groups'] = $this->group_model->get_groups($params);
-		$data['params'] = $params;
-		$this->load->view('groups/ajax_list_groups_staff_profile', isset($data) ? $data : NULL);
 	}
 	/**
 	*	@desc Adds new group

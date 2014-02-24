@@ -67,6 +67,26 @@ class Staff_model extends CI_Model {
 			}
 		}
 		
+		//Custom Attributes
+		//normal elements
+		$custom_attrs = modules::run('staff/get_custom_attrs',$params);
+		if(isset($custom_attrs) && $custom_attrs != ''){
+			
+			if(isset($custom_attrs['normal_elements']) && $custom_attrs['normal_elements'] != ''){
+				foreach($custom_attrs['normal_elements'] as $key => $val){
+					$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes = '".$val."'))";
+				}
+			}
+			//file uploads
+			if(isset($custom_attrs['file_uploads']) && $custom_attrs['file_uploads'] != ''){
+				foreach($custom_attrs['file_uploads'] as $key => $val){
+					$match = ($val == 'yes' ? '!=' : '=');
+					if($val == 'yes'){
+						$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes ".$match." ''))";
+					}
+				}
+			}
+		}
 		
 		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}				
 		//if(isset($params['limit'])) { $sql .= " LIMIT " . $params['limit']; }
@@ -76,6 +96,8 @@ class Staff_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	
+	
 	
 	function get_staff($user_id)
 	{

@@ -63,36 +63,6 @@ class Formbuilder extends MX_Controller {
 	}
 	
 	/**
-	*	@desc Shows the existing form for custom attributes in staff profile.
-	*
-	*   @name custom_attributes_for_staff_profile
-	*	@access public
-	*	@param (int) user id of staff
-	*	@return Loads existing form elements for custom attributes in staff profile.
-	*/
-	function custom_attributes_for_staff_profile($staff_user_id)
-	{
-		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(true);
-		$data['user_id'] = $staff_user_id;
-		$this->load->view('custom_attributes_for_staff_profile',isset($data) ? $data : NULL);	
-	}
-	
-	/**
-	*	@desc Shows the existing form for custom attributes in staff profile.
-	*
-	*   @name custom_file_uploads_for_staff_profile
-	*	@access public
-	*	@param (int) user id of staff
-	*	@return Loads existing file upload form elements for custom attributes in staff profile.
-	*/
-	function custom_file_uploads_for_staff_profile($staff_user_id)
-	{
-		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(false);
-		$data['user_id'] = $staff_user_id;
-		$this->load->view('custom_upload_fields_for_staff_profile',isset($data) ? $data : NULL);	
-	}
-	
-	/**
 	*	@desc Add Form
 	*
 	*   @name home

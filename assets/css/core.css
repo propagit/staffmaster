@@ -371,6 +371,9 @@ ol.example li.placeholder:before {
 	background-image:none;
 	border-color:rgba(255,255,255,0.25);
 }
+.btn:focus{
+	color:#fff;	
+}
 .btn-rt-margin{
 	margin-right:15px;	
 }

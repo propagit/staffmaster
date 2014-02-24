@@ -12,7 +12,7 @@ var sort_data = {
 };
 
 var params = {
-	'url': '<?=base_url();?>attribute/ajax/get_staffs_roles',
+	'url': '<?=base_url();?>staff/ajax/get_staffs_roles',
 	'output_container':'#load-roles',
 	'type':'POST',
 	'data':JSON.stringify(sort_data)

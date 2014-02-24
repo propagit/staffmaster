@@ -13,6 +13,7 @@ class Staff extends MX_Controller {
 		$this->load->model('profile/profile_model');
 		$this->load->model('user/user_model');
 		$this->load->model('staff_model');
+		$this->load->model('formbuilder/formbuilder_model');
 	}
 	
 	public function index($method='', $param='')
@@ -673,6 +674,73 @@ class Staff extends MX_Controller {
 				}	
 			}
 		}
+	}
+	
+	/**
+	*	@desc Shows the existing form for custom attributes in staff profile.
+	*
+	*   @name custom_attributes_for_staff_profile
+	*	@access public
+	*	@param (int) user id of staff
+	*	@return Loads existing form elements for custom attributes in staff profile.
+	*/
+	function custom_attributes_for_staff_profile($staff_user_id)
+	{
+		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(true);
+		$data['user_id'] = $staff_user_id;
+		$this->load->view('custom_attributes_for_staff_profile',isset($data) ? $data : NULL);	
+	}
+	
+	/**
+	*	@desc Shows the existing form for custom attributes in staff profile.
+	*
+	*   @name custom_file_uploads_for_staff_profile
+	*	@access public
+	*	@param (int) user id of staff
+	*	@return Loads existing file upload form elements for custom attributes in staff profile.
+	*/
+	function custom_file_uploads_for_staff_profile($staff_user_id)
+	{
+		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(false);
+		$data['user_id'] = $staff_user_id;
+		$this->load->view('custom_upload_fields_for_staff_profile',isset($data) ? $data : NULL);	
+	}
+	
+	/**
+	*	@desc Shows the existing form for custom attributes.
+	*
+	*   @name custom_attributes
+	*	@access public
+	*	@param null
+	*	@return Loads existing form elements for custom attributes.
+	*/
+	function custom_attributes()
+	{
+		$data['existing_elements'] = $this->formbuilder_model->get_form_elements();
+		$this->load->view('custom_attributes_search_form',isset($data) ? $data : NULL);	
+	}
+	
+	function get_custom_attrs($search_params)
+	{
+		$custom_attrs = array();
+		$normal_prefix = 'custom_attrs_';
+		$file_prefix = 'custom_file_';
+		if($search_params){
+			foreach($search_params as $key => $val){
+				if($val){
+					if(substr($key,0,strlen($normal_prefix)) == $normal_prefix){
+						$new_key = substr($key, strlen($normal_prefix));
+						$custom_attrs['normal_elements'][$new_key] = $val;	
+					}
+					if(substr($key,0,strlen($file_prefix)) == $file_prefix){
+						$new_key = substr($key, strlen($file_prefix));
+						$custom_attrs['file_uploads'][$new_key] = $val;	
+					}
+				}
+			}	
+		}
+		return $custom_attrs;
+	
 	}
 	
 }

@@ -12,6 +12,8 @@ class Ajax extends MX_Controller {
 		parent::__construct();
 		$this->load->model('staff_model');
 		$this->load->model('user/user_model');
+		$this->load->model('attribute/role_model');
+		$this->load->model('attribute/group_model');
 	}
 	
 	function search_staffs()
@@ -110,6 +112,23 @@ class Ajax extends MX_Controller {
 			's_agree' => isset($data['s_agree']) ? $data['s_agree'] : 0,
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
+	}
+	
+	/**
+	*	@desc Displayes all the available roles in the system and the roles that has been asigned to the staff.
+	*
+	*   @name get_staffs_roles
+	*	@access public
+	*	@param Post data - sort parameter and user id (staff id)
+	*	@return Lists all roles with roles that has been assigned to staffs checked
+	*	
+	*/
+	function get_staffs_roles()
+	{
+		$params = $this->input->post('params',true);
+		$data['roles'] = $this->role_model->get_roles($params);
+		$data['params'] = $params;
+		$this->load->view('ajax_list_roles_staff_profile', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -327,7 +346,22 @@ class Ajax extends MX_Controller {
 		$hour = $fields[2];
 		$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
 	}
-	
+	/**
+	*	@desc Displayes all the available groups in the system and the roles that has been asigned to the staff.
+	*
+	*   @name get_staffs_roles
+	*	@access public
+	*	@param Post data - sort parameter and user id (staff id)
+	*	@return Lists all roles with roles that has been assigned to staffs checked
+	*	
+	*/
+	function get_staffs_groups()
+	{
+		$params = $this->input->post('params',true);
+		$data['groups'] = $this->group_model->get_groups($params);
+		$data['params'] = $params;
+		$this->load->view('ajax_list_groups_staff_profile', isset($data) ? $data : NULL);
+	}
 	/**
 	*	@name: update_groups
 	*	@desc: ajax function to add or delete groups 

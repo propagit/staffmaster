@@ -145,6 +145,14 @@ a.default {
 	float:left;
 	width:100%;	
 }
+.custom-inline,
+.custom-attributes .inline{
+	width: auto !important;
+	padding-top: 0 !important;
+	line-height: 20px !important;
+	float: left;
+	padding-right: 10px;
+}
 .ui-draggable-helper {
 	 border: 1px solid #dddddd;
 	 background: #fff;
@@ -359,12 +367,10 @@ a.default {
 /* end responsive */
 
 /* Styles fdr search staff profile photo */
-.staff_search_profile
-{
+.staff_search_profile{
 	float:left;
 }
-.profile_photo
-{		
+.profile_photo{		
 	margin-right:10px;	
 	width:72px;
 	height:72px;
@@ -372,9 +378,11 @@ a.default {
 
 .resize{
 	width:100%;
-	
 }
 #wp_field_select_areas {
+}
+.toggle-custom-attrs .fa{
+	padding-right:10px;	
 }
 
 /* Styles for Job board / popover */

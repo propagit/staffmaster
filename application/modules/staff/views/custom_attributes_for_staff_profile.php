@@ -45,7 +45,7 @@
 									}
 								}
 				   ?>
-						<label class="radio <?=($elem->inline_element == 'yes' ? 'inline' : '' );?>">
+						<label class="radio <?=($elem->inline_element == 'yes' ? 'custom-inline' : '' );?>">
                           <input type="radio" name="<?=$elem->name;?>" value="<?=$attr->value;?>" <?=$checked;?> >
                           <?=$attr->value;?>
                         </label>
@@ -79,7 +79,7 @@
 									}
 								}
 				   ?>
-						<label class="checkbox <?=($elem->inline_element == 'yes' ? 'inline' : '' );?>">
+						<label class="checkbox <?=($elem->inline_element == 'yes' ? 'custom-inline' : '' );?>">
                           <input type="checkbox" name="<?=$elem->name;?>[]" value="<?=$attr->value;?>" <?=$checked;?>>
                           <?=$attr->value;?>
                         </label>
