@@ -107,8 +107,9 @@ class Ajax extends MX_Controller {
 	}
 	function upload_logo()
 	{
+		$stat=1;
 		$company_id = $this->input->post('company_id');
-		//if($company_id==0){$comp_id = 1;}
+		if($company_id==0){$stat = 0;$company_id = 1;}
 		$path = "./uploads/company";
 		$dir = $path;
 		if(!is_dir($dir))
@@ -168,7 +169,7 @@ class Ajax extends MX_Controller {
 		$config['remove_space'] = TRUE;
 	
 		$this->load->library('upload', $config);
-
+		if($stat==0){$company_id=0;}
 		if ( ! $this->upload->do_upload())
 		{
 			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());			
