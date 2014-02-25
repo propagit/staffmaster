@@ -95,7 +95,10 @@ class Ajax extends MX_Controller {
 			'email_s_linkedin' => $data['email_s_linkedin'],
 			'email_s_google' => $data['email_s_google'],
 			'email_s_youtube' => $data['email_s_youtube'],
-			'email_s_instagram' => $data['email_s_instagram'],			
+			'email_s_instagram' => $data['email_s_instagram'],	
+			'email_background_colour' => $data['email_background_colour'],			
+			'email_font_colour' => $data['email_font_colour'],
+			'email_common_text' => $data['email_common_text']			
 		);
 		if($data['company_id']==0){			
 			$this->setting_model->create_company_profile($company_data);		
@@ -105,6 +108,14 @@ class Ajax extends MX_Controller {
 			$this->setting_model->update_profile($data['company_id'], $company_data);		
 		}
 	}
+	
+	/**
+	*	@name: upload_logo
+	*	@desc: Upload logo of the company. the image will be resized with ratio 150:150 stored on thumbnail folder. There is no thumbnail needed for upload logo 
+	*	@access: public
+	*	@param: (via POST) (int) company_id
+	*	
+	*/
 	function upload_logo()
 	{
 		
@@ -186,32 +197,22 @@ class Ajax extends MX_Controller {
 			  $fp = fopen($dirs.'/index.html', 'w');
 			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 			  fclose($fp);
-			}
-			$dirs_thumb2 = $dir.'/thumbnail2';
-			if(!is_dir($dirs_thumb2))
-			{
-			  mkdir($dirs_thumb2);
-			  chmod($dirs_thumb2,0777);
-			  $fp = fopen($dirs_thumb2.'/index.html', 'w');
-			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-			  fclose($fp);
-			}
-			
+			}						
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;
 			$this->imageResizer($target,$target,150,150);	
 			
-			$thumb2_width = 216;
-			$thumb2_height = 216;
-			copy($dir.'/'.$file_name, $dirs_thumb2."/".$file_name);
-			$target_thumb2 = $dirs_thumb2."/".$file_name;
-			$this->scale_image($target_thumb2,$target_thumb2,$thumb2_width,$thumb2_height);
+			
 		}
 	}
-	function imageResizer($image_u,$target, $width, $height) {
-
-        //header('Content-type: image/jpeg');
-
+	/**
+	*	@name: imageResizer
+	*	@desc: Resize Image from uploaded logo. this will resize based on ratio parameter which is in this case 150:150
+	*	@access: public
+	*	@param: image, url target, width and height ratio image
+	*	
+	*/
+	function imageResizer($image_u,$target, $width, $height) {        
         list($width_orig, $height_orig) = getimagesize($image_u);
 		$myImage = imagecreatefromjpeg($image_u);
         $ratio_orig = $width_orig/$height_orig;
@@ -229,39 +230,8 @@ class Ajax extends MX_Controller {
 
         // Output the image
         imagejpeg($image_p, $target, 100);
-
     }
-	function scale_image($image,$target,$thumbnail_width,$thumbnail_height)
-	{
-	  if(!empty($image)) //the image to be uploaded is a JPG I already checked this
-	  {		
-		list($width_orig, $height_orig) = getimagesize($image);   
-		$myImage = imagecreatefromjpeg($image);
-		$ratio_orig = $width_orig/$height_orig;
-		//echo $ratio_orig;
-		if ($thumbnail_width/$thumbnail_height > $ratio_orig) {
-		   $new_height = $thumbnail_width/$ratio_orig;
-		   $new_width = $thumbnail_width;
-		} else {
-		   $new_width = $thumbnail_height*$ratio_orig;
-		   $new_height = $thumbnail_height;
-		}
-		
-		$x_mid = $new_width/2;  //horizontal middle
-		$y_mid = $new_height/2; //vertical middle
-		
-		$process = imagecreatetruecolor(round($new_width), round($new_height)); 
-		
-		imagecopyresampled($process, $myImage, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
-		$thumb = imagecreatetruecolor($thumbnail_width, $thumbnail_height); 
-		imagecopyresampled($thumb, $process, 0, 0, ($x_mid-($thumbnail_width/2)), ($y_mid-($thumbnail_height/2)), $thumbnail_width, $thumbnail_height, $thumbnail_width, $thumbnail_height);
-		
-		imagedestroy($process);
-		imagedestroy($myImage);
-		imagejpeg($thumb,$target, 100);
 	
-	  }
-	}	
 	
 	/**
 	*	@name: load_picture
@@ -293,39 +263,40 @@ class Ajax extends MX_Controller {
 		);
 		if($company_id!=0){	$this->setting_model->update_profile($company_id, $photo);}
 	}
-	
-	function send_email()
+	/**
+	*	@name: get_template_footer
+	*	@desc: Get Email Footer Template
+	*	@access: public
+	*	@param: (via POST) Background color and Font color
+	*	
+	*/
+	function get_template_footer()
 	{
-		/*$data['company'] = $this->setting_model->get_profile();		
-		$message ='Test Message';
-		//$message_footer = $this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);
-		//$message.=$message_footer;
-		//$this->load->library('email');
-		$config = Array(
- 	      'protocol' => 'smtp',
-		  'smtp_host' => 'ssl://smtp.googlemail.com',
-		  'smtp_port' => 465,
-		  'smtp_user' => 'propagate.au@gmail.com', // change it to yours
-		  'smtp_pass' => 'morem0n3y', // change it to yours
-		  'mailtype' => 'html',
-		  'charset' => 'iso-8859-1',
-		  'wordwrap' => TRUE
-		);
-		$this->load->library('email', $config);
-		$config['mailtype'] = 'html';
-		$this->email->initialize($config);	
-		$this->email->from('propagate.au@gmail.com');
-		$this->email->to('rseptiane@gmail.com');
-		
-		$this->email->subject('Email Template');
-		$this->email->message($message);
-		if ($this->email->send()) {
-        // This becomes triggered when sending
-        echo("Mail Sent");
-		}else{
-			echo($this->email->print_debugger()); //Display errors if any
+		$company = $this->setting_model->get_profile();
+		if($_POST){
+			$color = $this->input->post('color');
+			$font_color = $this->input->post('font_color');
 		}
-		*/
+		else
+		{
+			$color = $company['email_background_colour'];
+			$font_color = $company['email_font_colour'];
+		}
+		
+		
+		$data['color'] = $color;
+		$data['font_color'] = $font_color;
+		$data['company'] = $company;
+		$this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);	
+	}
+	/**
+	*	@name: send_email_template
+	*	@desc: Function to send email the templaete email
+	*	@access: public
+	*/
+	function send_email_template()
+	{
+		
 		$config = Array(
 			'protocol' => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -337,8 +308,7 @@ class Ajax extends MX_Controller {
 			'wordwrap' => TRUE
 		);
 		
-		$message = 'Test message';
-		//$message ='Test Message';
+		$message = 'Test message';		
 		$message_footer = modules::run('setting/ajax/get_template_footer');
 		$message=$message.$message_footer;
 		$this->load->library('email', $config);
@@ -358,11 +328,6 @@ class Ajax extends MX_Controller {
 		
 	}
 	
-	function get_template_footer($color='#fbfbfb')
-	{
-		$data['color'] = $color;
-		$data['company'] = $this->setting_model->get_profile();
-		$this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);	
-	}
+	
 	
 }
