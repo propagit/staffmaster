@@ -10,8 +10,7 @@
 		<th class="center" width="200">Time Sheets</th>
 		<th class="center" width="120">Expenses</th>
 		<th class="center" width="120">Amount</th>
-		<th class="center" width="40">Preview</th>
-		<th class="center" width="40">Generate</th>
+		<th class="center" width="160">Preview</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -22,8 +21,9 @@
 		<td class="center"><?=$invoice['total_timesheets'];?></td>
 		<td class="center"></td>
 		<td class="center">$<?=money_format('%i', $invoice['total_amount']);?></td>
-		<td class="center" width="80"><i class="fa fa-eye"></i></td>
-		<td class="center" width="80"><i class="fa fa-check"></i></td> 
+		<td class="center">
+			<a href="<?=base_url();?>invoice/create/<?=$invoice['user_id'];?>" target="_blank"><i class="fa fa-eye"></i></a>
+		</td>
 	</tr>
 	<? } ?>
 	</tbody>

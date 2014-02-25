@@ -28,7 +28,6 @@
 </table>
 </form>
 </div>
-<div id="serialize_output"></div>
 
 <script>
 $(function () {

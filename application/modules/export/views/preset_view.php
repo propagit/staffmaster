@@ -1,4 +1,4 @@
-<div class="clearfix" style="padding: 5px; background:#eee; border: 1px solid #ccc; border-bottom:0;">
+<div class="clearfix wp-fields">
 <?=modules::run('common/field_select', $fields, 'field-id');?>
 </div>
 <div class="table-responsive">

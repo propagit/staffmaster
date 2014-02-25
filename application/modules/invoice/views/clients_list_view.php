@@ -8,7 +8,7 @@
 	<tr>
 		<th class="center" width="20"></th>
 		<th colspan="5">Client Name</th>
-		<th class="center">Campaigns</th>
+		<th class="center" width="120">Campaigns</th>
 		<th class="center" width="40">
 		</th>
 	</tr>

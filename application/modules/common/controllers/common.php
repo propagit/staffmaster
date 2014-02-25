@@ -35,6 +35,16 @@ class Common extends MX_Controller {
 		$this->load->view('field_select', isset($data) ? $data : NULL);
 	}
 	
+	function field_select_gst($field_name, $field_value=null, $size=null, $title = false) {
+		$array = array(
+			array('value' => GST_NO, 'label' => 'No GST'),
+			array('value' => GST_YES, 'label' => 'Inc GST'),
+			array('value' => GST_ADD, 'label' => 'Add GST'),
+			array('value' => TAX_FREE, 'label' => 'Tax Free')
+		);
+		return $this->field_select($array, $field_name, $field_value, $size, $title);
+	}
+	
 	/**
 	*	@name: field_select_states
 	*	@desc: custom select states field

@@ -420,3 +420,10 @@ a.default {
 .staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
 	background-color:transparent;	
 }
+
+#template-preset .wp-fields {
+	padding: 7px; 
+	background:#eee; 
+	border: 1px solid #ccc; 
+	border-bottom:0;
+}

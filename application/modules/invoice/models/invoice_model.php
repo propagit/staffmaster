@@ -2,6 +2,80 @@
 
 class Invoice_model extends CI_Model {
 	
+	function check_client_invoice($user_id) {
+		$this->db->where('client_id', $user_id);
+		$this->db->where('status', 0);
+		$query = $this->db->get('invoices');
+		if ($query->num_rows() == 0) {
+			return 0;
+		} else {
+			$result = $query->first_row('array');
+			return $result['invoice_id'];
+		}
+	}
+	
+	function add_client_invoice($data) {
+		$this->db->insert('invoices', $data);
+		return $this->db->insert_id();
+	}
+	
+	function add_invoice_item($data) {
+		$this->db->insert('invoice_items', $data);
+		return $this->db->insert_id();
+	}
+	
+	function get_job_timesheets($job_id) {
+		$this->db->where('job_id', $job_id);
+		$this->db->where('status', TIMESHEET_BATCHED);
+		$this->db->where('status_invoice_client', INVOICE_READY);
+		$query = $this->db->get('job_shift_timesheets');
+		return $query->result_array();
+	}
+	
+	function delete_invoice_item($item_id) {
+		$this->db->where('item_id', $item_id);
+		return $this->db->delete('invoice_items');
+	}
+	
+	function delete_invoice_items($invoice_id) {
+		$this->db->where('invoice_id', $invoice_id);
+		return $this->db->delete('invoice_items');
+	}
+	
+	function delete_invoice($invoice_id) {
+		$this->db->where('invoice_id', $invoice_id);
+		return $this->db->delete('invoices');
+	}
+	
+	function get_invoice_items($invoice_id) {
+		$this->db->where('invoice_id', $invoice_id);
+		$this->db->order_by('job_id', 'asc');
+		$query = $this->db->get('invoice_items');
+		return $query->result_array();
+	}
+	
+	function update_invoice($invoice_id, $data) {
+		$this->db->where('invoice_id', $invoice_id);
+		return $this->db->update('invoices', $data);
+	}
+	
+	function get_invoice($invoice_id) {
+		$this->db->where('invoice_id', $invoice_id);
+		$query = $this->db->get('invoices');
+		return $query->first_row('array');
+	}
+	
+	function get_client_invoice($user_id) {
+		$sql = "SELECT j.*, sum(js.total_amount_client) as `total_amount` FROM `job_shift_timesheets` js
+						LEFT JOIN `jobs` j ON js.job_id = j.job_id
+						WHERE js.status = " . TIMESHEET_BATCHED . "
+						AND js.status_invoice_client = " . INVOICE_READY . "
+						AND js.client_id = " . $user_id . "
+						GROUP BY js.job_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+		
 	function get_invoiced_clients() {
 		$sql = "SELECT uc.*, sum(j.total_amount_client) as `total_amount`, count(*) as `total_timesheets` FROM `job_shift_timesheets` j
 					LEFT JOIN `user_clients` uc ON j.client_id = uc.user_id
