@@ -107,6 +107,14 @@ $template['staff'] = array(
 		'content',
 	)
 );
+$template['invoice'] = array(
+	'template' => 'admin/invoice',
+	'regions' => array(
+		'title',
+		'menu',
+		'content'
+	)
+);
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */

@@ -75,8 +75,14 @@ class Dispatcher extends MX_Controller {
 		$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
 		$title = ucwords($controller);
 		
+		if ($controller == 'invoice' && $method == 'edit') 
+		{
+			$this->template->set_template('invoice');
+		}
+		else {
+			$this->template->set_template('admin');
+		}
 		
-		$this->template->set_template('admin');
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'admin/menu');
 		$this->template->write('content', $content);

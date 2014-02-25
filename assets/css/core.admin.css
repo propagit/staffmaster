@@ -434,3 +434,38 @@ a.default {
 .error{
 	border-color:#F00;	
 }
+.search-staff-avatar-img .profile_photo{
+	width:45px;
+	height:45px;
+	margin-right:0;	
+}
+.search-staff-avatar-img img{
+	height:45px;
+	width:45px;
+}
+.search-staff-avatar-img .default-avatar-photo{
+	height:45px;
+	width:45px;
+	margin-top:0;
+	line-height:45px;
+}
+.search-staff-avatar-img .default-avatar-photo .fa{
+	font-size: 35px;
+	line-height: 45px;	
+}
+#menu-search-staff-result-action{
+	top:41px;	
+}
+.select-location_parent_id{
+	margin-bottom:15px;	
+}
+.staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
+	background-color:transparent;	
+}
+
+#template-preset .wp-fields {
+	padding: 7px; 
+	background:#eee; 
+	border: 1px solid #ccc; 
+	border-bottom:0;
+}

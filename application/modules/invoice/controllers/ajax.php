@@ -87,4 +87,72 @@ class Ajax extends MX_Controller {
 		$this->load->view('invoices_list_view', isset($data) ? $data : NULL);
 	}
 	
+	function list_items() {
+		$invoice_id = $this->input->post('invoice_id');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		$data['invoice'] = $invoice;
+		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+		$this->load->view('invoice_items_list', isset($data) ? $data : NULL);
+	}
+	
+	function get_total() {
+		$invoice_id = $this->input->post('invoice_id');
+		$total = 0;
+		$gst = 0;
+		$items = $this->invoice_model->get_invoice_items($invoice_id);
+		foreach($items as $item) {
+			$total += $item['amount'];
+			if ($item['tax']) {
+				$gst += $item['amount'] / 11;
+			}
+		}
+		$this->invoice_model->update_invoice($invoice_id, array('gst' => $gst,'total_amount' => $total));
+		$data['total'] = $total;
+		$data['gst'] = $gst;
+		$this->load->view('invoice_charge_details', isset($data) ? $data : NULL);
+	}
+	
+	function add_item() {
+		$data = $this->input->post();
+		if ($data['tax'] == GST_ADD) {
+			$data['amount'] = $data['amount'] * 1.1;
+		}
+		$this->invoice_model->add_invoice_item($data);
+	}
+	
+	function check_breakdown() {
+		$invoice_id = $this->input->post('invoice_id');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		$jobs = unserialize($invoice['jobs']);
+		$items = $this->invoice_model->get_invoice_items($invoice_id);
+		foreach($items as $key => $item) {
+			if (!$item['include_timesheets']) {
+				unset($items[$key]);
+			}
+		}
+		if (count($items) == count($jobs)) {
+			echo 'true';
+		} else {
+			echo 'false';
+		}
+	}
+	
+	function show_breakdown() {
+		$invoice_id = $this->input->post('invoice_id');
+		if ($this->input->post('show') == "true") {
+			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+			$this->load->view('invoice_breakdown', isset($data) ? $data : NULL);
+		}
+	}
+	
+	function delete_item() {
+		$this->invoice_model->delete_invoice_item($this->input->post('item_id'));
+	}
+	
+	function delete_invoice() {
+		$invoice_id = $this->input->post('invoice_id');
+		$this->invoice_model->delete_invoice_items($invoice_id);
+		$this->invoice_model->delete_invoice($invoice_id);
+	}
+	
 }
