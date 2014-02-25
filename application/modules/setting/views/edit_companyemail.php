@@ -20,7 +20,7 @@
 		</div>
         <label for="facebook" class="col-md-2 control-label">Facebook</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_facebook" name="email_c_facebook" value="<?=(isset($company['email_c_facebook'])) ? $company['email_c_facebook'] : ''  ?>" />
+			<input type="text" class="form-control" id="email_c_facebook" name="email_s_facebook" value="<?=(isset($company['email_s_facebook'])) ? $company['email_s_facebook'] : ''  ?>" />
 		</div>
     </div>
 </div>
@@ -32,7 +32,7 @@
 		</div>
         <label for="twitter" class="col-md-2 control-label">Twitter</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_twitter" name="email_c_twitter" value="<?=(isset($company['email_c_twitter'])) ? $company['email_c_twitter'] : ''  ?>" />
+			<input type="text" class="form-control" id="email_c_twitter" name="email_s_twitter" value="<?=(isset($company['email_s_twitter'])) ? $company['email_s_twitter'] : ''  ?>" />
 		</div>
     </div>
 </div>
@@ -44,7 +44,7 @@
 		</div>
         <label for="linkedin" class="col-md-2 control-label">LinkedIn</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_linkedin" name="email_c_linkedin" value="<?=(isset($company['email_c_linkedin'])) ? $company['email_c_linkedin'] :''  ?>" />
+			<input type="text" class="form-control" id="email_s_linkedin" name="email_s_linkedin" value="<?=(isset($company['email_s_linkedin'])) ? $company['email_s_linkedin'] :''  ?>" />
 		</div>
     </div>
 </div>
@@ -57,7 +57,7 @@
 		</div>
         <label for="google" class="col-md-2 control-label">Google+</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_google" name="email_c_google" value="<?=(isset($company['email_c_google'])) ? $company['email_c_google'] : ''  ?>" />
+			<input type="text" class="form-control" id="email_s_google" name="email_s_google" value="<?=(isset($company['email_s_google'])) ? $company['email_s_google'] : ''  ?>" />
 		</div>
     </div>
 </div>
@@ -70,7 +70,7 @@
 		</div>
         <label for="youtube" class="col-md-2 control-label">Youtube</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_youtube" name="email_c_youtube" value="<?=(isset($company['email_c_youtube'])) ? $company['email_c_youtube'] : ''  ?>" />
+			<input type="text" class="form-control" id="email_s_youtube" name="email_s_youtube" value="<?=(isset($company['email_s_youtube'])) ? $company['email_s_youtube'] : ''  ?>" />
 		</div>
     </div>
 </div>
@@ -84,7 +84,7 @@
     	
         <label for="instagram" class="col-md-2 control-label">Instagram</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_instagram" name="email_c_instagram" value="<?=(isset($company['email_c_instagram'])) ? $company['email_c_instagram'] : ''  ?>" />
+			<input type="text" class="form-control" id="email_s_instagram" name="email_s_instagram" value="<?=(isset($company['email_s_instagram'])) ? $company['email_s_instagram'] : ''  ?>" />
 		</div>
     </div>
 </div>
@@ -119,8 +119,9 @@
 		</div>
     	
         <label for="entertext" class="col-md-2 control-label">Enter Text</label>
-		<div class="col-md-4">
-			
+		<div class="col-md-4" style="position:absolute!important; left:66%; width:32.5%;">
+			<!--<input type="text" class="form-control" id="email_common_text" name="email_common_text" value="<?=(isset($company['email_common_text']) && $company['email_common_text'] !='' ) ? $company['email_common_text'] : ''  ?>" />-->
+            <textarea class="form-control" id="email_common_text" name="email_common_text"> <?=(isset($company['email_common_text']) && $company['email_common_text'] !='' ) ? $company['email_common_text'] : ''  ?></textarea>
 		</div>
     </div>
 </div>
@@ -139,7 +140,7 @@
 </div>
 
 <div class="row" >
-    <div class="col-md-12" style="padding-left:0px!important; margin-left:0px!important">                
+    <div class="col-md-6" style="padding-left:0px!important; margin-left:0px!important">                
     	<div id="template_footer"></div>
         
         <br />
@@ -150,20 +151,19 @@
 	<div class="form-group">
     	<div class="col-md-3"> 
         	<div style="float:left">Background Colour </div><div style="float:left; margin-left:10px;"class="cPicker" id="cPicker"><div style="background-color:#09F;"></div><span>Choose color...</span></div>
+            <input type="hidden" name="email_background_colour" id="email_background_colour" value="<?=(isset($company['email_background_colour']) && $company['email_background_colour'] !='') ? $company['email_background_colour'] : '00bbf8' ?>">
         </div>
 		<div class="col-md-3">
 			<div style="float:left">Font Colour </div><div style="float:left; margin-left:10px;" class="cPicker" id="FontcPicker"><div style="background-color:#09C;"></div><span>Choose color...</span></div>
-		</div>  
-        <div class="col-md-3">
-			Font 
-		</div>    	        
+            <input type="hidden" name="email_font_colour" id="email_font_colour" value="<?=(isset($company['email_font_colour']) && $company['email_font_colour'] !='') ? $company['email_font_colour'] : 'ffffff' ?>">
+		</div>             	        
     </div>
 </div>
 <div class="row">
 	<div class="form-group">
 		<div class="col-md-12">
-			<div class="alert alert-success hide" id="msg-update-personal"><i class="fa fa-check"></i> &nbsp; Company Signature has been updated successfully!</div>
-			<button type="button" class="btn btn-core" id="btn_update_personal"><i class="fa fa-save"></i> Save</button>
+			<div class="alert alert-success hide" id="msg-update-email-template"><i class="fa fa-check"></i> &nbsp; Company Signature has been updated successfully!</div>
+			<button type="button" class="btn btn-core" id="btn_update_email_template"><i class="fa fa-save"></i> Save</button>
 		</div>
 	</div>
 </div>
@@ -171,10 +171,14 @@
 
 <script>
 $(function(){	
-	update_email_template('#fbfbfb');
+	update_email_template('<?=(isset($company['email_background_colour']) && $company['email_background_colour'] !='') ? $company['email_background_colour'] : '00bbf8' ?>','<?=(isset($company['email_font_colour']) && $company['email_font_colour'] !='') ? $company['email_font_colour'] : 'ffffff' ?>');
+	
+	$('#cPicker div').css('backgroundColor', '#' + '<?=(isset($company['email_background_colour']) && $company['email_background_colour'] !='') ? $company['email_background_colour'] : '00bbf8' ?>');
+	$('#FontcPicker div').css('backgroundColor', '#' + '<?=(isset($company['email_font_colour']) && $company['email_font_colour'] !='') ? $company['email_font_colour'] : 'ffffff' ?>');
+	
 	
 	$('#cPicker').ColorPicker({
-		color: '#e62e90',
+		color: '#<?=(isset($company['email_background_colour']) && $company['email_background_colour'] !='') ? $company['email_background_colour'] : '00bbf8' ?>',
 		onShow: function (colpkr) {
 			$(colpkr).fadeIn(500);
 			return false;
@@ -184,13 +188,15 @@ $(function(){
 			return false;
 		},
 		onChange: function (hsb, hex, rgb) {
-			$('#cPicker div').css('backgroundColor', '#' + hex);			
+			$('#cPicker div').css('backgroundColor', '#' + hex);
+			$('#email_background_colour').val(hex);
+			update_email_template(hex,$('#email_font_colour').val());			
 		}
 	});
 		
 	
 	$('#FontcPicker').ColorPicker({
-		color: '#e62e90',
+		color: '#<?=(isset($company['email_font_colour']) && $company['email_font_colour'] !='') ? $company['email_font_colour'] : 'ffffff' ?>',
 		onShow: function (colpkr) {
 			$(colpkr).fadeIn(500);
 			return false;
@@ -201,7 +207,9 @@ $(function(){
 		},
 		onChange: function (hsb, hex, rgb) {
 			$('#FontcPicker div').css('backgroundColor', '#' + hex);
-			update_email_template(hex);
+			$('#email_font_colour').val(hex);			
+
+			update_email_template($('#email_background_colour').val(),hex);
 		}
 	});
 		
@@ -209,21 +217,41 @@ $(function(){
 	$('#button_trial_email').click(function(){
 		$.ajax({
 			type: "POST",
-			url: "<?=base_url();?>setting/ajax/send_email",			
+			url: "<?=base_url();?>setting/ajax/send_email_template",			
 			success: function(html) {				
 			}
 		})
 	})
+	
+	$('#btn_update_email_template').click(function(){
+		var valid = help.validate_form('form_update_company_signature');					
+		if(valid){
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>setting/ajax/update_company_signature",
+				data: $('#form_update_company_signature').serialize(),
+				success: function(html) {					
+					$('#msg-update-email-template').removeClass('hide');
+					setTimeout(function(){
+						$('#msg-update-email-template').addClass('hide');
+					}, 2000);
+					update_email_template($('#email_background_colour').val(),$('#email_font_colour').val())
+				}	
+			})
+		}
+		
+	})
 })
-function update_email_template(color)
+function update_email_template(color,font_color)
 {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>setting/ajax/get_template_footer",	
-		data:{color: color},
+		data:{color: color,font_color:font_color},
 		success: function(html) {				
 			$('#template_footer').html(html);
 		}
 	})
 }
+
 </script>
