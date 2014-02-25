@@ -391,6 +391,30 @@ ol.example li.placeholder:before {
 	margin-right:15px;	
 }
 
+/* company calendar */
+.company-calendar-actions{
+	width:100%;
+	text-align:center;	
+}
+.company-calender-filter{
+	float:left;
+	margin-right:10px;
+}
+.calendar-nav-wrap{
+	width:250px;
+	margin:auto;	
+}
+#company-calendar .cal-row-head{
+	margin-top:0;	
+}
+.company-calendar-nav-tab{
+	margin-top:0 !important;	
+}
+.company-calendar-nav-tab > li a{
+	padding-top:6px !important;
+	padding-bottom:6px !important;
+}	
+
 /* begin - responsive */
 
 /* *
@@ -536,7 +560,7 @@ ol.example li.placeholder:before {
 		float: left;
 		width: 100%;
 	}
-	.dropdown-menu{ 
+	#nav-wrap .dropdown-menu{ 
 		background-color:rgba(255,255,255,0.25); 
 		border: none; 
 		box-shadow:none;
@@ -556,12 +580,12 @@ ol.example li.placeholder:before {
 	#nav-wrap .nav .open .fa-caret-down{
 		display:none;	
 	}
-	.dropdown-menu > li > a{
+	#nav-wrap .dropdown-menu > li > a{
 		background-color: transparent;
 		color:#fff;	
 		padding:12px 10px 12px 50px;
 	}
-	.dropdown-menu > li > a:hover{
+	#nav-wrap .dropdown-menu > li > a:hover{
 		background-color:rgba(255,255,255,0.25);
 		color:#fff;	
 	}
@@ -1122,6 +1146,13 @@ ol.example li.placeholder:before {
 		width:30%;	
 	}
 
+}
+@media (max-width: 320px) {
+	.dob-day,.dob-mth,.dob-year{
+		width:100%;
+		margin-bottom:15px;	
+	}
+	
 }
 
 

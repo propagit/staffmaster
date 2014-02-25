@@ -38,16 +38,17 @@ class Job extends MX_Controller {
 					$this->job_details($param1,$param2,$param3, $param4);
 				break;
 			case 'calendar':
-					$this->job_calendar();
+					echo modules::run('job/calendar/index', $param1, $param2,$param3,$param4);	
 				break;
 			case 'search':
-					$this->search_jobs();
+					$this->search_jobs($param1,$param2,$param3, $param4);
 				break;
 			default:
 					
 				break;
 		}
 	}
+
 		
 	function create_job()
 	{

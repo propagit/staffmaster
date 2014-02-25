@@ -246,6 +246,60 @@ a.default {
 	font-weight:900!important;
 }
 
+
+/* Styles fdr search staff profile photo */
+.staff_search_profile{
+	float:left;
+}
+.profile_photo{		
+	margin-right:10px;	
+	width:72px;
+	height:72px;
+}
+
+.resize{
+	width:100%;
+}
+#wp_field_select_areas {
+}
+.toggle-custom-attrs .fa{
+	padding-right:10px;	
+}
+
+/* Styles for Job board / popover */
+#form_update_shift_staff #f_shift_staff {
+	margin-right: 10px;
+}
+
+.search-staff-avatar-img .profile_photo{
+	width:45px;
+	height:45px;
+	margin-right:0;	
+}
+.search-staff-avatar-img img{
+	height:45px;
+	width:45px;
+}
+.search-staff-avatar-img .default-avatar-photo{
+	height:45px;
+	width:45px;
+	margin-top:0;
+	line-height:45px;
+}
+.search-staff-avatar-img .default-avatar-photo .fa{
+	font-size: 35px;
+	line-height: 45px;	
+}
+#menu-search-staff-result-action{
+	top:41px;	
+}
+.select-location_parent_id{
+	margin-bottom:15px;	
+}
+.staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
+	background-color:transparent;	
+}
+
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 
@@ -341,6 +395,12 @@ a.default {
 	.mobile-tab{
 		width:100%;	
 	}
+	#menu-search-staff-result-action{
+		top:0;	
+	}
+	.pagination{
+		width:100%;	
+	}
 }
 
 @media (max-width:320px){
@@ -362,61 +422,15 @@ a.default {
 	.profile-menu ul li a .fa{
 		padding-left:2px;	
 	}
+	
+	#btn_search_staffs{
+		margin-bottom:15px;	
+	}
+
 
 }	
 /* end responsive */
 
-/* Styles fdr search staff profile photo */
-.staff_search_profile{
-	float:left;
-}
-.profile_photo{		
-	margin-right:10px;	
-	width:72px;
-	height:72px;
-}
-
-.resize{
-	width:100%;
-}
-#wp_field_select_areas {
-}
-.toggle-custom-attrs .fa{
-	padding-right:10px;	
-}
-
-/* Styles for Job board / popover */
-#form_update_shift_staff #f_shift_staff {
-	margin-right: 10px;
-}
 .error{
 	border-color:#F00;	
-}
-.search-staff-avatar-img .profile_photo{
-	width:45px;
-	height:45px;
-	margin-right:0;	
-}
-.search-staff-avatar-img img{
-	height:45px;
-	width:45px;
-}
-.search-staff-avatar-img .default-avatar-photo{
-	height:45px;
-	width:45px;
-	margin-top:0;
-	line-height:45px;
-}
-.search-staff-avatar-img .default-avatar-photo .fa{
-	font-size: 35px;
-	line-height: 45px;	
-}
-#menu-search-staff-result-action{
-	top:41px;	
-}
-.select-location_parent_id{
-	margin-bottom:15px;	
-}
-.staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
-	background-color:transparent;	
 }

@@ -13,15 +13,15 @@
     	<div class="inner-box">
             
             <ul class="nav nav-tabs tab-respond">
-				<li class="active"><a>Personal Details</a></li>
-				<li class="disabled"><a>Financial Details</a></li>
-				<li class="disabled"><a>Super Details</a></li>
-				<li class="disabled"><a>Availability</a></li>
-				<li class="disabled"><a>Roles</a></li>
-				<li class="disabled"><a>Options</a></li>
-				<li class="disabled"><a>Location</a></li>
-				<li class="disabled"><a>Settings</a></li>
-				<li class="disabled"><a>Documents</a></li>
+				<li class="mobile-tab active"><a>Personal Details</a></li>
+				<li class="mobile-tab disabled"><a>Financial Details</a></li>
+				<li class="mobile-tab disabled"><a>Super Details</a></li>
+				<li class="mobile-tab disabled"><a>Availability</a></li>
+				<li class="mobile-tab disabled"><a>Roles</a></li>
+				<li class="mobile-tab disabled"><a>Options</a></li>
+				<li class="mobile-tab disabled"><a>Location</a></li>
+				<li class="mobile-tab disabled"><a>Settings</a></li>
+				<li class="mobile-tab disabled"><a>Documents</a></li>
 			</ul>
         
 	        <p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>

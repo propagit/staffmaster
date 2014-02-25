@@ -12,7 +12,8 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-folder-open', 'title' => 'Manage Jobs', 'sub' => array(
 		array('path' => 'job/search', 'icon' => 'fa-search', 'title' => 'Search Jobs'),
-		array('path' => 'job/create', 'icon' => 'fa-plus', 'title' => 'Create Job')
+		array('path' => 'job/create', 'icon' => 'fa-plus', 'title' => 'Create Job'),
+		array('path' => 'job/calendar', 'icon' => 'fa-calendar', 'title' => 'Company Calendar')
 	)),
 	array('path' => '#', 'icon' => 'fa-key', 'title' => 'Edit Attributes', 'sub' => array(		
 		array('path' => 'attribute/payrate', 'icon' => 'fa-usd', 'title' => 'Pay Rates'),
