@@ -19,7 +19,7 @@
 	
 ?>
 <? if(isset($staffs)) { ?>
-
+<div class="table-responsive">
 	 <table class="table table-bordered table-hover table-middle staff-search-result-table">
         <thead>
         <tr class="heading">
@@ -76,7 +76,7 @@
         </tbody>
         </form>
     </table>
-
+</div>
 <script>
 	$(function(){
 		$('.sort-result').on('click',function(){
