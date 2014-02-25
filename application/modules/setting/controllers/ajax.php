@@ -107,9 +107,10 @@ class Ajax extends MX_Controller {
 	}
 	function upload_logo()
 	{
-		$stat=1;
+		
 		$company_id = $this->input->post('company_id');
-		if($company_id==0){$stat = 0;$company_id = 1;}
+		
+		if($company_id==0){$comp_id=1;}else{$comp_id=$company_id;}
 		$path = "./uploads/company";
 		$dir = $path;
 		if(!is_dir($dir))
@@ -132,7 +133,7 @@ class Ajax extends MX_Controller {
 		  fclose($fp);
 		}
 		$path = "./uploads/company/logo";
-		$newfolder = md5($company_id);
+		$newfolder = md5($comp_id);
 		$dir = $path."/".$newfolder;
 		if(!is_dir($dir))
 		{
@@ -141,25 +142,7 @@ class Ajax extends MX_Controller {
 		  $fp = fopen($dir.'/index.html', 'w');
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
-		}				
-		$dirs=$dir.'/thumbnail';
-		if(!is_dir($dirs))
-		{
-		  mkdir($dirs);
-		  chmod($dirs,0777);
-		  $fp = fopen($dirs.'/index.html', 'w');
-		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-		  fclose($fp);
-		}
-		$dirs_thumb2 = $dir.'/thumbnail2';
-		if(!is_dir($dirs_thumb2))
-		{
-		  mkdir($dirs_thumb2);
-		  chmod($dirs_thumb2,0777);
-		  $fp = fopen($dirs_thumb2.'/index.html', 'w');
-		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-		  fclose($fp);
-		}
+		}		
 		$config['upload_path'] = $dir;
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '4096'; // 4 MB
@@ -169,7 +152,9 @@ class Ajax extends MX_Controller {
 		$config['remove_space'] = TRUE;
 	
 		$this->load->library('upload', $config);
-		if($stat==0){$company_id=0;}
+		
+				
+		
 		if ( ! $this->upload->do_upload())
 		{
 			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());			
@@ -185,7 +170,7 @@ class Ajax extends MX_Controller {
 				'modified' => date('Y-m-d H:i:s'),				
 			);
 			if($company_id==0){			
-				$this->setting_model->create_company_profile($photo);		
+				$company_id = $this->setting_model->create_company_profile($photo);		
 			}
 			else
 			{
@@ -193,6 +178,24 @@ class Ajax extends MX_Controller {
 			}
 			
 			
+			$dirs=$dir.'/thumbnail';
+			if(!is_dir($dirs))
+			{
+			  mkdir($dirs);
+			  chmod($dirs,0777);
+			  $fp = fopen($dirs.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			$dirs_thumb2 = $dir.'/thumbnail2';
+			if(!is_dir($dirs_thumb2))
+			{
+			  mkdir($dirs_thumb2);
+			  chmod($dirs_thumb2,0777);
+			  $fp = fopen($dirs_thumb2.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
 			
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;

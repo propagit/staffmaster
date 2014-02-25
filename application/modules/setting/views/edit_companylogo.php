@@ -32,13 +32,13 @@
 $(function(){
 	load_picture(<?=(isset($company['id'])) ? $company['id'] : 0 ?>);
 });
-function load_picture(user_id)
+function load_picture(company_id)
 {
 	preloading($('#picture_photo'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>setting/ajax/load_picture",
-		data: {user_id: user_id},
+		data: {company_id: company_id},
 		success: function(html) {		
 			loaded($('#picture_photo'), html);
 		}
