@@ -290,8 +290,10 @@ a.default {
 	font-size: 35px;
 	line-height: 45px;	
 }
+#menu-search-client-result-action,
 #menu-search-staff-result-action{
-	top:41px;	
+	top:41px;
+	margin-bottom:41px;	
 }
 .select-location_parent_id{
 	margin-bottom:15px;	
@@ -452,9 +454,6 @@ a.default {
 .search-staff-avatar-img .default-avatar-photo .fa{
 	font-size: 35px;
 	line-height: 45px;	
-}
-#menu-search-staff-result-action{
-	top:41px;	
 }
 .select-location_parent_id{
 	margin-bottom:15px;	

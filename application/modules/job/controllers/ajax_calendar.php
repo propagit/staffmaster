@@ -14,4 +14,10 @@ class Ajax_calendar extends MX_Controller {
 		$this->load->model('job_shift_model');
 	}
 	
+	function get_company_calendar_data()
+	{
+		$shifts = $this->job_shift_model->get_shift_by_year_and_month(02,2014);
+
+	}
+	
 }

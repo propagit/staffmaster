@@ -180,4 +180,29 @@ class Job_shift_model extends CI_Model {
 		$this->db->where('job_date', $job_date);
 		return $this->db->delete('job_shifts');
 	}
+	
+	/**
+	*	@desc Function to get shifts based on their status 
+	*
+	*   @name get_shift_by_year_and_month
+	*	@access public
+	*	@param int month, int year 
+	*	@return Returns array of avaliable roles
+	*	
+	*/
+	
+	function get_shift_by_year_and_month($month = NULL,$year = NULL)
+	{
+		if(!$month){
+			$month = date('m');
+		}
+		if(!$year){
+			$year = date('Y');	
+		}
+		
+		$sql = "select shift_id,status,job_date from job_shifts where month(job_date) = '$month' and year(job_date) = '$year' and (status != -2 or status != 3)";
+		$shifts = $this->db->query($sql)->result();
+		return $shifts;
+		
+	}
 }

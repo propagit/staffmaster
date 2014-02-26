@@ -28,6 +28,19 @@ class Calendar extends MX_Controller {
 	
 	function home()
 	{
+		$date = date('Y-m-d');
+		$event_date = strtotime($date) . '000';
+		$out[] = array(
+					'active_job_campaigns' => 12,
+					'unfilled_shifts' => 2,
+					'unconfirmed_shift' => 10,
+					'confirmed_shift' => 4,
+					'title' => 'Test',
+					'url' => 'My Url',
+					'start' => $event_date,
+					'end' => $event_date,
+				);
+		$data['events_source'] = json_encode($out);
 		$this->load->view('calendar/company_calendar', isset($data) ? $data : NULL);
 	}
 	

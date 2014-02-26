@@ -631,6 +631,24 @@ class Common extends MX_Controller {
 		$this->load->view('admin_profile_picture', isset($data) ? $data : NULL);
 	}
 	
+	/**
+	*    @desc To display profile picture based on user_id while searching for staff while adding to a shift
+	*   
+	*    @param $field_name, $field_value=null; $field_name: name of that element such as location_id or id_location; $field_value: value if the location that need to show
+	*    @return loads the profile picture
+	* 
+	*/
+	function shift_search_staff_picture($field_name, $field_value=NULL)
+	{		
+		
+		$staff = $this->staff_model->get_staff($field_value);
+		$photo = $this->staff_model->get_hero($field_value);
+		$data['staff'] = $staff;
+		$data['photo'] = $photo;
+
+		$this->load->view('shift_search_staff_profile_picture', isset($data) ? $data : NULL);
+	}
+	
 	function create_pagination($total_records,$records_per_page = 6,$current_page = 1)
 	{
 		$data['total_records'] = $total_records;

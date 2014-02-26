@@ -48,7 +48,9 @@ class Ajax extends MX_Controller {
 	
 	function search_clients()
 	{
-		$data['clients'] = $this->client_model->search_clients($this->input->post('keyword'));
+		$data['clients'] = $this->client_model->search_clients($this->input->post());
+		$data['total_clients'] = $this->client_model->search_clients($this->input->post(),true);
+		$data['current_page'] = $this->input->post('current_page',true);
 		$this->load->view('search_results', isset($data) ? $data : NULL);
 	}
 	

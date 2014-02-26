@@ -95,9 +95,13 @@ class Staff_model extends CI_Model {
 		}
 		
 		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}				
-		//if(isset($params['limit'])) { $sql .= " LIMIT " . $params['limit']; }
-		if(!$total){
-			$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
+		if(isset($params['limit'])){ 
+			//if limit is not set it will default start the pagination
+			$sql .= " LIMIT " . $params['limit']; 
+		}else{
+			if(!$total){
+				$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
+			}
 		}
 		$query = $this->db->query($sql);
 		return $query->result_array();

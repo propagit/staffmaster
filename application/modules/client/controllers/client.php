@@ -129,4 +129,18 @@ class Client extends MX_Controller {
 		$data['field_value'] = $field_value;
 		$this->load->view('dropdown_departments', isset($data) ? $data : NULL);
 	}
+	
+	function get_client_total_jobs($client_id,$year = NULL)
+	{
+		$sql = "select count(job_id) as total_jobs from jobs where client_id = ".$client_id;
+		if($year){
+			$sql .= " and year(createdon) = '".$year."'";	
+		}
+		$jobs = $this->db->query($sql)->row();
+		if($jobs){
+			return $jobs->total_jobs;	
+		}else{
+			return 0;	
+		}
+	}
 }

@@ -11,9 +11,6 @@ if(count($photo)>0)
 }
 else
 {
-/* 	$thumb_src = base_url().'assets/img/dummy/default-avatar.png';
-	$photo['name'] = "Use Avatar";
-	$class='normal'; */
 ?>
 <div class="profile_photo">
 	<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><div class="default-avatar-photo">

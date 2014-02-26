@@ -420,7 +420,7 @@ class Ajax extends MX_Controller {
 	{
 		$query = $this->input->post('query');
 		$this->load->model('staff/staff_model');
-		$data['staffs'] = $this->staff_model->search_staffs(array('keyword' => $query, 'limit' => 5));
+		$data['staffs'] = $this->staff_model->search_staffs(array('keyword' => $query, 'limit' => 6));
 		$this->load->view('staffs_for_shift', isset($data) ? $data : NULL);
 	}
 	

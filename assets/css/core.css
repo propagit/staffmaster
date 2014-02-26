@@ -119,6 +119,32 @@ ol.example li.placeholder:before {
 	color: #00bbf8;
 	line-height: 216px;
 }
+.shift-search-pp{
+	box-shadow: 3px 3px 3px #ccc;
+	-webkit-box-shadow: 3px 3px 3px #ccc;
+	-moz-box-shadow: 3px 3px 3px #ccc;
+	height: 50px !important;
+	width: 50px !important;
+	margin-top: 0;
+	line-height: 45px;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 35px;
+	float: left;
+	overflow: hidden;
+}
+.shift-search-pp img{
+	border-radius:4px;
+	float: left;	
+}
+.shift-search-pp .fa{
+	padding-left:0 !important;	
+}
+#staff_quick_search_result{
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;	
+}
 /* staff profile images */
 .staff-photos{
 	list-style:none;
@@ -409,12 +435,26 @@ ol.example li.placeholder:before {
 }
 .company-calendar-nav-tab{
 	margin-top:0 !important;	
+	border-bottom:none;
 }
 .company-calendar-nav-tab > li a{
 	padding-top:6px !important;
 	padding-bottom:6px !important;
 }	
-
+.cc-filter-btn{
+	background-color:#00b1eb !important;	
+}
+.calendar-job-stat-legend{
+	float:right;
+	text-align:right;
+	list-style:none;	
+}
+.calendar-job-stat-legend > li{
+		
+}
+.calendar-job-stat-legend > li > span{
+	margin-left:15px;	
+}
 /* begin - responsive */
 
 /* *
@@ -783,6 +823,12 @@ ol.example li.placeholder:before {
 }
 .danger {
 	background-color: #ff0000;
+}
+.dark-grey-bg{
+	background-color: #3d3d3d;
+}
+.grey-bg{
+	background-color: #b4b4b4;
 }
 
 .box {
@@ -1176,4 +1222,8 @@ ol.example li.placeholder:before {
 
 .font-color{
 	color:#9C9;
+}
+
+.remove-left-padding{
+	padding-left:0;	
 }

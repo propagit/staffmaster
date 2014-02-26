@@ -3,17 +3,12 @@
 	<% if (events.length > 0) { %>
 		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
 			<% _.each(events, function(event) { %>
-				<a onclick="load_job_shifts(<%= event.title %>, '<%= event.url %>', true)">
 				
-				<span class="badge badge-xs success">0</span><br />
-				
-				<span class="badge badge-xs danger"><%= event.id %></span>
-				</a>
-				<!--
-<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" data-event-class="<%= event['class'] %>"
-					class="pull-left event <%= event['class'] %>" data-toggle="tooltip"
-					title="<%= event.title %>"></a>
--->
+                <span class="badge badge-xs dark-grey-bg"><%= event.active_job_campaigns %></span>
+                <span class="badge badge-xs grey-bg"><%= event.unfilled_shifts %></span>
+                <span class="badge badge-xs danger"><%= event.unconfirmed_shift %></span>
+				<span class="badge badge-xs success"><%= event.confirmed_shift %></span><br />
+                
 			<% }); %>
 		</div>
 	<% } %>
