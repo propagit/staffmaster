@@ -102,8 +102,6 @@ class Invoice extends MX_Controller {
 		$this->load->view('invoice_view', isset($data) ? $data : NULL);
 	}
 	
-	function job_timesheets($job_id) {
-		return $this->invoice_model->get_job_timesheets($job_id);
-	}
+	
 	
 }
