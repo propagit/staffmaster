@@ -69,7 +69,7 @@ define('TIMESHEET_SUBMITTED', 1);
 define('TIMESHEET_APPROVED', 2);
 define('TIMESHEET_BATCHED', 3);
 define('TIMESHEET_PROCESSING', 4);
-//define('TIMESHEET_PAID', 5);
+define('TIMESHEET_PAID', 5);
 
 define('PAYRUN_PENDING', 0);
 define('PAYRUN_READY', 1);
