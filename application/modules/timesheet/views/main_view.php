@@ -30,7 +30,7 @@
 				<div class="form-group">
 					<label for="client_id" class="col-md-2 control-label">Client</label>
 					<div class="col-md-4">
-						<?=modules::run('client/field_select', 'client_id');?>
+						<? #=modules::run('client/field_select', 'client_id');?>
 					</div>
 					<label class="col-md-2 control-label">Campaign Name</label>
 					<div class="col-md-4">

@@ -27,8 +27,13 @@ class Client_model extends CI_Model {
 			if(isset($params['current_page']) && $params['current_page'] != ''){
 				$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
 			}
-		}	
+		}
 		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function all_clients() {
+		$query = $this->db->get('user_clients');
 		return $query->result_array();
 	}
 	

@@ -37,10 +37,10 @@
 			<div class="row desktop-visible">
 		    	<div class="col-md-12">
 		            <ul class="nav nav-pills">
-		            	<li><a><i class="fa fa-check-circle"></i> Generate Invoice</a></li>
+		            	<li><a id="btn-generate-invoice"><i class="fa fa-check-circle"></i> Generate Invoice</a></li>
 		            	
-		            	<li><a><i class="fa fa-download"></i> Download Invoice</a></li>
-		            	<li><a><i class="fa fa-envelope-o"></i> Email Invoice</a></li>
+		            	<li><a id="btn-download-invoice"><i class="fa fa-download"></i> Download Invoice</a></li>
+		            	<li><a id="btn-email-invoice"><i class="fa fa-envelope-o"></i> Email Invoice</a></li>
 						<li class="pull-right"><a id="btn-reset-invoice"><i class="fa fa-refresh"></i> Reset</a></li>
 		            </ul>
 		        </div>

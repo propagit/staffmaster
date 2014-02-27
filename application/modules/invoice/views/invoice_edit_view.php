@@ -58,20 +58,6 @@
                         <tr class="charge-box-body">
                             <td>
                             	<div id="charge-details">
-                            		<table cellpadding="0" cellspacing="0" width="100%">
-										<tr>
-											<td><h3>Total Due</h3></td>	
-											<td align="right"><h3>$<?=money_format('%i', $invoice['total_amount']);?></h3></td>
-										</tr>
-										<tr>
-											<td><h4>Due Date</h4></td>	
-											<td align="right"><h4><?=date('dS M Y', strtotime($invoice['due_date']));?></h4></td>
-										</tr>
-										<tr>
-											<td class="padding-gst">GST</td>			
-											<td align="right" class="padding-gst">$<?=money_format('%i', $invoice['gst']);?></td>
-										</tr> 
-									</table>
                             	</div>
                             </td>
                         </tr>                    
@@ -83,68 +69,46 @@
         <hr />
         
         <div id="list-items">
-        	<table width="100%" cellpadding="10">
-				<tr>
-				    <td colspan="3"><h3>Expense Break Down</h3></td>
-				</tr>
-				
-				<tr>
-				    <td width="50%">Description</td>
-				    <td align="right" width="15%">GST</td>
-				    <td align="right">Sub Total</td>
-				    <td align="right">Total</td>
-				</tr>
-				<? foreach($items as $item) { if($item['job_id']) { ?>
-				<tr>
-					<td>
-						<? if ($item['include_timesheets']) { ?>
-						<b><?=$item['title'];?> - Staff Services</b>
-						<? } else { ?>
-						<span class="indent"> <?=$item['title'];?></span>
-						<? } ?>
-					</td>
-					<td align="right">
-						<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-						$<?=money_format('%i', $item['amount']/11);?>
-						<? } ?>
-					</td>
-					<td align="right">
-						<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-						$<?=money_format('%i', $item['amount']/11*10);?>
-						<? } ?>
-					</td>
-					<td align="right">$<?=money_format('%i', $item['amount']);?></td>
-				</tr>            
-				<? } } ?>
-				
-				<? foreach($items as $item) { if(!$item['job_id']) { ?>
-				<tr>
-					<td>
-						<?=$item['title'];?>
-					</td>
-					<td align="right">
-						<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-						$<?=money_format('%i', $item['amount']/11);?>
-						<? } ?>
-					</td>
-					<td align="right">
-						<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-						$<?=money_format('%i', $item['amount']/11*10);?>
-						<? } ?>
-					</td>
-					<td align="right">
-						<? if($item['amount'] != 0) { ?>
-						$<?=money_format('%i', $item['amount']);?>
-						<? } ?>
-					</td>
-				</tr> 
-				<? } } ?>
-			</table>
+        
         </div>
         
-        
+        <form id="addItemForm">
+        <input type="hidden" name="invoice_id" value="<?=$invoice['invoice_id'];?>" />
+        <table width="100%" cellpadding="10" class="charge-box-body">
+        	<tr>
+        		<td>Description</td>
+        		<td width="200">GST</td>
+        		<td align="right" width="200">Amount</td>
+        		<td>Campaign</td>
+        		<td width="20"></td>
+        	</tr>
+            <tr>
+            	<td>
+            		<input type="text" class="form-control" name="title" placeholder="Enter item title" />
+            	</td>
+            	<td align="right">
+	            	<?=modules::run('common/field_select_gst', 'tax');?>
+            	</td>
+            	<td>
+            		<div class="input-group">
+						<span class="input-group-addon">$</span>
+						<input type="text" class="form-control" name="amount">
+					</div>
+            	</td>
+            	<td>
+            		<?=modules::run('common/field_select', unserialize($invoice['jobs']), 'job_id');?>
+            	</td>
+            	<td align="right">
+            		<a id="btn-add-item" class="btn btn-core"><i class="fa fa-plus"></i></a>
+            	</td>
+            </tr>
+        </table>
+        </form>
         <br><br><br><br><br><br><br><br><br><br><br><br>
-    	
+    	<div class="checkbox">
+    		<input type="checkbox" id="full_breakdown" <?=($invoice['breakdown']) ? 'checked' : '';?> /> 
+    		For a full itemised breakdown of this invoice please refer to page 2
+    	</div>
         
         <b>Terms & Conditions of Payment</b><br />
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu tincidunt dui. Maecenas gravida euismod hendrerit. Nullam porta odio in neque suscipit, at fermentum lorem interdum. Mauris nec odio tempus, molestie mauris a, posuere urna. Donec augue nisi, tincidunt quis justo non, ultricies malesuada risus. Vivamus imperdiet purus eros, ut blandit felis ultricies eu. Nullam nec nulla erat. Sed vulputate quis quam eu bibendum. Sed sed ultricies ante. Integer id faucibus mauris.
@@ -211,53 +175,111 @@
     </div>
 </div>
 <!--end top box-->
-<? if ($invoice['breakdown']) { ?>
-<div id="wp-breakdown">
-<div class="col-md-12">
-	<div class="wp-page-invoice">
-		<table width="100%">
-			<? foreach($items as $item) { 
-			if ($item['include_timesheets']) {
-			$job = modules::run('job/get_job', $item['job_id']);
-			$timesheets = modules::run('invoice/get_job_timesheets', $item['job_id'], INVOICE_GENERATED);
-			 ?>
-			<tr>
-				<td colspan="8"><h2><?=$job['name'];?></h2></td>
-			</tr>
-			<tr>
-				<td>Job Date</td>
-				<td>Venue</td>
-				<td>Start Time - Finish Time</td>
-				<td>Break</td>
-				<td>Hours</td>
-				<td>Pay Rate</td>
-				<td>Total</td>
-			</tr>
-			<? foreach($timesheets as $timesheet) { 
-				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-			?>
-			<tr>
-                <td width="10%"><?=date('d-m-Y', $timesheet['start_time']);?></td>
-                <td width="30%"><?=modules::run('attribute/venue/display_venue', $timesheet['venue_id']);?></td>
-                <!-- <td width="15%"><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td> -->
-                <td width="20%"><?=date('H:i', $timesheet['start_time']);?> - <?=date('H:i', $timesheet['finish_time']);?> <?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-danger">*</span>': '';?></td>
-                <td width="10%"><?=modules::run('common/break_time', $timesheet['break_time']);?></td>
-                <td width="10%"><?=$timesheet['total_minutes']/60;?></td>
-                <td width="10%"><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
-                <td width="10%">$<?=$timesheet['total_amount_client'];?></td>
-            </tr>
-			<? } ?>
-			<? } } ?>                       
-        </table>
-	</div>
-</div>
-	
-</div>
-<? } ?>
+
+<div id="wp-breakdown"></div>
 <br /><br /><br />
 <script>
 $(function(){
-	$('#btn-generate-invoice').remove();
-	$('#btn-reset-invoice').html('<i class="fa fa-times"></i> Close');
+	list_items();
+	load_breakdown();
+	$('#btn-add-item').click(function(){
+		add_item();
+	});
+	$('#btn-reset-invoice').click(function(){
+		reset_invoice();
+	});
+	$('#btn-generate-invoice').click(function(){
+		generate_invoice();
+	});
+	$('#full_breakdown').click(function(){
+		load_breakdown();
+	});
+	
+	$('#btn-download-invoice').parent().addClass('disabled');
+	$('#btn-email-invoice').parent().addClass('disabled');
 })
+function generate_invoice() {
+	window.location = '<?=base_url();?>invoice/generate/<?=$invoice['invoice_id'];?>';
+}
+function add_item() {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/add_item",
+		data: $('#addItemForm').serialize(),
+		success: function(html) {
+			list_items();
+			$('#addItemForm')[0].reset();
+		}
+	})
+}
+function reset_invoice() {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/delete_invoice",
+		data: {invoice_id: <?=$invoice['invoice_id'];?>},
+		success: function(html) {
+			window.close();
+		}
+	})
+}
+function load_breakdown() {
+	var show = $('#full_breakdown').is(':checked');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/show_breakdown",
+		data: {invoice_id: <?=$invoice['invoice_id'];?>, show: show},
+		success: function(html) {
+			$('#wp-breakdown').html(html);
+		}
+	})
+}
+function check_breakdown() {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/check_breakdown",
+		data: {invoice_id: <?=$invoice['invoice_id'];?>},
+		success: function(html) {
+			if (html == "false") {
+				$('#full_breakdown').attr('checked', false);
+				$('#full_breakdown').attr('disabled', true);
+			} else {
+				$('#full_breakdown').attr('disabled', false);
+			}
+		}
+	})
+}
+function list_items() {
+	preloading($('#list-items'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/list_items",
+		data: {invoice_id: <?=$invoice['invoice_id'];?>},
+		success: function(html) {
+			loaded($('#list-items'), html);
+			get_total();
+			check_breakdown();
+		}
+	})
+}
+function delete_item(item_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/delete_item",
+		data: {item_id: item_id},
+		success: function(html) {
+			list_items();
+		}
+	})
+}
+function get_total() {
+	preloading($('#charge-details'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/get_total",
+		data: {invoice_id: <?=$invoice['invoice_id'];?>},
+		success: function(html) {
+			loaded($('#charge-details'), html);
+		}
+	})
+}
 </script>
