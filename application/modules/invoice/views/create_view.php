@@ -31,16 +31,6 @@ function list_clients(client_id=null) {
 		success: function(html) {
 			loaded($('#list_clients'), html);
 		}
-	}).done(function(){
-		setTimeout(
-		function() 
-		{
-			if (client_id != null) {
-				load_client_jobs(client_id);
-			}
-		}, 500);
-		
-		
 	})
 }
 function load_job_timesheets(job_id) {
@@ -54,16 +44,5 @@ function load_job_timesheets(job_id) {
 		}
 	})
 }
-function load_client_jobs(user_id) {
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>invoice/ajax/load_client_jobs",
-		data: {user_id: user_id},
-		success: function(html) {
-			$('#jobs_client_' + user_id).after(html);
-			$('#jobs_client_' + user_id).find('.wp-arrow').attr('onclick', 'hide_client_jobs(' + user_id + ')');
-			$('#jobs_client_' + user_id).find('.wp-arrow').html('<i class="fa fa-minus-square-o"></i>');
-		}
-	})
-}
+
 </script>

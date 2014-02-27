@@ -35,7 +35,18 @@ $(function(){
 	//load_client_jobs(<?=$clients[0]['user_id'];?>);
 });
 
-
+function load_client_jobs(user_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/load_client_jobs",
+		data: {user_id: user_id},
+		success: function(html) {
+			$('#jobs_client_' + user_id).after(html);
+			$('#jobs_client_' + user_id).find('.wp-arrow').attr('onclick', 'hide_client_jobs(' + user_id + ')');
+			$('#jobs_client_' + user_id).find('.wp-arrow').html('<i class="fa fa-minus-square-o"></i>');
+		}
+	})
+}
 function hide_client_jobs(user_id) {
 	$('.job_client_' + user_id).remove();
 	$('#jobs_client_' + user_id).find('.wp-arrow').attr('onclick', 'load_client_jobs(' + user_id + ')');
