@@ -20,11 +20,13 @@ class Client_model extends CI_Model {
 		$records_per_page = 5;
 		$sql = "SELECT c.*, u.*
 				FROM user_clients c
-				LEFT JOIN users u ON c.user_id = u.user_id";
+				LEFT JOIN users u ON c.user_id = u.user_id WHERE u.status != 2";
 		if(isset($params['keyword']) && $params['keyword'] != ''){$sql .= " WHERE c.company_name LIKE '%" . $params['keyword'] . "%'";} 
 		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}
 		if(!$total){
-			$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
+			if(isset($params['current_page']) && $params['current_page'] != ''){
+				$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
+			}
 		}	
 		$query = $this->db->query($sql);
 		return $query->result_array();

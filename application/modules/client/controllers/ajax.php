@@ -115,4 +115,43 @@ class Ajax extends MX_Controller {
 		$data = $this->input->post();
 		$this->client_model->update_department($data['department_id'], $data);
 	}
+	/**
+	*	@name: delete_client
+	*	@desc: Delete single client
+	*	@access: public
+	*	@param: (via POST) user id
+	*	
+	*/
+	function delete_client()
+	{
+		$user_id = $this->input->post('user_id',true);
+		return $this->user_model->update_user($user_id,array('status' => 2));	
+	}
+	/**
+	*	@name: delete_multi_clients
+	*	@desc: Delete multiple clients
+	*	@access: public
+	*	@param: (via POST) user id
+	*	
+	*/
+	function delete_multi_clients()
+	{
+		$user_ids = $this->input->post('user_client_selected_user_id');
+		return $this->user_model->delete_multi_users(implode(',',$user_ids));
+	}
+	/**
+	*	@name: update_status_multi_clients
+	*	@desc: Update rating for multiple clients
+	*	@access: public
+	*	@param: (via POST) user id and new rating
+	*	
+	*/
+	function update_status_multi_clients()
+	{
+		$user_ids = $this->input->post('user_client_selected_user_id',true);
+		$new_status = $this->input->post('new_multi_status',true);
+		return $this->user_model->update_status_multi_users(implode(',',$user_ids),$new_status);
+	}
+	
+	
 }

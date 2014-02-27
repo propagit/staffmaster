@@ -191,16 +191,15 @@ class Job_shift_model extends CI_Model {
 	*	
 	*/
 	
-	function get_shift_by_year_and_month($month = NULL,$year = NULL)
-	{
-		if(!$month){
-			$month = date('m');
+	function get_shift_by_year_and_month($month,$year,$status = 0)
+	{		
+		$sql = "select job_date,count(*) as total_shifts from job_shifts where month(job_date) = '".$month."' and year(job_date) = '".$year."'";
+		if($status == 'all'){
+			$sql .= " and status != -2 and status != -1";	
+		}else{
+			$sql .= " and status = ".$status;	
 		}
-		if(!$year){
-			$year = date('Y');	
-		}
-		
-		$sql = "select shift_id,status,job_date from job_shifts where month(job_date) = '$month' and year(job_date) = '$year' and (status != -2 or status != 3)";
+		$sql .= " group by job_date order by job_date asc";
 		$shifts = $this->db->query($sql)->result();
 		return $shifts;
 		

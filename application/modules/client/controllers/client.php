@@ -33,6 +33,9 @@ class Client extends MX_Controller {
 			case 'dropdown_client_departments':
 				$this->dropdown_client_departments($param);
 				break;
+			case 'update_client_jobs_count':
+				$this->update_client_jobs_count($param);
+				break;
 			default:
 					echo 'do nothing';
 				break;
@@ -142,5 +145,20 @@ class Client extends MX_Controller {
 		}else{
 			return 0;	
 		}
+	}
+	
+	function update_client_jobs_count()
+	{
+		$clients = $this->client_model->search_clients();
+		if($clients){
+			foreach($clients as $c){
+				$data = array(
+							'total_jobs' => $this->get_client_total_jobs($c['user_id']),
+							'total_jobs_current_year' => $this->get_client_total_jobs($c['user_id'],date('Y'))
+							);
+				$this->client_model->update_client($c['user_id'],$data);	
+			}
+		}
+		redirect('client/search');
 	}
 }

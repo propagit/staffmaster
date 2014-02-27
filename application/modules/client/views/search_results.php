@@ -24,25 +24,29 @@
     <tr>
     	<th class="center"><input type="checkbox" id="master-checkbox" /></th>
         <th class="left col-md-3">Company Name <i class="fa fa-sort sort-result" sort-by="c.company_name"></i></td>
-        <th class="center">Jobs <!--<i class="fa fa-sort sort-result" sort-by=""></i>--></th>
-        <th class="center">Jobs This Year <!--<i class="fa fa-sort sort-result" sort-by="total_jobs_this_year"></i>--></th>
+        <th class="center">Jobs <i class="fa fa-sort sort-result" sort-by="c.total_jobs"></i></th>
+        <th class="center">Jobs This Year <i class="fa fa-sort sort-result" sort-by="c.total_jobs_current_year"></i></th>
         <th class="center">Status <i class="fa fa-sort sort-result" sort-by="u.status"></i></th>
         <th class="center">View</th>
         <th class="center">Delete</th>
     </tr>
     </thead>
+    <tbody>
+    <form id="client-search-results-form">
     <? foreach($clients as $client) { ?>
     <tr>
     	<td class="center"><input type="checkbox" name="user_client_selected_user_id[]" value="<?=$client['user_id'];?>" class="checkbox-multi-action" /></td>
         <td class="left"><?=$client['company_name'];?></td>
-        <td class="center"><?=modules::run('client/get_client_total_jobs',$client['user_id']);?></td>
-        <td class="center"><?=modules::run('client/get_client_total_jobs',$client['user_id'],date('Y'));?></td>
+        <td class="center"><?=$client['total_jobs'];?></td>
+        <td class="center"><?=$client['total_jobs_current_year'];?></td>
         <td class="center"><?=($client['status'] != 0 ? ($client['status'] == 1 ? 'Active' : 'Inactive') : 'Pending');?></td>
         <td class="center"><a href="<?=base_url();?>client/edit/<?=$client['user_id'];?>"><i class="fa fa-eye"></i></a></td>
-        <td class="center"><a><i class="fa fa-times"></i></a></td>
+        <td class="center"><i class="fa fa-times delete-client" delete-data-id="<?=$client['user_id'];?>"></i></td>
         
     </tr>
     <? } ?>
+    </form>
+    </tbody>
 </table>
 </div>
 <? } ?>
@@ -60,6 +64,23 @@ $(function(){
 		reset_page();
 		search_clients();
 	});	
+	
+	//delete single client
+	$('.delete-client').on('click',function(){
+	var title = 'Delete Client';
+	var message ='Are you sure you would like to delete this "Client"';
+	var user_id = $(this).attr('delete-data-id');
+	help.confirm_delete(title,message,function(confirmed){
+		 if(confirmed){
+			 delete_staff(user_id);
+		 }
+		});
+	});
+
+	$('#menu-search-client-result-action ul li a').on('click',function(){
+		var action = $(this).attr('data-value');
+		perform_multi_update(action);
+	})
 	
 	//go to page
 	$('.pagination li').on('click',function(e){

@@ -153,13 +153,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-				<h4 class="modal-title">Update Selected Rating</h4>
+				<h4 class="modal-title">Update Selected Status</h4>
 			</div>
 			<form id="add-new-venue-form">
             <div class="col-md-12">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">Ratings</label>
+                        <label for="name" class="col-sm-2 control-label">Status</label>
                         <div class="col-sm-10">
                             <?=modules::run('staff/field_select_status', 'multi_status_update');?>
                         </div>
@@ -269,8 +269,8 @@ function perform_multi_update(action){
 }
 
 function delete_multi_staff(){
-		var title = 'Delete Staffs';
-		var message ='Are you sure you would like to delete these "Staffs"';
+		var title = 'Delete Staff';
+		var message ='Are you sure you would like to delete these "Staff"';
 		var user_id = $(this).attr('delete-data-id');
 		help.confirm_delete(title,message,function(confirmed){
 			 if(confirmed){
@@ -279,7 +279,7 @@ function delete_multi_staff(){
 						url: "<?=base_url();?>staff/ajax/delete_multi_staffs",
 						data: $('#staff-search-results-form').serialize(),
 						success: function(html) {
-							//console.log(html);
+							reset_page();
 							search_staffs();
 						}
 					});
@@ -297,6 +297,7 @@ function update_multiple_selected_rating()
 		  data: $('#staff-search-results-form').serialize(),
 		  success: function(html) {
 			  $('#updateMultiRating').modal('hide');
+			  reset_page();
 			  search_staffs();
 		  }
 	  }); 
@@ -313,6 +314,7 @@ function update_multiple_selected_status()
 		  data: $('#staff-search-results-form').serialize(),
 		  success: function(html) {
 			  $('#updateMultiStatus').modal('hide');
+			  reset_page();
 			  search_staffs();
 		  }
 	  });

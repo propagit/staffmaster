@@ -1,10 +1,10 @@
-<div class="cal-month-day <%= cls %>">
+<div class="cal-month-day <%= cls %> company-calendar-cell">
 	<span class="pull-right" data-cal-date="<%= data_day %>" data-cal-view="day" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
 	<% if (events.length > 0) { %>
-		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
+		<div class="events-list company-calendar-events" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
 			<% _.each(events, function(event) { %>
 				
-                <span class="badge badge-xs dark-grey-bg"><%= event.active_job_campaigns %></span>
+                <span class="display-block"><span class="badge badge-xs dark-grey-bg"><%= event.active_job_campaigns %></span></span>
                 <span class="badge badge-xs grey-bg"><%= event.unfilled_shifts %></span>
                 <span class="badge badge-xs danger"><%= event.unconfirmed_shift %></span>
 				<span class="badge badge-xs success"><%= event.confirmed_shift %></span><br />

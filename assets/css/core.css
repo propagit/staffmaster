@@ -455,6 +455,19 @@ ol.example li.placeholder:before {
 .calendar-job-stat-legend > li > span{
 	margin-left:15px;	
 }
+.company-calendar-cell{
+	height:150px;	
+}
+.company-calendar-events{
+	right:0;
+	left:10px;
+	text-align: left;
+	line-height: 28px;	
+}
+.company-calendar-events > .display-block{
+	display:block;	
+}
+
 /* begin - responsive */
 
 /* *
