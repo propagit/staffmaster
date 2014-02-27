@@ -14,3 +14,7 @@
 .indent {
 	padding-left: 20px;
 }
+.nav li.disabled a,
+.nav li.disabled a:hover {
+	color: #fff;
+}

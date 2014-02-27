@@ -23,6 +23,15 @@ class Invoice extends MX_Controller {
 			case 'edit':
 					$this->edit($param);
 				break;
+			case 'generate':
+					$this->generate($param);
+				break;
+			case 'view':
+					$this->view($param);
+				break;
+			case 'search':
+					$this->search();
+				break;
 			default:
 					$this->main_view();
 				break;
@@ -30,31 +39,46 @@ class Invoice extends MX_Controller {
 		
 	}
 	
+	/**
+	*	@name: main_view
+	*	@desc: load the main layout of the invoice page
+	*	@access: public
+	*	@param: (void)
+	*	@return: (html) load main layout of the invoice page
+	*/
 	function main_view() {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
-	function row_client_job($job_id) {
-		$data['job'] = $this->invoice_model->get_job($job_id);
-		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
-		$this->load->view('job_client_row', isset($data) ? $data : NULL);
+	/**
+	*	@name: create_view
+	*	@desc: view of create invoice tab
+	*	@access: public
+	*	@param: (void)
+	*	@return: (html) load main layout of the create invoice tab
+	*/
+	function create_view() {
+		$this->load->view('create_view', isset($data) ? $data : NULL);
 	}
 	
-	function row_timesheets_job($job_id) {
-		$data['job'] = $this->invoice_model->get_job($job_id);
-		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
-		$this->load->view('timesheets_job_row', isset($data) ? $data : NULL);
+	/**
+	*	@name: search_form
+	*	@desc: view of search invoice tab
+	*	@access: public
+	*	@param: (void)
+	*	@return: (html) load search form of the search invoice tab
+	*/
+	function search_form() {
+		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
 	
-	function row_timesheet($timesheet_id) {
-		$data['timesheet'] = $this->invoice_model->get_timesheet($timesheet_id);
-		$this->load->view('timesheet_row', isset($data) ? $data : NULL);
-	}
-	
-	function by_client($user_id) {
-		return $this->invoice_model->check_client_invoice($user_id);
-	}
-	
+	/**
+	*	@name: create
+	*	@desc: create the invoice record for a client
+	*	@access: public
+	*	@param: (int) $user_id
+	*	@return: (void) redirect to (html) invoice page
+	*/
 	function create($user_id) {
 		$invoice_id = $this->by_client($user_id);
 		if ($invoice_id == 0) {
@@ -62,7 +86,8 @@ class Invoice extends MX_Controller {
 			$invoice_data = array(
 				'client_id' => $user_id,
 				'title' => 'Services Rended',
-				'issued_date' => date('Y-m-d')
+				'issued_date' => date('Y-m-d H:i:s'),
+				'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60)
 			);
 			$invoice_id = $this->invoice_model->add_client_invoice($invoice_data);
 			$data_jobs = array();
@@ -94,14 +119,138 @@ class Invoice extends MX_Controller {
 		redirect('invoice/edit/' . $invoice_id);	
 	}
 	
+	/**
+	*	@name: edit
+	*	@desc: edit invoice page
+	*	@access: public
+	*	@param: (int) $invoice_id
+	*	@return: (html) edit invoice page
+	*/
 	function edit($invoice_id) {
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		if ($invoice['status'] == INVOICE_GENERATED) {
+			redirect('invoice/view/' . $invoice_id);
+		}
+		$data['invoice'] = $invoice;
+		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
+		if ($invoice['breakdown']) {
+			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+		}
+		$this->load->view('invoice_edit_view', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: generate
+	*	@desc: generate the invoice and link timesheets to the invoice
+	*	@access: public
+	*	@param: (int) $invoice_id
+	*	@return: (void) redirect to view invoice page
+	*/
+	function generate($invoice_id) {
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		# Update invoice status
+		$user = $this->session->userdata('user_data');
+		$this->invoice_model->update_invoice($invoice_id, array(
+			'status' => INVOICE_GENERATED,
+			'issued_by' => $user['user_id']
+		));
+		$this->invoice_model->generate_invoice_timesheets($invoice['client_id'], $invoice_id);
+		redirect('invoice/view/' . $invoice_id);
+	}
+	
+	/**
+	*	@name: view
+	*	@desc: view of the single invoice
+	*	@access: public
+	*	@param: (int) $invoice_id
+	*	@return: (html) view invoice page 
+	*/
+	function view($invoice_id) {
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		if ($invoice['status'] == INVOICE_PENDING) {
+			redirect('invoice/view/' . $invoice_id);
+		}
+		
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
-		$this->load->view('invoice_view', isset($data) ? $data : NULL);
+		$this->load->view('invoice_view', isset($data) ? $data : NULL); 
 	}
 	
+	/**
+	*	@name: row_client_job
+	*	@desc: view of a row (tr) of client job
+	*	@access: public
+	*	@param: (int) $job_id
+	*	@return: (html) row (tr) of client job
+	*/
+	function row_client_job($job_id) {
+		$data['job'] = $this->invoice_model->get_job($job_id);
+		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
+		$this->load->view('client_job_row', isset($data) ? $data : NULL);
+	}
 	
+	/**
+	*	@name: row_job
+	*	@desc: view of row of a job
+	*	@access: public
+	*	@param: (int) $job_id
+	*	@return: (html) row (tr) of the job
+	*/
+	function row_job($job_id) {
+		$data['job'] = $this->invoice_model->get_job($job_id);
+		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
+		$this->load->view('job_row', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: row_timesheet
+	*	@desc: view of row of a timesheet
+	*	@access: public
+	*	@param: (int) $timesheet_id
+	*	@return: (html) row (tr) of a job
+	*/
+	function row_timesheet($timesheet_id) {
+		$data['timesheet'] = $this->invoice_model->get_timesheet($timesheet_id);
+		$this->load->view('timesheet_row', isset($data) ? $data : NULL);
+	}
+	
+	function by_client($user_id) {
+		return $this->invoice_model->check_client_invoice($user_id);
+	}
+	
+	function get_job_timesheets($job_id, $status) {
+		return $this->invoice_model->get_job_timesheets($job_id, $status);
+	}
+	
+	/**
+	*	@name: field_select_status
+	*	@desc: custom field select status of invoice
+	*	@access: public
+	*	@param: - $field_name: string of field name
+	*			- $field_value (optional): selected value of field
+	*			- $size (optional): size 
+	*	@return: custom select input field
+	*/
+	function field_select_status($field_name, $field_value=null, $size=null)
+	{
+		$array = array(
+			array('value' => INVOICE_GENERATED, 'label' => 'Unpaid'),
+			array('value' => INVOICE_PAID, 'label' => 'Paid')
+		);
+		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
+	}
+	
+	/**
+	*	@name: menu_dropdown_status
+	*	@desc: generate the dropdown menu of invoice status
+	*	@access: public
+	*	@param: (int) $invoice_id
+	*	@return: (html) dropdown menu of invoice status
+	*/
+	function menu_dropdown_status($invoice_id) {
+		$data['invoice'] = $this->invoice_model->get_invoice($invoice_id);
+		$this->load->view('menu_dropdown_status', isset($data) ? $data : NULL);
+	}
 	
 }

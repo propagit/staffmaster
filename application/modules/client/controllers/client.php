@@ -84,7 +84,7 @@ class Client extends MX_Controller {
 	
 	function field_select($field_name, $field_value=null)
 	{
-		$clients = $this->client_model->search_clients();
+		$clients = $this->client_model->all_clients();
 		$array = array();
 		foreach($clients as $client)
 		{

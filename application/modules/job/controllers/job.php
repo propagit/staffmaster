@@ -11,7 +11,6 @@ class Job extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->output->enable_profiler();
 		$this->load->model('job_model');
 		$this->load->model('job_shift_model');
 		$this->load->model('client/client_model');

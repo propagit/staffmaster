@@ -10,6 +10,6 @@
 </tr>
 <? foreach($jobs as $job){ ?>
 <tr class="success job_client_<?=$user_id;?>" id="job_client_<?=$job['job_id'];?>">
-	<?=modules::run('invoice/row_client_job', $job['job_id']);?>
+	<?=modules::run('invoice/row_client_job', $job['job_id']);?>	
 </tr>
 <? } ?>

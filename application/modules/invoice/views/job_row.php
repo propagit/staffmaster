@@ -28,9 +28,8 @@ foreach($timesheets as $timesheet) {
 		<span class="badge success"><?=$total_ready;?></span>
 		<? } ?>
 	</td>
-	<td class="center"><?=$total_minutes/60;?></td>
+	<td width="60" class="center"><?=($total_minutes/60);?></td>
 	<td class="center">$<?=money_format('%i', $total_amount);?></td>
-	<td></td>
 	<td class="center">
 		<div class="btn-group">
 		<? if ($processing) { ?>
@@ -42,4 +41,5 @@ foreach($timesheets as $timesheet) {
 		<? } ?>
 		</div>
 	</td>
+	<td><a onclick="list_clients(<?=$job['client_id'];?>)"><i class="fa fa-minus-square-o"></i></a></td>
 </tr>

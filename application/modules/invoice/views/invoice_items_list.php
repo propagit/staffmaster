@@ -1,3 +1,4 @@
+<table width="100%" cellpadding="10">
 <tr>
     <td colspan="3"><h3>Expense Break Down</h3></td>
 </tr>
@@ -56,3 +57,4 @@
 	<td align="right"><a onclick="delete_item(<?=$item['item_id'];?>)"><i class="fa fa-times"></i></a></td>
 </tr> 
 <? } } ?>
+</table>

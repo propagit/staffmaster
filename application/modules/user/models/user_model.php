@@ -2,31 +2,19 @@
 
 class User_model extends CI_Model {
 	
-	
-	function get_states()
-	{
-		$query = $this->db->get('states');
-		return $query->result_array();
-	}
-	
-	function get_countries()
-	{
-		$query = $this->db->get('countries');
-		return $query->result_array();
-	}
-	
-	function check_username($username)
-	{
-		$this->db->where('username', $username);
-		$query = $this->db->get('users');
-		return $query->first_row('array');
-	}
-	
+		
 	function get_user($user_id)
 	{
 		$this->db->where('user_id', $user_id);
 		$query = $this->db->get('users');
 		return $query->first_row('array');
+	}
+	
+	function get_admin_users()
+	{
+		$this->db->where('is_admin', 1);
+		$query = $this->db->get('users');
+		return $query->result_array();
 	}
 	
 	function get_users()
@@ -36,12 +24,6 @@ class User_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	function get_sub_users($user_id)
-	{
-		$this->db->where('parent_id', $user_id);
-		$query = $this->db->get('users');
-		return $query->result_array();
-	}
 	
 	function prepare_user_data($data)
 	{
