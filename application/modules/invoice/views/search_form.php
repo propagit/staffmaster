@@ -76,7 +76,6 @@
 
 <script>
 $(function(){
-    search_invoices();
     $('#btn-search-invoices').click(function() {
 	    search_invoices();
     });

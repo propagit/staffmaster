@@ -31,6 +31,14 @@ function list_clients(client_id=null) {
 		success: function(html) {
 			loaded($('#list_clients'), html);
 		}
+	}).done(function(){
+		if (client_id != null) {
+			setTimeout(function() {
+				// Do something after 2 seconds
+				load_client_jobs(client_id);
+			}, 500);
+			
+		}
 	})
 }
 function load_job_timesheets(job_id) {

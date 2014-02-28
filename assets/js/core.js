@@ -5,11 +5,18 @@ function preloading(obj)
 	var w = $(obj).width();
 	$(obj).prepend('<div id="wrapper_loading" style="height:' + h + 'px;width:' + w + 'px;line-height:' + h + 'px;"><img src="' + base_url + 'assets/img/loading.gif" /></div>');
 }
-function loaded(obj,html)
+function loaded(obj,html=null)
 {
-	setTimeout(function(){
-		$(obj).html(html);
-	}, 200);
+	if (html != null) {
+		setTimeout(function(){
+			$(obj).html(html);
+		}, 200);
+	} else {
+		setTimeout(function(){
+			$(obj).find('#wrapper_loading').remove();
+		}, 200);
+	}
+	
 }
 /* Disable element */
 function disabled(obj)

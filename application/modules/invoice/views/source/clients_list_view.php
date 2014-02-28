@@ -53,60 +53,74 @@ function hide_client_jobs(user_id) {
 	$('#jobs_client_' + user_id).find('.wp-arrow').html('<i class="fa fa-plus-square-o"></i>');
 }
 function refresh_row_client_job(job_id) {
+	preloading($('#list_clients'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>invoice/ajax/row_client_job",
 		data: {job_id: job_id},
 		success: function(html) {
-			$('#job_client_' + job_id).html(html);
+			loaded($('#list_clients'));
+			$('#job_client_' + job_id).replaceWith(html);
 			list_temp_invoices();
 		}
 	})
 }
-function add_job_to_invoice(job_id, apply_all=false) {
+function add_job_to_invoice(job_id, apply_all=false) {	
+	preloading($('#list_clients'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>invoice/ajax/add_job_to_invoice",
 		data: {job_id: job_id, apply_all: apply_all},
 		success: function(data) {
 			refresh_row_client_job(job_id);
-			data = $.parseJSON(data);
-			for(var i=0; i < data.length; i++) {
-				refresh_row_timesheet(data[i]);
+			if (apply_all)
+			{				
+				data = $.parseJSON(data);
+				for(var i=0; i < data.length; i++) {
+					refresh_row_timesheet(data[i], false);
+				}
 			}
-			refresh_row_timesheets_job(job_id);
+			refresh_row_job(job_id);
+			loaded($('#list_clients'));
 		}
 	})
 }
-function remove_job_from_invoice(job_id, apply_all=false) {
+function remove_job_from_invoice(job_id, apply_all=false) {	
+	preloading($('#list_clients'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>invoice/ajax/remove_job_from_invoice",
 		data: {job_id: job_id, apply_all: apply_all},
 		success: function(data) {
 			refresh_row_client_job(job_id);
-			data = $.parseJSON(data);
-			for(var i=0; i < data.length; i++) {
-				refresh_row_timesheet(data[i]);
+			if (apply_all)
+			{				
+				data = $.parseJSON(data);
+				for(var i=0; i < data.length; i++) {
+					refresh_row_timesheet(data[i], false);
+				}
 			}
-			refresh_row_timesheets_job(job_id);
+			refresh_row_job(job_id);
+			loaded($('#list_clients'));
 		}
 	})
 }
-function refresh_row_timesheet(timesheet_id) {
+function refresh_row_timesheet(timesheet_id,loading=true) {
+	if (loading) { preloading($('#list_clients')); }
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>invoice/ajax/row_timesheet",
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
 			$('#timesheet_' + timesheet_id).replaceWith(html);
+			if (loading) { loaded($('#list_clients')); }
 		}
 	})
 }
-function refresh_row_timesheets_job(job_id) {
+function refresh_row_job(job_id) {
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>invoice/ajax/row_timesheets_job",
+		url: "<?=base_url();?>invoice/ajax/row_job",
 		data: {job_id: job_id},
 		success: function(html) {
 			$('#row-timesheets-job-' + job_id).replaceWith(html);
@@ -121,7 +135,7 @@ function add_timesheet_to_invoice(timesheet_id, job_id) {
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
 			refresh_row_timesheet(timesheet_id);
-			refresh_row_timesheets_job(job_id);
+			refresh_row_job(job_id);
 		}
 	})
 }
@@ -132,7 +146,7 @@ function remove_timesheet_from_invoice(timesheet_id, job_id) {
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
 			refresh_row_timesheet(timesheet_id);
-			refresh_row_timesheets_job(job_id);
+			refresh_row_job(job_id);
 		}
 	})
 }

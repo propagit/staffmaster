@@ -14,6 +14,7 @@ foreach($timesheets as $timesheet) {
 }
 ?>
 
+<tr class="success job_client_<?=$job['client_id'];?>" id="job_client_<?=$job['job_id'];?>">
 	<td width="20"><input type="checkbox" /></td>
 	<td><?=$job['name'];?></td>
 	<td class="center">$<?=money_format('%i', $billable);?></td>
@@ -44,3 +45,4 @@ foreach($timesheets as $timesheet) {
 	<td width="40">
 		<a onclick="load_job_timesheets(<?=$job['job_id'];?>)"><i class="fa fa-plus-square-o"></i></a>
 	</td>
+</tr>

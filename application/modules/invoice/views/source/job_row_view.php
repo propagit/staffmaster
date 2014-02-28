@@ -16,7 +16,7 @@ foreach($timesheets as $timesheet) {
 
 <tr class="row-open" id="row-timesheets-job-<?=$job['job_id'];?>">
 	<td width="20"></td>
-	<td></td>
+	<td class="center">Date</td>
 	<td><?=$job['name'];?></td>
 	<td colspan="2" class="center">
 		<? if (count($timesheets) == $total_ready) { ?>

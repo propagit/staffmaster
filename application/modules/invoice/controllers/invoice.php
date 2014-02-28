@@ -80,42 +80,46 @@ class Invoice extends MX_Controller {
 	*	@return: (void) redirect to (html) invoice page
 	*/
 	function create($user_id) {
-		$invoice_id = $this->by_client($user_id);
-		if ($invoice_id == 0) {
-			# Create invoice
-			$invoice_data = array(
-				'client_id' => $user_id,
-				'title' => 'Services Rended',
-				'issued_date' => date('Y-m-d H:i:s'),
-				'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60)
+		$invoice_id = $this->invoice_model->check_client_invoice($user_id);
+		# If found invoice, delete it
+		if ($invoice_id) {
+			$this->invoice_model->delete_invoice_items($invoice_id);
+			$this->invoice_model->delete_invoice($invoice_id);
+		}
+		
+		# Create invoice
+		$invoice_data = array(
+			'client_id' => $user_id,
+			'title' => 'Services Rended',
+			'issued_date' => date('Y-m-d H:i:s'),
+			'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60)
+		);
+		$invoice_id = $this->invoice_model->add_client_invoice($invoice_data);
+		$data_jobs = array();
+		$total = 0;
+		# Insert invoice items
+		$jobs = $this->invoice_model->get_client_invoice($user_id);
+		foreach($jobs as $job) {
+			$item_data = array(
+				'invoice_id' => $invoice_id,
+				'job_id' => $job['job_id'],
+				'include_timesheets' => 1,
+				'title' => $job['name'],
+				'tax' => GST_YES,
+				'amount' => $job['total_amount']
 			);
-			$invoice_id = $this->invoice_model->add_client_invoice($invoice_data);
-			$data_jobs = array();
-			$total = 0;
-			# Insert invoice items
-			$jobs = $this->invoice_model->get_client_invoice($user_id);
-			foreach($jobs as $job) {
-				$item_data = array(
-					'invoice_id' => $invoice_id,
-					'job_id' => $job['job_id'],
-					'include_timesheets' => 1,
-					'title' => $job['name'],
-					'tax' => GST_YES,
-					'amount' => $job['total_amount']
-				);
-				$data_jobs[] = array(
-					'value' => $job['job_id'],
-					'label' => $job['name']
-				);
-				$total += $job['total_amount'];
-				$this->invoice_model->add_invoice_item($item_data);
-			}
-			$this->invoice_model->update_invoice($invoice_id, array(
-				'jobs' => serialize($data_jobs),
-				'total_amount' => $total
-			));
+			$data_jobs[] = array(
+				'value' => $job['job_id'],
+				'label' => $job['name']
+			);
+			$total += $job['total_amount'];
+			$this->invoice_model->add_invoice_item($item_data);
+		}
+		$this->invoice_model->update_invoice($invoice_id, array(
+			'jobs' => serialize($data_jobs),
+			'total_amount' => $total
+		));
 			
-		} 
 		redirect('invoice/edit/' . $invoice_id);	
 	}
 	
@@ -128,6 +132,7 @@ class Invoice extends MX_Controller {
 	*/
 	function edit($invoice_id) {
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		# If invoice is generated, cannot edit anymore, go to view page
 		if ($invoice['status'] == INVOICE_GENERATED) {
 			redirect('invoice/view/' . $invoice_id);
 		}
@@ -136,7 +141,7 @@ class Invoice extends MX_Controller {
 		if ($invoice['breakdown']) {
 			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
 		}
-		$this->load->view('invoice_edit_view', isset($data) ? $data : NULL);
+		$this->load->view('create/edit_view', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -167,28 +172,12 @@ class Invoice extends MX_Controller {
 	*/
 	function view($invoice_id) {
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		if ($invoice['status'] == INVOICE_PENDING) {
-			redirect('invoice/view/' . $invoice_id);
-		}
-		
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
-		$this->load->view('invoice_view', isset($data) ? $data : NULL); 
+		$this->load->view('create/generated_view', isset($data) ? $data : NULL); 
 	}
 	
-	/**
-	*	@name: row_client_job
-	*	@desc: view of a row (tr) of client job
-	*	@access: public
-	*	@param: (int) $job_id
-	*	@return: (html) row (tr) of client job
-	*/
-	function row_client_job($job_id) {
-		$data['job'] = $this->invoice_model->get_job($job_id);
-		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
-		$this->load->view('client_job_row', isset($data) ? $data : NULL);
-	}
 	
 	/**
 	*	@name: row_job
@@ -200,7 +189,7 @@ class Invoice extends MX_Controller {
 	function row_job($job_id) {
 		$data['job'] = $this->invoice_model->get_job($job_id);
 		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
-		$this->load->view('job_row', isset($data) ? $data : NULL);
+		$this->load->view('source/job_row_view', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -212,12 +201,9 @@ class Invoice extends MX_Controller {
 	*/
 	function row_timesheet($timesheet_id) {
 		$data['timesheet'] = $this->invoice_model->get_timesheet($timesheet_id);
-		$this->load->view('timesheet_row', isset($data) ? $data : NULL);
+		$this->load->view('source/timesheet_row_view', isset($data) ? $data : NULL);
 	}
 	
-	function by_client($user_id) {
-		return $this->invoice_model->check_client_invoice($user_id);
-	}
 	
 	function get_job_timesheets($job_id, $status) {
 		return $this->invoice_model->get_job_timesheets($job_id, $status);
@@ -232,8 +218,7 @@ class Invoice extends MX_Controller {
 	*			- $size (optional): size 
 	*	@return: custom select input field
 	*/
-	function field_select_status($field_name, $field_value=null, $size=null)
-	{
+	function field_select_status($field_name, $field_value=null, $size=null) {
 		$array = array(
 			array('value' => INVOICE_GENERATED, 'label' => 'Unpaid'),
 			array('value' => INVOICE_PAID, 'label' => 'Paid')
@@ -250,7 +235,7 @@ class Invoice extends MX_Controller {
 	*/
 	function menu_dropdown_status($invoice_id) {
 		$data['invoice'] = $this->invoice_model->get_invoice($invoice_id);
-		$this->load->view('menu_dropdown_status', isset($data) ? $data : NULL);
+		$this->load->view('search/menu_dropdown_status', isset($data) ? $data : NULL);
 	}
 	
 }
