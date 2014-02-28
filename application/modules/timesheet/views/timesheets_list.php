@@ -2,12 +2,11 @@
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($timesheets);?></b> results</p>
 
+<? if (count($timesheets) > 0) { ?>
 <!-- Filter Menus -->
 <div id="nav_payruns">
 	<?=modules::run('timesheet/menu_dropdown_actions', 'action', 'Actions');?>			
 </div><!-- End Filter Menus -->
-
-<? if (count($timesheets) > 0) { ?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>

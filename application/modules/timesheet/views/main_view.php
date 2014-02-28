@@ -30,7 +30,7 @@
 				<div class="form-group">
 					<label for="client_id" class="col-md-2 control-label">Client</label>
 					<div class="col-md-4">
-						<? #=modules::run('client/field_select', 'client_id');?>
+						<?=modules::run('client/field_select', 'client_id');?>
 					</div>
 					<label class="col-md-2 control-label">Campaign Name</label>
 					<div class="col-md-4">
@@ -47,18 +47,6 @@
 					<label for="position" class="col-md-2 control-label">Role</label>
 					<div class="col-md-4">
 						<?=modules::run('attribute/role/field_select', 'position');?>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group">
-					<label for="location" class="col-md-2 control-label">Location</label>
-					<div class="col-md-4">
-						<?=modules::run('attribute/location/field_select', 'location_parent_id');?>
-					</div>
-					<label for="payrate" class="col-md-2 control-label">Payrate</label>
-					<div class="col-md-4">
-						<?=modules::run('attribute/payrate/field_select', 'payrate_id');?>
 					</div>
 				</div>
 			</div>
@@ -84,6 +72,18 @@
 			</div>
 			<div class="row">
 				<div class="form-group">
+					<label for="location" class="col-md-2 control-label">Location</label>
+					<div class="col-md-4">
+						<?=modules::run('attribute/location/field_select', 'location_parent_id');?>
+					</div>
+					<label for="payrate" class="col-md-2 control-label">Payrate</label>
+					<div class="col-md-4">
+						<?=modules::run('attribute/payrate/field_select', 'payrate_id');?>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
 						<button type="button" class="btn btn-core" id="btn_search_timesheets"><i class="fa fa-search"></i> Search</button> &nbsp; 
 						<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
@@ -104,7 +104,9 @@ var sort_data = {
 	'sort_order':'desc'
 };
 $(function(){
-	list_timesheets();
+	$('#btn_search_timesheets').click(function(){
+		list_timesheets();
+	})
 })
 
 function list_timesheets() {
