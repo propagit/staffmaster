@@ -14,15 +14,15 @@ class Ajax extends MX_Controller {
 	}
 	
 	/**
-	*	@name: list_payruns
+	*	@name: list_staffs
 	*	@desc: ajax function to get the list of staff with batched timesheets
 	*	@access: public
 	*	@param: (void)
 	*	@return: (html) main layout of list pay runs 
 	*/
-	function list_payruns() {
+	function list_staffs() {
 		$data['staffs'] = $this->payrun_model->get_staffs();
-		$this->load->view('payruns_list_view', isset($data) ? $data : NULL);
+		$this->load->view('source/staffs_list_view', isset($data) ? $data : NULL);
 	}
 	
 	/**

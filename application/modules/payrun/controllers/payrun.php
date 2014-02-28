@@ -36,6 +36,19 @@ class Payrun extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
+	
+	function create_view() {
+		$this->load->view('create_view', isset($data) ? $data : NULL);
+	}
+	
+	function search_payrun_view() {
+		$this->load->view('search_payrun_view', isset($data) ? $data : NULL);	
+	}
+	
+	function search_payslip_view() {
+		$this->load->view('search_payslip_view', isset($data) ? $data : NULL);	
+	}
+	
 	/**
 	*	@name: row_batched_staff
 	*	@desc: load the row (tr) of batched timesheets of a specified staff
