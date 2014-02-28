@@ -26,6 +26,32 @@ h2{font-size:18px;font-weight:bold;font-family: 'Lato', sans-serif;}
 	margin-top:20px;
 }
 
+.wp-page-invoice .charge-box-header {
+	background: #25c2f2;
+	color: #fff;
+}
+.wp-page-invoice .charge-box-body {
+	background: #eee;
+}
+.indent {
+	padding-left: 20px;
+}
+.nav li.disabled a,
+.nav li.disabled a:hover {
+	color: #fff;
+}
+
+#badge-paid {
+	position: absolute;
+	width: 181px;
+	height: 79px;
+}
+#badge-paid span {
+	display: block;
+	margin-left: 50px;
+	color: #97040c;
+	font-weight: bold;
+}
 .padding-left-15{
 	padding-left:15px;
 }

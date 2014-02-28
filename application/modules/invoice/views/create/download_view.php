@@ -1,3 +1,6 @@
+<html>
+<body>
+
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="wp-page-invoice">
@@ -261,16 +264,6 @@
 </div>
 <? } ?>
 <br /><br /><br />
-<script>
-$(function(){
-	$('#btn-generate-invoice').remove();
-	$('#btn-reset-invoice').html('<i class="fa fa-times"></i> Close');
-	$('#btn-reset-invoice').click(function(){
-		window.close();
-	});
-	$('#btn-download-invoice').click(function(){
-		$(this).prop('target', '_blank');
-		window.open('<?=base_url();?>invoice/download/<?=$invoice['invoice_id'];?>');
-	})
-})
-</script>
+
+</body>
+</html>

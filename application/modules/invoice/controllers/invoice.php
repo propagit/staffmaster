@@ -32,6 +32,9 @@ class Invoice extends MX_Controller {
 			case 'search':
 					$this->search();
 				break;
+			case 'download':
+					$this->download($param);
+				break;
 			default:
 					$this->main_view();
 				break;
@@ -164,6 +167,38 @@ class Invoice extends MX_Controller {
 	}
 	
 	/**
+	*	@name: download
+	*	@desc: generate and download the pdf
+	*	@access: public
+	*	@param: (int) $invoice_id
+	*	@return: (void)
+	*/
+	function download($invoice_id) {
+		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
+		$filename = "invoice_" . $invoice_id;
+		$pdfFilePath = "./uploads/pdf/$filename.pdf";
+		
+		 
+		ini_set('memory_limit','32M'); # boost the memory limit if it's low 
+		
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		$data['invoice'] = $invoice;
+		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
+		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+		$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true); 
+		
+				
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load(); 			
+		$stylesheet = file_get_contents('./assets/css/pdf.css');
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($pdfFilePath, 'F'); // save to file 
+		 
+		redirect("./uploads/pdf/$filename.pdf"); 
+	}
+	
+	/**
 	*	@name: view
 	*	@desc: view of the single invoice
 	*	@access: public
@@ -204,7 +239,14 @@ class Invoice extends MX_Controller {
 		$this->load->view('source/timesheet_row_view', isset($data) ? $data : NULL);
 	}
 	
-	
+	/**
+	*	@name: get_job_timesheets
+	*	@desc: get invoiced timesheets of an invoiced job
+	*	@access: public
+	*	@param: (int) $job_id
+	*			(int) $status
+	*	@return: (array) of time sheet objects
+	*/
 	function get_job_timesheets($job_id, $status) {
 		return $this->invoice_model->get_job_timesheets($job_id, $status);
 	}

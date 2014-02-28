@@ -20,14 +20,12 @@
 }
 
 #badge-paid {
-	background: url(../img/paid.png);
 	position: absolute;
 	width: 181px;
 	height: 79px;
 }
 #badge-paid span {
 	display: block;
-	margin-top: 80px;
 	margin-left: 50px;
 	color: #97040c;
 	font-weight: bold;
