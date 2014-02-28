@@ -337,4 +337,51 @@ class Ajax extends MX_Controller {
 		$this->invoice_model->mark_unpaid_timesheets($invoice_id);
 		echo modules::run('invoice/menu_dropdown_status', $invoice_id);
 	}
+	/**
+	*	@name: edit_client_invoice_title 
+	*	@desc: ajax function to edit template client invoice for TITLE of the invoice
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_title() {
+		$invoice_id = $this->input->post('pk');
+		$title = $this->input->post('value');
+		$data = array('title' => $title);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_issued_date
+	*	@desc: ajax function to edit template client invoice for Issued Date of the invoice
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_issued_date() {
+		$invoice_id = $this->input->post('pk');
+		$issued_date = $this->input->post('value');
+		$data = array('issued_date' => $issued_date);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_due_date
+	*	@desc: ajax function to edit template client invoice for Due Date of the invoice
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_due_date() {
+		$invoice_id = $this->input->post('pk');
+		$due_date = $this->input->post('value');
+		$data = array('due_date' => $due_date);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
 }

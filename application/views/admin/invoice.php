@@ -24,6 +24,12 @@
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.confirm.js"></script>
 	
+     <!-- x-editable (bootstrap 3) -->
+	<link href="<?=base_url();?>assets/css/bootstrap-editable.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/bootstrap-editable.min.js"></script>
+	<script src="<?=base_url();?>assets/js/editable/time.js"></script>
+	<link href="<?=base_url();?>assets/js/editable/break.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/editable/breaks.js"></script>	
 	
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>

@@ -10,8 +10,8 @@
             		<table>
                        <tr>
                         <td class="padding-top-15">
-                            Company Name<br>
-                            ABN: 123 456 789<br>
+                            <a href="#" class="inv_company_name" data-type="text"  data-pk="1" data-title="Company Name">Company Name</a><br>
+                            ABN: <a href="#" class="inv_company_abn" data-type="text"  data-pk="1" data-title="ABN">123 456 789</a><br>
                             <br>
                             
                             <b>
@@ -46,8 +46,8 @@
             <tr>
             	<td valign="middle">
                 	<h2>Tax Invoice</h2>                    
-                    Issue Date: <?=date('dS M Y', strtotime($invoice['issued_date']));?><br>
-                    <h1>Services Rended</h1>
+                    Issue Date: <a href="#" class="inv_company_issue_date" data-type="date"  data-pk="<?=$invoice['invoice_id']?>" data-title="Issue Date"><?=date('dS M Y', strtotime($invoice['issued_date']));?></a><br>
+                    <h1><a href="#" class="inv_title" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Title"><?=$invoice['title']?></a></h1>
                 </td>
                 <td></td>
                 <td>
@@ -87,7 +87,7 @@
             		<input type="text" class="form-control" name="title" placeholder="Enter item title" />
             	</td>
             	<td align="right">
-	            	<?=modules::run('common/field_select_gst', 'tax');?>
+	            	<? //=modules::run('common/field_select_gst', 'tax');?>
             	</td>
             	<td>
             		<div class="input-group">
@@ -197,6 +197,29 @@ $(function(){
 	
 	$('#btn-download-invoice').parent().addClass('disabled');
 	$('#btn-email-invoice').parent().addClass('disabled');
+	
+
+	
+	$('.inv_company_name').editable();
+	$('.inv_company_abn').editable();
+	
+	$('.inv_title').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_title',
+		
+		
+	});
+	
+	$('.inv_company_issue_date').editable({
+		  format: 'yyyy-mm-dd hh:ii',
+		  viewformat: 'dd M yyyy',
+		  datepicker: {
+		     weekStart: 1
+		  }	,	
+		  url: '<?=base_url();?>invoice/ajax/edit_client_invoice_issued_date',
+		  
+	});
+	
+	
 })
 function generate_invoice() {
 	window.location = '<?=base_url();?>invoice/generate/<?=$invoice['invoice_id'];?>';
