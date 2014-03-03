@@ -12,7 +12,7 @@ class Export_model extends CI_Model {
 	function get_template_fields($object, $format) {
 		$this->db->where('object', $object);
 		$this->db->where('format', $format);
-		$this->db->order_by('order', 'asc');
+		$this->db->order_by('label', 'asc');
 		$query = $this->db->get('export_fields');
 		return $query->result_array();
 	}

@@ -13,23 +13,33 @@ class Ajax extends MX_Controller {
 		$this->load->model('export_model');
 	}
 	
-	function load_objects($object) {
+	/**
+	*	@name: load_object
+	*	@desc: ajax function to load (abstract) view of an export template
+	*	@access: public
+	*	@param: (string) $object
+	*	@return: (html) (abstract) view of export template configuration
+	*/
+	function load_object($object='invoice') {
 		$data['object'] = $object;
 		$this->load->view('object_view', isset($data) ? $data : NULL);
 	}
 	
-	function load_templates() {
+	function load_templates() {		
 		$object = $this->input->post('object');
 		$format = $this->input->post('format');
 		$templates = $this->export_model->get_templates($object, $format);
-		$data = array();
+		$array = array();
 		foreach($templates as $template) {
-			$data[] = array(
+			$array[] = array(
 				'value' => $template['export_id'],
 				'label' => $template['name']
 			);
 		}
-		echo modules::run('common/field_select', $data, 'export_id', '','', false);
+		$data['templates'] = $array;
+		$data['fields'] = $this->export_model->get_template_fields($object, $format);
+		$data['object'] = $object;
+		$this->load->view('templates_view', isset($data) ? $data : NULL);
 	}
 	
 	function load_template() {
@@ -38,12 +48,6 @@ class Ajax extends MX_Controller {
 		$this->load->view('template_view', isset($data) ? $data : NULL);
 	}
 	
-	function load_preset() {
-		$object = $this->input->post('object');
-		$format = $this->input->post('format');
-		$data['fields'] = $this->export_model->get_template_fields($object, $format);
-		$this->load->view('preset_view', isset($data) ? $data : NULL);
-	}
 	
 	function add_field() {
 		$data = array(

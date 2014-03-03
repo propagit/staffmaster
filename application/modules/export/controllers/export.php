@@ -13,8 +13,18 @@ class Export extends MX_Controller {
 		$this->load->model('export_model');
 	}
 	
-	public function index($method='', $param1='', $param2='')
+	public function index($method='', $param='')
 	{
+		switch($method)
+		{
+			default:
+					$this->main_view();
+				break;
+		}
+		
+	}
+	
+	function main_view() {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	

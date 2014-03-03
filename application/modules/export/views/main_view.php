@@ -35,7 +35,7 @@
 <script>
 function show_tab(tab)
 {
-	tab.load('<?=base_url();?>export/ajax/load_objects/' + tab.attr('id'));
+	tab.load('<?=base_url();?>export/ajax/load_object/' + tab.attr('id'));
 }
 function init_tabs() {
 	show_tab($('.tab-pane.active'));

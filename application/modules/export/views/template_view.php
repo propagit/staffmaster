@@ -31,6 +31,19 @@
 
 <script>
 $(function () {
+	init_sort();
+})
+function remove_field(field_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>export/ajax/remove_field",
+		data: {field_id: field_id},
+		success: function(html) {
+			load_template();
+		}
+	})
+}
+function init_sort() {
 	var group = $('.sorted_table').sortable({
 		group: 'sorted_table',
 		containerSelector: 'table',
@@ -51,16 +64,6 @@ $(function () {
 		serialize: function (parent, children, isContainer) {
 			return isContainer ? children.join() : parent.find('input').val()
 		},
-	})
-})
-function remove_field(field_id) {
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>export/ajax/remove_field",
-		data: {field_id: field_id},
-		success: function(html) {
-			load_template();
-		}
 	})
 }
 </script>
