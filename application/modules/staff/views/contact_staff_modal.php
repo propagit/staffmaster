@@ -49,7 +49,7 @@
                                          (Selected Recipients: <b><?=$total;?></b>) 
                                          &nbsp;&nbsp;
                                          <a href="#"><i class="fa fa-eye"> </i> View Send List</a>
-                                         <div class="alert alert-success hide" id="msg-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; Staff personal details has been updated successfully!</div>
+                                         <div class="alert alert-success hide" id="msg-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; Email Successfully Sent</div>
                                      </div>
                                  </div>
                             </form>
