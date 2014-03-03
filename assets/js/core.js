@@ -5,7 +5,8 @@ function preloading(obj)
 	var w = $(obj).width();
 	$(obj).prepend('<div id="wrapper_loading" style="height:' + h + 'px;width:' + w + 'px;line-height:' + h + 'px;"><img src="' + base_url + 'assets/img/loading.gif" /></div>');
 }
-function loaded(obj,html=null)
+
+function loaded(obj,html)
 {
 	if (html != null) {
 		setTimeout(function(){

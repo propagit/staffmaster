@@ -37,7 +37,7 @@ class Setting extends MX_Controller {
 	function company()
 	{
 		$company = $this->setting_model->get_profile();		
-		$data['states'] = $this->user_model->get_states();
+		//$data['states'] = $this->user_model->get_states();
 		$data['company'] = $company;
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
@@ -123,6 +123,33 @@ class Setting extends MX_Controller {
 		}
 		 
 		redirect("./uploads/pdf/$filename.pdf"); 
+	}
+	
+	/**
+	*	@name: get_template_footer
+	*	@desc: Get Email Footer Template
+	*	@access: public
+	*	@param: (via POST) Background color and Font color
+	*	
+	*/
+	function get_email_footer()
+	{
+		$company = $this->setting_model->get_profile();
+		if($_POST){
+			$color = $this->input->post('color');
+			$font_color = $this->input->post('font_color');
+		}
+		else
+		{
+			$color = $company['email_background_colour'];
+			$font_color = $company['email_font_colour'];
+		}
+		
+		
+		$data['color'] = $color;
+		$data['font_color'] = $font_color;
+		$data['company'] = $company;
+		$this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);	
 	}
 	
 }
