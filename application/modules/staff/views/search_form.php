@@ -1,3 +1,6 @@
+<script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/config.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
@@ -179,6 +182,8 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div id="ajax-contact-staff-modal"></div>
+
 <script>
 var scroll_to_form = true;
 $(function(){
@@ -215,6 +220,7 @@ $(function(){
 			$('#toggle-custom-attrs-fa').removeClass('fa-minus-square').addClass('fa-plus-square');	
 		}
 	});
+
 })
 
 function reset_page()
@@ -251,7 +257,7 @@ function delete_staff(user_id){
 function perform_multi_update(action){
 	switch(action){
 		case 'contact-multi-staff':
-			
+			contact_multi_staff();	
 		break;
 		case 'delete-multi-staff':
 			delete_multi_staff();
@@ -318,6 +324,58 @@ function update_multiple_selected_status()
 			  search_staffs();
 		  }
 	  });
+}
+
+function contact_multi_staff(){
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>staff/ajax/get_contact_multi_staff_modal",
+		  data: $('#staff-search-results-form').serialize(),
+		  success: function(html) {
+			  $('#ajax-contact-staff-modal').html(html);
+			  $('#contact-staff-modal').modal('show');	
+		  }
+	  });
+		
+}
+
+function contact_staff_email()
+{
+	update_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>staff/ajax/contact_multi_staff",
+		  data: $('#contact-staff-email-form').serialize(),
+		  success: function(html) {
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);		
+		  }
+	  });	
+}
+
+function send_contact_staff_sample_email()
+{
+	update_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>staff/ajax/send_contact_staff_sample_email",
+		  data: $('#contact-staff-email-form').serialize(),
+		  success: function(html) {
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+		  }
+	  });
+}
+
+function update_ckeditor()
+{
+	for ( instance in CKEDITOR.instances ) {
+            CKEDITOR.instances[instance].updateElement();
+    }	
 }
 
 </script>

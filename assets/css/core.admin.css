@@ -302,6 +302,29 @@ a.default {
 	background-color:transparent;	
 }
 
+/* modal */
+.contact-modal{
+	width:1000px	
+}
+.contact-modal a.contact-staff-tab-head{
+	padding-right:30px;
+	padding-left:30px;	
+}
+.staff-contact-modal-body .tab-content{
+	margin-top:15px;	
+}
+.sample-email-btn{
+	background-color:#35c0ed;
+	color:#fff;
+	border-radius:0;
+}
+.staff-contact-modal-body .control-label{
+	line-height: 32px;
+}
+.editor-wrap{
+	float:left;
+	width:100%;	
+}
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 
