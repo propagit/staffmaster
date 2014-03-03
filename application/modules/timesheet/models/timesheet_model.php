@@ -59,7 +59,9 @@ class Timesheet_model extends CI_Model {
 	}
 		
 	function truncate() {
-		$this->db->truncate('job_shift_timesheets'); 
+		$this->db->where('status', 0);
+		
+		#$this->db->truncate('job_shift_timesheets'); 
 	}
 	
 }

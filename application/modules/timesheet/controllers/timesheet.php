@@ -68,14 +68,15 @@ class Timesheet extends MX_Controller {
 		$total_mins = 0;
 		$total_amount_staff = 0;
 		$total_amount_client = 0;
-		for($i=$start_time; $i < $finish_time; $i = $i + 60) { # Every minute
+		for($i=$start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes
 			$day = date('N', $i); # Get day of the week (1: for monday, 7 for sunday)
 			$hour = date('G', $i); # Get hour of the day (0 - 23)
 			
-			# Amount paid calculated by minute
-			$total_amount_staff += $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour)/60;
-			$total_amount_client += $this->payrate_model->get_payrate_data($payrate_id, 1, $day, $hour)/60;
-			$total_mins++;
+			# Amount paid calculated by 15 minute
+			
+			$total_amount_staff += $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour)/4;
+			$total_amount_client += $this->payrate_model->get_payrate_data($payrate_id, 1, $day, $hour)/4;
+			$total_mins = $total_mins + 15;
 		}
 		
 		# Deduct the break
@@ -86,13 +87,13 @@ class Timesheet extends MX_Controller {
 			{
 				$length = $break->length;
 				$start_at = $break->start_at;
-				for($i=0; $i < $length; $i = $i + 60) { # Every minute
+				for($i=0; $i < $length; $i = $i + 60*15) { # Every 15 minute
 					$start_at = $start_at + $i;
 					$day = date('N', $i);
 					$hour = date('G', $i);
-					$total_amount_staff -= $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour)/60;
-					$total_amount_client -= $this->payrate_model->get_payrate_data($payrate_id, 1, $day, $hour)/60;
-					$total_mins--;
+					$total_amount_staff -= $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour)/4;
+					$total_amount_client -= $this->payrate_model->get_payrate_data($payrate_id, 1, $day, $hour)/4;
+					$total_mins = $total_mins - 15;
 				}
 			}
 		}
@@ -107,13 +108,15 @@ class Timesheet extends MX_Controller {
 	
 	
 	function truncate() {
-		$shifts = $this->timesheet_model->get_timesheets();
+		/*
+$shifts = $this->timesheet_model->get_timesheets();
 		foreach($shifts as $shift)
 		{
 			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_CONFIRMED));
 		}
 		$this->timesheet_model->truncate();
 		redirect('timesheet');
+*/
 	}
 	
 	function field_select_status($field_name, $field_value=null, $size=null)

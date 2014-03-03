@@ -3,8 +3,6 @@
 	<div class="box top-box">
 		<div class="pull-right">
 			<a class="btn btn-core" href="<?=base_url();?>timesheet/generate">Generate Timesheets</a>
-			&nbsp; 
-			<a class="btn btn-danger" href="<?=base_url();?>timesheet/truncate">Clean Timesheeets</a>
 		</div>
 		<h2>Time Sheets</h2>
 		<p>To process your pay we require you to submit your time sheets. As you complete your shifts time sheets will become availble below for you to submit.</p>
