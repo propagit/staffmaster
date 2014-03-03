@@ -29,8 +29,8 @@
 		</td>
 		<td class="center"><?=$payrun['total_staffs'];?></td>
 		<td class="center"><?=$payrun['total_timesheets'];?></td>
-		<td class="center"><?=$payrun['amount'];?></td>
-		<td class="center"><a><i class="fa fa-download"></i></a></td>
+		<td class="center">$<?=$payrun['amount'];?></td>
+		<td class="center"><a data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>payrun/ajax/export_payrun/<?=$payrun['payrun_id'];?>"><i class="fa fa-download"></i></a></td>
 		<td class="center"><a><i class="fa fa-plus-square-o"></i></a></td>
 	</tr>
 <? } ?>

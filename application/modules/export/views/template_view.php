@@ -1,7 +1,7 @@
 <div class="table-responsive">
-<form id="sort-fields-form">
-<input type="hidden" id="order_values" name="order" />
-<table class="table table-bordered table-hover table-middle sorted_table">
+<form id="sort-fields-form_<?=$export_id;?>">
+<input type="hidden" id="order_values_<?=$export_id;?>" name="order" />
+<table class="table table-bordered table-hover table-middle sorted_table_<?=$export_id;?>">
 	<thead>
 	<tr class="exclude">
 		<th class="center" width="40">Sort</th>
@@ -44,19 +44,19 @@ function remove_field(field_id) {
 	})
 }
 function init_sort() {
-	var group = $('.sorted_table').sortable({
-		group: 'sorted_table',
+	var group = $('.sorted_table_<?=$export_id;?>').sortable({
+		group: 'sorted_table_<?=$export_id;?>',
 		containerSelector: 'table',
 		itemPath: '> tbody',
 		itemSelector: 'tr.field-sortable',
 		placeholder: '<tr class="placeholder"/>',
 		onDrop: function (item, container, _super) {
-			$('#order_values').val(group.sortable("serialize").get().join("\n"));
+			$('#order_values_<?=$export_id;?>').val(group.sortable("serialize").get().join("\n"));
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>export/ajax/update_fields_order",
-				data: $('#sort-fields-form').serialize(),
-				success: function(html) {					
+				data: $('#sort-fields-form_<?=$export_id;?>').serialize(),
+				success: function(html) {		
 				}
 			})
 			_super(item, container)

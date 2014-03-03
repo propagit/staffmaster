@@ -7,6 +7,29 @@ class Payrun_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function get_payrun($payrun_id) {
+		$this->db->where('payrun_id', $payrun_id);
+		$query = $this->db->get('payruns');
+		return $query->first_row('array');
+	}
+	
+	function get_export_timesheets($payrun_id) {
+		$sql = "SELECT t.*, j.name as job_name,
+						u.first_name, u.last_name, 
+						s.user_id, s.external_staff_id, 
+						v.name as venue,
+						p.name as payrate
+					FROM job_shift_timesheets t
+					LEFT JOIN jobs j ON t.job_id = j.job_id
+					LEFT JOIN attribute_venues v ON t.venue_id = v.venue_id
+					LEFT JOIN attribute_payrates p ON t.payrate_id = p.payrate_id
+					LEFT JOIN user_staffs s ON t.staff_id = s.user_id
+					LEFT JOIN users u ON t.staff_id = u.user_id
+					WHERE t.payrun_id = '" . $payrun_id . "'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	function search_payruns($params) {
 		if (isset($params['type']) && $params['type'] != 0) {
 			$this->db->where('type', $params['type']);
@@ -20,6 +43,35 @@ class Payrun_model extends CI_Model {
 			$this->db->where('created_on <=', $date_to);
 		}
 		$query = $this->db->get('payruns');
+		return $query->result_array();
+	}
+	
+	function search_timesheets($params) {
+		$sql = "SELECT t.*, u.first_name, u.last_name, v.name FROM job_shift_timesheets t
+					LEFT JOIN users u ON t.staff_id = u.user_id
+					LEFT JOIN attribute_venues v ON t.venue_id = v.venue_id";
+		if (isset($params['type']) && $params['type'] != 0) {
+			$sql .= " LEFT JOIN user_staffs s ON t.staff_id = s.user_id";
+		}
+		$sql .= " WHERE t.status_payrun_staff = " . PAYRUN_PAID;
+		if (isset($params['venue']) && $params['venue'] != '') {
+			$sql .= " AND v.name LIKE '%" . $params['venue'] . "%'";
+		}
+		if (isset($params['type']) && $params['type'] != 0) {
+			$sql .= " AND s.f_employed = " . $params['type'];
+		}
+		if (isset($params['staff_name']) && $params['staff_name'] != '') {
+			$sql .= " AND CONCAT(u.first_name, ' ', u.last_name) LIKE '%" . $params['staff_name'] . "%'";
+		}
+		if (isset($params['date_from']) && $params['date_from'] != '') {
+			$date_from = date('Y-m-d', strtotime($params['date_from']));
+			$sql .= " AND job_date >= '" . $date_from . "'";
+		}
+		if (isset($params['date_to']) && $params['date_to'] != '') {
+			$date_to = date('Y-m-d', strtotime($params['date_to']));
+			$sql .= " AND job_date <= '" . $date_to . "'";
+		}
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	
@@ -119,7 +171,8 @@ class Payrun_model extends CI_Model {
 	function add_timesheet_to_payrun($timesheet_id, $payrun_id) {
 		$data = array(
 			'payrun_id' => $payrun_id,
-			'status_payrun_staff' => PAYRUN_PAID
+			'status_payrun_staff' => PAYRUN_PAID,
+			'staff_paid_on' => date('Y-m-d H:i:s')
 		);
 		$this->db->where('timesheet_id', $timesheet_id);
 		return $this->db->update('job_shift_timesheets', $data);

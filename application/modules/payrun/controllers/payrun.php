@@ -137,6 +137,16 @@ class Payrun extends MX_Controller {
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
 	
+	function field_select_export_templates($type, $field_name, $field_value=null) {
+		$object = 'payrun_' . (($type == STAFF_TFN) ? 'tfn' : 'abn');
+		$this->load->model('export/export_model');
+		$data['single'] = $this->export_model->get_templates($object, 'single');		
+		$data['batched'] = $this->export_model->get_templates($object, 'batched');
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);
+	}
+	
 	/**
 	*	@name: menu_dropdown
 	*	@desc: generate the dropdown menu of pay run

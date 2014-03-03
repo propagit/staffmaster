@@ -45,6 +45,7 @@ class Ajax extends MX_Controller {
 	function load_template() {
 		$export_id = $this->input->post('export_id');
 		$data['fields'] = $this->export_model->get_fields($export_id);
+		$data['export_id'] = $export_id;
 		$this->load->view('template_view', isset($data) ? $data : NULL);
 	}
 	

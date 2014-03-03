@@ -163,6 +163,65 @@ class Ajax extends MX_Controller {
 		$this->load->view('create/export_view', isset($data) ? $data : NULL);
 	}
 	
+	function export_payrun($payrun_id) {
+		$payrun = $this->payrun_model->get_payrun($payrun_id);
+		$data['payrun'] = $payrun;
+		$this->load->view('search_payrun/export_view', isset($data) ? $data : NULL);
+	}
+	function exporting() {
+		$payrun_id = $this->input->post('payrun_id');
+		$export_id = $this->input->post('export_id');
+		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		
+		$this->load->model('export/export_model');
+		$fields = $this->export_model->get_fields($export_id);
+		
+		ini_set('memory_limit', '128M');
+		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Staff Master");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Staff Master");
+		$objPHPExcel->getProperties()->setTitle("Pay Run");
+		$objPHPExcel->getProperties()->setSubject("Pay Run");
+		$objPHPExcel->getProperties()->setDescription("Pay Run Excel file, generated from Staff Master.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$i = 0;
+		$row = 1;
+		foreach($fields as $field) {
+			$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $field['title']);
+			$i++;
+		}
+		$i = 0;
+		foreach($timesheets as $timesheet) {
+			$row++;
+			foreach($fields as $field) {
+				$value = $field['value']; # Convert $field, $timesheet
+				$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
+				$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
+				$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
+				$value = str_replace('{job_date}', date('d/m/Y', $timesheet['start_time']), $value);
+				$value = str_replace('{start_time}', date('H:i', $timesheet['start_time']), $value);
+				$value = str_replace('{finish_time}', date('H:i', $timesheet['finish_time']), $value);
+				$value = str_replace('{hours}', $timesheet['total_minutes']/60, $value);
+				$value = str_replace('{venue}', $timesheet['venue'], $value);
+				$value = str_replace('{job_name}', $timesheet['job_name'], $value);
+				$value = str_replace('{pay_rate}', $timesheet['payrate'], $value);
+				$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+				$i++;
+			}
+			$i=0;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('payrun');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
+		$file_name = "payrun_" . $payrun_id . "_" . time() . ".csv";
+		$objWriter->save("./exports/" . $file_name);
+		echo $file_name;
+	}
+	
 	function create_payrun() {
 		$type = $this->input->post('type');
 		$amount = $this->payrun_model->get_total_amount($type);
@@ -185,5 +244,11 @@ class Ajax extends MX_Controller {
 		$params = $this->input->post();
 		$data['payruns'] = $this->payrun_model->search_payruns($params);
 		$this->load->view('search_payrun/results_list_view', isset($data) ? $data : NULL);
+	}
+	
+	function search_payslips() {
+		$params = $this->input->post();
+		$data['payslips'] = $this->payrun_model->search_timesheets($params);
+		$this->load->view('search_payslip/results_list_view', isset($data) ? $data : NULL);
 	}
 }

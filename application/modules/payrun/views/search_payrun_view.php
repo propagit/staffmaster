@@ -3,7 +3,7 @@
 <form class="form-horizontal" role="form" id="form_search_payruns">
 <div class="row">
 	<div class="form-group">
-		<label for="client_id" class="col-md-2 control-label">Type: </label>
+		<label for="type" class="col-md-2 control-label">Type: </label>
 		<div class="col-md-4">
 			<?=modules::run('payrun/field_select_type', 'type');?>
 		</div>
