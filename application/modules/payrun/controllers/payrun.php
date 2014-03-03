@@ -50,6 +50,21 @@ class Payrun extends MX_Controller {
 	}
 	
 	/**
+	*	@name: row_staff
+	*	@desc: load view of a row (tr) of staff
+	*	@access: public
+	*	@param: (int) $user_id
+	*	@return: (html) view of a row (tr) of a staff
+	*/
+	function row_staff($user_id) {
+		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
+		$data['staff_timesheets'] = $timesheets;
+		$data['staff'] = $this->staff_model->get_staff($user_id);
+		$data['expanded'] = $expanded;
+		return $this->load->view('source/staff_row_view', isset($data) ? $data : NULL, true);
+	}
+	
+	/**
 	*	@name: row_batched_staff
 	*	@desc: load the row (tr) of batched timesheets of a specified staff
 	*	@access: public
@@ -87,15 +102,7 @@ class Payrun extends MX_Controller {
 	function row_timesheet($timesheet_id, $user_id) {
 		$data['timesheet'] = $this->payrun_model->get_timesheet($timesheet_id);
 		$data['user_id'] = $user_id;
-		$payrun_timesheets = $this->session->userdata('payrun_timesheets');
-		$checked = false;
-		if (is_array($payrun_timesheets)) {
-			if (in_array($timesheet_id, $payrun_timesheets)) {
-				$checked = true;
-			}
-		}
-		$data['checked'] = $checked;
-		$this->load->view('timesheet_row', isset($data) ? $data : NULL);
+		$this->load->view('source/timesheet_row', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -114,6 +121,23 @@ class Payrun extends MX_Controller {
 	}
 	
 	/**
+	*	@name: field_select_type
+	*	@desc: custom field select type of payrun
+	*	@access: public
+	*	@param: - $field_name: string of field name
+	*			- $field_value (optional): selected value of field
+	*			- $size (optional): size 
+	*	@return: custom select input field
+	*/
+	function field_select_type($field_name, $field_value=null, $size=null) {
+		$array = array(
+			array('value' => STAFF_TFN, 'label' => 'TFN'),
+			array('value' => STAFF_ABN, 'label' => 'ABN')
+		);
+		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
+	}
+	
+	/**
 	*	@name: menu_dropdown
 	*	@desc: generate the dropdown menu of pay run
 	*	@access: public
@@ -128,7 +152,7 @@ class Payrun extends MX_Controller {
 		);
 		return modules::run('common/menu_dropdown', $data, $id, $label);
 	}
-	
+		
 	/**
 	*	@name: menu_dropdown_actions
 	*	@desc: generate the dropdown menu of actions

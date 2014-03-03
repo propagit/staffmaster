@@ -1,6 +1,6 @@
 <tr class="success timesheets_staff_<?=$user_id;?>" id="timesheet_<?=$timesheet['timesheet_id'];?>">
 	<td class="center">
-		<input type="checkbox" class="payrun_timesheet" name="payrun_timesheets[]" value="<?=$timesheet['timesheet_id'];?>" <?=($checked) ? 'checked' : '';?> />
+		<input type="checkbox" class="payrun_timesheet" name="payrun_timesheets[]" value="<?=$timesheet['timesheet_id'];?>" />
 	</td>
 	<td class="wp-date" width="70">
 		<span class="wk_day"><?=date('D', $timesheet['start_time']);?></span>
@@ -35,7 +35,7 @@
 		</div>
 	</td>
 	<td class="center">
-		<? if($timesheet['status'] == TIMESHEET_BATCHED) { ?>
+		<? if($timesheet['status'] == TIMESHEET_BATCHED && ($timesheet['status_payrun_staff'] == PAYRUN_PENDING)) { ?>
 		<a onclick="revert_payrun(<?=$timesheet['staff_id'];?>,<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a>
 		<? } ?>
 	</td>

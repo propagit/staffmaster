@@ -18,11 +18,7 @@
 	</tr>
 	</thead>
 	<tbody>
-	<? foreach($staffs as $staff) { ?>
-	<tr id="timesheets_staff_<?=$staff['user_id'];?>">
-		<?=modules::run('payrun/row_batched_staff', $staff['user_id']);?>
-	</tr>
-	<? } ?>
+	<? foreach($staffs as $staff) { echo modules::run('payrun/row_staff', $staff['user_id']); } ?>
 	</tbody>
 </table>
 </div>

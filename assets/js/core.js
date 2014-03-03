@@ -16,7 +16,6 @@ function loaded(obj,html=null)
 			$(obj).find('#wrapper_loading').remove();
 		}, 200);
 	}
-	
 }
 /* Disable element */
 function disabled(obj)

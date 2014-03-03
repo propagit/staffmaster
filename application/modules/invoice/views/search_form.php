@@ -68,7 +68,7 @@
 			<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>
 		</div>
 	</div>
-</div>	
+</div>
 </form>
 
 <div id="invoice-search-results">
