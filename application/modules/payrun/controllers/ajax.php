@@ -96,7 +96,14 @@ class Ajax extends MX_Controller {
 	function row_timesheet() {
 		echo modules::run('payrun/row_timesheet', $this->input->post('timesheet_id'), $this->input->post('user_id'));
 	}
-		
+	
+	/**
+	*	@name: process_staff_payruns
+	*	@desc: ajax function to add all timesheets of staff to payrun
+	*	@access: public
+	*	@param: (POST) user_id
+	*	@return: json encode of array of all timesheet id
+	*/
 	function process_staff_payruns() {
 		$user_id = $this->input->post('user_id');
 		$this->payrun_model->process_staff_payruns($user_id);
@@ -151,5 +158,32 @@ class Ajax extends MX_Controller {
 		$this->payrun_model->revert_payrun($timesheet_id);
 	}
 	
-
+	function load_export($type) {
+		$data['type'] = $type;
+		$this->load->view('create/export_view', isset($data) ? $data : NULL);
+	}
+	
+	function create_payrun() {
+		$type = $this->input->post('type');
+		$amount = $this->payrun_model->get_total_amount($type);
+		$total_staffs = $this->payrun_model->count_staff($type);
+		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
+		$data = array(
+			'type' => $type,
+			'amount' => $amount,
+			'total_staffs' => $total_staffs,
+			'total_timesheets' => count($timesheets)
+		);
+		$payrun_id = $this->payrun_model->create_payrun($data);
+		foreach($timesheets as $timesheet) {
+			$this->payrun_model->add_timesheet_to_payrun($timesheet['timesheet_id'], $payrun_id);
+		}
+		
+	}
+	
+	function search_payruns() {
+		$params = $this->input->post();
+		$data['payruns'] = $this->payrun_model->search_payruns($params);
+		$this->load->view('search_payrun/results_list_view', isset($data) ? $data : NULL);
+	}
 }

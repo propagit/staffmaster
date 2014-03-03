@@ -36,3 +36,8 @@
 	</div>
 </div>
 
+<script>
+$(function() {
+	$('#tab-payrun a[href="#search-payrun"]').tab('show');
+})
+</script>

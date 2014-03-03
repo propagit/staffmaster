@@ -2,6 +2,27 @@
 
 class Payrun_model extends CI_Model {
 	
+	function create_payrun($data) {
+		$this->db->insert('payruns', $data);
+		return $this->db->insert_id();
+	}
+	
+	function search_payruns($params) {
+		if (isset($params['type']) && $params['type'] != 0) {
+			$this->db->where('type', $params['type']);
+		}
+		if (isset($params['date_from']) && $params['date_from'] != '') {
+			$date_from = date('Y-m-d', strtotime($params['date_from']));
+			$this->db->where('created_on >=', $date_from);
+		}
+		if (isset($params['date_to']) && $params['date_to'] != '') {
+			$date_to = date('Y-m-d', strtotime($params['date_to']));
+			$this->db->where('created_on <=', $date_to);
+		}
+		$query = $this->db->get('payruns');
+		return $query->result_array();
+	}
+	
 	/**
 	*	@name: count_staff
 	*	@desc: count the number of staffs ready for pay run
@@ -9,7 +30,7 @@ class Payrun_model extends CI_Model {
 	*	@param: (int) $tfn (1: TFN, 2: ABN)
 	*	@return: (int) number of staffs
 	*/
-	function count_staff($tfn=0) {
+	function count_staff($tfn=STAFF_TFN) {
 		$sql = "SELECT u.* FROM `job_shift_timesheets` j
 					LEFT JOIN `user_staffs` u ON j.staff_id = u.user_id
 					WHERE j.status = " . TIMESHEET_BATCHED . " 
@@ -19,6 +40,16 @@ class Payrun_model extends CI_Model {
 		return $query->num_rows();
 	}
 	
+	function get_payrun_timesheets($tfn=STAFF_TFN) {
+		$sql = "SELECT j.timesheet_id FROM `job_shift_timesheets` j
+					LEFT JOIN `user_staffs` u ON j.staff_id = u.user_id
+					WHERE j.status = " . TIMESHEET_BATCHED . " 
+					AND j.status_payrun_staff = " . PAYRUN_READY . " 
+					AND u.f_employed = " . $tfn;
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	/**
 	*	@name: get_total_amount
 	*	@desc: get total amount ready for staff pay run
@@ -26,7 +57,7 @@ class Payrun_model extends CI_Model {
 	*	@param: (int) $tfn (1: TFN, 2: ABN)
 	*	@return: (decimal) total amount to pay
 	*/
-	function get_total_amount($tfn=0) {
+	function get_total_amount($tfn=STAFF_TFN) {
 		$sql = "SELECT sum(j.total_amount_staff) as `total` FROM `job_shift_timesheets` j
 					LEFT JOIN `user_staffs` u ON j.staff_id = u.user_id
 					WHERE j.status = " . TIMESHEET_BATCHED . " 
@@ -51,7 +82,8 @@ class Payrun_model extends CI_Model {
 		$sql = "SELECT u.* FROM `job_shift_timesheets` j
 					LEFT JOIN `users` u ON j.staff_id = u.user_id
 					LEFT JOIN `user_staffs` s ON j.staff_id = s.user_id
-					WHERE j.status = " . TIMESHEET_BATCHED;
+					WHERE j.status = " . TIMESHEET_BATCHED . "
+					AND j.status_payrun_staff <= " . PAYRUN_READY;
 		
 		$prf_state = $this->session->userdata('prf_state');
 		if ($prf_state) {
@@ -65,7 +97,6 @@ class Payrun_model extends CI_Model {
 		if ($prf_status != "") {
 			$sql .= " AND j.status_payrun_staff = '" . $prf_status . "'";
 		}
-			
 		$sql .= " GROUP BY j.staff_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -85,6 +116,15 @@ class Payrun_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function add_timesheet_to_payrun($timesheet_id, $payrun_id) {
+		$data = array(
+			'payrun_id' => $payrun_id,
+			'status_payrun_staff' => PAYRUN_PAID
+		);
+		$this->db->where('timesheet_id', $timesheet_id);
+		return $this->db->update('job_shift_timesheets', $data);
+	}
+	
 	/**
 	*	@name: get_staff_timesheets
 	*	@desc: get all timesheets by a staff
@@ -92,10 +132,10 @@ class Payrun_model extends CI_Model {
 	*	@param: (int) $user_id
 	*	@return: (array) of timesheet objects
 	*/
-	function get_staff_timesheets($user_id)
-	{
+	function get_staff_timesheets($user_id) {
 		$this->db->where('staff_id', $user_id);
 		$this->db->where('status', TIMESHEET_BATCHED);
+		$this->db->where('status_payrun_staff <= ', PAYRUN_READY);
 		
 		$prf_status = $this->session->userdata('prf_status');
 		if ($prf_status != "") {
@@ -113,8 +153,7 @@ class Payrun_model extends CI_Model {
 	*	@param: (int) $staff_id
 	*	@return: (boolean)
 	*/
-	function process_staff_payruns($staff_id) 
-	{
+	function process_staff_payruns($staff_id) {
 		$this->db->where('staff_id', $staff_id);
 		return $this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_READY));
 	}
