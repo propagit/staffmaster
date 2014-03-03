@@ -695,4 +695,68 @@ class Ajax extends MX_Controller {
 		$new_status = $this->input->post('new_multi_status',true);
 		return $this->user_model->update_status_multi_users(implode(',',$user_ids),$new_status);
 	}
+	/**
+	*	@name: get_contact_multi_staff_modal
+	*	@desc: Open contact staff modal window
+	*	@access: public
+	*	@param: (via POST) user id and new stats
+	*	
+	*/
+	
+	function get_contact_multi_staff_modal()
+	{
+		$user_ids = $this->input->post('user_staff_selected_user_id',true);
+		if($user_ids){
+			$this->session->set_userdata('selected_staff_user_id',$user_ids);	
+			$data['total'] = count($user_ids);
+		}
+		$this->load->view('contact_staff_modal', isset($data) ? $data : NULL);
+	}
+	
+	function send_contact_staff_sample_email()
+	{
+		$this->load->model('setting/setting_model');
+		$company = $this->setting_model->get_profile();	
+		$email_body = $this->input->post('email_body',true);
+		$contact_staff_subject = $this->input->post('contact_staff_subject',true);
+		$email_to = $this->input->post('sample_email_to',true);
+
+		if($email_to){
+			$email_data = array(
+						'to' => $email_to,
+						'from' => $company['email_c_email'],
+						'from_text' => 'Admin @ '.$company['email_c_name'],
+						'subject' => $contact_staff_subject,
+						'message' => $email_body
+					);
+			modules::run('common/send_email_localhost',$email_data);
+		}
+		echo 'success';
+	}
+	
+	function contact_multi_staff()
+	{
+		$this->load->model('setting/setting_model');
+		$company = $this->setting_model->get_profile();	
+		$email_body = $this->input->post('email_body',true);
+		$contact_staff_subject = $this->input->post('contact_staff_subject',true);
+		$staff_user_ids = $this->session->userdata('selected_staff_user_id');
+		if($staff_user_ids){
+			foreach($staff_user_ids as $id){
+				$email = $this->user_model->get_user_email_from_user_id($id);
+				if($email){
+					$email_data = array(
+								'to' => $email,
+								'from' => $company['email_c_email'],
+								'from_text' => 'Admin @ '.$company['email_c_name'],
+								'subject' => $contact_staff_subject,
+								'message' => $email_body
+							);
+					modules::run('common/send_email_localhost',$email_data);
+				}
+			}
+		}
+		$this->session->set_userdata('selected_staff_user_id',false);
+		echo 'success';
+	}
 }

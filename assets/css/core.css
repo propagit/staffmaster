@@ -159,6 +159,9 @@ ol.example li.placeholder:before {
 .remove-left-gutter{
 	padding-left:0;	
 }
+.remove-right-gutter{
+	padding-right:0;	
+}
 #staff-edit-page-avatar, 
 #staff-edit-page-avatar .profile_photo{
 	display:inline-block;

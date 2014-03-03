@@ -83,6 +83,21 @@ class User_model extends CI_Model {
 		$sql = "UPDATE users SET status = ".$new_status." WHERE user_id IN (".$user_ids.")";
 		return $this->db->query($sql);
 	}
+	/**
+	*	@name: get_user_email_from_user_id
+	*	@desc: Get user email address from user id
+	*	@access: public
+	*	@param: (int) user id
+	*/
+	function get_user_email_from_user_id($user_id)
+	{
+		$sql = "SELECT email_address from users WHERE user_id = ".$user_id;
+		$user = $this->db->query($sql)->row();
+		if($user){
+			return $user->email_address;	
+		}
+		return false;
+	}
 	
 	
 }

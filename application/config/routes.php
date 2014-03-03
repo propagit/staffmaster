@@ -63,11 +63,11 @@ $route['logout'] = 'auth/logout_user';
 //$route['staff/(:any)'] = 'dispatcher/user_dispatcher/staff/$1';
 
 $route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export)'] = 'dispatcher/user_dispatcher/$1';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)'] = 'dispatcher/user_dispatcher/$1';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
 
 
 $route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
