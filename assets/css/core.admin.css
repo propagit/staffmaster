@@ -245,7 +245,36 @@ a.default {
 	margin-bottom:20px!important;;
 	font-weight:900!important;
 }
+/* style for email template */
+#email-template .control-label{
+	margin-left:0px!important;
+	padding-left:0px!important;
+	line-height:30px;
+}
 
+#email-template .last-right{
+	padding-right:0px!important;
+}
+
+#email-template .white-bg{
+	background:#FFF;
+}
+#email-template .desc-item{
+	float:none;
+}
+#email-template .first-item{
+	float:left;
+	width:200px;
+}
+#email-template .second-item{
+	float:left;
+}
+#email-template .clear{
+	clear:both;
+}
+#email-template .title-item{
+	padding-top:20px;
+}
 
 /* Styles fdr search staff profile photo */
 .staff_search_profile{

@@ -10,14 +10,26 @@
             		<table>
                        <tr>
                         <td class="padding-top-15">
-                            <a href="#" class="inv_company_name" data-type="text"  data-pk="1" data-title="Company Name">Company Name</a><br>
-                            ABN: <a href="#" class="inv_company_abn" data-type="text"  data-pk="1" data-title="ABN">123 456 789</a><br>
+                            <a href="#" class="inv_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Company Name">
+                            	<?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?>
+                            </a><br>
+                            ABN: <a href="#" class="inv_company_abn" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="ABN">								
+                                <?=($invoice['profile_abn'] != '') ? $invoice['profile_abn'] : $company_profile['abn_acn'];?>
+                            </a><br>
                             <br>
                             
                             <b>
-                            <?=$client['company_name'];?><br>
-                            <?=$client['address'];?><br>
-                            <?=$client['suburb'];?> <?=$client['state'];?> <?=$client['postcode'];?>
+                            <a href="#" class="inv_client_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
+								<?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?>
+                            </a><br>
+                            
+                            <a href="#" class="inv_client_address" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Address">
+								<?=($invoice['client_address'] != '') ? $invoice['client_address'] : $client['address'];?>
+                            </a><br>
+                            
+                            <a href="#" class="inv_client_suburb" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Suburb"><?=($invoice['client_suburb'] != '') ? $invoice['client_suburb'] : $client['suburb'];?></a> 
+                            <a href="#" class="inv_client_state" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client State"><?=($invoice['client_state'] != '') ? $invoice['client_state'] : $client['state'];?></a> 
+                            <a href="#" class="inv_client_postcode" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Postcode"><?=($invoice['client_postcode'] != '') ? $invoice['client_postcode'] : $client['postcode'];?></a>
                             </b>
                             <br>
                             <br>
@@ -29,16 +41,25 @@
                 <td width="5%"></td>
                 <td width="45%">
                 	<b>Bill Enquiries</b><br />
-                	<?=$client['company_name'];?><br />
+                	<a href="#" class="inv_client_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
+						<?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?>
+                    </a>
+					<br />
                 	<table>
                         <tr>
-                            <td>Tel:</td><td width="20"></td> <td> <?=$client['phone'];?></td>
+                            <td>Tel:</td><td width="20"></td> <td> 
+                            	<a href="#" class="inv_client_phone" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Phone"><?=($invoice['client_phone'] != '') ? $invoice['client_phone'] : $client['phone'];?></a> 							
+							</td>
                         </tr>
                         <tr>
-                            <td>Email:</td><td width="20"></td> <td><?=$client['email_address'];?></td>
+                            <td>Email:</td><td width="20"></td> <td>
+								<a href="#" class="inv_client_email_address" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Email Address">
+								<?=($invoice['client_email_address'] != '') ? $invoice['client_email_address'] : $client['email_address'];?></a> 															
+                            </td>
                         </tr>
                         <tr>
-                            <td>Invoice Number:</td><td width="20"></td> <td>smFRE-001</td>
+                            <td>Invoice Number:</td><td width="20"></td> 
+                            <td><a href="#" class="inv_number" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Number"><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></a></td>
                         </tr>
                     </table>
                 </td>
@@ -87,7 +108,7 @@
             		<input type="text" class="form-control" name="title" placeholder="Enter item title" />
             	</td>
             	<td align="right">
-	            	<? //=modules::run('common/field_select_gst', 'tax');?>
+	            	<?=modules::run('common/field_select_gst', 'tax');?>
             	</td>
             	<td>
             		<div class="input-group">
@@ -111,7 +132,9 @@
     	</div>
         
         <b>Terms & Conditions of Payment</b><br />
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu tincidunt dui. Maecenas gravida euismod hendrerit. Nullam porta odio in neque suscipit, at fermentum lorem interdum. Mauris nec odio tempus, molestie mauris a, posuere urna. Donec augue nisi, tincidunt quis justo non, ultricies malesuada risus. Vivamus imperdiet purus eros, ut blandit felis ultricies eu. Nullam nec nulla erat. Sed vulputate quis quam eu bibendum. Sed sed ultricies ante. Integer id faucibus mauris.
+        
+		<?=(isset($company_profile['term_and_conditions'])) ? $company_profile['term_and_conditions'] : '' ?>
+        
         
         <br>
         <hr />
@@ -122,20 +145,20 @@
             <tr>
                 <td width="50%"><b>Direct Deposit</b></td>
                 <td width="10%"></td>
-                <td><b>Fresh Events + People Pty Ltd</b></td>
+                <td><b><?=(isset($company_profile['company_name'])) ? $company_profile['company_name'] : '' ?></b></td>
             </tr>
             <b>
             <tr valign="top">
                 <td>
                     <table>
                         <tr valign="top">
-                            <td>Account Name:</td><td width="20"></td> <td> Fresh Events</td>
+                            <td>Account Name:</td><td width="20"></td> <td> <?=(isset($company_profile['bank_account_name'])) ? $company_profile['bank_account_name'] : '' ?></td>
                         </tr>
                         <tr>
-                            <td>BSB:</td><td width="20"></td> <td> 034722</td>
+                            <td>BSB:</td><td width="20"></td> <td> <?=(isset($company_profile['bank_bsb'])) ? $company_profile['bank_bsb'] : '' ?></td>
                         </tr>
                         <tr>
-                            <td>Account:</td><td width="20"></td> <td>209321</td>
+                            <td>Account:</td><td width="20"></td> <td><?=(isset($company_profile['bank_account_no'])) ? $company_profile['bank_account_no'] : '' ?></td>
                         </tr>
                     </table>
                 </td>
@@ -145,15 +168,15 @@
                         <tr valign="top">
                             <td>
                             	Head Office:<br />
-	                            31 Jeays Street<br />
-	                            Bowen Hills QLD<br />
-	                            Australia 4006
+	                            <?=(isset($company_profile['address'])) ? $company_profile['address'] : '' ?><br />
+	                            <?=(isset($company_profile['suburb'])) ? $company_profile['suburb'] : '' ?><?=(isset($company_profile['state'])) ? $company_profile['state'] : '' ?> <br />
+	                            <?=(isset($company_profile['country'])) ? $company_profile['country'] : '' ?> <?=(isset($company_profile['postcode'])) ? $company_profile['postcode'] : '' ?>
                             </td> 
                             <td width="20"></td> 
                             <td> 
-                            	Telephone: (07) 3852 2211<br />
-	                            Email: admin@freshevents.net.au<br />
-	                            Website: wwww.freshevents.net.au
+                            	Telephone: <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?><br />
+	                            Email: <?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?><br />
+	                            Website: <?=(isset($company_profile['website_account'])) ? $company_profile['website_account'] : '' ?>
                             </td>
                         </tr>
                     </table>
@@ -166,7 +189,7 @@
                     <table width="100%">
                         <tr>
                             <td valign="top"><img src="<?=base_url();?>assets/img/cc.png"></td>
-                            <td>Call (07) 3852 2211 to pay by Credit Card. An Additional (1.5%) charge will be applied</td>
+                            <td>Call <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?> to pay by Credit Card. An Additional (1.5%) charge will be applied</td>
                         </tr>
                     </table>
             	</td>
@@ -200,13 +223,16 @@ $(function(){
 	
 
 	
-	$('.inv_company_name').editable();
-	$('.inv_company_abn').editable();
+	$('.inv_company_name').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_company_name',		
+	});
+	
+	$('.inv_company_abn').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_company_abn',		
+	});
 	
 	$('.inv_title').editable({
-		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_title',
-		
-		
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_title',		
 	});
 	
 	$('.inv_company_issue_date').editable({
@@ -219,7 +245,37 @@ $(function(){
 		  
 	});
 	
+	$('.inv_number').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_number',		
+	});
 	
+	$('.inv_client_company_name').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_company_name',		
+	});
+	
+	$('.inv_client_address').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_address',		
+	});
+	
+	$('.inv_client_suburb').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_suburb',		
+	});
+	
+	$('.inv_client_state').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_state',		
+	});
+	
+	$('.inv_client_postcode').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_postcode',		
+	});
+	
+	$('.inv_client_phone').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_phone',		
+	});
+	
+	$('.inv_client_email_address').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_email_address',		
+	});
 })
 function generate_invoice() {
 	window.location = '<?=base_url();?>invoice/generate/<?=$invoice['invoice_id'];?>';

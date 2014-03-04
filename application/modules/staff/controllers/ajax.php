@@ -729,7 +729,7 @@ class Ajax extends MX_Controller {
 						'subject' => $contact_staff_subject,
 						'message' => $email_body
 					);
-			modules::run('common/send_email_localhost',$email_data);
+			modules::run('email/send_email_localhost',$email_data);
 		}
 		echo 'success';
 	}
@@ -752,7 +752,7 @@ class Ajax extends MX_Controller {
 								'subject' => $contact_staff_subject,
 								'message' => $email_body
 							);
-					modules::run('common/send_email_localhost',$email_data);
+					modules::run('email/send_email_localhost',$email_data);
 				}
 			}
 		}

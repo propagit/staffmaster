@@ -70,12 +70,15 @@ $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatc
 $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 
 $route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)'] = 'dispatcher/user_dispatcher/$1';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+
 #$route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
+
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)'] = 'dispatcher/user_dispatcher/$1';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
+$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+
 
 
 $route['attribute/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1';

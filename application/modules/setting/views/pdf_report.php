@@ -26,7 +26,7 @@
                      </table>                    
                 </td>
                 <td>&nbsp;</td>
-                <td class="padding-left-15" valign="top">           
+                <td valign="top">           
                     <table>
                         <tr>
                             <td class="padding-top-15">Company Name</td> 

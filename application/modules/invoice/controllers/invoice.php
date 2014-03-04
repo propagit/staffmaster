@@ -141,6 +141,7 @@ class Invoice extends MX_Controller {
 		}
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
+		$data['company_profile'] = modules::run('common/company_profile');
 		if ($invoice['breakdown']) {
 			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
 		}
@@ -185,7 +186,9 @@ class Invoice extends MX_Controller {
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+		$data['company_profile'] = modules::run('common/company_profile');
 		$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true); 
+
 		
 				
 		$this->load->library('pdf');
@@ -210,6 +213,7 @@ class Invoice extends MX_Controller {
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+		$data['company_profile'] = modules::run('common/company_profile');
 		$this->load->view('create/generated_view', isset($data) ? $data : NULL); 
 	}
 	
