@@ -29,8 +29,26 @@ class Job_shift_model extends CI_Model {
 				FROM `job_shifts` js
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id
-					LEFT JOIN `jobs` j ON j.job_id = js.job_id
-				WHERE js.status > -2";
+					LEFT JOIN `jobs` j ON j.job_id = js.job_id";
+		if($data['search_shift_shift_status']){
+			switch($data['search_shift_shift_status']){
+				case 'active':
+					$sql .= " WHERE (js.status != -2 or js.status != -1)";	
+				break;
+				case 'unassigned':
+					$sql .= " WHERE js.status = 0";
+				break;
+				case 'unconfirmed':
+					$sql .= " WHERE js.status = 1";
+				break;
+				case 'confirmed':
+					$sql .= " WHERE js.status = 2";
+				break;	
+			}
+		}else{
+			$sql .= " WHERE js.status > -2";
+		}
+				
 		if ($data['date_from'])
 		{
 			$sql .= " AND js.job_date >= '" . date('Y-m-d', strtotime($data['date_from'])) . "'";
@@ -191,17 +209,43 @@ class Job_shift_model extends CI_Model {
 	*	
 	*/
 	
-	function get_shift_by_year_and_month($month,$year,$status = 0)
-	{		
-		$sql = "select job_date,count(*) as total_shifts from job_shifts where month(job_date) = '".$month."' and year(job_date) = '".$year."'";
-		if($status == 'all'){
-			$sql .= " and status != -2 and status != -1";	
-		}else{
-			$sql .= " and status = ".$status;	
+	function get_shift_by_year_and_month($month,$year,$status,$only_total = false)
+	{
+		$client_user_id = 0;
+		if($this->session->userdata('company_calendar_filter_client_id')){
+			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
 		}
-		$sql .= " group by job_date order by job_date asc";
-		$shifts = $this->db->query($sql)->result();
-		return $shifts;
+		$sql = "select s.job_date,count(s.shift_id) as total_shifts from job_shifts s";
+		if($client_user_id && $client_user_id != 'all'){
+			$sql .= " join jobs j on s.job_id = j.job_id and j.client_id = ".$client_user_id;	
+		}else{
+			$sql .= " where s.shift_id != ''";	
+		}
+				
+		$sql .= " and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
+		switch($status){
+			case 'active':
+				$sql .= " and (s.status != -2 or s.status != -1)";	
+			break;
+			case 'unassigned':
+				$sql .= " and s.status = 0";
+			break;
+			case 'unconfirmed':
+				$sql .= " and s.status = 1";
+			break;
+			case 'confirmed':
+				$sql .= " and s.status = 2";
+			break;	
+		}
+		if($only_total){
+			$shift = $this->db->query($sql)->row();
+			return $shift->total_shifts;
+		}else{
+			$sql .= " group by s.job_date order by s.job_date asc";
+			$shifts = $this->db->query($sql)->result();
+			return $shifts;
+		}
+		
 		
 	}
 }
