@@ -30,7 +30,7 @@ class Ajax_calendar extends MX_Controller {
 		$year = date('Y',strtotime($new_date));
 		$data['custom_date'] = $new_date;
 		$data['events_source'] = modules::run('job/calendar/get_company_calendar_data',$month,$year);
-		$this->load->view('calendar/company_calendar', isset($data) ? $data : NULL);
+		echo $this->load->view('calendar/company_calendar', isset($data) ? $data : NULL);
 		
 	}
 	/**
