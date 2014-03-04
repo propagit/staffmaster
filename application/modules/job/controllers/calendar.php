@@ -102,10 +102,10 @@ class Calendar extends MX_Controller {
 		}
 		if(!$out){
 			$out[] = array(
-				'active_job_campaigns' => '',
-				'unfilled_shifts' => '',
-				'unconfirmed_shift' => '',
-				'confirmed_shift' => '',
+				'active_job_campaigns' => '-',
+				'unfilled_shifts' => '-',
+				'unconfirmed_shift' => '-',
+				'confirmed_shift' => '-',
 				'url' => 'test',
 				'start' => strtotime($new_date).'000',
 				'end' => strtotime($new_date).'000'
