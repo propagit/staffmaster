@@ -29,12 +29,34 @@ class Calendar extends MX_Controller {
 			break;
 		}
 	}
-	
+	/**
+	*	@desc Loads company calendar which contains all the shift count for a month based on their status 
+	*
+	*   @name home
+	*	@access public
+	*	@param (post) date
+	*	@return loads view file which shows the shift data in a monthly calendar
+	*	
+	*/
 	function home()
 	{
+		$selected_client_user_id = 0;
+		if($this->session->userdata('company_calendar_filter_client_id')){
+			$selected_client_user_id = $this->session->userdata('company_calendar_filter_client_id');
+		}
+		$data['selected_client_user_id'] = $selected_client_user_id;
+		$data['clients'] = modules::run('client/get_clients');
 		$this->load->view('calendar/home', isset($data) ? $data : NULL);
 	}
-	
+	/**
+	*	@desc Formats company calendar data for each calendar day
+	*
+	*   @name get_company_calendar_data
+	*	@access public
+	*	@param (string / int) month , (string / int) year
+	*	@return json encoded array of events for the calendar
+	*	
+	*/
 	function get_company_calendar_data($month = '',$year = '')
 	{
 		if(!$month){
@@ -44,10 +66,10 @@ class Calendar extends MX_Controller {
 			$year = date('Y');	
 		}
 		$new_date = $month.' '.$year;
-		$active_jobs = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'all');
-		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,0);
-		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,1);
-		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,2);
+		$active_jobs = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'active');
+		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned');//status 0
+		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed');//status 1
+		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed');//status 2
 		
 		
 		//merge the records in one array
@@ -70,9 +92,9 @@ class Calendar extends MX_Controller {
 		foreach($merged_array as $key => $val){
 			$out[] = array(
 							'active_job_campaigns' => isset($val['active_jobs']['count']) ? $val['active_jobs']['count'] : 0,
-							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['active_jobs']['count'] : 0,
-							'unconfirmed_shift' => isset($val['unconfirmed']['count']) ? $val['active_jobs']['count'] : 0,
-							'confirmed_shift' => isset($val['confirmed']['count']) ? $val['active_jobs']['count'] : 0,
+							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : 0,
+							'unconfirmed_shift' => isset($val['unconfirmed']['count']) ? $val['unconfirmed']['count'] : 0,
+							'confirmed_shift' => isset($val['confirmed']['count']) ? $val['confirmed']['count'] : 0,
 							'url' => 'test',
 							'start' => strtotime($key).'000',
 							'end' => strtotime($key).'000'
@@ -92,5 +114,6 @@ class Calendar extends MX_Controller {
 		
 		return json_encode($out);
 	}
+	
 	
 }

@@ -88,6 +88,10 @@ class Job extends MX_Controller {
 		
 	function search_jobs()
 	{
+		$data['search_shift_filters'] = array('client_user_id' => '','client_client_id' => '','shift_date' => date('d-m-Y'),'shift_status' => '');
+		if($this->session->userdata('search_shift_filters')){
+			$data['search_shift_filters'] = $this->session->userdata('search_shift_filters');	
+		}
 		if ($this->input->post())
 		{
 			$data['jobs'] = $this->job_model->search_jobs($this->input->post('keyword'));	
@@ -177,6 +181,27 @@ class Job extends MX_Controller {
 				break;
 		}
 		return $class;
+	}
+	
+	/**
+	*	@name: field_select_shift_status
+	*	@desc: custom select shift status field
+	*	@access: public
+	*	@param: - $field_name
+	*			- $field_value (optional)
+	*			- $size (optional)
+	*	@return: custom select staff status field
+	*/
+	function field_select_shift_status($field_name, $field_value=null, $size=null)
+	{
+		$array = array(
+			array('value' => 'active', 'label' => 'All Active Shifts'),
+			array('value' => 'unassigned', 'label' => 'Un-Filled Shifts'),
+			array('value' => 'unconfirmed', 'label' => 'Un-Confirmed Shifts'),
+			array('value' => 'confirmed', 'label' => 'Confirmed Shifts')
+		);
+		
+		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
 	
 }

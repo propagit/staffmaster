@@ -4,10 +4,10 @@
 		<div class="events-list company-calendar-events" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
 			<% _.each(events, function(event) { %>
 				
-                <span class="display-block"><span class="badge badge-xs dark-grey-bg"><%= event.active_job_campaigns %></span></span>
-                <span class="badge badge-xs grey-bg"><%= event.unfilled_shifts %></span>
-                <span class="badge badge-xs danger"><%= event.unconfirmed_shift %></span>
-				<span class="badge badge-xs success"><%= event.confirmed_shift %></span><br />
+                <span onclick="redirect_search_shift('<%= data_day %>','active');" class="display-block"><span class="badge badge-xs dark-grey-bg"><%= event.active_job_campaigns %></span></span>
+                <span onclick="redirect_search_shift('<%= data_day %>','unassigned');" class="badge badge-xs grey-bg"><%= event.unfilled_shifts %></span>
+                <span onclick="redirect_search_shift('<%= data_day %>','unconfirmed');" class="badge badge-xs danger"><%= event.unconfirmed_shift %></span>
+				<span onclick="redirect_search_shift('<%= data_day %>','confirmed');" class="badge badge-xs success"><%= event.confirmed_shift %></span><br />
                 
 			<% }); %>
 		</div>
