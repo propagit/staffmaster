@@ -25,7 +25,7 @@ $menu = array(
 		array('path' => 'attribute/group', 'icon' => 'fa-sitemap', 'title' => 'Groups')
 	)),
 	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
-		array('path' => '#', 'icon' => 'fa-dashboard', 'title' => 'Accounts Dashboard'),
+		array('path' => 'report', 'icon' => 'fa-dashboard', 'title' => 'Accounts Reports'),
 		array('path' => 'timesheet', 'icon' => 'fa-thumbs-up', 'title' => 'Time Sheets'),
 		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
 		array('path' => 'payrun', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Run'),
@@ -106,15 +106,4 @@ $menu = array(
         </div>
     </div>
     <!-- end mob nv-->
-    
-    
-</div>    
-            
-        
-        
-        
-        
-        
-        
-
-
+</div>

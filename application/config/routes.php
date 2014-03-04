@@ -60,25 +60,28 @@ $route['login'] = 'auth/login_user';
 $route['logout'] = 'auth/logout_user';
 
 
-//$route['staff/(:any)'] = 'dispatcher/user_dispatcher/staff/$1';
+$modules = array('job', 'staff', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'setting', 'export', 'email_template', 'report');
+$path = implode('|', $modules);
+$route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
+$route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
+$route['(' . $path . ')/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
+$route['(' . $path . ')/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
+$route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+$route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 
 $route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)'] = 'dispatcher/user_dispatcher/$1';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
-$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)'] = 'dispatcher/user_dispatcher/$1';
+#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
+#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
+#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
+#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email_template)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
+#$route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 
 
-$route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 $route['attribute/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1';
 $route['attribute/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2';
 $route['attribute/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2/$3';
 
-$route['(privacy-policy|terms-conditions|term-of-use)'] = 'dispatcher/user_dispatcher/page/$1';
-
-
-$route['(dashboard|product|warranty|job|profile|config|resource)'] = 'dispatcher/user_dispatcher/$1';
 
 $route['admin'] = 'dispatcher/admin_dispatcher';
 
