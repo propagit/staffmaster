@@ -49,6 +49,7 @@ class Ajax extends MX_Controller {
 			'super_product_id' => $data['super_product_id'],
 			'super_fund_phone' => $data['super_fund_phone'],
 			'super_fund_website' => $data['super_fund_website'],
+			'term_and_conditions' => $data['term_and_conditions'],
 			'email_c_name' => $data['company_name'],
 			'email_c_address' => $data['address'],
 			'email_c_suburb' => $data['suburb'],

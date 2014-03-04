@@ -25,6 +25,15 @@
  * @link		http://codeigniter.com/user_guide/helpers/number_helper.html
  */
 
+if ( ! function_exists('money_format'))
+{
+	function money_format($format='%i', $number)
+	{
+		setlocale(LC_MONETARY, "en_US");
+		echo number_format($number, 2);
+	}
+}
+
 // ------------------------------------------------------------------------
 
 /**

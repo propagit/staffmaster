@@ -119,7 +119,17 @@
                 <div class="col-lg-4">
                     <input type="text" class="form-control" id="super_website" name="super_fund_website" value="<?=(isset($company['super_fund_website'])) ? $company['super_fund_website'] : '' ?>" />
                 </div>
-            </div>      
+            </div>   
+            
+            
+            <h4 class="company-profile-header">Terms & Conditions of Payment</h4> 
+            <div class="form-group">
+                <label for="terms_and_conditions" class="col-lg-2 control-label">Text </label>
+                <div class="col-lg-4">
+                    <textarea class="form-control" id="term_and_conditions" name="term_and_conditions"><?=(isset($company['term_and_conditions'])) ? $company['term_and_conditions'] : '' ?></textarea>
+                    
+                </div>
+            </div>     
     	</div>
     </div>
     <div class="row">

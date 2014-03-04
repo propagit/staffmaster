@@ -384,4 +384,164 @@ class Ajax extends MX_Controller {
 		$this->invoice_model->update_invoice($invoice_id, $data);	
 		
 	}
+	
+	/**
+	*	@name: edit_client_invoice_number
+	*	@desc: ajax function to edit template client invoice for Invoice Number
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_number() {
+		$invoice_id = $this->input->post('pk');
+		$invoice_number = $this->input->post('value');
+		$data = array('invoice_number' => $invoice_number);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_company_name
+	*	@desc: ajax function to edit template client invoice for profile company name
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_company_name() {
+		$invoice_id = $this->input->post('pk');
+		$profile_company_name = $this->input->post('value');
+		$data = array('profile_company_name' => $profile_company_name);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_company_abn
+	*	@desc: ajax function to edit template client invoice for profile company name
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_company_abn() {
+		$invoice_id = $this->input->post('pk');
+		$profile_abn = $this->input->post('value');
+		$data = array('profile_abn' => $profile_abn);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_client_company_name
+	*	@desc: ajax function to edit template client invoice for client company name
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_client_company_name() {
+		$invoice_id = $this->input->post('pk');
+		$client_company_name = $this->input->post('value');
+		$data = array('client_company_name' => $client_company_name);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_client_address
+	*	@desc: ajax function to edit template client invoice for client address
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_client_address() {
+		$invoice_id = $this->input->post('pk');
+		$client_address = $this->input->post('value');
+		$data = array('client_address' => $client_address);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_client_suburb
+	*	@desc: ajax function to edit template client invoice for client suburb
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_client_suburb() {
+		$invoice_id = $this->input->post('pk');
+		$client_suburb = $this->input->post('value');
+		$data = array('client_suburb' => $client_suburb);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_client_state
+	*	@desc: ajax function to edit template client invoice for client state
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_client_state() {
+		$invoice_id = $this->input->post('pk');
+		$client_state = $this->input->post('value');
+		$data = array('client_state' => $client_state);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_client_postcode
+	*	@desc: ajax function to edit template client invoice for client postcode
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_client_postcode() {
+		$invoice_id = $this->input->post('pk');
+		$client_postcode = $this->input->post('value');
+		$data = array('client_postcode' => $client_postcode);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_client_phone
+	*	@desc: ajax function to edit template client invoice for client phone
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_client_phone() {
+		$invoice_id = $this->input->post('pk');
+		$client_phone = $this->input->post('value');
+		$data = array('client_phone' => $client_phone);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_client_invoice_client_email_address
+	*	@desc: ajax function to edit template client invoice for client email address
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_client_email_address() {
+		$invoice_id = $this->input->post('pk');
+		$client_email_address = $this->input->post('value');
+		$data = array('client_email_address' => $client_email_address);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
 }

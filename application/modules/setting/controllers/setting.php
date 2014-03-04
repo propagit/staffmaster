@@ -23,6 +23,9 @@ class Setting extends MX_Controller {
 			case 'delete_sub_user':
 					$this->delete_sub_user($param);
 				break;
+			case 'create_pdf':
+					$this->create_pdf();
+				break;
 			default:
 					$this->company();
 			break;
@@ -105,7 +108,7 @@ class Setting extends MX_Controller {
 	{
 		//http://davidsimpson.me/2013/05/19/using-mpdf-with-codeigniter/
 		// As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
-		$filename="invoice1";
+		$filename="invoice15";
 		$pdfFilePath = "./uploads/pdf/$filename.pdf";
 		
 		$data['page_title'] = 'Hello world'; // pass data to the view
