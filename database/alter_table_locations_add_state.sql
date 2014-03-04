@@ -1,0 +1,1 @@
+ALTER TABLE  `attribute_locations` ADD  `state` VARCHAR( 255 ) NOT NULL ;
