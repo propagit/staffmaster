@@ -106,7 +106,7 @@ function search_clients() {
 	})
 }
 
-function delete_staff(user_id){
+function delete_client(user_id){
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>client/ajax/delete_client",

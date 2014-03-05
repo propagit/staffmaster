@@ -21,6 +21,16 @@ class Dashboard extends MX_Controller {
 		
 		$this->load->view('dashboard', isset($data) ? $data : NULL);
 	}
+	
+	function load_daily_statistics()
+	{
+		$this->load->view('daily_statistics', isset($data) ? $data : NULL);	
+	}
+	
+	function load_conversations()
+	{
+			
+	}
 
 		
 }

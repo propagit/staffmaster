@@ -17,7 +17,7 @@ class Staff_model extends CI_Model {
 	
 	function search_staffs($params = array(),$total=false)
 	{
-		$records_per_page = 5;
+		$records_per_page = 20;
 		$sql = "SELECT s.*, u.* 
 				FROM user_staffs s 
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status != 2";
@@ -99,7 +99,7 @@ class Staff_model extends CI_Model {
 			//if limit is not set it will default start the pagination
 			$sql .= " LIMIT " . $params['limit']; 
 		}else{
-			if(!$total){
+			if(!$total && isset($params['current_page'])){
 				$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
 			}
 		}
