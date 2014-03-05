@@ -1,5 +1,5 @@
 <? if (count($staffs) == 0) { ?>
-<div class="alert alert-warning">Cannot find staffs with such information</div>
+<div class="alert alert-warning">Cannot find staff to match this role</div>
 <? } else { ?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">

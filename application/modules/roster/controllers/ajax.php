@@ -30,7 +30,7 @@ class Ajax extends MX_Controller {
 		$rosters = $this->input->post('rosters');
 		foreach($rosters as $roster)
 		{
-			$this->roster_model->update_roster($roster, array('status' => 2));
+			$this->roster_model->update_roster($roster, array('status' => SHIFT_CONFIRMED));
 		}
 	}
 	function reject_rosters()
@@ -38,7 +38,7 @@ class Ajax extends MX_Controller {
 		$rosters = $this->input->post('rosters');
 		foreach($rosters as $roster)
 		{
-			$this->roster_model->update_roster($roster, array('status' => -2));
+			$this->roster_model->update_roster($roster, array('status' => SHIFT_REJECTED));
 		}
 	}
 	

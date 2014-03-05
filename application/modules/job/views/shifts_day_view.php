@@ -42,7 +42,7 @@
 		<th>Pay rate</th>
 		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
 		<th class="center" colspan="2">Find</th>
-		<th class="center" colspan="2"></th>
+		<th class="center" colspan="2">Settings</th>
 		<th class="center" colspan="2" width="30">Functions</th>
 	</tr>
 </thead>

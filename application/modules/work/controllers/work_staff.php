@@ -10,7 +10,6 @@ class Work_staff extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('work_model');
-		$this->output->enable_profiler();
 	}
 	
 	public function index()

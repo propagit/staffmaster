@@ -8,24 +8,28 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="inner-box">
-		<div class="table_action">		
-			<ul class="nav nav-tabs nav-action">
-				<li class="dropdown">
-					<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
-					<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
-						<li><a class="multi_apply">Apply Selected</a></li>
-					</ul>
-				</li>
-			</ul>
-			<ul class="nav nav-tabs">
-				<? foreach($months as $month) { ?>
-				<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_works(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
-				<? } ?>
-			</ul>
+    		<div id="nav_works">
+    			
+    		</div>
+			<div class="table_action">		
+				<ul class="nav nav-tabs tab-respond nav-action">
+					<li class="dropdown">
+						<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
+						<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
+							<li><a class="multi_apply">Apply Selected</a></li>
+						</ul>
+					</li>
+				</ul>
+				
+				<ul class="nav nav-tabs tab-respond">
+					<? foreach($months as $month) { ?>
+					<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_works(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
+					<? } ?>
+				</ul>
+			</div>
+			
+			<div id="list_works" class="clear"></div>
 		</div>
-		
-		<div id="list_works" class="clear"></div>
-	</div>
 	</div>
 </div>
 
