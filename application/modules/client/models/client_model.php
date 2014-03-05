@@ -33,7 +33,11 @@ class Client_model extends CI_Model {
 	}
 	
 	function all_clients() {
-		$query = $this->db->get('user_clients');
+		$sql = "SELECT c.*, u.*
+				FROM user_clients c
+				LEFT JOIN users u ON c.user_id = u.user_id WHERE u.status != 2";
+		//$query = $this->db->get('user_clients');
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	
