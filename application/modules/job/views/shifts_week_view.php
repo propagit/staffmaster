@@ -34,8 +34,9 @@
 		<th class="center" width="70">Date</th>
 		<th class="center">Shifts</th>
 		<th class="center">Unassigned</th>
-		<th class="center">Confirmed</th>
 		<th class="center">Unconfirmed</th>
+		<th class="center">Rejected</th>
+		<th class="center">Confirmed</th>
 		<th class="center" colspan="2">Functions</th>
 	</tr>
 </thead>
@@ -44,8 +45,9 @@
 $date_ts = $start_date + 24*60*60*$i; 
 $shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
 $unassign = modules::run('job/count_job_shifts', $job_id, $date_ts, '0');
-$unconfirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, 1);
-$confirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, 2);
+$unconfirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_UNCONFIRMED);
+$rejected = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_REJECTED);
+$confirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_CONFIRMED);
 $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 ?>
 	<tr>
@@ -69,13 +71,18 @@ $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 			<? } ?>
 		</td>
 		<td class="center">
-			<? if ($confirmed > 0) { ?>
-			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge success"><?=$confirmed;?></a> 
+			<? if ($unconfirmed > 0) { ?>
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge warning"><?=$unconfirmed;?></a>
 			<? } ?>
 		</td>
 		<td class="center">
-			<? if ($unconfirmed > 0) { ?>
-			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge danger"><?=$unconfirmed;?></a>
+			<? if ($rejected > 0) { ?>
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge danger"><?=$rejected;?></a>
+			<? } ?>
+		</td>
+		<td class="center">
+			<? if ($confirmed > 0) { ?>
+			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge success"><?=$confirmed;?></a> 
 			<? } ?>
 		</td>
 		<td class="center" width="40">

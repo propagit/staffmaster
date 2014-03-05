@@ -2,7 +2,7 @@
 	<div class="box top-box">
 		<div class="col-md-5">
 	        <h2><?= $client['company_name']; ?></h2>
-	        <h2><?= $job['name']; ?> </h2>
+	        <h3><?= $job['name']; ?> </h3>
 		</div>
 		<div class="col-md-7">
 			<div class="pull-right">
@@ -24,7 +24,10 @@
 				$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED); 
 				$unassigned = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNASSIGNED); 
 				$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED); 
-				$completed_percentage = number_format($completed / $shifts_count * 100, 2, '.', '');
+				$completed_percentage = 0;
+				if ($shifts_count > 0) {
+					$completed_percentage = number_format($completed / $shifts_count * 100, 2, '.', '');
+				}
 			?>
 			<div class="span2 pie-chart pull-right">
 				<div id="easy-pie-chart-1" data-percent="<?=$completed_percentage;?>">
