@@ -1,7 +1,7 @@
 <?
 $page = $this->uri->segment(1) ? $this->uri->segment(1) : 'dashboard';
 $menu = array(
-	array('path' => 'dashboard', 'icon' => 'dashboard', 'title' => 'Dashboard', 'sub' => array(
+	array('path' => '', 'icon' => 'dashboard', 'title' => 'Dashboard', 'sub' => array(
 	)),
 	array('path' => 'staff', 'icon' => 'user', 'title' => 'Your Profile', 'sub' => array(
 	)),

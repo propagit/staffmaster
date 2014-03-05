@@ -14,8 +14,7 @@
 <div class="container">
         <div class="form-signin login-row">
         	<div class="logo-wrap">
-        		<!--<img src="<?=base_url();?>assets/img/core/staffmaster-logo.jpg" title="Staff Master Logo" alt="staffmaster-logo.jpg" />-->
-                <?=modules::run('common/company_logo');?>
+                <?=modules::run('setting/company_logo');?>
         	</div> 
             <form class="login-form" method="post" action="" >
                 <input type="text" name="username"  class="form-control" placeholder="User Name">

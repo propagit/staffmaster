@@ -164,6 +164,7 @@ function load_s_choice()
 		$('input[name="s_fund_name"]').prop('readonly',false);
 		$('#own').prop('checked',true);
 		$('#employer_choice').hide();
+		$('input[name="s_fund_name"]').val('')
 	}
 	else
 	{		
