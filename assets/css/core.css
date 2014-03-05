@@ -538,6 +538,8 @@ ol.example li.placeholder:before {
 .messages{
 	list-style:none;
 	padding-left:0;	
+	max-height:800px;
+	overflow:auto;	
 }
 .messages li:first-child {
 	margin-top: 20px;
@@ -616,9 +618,18 @@ ol.example li.placeholder:before {
 }
 .info-row > .title {
 	float: left;
+	font-size: 18px;
+	font-weight: 700;
+	color: #3d3d3d;
 }
 .info-row > .time {
 	float: right;
+	padding-right:0;
+}
+.info-row > .time span{
+	padding-right:0;
+	text-align: right;
+	width: auto;	
 }
 .info-row:after {
 	content: "";
@@ -628,15 +639,63 @@ ol.example li.placeholder:before {
 .divider > span {
 	position: absolute;
 	left: 50%;
-	margin-left: -21px;
-	width: 36px;
-	padding: 0 3px;
-	height: 9px;
+	padding: 0;
+	height: 24px;
 	display: block;
-	top: -4px;
-	background-color:#fff;
+	background-color: #fdfdfd;
+	font-size: 48px;
+	color: #cccccc;
+	line-height: 0;
+	margin-top: -15px;
+	padding: 0 10px;
 }
->>>>>>> working
+.messages .comments-wrap{
+	margin-top:10px;
+}
+.messages .comments-wrap .msg-comments{
+	padding-right:10px;	
+	cursor:pointer;
+}
+.msg-badge{
+	font-size:14px !important;	
+	margin-right:10px;
+}
+.text-blue{
+	color:#5fcff2;
+}
+.reply-wrap{
+	margin-top:15px;	
+}
+.reply-avatar{
+	float: right;
+}
+.reply-row{
+	height:25px;
+}
+.survey-wrap{
+	
+}
+.survey-wrap .msg-frm-group{
+	min-height: 20px;
+	margin-bottom: 0;
+	margin-top: 10px;
+}
+.survey-wrap .msg-frm-group .msg-radio{
+	min-height: 10px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+.msg-avatar{
+	box-shadow: 3px 3px 3px #ccc;
+	-webkit-box-shadow: 3px 3px 3px #ccc;
+	-moz-box-shadow: 3px 3px 3px #ccc;
+	height: 72px;
+	width: 72px;
+	text-align: center;
+	line-height: 72px;
+	background-color: #fff;
+	border-radius: 4px;	
+}
 /* begin - responsive */
 
 /* *
@@ -1411,4 +1470,7 @@ ol.example li.placeholder:before {
 }
 .remove-right-padding{
 	padding-right:0;	
+}
+.add-top-margin{
+	margin-top:15px;	
 }
