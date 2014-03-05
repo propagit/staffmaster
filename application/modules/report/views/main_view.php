@@ -1,6 +1,3 @@
-<script src="<?=base_url();?>assets/highcharts/highcharts.js"></script>
-
-
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">

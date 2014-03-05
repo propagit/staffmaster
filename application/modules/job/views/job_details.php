@@ -1,10 +1,10 @@
 <div class="col-md-12">
 	<div class="box top-box">
-		<div class="col-md-4">			
-	        <h2><?= $job['name']; ?> </h2>
+		<div class="col-md-5">
 	        <h2><?= $client['company_name']; ?></h2>
+	        <h2><?= $job['name']; ?> </h2>
 		</div>
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<div class="pull-right">
 				<form role="form">
 						<div class="form-group">
@@ -14,42 +14,33 @@
 								<span class="input-group-addon"><i class="fa fa-search"></i></span>
 							</div>
 						</div>
-						<button type="submit" class="btn btn-core"><i class="fa fa-plus"></i> Create New Campaign</button>
+						<a href="<?=base_url();?>job/create" class="btn btn-core"><i class="fa fa-plus"></i> Create New Campaign</a>
 					</form>
 			</div>
-			<div class="span2 pie-chart">
-				<div id="easy-pie-chart-1" data-percent="58">
-					58%
+			<? 
+				$shifts_count = modules::run('job/count_job_shifts', $job['job_id']);
+				$completed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_FINISHED); 
+				$confirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_CONFIRMED); 
+				$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED); 
+				$unassigned = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNASSIGNED); 
+				$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED); 
+				$completed_percentage = number_format($completed / $shifts_count * 100, 2, '.', '');
+			?>
+			<div class="span2 pie-chart pull-right">
+				<div id="easy-pie-chart-1" data-percent="<?=$completed_percentage;?>">
+					<small><?=$completed;?>/<?=$shifts_count;?></small>
 				</div>
 				<div class="caption">
 					Shifts Completed
 				</div>
 			</div>
-			<div class="span2 pie-chart">
-				<div id="easy-pie-chart-2" data-percent="84">
-					84%
+			<div class="span2 pie-chart pull-right">
+				<div id="chart-incompleted-shifts">
 				</div>
 				<div class="caption">
-					Shifts Confirmed
+					<b><?=($shifts_count - $completed);?></b> Active Shifts
 				</div>
 			</div>
-			<div class="span2 pie-chart">
-				<div id="easy-pie-chart-3" data-percent="12">
-					12%
-				</div>
-				<div class="caption">
-					Shifts Unconfirmed
-				</div>
-			</div>
-			<div class="span2 pie-chart">
-				<div id="easy-pie-chart-4" data-percent="16">
-					16%
-				</div>
-				<div class="caption">
-					Shifts Not Filled
-				</div>
-			</div>
-			
 		</div>
 				
     </div>       
@@ -95,6 +86,48 @@
 </div><!-- /.modal -->
 <script>
 $(function(){
+	$('#chart-incompleted-shifts').highcharts({
+        chart: {
+        	backgroundColor: '#f6f6f6',
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 50
+        },
+        colors: ['#2ae421','#e42146','#f2850f','#ddd'],
+        tooltip: {
+            pointFormat: '<b>{point.percentage:.1f}%: {point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+            	dataLabels: {
+	            	enabled: false	
+            	},
+                shadow: false,
+                center: ['50%', '50%']
+            }
+        },
+        credits: {
+	    	enabled: false  
+        },
+        series: [{
+            type: 'pie',
+            name: 'a',
+            innerSize: '95%',
+            data: [
+                ['Confirmed',       <?=$confirmed;?>],
+                ['Rejected', <?=$rejected;?>],
+                ['Unconfirmed',    <?=$unconfirmed;?>],
+                ['Unassigned',     <?=$unassigned;?>]
+            ]
+        }]
+    });
+    
 	// Easy Pie Charts
 	var easyPieChartDefaults = {
 		animate: 2000,
@@ -106,15 +139,6 @@ $(function(){
 	}
 	$('#easy-pie-chart-1').easyPieChart($.extend({}, easyPieChartDefaults, {
 		barColor: '#0fb507'
-	}));
-	$('#easy-pie-chart-2').easyPieChart($.extend({}, easyPieChartDefaults, {
-		barColor: '#2ae421'
-	}));
-	$('#easy-pie-chart-3').easyPieChart($.extend({}, easyPieChartDefaults, {
-		barColor: '#e42146'
-	}));
-	$('#easy-pie-chart-4').easyPieChart($.extend({}, easyPieChartDefaults, {
-		barColor: '#f2850f'
 	}));
 			
 	load_job_shifts(<?=$job['job_id'];?>);
