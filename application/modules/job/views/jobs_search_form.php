@@ -36,9 +36,7 @@
 							<div class="col-md-4">
 								<?=modules::run('client/field_select', 'client_id');?>
 							</div>
-							<label for="client_id" class="col-md-2 control-label">Department</label>
-							<div class="col-md-4">
-							</div>
+							
 						</div>
 					</div>
 					<div class="row">

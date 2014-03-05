@@ -41,8 +41,8 @@
 		<th class="center">Break</th>
 		<th>Pay rate</th>
 		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
-		<th class="center" colspan="3">Find Staff</th>
-		
+		<th class="center" colspan="2">Find</th>
+		<th class="center" colspan="2"></th>
 		<th class="center" colspan="2" width="30">Functions</th>
 	</tr>
 </thead>
@@ -82,10 +82,14 @@
 			</a>
 		</td>
 
-		<td class="center" width="40"><a data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/search_staffs"><i class="fa fa-search"></i></a></td>
-		<td class="center" width="40"><a data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
-		<td class="center" width="40"><i class="fa fa-globe"></i></td>
-
+		<td class="center" width="40"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/search_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-search"></i></a></td>
+		<td class="center" width="40"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
+		<td class="center" width="40">
+			<a id="shift_supervisor_<?=$shift['shift_id'];?>" onclick="load_shift_supervisor(this)" class="shift_supervisor editable-click" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-star"></i></a>
+		</td>
+		<td class="center" width="40">
+			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><i class="fa fa-male"></i></a>
+		</td>
 		<td class="center" width="40">
 			<a class="shift_copy" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=$shift['shift_id'];?>"><i class="fa fa-copy"></i></a>
 		</td>
@@ -101,6 +105,7 @@
 
 <div id="wrapper_shift_break"></div>
 <div id="wrapper_shift_staff" class="hide"></div>
+<div id="wrapper_shift_supervisor" class="hide"></div>
 
 <script>
 $(function(){
@@ -114,6 +119,9 @@ $(function(){
 		$('#wrapper_js').find('.popover-break').hide();
 	});
 	$('.shift_role').on('shown', function(e, editable) {
+		$('#wrapper_js').find('.popover-break').hide();
+	});
+	$('.shift_uniform').on('shown', function(e, editable) {
 		$('#wrapper_js').find('.popover-break').hide();
 	});
 	$('.shift_payrate').on('shown', function(e, editable) {
@@ -147,6 +155,15 @@ $(function(){
 		name: 'role_id',
 		title: 'Select role',
 		source: [<?=modules::run('attribute/role/get_roles', 'data_source'); ?>]
+	});
+	$('.shift_uniform').editable({
+		url: '<?=base_url();?>job/ajax/update_shift_uniform',
+		name: 'uniform_id',
+		title: 'Select Uniform',
+		source: [<?=modules::run('attribute/uniform/get_uniforms', 'data_source');?>],
+		display: function(value, sourceData) {
+			return;
+		}
 	});
 	$('.shift_payrate').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_payrate',
@@ -209,6 +226,17 @@ $(function(){
 		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
 		content: function(){
 			return $('#wrapper_shift_staff').html();
+		}
+	})
+	$('.shift_supervisor').popover({
+		html: true,
+		placement: 'bottom',
+		trigger: 'manual',
+		selector: false,
+		title: 'Supervisor',
+		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+		content: function(){
+			return $('#wrapper_shift_supervisor').html();
 		}
 	})
 	
@@ -275,6 +303,24 @@ function load_shift_staff(obj)
 		success: function(html)
 		{
 			$('#wrapper_shift_staff').html(html);
+		}
+	}).done(function(){
+		$(obj).popover('show');
+	})
+	
+}
+function load_shift_supervisor(obj)
+{
+	$('#wrapper_shift_supervisor').html('');
+	$('#wrapper_js').find('.popover-break').hide();
+	var pk = $(obj).attr('data-pk');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax/load_shift_supervisor",
+		data: {pk: pk},
+		success: function(html)
+		{
+			$('#wrapper_shift_supervisor').html(html);
 		}
 	}).done(function(){
 		$(obj).popover('show');

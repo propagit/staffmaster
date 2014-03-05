@@ -324,9 +324,6 @@ a.default {
 	top:41px;
 	margin-bottom:41px;	
 }
-.select-location_parent_id{
-	margin-bottom:15px;	
-}
 .staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
 	background-color:transparent;	
 }
@@ -507,9 +504,6 @@ a.default {
 	font-size: 35px;
 	line-height: 45px;	
 }
-.select-location_parent_id{
-	margin-bottom:15px;	
-}
 .staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
 	background-color:transparent;	
 }
@@ -519,4 +513,17 @@ a.default {
 	background:#eee; 
 	border: 1px solid #ccc; 
 	border-bottom:0;
+}
+#shift-search-staffs .row {
+	padding: 0;
+}
+#shift-search-staffs .col-md-7 {
+	padding-left: 0;
+}
+#shift-search-staffs .col-md-5 {
+	padding-right: 0;
+}
+#shift-search-staff-results {
+	max-height: 400px;
+	overflow-y: auto;
 }

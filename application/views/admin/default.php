@@ -118,5 +118,7 @@
 <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
 </div>
+
+<footer></footer>
 </body>
 </html>

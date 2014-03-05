@@ -94,10 +94,10 @@
 		</div>
 	</div>
 	
-	<div class="form-group">
-		<label for="supervisor_id" class="col-lg-3 control-label">Supervisor</label>
+	<div class="form-group" id="f_supervisor">
+		<label for="supervisor" class="col-lg-3 control-label">Supervisor</label>
 		<div class="col-lg-6">
-			<input type="text" class="form-control" name="supervisor_id" id="supervisor_id" />
+			<?=modules::run('staff/field_input', 'supervisor');?>
 		</div>
 	</div>	
 	
