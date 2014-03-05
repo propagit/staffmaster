@@ -1079,6 +1079,14 @@ ol.example li.placeholder:before {
 	letter-spacing:-1px;
 	color:#3d3d3d;
 }
+.box h3 {
+	margin-top: 0;
+	font-size:30px;
+	font-weight:900;
+	font-family:'Lato', sans-serif;
+	letter-spacing:-1px;
+	color:#3d3d3d;
+}
 .box h2.lg, .box p.lg {
 	padding: 20px 0;
 }
