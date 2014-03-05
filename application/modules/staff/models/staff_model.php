@@ -15,6 +15,17 @@ class Staff_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function search_staff_by_name($keyword='') {
+		$sql = "SELECT * FROM users 
+				WHERE status = " . STAFF_ACTIVE . " 
+				AND  is_staff=1";
+		if ($keyword != '') {
+			$sql .= " AND CONCAT(first_name, ' ', last_name) LIKE '%" . $keyword . "%'";
+		}
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	function search_staffs($params = array(),$total=false)
 	{
 		$records_per_page = 5;
@@ -99,7 +110,7 @@ class Staff_model extends CI_Model {
 			//if limit is not set it will default start the pagination
 			$sql .= " LIMIT " . $params['limit']; 
 		}else{
-			if(!$total){
+			if(!$total && isset($params['current_page'])){
 				$sql .= " LIMIT ".(($params['current_page']-1)*$records_per_page)." ,".$records_per_page;
 			}
 		}
@@ -114,6 +125,14 @@ class Staff_model extends CI_Model {
 		$sql = "SELECT s.*, u.*
 				FROM user_staffs s
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE s.user_id = '" . $user_id . "'";
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
+	function get_staff_by_name($name) {
+		$sql = "SELECT * FROM users 
+				WHERE status = " . STAFF_ACTIVE . " 
+				AND is_staff = 1 AND CONCAT(first_name, ' ', last_name) = '" . $name . "'";
 		$query = $this->db->query($sql);
 		return $query->first_row('array');
 	}

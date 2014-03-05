@@ -753,6 +753,15 @@ class Staff extends MX_Controller {
 	
 	}
 	
+	function get_staff_by_name($name) {
+		return $this->staff_model->get_staff_by_name($name);
+	}
+	
+	function field_input($field_name, $field_value=null) {
+		$data['field_name'] = $field_name;
+		$data['staffs'] = $this->staff_model->search_staff_by_name();
+		$this->load->view('field_input', isset($data) ? $data : NULL);
+	}
 	
 	
 	

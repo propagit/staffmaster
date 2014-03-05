@@ -46,9 +46,21 @@
 		<td><?=$client['company_name'];?></td>
 		<td><?=$job['name'];?></td>
 		<td class="center"><?=$shifts_count;?></td>
-		<td class="center"><span class="badge"><?=$unassign;?></span></td>
-		<td class="center"><span class="badge danger"><?=$unconfirmed;?></span></td>
-		<td class="center"><span class="badge success"><?=$confirmed;?></span></td>
+		<td class="center">
+			<? if ($unassign > 0) { ?>
+			<span class="badge"><?=$unassign;?></span>
+			<? } ?>
+		</td>
+		<td class="center">
+			<? if ($unconfirmed > 0) { ?>
+			<span class="badge danger"><?=$unconfirmed;?></span>
+			<? } ?>
+		</td>
+		<td class="center">
+			<? if ($confirmed > 0) { ?>
+			<span class="badge success"><?=$confirmed;?></span>
+			<? } ?>
+		</td>
 		<td></td>
 		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="fa fa-eye"></i></a></td>
 		<td class="center">

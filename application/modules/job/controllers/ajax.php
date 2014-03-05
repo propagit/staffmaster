@@ -116,6 +116,17 @@ class Ajax extends MX_Controller {
 			$filter_data['venue_id'] = $data['venue'];
 		}
 		
+		if ($data['supervisor'])
+		{
+			$supervisor = modules::run('staff/get_staff_by_name', $data['supervisor']);
+			if (!$supervisor) {
+				echo json_encode(array('ok' => false, 'error_id' => 'supervisor'));
+				return;
+			} else {
+				$filter_data['supervisor_id'] = $supervisor['user_id'];
+			}
+		}
+		
 		$filter_data['role_id'] = $data['role_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
 		$filter_data['payrate_id'] = $data['payrate_id'];
@@ -354,6 +365,11 @@ class Ajax extends MX_Controller {
 		$this->job_shift_model->update_job_shift($shift_id, array('role_id' => $this->input->post('value')));	
 	}
 	
+	function update_shift_uniform() {
+		$shift_id = $this->input->post('pk');
+		$this->job_shift_model->update_job_shift($shift_id, array('uniform_id' => $this->input->post('value')));	
+	}
+	
 	function update_shift_payrate()
 	{
 		$shift_id = $this->input->post('pk');
@@ -407,6 +423,15 @@ class Ajax extends MX_Controller {
 		$data['staff'] = modules::run('staff/get_staff', $shift['staff_id']);
 		$data['shift'] = $shift;
 		$this->load->view('shift_staff', isset($data) ? $data : NULL);
+	}
+	
+	function load_shift_supervisor()
+	{
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$data['supervisor'] = modules::run('staff/get_staff', $shift['supervisor_id']);
+		$data['shift'] = $shift;
+		$this->load->view('shift_supervisor', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -468,6 +493,37 @@ class Ajax extends MX_Controller {
 			'shift_id' => $data['shift_id'], 
 			'value' => ($data['shift_staff']) ? $data['shift_staff'] : 'No Staff Assigned',
 			'class_name' => modules::run('job/status_to_class', $update_shift_data['status'])
+		));
+	}
+	
+	function update_shift_supervisor() {
+		$data = $this->input->post();
+		$update_shift_data = array();
+		if ($data['shift_staff'])
+		{
+			$staff = modules::run('staff/get_staff', $data['shift_staff_id']);
+			
+			if ($staff)
+			{
+				$update_shift_data = array(
+					'supervisor_id' => $data['shift_staff_id']
+				);
+			}
+			else {
+				echo json_encode(array('ok' => false, 'msg' => 'Staff not found'));
+				return;
+			}
+		}
+		else {
+			$update_shift_data = array(
+				'supervisor_id' => 0
+			);
+		}
+		
+		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
+		echo json_encode(array(
+			'ok' => true, 
+			'shift_id' => $data['shift_id']
 		));
 	}
 	
@@ -710,9 +766,10 @@ class Ajax extends MX_Controller {
 	
 	
 	
-	function search_staffs()
+	function search_staffs($shift_id)
 	{
-		$this->load->view('search_staffs', isset($data) ? $data : NULL);
+		$data['shift_id'] = $shift_id;
+		$this->load->view('shift/search_staff/modal_view', isset($data) ? $data : NULL);
 	}
 	
 	function applied_staffs($shift_id)

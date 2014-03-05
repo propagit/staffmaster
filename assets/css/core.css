@@ -17,6 +17,9 @@ a {
 	cursor: pointer;
 	color: #00bbf8;
 }
+footer {
+	min-height: 200px;
+}
 a:hover {
 	color: #0089b5;
 
@@ -1085,7 +1088,7 @@ ol.example li.placeholder:before {
 }
 .modal-dialog.modal-lg {
 	max-width: 100%;
-	min-width: 800px;
+	min-width: 1000px;
 }
 .modal-header{
 	border-bottom:none;

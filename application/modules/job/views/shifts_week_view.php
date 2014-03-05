@@ -64,17 +64,17 @@ $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 		</td>
 		<td class="center"><?=($shifts_count > 0) ? $shifts_count : '';?></td>
 		<td class="center">
-			<? if ($shifts_count > 0) { ?>
+			<? if ($unassign > 0) { ?>
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge"><?=$unassign;?></a>
 			<? } ?>
 		</td>
 		<td class="center">
-			<? if ($shifts_count > 0) { ?>
+			<? if ($confirmed > 0) { ?>
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge success"><?=$confirmed;?></a> 
 			<? } ?>
 		</td>
 		<td class="center">
-			<? if ($shifts_count > 0) { ?>
+			<? if ($unconfirmed > 0) { ?>
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge danger"><?=$unconfirmed;?></a>
 			<? } ?>
 		</td>

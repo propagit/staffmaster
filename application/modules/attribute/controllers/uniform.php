@@ -23,6 +23,24 @@ class Uniform extends MX_Controller {
 		}
 	}
 	
+	function get_uniforms($format=null)
+	{
+		$uniforms = $this->uniform_model->get_uniforms();
+		if (!$format) {
+			return $uniforms;
+		}
+		if ($format == 'data_source')
+		{
+			$data_source = array();
+			foreach($uniforms as $uniform)
+			{
+				$data_source[] = '{value:' . $uniform['uniform_id'] . ', text: \'' . $uniform['name'] . '\'}';
+			}
+			$data_source = implode(",", $data_source);
+			return $data_source;
+		}	
+	}
+	
 	function list_uniforms()
 	{
 		$sort_uniform = (bool) $this->session->userdata('sort_uniform');
