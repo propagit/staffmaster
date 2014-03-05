@@ -1,10 +1,4 @@
-<style>
-#template_email{
-	border:1px solid #dfdfdf;background:#fbfbfb; border-radius:3px; font-size:11px;
-}
-
-</style>
-<table id="template_email" width="100%" style="border:1px solid #dfdfdf;background:#fbfbfb; border-radius:3px; font-size:11px;padding:15px;">
+<table id="template_email" width="100%" >
     <tr>
     	<td class="inside-template">
             <table  style="background:<?=(isset($color) && $color !='') ? '#'.$color : '#00bbf8' ?>; color:<?=(isset($font_color) && $font_color !='') ? '#'.$font_color : '#fff' ?>;" width="100%">

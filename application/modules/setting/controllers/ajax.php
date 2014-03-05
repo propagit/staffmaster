@@ -317,7 +317,7 @@ class Ajax extends MX_Controller {
 		$this->load->library('email', $config);
 		$this->email->set_newline("\r\n");
 		$this->email->from('propagate.au@gmail.com'); // change it to yours
-		$this->email->to('rseptiane@gmail.com');// change it to yours
+		$this->email->to('daniel@propagate.com.au');// change it to yours
 		$this->email->subject('Testing Email from localhost');
 		$this->email->message($message);
 		if($this->email->send())

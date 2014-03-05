@@ -2,6 +2,9 @@
 .inside-template{
 	padding:15px;
 }
+#template_email{
+	border:1px solid #dfdfdf;background:#fbfbfb; border-radius:3px; font-size:11px;padding:15px;
+}
 </style>
 <div class="company-profile-detail-box">
 <h2>Your Email Signature</h2>
