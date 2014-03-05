@@ -87,7 +87,7 @@
                     <label class="col-md-2 control-label"><?=$elem->label;?></label>
                     <div class="col-md-4">
                         <select id="select-basic" name="custom_attrs_<?=$elem->name;?><?=($elem->multi_select == 'yes' ? '[]' : '');?>" class="form-control" <?=($elem->multi_select == 'yes' ? 'multiple="multiple"' : '');?>>
-                          <option value="0">Select One</option>
+                          <option value="0" selected="selected">Any</option>
 						  <?php
                             $attrs = json_decode($elem->attributes);
                             if($attrs){
