@@ -487,6 +487,51 @@ ol.example li.placeholder:before {
 	display:block;	
 }
 
+/* dashboard - activity log*/
+
+#wrapper-outer{
+	border-radius:8px;
+	border:1px solid #cccccc;
+	background:#fff;
+	padding:15px;
+}
+#activity_lists .row {
+	border: 1px solid rgb(221, 221, 221);
+	margin: 0;
+	margin-bottom: -1px;
+}
+#activity_lists .row div {
+	padding: 10px;
+}
+#activity_lists .wrap-list-activity {
+	margin-top: 7px;
+}
+#activity_lists .wrap-list-date {
+	color:#cfcfcf;
+	width: 70px;
+	text-align: center;
+}
+#wrap-list{
+	overflow-y:scroll;	
+	height:418px;
+}
+.activity-information{
+	color:#015da4;
+	font-weight:600;
+}
+.activity-warning{
+	color:#d60000;
+	font-weight:600;
+}
+.activity-confirmation{
+	color:#00c129;
+	font-weight:600;
+}
+.active-list{
+	background-color:#d4f1da;
+}
+
+
 /* begin - responsive */
 
 /* *

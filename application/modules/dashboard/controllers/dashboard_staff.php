@@ -16,6 +16,9 @@ class Dashboard_staff extends MX_Controller {
 	{
 		$this->load->view('staff/dashboard', isset($data) ? $data : NULL);
 	}
-
-		
+	
+	public function activity_log()
+	{
+		$this->load->view('staff/activity_log', isset($data) ? $data : NULL);
+	}
 }

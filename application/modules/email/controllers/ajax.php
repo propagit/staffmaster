@@ -20,7 +20,7 @@ class Ajax extends MX_Controller {
 	*	@return: (html) view of email template configuration based on tab
 	*/
 	function load_email_template($tab='roster_update') {		
-		$this->load->view('roster_update', isset($data) ? $data : NULL);
+		$this->load->view($tab, isset($data) ? $data : NULL);
 	}
 	
 	function description_merge_fields()

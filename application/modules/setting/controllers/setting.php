@@ -39,8 +39,7 @@ class Setting extends MX_Controller {
 	*/
 	function company()
 	{
-		$company = $this->setting_model->get_profile();		
-		//$data['states'] = $this->user_model->get_states();
+		$company = $this->setting_model->get_profile();				
 		$data['company'] = $company;
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
@@ -97,37 +96,7 @@ class Setting extends MX_Controller {
 		{
 			echo $company[$field_name];
 		}
-	}
-	/**
-	*	@name: create_pdf
-	*	@desc: function to create pdf for invoice - templating stage
-	*	@access: public	
-	*	@return: .pdf 
-	*/
-	function create_pdf()
-	{
-		//http://davidsimpson.me/2013/05/19/using-mpdf-with-codeigniter/
-		// As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
-		$filename="invoice15";
-		$pdfFilePath = "./uploads/pdf/$filename.pdf";
-		
-		$data['page_title'] = 'Hello world'; // pass data to the view
-		 
-		if (file_exists($pdfFilePath) == FALSE)
-		{
-			ini_set('memory_limit','32M'); // boost the memory limit if it's low 
-			$html = $this->load->view('pdf_report', $data, true); // render the view into HTML					
-			$this->load->library('pdf');
-			$pdf = $this->pdf->load(); 			
-			$stylesheet = file_get_contents('./assets/css/pdf.css');
-			$pdf->WriteHTML($stylesheet,1);
-			$pdf->WriteHTML($html,2);
-			$pdf->Output($pdfFilePath, 'F'); // save to file 
-		}
-		 
-		redirect("./uploads/pdf/$filename.pdf"); 
-	}
-	
+	}		
 	/**
 	*	@name: get_template_footer
 	*	@desc: Get Email Footer Template
@@ -155,4 +124,28 @@ class Setting extends MX_Controller {
 		$this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);	
 	}
 	
+	/**
+	*	@name: company_logo
+	*	@desc: ajax function to get company logo
+	*	@access: public
+	*	
+	*	
+	*/
+	function company_logo()
+	{
+		$data['company'] = $this->setting_model->get_profile();
+		$this->load->view('company_logo', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: company_profile
+	*	@desc: ajax function to get company logo
+	*	@access: public
+	*	
+	*	
+	*/
+	function company_profile()
+	{
+		return $this->setting_model->get_profile();		
+	}
 }

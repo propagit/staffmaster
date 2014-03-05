@@ -22,5 +22,8 @@ class Dashboard extends MX_Controller {
 		$this->load->view('dashboard', isset($data) ? $data : NULL);
 	}
 
-		
+	public function activity_log()
+	{
+		$this->load->view('activity_log', isset($data) ? $data : NULL);
+	}	
 }

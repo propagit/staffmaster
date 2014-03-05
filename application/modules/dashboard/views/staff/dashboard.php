@@ -14,10 +14,9 @@
 	</div>
 	
 	<div class="col-md-6">
-		<div class="box">
-		<h2>Activity Log</h2>
-		<p>Your activity log will inform you of information updates</p>
-		</div>
+		
+        <?=modules::run('dashboard/dashboard_staff/activity_log');?>
+		
 	</div>
 </div>
 

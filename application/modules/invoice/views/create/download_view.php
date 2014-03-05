@@ -144,7 +144,7 @@
 			} } ?>
             
         </table>
-        <? $height = 170 - ($item_line*30); if($height<0){$height=0;}?>
+        <? $height = 220 - ($item_line*30); if($height<0){$height=0;}?>
         <table >
         	<tr>
             	<td style="height:<?=$height?>px;">&nbsp;</td>
@@ -156,12 +156,12 @@
             	<td class="padding-top-20"><b>Terms & Conditions of Payment</b><br></td>
             </tr>
             <tr>
-            	<td><?=(isset($company_profile['term_and_conditions'])) ? $company_profile['term_and_conditions'] : '' ?></td>
+            	<td><span class="footer-invoice"><?=(isset($company_profile['term_and_conditions'])) ? $company_profile['term_and_conditions'] : '' ?></span></td>
             </tr>
         </table>
-        <br>
+        
         <div class="line"></div>
-        <table>
+        <table style="padding-bottom:0px; margin-bottom:0px;">
             <tr>
                 <td colspan="3"><h2 class="expense-break">How to Pay</h2></td>
             </tr>
@@ -175,13 +175,13 @@
                 <td>
                     <table>
                         <tr valign="top">
-                            <td>Account Name:</td><td width="20"></td> <td> <?=(isset($company_profile['bank_account_name'])) ? $company_profile['bank_account_name'] : '' ?></td>
+                            <td><span class="footer-invoice">Account Name:</span></td><td width="20"></td> <td> <span class="footer-invoice"><?=(isset($company_profile['bank_account_name'])) ? $company_profile['bank_account_name'] : '' ?></span></td>
                         </tr>
                         <tr>
-                            <td>BSB:</td><td width="20"></td> <td> <?=(isset($company_profile['bank_bsb'])) ? $company_profile['bank_bsb'] : '' ?></td>
+                            <td><span class="footer-invoice">BSB:</span></td><td width="20"></td> <td> <span class="footer-invoice"><?=(isset($company_profile['bank_bsb'])) ? $company_profile['bank_bsb'] : '' ?></span></td>
                         </tr>
                         <tr>
-                            <td>Account:</td><td width="20"></td> <td><?=(isset($company_profile['bank_account_no'])) ? $company_profile['bank_account_no'] : '' ?></td>
+                            <td><span class="footer-invoice">Account:</span></td><td width="20"></td> <td><span class="footer-invoice"><?=(isset($company_profile['bank_account_no'])) ? $company_profile['bank_account_no'] : '' ?></span></td>
                         </tr>
                     </table>
                 </td>
@@ -190,16 +190,16 @@
                 	<table>
                         <tr valign="top">
                             <td>
-                            	Head Office:<br />
-	                            <?=(isset($company_profile['address'])) ? $company_profile['address'] : '' ?><br />
-	                            <?=(isset($company_profile['suburb'])) ? $company_profile['suburb'] : '' ?><?=(isset($company_profile['state'])) ? $company_profile['state'] : '' ?><br />
-	                            <?=(isset($company_profile['country'])) ? $company_profile['country'] : '' ?> <?=(isset($company_profile['postcode'])) ? $company_profile['postcode'] : '' ?>
+                            	<span class="footer-invoice">Head Office:<br />
+	                            <span class="footer-invoice"><?=(isset($company_profile['address'])) ? $company_profile['address'] : '' ?></span><br />
+	                            <span class="footer-invoice"><?=(isset($company_profile['suburb'])) ? $company_profile['suburb'] : '' ?><?=(isset($company_profile['state'])) ? $company_profile['state'] : '' ?></span><br />
+	                            <span class="footer-invoice"><?=(isset($company_profile['country'])) ? $company_profile['country'] : '' ?> <?=(isset($company_profile['postcode'])) ? $company_profile['postcode'] : '' ?></span>
                             </td> 
                             <td width="20"></td> 
                             <td> 
-                            	Telephone: <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?><br />
-	                            Email: <?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?><br />
-	                            Website: <?=(isset($company_profile['website_account'])) ? $company_profile['website_account'] : '' ?>
+                            	<span class="footer-invoice">Telephone: <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?></span><br />
+	                            <span class="footer-invoice">Email: <?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?></span><br />
+	                            <span class="footer-invoice">Website: <?=(isset($company_profile['website_account'])) ? $company_profile['website_account'] : '' ?></span>
                             </td>
                         </tr>
                     </table>
@@ -207,12 +207,12 @@
             </tr>
             <tr>
             	<td colspan="3" style="padding-top:10px;">
-            	    <b>Credit Card</b>
+            	    <span class="footer-invoice"><b>Credit Card</span></b>
                     <br />      
                     <table width="100%">
                         <tr>
                             <td valign="top" class="padding-top-5 ccard"><img src="<?=base_url();?>assets/img/cc.png"></td>
-                            <td class="padding-top-5">Call <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?> to pay by Credit Card. <br>An Additional (1.5%) charge will be applied</td>
+                            <td class="padding-top-5"><span class="footer-invoice">Call <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?> to pay by Credit Card. <br>An Additional (1.5%) charge will be applied</span></td>
                         </tr>
                     </table>
             	</td>
