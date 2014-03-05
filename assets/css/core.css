@@ -819,6 +819,13 @@ ol.example li.placeholder:before {
 /* Custom styles for button */
 .btn-group.btn-nav {
 	margin-bottom: -1px;
+	margin-right: 5px;
+}
+.btn-group.btn-nav .btn {
+	padding: 8px 12px;
+}
+.btn-group.btn-nav ul.nav {
+	margin-top: -5px;
 }
 .btn-group.btn-nav .btn:first-child {
 	border-bottom-left-radius: 0;
@@ -1029,7 +1036,6 @@ ol.example li.placeholder:before {
 .top-box{ 
 	margin-top:45px;
 	overflow: hidden;
-	
 }
 .bottom-box{
 	padding:10px;
@@ -1079,6 +1085,9 @@ ol.example li.placeholder:before {
 	letter-spacing:-1px;
 	color:#3d3d3d;
 }
+.top-box h2 {
+	margin-top: 10px;
+}
 .box h3 {
 	margin-top: 0;
 	font-size:30px;
@@ -1094,7 +1103,6 @@ ol.example li.placeholder:before {
 	font-size:16px;
 	width:60%;
 	font-family:'Lato', sans-serif;
-	color:#3d3d3d;
 }
 .table_action {
 	padding: 0 30px;

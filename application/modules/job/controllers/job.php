@@ -168,7 +168,7 @@ class Job extends MX_Controller {
 		$class = '';
 		switch($status)
 		{
-			case SHIFT_UNCONFIRMED: $class = 'active';
+			case SHIFT_UNCONFIRMED: $class = 'warning';
 				break;
 			case SHIFT_CONFIRMED: $class = 'success';
 				break;
@@ -182,7 +182,7 @@ class Job extends MX_Controller {
 		}
 		return $class;
 	}
-	
+		
 	/**
 	*	@name: field_select_shift_status
 	*	@desc: custom select shift status field
@@ -204,4 +204,9 @@ class Job extends MX_Controller {
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
 	
+	function field_input($field_name, $field_value=null, $size=null) {
+		$data['field_name'] = $field_name;
+		$data['jobs'] = $this->job_model->all_jobs();
+		$this->load->view('field_input', isset($data) ? $data : NULL);
+	}
 }

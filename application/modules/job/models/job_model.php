@@ -15,6 +15,11 @@ class Job_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function all_jobs() {
+		$query = $this->db->get('jobs');
+		return $query->result_array();
+	}
+	
 	function search_jobs($data = array())
 	{
 		# Select the job id that has shifts in selected date range

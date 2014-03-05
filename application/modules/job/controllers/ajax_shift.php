@@ -34,4 +34,8 @@ class Ajax_shift extends MX_Controller {
 			'job_date' => $shift['job_date']
 		));
 	}
+	
+	function set_status_filter() {
+		$this->session->set_userdata('shift_status_filter', $this->input->post('value'));
+	}
 }

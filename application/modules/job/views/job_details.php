@@ -10,7 +10,7 @@
 						<div class="form-group">
 							<label for="exampleInputEmail1">Search Job Campaigns</label>
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="keywords..." />
+								<?=modules::run('job/field_input', 'job_name');?>
 								<span class="input-group-addon"><i class="fa fa-search"></i></span>
 							</div>
 						</div>

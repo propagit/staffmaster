@@ -108,6 +108,10 @@ class Job_shift_model extends CI_Model {
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id 
 				WHERE js.job_id = '" . $job_id . "'
 				AND js.status > -2";
+		$status = $this->session->userdata('shift_status_filter');
+		if ($status != '') {
+			$sql .= " AND js.status = " . $status;
+		}
 		if ($job_date && $job_date != 'all')
 		{
 			$sql .= " AND js.job_date = '" . $job_date . "'";

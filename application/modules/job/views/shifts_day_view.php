@@ -1,34 +1,46 @@
-<div class="table_action">
+<div id="nav_shifts">
+<?
+	# Action menu
+	$data = array(
+		array('value' => 'copy', 'label' => '<i class="fa fa-copy"></i> Copy Shifts'),
+		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Shifts')
+	);
+	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 	
-	<ul class="nav nav-tabs nav-action tab-respond">
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a class="multi_apply">Attach Resource</a></li>
-				<li><a class="multi_copy">Copy</a></li>
-				<li><a class="multi_delete">Delete</a></li>
-			</ul>
-		</li>
-	</ul>
-	
-	
-	
-	<ul class="nav nav-tabs tab-respond">
-		<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
-		<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
-		<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
-		<? foreach($job_dates as $date) { ?>
-		<li<?=($this->session->userdata('job_date') == $date['job_date']) ? ' class="active"' : '';?>>
-			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')">
-				<?=date('d', strtotime($date['job_date']));?>
-				<span class="month"><?=date('M', strtotime($date['job_date']));?></span>
-				(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']));?>)
-			</a>
-		</li>
-		<? } ?>
-	</ul>
+	# Filter menu
+	$data = array(
+		array('value' => '', 'label' => 'Any'),
+		array('value' => SHIFT_UNASSIGNED, 'label' => 'Unassigned'),
+		array('value' => SHIFT_UNCONFIRMED, 'label' => 'Unconfirmed'),
+		array('value' => SHIFT_CONFIRMED, 'label' => 'Confirmed'),
+		array('value' => SHIFT_REJECTED, 'label' => 'Rejected'),
+		array('value' => SHIFT_FINISHED, 'label' => 'Completed')
+	);
+	$filter = $this->session->userdata('shift_status_filter');
+	$label = 'Status: Any';
+	foreach($data as $e) {
+		if ($e['value'] == $filter) { $label = 'Status: ' . $e['label']; }
+	}
+	echo modules::run('common/menu_dropdown', $data, 'status', $label);
+?>
+	<div class="btn-group btn-nav">
+		<ul class="nav nav-tabs tab-respond">
+			<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
+			<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
+			<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
+			<? foreach($job_dates as $date) { ?>
+			<li<?=($this->session->userdata('job_date') == $date['job_date']) ? ' class="active"' : '';?>>
+				<a onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')">
+					<?=date('d', strtotime($date['job_date']));?>
+					<span class="month"><?=date('M', strtotime($date['job_date']));?></span>
+					(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']));?>)
+				</a>
+			</li>
+			<? } ?>
+		</ul>
+	</div>
 </div>
-                        
+                 
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
@@ -109,6 +121,18 @@
 
 <script>
 $(function(){
+	$('#menu-status ul li a').click(function(){
+		var value = $(this).attr('data-value');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>job/ajax_shift/set_status_filter",
+			data: {value:value},
+			success: function(html) {
+				load_job_shifts(<?=$job_id;?>);
+			}
+		})		
+	});
+	
 	$.each($('tr.disabled'), function() {
 		$(this).find('input').remove();
 		disabled($(this));
@@ -255,7 +279,7 @@ $(function(){
 			delete_shifts(selected_shifts);
 		}
 	});
-	$('.multi_delete').confirmModal({
+	$('#menu-day-action ul li a[data-value="delete"]').confirmModal({
 		confirmTitle: 'Delete selected shifts',
 		confirmMessage: 'Are you sure you want to delete selected shifts?',
 		confirmCallback: function(e) {
@@ -266,7 +290,7 @@ $(function(){
 			delete_shifts(selected_shifts);
 		}
 	});
-	$('.multi_copy').click(function(){
+	$('#menu-day-action ul li a[data-value="copy"]').click(function(){
 		selected_shifts.length = 0;
 		$('.selected_shifts:checked').each(function(){
 			selected_shifts.push($(this).val());
@@ -279,8 +303,7 @@ $(function(){
 
 	});
 })
-function unlock_shift(pk)
-{
+function unlock_shift(pk) {
 	 $.ajax({
 		type: "POST",
 		url: "<?=base_url();?>job/ajax/unlock_shift",
@@ -291,8 +314,7 @@ function unlock_shift(pk)
 	})
 	
 }
-function load_shift_staff(obj)
-{
+function load_shift_staff(obj) {
 	$('#wrapper_shift_staff').html('');
 	$('#wrapper_js').find('.popover-break').hide();
 	var pk = $(obj).attr('data-pk');
@@ -309,8 +331,7 @@ function load_shift_staff(obj)
 	})
 	
 }
-function load_shift_supervisor(obj)
-{
+function load_shift_supervisor(obj) {
 	$('#wrapper_shift_supervisor').html('');
 	$('#wrapper_js').find('.popover-break').hide();
 	var pk = $(obj).attr('data-pk');
@@ -327,8 +348,7 @@ function load_shift_supervisor(obj)
 	})
 	
 }
-function load_shift_breaks(obj)
-{
+function load_shift_breaks(obj) {
 	$('#wrapper_shift_break').html('');
 	$('#wrapper_js').find('.popover-break').hide();
 	var pk = $(obj).attr('data-pk');

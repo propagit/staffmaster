@@ -27,4 +27,5 @@ class Shift extends MX_Controller {
 		$data['location'] = modules::run('attribute/location/get_location', $venue['location_id']);
 		$this->load->view('shift/search_staff/search_form', isset($data) ? $data : NULL);
 	}
+	
 }

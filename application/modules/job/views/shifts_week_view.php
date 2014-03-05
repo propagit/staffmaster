@@ -43,11 +43,12 @@
 <tbody>
 <? for($i=0; $i < 7; $i++) { 
 $date_ts = $start_date + 24*60*60*$i; 
-$shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
+#$shifts_count = modules::run('job/count_job_shifts', $job_id, $date_ts);
 $unassign = modules::run('job/count_job_shifts', $job_id, $date_ts, '0');
 $unconfirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_UNCONFIRMED);
 $rejected = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_REJECTED);
 $confirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_CONFIRMED);
+$shifts_count = $unassign + $unconfirmed + $rejected + $confirmed;
 $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 ?>
 	<tr>
