@@ -2,7 +2,7 @@
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_clients);?></b> results</p>
 <ul class="pagination pull">
-<?=modules::run('common/create_pagination',count($total_clients),5,$current_page)?>
+<?=modules::run('common/create_pagination',count($total_clients),20,$current_page)?>
 </ul>
 <?php
 	$array = array(
@@ -34,7 +34,7 @@
     <tbody>
     <form id="client-search-results-form">
     <? foreach($clients as $client) { ?>
-    <tr>
+    <tr id="search-result-tr-<?=$client['user_id'];?>">
     	<td class="center"><input type="checkbox" name="user_client_selected_user_id[]" value="<?=$client['user_id'];?>" class="checkbox-multi-action" /></td>
         <td class="left"><?=$client['company_name'];?></td>
         <td class="center"><?=$client['total_jobs'];?></td>
@@ -72,7 +72,7 @@ $(function(){
 	var user_id = $(this).attr('delete-data-id');
 	help.confirm_delete(title,message,function(confirmed){
 		 if(confirmed){
-			 delete_staff(user_id);
+			 delete_client(user_id);
 		 }
 		});
 	});

@@ -33,7 +33,7 @@ class Job_shift_model extends CI_Model {
 		if($data['search_shift_shift_status']){
 			switch($data['search_shift_shift_status']){
 				case 'active':
-					$sql .= " WHERE (js.status != -2 or js.status != -1)";	
+					$sql .= " WHERE js.status > -2";	
 				break;
 				case 'unassigned':
 					$sql .= " WHERE js.status = 0";
@@ -225,7 +225,7 @@ class Job_shift_model extends CI_Model {
 		$sql .= " and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
 		switch($status){
 			case 'active':
-				$sql .= " and (s.status != -2 or s.status != -1)";	
+				$sql .= " and (s.status > -2)";	
 			break;
 			case 'unassigned':
 				$sql .= " and s.status = 0";

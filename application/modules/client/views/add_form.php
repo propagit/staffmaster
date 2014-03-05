@@ -124,8 +124,8 @@ $(function(){
 				url: "<?=base_url();?>client/ajax/add_client",
 				data: $('#form_add_client').serialize(),
 				success: function(html) {
-					alert(html);
-					//windw.location = '<?=base_url();?>client/edit/' + client_id;
+					//alert(html);
+					window.location.href = '<?=base_url();?>client/edit/' + html;
 				}
 			});
 		}		

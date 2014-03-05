@@ -17,7 +17,7 @@ class Client_model extends CI_Model {
 	
 	function search_clients($params = array(),$total=false)
 	{
-		$records_per_page = 5;
+		$records_per_page = 20;
 		$sql = "SELECT c.*, u.*
 				FROM user_clients c
 				LEFT JOIN users u ON c.user_id = u.user_id WHERE u.status != 2";

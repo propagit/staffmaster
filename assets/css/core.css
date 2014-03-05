@@ -487,6 +487,7 @@ ol.example li.placeholder:before {
 	display:block;	
 }
 
+
 /* dashboard - activity log*/
 
 #wrapper-outer{
@@ -532,6 +533,110 @@ ol.example li.placeholder:before {
 }
 
 
+
+/* conversation */
+.messages{
+	list-style:none;
+	padding-left:0;	
+}
+.messages li:first-child {
+	margin-top: 20px;
+}
+.messages li {
+	position: relative;
+	min-height: 36px;
+	margin: 0 18px 20px 18px;
+}
+.messages > li.divider {
+	border-top: 1px solid #DFDFDF;
+	border-bottom: 1px solid #fff;
+	margin: 20px 0 20px 0;
+	min-height: 0;
+}
+.messages .by-user > a {
+	left: 0;
+}
+.messages .by-me > a {
+	right: 0;
+}
+.messages .by-user > a, 
+.messages .by-me > a {
+	position: absolute;
+	top: 0;
+	display: block;
+}
+.message-fa{
+	font-size: 22px;
+	margin-top: 0px;
+	margin: 0;
+	padding: 0;
+	color: #e4e4e4;
+	line-height: 0;	
+}
+.messages .by-user .message-area {
+	background: #fff;
+	margin-left: 100px;
+}
+.messages .by-user .message-area, 
+.messages .by-me .message-area {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	padding: 8px 12px;
+	position: relative;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 2px solid #e4e4e4;
+}
+.messages .by-me .message-area {
+	margin-right: 100px;
+}
+.messages .by-user .aro {
+	left: -8px;
+}
+.messages .by-user .aro, 
+.messages .by-me .aro {
+	width: 8px;
+	height: 12px;
+	position: absolute;
+	top: 12px;
+	background: #fff;
+	line-height: 15px;
+}
+.messages .by-me .aro {
+	right: -8px;
+}
+.info-row{
+	font-size: 11px;
+	color: #949494;
+	margin-bottom: 6px;
+	margin-top: -2px;
+}
+.info-row > .title {
+	float: left;
+}
+.info-row > .time {
+	float: right;
+}
+.info-row:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+.divider > span {
+	position: absolute;
+	left: 50%;
+	margin-left: -21px;
+	width: 36px;
+	padding: 0 3px;
+	height: 9px;
+	display: block;
+	top: -4px;
+	background-color:#fff;
+}
+>>>>>>> working
 /* begin - responsive */
 
 /* *
@@ -1303,4 +1408,7 @@ ol.example li.placeholder:before {
 
 .remove-left-padding{
 	padding-left:0;	
+}
+.remove-right-padding{
+	padding-right:0;	
 }
