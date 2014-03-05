@@ -25,10 +25,5 @@ class Ajax extends MX_Controller {
 	{
 		$loggedin_user = $this->session->userdata('user_data');
 		echo modules::run('common/profile_picture','',$loggedin_user['user_id']);	
-	}
-	
-	function reload_header_logo()
-	{
-		echo modules::run('common/company_logo','','');	
-	}
+	}		
 }

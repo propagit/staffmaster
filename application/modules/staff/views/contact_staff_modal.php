@@ -23,7 +23,7 @@
                             <form id="contact-staff-email-form">
                                  <div class="form-group">
                                      <div class="col-sm-5 remove-left-gutter">
-                                            <?=modules::run('email_template/email_templates_dropdown','contact_staff_subject');?>
+                                            <?=modules::run('email/email_templates_dropdown','contact_staff_subject');?>
                                      </div>
                                      <label for="add-button" class="col-sm-2 control-label">Send Sample Email</label>
                                       <div class="col-sm-5 remove-right-gutter">
