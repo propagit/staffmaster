@@ -49,7 +49,7 @@
                 <td class="center">
                 <a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>">
                 <div class="search-staff-avatar-img">
-                	<?=modules::run('common/profile_picture','',$staff['user_id']);?>
+                	<?=modules::run('staff/get_profile_picture',$staff['user_id']);?>
                  </div>    
                 </a>
             	</td>

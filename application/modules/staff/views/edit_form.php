@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
     	 <div id="staff-edit-page-avatar">
-			<?=modules::run('common/profile_picture','',$staff['user_id']);?>
+			<?=modules::run('staff/get_profile_picture',$staff['user_id']);?>
    		 </div>
          <div class="staff-profile-bar-box">
              <h2><?=$staff['title'].'. '.$staff['first_name'].' '.$staff['last_name'];?></h2>

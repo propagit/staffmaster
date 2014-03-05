@@ -148,7 +148,7 @@
 </div>
 
 <div class="row" >
-    <div class="col-md-6" style="padding-left:0px!important; margin-left:0px!important">                
+    <div class="col-md-7" style="padding-left:0px!important; margin-left:0px!important">                
     	<div id="template_footer"></div>
         
         <br />
