@@ -59,7 +59,7 @@
        <div class="row profile-bar">
        		<div class="col-md-12">
             	<div class="logo">
-                	<?=modules::run('common/company_logo');?>
+                	<?=modules::run('setting/company_logo');?>
                 </div>
 
                 <div class="profile-menu">

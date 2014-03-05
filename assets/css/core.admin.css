@@ -252,12 +252,30 @@ a.default {
 	line-height:30px;
 }
 
-#email-template .last-right{
-	padding-right:0px!important;
+#email-template .break-25{
+	height:25px;
 }
 
+
+#email-template .last-right{
+	padding-right:0px!important;
+	padding-left:0px!important;
+}
+
+
+#email-template .first-left{
+	
+	padding-left:0px!important;
+}
+#email-template .email-template-title{
+	margin-top:20px;
+}
 #email-template .white-bg{
-	background:#FFF;
+	background:#FBFBFB;
+	border-radius:10px;
+	border:1px solid #e8e8e8;
+	padding: 20px 15px 20px 35px;
+	margin-top:0px;
 }
 #email-template .desc-item{
 	float:none;

@@ -141,7 +141,7 @@ class Invoice extends MX_Controller {
 		}
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
-		$data['company_profile'] = modules::run('common/company_profile');
+		$data['company_profile'] = modules::run('setting/company_profile');
 		if ($invoice['breakdown']) {
 			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
 		}
@@ -179,6 +179,15 @@ class Invoice extends MX_Controller {
 		$filename = "invoice_" . $invoice_id;
 		$pdfFilePath = "./uploads/pdf/$filename.pdf";
 		
+		$dir = './uploads/pdf/';
+		if(!is_dir($dir))
+		{
+		  mkdir($dir);
+		  chmod($dir,0777);
+		  $fp = fopen($dir.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
 		 
 		ini_set('memory_limit','32M'); # boost the memory limit if it's low 
 		
@@ -186,7 +195,7 @@ class Invoice extends MX_Controller {
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
-		$data['company_profile'] = modules::run('common/company_profile');
+		$data['company_profile'] = modules::run('setting/company_profile');
 		$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true); 
 
 		
@@ -213,7 +222,7 @@ class Invoice extends MX_Controller {
 		$data['invoice'] = $invoice;
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
-		$data['company_profile'] = modules::run('common/company_profile');
+		$data['company_profile'] = modules::run('setting/company_profile');
 		$this->load->view('create/generated_view', isset($data) ? $data : NULL); 
 	}
 	

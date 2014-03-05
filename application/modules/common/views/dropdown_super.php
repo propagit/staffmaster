@@ -23,7 +23,7 @@ $(function(){
 })
 function validateSelection() {
     if ($.inArray($(this).val(), myData) === -1) {
-        alert('Sorry, the super name is not available in our system');
+        //alert('Sorry, the super name is not available in our system');
 		
 	}
 		

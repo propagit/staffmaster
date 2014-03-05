@@ -49,7 +49,7 @@ function show_tab(tab)
 }
 function init_tabs() {
 	show_tab($('.tab-pane.active'));
-	$('#nav-email-template a').on('shown.bs.tab', function(e) {
+	$('#nav-email-templates a').on('shown.bs.tab', function(e) {
 		tab = $('#' + $(e.target).attr('href').substr(1));
 		show_tab(tab);	
 	});

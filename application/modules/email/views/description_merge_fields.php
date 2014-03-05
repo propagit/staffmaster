@@ -1,5 +1,6 @@
-<div class="white-bg" id="email-template-merge-field">
-	<h2> Merge Fields </h2>
+<div class="clear hidden-lg hidden-md break-25"></div>
+<div class="white-bg" id="email-template-merge-field">	
+    <h2> Merge Fields </h2>
 	<p> Merge Fields can be used to create dynamic content in your email </p>
 	<div class="clear"></div>
     <div class="desc-item">
@@ -126,4 +127,5 @@
     	<div class="first-item">Company Phone</div>
         <div class="second-item">{CompanyPhone}</div>
     </div>    
+    <div class="clear"></div>
 </div>

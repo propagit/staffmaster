@@ -281,185 +281,7 @@ class Common extends MX_Controller {
 			echo 0;
 		}
 	}
-	
-	
-	
-	
-	/**
-	*    @desc Show the location that only can be used in staff profile as we have multiselect element
-	*    @name dropdown_location
-	*    @access public
-	*    @param $field_name, $field_value=null; $field_name: name of that element such as location_id or id_location; $field_value: value if the location that need to show
-	*    @return loads the location select element	
-	* 
-	*/
-
-	function dropdown_location($field_name, $field_value=null)
-	{
-
-		$data['locations'] = $this->common_model->get_locations();
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$this->load->view('dropdown_location', isset($data) ? $data : NULL);
-	}
-	
-	function dropdown_get_area()
-	{
 		
-		$field_name = $this->input->post('field_name');
-		$field_value = $this->input->post('field_value');
-		$staff_locations = json_decode($field_value);
-		$scs = array();
-		if(isset($staff_locations)){
-			foreach($staff_locations as $sc)
-			{
-				if($sc!=''){
-				$scs[] = $sc;}
-			}
-		}
-		if(!isset($_POST['loc'])){$loc='';}else {$loc= $this->input->post('loc');}
-		if($loc!=''){
-			$new_loc = explode('#',$_POST['loc']);
-			foreach($new_loc as $nl)
-			{
-				if($nl!=''){
-				$scs[] = $nl;}
-			}
-		}
-		$locats = $this->common_model->get_locations();
-		//$areas = $this->common_model->get_locations_child($loc);
-		//$detail = $this->common_model->get_locations_detail($loc);
-		$print='';
-		$select='';
-		
-		$print='<select data-placeholder="Select Your Area" class="selectMultiple" multiple="multiple" tabindex="6" >
-			<option value=""></option>';
-			
-			foreach($locats as $lct)
-			{
-				//$detail = $this->common_model->get_locations_detail($lct['location_id']);
-				$print.='<optgroup label="'.$lct['name'].'">';
-				$areas = $this->common_model->get_locations_child($lct['location_id']);
-				foreach($areas as $area)
-				{
-					if(in_array($area['location_id'],$scs)){$select=" selected=selected ";}else{$select='';}
-					$print.='<option value="'.$area['location_id'].'"'.$select.'><b>'.$area['name'].'</b></option>';
-					$areas2 = $this->common_model->get_locations_child($area['location_id']);
-					foreach($areas2 as $ar)
-					{	
-						if(in_array($ar['location_id'],$scs)){$select=" selected=selected ";}else{$select='';}
-						$print.='<option value="'.$ar['location_id'].'"'.$select.'>&nbsp;&nbsp;&nbsp;&nbsp;'.$ar['name'].'</option>';
-					}
-				}
-				$print.='</optgroup>';
-			}
-		$print.='</select> <script>	$(".select").select2();	$(".selectMultiple").select2();</script>';
-		
-		
-		echo $print;
-	}
-	
-	
-	/**
-	*    @desc Show the location that can used in any forms that required location input. such as search staff form or add staff or add venue
-	*    @name dropdown_location_form
-	*    @access public
-	*    @param $field_name, $field_value=null; $field_name: name of that element such as location_id or id_location; $field_value: value if the location that need to show
-	*    @return loads the location select element	
-	* 
-	*/
-	
-	function dropdown_location_form($field_name, $field_value=null)
-	{
-		$data['locations'] = $this->common_model->get_locations();
-		$data['field_name'] = $field_name;
-		$data['field_value'] = $field_value;
-		$this->load->view('dropdown_location_form', isset($data) ? $data : NULL);
-	}
-	
-	function dropdown_get_area_state()
-	{				
-		$loc= $this->input->post('loc');
-		$field_name = $this->input->post('field_name');
-		$field_value = $this->input->post('field_value');
-		$staff_locations = json_decode($field_value);
-		$areas = $this->common_model->get_locations_child($loc);
-		$detail = $this->common_model->get_locations_detail($loc);
-		$print='';
-		$select='';
-		$print='<select name="area_location_state" id="area_location_state" class="form-control auto-width">
-			<option value="">Select Area</option>';
-			if($loc > 0){
-
-			
-				foreach($areas as $area)
-				{
-					//if(in_array($area['location_id'],$staff_locations)){$select=" selected=selected ";}
-					$print.='<option value="'.$area['location_id'].'"'.$select.'>'.$area['name'].'</option>';
-					
-				}
-			}
-		$print.='</select>';
-		
-		
-		echo $print;
-	}
-	
-	function dropdown_form_get_area_state()
-	{				
-		$loc= $this->input->post('loc');
-		$field_name = $this->input->post('field_name');
-		$field_value = $this->input->post('field_value');
-		$staff_locations = json_decode($field_value);
-		$areas = $this->common_model->get_locations_child($loc);
-		$detail = $this->common_model->get_locations_detail($loc);
-		$print='';
-		$select='';
-		$print='<select name="'.$field_name.'" id="area_location_state" class="form-control auto-width">
-			<option value="">Select Area</option>';
-			if($loc > 0){
-
-			
-				foreach($areas as $area)
-				{
-					//if(in_array($area['location_id'],$staff_locations)){$select=" selected=selected ";}
-					$print.='<option value="'.$area['location_id'].'"'.$select.'>'.$area['name'].'</option>';
-					
-				}
-			}
-		$print.='</select>';
-		
-		
-		echo $print;
-	}
-	function dropdown_get_area_init()
-	{
-
-		$loc= $this->input->post('loc');
-		$field_name = $this->input->post('field_name');
-		$field_value = $this->input->post('field_value');
-		$staff_locations = json_decode($field_value);
-		$areas = $this->common_model->get_locations_child($loc);
-		$detail = $this->common_model->get_locations_detail($loc);
-		$print='';
-		$select='';
-		$print='<select data-placeholder="Select Your Area" class="selectMultiple" multiple="multiple" tabindex="6" >
-			<option value=""></option>';
-			if($loc > 0){
-			$print.='<optgroup label="'.$detail['name'].'">';
-			
-				foreach($areas as $area)
-				{
-					if(in_array($area['location_id'],$staff_locations)){$select=" selected=selected ";}
-					$print.='<option value="'.$area['location_id'].'"'.$select.'>'.$area['name'].'</option>';
-					
-				}
-			}
-		$print.='</optgroup></select> <script>	$(".select").select2();	$(".selectMultiple").select2();</script>';
-		
-		
-		echo $print;
-	}
 	function define_area()
 	{
 		$loc='';
@@ -611,15 +433,7 @@ class Common extends MX_Controller {
 		$photo_id = $_POST['photo_id'];
 		$this->common_model->delete_photo($staff_id,$photo_id);
 	}
-	
-	
-	/**
-	*    @desc To display profile picture based on user_id
-	*   
-	*    @param $field_name, $field_value=null; $field_name: name of that element such as location_id or id_location; $field_value: value if the location that need to show
-	*    @return loads the profile picture
-	* 
-	*/
+			
 	function profile_picture($field_name, $field_value=NULL)
 	{		
 		
@@ -630,6 +444,7 @@ class Common extends MX_Controller {
 
 		$this->load->view('admin_profile_picture', isset($data) ? $data : NULL);
 	}
+	
 	
 	/**
 	*    @desc To display profile picture based on user_id while searching for staff while adding to a shift
@@ -670,17 +485,7 @@ class Common extends MX_Controller {
 		$this->load->view('company_logo', isset($data) ? $data : NULL);
 	}
 	
-	/**
-	*	@name: company_profile
-	*	@desc: ajax function to get company logo
-	*	@access: public
-	*	
-	*	
-	*/
-	function company_profile()
-	{
-		return $this->setting_model->get_profile();		
-	}
+	
 	
 	
 

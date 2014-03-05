@@ -97,7 +97,7 @@ class Email extends MX_Controller {
 			$this->email->to($to);
 			$this->email->cc($cc);
 			$this->email->bcc($bcc);
-			$company_logo = modules::run('common/company_logo');
+			$company_logo = modules::run('setting/company_logo');
 			$email_signature = modules::run('setting/ajax/get_template_footer');
 			$this->email->subject($subject);
 			$this->email->message($company_logo . '<br />'.$message . $email_signature);
@@ -179,7 +179,7 @@ class Email extends MX_Controller {
 		$this->email->from('propagate.au@gmail.com',$from_text); // change it to yours
 		$this->email->to($to);// change it to yours
 		$this->email->subject($subject);
-		$company_logo = modules::run('common/company_logo');
+		$company_logo = modules::run('setting/company_logo');
 		$email_signature = modules::run('setting/get_email_footer');
 		$this->email->message($company_logo . '<br />'.$message . $email_signature);
 		
