@@ -54,7 +54,7 @@ function update_company_logo_header()
 {
 	$.ajax({
 		type: 'POST',
-		url: '<?=base_url();?>common/ajax/reload_header_logo',		
+		url: '<?=base_url();?>setting/ajax/reload_header_logo',		
 		success: function(html) {
 			$('.logo').html(html);
 		}

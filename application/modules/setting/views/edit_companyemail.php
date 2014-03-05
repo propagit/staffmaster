@@ -1,3 +1,8 @@
+<style>
+.inside-template{
+	padding:15px;
+}
+</style>
 <div class="company-profile-detail-box">
 <h2>Your Email Signature</h2>
 <p>Your email signature will be attached to the base of every email sent from the sytem</p>

@@ -99,7 +99,7 @@
             <div class="form-group">
                 <label for="super_fund_name" class="col-lg-2 control-label">Super Fund Name </label>
                 <div class="col-lg-4">                    
-                    <?=modules::run('common/dropdown_supers', 'super_fund_name',(isset($company['super_fund_name'])) ? $company['super_fund_name'] : '');?>
+                    <input type="text" class="form-control" id="super_fund_name" name="super_fund_name" value="<?=(isset($company['super_fund_name'])) ? $company['super_fund_name'] : '' ?>" />					
                 </div>
             </div> 
             <div class="form-group">
