@@ -125,8 +125,7 @@ class Staff extends MX_Controller {
 			}
 		}
 		
-		$data['states'] = $this->user_model->get_states();
-		$data['countries'] = $this->user_model->get_countries();
+		
 		$this->load->view('add_form', isset($data) ? $data : NULL);
 	}
 	

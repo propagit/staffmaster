@@ -2,9 +2,7 @@
 #template_email{
 	border:1px solid #dfdfdf;background:#fbfbfb; border-radius:3px; font-size:11px;
 }
-.inside-template{
-	padding:15px;
-}
+
 </style>
 <table id="template_email" width="100%" style="border:1px solid #dfdfdf;background:#fbfbfb; border-radius:3px; font-size:11px;padding:15px;">
     <tr>
@@ -32,12 +30,12 @@
                 <tr>
                     <td class="inside-template" style="padding:15px;">
                     <table align="right" width="35%" ><tr>
-                    <?=(isset($company['email_s_facebook']) && $company['email_s_facebook']!='') ? '<td align="right" width="3%"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/facebook.png"></td>' : ''; ?> 
-                    <?=(isset($company['email_s_twitter']) && $company['email_s_twitter']!='') ? '<td align="right" width="3%"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/twitter.png"></td>' : ''; ?> 
-                    <?=(isset($company['email_s_linkedin']) && $company['email_s_linkedin']!='') ? '<td align="right" width="3%"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/linkedin.png"></td>' : ''; ?> 
-                    <?=(isset($company['email_s_googleplus']) && $company['email_s_googleplus']!='') ?  '<td align="right" width="3%"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/google.png"></td>' : ''; ?> 
-                    <?=(isset($company['email_s_youtube']) && $company['email_s_youtube']!='') ? '<td align="right" width="3%"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/youtube.png"></td>' : ''; ?> 
-                    <?=(isset($company['email_s_instagram']) && $company['email_s_instagram']!='') ? '<td align="right" width="3%"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/instagram.png"></td>' : ''; ?> 
+                    <?=(isset($company['email_s_facebook']) && $company['email_s_facebook']!='') ? '<td align="right" width="3%"><a href="'.$company['email_s_facebook'].'"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/facebook.png"></a></td>' : ''; ?> 
+                    <?=(isset($company['email_s_twitter']) && $company['email_s_twitter']!='') ? '<td align="right" width="3%"><a href="'.$company['email_s_twitter'].'"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/twitter.png"></a></td>' : ''; ?> 
+                    <?=(isset($company['email_s_linkedin']) && $company['email_s_linkedin']!='') ? '<td align="right" width="3%"><a href="'.$company['email_s_linkedin'].'"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/linkedin.png"></a></td>' : ''; ?> 
+                    <?=(isset($company['email_s_googleplus']) && $company['email_s_googleplus']!='') ?  '<td align="right" width="3%"><a href="'.$company['email_s_googleplus'].'"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/google.png"></a></td>' : ''; ?> 
+                    <?=(isset($company['email_s_youtube']) && $company['email_s_youtube']!='') ? '<td align="right" width="3%"><a href="'.$company['email_s_youtube'].'"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/youtube.png"></a></td>' : ''; ?> 
+                    <?=(isset($company['email_s_instagram']) && $company['email_s_instagram']!='') ? '<td align="right" width="3%"><a href="'.$company['email_s_instagram'].'"><img style="border:1px solid#fff;" src="'.base_url().'assets/img/instagram.png"></a></td>' : ''; ?> 
                     </tr></table></td>
                 </tr>
                 <tr><td align="right">

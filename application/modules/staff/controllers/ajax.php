@@ -50,6 +50,7 @@ class Ajax extends MX_Controller {
 			'title' => $data['title'],
 			'first_name' => $data['first_name'],
 			'last_name' => $data['last_name'],
+			'email_address' => $data['email_address'],
 			'address' => $data['address'],
 			'suburb' => $data['suburb'],			
 			'state' => $data['state'],

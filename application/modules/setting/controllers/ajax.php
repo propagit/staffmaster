@@ -274,15 +274,17 @@ class Ajax extends MX_Controller {
 	function get_template_footer()
 	{
 		$company = $this->setting_model->get_profile();
+		
+		$color = $company['email_background_colour'];
+		$font_color = $company['email_font_colour'];
+		
 		if($_POST){
 			$color = $this->input->post('color');
 			$font_color = $this->input->post('font_color');
 		}
-		else
-		{
-			$color = $company['email_background_colour'];
-			$font_color = $company['email_font_colour'];
-		}
+		
+		
+		
 		
 		
 		$data['color'] = $color;
@@ -329,6 +331,10 @@ class Ajax extends MX_Controller {
 		
 	}
 	
+	function reload_header_logo()
+	{
+		echo modules::run('setting/company_logo');	
+	}	
 	
 	
 }
