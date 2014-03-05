@@ -34,6 +34,9 @@
 	<link href="<?=base_url();?>assets/css/adminflare.custom.css" rel="stylesheet" media="screen">
 	<script src="<?=base_url();?>assets/js/adminflare.min.js"></script>
 	
+	<!-- highcharts -->
+	<script src="<?=base_url();?>assets/highcharts/highcharts.js"></script>
+	
 	<!-- datetimepicker (bootstrap 3)  -->
 	<link href="<?=base_url();?>assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>

@@ -11,10 +11,11 @@
 		<th>Client &nbsp; <a onclick="sort_jobs('client_')"><i class="fa fa-sort"></i></a></th>
 		<th>Campaign Name &nbsp; <a onclick="sort_jobs('campaign')"><i class="fa fa-sort"></i></a></th>
 		<th class="center">Total Shifts</th>
-		<th class="center">Unassigned</th>
-		<th class="center">Unconfirmed</th>
-		<th class="center">Confirmed</th>
-		<th class="center">Billing Status</th>
+		<th class="center" width="100">Unassigned</th>
+		<th class="center" width="100">Unconfirmed</th>
+		<th class="center" width="100">Rejected</th>
+		<th class="center" width="100">Confirmed</th>
+		<th class="center" width="100">Completed</th>
 		<th class="center" width="40">View</th>
 		<th class="center" width="40">Delete</th>
 	</tr>
@@ -25,8 +26,10 @@
 		$finish_time = modules::run('job/get_job_finish_date', $job['job_id']);
 		$shifts_count = modules::run('job/count_job_shifts', $job['job_id']);
 		$unassign = modules::run('job/count_job_shifts', $job['job_id'], null, '0');
-		$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, 1);
-		$confirmed = modules::run('job/count_job_shifts', $job['job_id'], null, 2);
+		$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED);
+		$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED);
+		$confirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_CONFIRMED);
+		$completed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_FINISHED);
 	?>
 	<tr>
 		<td width="65" class="center">
@@ -53,7 +56,12 @@
 		</td>
 		<td class="center">
 			<? if ($unconfirmed > 0) { ?>
-			<span class="badge danger"><?=$unconfirmed;?></span>
+			<span class="badge warning"><?=$unconfirmed;?></span>
+			<? } ?>
+		</td>
+		<td class="center">
+			<? if ($rejected > 0) { ?>
+			<span class="badge danger"><?=$rejected;?></span>
 			<? } ?>
 		</td>
 		<td class="center">
@@ -61,7 +69,11 @@
 			<span class="badge success"><?=$confirmed;?></span>
 			<? } ?>
 		</td>
-		<td></td>
+		<td class="center">
+			<? if ($completed > 0) { ?>
+			<span class="badge primary"><?=$completed;?></span>
+			<? } ?>
+		</td>
 		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="fa fa-eye"></i></a></td>
 		<td class="center">
 			<a onclick="delete_job(<?=$job['job_id'];?>)"><i class="fa fa-times"></i></a>

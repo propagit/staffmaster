@@ -856,6 +856,12 @@ ol.example li.placeholder:before {
 .danger {
 	background-color: #ff0000;
 }
+.primary {
+	background-color: #428BCA;
+}
+.warning {
+	background-color: #F0AD4E;
+}
 .dark-grey-bg{
 	background-color: #3d3d3d;
 }
