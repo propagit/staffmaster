@@ -17,7 +17,7 @@ class Staff_model extends CI_Model {
 	
 	function search_staffs($params = array(),$total=false)
 	{
-		$records_per_page = 20;
+		$records_per_page = 30;
 		$sql = "SELECT s.*, u.* 
 				FROM user_staffs s 
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status != 2";
