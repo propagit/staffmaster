@@ -16,8 +16,8 @@
 		<div class="inner-box">
 			<ul class="nav nav-tabs tab-respond">
 				<li class="active"><a>Time Sheets</a></li>
-				<li><a href="<?=base_url();?>invoice">Client Invoices</a></li>
 				<li><a href="<?=base_url();?>payrun">Pay Run</a></li>
+				<li><a href="<?=base_url();?>invoice">Client Invoices</a></li>
 			</ul>
 			<br />
 			<h2>Find Time Sheets</h2>

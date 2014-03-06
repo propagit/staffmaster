@@ -38,6 +38,6 @@
 
 <script>
 $(function() {
-	$('#tab-payrun a[href="#search-payrun"]').tab('show');
+	//$('#tab-payrun a[href="#search-payrun"]').tab('show');
 })
 </script>
