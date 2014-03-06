@@ -127,8 +127,7 @@
 		</div>
     	
         <label for="entertext" class="col-md-2 control-label">Enter Text</label>
-		<div class="col-md-4" style="position:absolute!important; left:66%; width:32.5%;">
-			<!--<input type="text" class="form-control" id="email_common_text" name="email_common_text" value="<?=(isset($company['email_common_text']) && $company['email_common_text'] !='' ) ? $company['email_common_text'] : ''  ?>" />-->
+		<div class="col-md-4" style="position:absolute!important; left:66%; width:32.5%;">			
             <textarea class="form-control" id="email_common_text" name="email_common_text"> <?=(isset($company['email_common_text']) && $company['email_common_text'] !='' ) ? $company['email_common_text'] : ''  ?></textarea>
 		</div>
     </div>
