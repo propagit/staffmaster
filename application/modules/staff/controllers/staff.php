@@ -761,7 +761,13 @@ class Staff extends MX_Controller {
 		$data['staffs'] = $this->staff_model->search_staff_by_name();
 		$this->load->view('field_input', isset($data) ? $data : NULL);
 	}
-	
+	/**
+	*	@desc this functio to get single image of staff with url on the image
+	*   @name profile_image
+	*	@access public
+	*	@param (via GET) get the value of user_id
+	*	@return Returns the image of staff profile with url (a tag)
+	*/
 	function get_profile_picture($user_id=NULL)
 	{		
 		
@@ -772,7 +778,13 @@ class Staff extends MX_Controller {
 
 		$this->load->view('profile_picture', isset($data) ? $data : NULL);
 	}
-	
+	/**
+	*	@desc this functio to get single image of staff without having url on the image
+	*   @name profile_image
+	*	@access public
+	*	@param (via GET) get the value of user_id
+	*	@return Returns the image of staff profile
+	*/
 	function profile_image($user_id=NULL)
 	{		
 		
