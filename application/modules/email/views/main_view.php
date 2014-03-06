@@ -15,8 +15,8 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
             <ul class="nav nav-tabs tab-respond" id="nav-email-templates">
-                <li class="mobile-tab"><a href="#welcome_staff" data-toggle="tab">Welcome Staff</a></li>
-                <li class="active mobile-tab"><a href="#roster_update" data-toggle="tab">Roster Update</a></li>
+                <li class="active mobile-tab"><a href="#welcome_staff" data-toggle="tab">Welcome Staff</a></li>
+                <li class="mobile-tab"><a href="#roster_update" data-toggle="tab">Roster Update</a></li>
                 <li class="mobile-tab"><a href="#apply_shift" data-toggle="tab">Apply For Shifts</a></li> 
                 <li class="mobile-tab"><a href="#shift_reminder" data-toggle="tab">Shift Reminder</a></li> 
                 <li class="mobile-tab"><a href="#work_confirmation" data-toggle="tab">Work Confirmation</a></li>
@@ -27,8 +27,8 @@
 			
 			
 			<div class="tab-content tab-email">
-				<div class="tab-pane" id="welcome_staff"></div>	
-                <div class="tab-pane active" id="roster_update"></div>			
+				<div class="tab-pane active" id="welcome_staff"></div>	
+                <div class="tab-pane" id="roster_update"></div>			
 				<div class="tab-pane" id="apply_shift"></div>
 				<div class="tab-pane" id="shift_reminder"></div>
 				<div class="tab-pane" id="work_confirmation"></div>
@@ -56,6 +56,29 @@ function init_tabs() {
 }
 
 $(function(){
-	init_tabs();	
-});
+	init_tabs();
+});//ready
+
+function update_template(form_id){
+	update_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/update_template",
+		  data: $('#'+form_id).serialize(),
+		  success: function(html) {
+			$('.email-template-updated').removeClass('hide');
+			setTimeout(function(){
+				$('.email-template-updated').addClass('hide');
+			}, 2000); 
+		  }
+	  });
+}
+
+function update_ckeditor()
+{
+	for ( instance in CKEDITOR.instances ) {
+            CKEDITOR.instances[instance].updateElement();
+    }	
+}
+
 </script>

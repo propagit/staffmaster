@@ -6,9 +6,10 @@
         </div>
         <div class="col-md-2 remove-left-padding">
         	<ul class="calendar-job-stat-legend">
-            	<li>Active Job Campaigns <span id="active-jobs-count" class="badge badge-xs dark-grey-bg">0</span></li>
+            	<li>Active Job Campaigns <span id="job-campaigns-count" class="badge badge-xs dark-grey-bg">0</span></li>
                 <li>Unfilled Shifts <span id="unfilled-shifts-count" class="badge badge-xs grey-bg">0</span></li>
-                <li>Un-confirmed Shifts <span id="unconfirmed-shifts-count" class="badge badge-xs danger">0</span></li>
+                <li>Un-confirmed Shifts <span id="unconfirmed-shifts-count" class="badge badge-xs warning">0</span></li>
+                <li>Rejected Shifts <span id="rejected-shifts-count" class="badge badge-xs danger">0</span></li>
                 <li>Confirmed Shifts <span id="confirmed-shifts-count" class="badge badge-xs success">0</span></li>
             </ul>
         </div>
@@ -89,9 +90,10 @@ function get_calendar_data_summary(new_date){
 		data:{new_date:new_date},
 		dataType:'json',
 		success: function(data){
-			$('#active-jobs-count').html(data['active_jobs']);
+			$('#job-campaigns-count').html(data['job_campaign']);
 			$('#unfilled-shifts-count').html(data['unassigned']);
 			$('#unconfirmed-shifts-count').html(data['unconfirmed']);
+			$('#rejected-shifts-count').html(data['rejected']);
 			$('#confirmed-shifts-count').html(data['confirmed']);
 		}
 	});	

@@ -88,9 +88,9 @@ class Job extends MX_Controller {
 		
 	function search_jobs()
 	{
-		$data['search_shift_filters'] = array('client_user_id' => '','client_client_id' => '','shift_date' => date('d-m-Y'),'shift_status' => '');
-		if($this->session->userdata('search_shift_filters')){
-			$data['search_shift_filters'] = $this->session->userdata('search_shift_filters');	
+		$data['search_shift_filters'] = array('client_user_id' => '','client_client_id' => '','shift_date' => date('d-m-Y'),'search_shift_date_to' => '','shift_status' => 'job_campaign');
+		if($this->session->flashdata('search_shift_filters')){
+			$data['search_shift_filters'] = $this->session->flashdata('search_shift_filters');	
 		}
 		if ($this->input->post())
 		{

@@ -237,6 +237,9 @@ class Job_shift_model extends CI_Model {
 			case 'unconfirmed':
 				$sql .= " and s.status = 1";
 			break;
+			case 'rejected':
+				$sql .= " and s.status = -1";
+			break;
 			case 'confirmed':
 				$sql .= " and s.status = 2";
 			break;	
@@ -249,7 +252,31 @@ class Job_shift_model extends CI_Model {
 			$shifts = $this->db->query($sql)->result();
 			return $shifts;
 		}
+	}
+	
+	function get_job_campaing_count_by_year_and_month($month,$year,$only_total = false)
+	{
+		$client_user_id = 0;
+		if($this->session->userdata('company_calendar_filter_client_id')){
+			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
+		}
+		$sql = "select s.job_date,count(distinct s.job_id) as total_jobs from job_shifts s";
+		if($client_user_id && $client_user_id != 'all'){
+			$sql .= " join jobs j on s.job_id = j.job_id and j.client_id = ".$client_user_id;	
+		}else{
+			$sql .= " where s.shift_id != ''";	
+		}
+				
+		$sql .= " and s.status > -2 and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
 		
-		
+		if($only_total){
+			$sql .= " group by s.job_id order by s.job_date asc";
+			$jobs = $this->db->query($sql)->result();
+			return count($jobs);
+		}else{
+			$sql .= " group by s.job_date order by s.job_date asc";
+			$jobs = $this->db->query($sql)->result();
+			return $jobs;
+		}	
 	}
 }

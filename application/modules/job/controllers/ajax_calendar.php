@@ -45,10 +45,10 @@ class Ajax_calendar extends MX_Controller {
 		$new_date = $this->input->post('new_date',true);
 		$month = date('m',strtotime($new_date));
 		$year = date('Y',strtotime($new_date));	
-		
-		$data['active_jobs'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'active',true); 
+		$data['job_campaign'] = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,true); 
 		$data['unassigned'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',true); //status 0
 		$data['unconfirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',true);//status 1
+		$data['rejected'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',true);//status -1
 		$data['confirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',true);//status 2
 		echo json_encode($data);
 	}
@@ -80,9 +80,10 @@ class Ajax_calendar extends MX_Controller {
 						'client_user_id' => $client_user_id,
 						'client_client_id' => $client['client_id'],
 						'shift_date' => date('d-m-Y',strtotime($shift_date)),
+						'search_shift_date_to' => date('d-m-Y',strtotime($shift_date)),
 						'shift_status' => $shift_status
 					);
-		$this->session->set_userdata('search_shift_filters',$data);
+		$this->session->set_flashdata('search_shift_filters',$data);
 		echo 'var sets';
 	}
 	
