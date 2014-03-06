@@ -773,5 +773,16 @@ class Staff extends MX_Controller {
 		$this->load->view('profile_picture', isset($data) ? $data : NULL);
 	}
 	
+	function profile_image($user_id=NULL)
+	{		
+		
+		$staff = $this->staff_model->get_staff($user_id);
+		$photo = $this->staff_model->get_hero($user_id);
+		$data['staff'] = $staff;
+		$data['photo'] = $photo;
+
+		$this->load->view('staff_picture', isset($data) ? $data : NULL);
+	}
+	
 	
 }

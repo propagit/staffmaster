@@ -33,7 +33,7 @@
                     </tr></table></td>
                 </tr>
                 <tr><td align="right">
-                <p style="font-size:10px; text-align:right; padding-right:15px;">
+                <p style="font-size:10px; text-align:right; padding-right:15px;color:<?=(isset($font_color) && $font_color !='') ? '#'.$font_color : '#fff' ?>;">
                     <?=(isset($company['email_common_text'])) ? $company['email_common_text'] : '';?>                                            
                 </p>
                 </td></tr>
