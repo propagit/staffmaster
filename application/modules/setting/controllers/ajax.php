@@ -311,15 +311,16 @@ class Ajax extends MX_Controller {
 			'wordwrap' => TRUE
 		);
 		
-		$message = 'Test message';		
-		$message_footer = modules::run('setting/ajax/get_template_footer');
-		$message=$message.$message_footer;
+		$subject ="Email Template Company Profile";
 		$this->load->library('email', $config);
 		$this->email->set_newline("\r\n");
 		$this->email->from('propagate.au@gmail.com'); // change it to yours
 		$this->email->to('raquel@propagate.com.au');// change it to yours
-		$this->email->subject('Testing Email from localhost');
-		$this->email->message($message);
+		$company_logo = modules::run('setting/company_logo');
+		$email_signature = modules::run('setting/ajax/get_template_footer');
+		$this->email->subject($subject);
+		$this->email->message($company_logo . '<br />'.$message . $email_signature);
+		
 		if($this->email->send())
 		{
 		echo 'Email sent.';

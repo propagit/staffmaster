@@ -3,7 +3,7 @@
 		$user_data = $this->session->userdata('user_data');
 	?>
     <div id="profile-bar-avatar">
-		<?=modules::run('common/profile_picture','',$user_data['user_id']);?>
+		<?=modules::run('staff/get_profile_picture',$user_data['user_id']);?>
     </div>
 </div>
 <ul>

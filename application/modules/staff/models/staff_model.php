@@ -432,13 +432,14 @@ class Staff_model extends CI_Model {
 		$sql = "delete from staff_custom_attributes where staff_custom_attributes_id = ".$staff_custom_attributes_id;
 		return $this->db->query($sql);
 	}
-	/**
-	*	@name: delete_staff_custom_attributes_by_id
-	*	@desc: Delete custom attributes of a staff by delete_staff_custom_attributes_by_id
-	*	@access: public
-	*	@param: (int) delete_staff_custom_attributes_by_id
-	*	@return: null
-	*/
+	
+	function add_picture($data)
+	{
+		$this->db->insert('user_staff_picture', $data);
+		return $this->db->insert_id();
+	}
+	
+	
 	function update_user_staff_picture($user_staff_picture_id,$data)
 	{
 		return $this->db->where('id',$user_staff_picture_id)->update('user_staff_picture',$data);	

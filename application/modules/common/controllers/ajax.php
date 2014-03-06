@@ -21,9 +21,4 @@ class Ajax extends MX_Controller {
 		$this->load->view('map', isset($data) ? $data : NULL);
 	}
 	
-	function reload_avatar()
-	{
-		$loggedin_user = $this->session->userdata('user_data');
-		echo modules::run('common/profile_picture','',$loggedin_user['user_id']);	
-	}		
 }
