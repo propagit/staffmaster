@@ -34,6 +34,12 @@ class Email extends MX_Controller {
 		
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
+	
+	function description_merge_fields($text_area_id = '')
+	{
+		$data['text_area_id'] = $text_area_id;
+		$this->load->view('description_merge_fields', isset($data) ? $data : NULL);
+	}
 	/**
 	*	@name: send_email
 	*	@desc: A central function to send email

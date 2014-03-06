@@ -66,9 +66,10 @@ class Calendar extends MX_Controller {
 			$year = date('Y');	
 		}
 		$new_date = $month.' '.$year;
-		$active_jobs = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'active');
+		$job_campaign = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year); 
 		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned');//status 0
 		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed');//status 1
+		$rejected = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected');//status -1
 		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed');//status 2
 		
 		
@@ -76,8 +77,8 @@ class Calendar extends MX_Controller {
 		//this is so that the its easier to display. 
 		$merged_array = array();
 		
-		foreach($active_jobs as $aj){
-			$merged_array[$aj->job_date]['active_jobs']['count'] = $aj->total_shifts;
+		foreach($job_campaign as $jc){
+			$merged_array[$jc->job_date]['job_campaign']['count'] = $jc->total_jobs;
 		}
 		foreach($unassigned as $ua){
 			$merged_array[$ua->job_date]['unassigned']['count'] = $ua->total_shifts;
@@ -85,16 +86,20 @@ class Calendar extends MX_Controller {
 		foreach($unconfirmed as $uc){
 			$merged_array[$uc->job_date]['unconfirmed']['count'] = $uc->total_shifts;
 		}
+		foreach($rejected as $rs){
+			$merged_array[$rs->job_date]['rejected']['count'] = $rs->total_shifts;	
+		}
 		foreach($confirmed as $cs){
 			$merged_array[$cs->job_date]['confirmed']['count'] = $cs->total_shifts;
 		}
 		
 		foreach($merged_array as $key => $val){
 			$out[] = array(
-							'active_job_campaigns' => isset($val['active_jobs']['count']) ? $val['active_jobs']['count'] : 0,
-							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : 0,
-							'unconfirmed_shift' => isset($val['unconfirmed']['count']) ? $val['unconfirmed']['count'] : 0,
-							'confirmed_shift' => isset($val['confirmed']['count']) ? $val['confirmed']['count'] : 0,
+							'active_job_campaigns' => isset($val['job_campaign']['count']) ? $val['job_campaign']['count'] : '',
+							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',
+							'unconfirmed_shift' => isset($val['unconfirmed']['count']) ? $val['unconfirmed']['count'] : '',
+							'rejected_shift' => isset($val['rejected']['count']) ? $val['rejected']['count'] : '',
+							'confirmed_shift' => isset($val['confirmed']['count']) ? $val['confirmed']['count'] : '',
 							'url' => 'test',
 							'start' => strtotime($key).'000',
 							'end' => strtotime($key).'000'
@@ -105,6 +110,7 @@ class Calendar extends MX_Controller {
 				'active_job_campaigns' => '-',
 				'unfilled_shifts' => '-',
 				'unconfirmed_shift' => '-',
+				'rejected_shift' => '-',
 				'confirmed_shift' => '-',
 				'url' => 'test',
 				'start' => strtotime($new_date).'000',

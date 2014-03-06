@@ -235,52 +235,55 @@ a.default {
 	font-weight:900!important;
 }
 /* style for email template */
-#email-template .control-label{
+.email-template .control-label{
 	margin-left:0px!important;
 	padding-left:0px!important;
 	line-height:30px;
 }
 
-#email-template .break-25{
+.email-template .break-25{
 	height:25px;
 }
 
 
-#email-template .last-right{
+.email-template .last-right{
 	padding-right:0px!important;
 	padding-left:0px!important;
 }
 
 
-#email-template .first-left{
+.email-template .first-left{
 	
 	padding-left:0px!important;
 }
-#email-template .email-template-title{
+.email-template .email-template-title{
 	margin-top:20px;
 }
-#email-template .white-bg{
+.email-template .white-bg{
 	background:#FBFBFB;
 	border-radius:10px;
 	border:1px solid #e8e8e8;
 	padding: 20px 15px 20px 35px;
 	margin-top:0px;
 }
-#email-template .desc-item{
+.email-template .desc-item{
 	float:none;
 }
-#email-template .first-item{
+.email-template .first-item{
 	float:left;
 	width:200px;
 }
-#email-template .second-item{
+.email-template .second-item{
 	float:left;
 }
-#email-template .clear{
+.email-template .clear{
 	clear:both;
 }
-#email-template .title-item{
+.email-template .title-item{
 	padding-top:20px;
+}
+.email-template .template-item{
+	cursor:pointer;
 }
 
 /* Styles fdr search staff profile photo */
@@ -705,4 +708,7 @@ span.dash-invoice-value{
 	margin-right: 15px;
 	z-index: 100;
 	position: relative;
+}
+.add-top-margin-20{
+	margin-top:20px;	
 }

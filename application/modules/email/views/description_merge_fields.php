@@ -15,22 +15,22 @@
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Staff First Name</div>
-        <div class="second-item">{FirstName}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{FirstName}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Staff Family Name</div>
-        <div class="second-item">{FamilyName}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{FamilyName}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Staff Profile Image</div>
-        <div class="second-item">{ProfileImage}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{ProfileImage}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Staff Email</div>
-        <div class="second-item">{StaffEmail}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{StaffEmail}</div>
     </div>
     <div class="clear"></div>
     
@@ -40,57 +40,57 @@
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Staff Roster</div>
-        <div class="second-item">{Roster}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{Roster}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Selected Jobs</div>
-        <div class="second-item">{JobSelect}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{JobSelect}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Shift Venue Name</div>
-        <div class="second-item">{Venue}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{Venue}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Venue Address</div>
-        <div class="second-item">{VenueAddress}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{VenueAddress}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Venue Map</div>
-        <div class="second-item">{Map}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{Map}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Shift Role</div>
-        <div class="second-item">{Role}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{Role}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Shift Uniform</div>
-        <div class="second-item">{Uniform}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{Uniform}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Shift Pay Rate</div>
-        <div class="second-item">{PayRate}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{PayRate}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Shift Supervisor</div>
-        <div class="second-item">{Supervisor}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{Supervisor}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Shift Date</div>
-        <div class="second-item">{ShiftDate}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{ShiftDate}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Shift Time</div>
-        <div class="second-item">{ShiftTime}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{ShiftTime}</div>
     </div>
     <div class="clear"></div>
     
@@ -100,12 +100,12 @@
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Client Name</div>
-        <div class="second-item">{ClientName}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{ClientName}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Client Department</div>
-        <div class="second-item">{ClientDepartment}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{ClientDepartment}</div>
     </div>
     <div class="clear"></div>
     
@@ -115,17 +115,17 @@
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Company Name</div>
-        <div class="second-item">{CompanyName}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{CompanyName}</div>
     </div>
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Company Email</div>
-        <div class="second-item">{CompanyEmail}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{CompanyEmail}</div>
     </div>    
     <div class="clear"></div>
     <div class="desc-item">
     	<div class="first-item">Company Phone</div>
-        <div class="second-item">{CompanyPhone}</div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>">{CompanyPhone}</div>
     </div>    
     <div class="clear"></div>
 </div>
