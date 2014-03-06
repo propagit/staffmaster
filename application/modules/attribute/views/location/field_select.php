@@ -25,6 +25,11 @@ function load_areas()
 		url: "<?=base_url();?>attribute/ajax/get_locations",
 		data: {location_id: location_id,child_selected:<?=($child_value != '' ? $child_value : 0);?>},
 		success: function(html) {
+			if (html) {
+				$('#<?=$field_name;?>').css('margin-bottom', '15px');
+			} else {
+				$('#<?=$field_name;?>').css('margin-bottom', '0');
+			}
 			$('.wp_field_select_areas').html(html);
 		}
 	});

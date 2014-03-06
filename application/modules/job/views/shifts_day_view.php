@@ -19,7 +19,7 @@
 	$filter = $this->session->userdata('shift_status_filter');
 	$label = 'Status: Any';
 	foreach($data as $e) {
-		if ($e['value'] == $filter) { $label = 'Status: ' . $e['label']; }
+		if ($filter != '' && $e['value'] == $filter) { $label = 'Status: ' . $e['label']; }
 	}
 	echo modules::run('common/menu_dropdown', $data, 'status', $label);
 ?>
@@ -59,7 +59,13 @@
 	</tr>
 </thead>
 <tbody>
-	<? foreach($job_shifts as $shift) { ?>
+<? if (count($job_shifts) == 0) { ?>
+	<tr>
+		<td colspan="14">
+			No shifts found
+		</td>
+	</tr>
+<? } else foreach($job_shifts as $shift) { ?>
 	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>">
 		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
 		<td class="wp-date" width="80">
@@ -109,7 +115,7 @@
 			<a class="shift_delete" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-trash-o"></i></a>
 		</td>
 	</tr>
-	<? } ?>
+<? } ?>
 </tbody>
 </table>
 </div>

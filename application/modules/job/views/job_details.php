@@ -22,7 +22,7 @@
 				$completed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_FINISHED); 
 				$confirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_CONFIRMED); 
 				$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED); 
-				$unassigned = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNASSIGNED); 
+				$unassigned = modules::run('job/count_job_shifts', $job['job_id'], null, '0'); 
 				$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED); 
 				$completed_percentage = 0;
 				if ($shifts_count > 0) {
