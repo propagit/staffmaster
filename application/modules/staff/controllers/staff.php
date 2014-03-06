@@ -472,7 +472,7 @@ class Staff extends MX_Controller {
 	*	@param: string, int status
 	*	@return: (int) total staff
 	*/
-	function get_total_staffs($status='')
+	function get_total_staff($status='')
 	{
 		return $this->staff_model->get_total_staffs_count($status);
 	}
@@ -493,15 +493,15 @@ class Staff extends MX_Controller {
 		if($staff_attribute){
 			if($has_multiple_value){
 				$data['attributes'] = json_decode($staff_attribute->attributes);
-				$data['staffs_custom_attributes_id'] = $staff_attribute->staffs_custom_attributes_id;
+				$data['staff_custom_attributes_id'] = $staff_attribute->staff_custom_attributes_id;
 				$data['has_multi'] = true;
 			}else{
 				$data['attributes'] = $staff_attribute->attributes;	
-				$data['staffs_custom_attributes_id'] = $staff_attribute->staffs_custom_attributes_id;
+				$data['staff_custom_attributes_id'] = $staff_attribute->staff_custom_attributes_id;
 			}
 		}else{
 			$data['attributes'] = '';
-			$data['staffs_custom_attributes_id'] = '';	
+			$data['staff_custom_attributes_id'] = '';	
 		}
 		return $data;
 	}
@@ -573,14 +573,14 @@ class Staff extends MX_Controller {
 	*	@param: int(staff custom attribute id)
 	*	@return: redirect to staff profile 
 	*/
-	function delete_custom_document($staffs_custom_attributes_id)
+	function delete_custom_document($staff_custom_attributes_id)
 	{
-		$file_details = $this->staff_model->get_staff_custom_attribute_by_id($staffs_custom_attributes_id);
+		$file_details = $this->staff_model->get_staff_custom_attribute_by_id($staff_custom_attributes_id);
 		$file_name = $file_details->attributes;	
 		$staff_user_id = $file_details->user_id;
 		$folder =  md5('custom_files'.$staff_user_id);
 		$this->_delete_document($folder,$file_name);
-		$this->staff_model->delete_staff_custom_attributes_by_id($staffs_custom_attributes_id);
+		$this->staff_model->delete_staff_custom_attributes_by_id($staff_custom_attributes_id);
 		$this->session->set_flashdata('load_document_tab',true);
 		redirect('staff/edit/'.$staff_user_id);
 	}
