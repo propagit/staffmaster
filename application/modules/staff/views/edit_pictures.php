@@ -53,7 +53,7 @@ function update_avatar(user_id)
 {
 	$.ajax({
 		type: 'POST',
-		url: '<?=base_url();?>common/ajax/reload_avatar',
+		url: '<?=base_url();?>staff/ajax/reload_avatar',
 		data:{user_id:user_id},
 		success: function(html) {
 			$('#profile-bar-avatar').html(html);

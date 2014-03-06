@@ -68,8 +68,7 @@ class Ajax extends MX_Controller {
 			'emergency_contact' => $data['emergency_contact'],
 			'emergency_phone' => $data['emergency_phone'],
 		);
-		$this->staff_model->update_staff($data['user_id'], $staff_data);
-		//echo modules::run('common/field_rating', 'rating', $data['rating']);
+		$this->staff_model->update_staff($data['user_id'], $staff_data);		
 		echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
 	}
 	
@@ -464,13 +463,14 @@ class Ajax extends MX_Controller {
 				'modified' => date('Y-m-d H:i:s'),
 				'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)									
 			);
-			$this->load->model('common/common_model');
-			$this->common_model->add_picture($photo);
+			
+			$this->staff_model->add_picture($photo);
 			$new_width=216;		
 			$new_height=216;		
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;
 			$this->scale_image($target,$target,$new_width,$new_height);	
+			
 			//create thumbnail 2 
 			$thumb2_width = 72;
 			$thumb2_height = 72;
@@ -525,9 +525,7 @@ class Ajax extends MX_Controller {
 		$hero_photo = $this->staff_model->get_hero($user_id);	
 		$data['hero_photo'] = $hero_photo;
 		$data['photos'] = $photos;
-		$data['user_id'] = $user_id;
-		//error_reporting(E_ALL);
-		
+		$data['user_id'] = $user_id;				
 		$this->load->view('staff/list_photo', isset($data) ? $data : NULL);
 	}
 	
@@ -604,8 +602,16 @@ class Ajax extends MX_Controller {
 	function reload_staff_edit_page_avatar()
 	{
 		$staff_user_id = $this->input->post('user_id',true);
-		echo modules::run('common/profile_picture','',$staff_user_id);
+		echo modules::run('staff/get_profile_picture',$staff_user_id);
 	}
+	
+	function reload_avatar()
+	{
+		$loggedin_user = $this->session->userdata('user_data');
+		echo modules::run('staff/get_profile_picture',$loggedin_user['user_id']);	
+	}
+	
+	
 	/**
 	*	@name: delete_photo
 	*	@desc: Delete staff photo
