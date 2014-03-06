@@ -13,7 +13,7 @@
 					<? foreach($staffs as $staff) { ?>
 					<tr>
 						<td>
-							<a class="photo_staff wp_photo_30 pull-left">
+							<a class="wp_photo_30 pull-left">
 								<?=modules::run('staff/profile_image', $staff['user_id']);?>
 							</a>
 							<a><?=$staff['first_name'];?> <?=$staff['last_name'];?></a>
