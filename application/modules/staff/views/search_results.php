@@ -20,6 +20,7 @@
 ?>
 <? if(isset($staffs)) { ?>
 <div class="table-responsive">
+	 <form id="staff-search-results-form" role="form">
 	 <table class="table table-bordered table-hover table-middle staff-search-result-table">
         <thead>
         <tr class="heading">
@@ -38,14 +39,16 @@
         </tr>
         </thead>
         <tbody>
-        	<form id="staff-search-results-form">
+        	
             <? 
 				foreach($staffs as $staff) {
 				$photo = $this->staff_model->get_hero($staff['user_id']);
 				$last_worked = $staff['last_worked_date'] == '0000-00-00 00:00:00' ? 'NA' : date('d M Y',strtotime(($staff['last_worked_date'])));
 			 ?>
             <tr id="search-result-tr-<?=$staff['user_id'];?>">
-                <td class="center"><input type="checkbox" name="user_staff_selected_user_id[]" value="<?=$staff['user_id'];?>" class="checkbox-multi-action" /></td>
+                <td class="center">
+                <input type="checkbox" name="user_staff_selected_user_id[]" value="<?=$staff['user_id'];?>" class="checkbox-multi-action" />
+                </td>
                 <td class="center">
                 <a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>">
                 <div class="search-staff-avatar-img">
@@ -74,8 +77,8 @@
             </tr>
             <? } }?>
         </tbody>
-        </form>
     </table>
+    </form>
 </div>
 <script>
 	$(function(){

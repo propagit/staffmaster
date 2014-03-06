@@ -189,8 +189,6 @@ var scroll_to_form = true;
 $(function(){
 	//reset ratings
 	$('#reset').click(function(){
-		$('.basic-search-form .jRatingAverage').css({'width':0});
-		$('#rating').val(0);
 		reset_page();
 	});
 	
@@ -225,6 +223,8 @@ $(function(){
 
 function reset_page()
 {
+	$('.basic-search-form .jRatingAverage').css({'width':0});
+	$('#rating').val(0);
 	$('#current_page').val(1);
 }
 

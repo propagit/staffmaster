@@ -707,6 +707,7 @@ class Ajax extends MX_Controller {
 	function get_contact_multi_staff_modal()
 	{
 		$user_ids = $this->input->post('user_staff_selected_user_id',true);
+		$data['total'] = 0;
 		if($user_ids){
 			$this->session->set_userdata('selected_staff_user_id',$user_ids);	
 			$data['total'] = count($user_ids);

@@ -19,6 +19,7 @@
 ?>
 <? if (isset($clients)) { ?>
 <div class="table-responsive">
+<form id="client-search-results-form">
 <table class="table table-bordered table-hover table-middle table-expanded">
     <thead>
     <tr>
@@ -32,7 +33,6 @@
     </tr>
     </thead>
     <tbody>
-    <form id="client-search-results-form">
     <? foreach($clients as $client) { ?>
     <tr id="search-result-tr-<?=$client['user_id'];?>">
     	<td class="center"><input type="checkbox" name="user_client_selected_user_id[]" value="<?=$client['user_id'];?>" class="checkbox-multi-action" /></td>
@@ -45,9 +45,9 @@
         
     </tr>
     <? } ?>
-    </form>
     </tbody>
 </table>
+</form>
 </div>
 <? } ?>
 
