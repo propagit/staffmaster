@@ -4,11 +4,11 @@
             <table  style="background:<?=(isset($color) && $color !='') ? '#'.$color : '#00bbf8' ?>; color:<?=(isset($font_color) && $font_color !='') ? '#'.$font_color : '#fff' ?>;" width="100%">
             <tr>
             <td width="50%" class="inside-template" style="padding:15px;" valign="bottom">        	
-                        <?=(isset($company['email_c_name'])&& $company['email_c_name']!='') ? $company['email_c_name'] : '';?><br />
-                        <?=(isset($company['email_c_address']) && $company['email_c_address']!='') ? $company['email_c_address'] : '';?><br />
-                        <?=(isset($company['email_c_state']) && $company['email_c_state']!='') ? $company['email_c_state'] : '';?>&nbsp; 
-                        <?=(isset($company['email_c_country']) && $company['email_c_country']!='') ? $company['email_c_country'] : '';?> &nbsp;
-                        <?=(isset($company['email_c_postcode']) && $company['email_c_postcode']!='') ? $company['email_c_postcode'] : '';?><br />
+                        <?=(isset($company['email_c_name'])&& $company['email_c_name']!='') ? $company['email_c_name'].'<br />' : '';?>
+                        <?=(isset($company['email_c_address']) && $company['email_c_address']!='') ? $company['email_c_address'].'<br />' : '';?>
+                        <?=(isset($company['email_c_state']) && $company['email_c_state']!='') ? $company['email_c_state'].'&nbsp;' : '';?> 
+                        <?=(isset($company['email_c_country']) && $company['email_c_country']!='') ? $company['email_c_country'].'&nbsp;' : '';?> 
+                        <?=(isset($company['email_c_postcode']) && $company['email_c_postcode']!='') ? $company['email_c_postcode'].'<br />' : '';?>
                         <br />
                         <?=(isset($company['email_c_telephone']) && $company['email_c_telephone']!='') ? 'T: '.$company['email_c_telephone'].'<br />' : '';?> 
                         <?=(isset($company['email_c_fax']) && $company['email_c_fax']!='') ? 'F: '.$company['email_c_fax'].'<br />' : '';?> 
