@@ -40,10 +40,10 @@ class Staff_model extends CI_Model {
 		if(isset($params['state']) && $params['state'] != ''){ $sql .= " AND u.state = '".$params['state']."'";}
 		
 		// Group
-		if(isset($params['group_id']) && $params['group_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staffs_groups.user_id as sg_uid from attribute_groups, staffs_groups WHERE  attribute_groups.group_id = staffs_groups.attribute_group_id AND group_id = ".$params['group_id'].")";}
+		if(isset($params['group_id']) && $params['group_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staff_groups.user_id as sg_uid from attribute_groups, staff_groups WHERE  attribute_groups.group_id = staff_groups.attribute_group_id AND group_id = ".$params['group_id'].")";}
 		
 		//Role
-		if(isset($params['role_id']) && $params['role_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staffs_roles.user_id as sr_uid from attribute_roles, staffs_roles WHERE  attribute_roles.role_id = staffs_roles.attribute_role_id AND role_id = ".$params['role_id'].")";}	
+		if(isset($params['role_id']) && $params['role_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staff_roles.user_id as sr_uid from attribute_roles, staff_roles WHERE  attribute_roles.role_id = staff_roles.attribute_role_id AND role_id = ".$params['role_id'].")";}	
 		
 		//Location	
 		//if location id is set use this to filter the search
@@ -87,10 +87,10 @@ class Staff_model extends CI_Model {
 				foreach($custom_attrs['normal_elements'] as $key => $val){
 					if(is_array($val)){
 						foreach($val as $v){
-							$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes like '%".$v."%'))";	
+							$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_attributes WHERE (attribute_name = '".$key."' AND attributes like '%".$v."%'))";	
 						}
 					}else{
-						$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes = '".$val."'))";
+						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_attributes WHERE (attribute_name = '".$key."' AND attributes = '".$val."'))";
 					}
 				}
 			}
@@ -99,7 +99,7 @@ class Staff_model extends CI_Model {
 				foreach($custom_attrs['file_uploads'] as $key => $val){
 					$match = ($val == 'yes' ? '!=' : '=');
 					if($val == 'yes'){
-						$sql .= " AND s.user_id IN (SELECT user_id from staffs_custom_attributes WHERE (attribute_name = '".$key."' AND attributes ".$match." ''))";
+						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_attributes WHERE (attribute_name = '".$key."' AND attributes ".$match." ''))";
 					}
 				}
 			}
@@ -245,7 +245,7 @@ class Staff_model extends CI_Model {
 	*/
 	function staff_has_role($staff_user_id,$role_id)
 	{
-		$query = $this->db->where('user_id',$staff_user_id)->where('attribute_role_id',$role_id)->get('staffs_roles')->row();
+		$query = $this->db->where('user_id',$staff_user_id)->where('attribute_role_id',$role_id)->get('staff_roles')->row();
 		if($query){
 			return true;	
 		}
@@ -265,7 +265,7 @@ class Staff_model extends CI_Model {
 	
 	function get_role_frequency($role_id)
 	{
-		$sql = "SELECT count(staffs_roles_id) as total FROM `staffs_roles` WHERE `attribute_role_id` = ".$role_id;
+		$sql = "SELECT count(staff_roles_id) as total FROM `staff_roles` WHERE `attribute_role_id` = ".$role_id;
 		$total = $this->db->query($sql)->row_array();
 		if($total){
 			return $total['total'];	
@@ -301,7 +301,7 @@ class Staff_model extends CI_Model {
 					'user_id' => $user_staff_id,
 					'attribute_role_id' => $role_id
 				);
-		$this->db->insert('staffs_roles', $data);
+		$this->db->insert('staff_roles', $data);
 		return $this->db->insert_id();
 	}
 	/**
@@ -313,7 +313,7 @@ class Staff_model extends CI_Model {
 	*/
 	function delete_staff_role($user_staff_id,$role_id)
 	{
-		$sql = "delete from staffs_roles where user_id = ".$user_staff_id." and attribute_role_id = ".$role_id;
+		$sql = "delete from staff_roles where user_id = ".$user_staff_id." and attribute_role_id = ".$role_id;
 		return $this->db->query($sql);
 	}
 	
@@ -328,7 +328,7 @@ class Staff_model extends CI_Model {
 	*/
 	function staff_has_group($staff_user_id,$group_id)
 	{
-		$query = $this->db->where('user_id',$staff_user_id)->where('attribute_group_id',$group_id)->get('staffs_groups')->row();
+		$query = $this->db->where('user_id',$staff_user_id)->where('attribute_group_id',$group_id)->get('staff_groups')->row();
 		if($query){
 			return true;	
 		}
@@ -364,7 +364,7 @@ class Staff_model extends CI_Model {
 					'user_id' => $user_staff_id,
 					'attribute_group_id' => $group_id
 				);
-		$this->db->insert('staffs_groups', $data);
+		$this->db->insert('staff_groups', $data);
 		return $this->db->insert_id();
 	}
 	/**
@@ -376,7 +376,7 @@ class Staff_model extends CI_Model {
 	*/
 	function delete_staff_group($user_staff_id,$group_id)
 	{
-		$sql = "delete from staffs_groups where user_id = ".$user_staff_id." and attribute_group_id = ".$group_id;
+		$sql = "delete from staff_groups where user_id = ".$user_staff_id." and attribute_group_id = ".$group_id;
 		return $this->db->query($sql);
 	}
 	
@@ -389,7 +389,7 @@ class Staff_model extends CI_Model {
 	*/
 	function delete_staff_custom_attributes($user_staff_id)
 	{
-		$sql = "delete from staffs_custom_attributes where file_upload = 'no' and user_id = ".$user_staff_id;
+		$sql = "delete from staff_custom_attributes where file_upload = 'no' and user_id = ".$user_staff_id;
 		return $this->db->query($sql);
 	}
 	
@@ -402,7 +402,7 @@ class Staff_model extends CI_Model {
 	*/
 	function insert_staff_custom_attributes($data)
 	{
-		$this->db->insert('staffs_custom_attributes',$data);
+		$this->db->insert('staff_custom_attributes',$data);
 	}
 	/**
 	*	@name: get_staff_custom_attribute
@@ -413,12 +413,12 @@ class Staff_model extends CI_Model {
 	*/
 	function get_staff_custom_attribute($user_id,$attribute_name)
 	{
-		return $this->db->where('user_id',$user_id)->where('attribute_name',$attribute_name)->get('staffs_custom_attributes')->row();
+		return $this->db->where('user_id',$user_id)->where('attribute_name',$attribute_name)->get('staff_custom_attributes')->row();
 	}
 	
-	function get_staff_custom_attribute_by_id($staffs_custom_attributes_id)
+	function get_staff_custom_attribute_by_id($staff_custom_attributes_id)
 	{
-		return $this->db->where('staffs_custom_attributes_id',$staffs_custom_attributes_id)->get('staffs_custom_attributes')->row();
+		return $this->db->where('staff_custom_attributes_id',$staff_custom_attributes_id)->get('staff_custom_attributes')->row();
 	}
 	/**
 	*	@name: delete_staff_custom_attributes_by_id
@@ -427,9 +427,9 @@ class Staff_model extends CI_Model {
 	*	@param: (int) delete_staff_custom_attributes_by_id
 	*	@return: null
 	*/
-	function delete_staff_custom_attributes_by_id($staffs_custom_attributes_id)
+	function delete_staff_custom_attributes_by_id($staff_custom_attributes_id)
 	{
-		$sql = "delete from staffs_custom_attributes where staffs_custom_attributes_id = ".$staffs_custom_attributes_id;
+		$sql = "delete from staff_custom_attributes where staff_custom_attributes_id = ".$staff_custom_attributes_id;
 		return $this->db->query($sql);
 	}
 	/**

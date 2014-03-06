@@ -4,7 +4,7 @@ class Group_model extends CI_Model {
 	
 	function get_groups($params = '')
 	{
-		$sql = "select attribute_groups.*, (select count(staffs_groups_id) from staffs_groups where attribute_groups.group_id = staffs_groups.attribute_group_id) as frequency from attribute_groups";
+		$sql = "select attribute_groups.*, (select count(staff_groups_id) from staff_groups where attribute_groups.group_id = staff_groups.attribute_group_id) as frequency from attribute_groups";
 		if($params){
 			$sort_param = json_decode($params);	
 			$sql .= " order by $sort_param->sort_by $sort_param->sort_order";

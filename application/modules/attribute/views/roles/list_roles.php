@@ -93,7 +93,7 @@
 var sort_data = {
 	'sort_by':'name',
 	'sort_order':'asc',
-	'total_active_staffs':<?=modules::run('staff/get_total_staffs');?>	
+	'total_active_staffs':<?=modules::run('staff/get_total_staff');?>	
 };
 
 var params = {

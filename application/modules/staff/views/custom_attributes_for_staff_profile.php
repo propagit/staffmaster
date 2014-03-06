@@ -99,6 +99,7 @@
                 <label class="col-md-3 control-label"><?=$elem->label;?></label>
                 <div class="col-md-4">
                		<select id="select-basic" name="<?=$elem->name;?><?=($elem->multi_select == 'yes' ? '[]' : '');?>" class="form-control" <?=($elem->multi_select == 'yes' ? 'multiple="multiple"' : '');?>>
+                      <option value="0">Select One</option>	
                       <?php
 					  	$attrs = json_decode($elem->attributes);
 						if($attrs){
