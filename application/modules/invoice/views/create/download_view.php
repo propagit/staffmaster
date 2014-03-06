@@ -4,7 +4,7 @@
             <tr>
             	<td width="65%"><img src="<?=base_url()?>assets/img/core/staffmaster-logo.jpg"></td>
                 <td width="5%">&nbsp;</td>
-                <td valign="bottom" class="padding-left-15">Bill Enquiries</td>
+                <td width="30%" style="width:500px;" valign="bottom" class="padding-left-15">Bill Enquiries</td>
             </tr>
             <tr>
                 <td valign="top">                    
