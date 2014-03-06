@@ -19,7 +19,7 @@
 		<div class="form-group">
 			<label class="col-lg-2 control-label">Location</label>
 			<div class="col-lg-10">
-				<?=modules::run('attribute/location/field_select', 'location_parent_id', $location['parent_id'], $location['location_id']);?>
+				<?=modules::run('attribute/location/field_select', 'location_parent_id', $parent_id, $location_id);?>
 			</div>
 		</div>
 	</div>

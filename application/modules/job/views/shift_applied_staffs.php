@@ -13,7 +13,9 @@
 					<? foreach($staffs as $staff) { ?>
 					<tr>
 						<td>
-							<a class="photo_staff photo_45 pull-left"></a>
+							<a class="photo_staff wp_photo_30 pull-left">
+								<?=modules::run('staff/profile_image', $staff['user_id']);?>
+							</a>
 							<a><?=$staff['first_name'];?> <?=$staff['last_name'];?></a>
 							<?=modules::run('common/field_rating', 'rating', $staff['rating'],true);?>
 						</td>
