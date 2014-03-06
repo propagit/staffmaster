@@ -314,8 +314,17 @@ class Ajax extends MX_Controller {
 			$out = array();
 			foreach($job_dates as $date)
 			{
+				
+				#$unassign = modules::run('job/count_job_shifts', $job_id, $date['job_date'], '0');
+				#$completed = modules::run('job/count_job_shifts', $job_id, $date['job_date'], SHIFT_FINISHED); 
+
+
 				$out[] = array(
-					'id' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date']),
+					'unassigned' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], '0'),
+					'unconfirmed' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], SHIFT_UNCONFIRMED),
+					'rejected' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], SHIFT_REJECTED),
+					'confirmed' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], SHIFT_CONFIRMED),
+					'completed' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], SHIFT_FINISHED),
 					'title' => $job_id,
 					'url' => $date['job_date'],
 					'start' => strtotime($date['job_date']) . '000',

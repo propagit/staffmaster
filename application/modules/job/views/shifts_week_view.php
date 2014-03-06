@@ -31,8 +31,7 @@
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_days" /></th>
-		<th class="center" width="70">Date</th>
-		<th class="center">Shifts</th>
+		<th class="center" width="80">Date</th>
 		<th class="center">Unassigned</th>
 		<th class="center">Unconfirmed</th>
 		<th class="center">Rejected</th>
@@ -48,6 +47,7 @@ $unassign = modules::run('job/count_job_shifts', $job_id, $date_ts, '0');
 $unconfirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_UNCONFIRMED);
 $rejected = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_REJECTED);
 $confirmed = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_CONFIRMED);
+$completed = modules::run('job/count_job_shifts', $job_id, $date_ts, SHIFT_FINISHED); 
 $shifts_count = $unassign + $unconfirmed + $rejected + $confirmed;
 $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 ?>
@@ -57,7 +57,7 @@ $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 			<input type="checkbox" class="selected_shift_days" value="<?=implode(',', $ids);?>" />
 			<? } ?>
 		</td>
-		<td class="wp-date" width="70">
+		<td class="wp-date" width="80">
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', <?=($shifts_count > 0) ? 'true' : 'false';?>)" class="<?=($shifts_count == 0) ? 'default' : ''; ?><?=($this->session->userdata('job_date') == date('Y-m-d',$date_ts) && ($shifts_count != 0)) ? ' active': '';?>">
 				<span class="wk_day"><?=date('D', $date_ts);?></span>
 				<span class="wk_date"><?=date('d', $date_ts);?></span>
@@ -65,7 +65,6 @@ $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 				
 			</a>
 		</td>
-		<td class="center"><?=($shifts_count > 0) ? $shifts_count : '';?></td>
 		<td class="center">
 			<? if ($unassign > 0) { ?>
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', true)" class="badge"><?=$unassign;?></a>
