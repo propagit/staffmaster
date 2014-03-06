@@ -23,8 +23,18 @@ class Shift extends MX_Controller {
 	function search_staff_form($shift_id) {
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
 		$data['shift'] = $shift;
+		$location_id = null;
+		$parent_id = null;
 		$venue = modules::run('attribute/venue/get_venue', $shift['venue_id']);
-		$data['location'] = modules::run('attribute/location/get_location', $venue['location_id']);
+		if ($venue) {
+			$location = modules::run('attribute/location/get_location', $venue['location_id']);
+			if ($location) {
+				$location_id = $location['location_id'];
+				$parent_id = $location['parent_id'];
+			}
+		}
+		$data['parent_id'] = $parent_id;
+		$data['location_id'] = $location_id;
 		$this->load->view('shift/search_staff/search_form', isset($data) ? $data : NULL);
 	}
 	
