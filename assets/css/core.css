@@ -24,6 +24,9 @@ a:hover {
 	color: #0089b5;
 
 }
+.text-red {
+	color: #ff0000;
+}
 /* style for drag & drop */
 body.dragging, body.dragging * {
   cursor: move !important;

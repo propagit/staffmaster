@@ -27,31 +27,80 @@
 </thead>
 <tbody>
 	<? foreach($timesheets as $timesheet) { 
-		$client = modules::run('client/get_client', $timesheet['client_id']);
-		$staff = modules::run('staff/get_staff', $timesheet['staff_id']);  ?>
-	<tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status']);?>">
-		<td><input type="checkbox" value="<?=$timesheet['shift_id'];?>" /></td>
-		<td class="wp-date" width="80">
-			<span class="wk_day"><?=date('D', strtotime($timesheet['job_date']));?></span>
-			<span class="wk_date"><?=date('d', strtotime($timesheet['job_date']));?></span>
-			<span class="wk_month"><?=date('M', strtotime($timesheet['job_date']));?></span>
-		</td>
-		<td><?=$client['company_name'];?></td>
-		<td><?=$timesheet['job_name'];?></td>
-		<td class="center"><?=date('H:i', $timesheet['start_time']);?> - <?=date('H:i', $timesheet['finish_time']);?> <?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-danger">*</span>': '';?></td>
-		<td class="center"><?=modules::run('common/break_time', $timesheet['break_time']);?></td>
-		<td><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
-		<td><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td>
-		<td class="center"><a href="#"><i class="fa fa-dollar"></i></a></td>
-		<td class="center"><a class="" onclick="batch_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-share-square-o"></i></a></td>
-		<td class="center"><a data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/load_timesheet/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a></td>
-		<td class="center"><a onclick="delete_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a></td>
-	</tr>
-	<? } ?>
+		echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); } ?>
 </tbody>
 </table>
 
 <script>
+$(function(){
+	init_edit();
+    
+	$('.sort-data').on('click',function(){
+		sort_data.sort_by = $(this).attr('sort-by');
+		//toggle sort order data for next sort
+		(sort_data.sort_order == 'asc' ? sort_data.sort_order = 'desc' : sort_data.sort_order = 'asc');	
+		list_timesheets();
+	});
+})
+function init_edit() {
+	$('.ts_start_time').editable({
+		combodate: {
+            firstItem: '',
+            minuteStep: 15
+        },
+		url: '<?=base_url();?>timesheet/ajax/update_timesheet_start_time',
+        success: function(response, newValue)
+        {
+	        if (response.status == 'error')
+			{
+				return response.msg;
+			}
+			else
+			{
+				refrest_timesheet($(this).attr('data-pk'));
+			}
+        }
+    });
+    $('.ts_finish_time').editable({
+		combodate: {
+            firstItem: '',
+            minuteStep: 15
+        },
+        url: '<?=base_url();?>timesheet/ajax/update_timesheet_finish_time',
+        success: function(response, newValue)
+        {
+	        if (response.status == 'error')
+			{
+				return response.msg;
+			}
+			else
+			{
+				refrest_timesheet($(this).attr('data-pk'));
+			}
+        }
+    });
+    $('.ts_payrate').editable({
+		url: '<?=base_url();?>timesheet/ajax/update_timesheet_payrate',
+		name: 'payrate_id',
+		title: 'Select Pay Rate',
+		source: [<?=modules::run('attribute/payrate/get_payrates', 'data_source');?>],
+		success: function(response, newValue)
+        {
+	        refrest_timesheet($(this).attr('data-pk'));
+        }
+	});
+}
+function refrest_timesheet(timesheet_id) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>timesheet/ajax/refresh_timesheet",
+		data: {timesheet_id: timesheet_id},
+		success: function(html) {
+			$('#timesheet_' + timesheet_id).replaceWith(html);
+			init_edit();
+		}
+	})
+}
 function batch_timesheet(timesheet_id) {	
 	preloading($('#list_timesheets'));
 	$.ajax({
@@ -79,14 +128,5 @@ function delete_timesheet(timesheet_id) {
 		 }
 	});
 }
-
-$(function(){
-	$('.sort-data').on('click',function(){
-			sort_data.sort_by = $(this).attr('sort-by');
-			//toggle sort order data for next sort
-			(sort_data.sort_order == 'asc' ? sort_data.sort_order = 'desc' : sort_data.sort_order = 'asc');	
-			list_timesheets();
-		});
-});
 </script>
 <? } ?>

@@ -671,13 +671,13 @@ span.dash-invoice-value{
 	border-bottom:0;
 }
 
-#shift-search-staffs .row {
+.modal-form .row {
 	padding: 0;
 }
-#shift-search-staffs .col-md-7 {
+.modal-form .col-md-7 {
 	padding-left: 0;
 }
-#shift-search-staffs .col-md-5 {
+.modal-form .col-md-5 {
 	padding-right: 0;
 }
 #shift-search-staff-results {

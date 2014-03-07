@@ -53,13 +53,6 @@ $(function(){
 				{
 					
 					load_job_shifts(<?=$shift['job_id'];?>);
-					/* $('.shift_staff').popover('hide');
-					$('#shift_staff_' + data.shift_id).html(data.value);
-					$('#shift_staff_' + data.shift_id).removeClass(function (index, css) {
-					    return (css.match (/\bbtn-\S+/g) || []).join(' ');
-					});
-					$('#shift_staff_' + data.shift_id).parent().parent().removeClass();
-					$('#shift_staff_' + data.shift_id).parent().parent().addClass(data.class_name); */
 				}
 			}
 		})

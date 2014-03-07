@@ -5,7 +5,7 @@
 			<h4 class="modal-title" id="myModalLabel">Find Staff</h4>
 		</div>
 		<div class="col-md-12">			
-			<div class="modal-body" id="shift-search-staffs">
+			<div class="modal-body modal-form">
 				<div class="col-md-7">
 					<h4>Search Staff</h4>
 					<p>Find staff to fill this shift<br />&nbsp;</p>

@@ -55,7 +55,8 @@
 		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
 		<th class="center" colspan="2">Find</th>
 		<th class="center" colspan="2">Settings</th>
-		<th class="center" colspan="2" width="30">Functions</th>
+		<th class="center" colspan="2" width="30">Brief</th>
+		<th class="center">Exp</th>
 	</tr>
 </thead>
 <tbody>
@@ -109,10 +110,13 @@
 			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><i class="fa fa-male"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="shift_copy" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=$shift['shift_id'];?>"><i class="fa fa-copy"></i></a>
+			<a class="editable-click"><i class="fa fa-info-circle"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="shift_delete" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-trash-o"></i></a>
+			<a class="editable-click" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-comment-o"></i></a>
+		</td>
+		<td class="center" width="40">
+			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_expenses_modal/<?=$shift['shift_id'];?>"><i class="fa fa-dollar"></i></a>
 		</td>
 	</tr>
 <? } ?>
@@ -203,7 +207,8 @@ $(function(){
 	});
 	$('.shift_start_time').editable({
 		combodate: {
-            firstItem: 'name'
+            firstItem: '',            
+            minuteStep: 15
         },
 		url: '<?=base_url();?>job/ajax/update_shift_start_time',
         success: function(response, newValue)
@@ -216,7 +221,8 @@ $(function(){
     });
     $('.shift_finish_time').editable({
 		combodate: {
-            firstItem: 'name'
+            firstItem: '',
+            minuteStep: 15
         },
         url: '<?=base_url();?>job/ajax/update_shift_finish_time',
         success: function(response, newValue)

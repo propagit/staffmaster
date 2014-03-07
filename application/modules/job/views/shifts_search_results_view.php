@@ -6,7 +6,7 @@
 <table class="table table-bordered table-hover table-middle">
 	<thead>
 	<tr>
-		<th class="center" width="65">Date &nbsp; <a onclick="sort_search_shifts('date')"><i class="fa fa-sort"></i></a></th>
+		<th class="center" width="80">Date &nbsp; <a onclick="sort_search_shifts('date')"><i class="fa fa-sort"></i></a></th>
 		<th>Client &nbsp; <a onclick="sort_search_shifts('client')"><i class="fa fa-sort"></i></a></th>
 		<th>Campaign Name &nbsp; <a onclick="sort_search_shifts('campaign')"><i class="fa fa-sort"></i></a></th>
 		<th>Venue &nbsp; <a onclick="sort_search_shifts('venue')"><i class="fa fa-sort"></i></a></th>
