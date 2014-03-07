@@ -78,6 +78,7 @@
             <? } }?>
         </tbody>
     </table>
+    <input type="hidden" name="email_modal_header" value="Contact Staff" />
     </form>
 </div>
 <script>

@@ -14,6 +14,19 @@ class Email_template_model extends CI_Model {
 		return $template;
 	}
 	
+	function get_all_templates()
+	{
+		$templates = $this->db->get('email_templates')->result();
+		return $templates;
+	}
+	
+	function get_merge_field_by_merge_field($merge_field)
+	{
+		$merge_field = $this->db->get('merge_field')->row();
+		if($merge_field){
+			return $merge_field;
+		}
+	}
 	
 	
 }

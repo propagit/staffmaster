@@ -34,10 +34,7 @@ class Staff extends MX_Controller {
 				break;	
 			case 'delete_custom_document':
 					$this->delete_custom_document($param);
-				break;	
-			case 'send_email':
-					$this->send_email();
-				break;	
+				break;		
 			default:
 					echo 'do nothing';
 				break;

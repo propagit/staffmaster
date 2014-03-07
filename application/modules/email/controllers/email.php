@@ -9,6 +9,7 @@ class Email extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('email_template_model');
 	}
 	
 	public function index($method='', $param='')
@@ -21,20 +22,89 @@ class Email extends MX_Controller {
 		}
 		
 	}
-	
-	function main_view() {
+	/**
+	*	@name: main_view
+	*	@desc: Load the landing page for email template. This is where the user will be able to modify email templates.
+	*	@access: public
+	*	@param: none
+	*	@return: Loads the UI to update email template
+	*/
+	function main_view(){
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
-	
+	/**
+	*	@name: email_templates_dropdown
+	*	@desc: 
+	*	@access: public
+	*	@param: 
+	*/
 	function email_templates_dropdown($field_name, $field_value=null, $size=null)
 	{
-		$array = array(
-			array('value' => 'Roster Update', 'label' => 'Roster Update Email Template'),
-		);
+		$templates = $this->email_template_model->get_all_templates();
+		$count = 0;
+		if($templates){
+			foreach($templates as $template){
+				  $array[$count] = array('value' => $template->email_template_id, 'label' => $template->template_name);
+				  $count++;
+			}
+		}
 		
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
-	
+	/**
+	*	@name: format_template_body
+	*	@desc: 
+	*	@access: public
+	*	@param: 
+	*/
+	function format_template_body($email)
+	{
+		preg_match_all('/{[^}]*}/', $email, $merge_fields);
+		$formatted_email = $email;
+		if($merge_fields[0]){
+			foreach($merge_fields[0] as $field){
+				
+				switch(trim($field)){
+					case '{FirstName}':
+						$formatted_email = str_replace($field,'Kaushtuv',$formatted_email);
+					break;
+					case '{CompanyName}':
+						$formatted_email = str_replace($field,'Propagate',$formatted_email);
+					break;	
+					case '{SystemURL}':
+						$formatted_email = str_replace($field,base_url(),$formatted_email);
+					break;	
+					case '{UserName}':
+						$formatted_email = str_replace($field,'kaushtuv@propagate.com.au',$formatted_email);
+					break;	
+					case '{Password}':
+						$formatted_email = str_replace($field,'admin1234',$formatted_email);
+					break;	
+				}
+				
+				/*  $rule = $this->email_template_model->get_merge_field_by_merge_field($field);
+				switch($rule->merge_rule){
+					case 'field_name':
+						$temp_email = str_replace($field,$object[$rule->table_field],$temp_email);
+					break;
+					case 'replace_text':
+					
+					break;
+					case 'custom_rule':
+					
+					break;	
+				}  */
+			}
+		}
+		return $formatted_email;
+		
+	}
+	/**
+	*	@name: description_merge_fields
+	*	@desc: 
+	*	@access: public
+	*	@param: 
+	*/
 	function description_merge_fields($text_area_id = '')
 	{
 		$data['text_area_id'] = $text_area_id;
@@ -195,5 +265,7 @@ class Email extends MX_Controller {
 			show_error($this->email->print_debugger());
 		} 
 	}
+	
+	
 	
 }

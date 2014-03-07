@@ -49,7 +49,12 @@ class Ajax extends MX_Controller {
 		}
 		$this->load->view($tab, isset($data) ? $data : NULL);
 	}
-	
+	/**
+	*	@name: update_template
+	*	@desc: Update email template
+	*	@access: public
+	*	@param: (via post) 
+	*/
 	function update_template()
 	{
 		$name_prefix = $this->input->post('form_name_prefix',true);
@@ -57,13 +62,125 @@ class Ajax extends MX_Controller {
 		$email_from = $this->input->post($name_prefix.'email_from',true);
 		$email_subject = $this->input->post($name_prefix.'email_subject',true);
 		$email = $this->input->post($name_prefix.'email',true);
+		$auto_send =  $this->input->post($name_prefix.'auto_send',true);
 		$data = array(
 					'template_content' => $email,
 					'email_from' => $email_from,
 					'email_subject' => $email_subject,
+					'auto_send' => ($auto_send ? 'yes' : 'no'),
 					'modified' => date('Y-m-d H:i:s')
 					);
 		echo $this->email_template_model->update_template($template_id,$data);
 	}
 	
+	function load_template()
+	{
+		$template_id = $this->input->post('template_id',true);
+		if($template_id){
+			$template =  $this->email_template_model->get_template($template_id);
+			echo $template->template_content;	
+		}
+		echo  '&nbsp;';
+	}
+	
+	/**
+	*	@name: get_send_email_modal
+	*	@desc: Open modal window which contains the view to send email to multiple user
+	*	@access: public
+	*	@param: (via POST) modal_header
+	*	
+	*/
+	
+	function get_send_email_modal()
+	{
+		$data['email_modal_header'] = "Contact User";
+		$user_ids = $this->input->post('selected_user_ids',true);
+		if($this->input->post('modal_header',true)){
+			$data['email_modal_header'] = $this->input->post('email_modal_header',true);	
+		}
+		$data['total'] = 0;
+		if($user_ids){
+			$this->session->set_userdata('selected_user_ids',$user_ids);	
+			$data['total'] = count($user_ids);
+			
+		}
+		$this->load->view('send_email_modal', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@name: send_sample_email
+	*	@desc: Send sample email to a particular email
+	*	@access: public
+	*	@param: (via POST) user id 
+	*	
+	*/
+	function send_sample_email()
+	{
+		$this->load->model('setting/setting_model');
+		$company = $this->setting_model->get_profile();	
+		$email_body = $this->input->post('email_body',true);
+		$email_subject = 'Test Email';
+		$email_template_id = $this->input->post('email_template_select',true);
+		if($email_template_id){
+			$template_info = $this->email_template_model->get_template($email_template_id);
+			$email_subject = $template_info->email_subject;
+		}
+		$email_to = $this->input->post('sample_email_to',true);
+		if($email_to){
+			$email_data = array(
+						'to' => $email_to,
+						'from' => $company['email_c_email'],
+						'from_text' => 'Admin @ '.$company['email_c_name'],
+						'subject' => $email_subject,
+						'message' => modules::run('email/format_template_body',$email_body)
+					);
+			if(LIVE_SERVER){
+				modules::run('email/send_email',$email_data);
+			}else{
+				modules::run('email/send_email_localhost',$email_data);
+			}
+			
+		}
+		echo 'success';
+	}
+	/**
+	*	@name: send_email
+	*	@desc: Open contact staff modal window
+	*	@access: public
+	*	@param: (via POST) user id and new stats
+	*	
+	*/
+	function send_email()
+	{
+		$this->load->model('setting/setting_model');
+		$company = $this->setting_model->get_profile();	
+		$email_body = $this->input->post('email_body',true);
+		$email_subject = 'Test Email';
+		$email_template_id = $this->input->post('email_template_select',true);
+		if($email_template_id){
+			$template_info = $this->email_template_model->get_template($email_template_id);
+			$email_subject = $template_info->email_subject;
+		}
+		$selected_user_ids = $this->session->userdata('selected_user_ids');
+		if($selected_user_ids){
+			foreach($selected_user_ids as $id){
+				$email = $this->user_model->get_user_email_from_user_id($id);
+				if($email){
+					$email_data = array(
+								'to' => $email,
+								'from' => $company['email_c_email'],
+								'from_text' => 'Admin @ '.$company['email_c_name'],
+								'subject' => $email_subject,
+								'message' => $email_body
+							);
+					if(LIVE_SERVER){
+						modules::run('email/send_email',$email_data);
+					}else{
+						modules::run('email/send_email_localhost',$email_data);
+					}
+				}
+			}
+		}
+		$this->session->unset_userdata('selected_user_ids');
+		echo 'success';
+	}
 }

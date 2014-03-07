@@ -87,5 +87,7 @@ define('GST_NO', 0);
 define('GST_YES', 1);
 define('GST_ADD', 2);
 define('TAX_FREE', 3);
+
+define('LIVE_SERVER',false);
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

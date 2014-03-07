@@ -329,53 +329,15 @@ function update_multiple_selected_status()
 function contact_multi_staff(){
 	$.ajax({
 		  type: "POST",
-		  url: "<?=base_url();?>staff/ajax/get_contact_multi_staff_modal",
+		  url: "<?=base_url();?>email/ajax/get_send_email_modal",
 		  data: $('#staff-search-results-form').serialize(),
 		  success: function(html) {
 			  $('#ajax-contact-staff-modal').html(html);
-			  $('#contact-staff-modal').modal('show');	
+			  $('#email-modal').modal('show');	
 		  }
 	  });
 		
 }
 
-function contact_staff_email()
-{
-	update_ckeditor();
-	$.ajax({
-		  type: "POST",
-		  url: "<?=base_url();?>staff/ajax/contact_multi_staff",
-		  data: $('#contact-staff-email-form').serialize(),
-		  success: function(html) {
-			$('#msg-email-sent-successfully').removeClass('hide');
-			setTimeout(function(){
-				$('#msg-email-sent-successfully').addClass('hide');
-			}, 3000);		
-		  }
-	  });	
-}
-
-function send_contact_staff_sample_email()
-{
-	update_ckeditor();
-	$.ajax({
-		  type: "POST",
-		  url: "<?=base_url();?>staff/ajax/send_contact_staff_sample_email",
-		  data: $('#contact-staff-email-form').serialize(),
-		  success: function(html) {
-			$('#msg-email-sent-successfully').removeClass('hide');
-			setTimeout(function(){
-				$('#msg-email-sent-successfully').addClass('hide');
-			}, 3000);
-		  }
-	  });
-}
-
-function update_ckeditor()
-{
-	for ( instance in CKEDITOR.instances ) {
-            CKEDITOR.instances[instance].updateElement();
-    }	
-}
 
 </script>
