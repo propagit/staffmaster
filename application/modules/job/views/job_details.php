@@ -2,7 +2,7 @@
 	<div class="box top-box">
 		<div class="col-md-5">
 	        <h2><?= $client['company_name']; ?></h2>
-	        <h3><?= $job['name']; ?> </h3>
+	        <h2 class="s30"><?= $job['name']; ?> </h2>
 		</div>
 		<div class="col-md-7">
 			<div class="pull-right">

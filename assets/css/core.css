@@ -1150,7 +1150,7 @@ ol.example li.placeholder:before {
 .top-box h2 {
 	margin-top: 10px;
 }
-.box h3 {
+.box h2.s30 {
 	margin-top: 0;
 	font-size:30px;
 	font-weight:900;

@@ -9,7 +9,8 @@
 				array('value' => 'contact-multi-clients','label' =>'<i class="fa fa-envelope-o"></i> Contact Clients'),
 				array('value' => 'delete-multi-clients','label' =>'<i class="fa fa-times"></i> Delete Clients'),
 				array('value' => 'change-multi-status','label' =>'<i class="fa fa-thumbs-o-up"></i> Change Selected Status'),
-				array('value' => 'export-clients','label' =>'<i class="fa fa-download"></i> Export Selected')
+				array('value' => 'export-clients','label' =>'<i class="fa fa-download"></i> Export Selected'),
+				array('value' => 'update-job-counts', 'label' => '<i class="fa fa-refresh"></i> Update Job Count')
 				);
 
 	$id = 'search-client-result-action';
@@ -79,9 +80,13 @@ $(function(){
 
 	$('#menu-search-client-result-action ul li a').on('click',function(){
 		var action = $(this).attr('data-value');
-		perform_multi_update(action);
+		if (action == 'update-job-counts') {
+			window.location = '<?=base_url();?>client/update_client_jobs_count';
+		} else {
+			perform_multi_update(action);
+		}
+		
 	})
-	
 	//go to page
 	$('.pagination li').on('click',function(e){
 		e.preventDefault();
