@@ -74,7 +74,6 @@
 
 <script>
 $(function(){
-	search_clients();
 	$('#btn_search_clients').click(function(){
 		search_clients();
 	})
