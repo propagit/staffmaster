@@ -24,6 +24,9 @@ a:hover {
 	color: #0089b5;
 
 }
+.text-red {
+	color: #ff0000;
+}
 /* style for drag & drop */
 body.dragging, body.dragging * {
   cursor: move !important;
@@ -1150,7 +1153,7 @@ ol.example li.placeholder:before {
 .top-box h2 {
 	margin-top: 10px;
 }
-.box h3 {
+.box h2.s30 {
 	margin-top: 0;
 	font-size:30px;
 	font-weight:900;

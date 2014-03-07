@@ -52,5 +52,48 @@ class Ajax extends MX_Controller {
 		# Unlock the shift
 		$this->job_shift_model->update_job_shift($timesheet['shift_id'], array('status' => SHIFT_CONFIRMED));
 	}
-
+	
+	function update_timesheet_start_time()
+	{
+		$timesheet_id = $this->input->post('pk');
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$new_start_time = strtotime($this->input->post('value') . ':00');
+		if ($new_start_time >= $timesheet['finish_time'])
+		{
+			$this->output->set_status_header('400');
+			echo 'Start time cannot be greater than finish time';
+		}
+		else
+		{
+			$this->timesheet_model->update_timesheet($timesheet_id, array('start_time' => $new_start_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_start_time));
+		}
+	}
+	function update_timesheet_finish_time()
+	{
+		$timesheet_id = $this->input->post('pk');
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$new_finish_time = strtotime($this->input->post('value') . ':00');
+		if ($new_finish_time <= $timesheet['start_time'])
+		{
+			$this->output->set_status_header('400');
+			echo 'Finish time cannot be less than start time';
+		}
+		else
+		{
+			$this->timesheet_model->update_timesheet($timesheet_id, array('finish_time' => $new_finish_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
+		}
+	}
+	
+	function refresh_timesheet() {
+		$timesheet_id = $this->input->post('timesheet_id');
+		echo modules::run('timesheet/row_timesheet', $timesheet_id);
+	}
+	
+	function update_timesheet_payrate()
+	{
+		$timesheet_id = $this->input->post('pk');
+		$this->timesheet_model->update_timesheet($timesheet_id, array('payrate_id' => $this->input->post('value')));
+	}
 }

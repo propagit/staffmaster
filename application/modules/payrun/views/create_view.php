@@ -88,6 +88,7 @@ function list_staffs() {
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/list_staffs",
 		success: function(html) {
+				alert(html);
 			loaded($('#list_staffs'), html);
 		}
 	})

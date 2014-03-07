@@ -48,6 +48,8 @@
 				</div>
 				<? } else if ($roster['status'] == 2) { ?>
 				<span class="btn btn-success"><i class="fa fa-thumbs-o-up"></i> Confirmed</span>
+				<? } else { ?>
+				<span class="btn btn-core">Completed</span>
 				<? } ?>
 			</td>
 		</tr>

@@ -42,6 +42,16 @@ class Timesheet extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
+	function row_timesheet($timesheet_id) {
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$data['client'] = modules::run('client/get_client', $timesheet['client_id']);
+		$data['staff'] = modules::run('staff/get_staff', $timesheet['staff_id']);
+		$data['timesheet'] = $timesheet;
+		$data['shift'] = $this->job_shift_model->get_job_shift($timesheet['shift_id']);
+		$data['job'] = modules::run('job/get_job', $timesheet['job_id']);
+		$this->load->view('timesheet_row_view', isset($data) ? $data : NULL);
+	}
+	
 	function generate() {
 		$shifts = $this->timesheet_model->get_finished_shifts();
 		foreach($shifts as $shift)
@@ -139,9 +149,8 @@ $shifts = $this->timesheet_model->get_timesheets();
 	*/
 	function menu_dropdown_actions($id, $label) {
 		$data = array(
-			array('value' => 'batch', 'label' => 'Batch Selected'),
-			array('value' => 'revert', 'label' => 'Revert Selected'),
-			array('value' => 'delete', 'label' => 'Delete Selected')
+			array('value' => 'batch', 'label' => '<i class="fa fa-share-square-o"></i> Batch Selected'),
+			array('value' => 'revert', 'label' => '<i class="fa fa-times"></i> Revert Selected')
 		);
 		return modules::run('common/menu_dropdown', $data, $id, $label);
 	}
