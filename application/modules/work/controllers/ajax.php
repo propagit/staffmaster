@@ -13,17 +13,24 @@ class Ajax extends MX_Controller {
 		$this->load->model('work_model');
 	}
 	
-	function load_month_works()
-	{
+	/**
+	*	@name: load_works
+	*	@desc: ajax function to load list of works group by date
+	*	@access: public
+	*	@param: (void)
+	*	@return: (html) list view of works group by date
+	*/
+	function load_works() {
+		$active_month = $this->session->userdata('active_month_work');
+		$data['work_days'] = $this->work_model->get_work_days(date('Y-m', $active_month));
+		$this->load->view('staff/days_list_view', isset($data) ? $data : NULL);
+	}
+	
+	
+	function load_month_works() {
 		$this->session->set_userdata('active_month_work', $this->input->post('ts'));
 	}
 	
-	function load_works()
-	{
-		$active_month = $this->session->userdata('active_month_work');
-		$data['work_days'] = $this->work_model->get_work_days(date('Y-m', $active_month));
-		$this->load->view('staff/work_days_list', isset($data) ? $data : NULL);
-	}
 	
 	function load_roster_brief()
 	{

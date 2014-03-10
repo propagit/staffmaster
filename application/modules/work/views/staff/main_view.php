@@ -9,24 +9,20 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
     		<div id="nav_works">
-    			
+    			<?
+    				$data = array(
+    					array('value' => 'apply', 'label' => '<i class="fa fa-thumbs-o-up"></i> Apply Selected')
+    				);
+    				echo modules::run('common/menu_dropdown', $data, 'work-action', 'Actions');
+    			?>
+    			<div class="btn-group btn-nav">
+    				<ul class="nav nav-tabs tab-respond">
+						<? foreach($months as $month) { ?>
+						<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_works(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
+						<? } ?>
+					</ul>
+    			</div>
     		</div>
-			<div class="table_action">		
-				<ul class="nav nav-tabs tab-respond nav-action">
-					<li class="dropdown">
-						<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
-						<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
-							<li><a class="multi_apply">Apply Selected</a></li>
-						</ul>
-					</li>
-				</ul>
-				
-				<ul class="nav nav-tabs tab-respond">
-					<? foreach($months as $month) { ?>
-					<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_works(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
-					<? } ?>
-				</ul>
-			</div>
 			
 			<div id="list_works" class="clear"></div>
 		</div>
@@ -37,17 +33,17 @@
 <script>
 $(function(){
 	load_works();
-	$('.multi_apply').click(function(){
+	$('#menu-work-action ul li a[data-value="apply"]').click(function(){
 		var selected_shifts = new Array();
 		$('.select_shift:checked').each(function(){
 			selected_shifts.push($(this).val());
 		});
-		apply_shifts(selected_shifts);		
+		apply_shifts(selected_shifts);
 	});
+	
 })
 
-function load_works()
-{
+function load_works() {
 	preloading($('#list_works'));
 	$.ajax({
 		url: "<?=base_url();?>work/ajax/load_works",
@@ -56,8 +52,7 @@ function load_works()
 		}
 	})
 }
-function load_month_works(obj, ts)
-{
+function load_month_works(obj, ts) {
 	$(obj).parent().parent().find('li').removeClass('active');
 	$.ajax({
 		type: "POST",
