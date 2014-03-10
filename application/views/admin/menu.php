@@ -35,6 +35,7 @@ $menu = array(
 		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Buy SMS Credits')
 	)),
 	array('path' => '#', 'icon' => 'fa-lightbulb-o', 'title' => 'Training Centre', 'sub' => array(
+		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
 		array('path' => '#', 'icon' => 'fa-question', 'title' => 'User Guide'),
 		array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
 		array('path' => '#', 'icon' => 'fa-folder-open-o', 'title' => 'Training Centre'),

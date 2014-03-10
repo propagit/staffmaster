@@ -31,7 +31,7 @@
             	<div class="msg-head-wrap">
                     <h2>Conversations</h2>
                     <p>Join the conversation and get involved!</p>
-                    <button class="btn btn-core dash-start-conversation"><i class="fa fa-comments-o"></i> Start Conversation</button>
+                    <button class="btn btn-core dash-start-conversation" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>forum/ajax/create_topic_form"><i class="fa fa-comments-o"></i> Start Conversation</button>
                 </div>
                 <ul class="messages">
                     <li class="by-user">
