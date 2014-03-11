@@ -300,6 +300,8 @@ ol.example li.placeholder:before {
 		display:none;	
 }
 
+
+
 /* begin - bootstrap overwrites */
 
 .row{ 
@@ -616,6 +618,24 @@ ol.example li.placeholder:before {
 .messages .by-me .aro {
 	right: -8px;
 }
+.messages .message-img{
+	display:block;
+	padding:15px 0;	
+}
+.messages .default-avatar-photo{
+	margin-top:0;	
+}
+.messages .document-anchor{
+	display:inline;	
+}
+.reply-btn{
+	float: right;
+	margin: 10px 0;	
+}
+.message-reply-box{
+	padding:10px 0;	
+	min-height:120px;
+}
 .info-row{
 	font-size: 11px;
 	color: #949494;
@@ -701,6 +721,9 @@ ol.example li.placeholder:before {
 	line-height: 72px;
 	background-color: #fff;
 	border-radius: 4px;	
+}
+.margin-bottom-5{
+	margin-bottom:5px;	
 }
 /* begin - responsive */
 
@@ -1408,12 +1431,25 @@ ol.example li.placeholder:before {
 	float:left;
 	width:100%;
 }
-
+/* modal tabs */
+.modal-tab-head{
+	padding-right:30px;
+	padding-left:30px;
+}
+.modal-tab-li{
+	min-width:136px;
+	text-align:center;
+}
+.modal-add-left-padding{
+	padding-left:15px !important;	
+}
 /* style for select under this class */
 .select-btm-margin .custom-select{
 	margin-bottom:15px;	
 }
-
+.modal-checkbox-wrap{
+	line-height:34px;	 
+}
 
 /* style for disabled */
 .wrapper_disabled {

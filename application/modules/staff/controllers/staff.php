@@ -577,5 +577,18 @@ class Staff extends MX_Controller {
 		$this->load->view('staff_picture', isset($data) ? $data : NULL);
 	}
 	
+	/**
+	*	@desc Returns group id that an staff has been assigned to
+	*
+	*   @name get_staff_groups
+	*	@access public
+	*	@param ([int] user id)
+	*	@return Returns an array with group id if a staff member has been assigned to a group or false if the staff has not been assigned to any group
+	*	
+	*/
+	function get_staff_groups($user_id)
+	{
+		return $this->staff_modal->get_staff_groups($user_id);
+	}
 	
 }

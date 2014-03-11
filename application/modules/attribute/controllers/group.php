@@ -88,4 +88,23 @@ class Group extends MX_Controller {
 		return modules::run('common/field_select', $array, $field_name, $field_value);
 	}
 	
+	function conversation_field_select($field_name, $field_value=null)
+	{
+		$groups = $this->group_model->get_groups();
+		$array = array();
+		foreach($groups as $group)
+		{
+			$array[] = array(
+				'value' => $group['group_id'],
+				'label' => $group['name']
+			);
+		}
+		$data = array(
+			'data' => $array,
+			'field_name' => $field_name,
+			'field_value' => $field_value
+		);
+		$this->load->view('groups/conversation_field_select', isset($data) ? $data : NULL);
+	}
+	
 }

@@ -236,6 +236,18 @@ var help = {
             	$(slaves).prop("checked", false);
         	}	
 		});	
+	},
+	
+	//reload conversations
+	reload_conversations:function(container_id,action_url)
+	{
+		$.ajax({
+			type: "POST",
+			url: action_url,
+			success: function(html) {
+				$('#'+container_id).html(html);
+			}
+		})	
 	}
 
 	

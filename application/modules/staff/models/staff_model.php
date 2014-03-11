@@ -465,4 +465,23 @@ class Staff_model extends CI_Model {
 		$sql = "UPDATE user_staffs SET rating = ".$new_rating." WHERE user_id IN (".$user_ids.")";
 		return $this->db->query($sql);
 	}
+	/**
+	*	@desc Checks if a staff has been assigned this role.
+	*
+	*   @name staff_has_role
+	*	@access public
+	*	@param null
+	*	@return Returns true if this role has been assigned to staff and vice versa
+	*	
+	*/
+	function get_staff_groups($user_id)
+	{
+		$sql = "select attribute_group_id as group_id from staff_groups where user_id = ".$user_id;
+		$staff_groups = $this->db->query($sql)->result();
+		if($staff_groups){
+			return $staff_groups;	
+		}
+		return false;
+		
+	}
 }

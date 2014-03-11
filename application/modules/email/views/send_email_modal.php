@@ -16,10 +16,6 @@
                     
                     <div class="tab-content">
                         <div class="tab-pane active" id="send-email">
-                        	<h4 class="modal-body-title">Via Email</h4>
-                            <p>
-                            The Role name should represent the job the staff will perform whilst performing this role.
-                            </p>
                             <form id="send-email-form">
                                  <div class="form-group">
                                      <div class="col-sm-5 remove-left-gutter">
