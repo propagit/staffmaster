@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-lg" id="conversation-create-modal">
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
@@ -21,14 +21,14 @@
                                  <div class="form-group">
                                      <label for="add-button" class="col-sm-2 control-label">Title:</label>
                                       <div class="col-sm-10 modal-add-left-padding">
-                                           <input type="text" class="form-control" id="conversation_title" name="conversation_title" data="required">
+                                           <input type="text" class="form-control" id="conversation_title" name="conversation_title" data="required" value="<? if(isset($conversation)){ echo $conversation->title; }?>">
                                       </div>
                                  </div>
                                  
                                  <div class="form-group editor-wrap">
                                  	 <label for="add-button" class="col-sm-2 control-label">Message:</label>
                                 	 <div class="col-sm-10 modal-add-left-padding">
-                                      	 <textarea class="form-control" id="conversation_message" name="conversation_message" data="required"></textarea> 
+                                      	 <textarea class="form-control" id="conversation_message" name="conversation_message" data="required"><? if(isset($conversation)){ echo $conversation->message; }?></textarea> 
                                      </div>
                                  </div>
                                  
@@ -65,6 +65,7 @@
                                            <div class="alert alert-success"><i class="fa fa-check"></i> &nbsp; Conversation Succesfully Posted</div>
                                       </div>
                                  </div>
+                                 <input type="hidden" name="update_id" value="<? if(isset($conversation)){ echo $conversation->topic_id; }?>" />
                             </form>
                             
                             
@@ -81,28 +82,3 @@
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 
-<script>
-$(function(){
-	
-	$('#start-conversation').on('click',function(){
-		if(help.validate_form('start-conversation-form')){
-			$('#start-conversation-form').submit();	
-		}
-	});
-
-	$('#start-conversation-form').submit(function(){
-		preloading($('#start-conversation-content'));
-		$(this).ajaxSubmit(function(html){
-			$('#msg-conversation-started-successfully').removeClass('hide');
-			setTimeout(function(){
-				$('#msg-conversation-started-successfully').addClass('hide');
-			}, 2000);
-			help.reload_conversations('load-conversations','<?=base_url();?>forum/ajax/reload_conversation');	
-		});	
-		return false;
-	});
-});//ready
-
-
-
-</script>

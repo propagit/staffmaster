@@ -238,9 +238,29 @@ var help = {
 		});	
 	},
 	
+	create_conversation:function(container_id,action_url){
+		$(document).on('click','#start-conversation',function(){
+			if(help.validate_form('start-conversation-form')){
+				$('#start-conversation-form').submit();	
+			}
+		});
+	
+		$(document).on('submit','#start-conversation-form',function(){
+			preloading($('#start-conversation-tab'));
+			$(this).ajaxSubmit(function(html){
+				$('#msg-conversation-started-successfully').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-conversation-started-successfully').addClass('hide');
+				}, 2000);
+				help.reload_conversations(container_id,action_url);	
+				$('#wrapper_loading').remove();
+			});	
+			return false;
+		});
+	},
+	
 	//reload conversations
-	reload_conversations:function(container_id,action_url)
-	{
+	reload_conversations:function(container_id,action_url){
 		$.ajax({
 			type: "POST",
 			url: action_url,

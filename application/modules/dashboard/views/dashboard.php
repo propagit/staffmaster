@@ -34,7 +34,7 @@
                     <button class="btn btn-core dash-start-conversation" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>forum/ajax/create_topic_form"><i class="fa fa-comments-o"></i> Start Conversation</button>
                 </div>
                 <div id="load-conversations">
-                	<?=modules::run('forum/load_converation');?>
+                	<?=modules::run('forum/load_conversation');?>
                 </div>
             </div>
         </div>
@@ -50,3 +50,8 @@
         </div>
     </div>
 </div>
+<script>
+$(function(){
+	help.create_conversation('load-conversations','<?=base_url();?>forum/ajax/reload_conversation');
+});//ready
+</script>

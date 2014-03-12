@@ -654,7 +654,7 @@ ol.example li.placeholder:before {
 }
 .info-row > .time span{
 	padding-right:0;
-	text-align: right;
+	text-align:center;
 	width: auto;	
 }
 .info-row:after {
@@ -685,6 +685,7 @@ ol.example li.placeholder:before {
 .msg-badge{
 	font-size:14px !important;	
 	margin-right:10px;
+	margin-left: 26px;
 }
 .text-blue{
 	color:#5fcff2;
@@ -692,14 +693,22 @@ ol.example li.placeholder:before {
 .reply-wrap{
 	margin-top:15px;	
 }
-.reply-avatar{
-	float: right;
-}
 .reply-row{
 	height:25px;
 }
 .survey-wrap{
 	
+}
+.reply-user-name{
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	color: #949494 !important;	
+}
+.toggle-replies{
+	font-size: 20px;
+	margin-top: 2px;
+	position: absolute;
+	cursor: pointer;
 }
 .survey-wrap .msg-frm-group{
 	min-height: 20px;
@@ -724,6 +733,20 @@ ol.example li.placeholder:before {
 }
 .margin-bottom-5{
 	margin-bottom:5px;	
+}
+.center-div-date{
+	width: 34px;
+	margin: auto;
+	float: none;
+	padding: 0;	
+}
+.reply-by-me{
+	margin-right:0 !important;
+	margin-left: 100px;
+}
+.aro-left{
+	right:0;
+	left:-8px;	
 }
 /* begin - responsive */
 
@@ -1538,3 +1561,4 @@ ol.example li.placeholder:before {
 .add-top-margin{
 	margin-top:15px;	
 }
+

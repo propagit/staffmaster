@@ -312,5 +312,5 @@ class Common extends MX_Controller {
 		$data['current_page'] = $current_page;
 		$this->load->view('pagination',isset($data) ? $data : NULL);
 	}
-	
+
 }

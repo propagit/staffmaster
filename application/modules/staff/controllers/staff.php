@@ -441,7 +441,7 @@ class Staff extends MX_Controller {
 	/**
 	*	@name: delete_files
 	*	@desc: Deletes file from server
-	*	@access: private
+	*	@access: public
 	*	@param: (string) path to the main folder, (string) name of the file, (array) sub folder names
 	*	@return: null
 	*/

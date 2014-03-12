@@ -34,5 +34,10 @@ class User extends MX_Controller {
 	function get_user($user_id) {
 		return $this->user_model->get_user($user_id);
 	}
+	
+	function get_user_full_name($user_id){
+		$user = $this->user_model->get_user($user_id);
+		return $user['first_name'].' '.$user['last_name'];	
+	}
 		
 }
