@@ -27,6 +27,9 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="col-md-6 white-box">
+        	<div class="inner-box desktop-hidden-lg add-bottom-margin">
+                <?=modules::run('dashboard/load_daily_statistics');?>
+            </div>
             <div class="inner-box">
             	<div class="msg-head-wrap">
                     <h2>Conversations</h2>
@@ -40,7 +43,7 @@
         </div>
         
         <div class="col-md-6 white-box">
-            <div class="inner-box">
+            <div class="inner-box desktop-visible-lg">
                 <?=modules::run('dashboard/load_daily_statistics');?>
             </div>
             <div class="inner-box add-top-margin">
@@ -52,6 +55,9 @@
 </div>
 <script>
 $(function(){
+	//create conversation
 	help.create_conversation('load-conversations','<?=base_url();?>forum/ajax/reload_conversation');
+	//create poll
+	help.create_poll('load-conversations','<?=base_url();?>forum/ajax/reload_conversation');
 });//ready
 </script>

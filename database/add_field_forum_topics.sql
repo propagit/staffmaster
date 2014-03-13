@@ -1,0 +1,1 @@
+ALTER TABLE  `forum_topics` ADD  `type` ENUM(  'poll',  'conversation' ) NOT NULL DEFAULT  'conversation' AFTER  `document_name` ;

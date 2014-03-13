@@ -394,6 +394,12 @@ ol.example li.placeholder:before {
 .desktop-visible{ 
 	display:block;
 }
+.desktop-hidden-lg{ 
+	display: none;
+}
+.desktop-visible-lg{ 
+	display:block;
+}
 .form-horizontal .control-label {
 	text-align: left;
 }
@@ -585,7 +591,7 @@ ol.example li.placeholder:before {
 }
 .messages .by-user .message-area {
 	background: #fff;
-	margin-left: 100px;
+	margin-left: 88px;
 }
 .messages .by-user .message-area, 
 .messages .by-me .message-area {
@@ -593,15 +599,17 @@ ol.example li.placeholder:before {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
-	padding: 8px 12px;
+	padding: 8px 12px 12px 12px;
 	position: relative;
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border: 2px solid #e4e4e4;
+	font-size:14px;
+	line-height:14px;
 }
 .messages .by-me .message-area {
-	margin-right: 100px;
+	margin-right: 88px;
 }
 .messages .by-user .aro {
 	left: -8px;
@@ -611,7 +619,7 @@ ol.example li.placeholder:before {
 	width: 8px;
 	height: 12px;
 	position: absolute;
-	top: 12px;
+	top: 30px;
 	background: #fff;
 	line-height: 15px;
 }
@@ -647,14 +655,19 @@ ol.example li.placeholder:before {
 	font-size: 18px;
 	font-weight: 700;
 	color: #3d3d3d;
+	padding: 10px 0;
+	line-height:20px;
 }
 .info-row > .time {
-	float: right;
+	float: left;
 	padding-right:0;
+	padding-left:0;
+	display:block;
+	width:100%;
 }
 .info-row > .time span{
 	padding-right:0;
-	text-align:center;
+	text-align:left;
 	width: auto;	
 }
 .info-row:after {
@@ -702,13 +715,14 @@ ol.example li.placeholder:before {
 .reply-user-name{
 	font-size: 11px !important;
 	font-weight: 600 !important;
-	color: #949494 !important;	
+	color: #949494 !important;
+	display:inline;
+	padding:0 0 0 10px !important;	
 }
-.toggle-replies{
+.reply-arrow-down{
 	font-size: 20px;
-	margin-top: 2px;
+	margin-top: -2px;
 	position: absolute;
-	cursor: pointer;
 }
 .survey-wrap .msg-frm-group{
 	min-height: 20px;
@@ -740,13 +754,37 @@ ol.example li.placeholder:before {
 	float: none;
 	padding: 0;	
 }
-.reply-by-me{
+.reply-by-user{
 	margin-right:0 !important;
-	margin-left: 100px;
+	margin-left: 88px;
+}
+.messages .by-user .reply-by-me{
+	margin-left:0 !important;
+	margin-right: 88px;
+}
+.messages .reply-by-me .aro{
+	left: inherit;
+	right:-8px;
+}
+.reply-date{
+	display:inline !important;
+	width:auto !important;	
 }
 .aro-left{
 	right:0;
 	left:-8px;	
+}
+.poll-radio{
+	margin-top:0 !important;	
+}
+.survey-bar{
+	margin-bottom:10px;	
+}
+.survey-result-stat{
+	color:#3d3d3d;	
+}
+.messages .profile_photo{
+	margin-right:0 !important;	
 }
 /* begin - responsive */
 
@@ -793,6 +831,12 @@ ol.example li.placeholder:before {
 }
 
 @media(max-width:992px){
+	.desktop-hidden-lg{ 
+		display: block;
+	}
+	.desktop-visible-lg{ 
+		display:none;
+	}
 	.dropdown .fa{ 
 		display:none;
 	}
@@ -1487,7 +1531,11 @@ ol.example li.placeholder:before {
 	width: 55px;
 }
 
-
+@media(max-width:1500px){
+	.messages .message-img{
+		width:100%;
+	}	
+}
 @media(max-width:1200px){
 	.box p{ 
 		font-size:16px;
@@ -1519,7 +1567,11 @@ ol.example li.placeholder:before {
 	.dob-day,.dob-mth,.dob-year{
 		width:30%;	
 	}
-
+	.dash-start-conversation{
+		float:none !important;
+		margin-top:0 !important;
+		margin-bottom:20px;	
+	}
 }
 @media (max-width: 320px) {
 	.dob-day,.dob-mth,.dob-year{
@@ -1560,5 +1612,12 @@ ol.example li.placeholder:before {
 }
 .add-top-margin{
 	margin-top:15px;	
+}
+.add-bottom-margin{
+	margin-bottom:20px;
+}
+.remove-gutters{
+	padding-left:0;
+	padding-right:0;
 }
 

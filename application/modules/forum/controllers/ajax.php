@@ -25,6 +25,35 @@ class Ajax extends MX_Controller {
 		$data['conversation'] = $this->forum_model->get_conversation_by_id($topic_id);
 		$this->load->view('create_topic_form', isset($data) ? $data : NULL);
 	}
+	/**
+	*	@name: take_poll
+	*	@desc: Adds survey info into the database when a user takes a survey
+	*	@access: public
+	*	@param: ([vai post][int] topic id, [int] poll answer id)
+	*	@return: the poll result
+	*/
+	function take_poll()
+	{
+		$poll_answer_id = $this->input->post('poll_answer_id',true);
+		$topic_id = $this->input->post('topic_id',true);
+		$current_answer_stat = $this->forum_model->get_poll_answer_by_id($poll_answer_id);
+		$user = $this->session->userdata('user_data');
+		if($current_answer_stat){
+			//update poll answer count
+			$data = array(
+							'answer_count' => $current_answer_stat->answer_count+1
+						);
+			$this->forum_model->update_poll_answers($poll_answer_id,$data);
+			//mark this user as someone who has already taken the poll
+			$data_user_poll_answers = array(
+											'topic_id' => $topic_id,
+											'poll_answer_id' => $poll_answer_id,
+											'user_id' => $user['user_id']
+										);
+			$this->forum_model->add_user_poll_answers($data_user_poll_answers);
+		}
+		echo modules::run('forum/load_poll',$topic_id);
+	}
 	
 	/**
 	*	@name: load_conversation_list
@@ -40,6 +69,20 @@ class Ajax extends MX_Controller {
 		$data['user'] = $user;
 		$data['conversations'] = $this->forum_model->get_conversations($user,$params); 
 		$this->load->view('conversation_list', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@desc Delete forum reply
+	*   @name delete_forum_reply
+	*	@access public
+	*	@param ([vai post] [int] message id)
+	*	@return success or failed message
+	*	
+	*/
+	function delete_forum_reply()
+	{
+		$message_id = $this->input->post('message_id',true);
+		$this->forum_model->delete_conversation_reply($message_id);
+		echo 'success';
 	}
 	
 	/**
@@ -74,6 +117,10 @@ class Ajax extends MX_Controller {
 		$this->forum_model->delete_conversation_replies($topic_id);
 		//delete conversation
 		$this->forum_model->delete_conversation_topic($topic_id);
+		//delete forum poll answers
+		$this->forum_model->delete_poll_answers_by_topic_id($topic_id);
+		//delete forum_user_poll_answers
+		$this->forum_model->delete_user_poll_answers_by_topic_id($topic_id);
 		echo 'success';
 	}
 	
@@ -139,6 +186,7 @@ class Ajax extends MX_Controller {
 		$update_id = $this->input->post('update_id',true);
 		
 		$user_info = $this->session->userdata('user_data');
+		$topic_id = 0;
 		
 		if($update_id){
 			//update data
@@ -148,6 +196,7 @@ class Ajax extends MX_Controller {
 						'group_id' => $group_id
 						);
 			$this->forum_model->update_topic($update_id,$data);
+			$topic_id = $update_id;
 		}else{
 			//insert data
 			$data = array(
@@ -157,68 +206,161 @@ class Ajax extends MX_Controller {
 						'created_by' => $user_info['user_id']
 						);
 			$insert_id = $this->forum_model->add_topic($data);
-			
-			//if a file has been uploaded
-			if($_FILES['userfile']['name']){			
-				$path = $_FILES['userfile']['name'];
-				$ext = pathinfo($path, PATHINFO_EXTENSION);
-				$img_ext_chk = array('jpg','png','gif','jpeg');
-				$doc_ext_chk = array('pdf','doc','docx');
-				
-				$main_path = './uploads/conversation/';
-				$this->load->library('upload');
-				
-				if (in_array($ext,$img_ext_chk)){
-					//image
-					$subfolders = array('thumb');
-					$salt = 'forum'.$insert_id;
-					//create folders
-					$folder_name = $this->_create_folders('./uploads/conversation/img',$salt,$subfolders);
-					$file_path = $main_path.'img/';
-					$config['upload_path'] = $file_path.$folder_name;
-					$config['allowed_types'] = 'gif|jpg|png|jpeg';
-					$config['max_width']  = '2000';
-					$config['max_height']  = '2000';
-					$document_type = 'image';
-						
-				}elseif (in_array($ext,$doc_ext_chk)){
-					//documents
-					$salt = 'forum'.$insert_id;
-					//create folders
-					$folder_name = $this->_create_folders('./uploads/conversation/docs',$salt);
-					$file_path = $main_path.'docs/';
-					$config['upload_path'] = $file_path.$folder_name;
-					$config['allowed_types'] = 'pdf|doc|docx';
-					$document_type = 'file';
-				}
+			$topic_id = $insert_id;
+		}	
+		  //if a file has been uploaded
+		  //this ignores previous files that has been uploaded as the system is cleaned every six month
+		  if($_FILES['userfile']['name']){
+			  //create main folders if not exist
+			  $main_sub_folders = array('img','docs');
+			  $this->_create_upload_folders('./uploads/conversation/',$main_sub_folders);
+		
+			  $path = $_FILES['userfile']['name'];
+			  $ext = pathinfo($path, PATHINFO_EXTENSION);
+			  $img_ext_chk = array('jpg','png','gif','jpeg');
+			  $doc_ext_chk = array('pdf','doc','docx');
+			  
+			  $main_path = './uploads/conversation/';
+			  $this->load->library('upload');
+			  
+			  if (in_array($ext,$img_ext_chk)){
+				  //image
+				  $subfolders = array('thumb');
+				  $salt = 'forum'.$topic_id;
+				  //create folders
+				  $folder_name = $this->_create_folders('./uploads/conversation/img',$salt,$subfolders);
+				  $file_path = $main_path.'img/';
+				  $config['upload_path'] = $file_path.$folder_name;
+				  $config['allowed_types'] = 'gif|jpg|png|jpeg';
+				  $config['max_width']  = '2000';
+				  $config['max_height']  = '2000';
+				  $document_type = 'image';
+					  
+			  }elseif (in_array($ext,$doc_ext_chk)){
+				  //documents
+				  $salt = 'forum'.$topic_id;
+				  //create folders
+				  $folder_name = $this->_create_folders('./uploads/conversation/docs',$salt);
+				  $file_path = $main_path.'docs/';
+				  $config['upload_path'] = $file_path.$folder_name;
+				  $config['allowed_types'] = 'pdf|doc|docx';
+				  $document_type = 'file';
+			  }
 	
-				$config['max_size']	= '4096'; // 4 MB
-				$config['overwrite'] = FALSE;
-				$config['remove_space'] = TRUE;
-				
-				$this->upload->initialize($config);
-				
-				if (!$this->upload->do_upload()){
-					$this->session->set_flashdata('error_with_fileupload',$this->upload->display_errors());			
-				}else{
-					$data = array('upload_data' => $this->upload->data());
-					$file_name = $data['upload_data']['file_name'];
-					$file_data = array(
-						'document_type' => $document_type,
-						'document_name' => $file_name									
+			  $config['max_size']	= '4096'; // 4 MB
+			  $config['overwrite'] = FALSE;
+			  $config['remove_space'] = TRUE;
+			  
+			  $this->upload->initialize($config);
+			  
+			  if (!$this->upload->do_upload()){
+				  $this->session->set_flashdata('error_with_fileupload',$this->upload->display_errors());			
+			  }else{
+				  $data = array('upload_data' => $this->upload->data());
+				  $file_name = $data['upload_data']['file_name'];
+				  $file_data = array(
+					  'document_type' => $document_type,
+					  'document_name' => $file_name									
+				  );
+				  $this->forum_model->update_topic($topic_id,$file_data);
+				  //create thumbnail if file type is image
+				  if (in_array($ext,$img_ext_chk)){
+					  $thumb_path = $main_path.'img/'.$folder_name;
+					  $this->_resize_photo($file_name,$thumb_path,"thumb",450,338);
+				  }
+			  }
+		  }
+		  
+		  if($send_by_email){
+			  //send email to staff	
+			  modules::run('forum/send_conversation_notification',$topic_id);
+		  }
+		
+		echo 'success';
+	}
+	/**
+	*	@name: create_poll
+	*	@desc: Adds new poll
+	*	@access: public
+	*	@param: (via post) question, poll answers
+	*	@return: status of the initiation process i.e. successful or not.
+	*/
+	function create_poll()
+	{
+		$poll_question = $this->input->post('poll_question',true);
+		$poll_answers = $this->input->post('poll_answers',true);
+		$group_id = $this->input->post('conversation_groups',true);
+		$send_by_email = $this->input->post('send_by_email',true);
+		
+		$user_info = $this->session->userdata('user_data');
+
+		//insert data
+		$data = array(
+					'title' => $poll_question,
+					'message' => json_encode($poll_answers),
+					'group_id' => $group_id,
+					'type' => 'poll',
+					'created_by' => $user_info['user_id']
 					);
-					$this->forum_model->update_topic($insert_id,$file_data);
-					//create thumbnail if file type is image
-					if (in_array($ext,$img_ext_chk)){
-						$thumb_path = $main_path.'img/'.$folder_name;
-						$this->_resize_photo($file_name,$thumb_path,"thumb",450,338);
-					}
+		$insert_id = $this->forum_model->add_topic($data);
+		//add poll answers
+		if($poll_answers)
+		foreach($poll_answers as $pa){
+			if($pa){
+				$poll_data = array(
+									'topic_id' => $insert_id,
+									'answer' => $pa
+								);
+				$this->forum_model->add_poll_answers($poll_data);
+			}
+		}
+
+		  
+		if($send_by_email){
+			//send email to staff	
+			modules::run('forum/send_conversation_notification',$insert_id);
+		}
+		
+		echo 'success';
+	}
+	/**
+	*	@name: _create_upload_folders
+	*	@desc: Creates main folder for documents in the upload folders. This not the folder with md5 hash names. These folders have distinct meaning such as staff_picture etc.
+	*	@access: private
+	*	@param: (string) path of the folder, (array) array of subfolders if applicable
+	*	@return: null
+	*/
+	function _create_upload_folders($path,$subfolders = null)
+	{	
+		//create staff specific folders
+		if($path){
+			$dir = $path;
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			
+			$sub_dir = '';
+			if($subfolders){
+				foreach($subfolders as $folder){
+					$sub_dir = $dir.'/'.$folder;	
+					if(!is_dir($sub_dir))
+					{
+					  mkdir($sub_dir);
+					  chmod($sub_dir,0777);
+					  $fp = fopen($sub_dir.'/index.html', 'w');
+					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+					  fclose($fp);
+					}		
 				}
 			}
 		}
-		echo 'success';
+		
 	}
-	
 	/**
 	*	@name: _create_folders
 	*	@desc: Creates folder for documents
@@ -259,6 +401,8 @@ class Ajax extends MX_Controller {
 		}
 		
 	}
+	
+	
 	/**
 	*	@name: _resize_photo
 	*	@desc: Create thumbnails for images

@@ -18,6 +18,9 @@ class Forum extends MX_Controller {
 	function index($method='', $param='') {
 		switch($method)
 		{
+			case 'manage_conversation_replies':
+				$this->manage_conversation_replies($param);
+			break;	
 			default:
 					$this->main_view();
 				break;
@@ -27,6 +30,20 @@ class Forum extends MX_Controller {
 	
 	function main_view() {
 		$this->load->view('manage_conversations', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@name: manage_conversation_replies
+	*	@desc: Loads list of replies to the conversation for editing purpose by the admin.
+	*	@access: public
+	*	@param: ([int] topic id)
+	*	@return: Displays the list of replies to a conversation for admin to edit
+	*	@action_permitted: Delete only
+	*/
+	function manage_conversation_replies($topic_id)
+	{	
+		$data['replies'] = $this->forum_model->get_replies($topic_id);
+		$data['conversation'] = $this->forum_model->get_conversation_by_id($topic_id);
+		$this->load->view('manage_conversation_replies', isset($data) ? $data : NULL);
 	}
 	/**
 	*	@name: load_converation
@@ -41,6 +58,29 @@ class Forum extends MX_Controller {
 		$data['user'] = $user;
 		$data['conversations'] = $this->forum_model->get_conversations($user);
 		$this->load->view('conversations', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@name: load_poll
+	*	@desc: Loads a poll
+	*	@access: public
+	*	@param: ([int] topic_id) 
+	*	@return: returns a poll
+	*/
+	function load_poll($topic_id)
+	{
+		$user = $this->session->userdata('user_data');
+		$data['user'] = $user;
+		$data['topic_id'] = $topic_id;
+		//if a user has already taken the poll show result
+		if($this->forum_model->has_user_taken_poll($user['user_id'],$topic_id)){
+			$data['total_answer_count'] = $this->forum_model->get_poll_answer_total_count($topic_id);
+			$data['poll_results'] = $this->forum_model->get_poll_answers($topic_id);	
+			$this->load->view('poll_result', isset($data) ? $data : NULL);
+		}else{
+		//if user has not taken the poll show the poll
+			$data['poll_answers'] = $this->forum_model->get_poll_answers($topic_id);
+			$this->load->view('poll', isset($data) ? $data : NULL);
+		}
 	}
 	
 	/**
@@ -68,7 +108,28 @@ class Forum extends MX_Controller {
 		$data['replies'] = $this->forum_model->get_replies($topic_id);
 		$this->load->view('replies', isset($data) ? $data : NULL);
 	}
+	/**
+	*	@name: send_conversation_notification
+	*	@desc: Sends email to staff notifying them of a conversation that has been posted
+	*	@access: public
+	*	@param: ([int] topic id)
+	*	@return: sends email
+	*/
 	
+	function send_conversation_notification($topic_id)
+	{
+		if($topic_id){
+			$conversation = $this->forum_model->get_conversation_by_id($topic_id);
+			if($conversation){
+				$group_id = $conversation->group_id;
+				if(!$group_id){
+					//group id is zero so send to all staff	
+				}else{
+					//get staff belonging to this group and send email to those staff	
+				}
+			}
+		}
+	}
 	
 	
 }

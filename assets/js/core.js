@@ -259,6 +259,27 @@ var help = {
 		});
 	},
 	
+	create_poll:function(container_id,action_url){
+		$(document).on('click','#create-poll',function(){
+			if(help.validate_form('create-poll-form')){
+				$('#create-poll-form').submit();	
+			}
+		});
+	
+		$(document).on('submit','#create-poll-form',function(){
+			preloading($('#create-poll-tab'));
+			$(this).ajaxSubmit(function(html){
+				$('#msg-poll-started-successfully').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-poll-started-successfully').addClass('hide');
+				}, 2000);
+				help.reload_conversations(container_id,action_url);	
+				$('#wrapper_loading').remove();
+			});	
+			return false;
+		});
+	},
+	
 	//reload conversations
 	reload_conversations:function(container_id,action_url){
 		$.ajax({

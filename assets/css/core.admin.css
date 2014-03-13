@@ -712,3 +712,6 @@ span.dash-invoice-value{
 .add-top-margin-20{
 	margin-top:20px;	
 }
+.display-inline{
+	display:inline !important;	
+}

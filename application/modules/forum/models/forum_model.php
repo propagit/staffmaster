@@ -33,6 +33,100 @@ class Forum_model extends CI_Model {
 		return $this->db->update('forum_topics', $data);	
 	}
 	/**
+	*	@name: add_poll_answer
+	*	@desc: Performs Database operation - insert data to the table forum_poll_answers
+	*	@access: public
+	*	@param: (array) array of forum poll data such as poll answers
+	*	@return: insert id
+	*/
+	function add_poll_answers($data)
+	{
+		$this->db->insert('forum_poll_answers',$data);
+		return $this->db->insert_id();
+	}
+	/**
+	*	@name: update_poll_answer
+	*	@desc: Update existing forum poll answers. 
+	*	@access: public
+	*	@param: ([int] poll_answer_id id, [array] update data)
+	*	@return: returns number of rows affected
+	*/
+	function update_poll_answers($poll_answer_id,$data)
+	{
+		$this->db->where('poll_answer_id', $poll_answer_id);
+		return $this->db->update('forum_poll_answers', $data);	
+	}
+	/**
+	*	@name: get_poll_answers
+	*	@desc: This performs database query to get poll answers
+	*	@access: public
+	*	@param: ([int] topic id)
+	*	@return: returns poll answers
+	*/
+	function get_poll_answers($topic_id)
+	{
+		$sql = "SELECT * FROM forum_poll_answers WHERE topic_id = ".$topic_id;
+		$sql .= " ORDER BY poll_answer_id ASC";
+		return $this->db->query($sql)->result();
+	}
+	/**
+	*	@name: get_poll_answer_by_id
+	*	@desc: This performs database query to get poll answer
+	*	@access: public
+	*	@param: ([int] poll answer id)
+	*	@return: returns one poll answer
+	*/
+	function get_poll_answer_by_id($poll_answer_id)
+	{
+		$sql = "SELECT * FROM forum_poll_answers WHERE poll_answer_id = ".$poll_answer_id;
+		return $this->db->query($sql)->row();
+	}
+	/**
+	*	@name: get_replies
+	*	@desc: This performs database query to get the most recent replices for a conversation topic.
+	*	@access: public
+	*	@param: ([int] topic id)
+	*	@return: list of most recent replies
+	*/
+	function get_poll_answer_total_count($topic_id)
+	{
+		$sql = "SELECT SUM(answer_count) as total_answer FROM forum_poll_answers WHERE topic_id = ".$topic_id;
+		$result = $this->db->query($sql)->row();
+		if($result){
+			return $result->total_answer;	
+		}else{
+			return 0;
+		}	
+	}
+	
+	/**
+	*	@name: get_replies
+	*	@desc: This performs database query to get the most recent replices for a conversation topic.
+	*	@access: public
+	*	@param: ([int] topic id)
+	*	@return: list of most recent replies
+	*/
+	function has_user_taken_poll($user_id,$topic_id)
+	{
+		$sql = "SELECT * FROM forum_user_poll_answers WHERE topic_id = ".$topic_id." AND user_id = ".$user_id;
+		$result = $this->db->query($sql)->row();
+		if($result){
+			return $result;	
+		}
+	}
+	/**
+	*	@name: add_user_poll_answers
+	*	@desc: Performs Database operation - insert data to the table forum_user_poll_answers
+	*	@access: public
+	*	@param: (array) array of forum user poll data such as user id poll answer id
+	*	@return: insert id
+	*/
+	function add_user_poll_answers($data)
+	{
+		$this->db->insert('forum_user_poll_answers',$data);
+		return $this->db->insert_id();
+	}
+	/**
 	*	@name: get_conversations
 	*	@desc: This performs database query to get the most recent conversation mostly 10. For admin dashboard the conversation will be loaded ignoring the groups.
 	*	@access: public
@@ -66,7 +160,7 @@ class Forum_model extends CI_Model {
 			}
 		}else{
 			if(!$params){
-				$sql .= " ORDER BY ft.created_on desc";	
+				$sql .= " ORDER BY ft.created_on DESC";	
 			}
 		}
 		return $this->db->query($sql)->result();
@@ -92,8 +186,8 @@ class Forum_model extends CI_Model {
 	*/
 	function get_replies($topic_id,$total = false)
 	{
-		$sql = "select * from forum_messages where topic_id = ".$topic_id;
-		$sql .= " order by posted_on desc";
+		$sql = "SELECT * FROM forum_messages WHERE topic_id = ".$topic_id;
+		$sql .= " ORDER BY posted_on DESC";
 		if($total){
 			$total = $this->db->query($sql)->result();
 			return count($total);
@@ -130,7 +224,7 @@ class Forum_model extends CI_Model {
 	}
 	
 	/**
-	*	@name: delete_conversation_topic
+	*	@name: delete_conversation_replies
 	*	@desc: Permanently removes replies to a conversation topic from the system 
 	*	@access: public
 	*	@param: ([int] topic id)
@@ -141,6 +235,43 @@ class Forum_model extends CI_Model {
 		$this->db->where('topic_id', $topic_id);
 		return $this->db->delete('forum_messages');
 	}
+	/**
+	*	@name: delete_conversation_reply
+	*	@desc: Permanently removes a single reply to a conversation topic from the system 
+	*	@access: public
+	*	@param: ([int] message id)
+	*	@return: rows affected 
+	*/
+	function delete_conversation_reply($message_id)
+	{
+		$this->db->where('message_id', $message_id);
+		return $this->db->delete('forum_messages');
+	}
+	/**
+	*	@name: delete_poll_answers_by_topic_id
+	*	@desc: Delete all poll answers by topic id. This function is mostly called when a conversation is deleted
+	*	@access: public
+	*	@param: ([int] topic_id)
+	*	@return: rows affected 
+	*/
+	function delete_poll_answers_by_topic_id($topic_id)
+	{
+		$this->db->where('topic_id', $topic_id);
+		return $this->db->delete('forum_poll_answers');
+	}
+	/**
+	*	@name: delete_user_poll_answers_by_topic_id
+	*	@desc: Delete all user poll answers by topic id. This function is mostly called when a conversation is deleted
+	*	@access: public
+	*	@param: ([int] topic_id)
+	*	@return: rows affected 
+	*/
+	function delete_user_poll_answers_by_topic_id($topic_id)
+	{
+		$this->db->where('topic_id', $topic_id);
+		return $this->db->delete('forum_user_poll_answers');
+	}
+	
 	
 	
 	
