@@ -10,6 +10,12 @@ class Timesheet_staff_model extends CI_Model {
 		$this->user_id = $user['user_id'];
 	}
 	
+	function get_timesheet($timesheet_id) {
+		$this->db->where('timesheet_id', $timesheet_id);
+		$query = $this->db->get('job_shift_timesheets');
+		return $query->first_row('array');
+	}
+	
 	function get_timesheets() {
 		$sql = "SELECT t.*, j.name as job_name, j.client_id, v.name as venue_name, r.name as role_name
 				FROM `job_shift_timesheets` t

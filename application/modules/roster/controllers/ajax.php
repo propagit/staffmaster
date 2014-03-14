@@ -14,17 +14,24 @@ class Ajax extends MX_Controller {
 	}
 	
 	
-	function load_month_rosters()
-	{
-		$this->session->set_userdata('active_month', $this->input->post('ts'));
+	public function load_rosters() {
+		$active_month = $this->session->userdata('active_month_roster');
+		$data['rosters'] = $this->roster_model->get_rosters(date('Y-m', $active_month));
+		$this->load->view('staff/rosters_table_view', isset($data) ? $data : NULL);
 	}
 	
-	public function load_rosters()
-	{
-		$active_month = $this->session->userdata('active_month');
-		$data['rosters'] = $this->roster_model->get_rosters(date('Y-m', $active_month));
-		$this->load->view('staff/rosters_list_table', isset($data) ? $data : NULL);
+	/**
+	*	@name: load_month_rosters
+	*	@desc: ajax function to set active month to the session
+	*	@access: public
+	*	@param: (POST) ts (timestamp)
+	*	@return: (void)
+	*/
+	function load_month_rosters() {
+		$this->session->set_userdata('active_month_roster', $this->input->post('ts'));
 	}
+	
+	
 	function confirm_rosters()
 	{
 		$rosters = $this->input->post('rosters');

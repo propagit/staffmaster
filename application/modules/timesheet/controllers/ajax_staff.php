@@ -14,14 +14,17 @@ class Ajax_staff extends MX_Controller {
 	}
 	
 	
-	function list_timesheets()
-	{
+	function list_timesheets() {
 		$data['timesheets'] = $this->timesheet_staff_model->get_timesheets();
 		$this->load->view('staff/timesheets_list', isset($data) ? $data : NULL);
 	}
 	
-	function submit_timesheet()
-	{
+	function refresh_timesheet() {
+		$timesheet_id = $this->input->post('timesheet_id');
+		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet_id);
+	}
+	
+	function submit_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
 		$this->timesheet_staff_model->update_timesheet($timesheet_id, array('status' => TIMESHEET_SUBMITTED));
 	}

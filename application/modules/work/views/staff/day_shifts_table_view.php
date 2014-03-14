@@ -21,8 +21,8 @@
 		<td><? $client = modules::run('client/get_client', $shift['client_id']); echo $client['company_name']; ?></td>
 		<td><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>
 		<td>
-			<? if ($shift['venue_id']) { ?>
-			<i class="fa fa-map-marker"></i> &nbsp; <a data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>roster/ajax/load_roster_venue/<?=$shift['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
+			<? if ($shift['venue_id']) { ?>			
+			<a data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>common/ajax/load_venue_map/<?=$shift['venue_id'];?>"><i class="fa fa-map-marker"></i> &nbsp; <?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>			
 			<? } else { ?>
 			Not Specified
 			<? } ?>

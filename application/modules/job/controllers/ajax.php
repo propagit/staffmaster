@@ -781,10 +781,10 @@ class Ajax extends MX_Controller {
 		$this->load->view('shift/search_staff/modal_view', isset($data) ? $data : NULL);
 	}
 	
-	function applied_staffs($shift_id)
-	{
+	function applied_staffs($shift_id) {
 		$data['staffs'] = $this->job_shift_model->get_applied_staffs($shift_id);
 		$data['shift_id'] = $shift_id;
+		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
 		$this->load->view('shift_applied_staffs', isset($data) ? $data : NULL);
 	}
 		
