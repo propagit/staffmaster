@@ -1470,20 +1470,6 @@ ol.example li.placeholder:before {
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
-#modal-timesheet .form-group {
-	margin-bottom: 5px;
-}
-#modal-timesheet p{
-	padding-bottom:0;	
-}
-#modal-timesheet .col-left {
-	float: left;
-	width: 450px;
-}
-#modal-timesheet .col-right {
-	float: right;
-	width: 200px;
-}
 
 .modal-body .col-sm-2,
 .modal-body .col-sm-10{

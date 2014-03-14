@@ -1,4 +1,4 @@
-<? if (!isset($expenses) || !$expense) { ?>
+<? if (!isset($expenses) || !$expenses) { ?>
 <div class="alert alert-warning">No expenses</div>
 <? } else { ?>
 <div class="table-responsive">
@@ -19,7 +19,7 @@
 		<td class="center">$<?=$expense['staff_cost'];?></td>
 		<td class="center">$<?=$expense['client_cost'];?></td>
 		<td class="center"><?=modules::run('common/reverse_field_gst', $expense['tax']);?></td>
-		<td class="center"><a onclick="delete_expense(<?=$shift_id;?>, <?=$i;?>)"><i class="fa fa-times"></i></a></td>
+		<td class="center"><a onclick="delete_expense(<?=$timesheet_id;?>, <?=$i;?>)"><i class="fa fa-times"></i></a></td>
 	</tr>
 	<? $i++; } ?>
 </tbody>

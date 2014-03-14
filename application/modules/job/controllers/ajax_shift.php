@@ -83,7 +83,9 @@ class Ajax_shift extends MX_Controller {
 	function list_expenses() {
 		$shift_id = $this->input->post('shift_id');
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
-		$data['expenses'] = unserialize($shift['expenses']);
+		if($shift) {
+			$data['expenses'] = unserialize($shift['expenses']);
+		}
 		$data['shift_id'] = $shift_id;
 		$this->load->view('shift/expense/table_list_view', isset($data) ? $data : NULL);
 	}

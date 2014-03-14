@@ -41,6 +41,16 @@ class Uniform extends MX_Controller {
 		}	
 	}
 	
+	function display_uniform($uniform_id)
+	{
+		$uniform = $this->get_uniform($uniform_id);
+		echo ($uniform) ? $uniform['name'] : 'Not Specified';
+	}
+	function get_uniform($uniform_id)
+	{
+		return $this->uniform_model->get_uniform($uniform_id);
+	}
+	
 	function list_uniforms()
 	{
 		$sort_uniform = (bool) $this->session->userdata('sort_uniform');

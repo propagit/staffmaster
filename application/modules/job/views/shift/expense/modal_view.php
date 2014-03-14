@@ -6,11 +6,11 @@
 		</div>
 		<div class="col-md-12">			
 			<div class="modal-body modal-form">
-				<h4>Add Expense</h4>
+				
+				<div id="shift-expenses"></div>
+				
 				<?=modules::run('job/shift/add_expense_form', $shift_id);?>
 				
-				<div id="shift-expenses">
-				</div>
 			</div>
 		</div>
 	</div><!-- /.modal-content -->

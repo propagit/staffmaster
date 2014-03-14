@@ -7,9 +7,8 @@
 $(function(){
 	$('.photo_staff').tooltip();
 })
-function select_staff(obj)
-{
-	$('input[name="shift_staff"]').val($(obj).attr('data-original-title'));
-	$('input[name="shift_staff_id"]').val($(obj).attr('data-pk'));
+function select_staff(obj) {
+	$('input[name="ts_staff"]').val($(obj).attr('data-original-title'));
+	$('input[name="ts_staff_id"]').val($(obj).attr('data-pk'));
 }
 </script>

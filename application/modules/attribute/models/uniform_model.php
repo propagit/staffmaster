@@ -22,6 +22,12 @@ class Uniform_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function get_uniform($uniform_id)
+	{
+		$this->db->where('uniform_id', $uniform_id);
+		$query = $this->db->get('attribute_uniforms');
+		return $query->first_row('array');
+	}
 	
 	function update_uniform($uniform_id, $data)
 	{

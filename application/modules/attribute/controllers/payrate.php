@@ -68,6 +68,54 @@ class Payrate extends MX_Controller {
 		}	
 	}
 	
+	function extract_payrate($object) {
+		$payrate_id = $object['payrate_id'];
+		$start_time = $object['start_time'];
+		$finish_time = $object['finish_time'];
+		$rates = array();
+		for($i=$start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes
+			$day = date('N', $i); # Get day of the week	(1: monday - 7: sunday)
+			$hour = date('G', $i); # Get hour of the day (0-23)
+			$staff_rate = $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour);
+			if (!in_array($staff_rate, $rates)) {
+				$rates[] = $staff_rate;
+			}
+		}
+		$hours = array();
+		foreach($rates as $rate) {
+			$hours[$rate] = 0;
+			for($i=$start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes
+				$day = date('N', $i); # Get day of the week	(1: monday - 7: sunday)
+				$hour = date('G', $i); # Get hour of the day (0-23)
+				$staff_rate = $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour);
+				if ($staff_rate == $rate) {
+					$hours[$rate] += 15; 
+				}
+			}
+		}
+		$breaks = json_decode($object['break_time']);
+		if (count($breaks) > 0) {
+			foreach($breaks as $break)
+			{
+				$length = $break->length;
+				$start_at = $break->start_at;
+				foreach($rates as $rate) {
+					for($i=0; $i < $length; $i = $i + 60*15) { # Every 15 minute
+						$start_at = $start_at + $i;
+						$day = date('N', $i);
+						$hour = date('G', $i);
+						$staff_rate = $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour);
+						if ($staff_rate == $rate) {
+							$hours[$rate] -= 15;
+						}
+					}
+				}
+				
+			}
+		}
+		return $hours;
+	}
+	
 	function field_select($field_name, $field_value=null)
 	{
 		$payrates = $this->payrate_model->get_payrates();

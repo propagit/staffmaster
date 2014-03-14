@@ -170,5 +170,9 @@ $shifts = $this->timesheet_model->get_timesheets();
 		}
 		return $class;
 	}
-
+	
+	function add_expense_form($timesheet_id) {
+		$data['timesheet_id'] = $timesheet_id;
+		$this->load->view('edit/expense/add_form', isset($data) ? $data : NULL);
+	}
 }
