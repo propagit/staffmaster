@@ -70,14 +70,13 @@ class Work_model extends CI_Model {
 		$sql = "SELECT `job_date`, count(*) as `shifts_count` FROM `job_shifts`
 				WHERE `job_date` LIKE '" . $active_month . "%'
 				AND `status` IN (" . SHIFT_REJECTED . "," . SHIFT_UNASSIGNED . "," . SHIFT_UNCONFIRMED . ")
-				AND `job_date` > '" . date('Y-m-d') . "'
+				AND `job_date` >= '" . date('Y-m-d') . "'
 				GROUP BY `job_date`";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	
-	function get_day_shifts($date)
-	{
+	function get_day_shifts($date) {
 		$sql = "SELECT js.*, j.client_id FROM `job_shifts` js
 				LEFT JOIN `jobs` j ON j.job_id = js.job_id
 				WHERE js.`job_date` = '" . $date . "'
@@ -86,18 +85,12 @@ class Work_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	/**
-	*	@name: count_day_shifts
-	*	@desc: count total available shifts in a day
-	*	@access: public
-	*	@param: $date (YYY-MM-DD)
-	*	@return: (int) total available shifts in a day
-	*/
-	function count_day_shifts($date) {
+	function count_applied_shifts($date) {
 		$sql = "SELECT count(*) as `total`
 				FROM `job_shift_staff_apply` a
 				LEFT JOIN `job_shifts` j ON a.`shift_id` = j.`shift_id`
 				WHERE a.`staff_id` = '" . $this->user_id . "'
+				AND j.status <= " . SHIFT_CONFIRMED . "
 				AND j.`job_date` = '" . $date . "'";
 		$query =$this->db->query($sql);
 		$r = $query->first_row('array');

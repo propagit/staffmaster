@@ -12,22 +12,24 @@
 			<span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-print"></i> Print Rosters</span>
 			<span class="btn btn-core pull-right hidden-xs"><i class="fa fa-envelope-o"></i> Email Rosters</span>
 			<span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-download"></i> Download Rosters</span>
-			<ul class="nav nav-tabs nav-action">
-				<li class="dropdown">
-					<a id="multi-rosters" class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
-					<ul class="dropdown-menu" aria-labelledby="multi-rosters" role="menu">
-						<li><a class="multi_confirm">Confirm Selected</a></li>
-						<li><a class="multi_reject">Reject Selected</a></li>
-					</ul>
-				</li>
-			</ul>
-			<ul class="nav nav-tabs">
-				<? foreach($months as $month) { ?>
-				<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_rosters(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
-				<? } ?>
-			</ul>
 		</div>
 		
+		<div id="nav_rosters">
+			<?
+				$data = array(
+					array('value' => 'confirm', 'label' => '<i class="fa fa-thumbs-o-up"></i> Confirm Selected'),
+					array('value' => 'reject', 'label' => '<i class="fa fa-thumbs-o-down"></i> Reject Selected')
+				);
+				echo modules::run('common/menu_dropdown', $data, 'roster-action', 'Actions');
+			?>
+			<div class="btn-group btn-nav">
+				<ul class="nav nav-tabs tab-respond">
+					<? foreach($months as $month) { ?>
+					<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_rosters(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>
+					<? } ?>
+				</ul>
+			</div>
+		</div>
 		<div id="list_rosters" class="clear"></div>
 	</div>
 	</div>
@@ -39,8 +41,7 @@ $(function(){
 	load_rosters();
 })
 
-function load_rosters()
-{
+function load_rosters() {
 	preloading($('#list_rosters'));
 	$.ajax({
 		type: "POST",
@@ -50,8 +51,7 @@ function load_rosters()
 		}
 	})
 }
-function load_month_rosters(obj,ts)
-{
+function load_month_rosters(obj,ts) {
 	$(obj).parent().parent().find('li').removeClass('active');
 	$.ajax({
 		type: "POST",

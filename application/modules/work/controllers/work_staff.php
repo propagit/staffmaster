@@ -22,8 +22,7 @@ class Work_staff extends MX_Controller {
 		
 	}
 	
-	function main_view()
-	{
+	function main_view() {
 		$active_month = date('Y-m');
 		$months = $this->work_model->get_work_months($active_month);
 		if ($this->session->userdata('active_month_work')) {
@@ -39,8 +38,15 @@ class Work_staff extends MX_Controller {
 		$this->load->view('staff/main_view', isset($data) ? $data : NULL);
 	}
 	
-	function count_day_shifts($date) {
-		return $this->work_model->count_day_shifts($date);
+	/**
+	*	@name: count_applied_shifts
+	*	@desc: count total shifts applied in a day
+	*	@access: public
+	*	@param: (string) $date (YYYY-MM-DD)
+	*	@return: (int) total shifts applied
+	*/
+	function count_applied_shifts($date) {
+		return $this->work_model->count_applied_shifts($date);
 	}
 	
 }

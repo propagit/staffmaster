@@ -17,6 +17,9 @@ a {
 	cursor: pointer;
 	color: #00bbf8;
 }
+.pointer {
+	cursor: pointer;
+}
 footer {
 	min-height: 200px;
 }

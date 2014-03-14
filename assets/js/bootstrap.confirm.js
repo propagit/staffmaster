@@ -42,9 +42,9 @@
                             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
                             '<h3>#Heading#</h3>' +
                         '</div>' +
-                        '<div class="modal-body">' +
+                        '<div class="col-md-12"><div class="modal-body">' +
                             '<p>#Body#</p>' +
-                        '</div>' +
+                        '</div></div>' +
                         '<div class="modal-footer">' +
                         '#buttonTemplate#' +
                         '</div>' +

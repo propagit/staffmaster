@@ -31,14 +31,14 @@
 </div><!-- /.modal-dialog -->
 
 <script>
-function assign_new_staff(user_id)
-{
+function assign_new_staff(user_id) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>job/ajax/update_shift_staff",
 		data: {shift_id: <?=$shift_id;?>, shift_staff_id: user_id, shift_staff: true, status: <?=SHIFT_UNCONFIRMED;?>},
 		success: function(html) {
-			load_job_shifts();
+			load_job_shifts(<?=$shift['job_id'];?>);
+			$('.bs-modal-lg').modal('hide');
 		}
 	})
 }

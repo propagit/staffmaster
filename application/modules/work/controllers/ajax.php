@@ -26,19 +26,19 @@ class Ajax extends MX_Controller {
 		$this->load->view('staff/days_list_view', isset($data) ? $data : NULL);
 	}
 	
-	
+	/**
+	*	@name: load_month_works
+	*	@desc: ajax function to set the active month and then reload works
+	*	@access: public
+	*	@param: (POST) ts (timestamp)
+	*	@return: (void)
+	*/
 	function load_month_works() {
 		$this->session->set_userdata('active_month_work', $this->input->post('ts'));
 	}
 	
-	
-	function load_roster_brief()
-	{
-		$this->load->view('staff/work_brief', isset($data) ? $data : NULL);
-	}
-	
-	function load_day_shifts()
-	{
+		
+	function load_day_shifts() {
 		$date = $this->input->post('date');
 		
 		$open_days = $this->session->userdata('open_days');
@@ -47,11 +47,11 @@ class Ajax extends MX_Controller {
 		
 		$data['shifts'] = $this->work_model->get_day_shifts($date);
 		$data['date'] = $date;
-		$this->load->view('staff/work_day_shifts_table', isset($data) ? $data : NULL);
+		$this->load->view('staff/day_shifts_table_view', isset($data) ? $data : NULL);
 	}
 	
-	function hide_day_shifts()
-	{
+	
+	function hide_day_shifts() {
 		$open_days = $this->session->userdata('open_days');
 		
 		foreach (array_keys($open_days, $this->input->post('date')) as $key) {
@@ -80,8 +80,11 @@ class Ajax extends MX_Controller {
 	{
 		return $this->work_model->is_shift_staff_applied($shift_id);
 	}
-	function count_day_shifts($date)
+	
+	
+	
+	function load_roster_brief()
 	{
-		return $this->work_model->count_day_shifts($date);
+		$this->load->view('staff/work_brief', isset($data) ? $data : NULL);
 	}
 }

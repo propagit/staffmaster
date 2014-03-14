@@ -28,7 +28,11 @@
 			</td>
 			<td><? $client = modules::run('client/get_client', $roster['client_id']); echo $client['company_name']; ?></td>
 			<td>
-				<i class="fa fa-map-marker"></i> &nbsp; <a class="roster_venue" data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>roster/ajax/load_roster_venue/<?=$roster['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?></a>
+				<? if ($roster['venue_id']) { ?>			
+				<a data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>common/ajax/load_venue_map/<?=$roster['venue_id'];?>"><i class="fa fa-map-marker"></i> &nbsp; <?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?></a>			
+				<? } else { ?>
+				Not Specified
+				<? } ?>
 			</td>
 			<td class="center"><?=date('H:i', $roster['start_time']);?></td>
 			<td class="center"><?=date('H:i', $roster['finish_time']);?> <?=(date('d', $roster['finish_time']) != date('d', $roster['start_time'])) ? '<span class="error">*</span>': '';?></td>
@@ -42,8 +46,8 @@
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a class="roster_confirm" data-shift-id="<?=$roster['shift_id'];?>">Confirm</a></li>
-						<li><a class="roster_reject" data-shift-id="<?=$roster['shift_id'];?>">Reject</a></li>
+						<li><a class="roster_confirm" data-shift-id="<?=$roster['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i> Confirm</a></li>
+						<li><a class="roster_reject" data-shift-id="<?=$roster['shift_id'];?>"><i class="fa fa-thumbs-o-down"></i> Reject</a></li>
 					</ul>
 				</div>
 				<? } else if ($roster['status'] == 2) { ?>
