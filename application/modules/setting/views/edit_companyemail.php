@@ -1,11 +1,3 @@
-<style>
-.inside-template{
-	padding:15px;
-}
-#template_email{
-	border:1px solid #dfdfdf;background:#fbfbfb; border-radius:3px; font-size:11px;padding:15px;
-}
-</style>
 <div class="company-profile-detail-box">
 <h2>Your Email Signature</h2>
 <p>Your email signature will be attached to the base of every email sent from the sytem</p>
@@ -147,8 +139,8 @@
 </div>
 
 <div class="row" >
-    <div class="col-md-7" style="padding-left:0px!important; margin-left:0px!important">                
-    	<div id="template_footer"></div>
+    <div class="col-md-7 remove-gutters">                
+    	<div id="template_footer" class="email-footer-preview-wrap"></div>
         
         <br />
         <h4>Colour & Fonts </h4>

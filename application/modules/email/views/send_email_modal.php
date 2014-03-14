@@ -15,8 +15,8 @@
                     </ul>
                     
                     <div class="tab-content">
-                        <div class="tab-pane active" id="send-email">
-                            <form id="send-email-form">
+                        <div class="tab-pane active" id="send-email-modal-window">
+                            <form id="send-email-modal-form">
                                  <div class="form-group">
                                      <div class="col-sm-5 remove-left-gutter">
                                             <?=modules::run('email/email_templates_dropdown','email_template_select');?>
@@ -40,7 +40,7 @@
                                  
                              	 <div class="form-group">
                                 	 <div class="col-sm-12 remove-left-gutter remove-right-gutter">
-                                      	 <button onclick="send_email();"  type="button" class="btn btn-info"><i class="fa fa-envelope-o"></i> Send Mail</button>
+                                      	 <button type="button" class="btn btn-info send-email-from-modal"><i class="fa fa-envelope-o"></i> Send Mail</button>
 										 &nbsp;&nbsp;
                                          (Selected Recipients: <b><?=$total;?></b>) 
                                          &nbsp;&nbsp;
@@ -48,6 +48,7 @@
                                          <div class="alert alert-success add-top-margin-20 hide" id="msg-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; Email Successfully Sent</div>
                                      </div>
                                  </div>
+                                 <input type="hidden" name="selected_user_ids" value='<?=$selected_user_ids;?>' />
                             </form>
                             
                             
@@ -75,6 +76,13 @@ $(function(){
 		load_template($(this).val());
 	});
 });//ready
+<?php if(0){?>
+/* 
+
+//Function for reference only.
+//Write this function from where ever the modal window is being called
+//Since the email can be sent to different users such as client or staff with different parameters
+//It is wise to gather those info in the individual page itself then pass it to the send email function 
 
 function send_email()
 {
@@ -82,7 +90,7 @@ function send_email()
 	$.ajax({
 		  type: "POST",
 		  url: "<?=base_url();?>email/ajax/send_email",
-		  data: $('#send-email-form').serialize(),
+		  data: $('#send-email-modal-form').serialize(),
 		  success: function(html) {
 			$('#msg-email-sent-successfully').removeClass('hide');
 			setTimeout(function(){
@@ -90,16 +98,18 @@ function send_email()
 			}, 3000);		
 		  }
 	  });	
-}
-
+} */
+<?php } ?>
 function send_sample_email()
 {
+	preloading($('#send-email-modal-window'));
 	update_ckeditor();
 	$.ajax({
 		  type: "POST",
 		  url: "<?=base_url();?>email/ajax/send_sample_email",
-		  data: $('#send-email-form').serialize(),
+		  data: $('#send-email-modal-form').serialize(),
 		  success: function(html) {
+			$('#wrapper_loading').remove();
 			$('#msg-email-sent-successfully').removeClass('hide');
 			setTimeout(function(){
 				$('#msg-email-sent-successfully').addClass('hide');
@@ -113,7 +123,7 @@ var email_body = CKEDITOR.replace('email_body',{
 });
 
 CKEDITOR.config.toolbar = [
-   ['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor']
+    <?=LIVE_SERVER ? LIVE_CK_TOOLS : DEV_CK_TOOLS;?>
 ] ;
 
 function update_ckeditor()

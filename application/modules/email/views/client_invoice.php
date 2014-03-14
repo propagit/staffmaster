@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <?=modules::run('email/description_merge_fields');?>
+        <?=modules::run('email/description_merge_fields','client_invoice_email');?>
     </div>
 </div>
 
@@ -38,7 +38,7 @@ var client_invoice_email = CKEDITOR.replace('client_invoice_email',{
 });
 
 CKEDITOR.config.toolbar = [
-   ['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor']
+    <?=LIVE_SERVER ? LIVE_CK_TOOLS : DEV_CK_TOOLS;?>
 ] ;
 
 $(function(){
