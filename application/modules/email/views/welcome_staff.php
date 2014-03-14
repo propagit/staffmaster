@@ -27,7 +27,7 @@
         </div>
         <div class="row">
             <div class="form-group">
-        		<textarea id="welcome_email" name="welcome_email"><?=$template->template_content;?></textarea>   
+        		<textarea class="email-template-text-area" id="welcome_email" name="welcome_email"><?=$template->template_content;?></textarea>   
         	</div>
         </div>
         <br>     
@@ -39,7 +39,8 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <?=modules::run('email/description_merge_fields','welcome_email');?>
+    	<? //params 'text field name so that the merge field can be inserted into the text area editor when clicked','Template id : Welcome Template = 1' ?>
+        <?=modules::run('email/description_merge_fields','welcome_email',1);?>
     </div>
 </div>
 
@@ -49,7 +50,7 @@ var welcome_email = CKEDITOR.replace('welcome_email',{
 });
 
 CKEDITOR.config.toolbar = [
-   ['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor']
+   <?=LIVE_SERVER ? LIVE_CK_TOOLS : DEV_CK_TOOLS;?>
 ] ;
 
 $(function(){

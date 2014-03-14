@@ -235,6 +235,9 @@ a.default {
 	font-weight:900!important;
 }
 /* style for email template */
+.email-merge-fields-wrap{
+	min-height:600px;	
+}
 .email-template .control-label{
 	margin-left:0px!important;
 	padding-left:0px!important;
@@ -285,7 +288,13 @@ a.default {
 .email-template .template-item{
 	cursor:pointer;
 }
-
+.email-footer-preview-wrap{
+	border:1px solid #dfdfdf;
+	background:#fbfbfb; 
+	border-radius:3px; 
+	font-size:11px;
+	padding:15px;	
+}
 /* Styles fdr search staff profile photo */
 .staff_search_profile{
 	float:left;

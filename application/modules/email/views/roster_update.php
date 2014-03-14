@@ -27,7 +27,8 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5" style="padding-right:0px!important;">
-        <?=modules::run('email/description_merge_fields','roster_email');?>
+    	<? //params 'text field name so that the merge field can be inserted into the text area editor when clicked','Template id : Roster Update Template = 2' ?>
+        <?=modules::run('email/description_merge_fields','roster_email',2);?>
     </div>
 </div>
 
@@ -38,7 +39,7 @@ var roster_email = CKEDITOR.replace('roster_email',{
 });
 
 CKEDITOR.config.toolbar = [
-   ['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor']
+    <?=LIVE_SERVER ? LIVE_CK_TOOLS : DEV_CK_TOOLS;?>
 ] ;
 
 $(function(){

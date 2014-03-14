@@ -1,5 +1,5 @@
 <div class="clear hidden-lg hidden-md break-25"></div>
-<div class="white-bg" id="email-template-merge-field">	
+<div class="white-bg email-merge-fields-wrap" id="email-template-merge-field">	
     <h2> Merge Fields </h2>
 	<p> Merge Fields can be used to create dynamic content in your email </p>
 	<div class="clear"></div>
@@ -9,15 +9,18 @@
     </div>
     <div class="clear"></div>
     
-    <div class="desc-item title-item">
+    <!--<div class="desc-item title-item">
     	<div class="first-item"><b>Staff Details</b></div>        
-    </div>
+    </div>-->
     <div class="clear"></div>
+    <?php if($merge_fields){ foreach($merge_fields as $mf){?>
     <div class="desc-item">
-    	<div class="first-item">Staff First Name</div>
-        <div class="second-item template-item" data="<?=$text_area_id;?>">{FirstName}</div>
+    	<div class="first-item"><?=$mf->merge_label;?></div>
+        <div class="second-item template-item" data="<?=$text_area_id;?>"><?=$mf->merge_field;?></div>
     </div>
     <div class="clear"></div>
+    <?php }} ?>
+    <?php if(0){ ?>
     <div class="desc-item">
     	<div class="first-item">Staff Family Name</div>
         <div class="second-item template-item" data="<?=$text_area_id;?>">{FamilyName}</div>
@@ -128,4 +131,5 @@
         <div class="second-item template-item" data="<?=$text_area_id;?>">{CompanyPhone}</div>
     </div>    
     <div class="clear"></div>
+    <?php } ?>
 </div>

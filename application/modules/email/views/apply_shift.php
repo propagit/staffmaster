@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <?=modules::run('email/description_merge_fields');?>
+        <?=modules::run('email/description_merge_fields','apply_shift_email',3);?>
     </div>
 </div>
 
@@ -38,7 +38,7 @@ var apply_shift_email = CKEDITOR.replace('apply_shift_email',{
 });
 
 CKEDITOR.config.toolbar = [
-   ['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor']
+    <?=LIVE_SERVER ? LIVE_CK_TOOLS : DEV_CK_TOOLS;?>
 ] ;
 
 $(function(){

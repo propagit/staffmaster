@@ -218,6 +218,11 @@ $(function(){
 			$('#toggle-custom-attrs-fa').removeClass('fa-minus-square').addClass('fa-plus-square');	
 		}
 	});
+	
+	//send email
+	$(document).on('click','.send-email-from-modal',function(){
+		send_email();
+	});
 
 })
 
@@ -339,5 +344,23 @@ function contact_multi_staff(){
 		
 }
 
+function send_email()
+{
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>staff/ajax/send_email",
+		  data: $('#send-email-modal-form').serialize(),
+		  success: function(html) {
+		    $('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);		
+		  }
+	  });	
+}
 
 </script>

@@ -10,9 +10,10 @@ class Email extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('email_template_model');
+		$this->load->model('user/user_model');
 	}
 	
-	public function index($method='', $param='')
+	public function index($method = '', $param1 = '',$param2 = '')
 	{
 		switch($method)
 		{
@@ -22,6 +23,7 @@ class Email extends MX_Controller {
 		}
 		
 	}
+	
 	/**
 	*	@name: main_view
 	*	@desc: Load the landing page for email template. This is where the user will be able to modify email templates.
@@ -32,6 +34,64 @@ class Email extends MX_Controller {
 	function main_view(){
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
+	/**
+	*	@name: get_email_obj
+	*	@desc: Create the object needed for a particular template
+	*	@access: public
+	*	@param: ([int] template id, [int] user id)
+	*	@return: returns object for a particular email template
+	*/
+	function get_email_obj($template_id,$user_id,$company,$password = '')
+	{
+		$obj = array();
+		if($template_id && $user_id && $company){
+			$user = $this->user_model->get_user($user_id);
+			switch($template_id){
+				case 1:
+				//welcome
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'company_name' => $company['company_name'],
+							'system_url' => base_url(),
+							'username' => $user['username'],
+							'password' => $password,
+							);
+				
+				break;
+				
+				case 2:
+				//roster update
+				break;
+				
+				case 3:
+				//apply for shifts
+				break;
+				
+				case 4:
+				//shift reminder
+				break;
+				
+				case 5:
+				//work confirmation
+				break;
+				
+				case 6:
+				//forgot password
+				break;
+				
+				case 7:
+				//client invoice
+				break;
+				
+				case 8:
+				//client quote
+				break;
+			}
+		}
+		return $obj;
+	}
+	
 	/**
 	*	@name: email_templates_dropdown
 	*	@desc: 
@@ -57,46 +117,19 @@ class Email extends MX_Controller {
 	*	@access: public
 	*	@param: 
 	*/
-	function format_template_body($email)
+	function format_template_body($email,$obj = NULL)
 	{
-		preg_match_all('/{[^}]*}/', $email, $merge_fields);
-		$formatted_email = $email;
-		if($merge_fields[0]){
-			foreach($merge_fields[0] as $field){
-				
-				switch(trim($field)){
-					case '{FirstName}':
-						$formatted_email = str_replace($field,'Kaushtuv',$formatted_email);
-					break;
-					case '{CompanyName}':
-						$formatted_email = str_replace($field,'Propagate',$formatted_email);
-					break;	
-					case '{SystemURL}':
-						$formatted_email = str_replace($field,base_url(),$formatted_email);
-					break;	
-					case '{UserName}':
-						$formatted_email = str_replace($field,'kaushtuv@propagate.com.au',$formatted_email);
-					break;	
-					case '{Password}':
-						$formatted_email = str_replace($field,'admin1234',$formatted_email);
-					break;	
-				}
-				
-				/*  $rule = $this->email_template_model->get_merge_field_by_merge_field($field);
-				switch($rule->merge_rule){
-					case 'field_name':
-						$temp_email = str_replace($field,$object[$rule->table_field],$temp_email);
-					break;
-					case 'replace_text':
-					
-					break;
-					case 'custom_rule':
-					
-					break;	
-				}  */
-			}
+		if($obj){
+				$email = str_replace('{FirstName}',$obj['first_name'],$email);
+				$email = str_replace('{FamilyName}',$obj['last_name'],$email);
+				$email = str_replace('{CompanyName}',$obj['company_name'],$email);
+				$email = str_replace('{SystemURL}',$obj['system_url'],$email);
+				$email = str_replace('{UserName}',$obj['username'],$email);
+				$email = str_replace('{Password}',$obj['password'],$email);
+				$email = str_replace('{Roster}',$obj['roster'],$email);
+				$email = str_replace('{SelectedShifts}',$obj['selected_shifts'],$email);
 		}
-		return $formatted_email;
+		return $email;
 		
 	}
 	/**
@@ -105,9 +138,13 @@ class Email extends MX_Controller {
 	*	@access: public
 	*	@param: 
 	*/
-	function description_merge_fields($text_area_id = '')
+	function description_merge_fields($text_area_id,$template_id = '')
 	{
 		$data['text_area_id'] = $text_area_id;
+		if(!$template_id){
+			$template_id = 1;	
+		}
+		$data['merge_fields'] = $this->email_template_model->get_email_merge_fields_by_template_id($template_id);
 		$this->load->view('description_merge_fields', isset($data) ? $data : NULL);
 	}
 	/**
