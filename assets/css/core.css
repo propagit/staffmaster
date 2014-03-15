@@ -1011,6 +1011,10 @@ ol.example li.placeholder:before {
 .nav-tabs > li {
 	margin-right: 5px;
 }
+.nav-tabs > li.pull-right {
+	margin-right: 0;
+	margin-left: 5px;
+}
 .nav-tabs > li a,
 .nav-tabs > li a:hover {
 	background: #ebebeb;

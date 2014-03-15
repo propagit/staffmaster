@@ -64,7 +64,7 @@ class Ajax extends MX_Controller {
 		$data['job'] = $job;
 		$data['client'] = modules::run('client/get_client', $job['client_id']);
 		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
-		$this->load->view('source/client_job_timesheets_list', isset($data) ? $data : NULL);
+		$this->load->view('source/client_job_timesheets_list_view', isset($data) ? $data : NULL);
 	}	
 	
 	/**

@@ -1,5 +1,5 @@
-<? if (!isset($expenses) || !$expense) { ?>
-<div class="alert alert-warning">No expenses</div>
+<? if (!isset($expenses) || !$expenses) { ?>
+<div class="alert alert-warning"><b>No expenses.</b> Use the form below to add expense</div>
 <? } else { ?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">

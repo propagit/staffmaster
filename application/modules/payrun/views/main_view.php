@@ -12,9 +12,15 @@
 	<div class="box bottom-box">
 		<div class="inner-box">
 			<ul class="nav nav-tabs tab-respond" id="tab-payrun">
-				<li class="active"><a href="#create-payrun" data-toggle="tab">Pay Run</a></li>
+				<li class="active"><a href="#create-payrun" data-toggle="tab">Create Pay Run</a></li>
 				<li><a href="#search-payrun" data-toggle="tab">Search Pay Run</a></li>
 				<li><a href="#search-payslip" data-toggle="tab">Find Processed Payslip</a></li>
+				<li class="pull-right">
+					<a href="<?=base_url();?>invoice">Client Invoices</a>
+				</li>
+				<li class="pull-right">
+					<a href="<?=base_url();?>timesheet">Time Sheets</a>
+				</li>
 			</ul>
 			<br />
 			

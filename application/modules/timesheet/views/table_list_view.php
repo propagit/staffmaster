@@ -23,12 +23,13 @@
 			<th class="center">Expenses</th>
 			<th class="center" width="40">View</th>
 			<th class="center" width="40">Batch</th>
-			<th class="center" width="40">Revert</th>
+			<th class="center" width="40">Delete</th>
 		</tr>
 	</thead>
 	<tbody>
 		<? foreach($timesheets as $timesheet) { 
-			echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); } ?>
+			echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); 
+		} ?>
 	</tbody>
 	</table>
 	</div>
@@ -43,7 +44,7 @@ $(function(){
 		sort_data.sort_by = $(this).attr('sort-by');
 		//toggle sort order data for next sort
 		(sort_data.sort_order == 'asc' ? sort_data.sort_order = 'desc' : sort_data.sort_order = 'asc');	
-		list_timesheets();
+		search_timesheets();
 	});
 })
 function init_edit() {
@@ -136,20 +137,19 @@ function refrest_timesheet(timesheet_id) {
 		}
 	})
 }
-function batch_timesheet(timesheet_id) {	
-	preloading($('#list_timesheets'));
+function batch_timesheet(timesheet_id) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>timesheet/ajax/batch_timesheet",
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
-			list_timesheets();
+			$('#timesheet_' + timesheet_id).remove();
 		}
 	})
 }
 function delete_timesheet(timesheet_id) {
 	var title = 'Delete Timesheet';
-	var message ='This action will delete the timesheet and unlock the shift. Are you sure you want to do so?';
+	var message ='This action will delete the timesheet and unlock the shift.<br />Are you sure you want to do so?';
 	help.confirm_delete(title,message,function(confirmed){
 		 if(confirmed){
 			 $.ajax({
@@ -157,7 +157,7 @@ function delete_timesheet(timesheet_id) {
 				 url: "<?=base_url();?>timesheet/ajax/delete_timesheet",
 				 data: {timesheet_id: timesheet_id},
 				 success: function(html) {
-					 list_timesheets();
+					 $('#timesheet_' + timesheet_id).remove();
 				 }
 			 })
 		 }

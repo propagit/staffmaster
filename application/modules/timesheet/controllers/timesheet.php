@@ -1,18 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Controller: Job
- * @author: namnd86@gmail.com
+ *	@module: Timesheet
+ *	@controller: Timesheet
  */
 
 class Timesheet extends MX_Controller {
 
-	function __construct()
-	{
+	function __construct() {
 		parent::__construct();
 		$this->load->model('timesheet_model');
 		$this->load->model('job/job_shift_model');
-		$this->load->model('staff/staff_model');
 		$this->load->model('attribute/payrate_model');
 	}
 	
@@ -23,25 +21,42 @@ class Timesheet extends MX_Controller {
 			case 'generate':
 					$this->generate();
 				break;
-			case 'truncate':
-					$this->truncate();
-				break;
-			case 'batched':
-					$this->list_batched_timesheets();
-				break;
 			default:
-					$this->list_timesheets();
+					$this->main_view();
 				break;
 		}
 		
 	}
 	
-	function list_timesheets()
-	{
-		$data['timesheets'] = $this->timesheet_model->get_timesheets();
+	/**
+	*	@name: main_view
+	*	@desc: load main view of timesheet module (landing page)
+	*	@access: public
+	*	@param: (void)
+	*	@return: (html) view of the timesheet module landing page
+	*/
+	function main_view() {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
+	/**
+	*	@name: search_form
+	*	@desc: load search timesheets form view
+	*	@access: public
+	*	@param: (void)
+	*	@return: (html) view of search timesheets form
+	*/
+	function search_form() {
+		$this->load->view('search_form_view', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: row_timesheet
+	*	@desc: load row view (tr) of one timesheet
+	*	@access: public
+	*	@param: $timesheet_id
+	*	@return: (html) tr view of one timesheet
+	*/
 	function row_timesheet($timesheet_id) {
 		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
 		$data['client'] = modules::run('client/get_client', $timesheet['client_id']);
@@ -49,28 +64,17 @@ class Timesheet extends MX_Controller {
 		$data['timesheet'] = $timesheet;
 		$data['shift'] = $this->job_shift_model->get_job_shift($timesheet['shift_id']);
 		$data['job'] = modules::run('job/get_job', $timesheet['job_id']);
-		$this->load->view('timesheet_row_view', isset($data) ? $data : NULL);
+		$this->load->view('row_view', isset($data) ? $data : NULL);
 	}
 	
-	function generate() {
-		$shifts = $this->timesheet_model->get_finished_shifts();
-		foreach($shifts as $shift)
-		{
-			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));
-			unset($shift['status']);
-			unset($shift['created_on']);
-			unset($shift['modified_on']);
-			unset($shift['payrate_type']);
-			$job = modules::run('job/get_job', $shift['job_id']);
-			$shift['client_id'] = $job['client_id'];
-			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
-			$this->update_timesheet_hour_rate($timesheet_id);
-		}
-		redirect('timesheet');
-	}
-	
-	function update_timesheet_hour_rate($timesheet_id)
-	{
+	/**
+	*	@name: update_timesheet_hour_rate
+	*	@desc: calculate and update client/staff cost of a timesheet based on hours & pay rate
+	*	@access: public
+	*	@param: $timesheet_id
+	*	@return: (boolean)
+	*/
+	function update_timesheet_hour_rate($timesheet_id) {
 		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
 		$payrate_id = $timesheet['payrate_id'];
 		$start_time = $timesheet['start_time'];
@@ -116,21 +120,14 @@ class Timesheet extends MX_Controller {
 		
 	}
 	
-	
-	function truncate() {
-		/*
-$shifts = $this->timesheet_model->get_timesheets();
-		foreach($shifts as $shift)
-		{
-			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_CONFIRMED));
-		}
-		$this->timesheet_model->truncate();
-		redirect('timesheet');
-*/
-	}
-	
-	function field_select_status($field_name, $field_value=null, $size=null)
-	{
+	/**
+	*	@name: field_select_status
+	*	@desc: custom field select timesheet status
+	*	@access: public
+	*	@param: $field_name, $field_value (optional), $size (optional)
+	*	@return: (html) custom field select
+	*/
+	function field_select_status($field_name, $field_value=null, $size=null) {
 		$array = array(
 			array('value' => TIMESHEET_PENDING, 'label' => 'Pending'),
 			array('value' => TIMESHEET_SUBMITTED, 'label' => 'Submitted'),
@@ -141,25 +138,29 @@ $shifts = $this->timesheet_model->get_timesheets();
 	
 	/**
 	*	@name: menu_dropdown_actions
-	*	@desc: generate the dropdown menu of actions
+	*	@desc: generate the dropdown menu of actions applied to timesheets
 	*	@access: public
-	*	@param: (string) $id
-	*			(string) $label
-	*	@return: (html) dropdown menu of actions
+	*	@param: $id, $label
+	*	@return: (html) dropdown menu of actions applied to timesheets
 	*/
 	function menu_dropdown_actions($id, $label) {
 		$data = array(
 			array('value' => 'batch', 'label' => '<i class="fa fa-share-square-o"></i> Batch Selected'),
-			array('value' => 'revert', 'label' => '<i class="fa fa-times"></i> Revert Selected')
+			array('value' => 'revert', 'label' => '<i class="fa fa-times"></i> Delete Selected')
 		);
 		return modules::run('common/menu_dropdown', $data, $id, $label);
 	}
 	
-	function status_to_class($status)
-	{
+	/**
+	*	@name: status_to_class
+	*	@desc: convert timesheet status to css class
+	*	@access: public
+	*	@param: $status
+	*	@return: class_name
+	*/
+	function status_to_class($status) {
 		$class = '';
-		switch($status)
-		{
+		switch($status) {
 			case TIMESHEET_SUBMITTED: $class = 'warning';
 				break;
 			case TIMESHEET_APPROVED: $class = 'success';
@@ -171,8 +172,32 @@ $shifts = $this->timesheet_model->get_timesheets();
 		return $class;
 	}
 	
+	/**
+	*	@name: add_expense_form
+	*	@desc: load add expense form view
+	*	@access: public
+	*	@param: $timesheet_id
+	*	@return: (html) add expense form view
+	*/
 	function add_expense_form($timesheet_id) {
 		$data['timesheet_id'] = $timesheet_id;
 		$this->load->view('edit/expense/add_form', isset($data) ? $data : NULL);
+	}
+	
+	function generate() {
+		$shifts = $this->timesheet_model->get_finished_shifts();
+		foreach($shifts as $shift)
+		{
+			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));
+			unset($shift['status']);
+			unset($shift['created_on']);
+			unset($shift['modified_on']);
+			unset($shift['payrate_type']);
+			$job = modules::run('job/get_job', $shift['job_id']);
+			$shift['client_id'] = $job['client_id'];
+			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
+			$this->update_timesheet_hour_rate($timesheet_id);
+		}
+		redirect('timesheet');
 	}
 }

@@ -11,8 +11,7 @@
 		<th>Campaign Name &nbsp; <a onclick="sort_search_shifts('campaign')"><i class="fa fa-sort"></i></a></th>
 		<th>Venue &nbsp; <a onclick="sort_search_shifts('venue')"><i class="fa fa-sort"></i></a></th>
 		<th>Role &nbsp; <a onclick="sort_search_shifts('role')"><i class="fa fa-sort"></i></a></th>
-		<th class="center">Start - Finish</th>
-		<th>Pay Rate</th>
+		<th class="center" width="120">Start - Finish</th>
 		<th>Staff Assigned &nbsp; <a onclick="sort_search_shifts('status')"><i class="fa fa-sort"></i></a></th>
 		<th class="center" width="40">View</th>
 	</tr>
@@ -29,8 +28,7 @@
 		<td><?=$shift['job_name'];?></td>
 		<td><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></td>
 		<td><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>
-		<td class="center"><?=date('H:i', $shift['start_time']);?> - <?=date('H:i', $shift['finish_time']);?> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-danger">*</span>': '';?></td>
-		<td></td>
+		<td class="center"><?=date('H:i', $shift['start_time']);?> - <?=date('H:i', $shift['finish_time']);?><?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-red">*</span>': '';?></td>
 		<td>
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
 				echo $staff['first_name'] . ' ' . $staff['last_name'];				
