@@ -42,6 +42,18 @@ class Timesheet_model extends CI_Model {
 	}
 	
 	/**
+	*	@name: delete_shift_timesheet
+	*	@desc: delete timesheet by shift_id
+	*	@access: public
+	*	@param: $shift_id
+	*	@return: (boolean)
+	*/
+	function delete_shift_timesheet($shift_id) {
+		$this->db->where('shift_id', $shift_id);
+		return $this->db->delete('job_shift_timesheets');
+	}
+	
+	/**
 	*	@name: update_timesheet
 	*	@desc: update timesheet by id
 	*	@access: public

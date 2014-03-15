@@ -146,7 +146,7 @@ $(function(){
 	$.each($('tr.disabled'), function() {
 		$(this).find('input').remove();
 		disabled($(this));
-		var pk = $(this).find('.shift_delete').attr('data-pk');
+		var pk = $(this).find('.shift_uniform').attr('data-pk');
 		$(this).find('.content-disabled').html('<a class="btn btn-default" onclick="unlock_shift(' + pk + ')"><i class="fa fa-lock"></i></a>');
 	});
 	$('.shift_venue').on('shown', function(e, editable) {
@@ -281,15 +281,6 @@ $(function(){
 
 	$('#selected_all_shifts').click(function(){
 		$('input.selected_shifts').prop('checked', this.checked);		
-	});
-	$('.shift_delete').confirmModal({
-		confirmTitle: 'Delete this shift',
-		confirmMessage: 'Are you sure you want to delete this shift?',
-		confirmCallback: function(e){
-			selected_shifts.length = 0;
-			selected_shifts.push($(e).attr('data-pk'));
-			delete_shifts(selected_shifts);
-		}
 	});
 	$('#menu-day-action ul li a[data-value="delete"]').confirmModal({
 		confirmTitle: 'Delete selected shifts',

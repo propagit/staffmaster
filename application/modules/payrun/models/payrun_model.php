@@ -260,7 +260,10 @@ class Payrun_model extends CI_Model {
 	function revert_staff_payruns($staff_id)
 	{
 		$this->db->where('staff_id', $staff_id);
-		return $this->db->update('job_shift_timesheets', array('status' => TIMESHEET_APPROVED));
+		return $this->db->update('job_shift_timesheets', array(
+			'status' => TIMESHEET_APPROVED,
+			'status_payrun_staff' => PAYRUN_PENDING
+		));
 	}
 	
 	/**
@@ -273,6 +276,9 @@ class Payrun_model extends CI_Model {
 	function revert_payrun($timesheet_id)
 	{
 		$this->db->where('timesheet_id', $timesheet_id);
-		return $this->db->update('job_shift_timesheets', array('status' => TIMESHEET_APPROVED));
+		return $this->db->update('job_shift_timesheets', array(
+			'status' => TIMESHEET_APPROVED,
+			'status_payrun_staff' => PAYRUN_PENDING
+		));
 	}
 }

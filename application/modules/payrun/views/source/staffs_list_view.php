@@ -10,7 +10,7 @@
 		<th class="center">Total Hours</th>
 		<th class="center">Amount</th>
 		<th class="center">Time Sheets</th>
-		<th class="center">Add to Pay Run</th>
+		<th class="center" width="120">Add to Pay Run</th>
 		<th class="center" width="40">Revert</th>
 		<th class="center" width="40">
 			<a onclick="expand_all(this)"><i class="fa fa-plus-square-o"></i></a>

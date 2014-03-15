@@ -1,5 +1,5 @@
 <tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status']);?>" id="timesheet_<?=$timesheet['timesheet_id'];?>">
-	<td><input type="checkbox" value="<?=$timesheet['shift_id'];?>" /></td>
+	<td><input type="checkbox" class="select_timesheet" value="<?=$timesheet['timesheet_id'];?>" /></td>
 	<td class="wp-date" width="80">
 		<span class="wk_day"><?=date('D', strtotime($timesheet['job_date']));?></span>
 		<span class="wk_date"><?=date('d', strtotime($timesheet['job_date']));?></span>

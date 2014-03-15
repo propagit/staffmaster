@@ -6,13 +6,13 @@
 <div id="wrapper_ts">
 	<!-- Filter Menus -->
 	<div id="nav_payruns">
-		<?=modules::run('timesheet/menu_dropdown_actions', 'action', 'Actions');?>			
+		<?=modules::run('timesheet/menu_dropdown_actions', 'ts-action', 'Actions');?>			
 	</div><!-- End Filter Menus -->
 	<div class="table-responsive">
 	<table class="table table-bordered table-hover table-middle" width="100%">
 	<thead>
 		<tr>
-			<th class="center" width="20"></th>
+			<th class="center" width="20"><input type="checkbox" id="selected_all_timesheets" /></th>
 			<th class="center">Date <i class="fa fa-sort sort-data" sort-by="t.job_date"></i></th>
 			<th>Client</th>
 			<th>Campaign Name</th>
@@ -48,6 +48,15 @@ $(function(){
 	});
 })
 function init_edit() {
+	$('#selected_all_timesheets').click(function(){
+		$('input.select_timesheet').prop('checked', this.checked);	
+	});
+	$('#menu-ts-action ul li a[data-value="batch"]').click(function(){
+		$('.select_timesheet:checked').each(function(){
+			batch_timesheet($(this).val());
+		});
+	})
+	
 	$('.ts_start_time').on('shown', function(e, editable) {
 		$('#wrapper_ts').find('.popover-break').hide();
 	});

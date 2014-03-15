@@ -348,7 +348,7 @@ class Ajax extends MX_Controller {
 		$shift_id = $this->input->post('pk');
 		$this->load->model('timesheet/timesheet_model');
 		# First delete the timesheet
-		$this->timesheet_model->delete_timesheet($shift_id);
+		$this->timesheet_model->delete_shift_timesheet($shift_id);
 		# Then update shift status
 		$this->job_shift_model->update_job_shift($shift_id, array('status' => SHIFT_CONFIRMED));
 	}

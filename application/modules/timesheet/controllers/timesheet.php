@@ -112,7 +112,21 @@ class Timesheet extends MX_Controller {
 			}
 		}
 		
+		# Update expenses cost
+		$expenses_staff_cost = 0;
+		$expenses_client_cost = 0;
+		
+		$expenses = unserialize($timesheet['expenses']);
+		if (count($expenses) > 0) {
+			foreach($expenses as $exp) {
+				$expenses_staff_cost += $exp['staff_cost'];
+				$expenses_client_cost += $exp['client_cost'];
+			}
+		}
+		
 		return $this->timesheet_model->update_timesheet($timesheet_id, array(
+			'expenses_staff_cost' => $expenses_staff_cost,
+			'expenses_client_cost' => $expenses_client_cost,
 			'total_minutes' => $total_mins,
 			'total_amount_staff' => $total_amount_staff,
 			'total_amount_client' => $total_amount_client

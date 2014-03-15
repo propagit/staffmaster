@@ -35,7 +35,11 @@ class Ajax extends MX_Controller {
 	function batch_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
 		modules::run('timesheet/update_timesheet_hour_rate', $timesheet_id);
-		$this->timesheet_model->update_timesheet($timesheet_id, array('status' => TIMESHEET_BATCHED));
+		$this->timesheet_model->update_timesheet($timesheet_id, array(
+			'status' => TIMESHEET_BATCHED,
+			'status_payrun_staff' => PAYRUN_PENDING,
+			'status_invoice_client' => INVOICE_PENDING
+		));
 	}
 	
 	/**
