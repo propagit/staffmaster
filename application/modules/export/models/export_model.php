@@ -5,7 +5,7 @@ class Export_model extends CI_Model {
 	function get_templates($object, $format) {
 		$this->db->where('object', $object);
 		$this->db->where('format', $format);
-		$this->db->where('status', ACTIVE);
+		#$this->db->where('status', ACTIVE);
 		$query = $this->db->get('export_templates');
 		return $query->result_array();
 	}	
