@@ -8,7 +8,7 @@
 			<form id="export-payrun-form">
 			<input type="hidden" name="payrun_id" value="<?=$payrun['payrun_id'];?>" />
 			<div class="modal-body">
-				<div class="form-group alert alert-info clearfix">
+				<div id="export_templates" class="form-group alert alert-info clearfix">
 					<?=modules::run('payrun/field_select_export_templates', $payrun['type'], 'export_id');?>
 				</div>
 				<div class="form-group">
@@ -28,6 +28,10 @@ $(function(){
 			url: "<?=base_url();?>payrun/ajax/exporting",
 			data: $('#export-payrun-form').serialize(),
 			success: function(html) {
+				if (!html) {
+					$('#export_templates').addClass('has-error');
+					return;
+				}
 				window.location = '<?=base_url();?>exports/payrun/' + html;
 				$('.bs-modal-lg').modal('hide');
 			

@@ -171,6 +171,9 @@ class Ajax extends MX_Controller {
 	function exporting() {
 		$payrun_id = $this->input->post('payrun_id');
 		$export_id = $this->input->post('export_id');
+		if ($export_id == '') {
+			return;
+		}
 		$file_name = $this->_export_payrun($payrun_id, $export_id);
 		echo $file_name;
 	}

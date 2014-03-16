@@ -46,6 +46,8 @@ define('COLOR_DARK', '#000000');
 define('CLIENT_ACTIVE', 1);
 define('CLIENT_INACTIVE', -1);
 
+define('ACTIVE', 1);
+
 define('STAFF_DELETED', -2);
 define('STAFF_INACTIVE', -1);
 define('STAFF_PENDING', 0);

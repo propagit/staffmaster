@@ -1,31 +1,29 @@
-<div class="table_action">
-	<ul class="nav nav-tabs tab-respond pull-right">
-		<li><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
-		<li><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
-	</ul>
-	<ul class="nav nav-tabs tab-respond nav-action">
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Action <b class="caret"></b></a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a class="multi_day_attach">Attach Resource</a></li>
-				<li><a class="multi_day_delete">Delete</a></li>
-			</ul>
-		</li>
-	</ul>
-	<ul class="nav nav-tabs nav-group tab-respond">
-		<li class="active"><a step="-1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
-		<?
-		if (date('D', $custom_date) == 'Mon') {
-			$start_date = $custom_date;
-		} else {
-			$start_date = strtotime('this week last monday', $custom_date);
-		}
-		$end_date = $start_date + 6*24*60*60;
-		?>
-		<li class="active"><a><?=date('d M y', $start_date);?> - <?=date('d M y', $end_date);?></a></li>
-		<li class="active"><a step="1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>
-	</ul>
+<div id="nav_week_shifts">
+	<?
+	# Action menu
+	$data = array(
+		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Shifts')
+	);
+	echo modules::run('common/menu_dropdown', $data, 'week-action', 'Actions');
+	?>
+	<div class="btn-group btn-nav">
+		<ul class="nav nav-tabs tab-respond">
+			<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
+			<li class="active first-child"><a step="-1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
+			<?
+			if (date('D', $custom_date) == 'Mon') {
+				$start_date = $custom_date;
+			} else {
+				$start_date = strtotime('this week last monday', $custom_date);
+			}
+			$end_date = $start_date + 6*24*60*60;
+			?>
+			<li class="active mid-child"><a><?=date('d M y', $start_date);?> - <?=date('d M y', $end_date);?></a></li>
+			<li class="active last-child"><a step="1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>
+		</ul>
+	</div>
 </div>
+
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
@@ -133,7 +131,7 @@ $(function(){
 	$('#selected_all_days').click(function(){
 		$('input.selected_shift_days').prop('checked', this.checked);		
 	});
-	$('.multi_day_delete').confirmModal({
+	$('#menu-week-action ul li a[data-value="delete"]').confirmModal({
 		confirmTitle: 'Delete days shifts',
 		confirmMessage: 'Are you sure you want to delete all shifts in selected days?',
 		confirmCallback: function(e) {
@@ -144,6 +142,6 @@ $(function(){
 			});
 			delete_shifts(selected_shifts_day);
 		}
-	})
+	});
 })
 </script>

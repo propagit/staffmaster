@@ -9,9 +9,9 @@
 	<tr>
 		<th class="center" width="80">Processed</th>
 		<th>Type</th>
-		<th class="center">Staff</th>
-		<th class="center">Time Sheets</th>
-		<th class="center">Amount</th>
+		<th class="center" width="100">Staff</th>
+		<th class="center" width="100">Time Sheets</th>
+		<th class="center" width="120">Amount</th>
 		<th class="center" width="80">Export</th>
 		<th class="center" width="40"></th>
 	</tr>

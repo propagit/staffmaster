@@ -10,12 +10,12 @@
 		<th class="center" width="20"></th>
 		<th class="center" width="80">Issued</th>
 		<th class="center" width="80">Due</th>
+		<th class="center">Inv #</th>
+		<th class="center">PO #</th>
 		<th>Client Name</th>
 		<th>Invoice Title</th>
 		<th class="center">Amount</th>
 		<th>Issued By</th>
-		<th class="center">Inv #</th>
-		<th class="center">PO #</th>
 		<th class="center" width="120">Status</th>
 		<th class="center" width="40">View</th>
 		<th class="center" width="40">Email</th>
@@ -39,12 +39,12 @@
 			<span class="wk_date"><?=date('d', strtotime($invoice['due_date']));?></span>
 			<span class="wk_month"><?=date('M', strtotime($invoice['due_date']));?></span>
 		</td>
+		<td><?=$invoice['invoice_number'];?></td>
+		<td><?=$invoice['po_number'];?></td>
 		<td><?=$client['company_name'];?></td>
 		<td><?=$invoice['title'];?></td>
 		<td class="center">$<?=money_format('%i', $invoice['total_amount']);?></td>
 		<td><?=$user['first_name'] . ' ' . $user['last_name'];?></td>
-		<td><?=$invoice['invoice_number'];?></td>
-		<td><?=$invoice['po_number'];?></td>
 		<td class="center" id="invoice-status-<?=$invoice['invoice_id'];?>">
 			<?=modules::run('invoice/menu_dropdown_status', $invoice['invoice_id']);?>
 		</td>
