@@ -6,10 +6,11 @@
 		<th class="center" width="65">From</th>
 		<th class="center" width="65">To</th>
 		<th colspan="3">Staff</th>
-		<th class="center">State</th>
-		<th class="center">Total Hours</th>
-		<th class="center">Amount</th>
-		<th class="center">Time Sheets</th>
+		<th class="center" width="80">State</th>
+		<th class="center" width="100">Total Hours</th>
+		<th class="center" width="100">Amount</th>
+		<th class="center" width="100">Expenses</th>
+		<th class="center" width="120">Time Sheets</th>
 		<th class="center" width="120">Add to Pay Run</th>
 		<th class="center" width="40">Revert</th>
 		<th class="center" width="40">
@@ -18,7 +19,7 @@
 	</tr>
 	</thead>
 	<tbody>
-	<? foreach($staffs as $staff) { echo modules::run('payrun/row_staff', $staff['user_id']); } ?>
+	<? foreach($staffs as $staff) { echo modules::run('payrun/row_batched_staff', $staff['user_id']); } ?>
 	</tbody>
 </table>
 </div>
@@ -66,7 +67,7 @@ function refresh_row_timesheets_staff(user_id) {
 		url: "<?=base_url();?>payrun/ajax/row_timesheets_staff",
 		data: {user_id: user_id,expanded: expanded},
 		success: function(html) {
-			$('#timesheets_staff_' + user_id).html(html);
+			$('#timesheets_staff_' + user_id).replaceWith(html);
 		}
 	}).done(function() {
 		$('.payrun_staff').click(function(){
@@ -169,7 +170,7 @@ function expand_staff_timehsheets(user_id) {
 				$('.timesheets_staff_' + user_id).remove();
 			} else {
 				$('#timesheets_staff_' + user_id).addClass('row-open');
-				$('#timesheets_staff_' + user_id).html(data.parent);
+				$('#timesheets_staff_' + user_id).replaceWith(data.parent);
 				$('#timesheets_staff_' + user_id).after(data.children);
 				$('#timesheets_staff_' + user_id).find('.wp-arrow').html('<i class="fa fa-minus-square-o"></i>');
 				$('#timesheets_staff_' + user_id).find('.wp-arrow').attr('onclick', 'collapse_staff_timesheets(' + user_id + ')');
@@ -223,7 +224,7 @@ function revert_payrun(user_id,timesheet_id) {
 				url: "<?=base_url();?>payrun/ajax/revert_payrun",
 				data: {timesheet_id: timesheet_id},
 				success: function(html) {
-					$('#timesheets_' + timesheet_id).remove();
+					$('#timesheet_' + timesheet_id).remove();
 					refresh_row_timesheets_staff(user_id);
 				}
 			})

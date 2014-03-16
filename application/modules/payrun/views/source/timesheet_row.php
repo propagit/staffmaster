@@ -15,13 +15,18 @@
 	<td>
 		<?=date('H:i', $timesheet['start_time']);?> - <?=date('H:i', $timesheet['finish_time']);?>
 	</td>
-	<td><?=modules::run('common/break_time', $timesheet['break_time']);?></td>
-	<td><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
+	<td class="center"><?=modules::run('common/break_time', $timesheet['break_time']);?></td>
+	<td class="center"><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
 	<td></td>
 	<td class="center"><?=$timesheet['total_minutes']/60;?></td>
 	<td class="center">$<?=$timesheet['total_amount_staff'];?></td>
 	<td class="center">
-		<a href="#"><i class="fa fa-eye"></i></a>
+		<? if ($timesheet['expenses_staff_cost'] > 0) { ?>
+		$<?=$timesheet['expenses_staff_cost'];?>
+		<? } ?>
+	</td>
+	<td class="center">
+		<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/details/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a>
 	</td>
 	<td class="center">
 		<div class="btn-group">

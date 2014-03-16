@@ -15,7 +15,6 @@
 					<button id="export-payrun" type="button" class="btn btn-core"><i class="fa fa-download"></i> Export Pay Run</button>
 				</div>
 				
-				<div id="output"></div>
 			</div>
 			</form>
 		</div>
@@ -29,7 +28,9 @@ $(function(){
 			url: "<?=base_url();?>payrun/ajax/exporting",
 			data: $('#export-payrun-form').serialize(),
 			success: function(html) {
-				$('#output').html(html);
+				window.location = '<?=base_url();?>exports/payrun/' + html;
+				$('.bs-modal-lg').modal('hide');
+			
 			}
 		})
 	})

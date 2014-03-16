@@ -33,7 +33,7 @@ class Ajax extends MX_Controller {
 	*	@return: (html) view of pay run stats
 	*/
 	function get_payrun_stats() {
-		$this->load->view('stats', isset($data) ? $data : NULL);
+		$this->load->view('create/stats', isset($data) ? $data : NULL);
 	}
 	
 	/**
@@ -171,10 +171,47 @@ class Ajax extends MX_Controller {
 	function exporting() {
 		$payrun_id = $this->input->post('payrun_id');
 		$export_id = $this->input->post('export_id');
+		$file_name = $this->_export_payrun($payrun_id, $export_id);
+		echo $file_name;
+	}
+	
+	function create_payrun() {
+		$type = $this->input->post('type');
+		$amount = $this->payrun_model->get_total_amount($type);
+		$total_staffs = $this->payrun_model->count_staff($type);
+		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
+		$data = array(
+			'type' => $type,
+			'amount' => $amount,
+			'total_staffs' => $total_staffs,
+			'total_timesheets' => count($timesheets)
+		);
+		$payrun_id = $this->payrun_model->create_payrun($data);
+		foreach($timesheets as $timesheet) {
+			$this->payrun_model->add_timesheet_to_payrun($timesheet['timesheet_id'], $payrun_id);
+		}
+		if ($this->input->post('export_id')) {
+			$file_name = $this->_export_payrun($payrun_id, $this->input->post('export_id'));
+			echo json_encode(array(
+				'export' => true,
+				'file_name' => $file_name
+			));
+		} else {
+			echo json_encode(array('export' => false));
+		}
+	}
+	
+	/**
+	*	@name: _export_payrun
+	*	@desc: export a pay run
+	*	@access: private
+	*	@param: $payrun_id, $export_id
+	*	@return: (string) $file_name
+	*/
+	private function _export_payrun($payrun_id, $export_id) {
 		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		
-		$this->load->model('export/export_model');
-		$fields = $this->export_model->get_fields($export_id);
+		$fields = modules::run('export/get_fields', $export_id);
 		
 		ini_set('memory_limit', '128M');
 		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
@@ -217,27 +254,9 @@ class Ajax extends MX_Controller {
 		
 		$objPHPExcel->getActiveSheet()->setTitle('payrun');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
-		$file_name = "payrun_" . $payrun_id . "_" . time() . ".csv";
-		$objWriter->save("./exports/" . $file_name);
-		echo $file_name;
-	}
-	
-	function create_payrun() {
-		$type = $this->input->post('type');
-		$amount = $this->payrun_model->get_total_amount($type);
-		$total_staffs = $this->payrun_model->count_staff($type);
-		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
-		$data = array(
-			'type' => $type,
-			'amount' => $amount,
-			'total_staffs' => $total_staffs,
-			'total_timesheets' => count($timesheets)
-		);
-		$payrun_id = $this->payrun_model->create_payrun($data);
-		foreach($timesheets as $timesheet) {
-			$this->payrun_model->add_timesheet_to_payrun($timesheet['timesheet_id'], $payrun_id);
-		}
-		
+		$file_name = $payrun_id . "_" . time() . ".csv";
+		$objWriter->save("./exports/payrun/" . $file_name);
+		return $file_name;
 	}
 	
 	function search_payruns() {

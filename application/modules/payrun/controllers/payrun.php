@@ -50,21 +50,6 @@ class Payrun extends MX_Controller {
 	}
 	
 	/**
-	*	@name: row_staff
-	*	@desc: load view of a row (tr) of staff
-	*	@access: public
-	*	@param: (int) $user_id
-	*	@return: (html) view of a row (tr) of a staff
-	*/
-	function row_staff($user_id) {
-		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
-		$data['staff_timesheets'] = $timesheets;
-		$data['staff'] = $this->staff_model->get_staff($user_id);
-		$data['expanded'] = $expanded;
-		return $this->load->view('source/staff_row_view', isset($data) ? $data : NULL, true);
-	}
-	
-	/**
 	*	@name: row_batched_staff
 	*	@desc: load the row (tr) of batched timesheets of a specified staff
 	*	@access: public
@@ -77,18 +62,8 @@ class Payrun extends MX_Controller {
 		$data['staff_timesheets'] = $timesheets;
 		$data['staff'] = $this->staff_model->get_staff($user_id);
 		$data['expanded'] = $expanded;
-		$checked = false;
-		$payrun_timesheets = $this->session->userdata('payrun_timesheets');
-		if (is_array($payrun_timesheets)) {
-			foreach($timesheets as $timesheet) {
-				if (in_array($timesheet['timesheet_id'], $payrun_timesheets)) {
-					$checked = true;
-				}
-			}
-		}	
 		
-		$data['checked'] = $checked;
-		return $this->load->view('batched_staff_row', isset($data) ? $data : NULL, true);
+		return $this->load->view('source/batched_staff_row', isset($data) ? $data : NULL, true);
 	}
 	
 	/**

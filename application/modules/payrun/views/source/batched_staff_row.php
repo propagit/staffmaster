@@ -1,6 +1,7 @@
 <? 
 $total_minutes = 0;
 $total_amount = 0;
+$total_expenses = 0;
 $from_date = 100000000000;
 $to_date = 0;
 $processing = true;
@@ -8,6 +9,7 @@ $total_ready = 0;
 foreach($staff_timesheets as $timesheet) {
 	$total_minutes += $timesheet['total_minutes'];
 	$total_amount += $timesheet['total_amount_staff'];
+	$total_expenses += $timesheet['expenses_staff_cost'];
 	if ($from_date >= $timesheet['start_time']) {
 		$from_date = $timesheet['start_time'];
 	}
@@ -20,7 +22,8 @@ foreach($staff_timesheets as $timesheet) {
 		$processing = false;
 	}
 } ?>
-	<td class="center"><input type="checkbox" class="payrun_staff" name="payrun_staffs[]" value="<?=$staff['user_id'];?>" <?=($checked) ? 'checked' : '';?> /></td>
+<tr id="timesheets_staff_<?=$staff['user_id'];?>">
+	<td class="center"><input type="checkbox" class="payrun_staff" name="payrun_staffs[]" value="<?=$staff['user_id'];?>" /></td>
 	<td class="wp-date" width="70">
 		<span class="wk_day"><?=date('D', $from_date);?></span>
 		<span class="wk_date"><?=date('d', $from_date);?></span>
@@ -36,6 +39,12 @@ foreach($staff_timesheets as $timesheet) {
 	<td class="center"><?=$total_minutes / 60;?></td>
 	<td class="center">$<?=money_format('%i', $total_amount);?></td>
 	<td class="center">
+		<? if ($total_expenses > 0) { ?>
+		$<?=money_format('%i', $total_expenses);?>
+		<? } ?>
+	</td>
+	<td class="center">
+		<a onclick="expand_staff_timehsheets(<?=$staff['user_id'];?>)">
 		<? if (count($staff_timesheets) == $total_ready) { ?>
 		<span class="badge success"><?=$total_ready;?></span>
 		<? } else if($total_ready == 0) { ?>
@@ -44,6 +53,7 @@ foreach($staff_timesheets as $timesheet) {
 		<span class="badge danger"><?=count($staff_timesheets) - $total_ready;?></span> 
 		<span class="badge success"><?=$total_ready;?></span>
 		<? } ?>
+		</a>
 	</td>
 	<td class="center">
 		<div class="btn-group">
@@ -68,3 +78,4 @@ foreach($staff_timesheets as $timesheet) {
 		<a class="wp-arrow" onclick="expand_staff_timehsheets(<?=$staff['user_id'];?>)"><i class="fa fa-plus-square-o fa-1x"></i></a>
 		<? } ?>
 	</td>
+</tr>

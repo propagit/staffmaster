@@ -41,5 +41,7 @@ class Export extends MX_Controller {
 		return modules::run('common/field_select', $data, $field_name, $field_value);
 	}	
 	
-	
+	function get_fields($export_id) {
+		return $this->export_model->get_fields($export_id);
+	}
 }

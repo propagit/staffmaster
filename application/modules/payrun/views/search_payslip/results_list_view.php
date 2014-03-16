@@ -42,7 +42,7 @@
 			<?=date('H:i', $payslip['start_time']);?> - <?=date('H:i', $payslip['finish_time']);?> <?=(date('d', $payslip['finish_time']) != date('d', $payslip['start_time'])) ? '<span class="text-danger">*</span>': '';?>
 		</td>
 		<td class="center"><?=modules::run('common/break_time', $payslip['break_time']);?></td>
-		<td><?=modules::run('attribute/payrate/display_payrate', $payslip['payrate_id']);?></td>
+		<td class="center"><?=modules::run('attribute/payrate/display_payrate', $payslip['payrate_id']);?></td>
 		<td class="center"><?=$payslip['total_minutes']/60;?></td>
 		<td class="center">$<?=$payslip['total_amount_staff'];?></td>
 		<td class="wp-date" width="80">

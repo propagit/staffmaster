@@ -129,7 +129,9 @@ class Timesheet extends MX_Controller {
 			'expenses_client_cost' => $expenses_client_cost,
 			'total_minutes' => $total_mins,
 			'total_amount_staff' => $total_amount_staff,
-			'total_amount_client' => $total_amount_client
+			'total_amount_client' => $total_amount_client,
+			'total_cost_staff' => ($expenses_staff_cost + $total_amount_staff),
+			'total_cost_client' => ($expenses_client_cost + $total_amount_client)
 		));
 		
 	}
