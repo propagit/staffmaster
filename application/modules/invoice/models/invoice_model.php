@@ -156,7 +156,7 @@ class Invoice_model extends CI_Model {
 	*	@return: array of client objects
 	*/
 	function get_invoiced_clients() {
-		$sql = "SELECT uc.*, sum(j.total_amount_client) as `total_amount`, count(*) as `total_timesheets` FROM `job_shift_timesheets` j
+		$sql = "SELECT uc.*, sum(j.expenses_client_cost) as `expenses`, sum(j.total_amount_client) as `total_amount`, count(*) as `total_timesheets` FROM `job_shift_timesheets` j
 					LEFT JOIN `user_clients` uc ON j.client_id = uc.user_id
 					WHERE j.status = " . TIMESHEET_BATCHED . "
 					AND j.status_invoice_client = " . INVOICE_READY . "

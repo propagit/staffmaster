@@ -19,7 +19,11 @@
 		<td class="center"><input type="checkbox" /></td>
 		<td><?=$invoice['company_name'];?></td>
 		<td class="center"><?=$invoice['total_timesheets'];?></td>
-		<td class="center"></td>
+		<td class="center">
+			<? if($invoice['expenses'] > 0) { ?>
+			$<?=money_format('%i', $invoice['expenses']);?>
+			<? } ?>
+		</td>
 		<td class="center">$<?=money_format('%i', $invoice['total_amount']);?></td>
 		<td class="center">
 			<a href="<?=base_url();?>invoice/create/<?=$invoice['user_id'];?>" target="_blank"><i class="fa fa-eye"></i></a>

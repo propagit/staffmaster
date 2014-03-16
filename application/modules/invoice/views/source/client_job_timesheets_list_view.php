@@ -19,6 +19,18 @@
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle">
 	<?=modules::run('invoice/row_job', $job['job_id']);?>
+	<tr>
+		<td class="center"></td>
+		<td class="center">Date</td>
+		<td>Venue</td>
+		<td class="center" width="120">Start - Finish</td>
+		<td class="center" width="100">Break</td>
+		<td class="center" width="100">Hours</td>
+		<td class="center" width="120">Expense</td>
+		<td class="center">Amount</td>
+		<td class="center">Add To Invoice</td>
+		<td class="center"></td>
+	</tr>
 	<? foreach($timesheets as $timesheet) { echo modules::run('invoice/row_timesheet', $timesheet['timesheet_id']); } ?>
 </table>
 </div>

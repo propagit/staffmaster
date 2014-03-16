@@ -176,6 +176,13 @@ class Ajax extends MX_Controller {
 	}
 	
 	function create_payrun() {
+		if ($this->input->post('export_id') == '') {
+			echo json_encode(array(
+				'export' => true,
+				'success' => false
+			));
+			return;
+		}
 		$type = $this->input->post('type');
 		$amount = $this->payrun_model->get_total_amount($type);
 		$total_staffs = $this->payrun_model->count_staff($type);
@@ -194,6 +201,7 @@ class Ajax extends MX_Controller {
 			$file_name = $this->_export_payrun($payrun_id, $this->input->post('export_id'));
 			echo json_encode(array(
 				'export' => true,
+				'success' => true,
 				'file_name' => $file_name
 			));
 		} else {

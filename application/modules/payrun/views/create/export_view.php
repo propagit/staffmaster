@@ -45,7 +45,13 @@ function save_payrun() {
 		success: function(data) {
 			data = $.parseJSON(data);
 			if (data.export) {
-				window.location = '<?=base_url();?>exports/payrun/' + data.file_name;
+				if (!data.success) {
+					$('#export_templates').addClass('has-error');
+					return;
+				} else {
+					window.location = '<?=base_url();?>exports/payrun/' + data.file_name;
+				}
+				
 			}
 			$('.bs-modal-lg').modal('hide');
 			list_staffs();

@@ -16,9 +16,8 @@ foreach($timesheets as $timesheet) {
 
 <tr class="row-open" id="row-timesheets-job-<?=$job['job_id'];?>">
 	<td width="20"></td>
-	<td class="center">Date</td>
-	<td><?=$job['name'];?></td>
-	<td colspan="2" class="center">
+	<td colspan="3"><?=$job['name'];?></td>
+	<td colspan="2" class="center" width="200">
 		<? if (count($timesheets) == $total_ready) { ?>
 		<span class="badge success"><?=$total_ready;?></span>
 		<? } else if($total_ready == 0) { ?>
@@ -28,7 +27,7 @@ foreach($timesheets as $timesheet) {
 		<span class="badge success"><?=$total_ready;?></span>
 		<? } ?>
 	</td>
-	<td width="60" class="center"><?=($total_minutes/60);?></td>
+	<td class="center">$</td>
 	<td class="center">$<?=money_format('%i', $total_amount);?></td>
 	<td class="center">
 		<div class="btn-group">

@@ -13,11 +13,13 @@
 	<?
 	$timesheets = $this->invoice_model->get_timesheets($job['job_id']);
 	$total_amount = 0;
+	$total_expenses = 0;
 	$total_ready = 0;
 	$processing = true;
 	$billable = 0;
 	foreach($timesheets as $timesheet) {	
 		$billable += $timesheet['total_amount_client'];
+		$total_expenses += $timesheet['expenses_client_cost'];
 		if ($timesheet['status_invoice_client'] == INVOICE_READY) {
 			$total_ready++;
 			$total_amount += $timesheet['total_amount_client'];
@@ -41,6 +43,7 @@
 		<? } ?>
 	</td>
 	<td class="center">
+		$<?=money_format('%i', $total_expenses);?>
 	</td>
 	<td class="center">$<?=money_format('%i', $total_amount);?></td>
 	<td class="center">

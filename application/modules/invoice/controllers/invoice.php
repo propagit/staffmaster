@@ -117,6 +117,27 @@ class Invoice extends MX_Controller {
 			);
 			$total += $job['total_amount'];
 			$this->invoice_model->add_invoice_item($item_data);
+			
+			
+			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
+			foreach($timesheets as $timesheet) {
+				$expenses = unserialize($timesheet['expenses']);
+				if (count($expenses) > 0) {
+					foreach($expenses as $exp) {
+						$expenses_staff_cost += $exp['staff_cost'];
+						$expenses_client_cost += $exp['client_cost'];
+						$item_data = array(
+							'invoice_id' => $invoice_id,
+							'job_id' => $job['job_id'],
+							'title' => $exp['description'],
+							'tax' => $exp['tax'],
+							'amount' => $exp['client_cost']
+						);
+						$total += $exp['client_cost'];
+						$this->invoice_model->add_invoice_item($item_data);
+					}
+				}	
+			}
 		}
 		$this->invoice_model->update_invoice($invoice_id, array(
 			'jobs' => serialize($data_jobs),
