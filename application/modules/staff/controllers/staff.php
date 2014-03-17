@@ -591,4 +591,12 @@ class Staff extends MX_Controller {
 		return $this->staff_modal->get_staff_groups($user_id);
 	}
 	
+	function reset_password($user_id)
+	{
+		$password = modules::run('common/generate_password');
+		$data = array('password' => md5($password));
+		$this->user_model->update_user($user_id,$data);
+		return $password;
+	}
+	
 }

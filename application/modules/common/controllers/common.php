@@ -312,5 +312,17 @@ class Common extends MX_Controller {
 		$data['current_page'] = $current_page;
 		$this->load->view('pagination',isset($data) ? $data : NULL);
 	}
+	
+	function generate_password($password_length = 6)
+	{
+		$alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+		$pass = array(); 
+		$alpha_length = strlen($alphabet) - 1; 
+		for ($i = 0; $i < $password_length; $i++) {
+			$n = rand(0, $alpha_length);
+			$pass[] = $alphabet[$n];
+		}
+		return implode($pass); 
+	}
 
 }
