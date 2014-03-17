@@ -41,7 +41,7 @@ class Email extends MX_Controller {
 	*	@param: ([int] template id, [int] user id)
 	*	@return: returns object for a particular email template
 	*/
-	function get_email_obj($template_id,$user_id,$company,$password = '')
+	function get_email_obj($template_id,$user_id,$company)
 	{
 		$obj = array();
 		if($template_id && $user_id && $company){
@@ -49,13 +49,14 @@ class Email extends MX_Controller {
 			switch($template_id){
 				case 1:
 				//welcome
+				$password = modules::run('staff/reset_password',$user_id);
 				$obj = array(
 							'first_name' => $user['first_name'],
 							'last_name' => $user['last_name'],
 							'company_name' => $company['company_name'],
 							'system_url' => base_url(),
 							'username' => $user['username'],
-							'password' => $password,
+							'password' => $password
 							);
 				
 				break;
