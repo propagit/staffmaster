@@ -14,6 +14,9 @@
 			<ul class="nav nav-tabs tab-respond" id="tab-invoice">
 				<li class="active"><a href="#create-invoice" data-toggle="tab">Create Invoice</a></li>
 				<li><a href="#search-invoices" data-toggle="tab">Search Invoices</a></li>
+				
+				<li class="pull-right active"><a>Client Invoices</a></li>
+				<li class="pull-right"><a href="<?=base_url();?>expense">Staff Expenses</a></li>
 				<li class="pull-right">
 					<a href="<?=base_url();?>payrun">Pay Run</a>
 				</li>

@@ -110,7 +110,7 @@ class Payrun_model extends CI_Model {
 	*	@return: (decimal) total amount to pay
 	*/
 	function get_total_amount($tfn=STAFF_TFN) {
-		$sql = "SELECT sum(j.total_amount_staff + j.expenses_staff_cost) as `total` FROM `job_shift_timesheets` j
+		$sql = "SELECT sum(j.total_amount_staff) as `total` FROM `job_shift_timesheets` j
 					LEFT JOIN `user_staffs` u ON j.staff_id = u.user_id
 					WHERE j.status = " . TIMESHEET_BATCHED . " 
 					AND j.status_payrun_staff = " . PAYRUN_READY . " 
@@ -251,23 +251,7 @@ class Payrun_model extends CI_Model {
 		$this->db->where('timesheet_id', $timesheet_id);
 		return $this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_PENDING));
 	}
-	
-	/**
-	*	@name: revert_staff_payruns
-	*	@desc: revert all timesheets of a staff to previous status (not batched)
-	*	@access: public
-	*	@param: (int) $staff_id
-	*	@return: (boolean)
-	*/
-	function revert_staff_payruns($staff_id)
-	{
-		$this->db->where('staff_id', $staff_id);
-		return $this->db->update('job_shift_timesheets', array(
-			'status' => TIMESHEET_APPROVED,
-			'status_payrun_staff' => PAYRUN_PENDING
-		));
-	}
-	
+		
 	/**
 	*	@name: revert_payrun
 	*	@desc: revert a timesheet to previous status (not batched)
@@ -278,6 +262,7 @@ class Payrun_model extends CI_Model {
 	function revert_payrun($timesheet_id)
 	{
 		$this->db->where('timesheet_id', $timesheet_id);
+		$this->db->where('status_payrun_staff < ', PAYRUN_GENERATED);
 		return $this->db->update('job_shift_timesheets', array(
 			'status' => TIMESHEET_APPROVED,
 			'status_payrun_staff' => PAYRUN_PENDING

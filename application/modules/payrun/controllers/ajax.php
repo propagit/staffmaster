@@ -11,6 +11,7 @@ class Ajax extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('payrun_model');
+		$this->load->model('expense/expense_model');
 	}
 	
 	/**
@@ -150,14 +151,22 @@ class Ajax extends MX_Controller {
 	
 	function revert_staff_payruns() {
 		$user_id = $this->input->post('user_id');
-		$this->payrun_model->revert_staff_payruns($user_id);		
+		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
+		foreach($timesheets as $timesheet) {
+			$this->_revert_payrun($timesheet['timesheet_id']);
+		}
 	}
 	
 	function revert_payrun() {
 		$timesheet_id = $this->input->post('timesheet_id');
-		$this->payrun_model->revert_payrun($timesheet_id);
+		$this->_revert_payrun($timesheet_id);
 	}
 	
+	private function _revert_payrun($timesheet_id) {
+		$this->payrun_model->revert_payrun($timesheet_id);
+		$this->expense_model->delete_timesheet_expenses($timesheet_id);
+	}
+		
 	function load_export($type) {
 		$data['type'] = $type;
 		$this->load->view('create/export_view', isset($data) ? $data : NULL);

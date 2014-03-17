@@ -9,7 +9,6 @@
 		<th class="center" width="80">State</th>
 		<th class="center" width="100">Total Hours</th>
 		<th class="center" width="100">Amount</th>
-		<th class="center" width="100">Expenses</th>
 		<th class="center" width="120">Time Sheets</th>
 		<th class="center" width="120">Add to Pay Run</th>
 		<th class="center" width="40">Revert</th>
@@ -225,7 +224,11 @@ function revert_payrun(user_id,timesheet_id) {
 				data: {timesheet_id: timesheet_id},
 				success: function(html) {
 					$('#timesheet_' + timesheet_id).remove();
-					refresh_row_timesheets_staff(user_id);
+					if ($('.timesheets_staff_' + user_id).length > 0) {
+						refresh_row_timesheets_staff(user_id);
+					} else {
+						$('#timesheets_staff_' + user_id).remove();
+					}					
 				}
 			})
 		 }

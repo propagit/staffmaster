@@ -12,6 +12,7 @@ class Timesheet extends MX_Controller {
 		$this->load->model('timesheet_model');
 		$this->load->model('job/job_shift_model');
 		$this->load->model('attribute/payrate_model');
+		$this->load->model('expense/expense_model');
 	}
 	
 	
@@ -50,6 +51,10 @@ class Timesheet extends MX_Controller {
 		$this->load->view('search_form_view', isset($data) ? $data : NULL);
 	}
 	
+	function get_timesheet($timesheet_id) {
+		return $this->timesheet_model->get_timesheet($timesheet_id);
+	}
+	
 	/**
 	*	@name: row_timesheet
 	*	@desc: load row view (tr) of one timesheet
@@ -64,6 +69,27 @@ class Timesheet extends MX_Controller {
 		$data['timesheet'] = $timesheet;
 		$data['shift'] = $this->job_shift_model->get_job_shift($timesheet['shift_id']);
 		$data['job'] = modules::run('job/get_job', $timesheet['job_id']);
+		
+		$total_expenses = 0;
+		$expenses = unserialize($timesheet['expenses']);
+		if (is_array($expenses)) {
+			foreach($expenses as $e) {
+				$staff_cost = $e['staff_cost'];
+				if ($e['tax'] == GST_ADD) {
+					$staff_cost *= 1.1;
+				}
+				$total_expenses += $staff_cost;
+			}
+		}
+		$paid_expenses = $this->expense_model->get_timesheet_expenses($timesheet_id);
+		foreach($paid_expenses as $e) {
+			$staff_cost = $e['staff_cost'];
+			if ($e['tax'] == GST_ADD) {
+				$staff_cost *= 1.1;
+			}
+			$total_expenses += $staff_cost;
+		}
+		$data['total_expenses'] = $total_expenses;
 		$this->load->view('row_view', isset($data) ? $data : NULL);
 	}
 	
@@ -121,6 +147,11 @@ class Timesheet extends MX_Controller {
 			foreach($expenses as $exp) {
 				$expenses_staff_cost += $exp['staff_cost'];
 				$expenses_client_cost += $exp['client_cost'];
+				$exp['job_id'] = $timesheet['job_id'];
+				$exp['timesheet_id'] = $timesheet['timesheet_id'];
+				$exp['staff_id'] = $timesheet['staff_id'];
+				$exp['client_id'] = $timesheet['client_id'];		
+				$this->expense_model->add_expense($exp);				
 			}
 		}
 		
@@ -129,9 +160,7 @@ class Timesheet extends MX_Controller {
 			'expenses_client_cost' => $expenses_client_cost,
 			'total_minutes' => $total_mins,
 			'total_amount_staff' => $total_amount_staff,
-			'total_amount_client' => $total_amount_client,
-			'total_cost_staff' => ($expenses_staff_cost + $total_amount_staff),
-			'total_cost_client' => ($expenses_client_cost + $total_amount_client)
+			'total_amount_client' => $total_amount_client
 		));
 		
 	}
