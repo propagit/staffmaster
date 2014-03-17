@@ -15,9 +15,11 @@
 	<div class="box bottom-box">
 		<div class="inner-box">
 			<ul class="nav nav-tabs tab-respond">
-				<li class="active"><a>Time Sheets</a></li>
+				<li class="active"><a>Search Time Sheets</a></li>
 				<li class="pull-right"><a href="<?=base_url();?>invoice">Client Invoices</a></li>
+				<li class="pull-right"><a href="<?=base_url();?>expense">Staff Expenses</a></li>
 				<li class="pull-right"><a href="<?=base_url();?>payrun">Pay Run</a></li>
+				<li class="pull-right active"><a>Time Sheets</a></li>
 			</ul>
 			<br />
 			<h2>Find Time Sheets</h2>

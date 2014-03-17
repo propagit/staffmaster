@@ -21,11 +21,6 @@
 	<td class="center"><?=$timesheet['total_minutes']/60;?></td>
 	<td class="center">$<?=$timesheet['total_amount_staff'];?></td>
 	<td class="center">
-		<? if ($timesheet['expenses_staff_cost'] > 0) { ?>
-		$<?=$timesheet['expenses_staff_cost'];?>
-		<? } ?>
-	</td>
-	<td class="center">
 		<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/details/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a>
 	</td>
 	<td class="center">

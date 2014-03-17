@@ -1,7 +1,6 @@
 <? 
 $total_minutes = 0;
 $total_amount = 0;
-$total_expenses = 0;
 $from_date = 100000000000;
 $to_date = 0;
 $processing = true;
@@ -9,7 +8,6 @@ $total_ready = 0;
 foreach($staff_timesheets as $timesheet) {
 	$total_minutes += $timesheet['total_minutes'];
 	$total_amount += $timesheet['total_amount_staff'];
-	$total_expenses += $timesheet['expenses_staff_cost'];
 	if ($from_date >= $timesheet['start_time']) {
 		$from_date = $timesheet['start_time'];
 	}
@@ -38,11 +36,6 @@ foreach($staff_timesheets as $timesheet) {
 	<td class="center"><?=$staff['state'];?></td>
 	<td class="center"><?=$total_minutes / 60;?></td>
 	<td class="center">$<?=money_format('%i', $total_amount);?></td>
-	<td class="center">
-		<? if ($total_expenses > 0) { ?>
-		$<?=money_format('%i', $total_expenses);?>
-		<? } ?>
-	</td>
 	<td class="center">
 		<a onclick="expand_staff_timehsheets(<?=$staff['user_id'];?>)">
 		<? if (count($staff_timesheets) == $total_ready) { ?>

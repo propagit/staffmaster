@@ -82,6 +82,10 @@ define('INVOICE_READY', 1);
 define('INVOICE_GENERATED', 2);
 define('INVOICE_PAID', 3);
 
+define('EXPENSE_UNPAID', 0);
+define('EXPENSE_PAID', 1);
+define('EXPENSE_DELETED', -1);
+
 define('STAFF_TFN', 1);
 define('STAFF_ABN', 2);
 

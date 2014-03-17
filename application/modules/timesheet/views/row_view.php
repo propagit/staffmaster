@@ -57,9 +57,9 @@
 	<td class="center">
 		<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/load_expenses_modal/<?=$timesheet['timesheet_id'];?>">
 			<? if ($timesheet['expenses'] != $shift['expenses']) { ?>
-			<span class="text-red"><i class="fa fa-dollar"></i></span>
+			<span class="text-red">$<?=money_format('%i', $total_expenses);?></span>
 			<? } else { ?>
-			<i class="fa fa-dollar"></i>
+			$<?=money_format('%i', $total_expenses);?>
 			<? } ?>
 		</a>
 	</td>

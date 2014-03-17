@@ -46,11 +46,15 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size, $title);
 	}
 	
-	function reverse_field_gst($value) {
+	function reverse_field_gst($value, $edit = false) {
+		$add_gst = 'Add GST';
+		if (!$edit) {
+			$add_gst = 'Inc GST';
+		}
 		switch($value) {
 			case GST_NO: return 'No GST';
 			case GST_YES: return 'Inc GST';
-			case GST_ADD: return 'Add GST';
+			case GST_ADD: return $add_gst;
 			case TAX_FREE: return 'Tax Free';
 		}
 	}

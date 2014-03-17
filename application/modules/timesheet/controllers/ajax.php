@@ -10,6 +10,7 @@ class Ajax extends MX_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('timesheet_model');
+		$this->load->model('expense/expense_model');
 	}
 	
 	/**
@@ -51,6 +52,7 @@ class Ajax extends MX_Controller {
 	*/
 	function details($timesheet_id) {
 		$data['timesheet'] = $this->timesheet_model->get_timesheet($timesheet_id);
+		$data['paid_expenses'] = $this->expense_model->get_timesheet_expenses($timesheet_id);
 		$this->load->view('details_modal_view', isset($data) ? $data : NULL);
 	}
 	
@@ -284,6 +286,7 @@ class Ajax extends MX_Controller {
 			$data['expenses'] = unserialize($timesheet['expenses']);
 		}
 		$data['timesheet_id'] = $timesheet_id;
+		$data['paid_expenses'] = $this->expense_model->get_timesheet_expenses($timesheet_id);
 		$this->load->view('edit/expense/table_list_view', isset($data) ? $data : NULL);
 	}
 	

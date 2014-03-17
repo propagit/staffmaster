@@ -14,7 +14,8 @@
             <ul class="nav nav-tabs tab-respond" id="nav-export-types">
                 <li class="active mobile-tab"><a href="#invoice" data-toggle="tab">Client Invoice Export</a></li>
                 <li class="mobile-tab"><a href="#payrun_tfn" data-toggle="tab">Pay Run TFN</a></li>
-                <li class="mobile-tab"><a href="#payrun_abn" data-toggle="tab">Pay Run ABN</a></li> 
+                <li class="mobile-tab"><a href="#payrun_abn" data-toggle="tab">Pay Run ABN</a></li>
+                <li class="mobile-tab"><a href="#expense" data-toggle="tab">Staff Expenses</a></li>
                 <li class="mobile-tab"><a href="#staff" data-toggle="tab">Staff Data Export</a></li>                              
 			</ul>
 			
@@ -23,6 +24,7 @@
 				<div class="tab-pane active" id="invoice"></div>	
                 <div class="tab-pane" id="payrun_tfn"></div>			
 				<div class="tab-pane" id="payrun_abn"></div>
+				<div class="tab-pane" id="expense"></div>
 				<div class="tab-pane" id="staff"></div>
 				
 			</div>

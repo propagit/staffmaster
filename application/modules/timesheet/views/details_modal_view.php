@@ -77,14 +77,20 @@
 					<? $expenses = unserialize($timesheet['expenses']); ?>
 					<tr class="active">
 						<th>Expenses</th>
-						<td><? if (!$expenses) { echo 'No Expenses'; } ?></td>
+						<td><? if (!$expenses && count($paid_expenses) == 0) { echo 'No Expenses'; } ?></td>
 					</tr>
-					<? if ($expenses) { foreach($expenses as $expense) { ?>
+					<? if ($expenses) { foreach($expenses as $expense) { $tax = 1; if ($expense['tax'] == GST_ADD) { $tax = 1.1; } ?>
 					<tr>
 						<td><?=$expense['description'];?></td>						
-						<td>$<?=$expense['staff_cost'];?></td>
+						<td>$<?=$expense['staff_cost'] * $tax;?> (<?=modules::run('common/reverse_field_gst', $expense['tax']);?>)</td>
 					</tr>
 					<? } } ?>
+					<? foreach($paid_expenses as $expense) { $tax = 1; if ($expense['tax'] == GST_ADD) { $tax = 1.1; } ?>
+					<tr>
+						<td><?=$expense['description'];?></td>						
+						<td>$<?=$expense['staff_cost'] * $tax;?> (<?=modules::run('common/reverse_field_gst', $expense['tax']);?>)</td>
+					</tr>
+					<? } ?>
 				</table>				
 				<button type="button" class="btn btn-core"><i class="fa fa-print"></i> Print</button>
 				&nbsp;
