@@ -27,6 +27,10 @@ class Report extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
+	function financial_year_view() {
+		$this->load->view('financial_year_view', isset($data) ? $data : NULL);
+	}
+	
 	function fore_cast_view() {
 		$today = date('Y-m-d');
 		$months[] = date('Y-m');
@@ -37,15 +41,21 @@ class Report extends MX_Controller {
 		foreach($months as $month) {
 			$categories[] = date('M Y', strtotime($month));
 		}
-		$data['categories'] = implode('\' , \'', $categories);
+		$data['categories'] = '\'' . implode('\' , \'', $categories) . '\'';
 		$data['months'] = $months;
 		$this->load->view('fore_cast_view', isset($data) ? $data : NULL);
 	}
 	
 	function field_select_financial_year($field_name, $field_value=null, $size=null) {
-		$years = array(
-			array('value' => '2013', 'label' => '2013-2014')
-		);
+		$max_year = date('Y');
+		if (date('n') > 7) {
+			$max_year++;
+		}
+		$years = array();
+		for($i=$max_year; $i > 2010; $i--) {
+			$years[] = array('value' => ($i - 1), 'label' => ($i - 1) . '-' . $i);
+		}
+		$field_value = $max_year - 1;
 		return modules::run('common/field_select', $years, $field_name, $field_value, $size, false);
 		
 	}

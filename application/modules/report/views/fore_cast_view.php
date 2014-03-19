@@ -15,7 +15,7 @@ var chart_forecast = new Highcharts.Chart({
         text: ' '
     },
     xAxis: {
-        categories: ['<?=$categories;?>'],
+        categories: [<?=$categories;?>],
         tickmarkPlacement: 'on',
         title: {
             enabled: false
