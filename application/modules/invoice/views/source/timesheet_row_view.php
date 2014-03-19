@@ -16,8 +16,9 @@
 	</td>
 	<td width="60" class="center"> <?=$timesheet['total_minutes']/60;?></td>
 	<td class="center" width="120">
-		<? if($timesheet['expenses_client_cost'] > 0) { ?>
-			$<?=$timesheet['expenses_client_cost'];?>
+		<? $expenses = modules::run('timesheet/calculate_expenses', $timesheet['timesheet_id'], 'client');
+			if($expenses > 0) { ?>
+			$<?=money_format('%i', $expenses);?>
 		<? } ?>
 	</td>
 	<td class="center" width="120">$<?=$timesheet['total_amount_client'];?></td>

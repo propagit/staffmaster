@@ -18,7 +18,7 @@
 		<td><?=$expense['description'];?></td>
 		<td class="center">$<?=$expense['staff_cost'];?></td>
 		<td class="center">$<?=$expense['client_cost'];?></td>
-		<td class="center"><?=modules::run('common/reverse_field_gst', $expense['tax']);?></td>
+		<td class="center"><?=modules::run('common/reverse_field_gst', $expense['tax'], true);?></td>
 		<td class="center"><a onclick="delete_expense(<?=$shift_id;?>, <?=$i;?>)"><i class="fa fa-times"></i></a></td>
 	</tr>
 	<? $i++; } ?>

@@ -44,6 +44,20 @@ class Ajax extends MX_Controller {
 		if ($export_id == '') {
 			return;
 		}
+		# Mark all expenses as paid
+		$mark_as_paid = $this->input->post('mark_as_paid');
+		if ($mark_as_paid) {
+			foreach($ids as $expense_id) {
+				$expense = $this->expense_model->get_expense($expense_id);
+				if ($expense['status'] != EXPENSE_PAID) {
+					$this->expense_model->update_expense($expense_id, array(
+						'status' => EXPENSE_PAID,
+						'paid_on' => date('Y-m-d H:i:s')
+					));
+				}			
+			}
+		}
+		
 		$file_name = $this->_export_expense($ids, $export_id);
 		echo $file_name;
 	}
@@ -107,7 +121,7 @@ class Ajax extends MX_Controller {
 		
 		$objPHPExcel->getActiveSheet()->setTitle('expense');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
-		$file_name = $expense_id . "_" . time() . ".csv";
+		$file_name = 'staff_expense_' . time() . ".csv";
 		$objWriter->save("./exports/expense/" . $file_name);
 		return $file_name;
 	} 

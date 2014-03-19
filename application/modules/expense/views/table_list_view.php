@@ -71,10 +71,12 @@ $(function(){
 			selected_expenses.push($(this).val());
 		});
 		var ids = selected_expenses.join(',');
-		$('.bs-modal-lg').modal({
-			remote: '<?=base_url();?>expense/ajax/load_export_modal/' + encodeURIComponent(ids),
-			show: true
-		});
+		if (ids != '') {
+			$('.bs-modal-lg').modal({
+				remote: '<?=base_url();?>expense/ajax/load_export_modal/' + encodeURIComponent(ids),
+				show: true
+			});
+		}		
 	})
 })
 </script>

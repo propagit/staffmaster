@@ -3,11 +3,24 @@
 <p>Your search returned <b><?=count($invoices);?></b> results</p>
 
 <? if (count($invoices) > 0) { ?>
+<div id="nav_invoices">
+<?
+	# Action menu
+	$data = array(
+		array('value' => 'export', 'label' => 'Export Selected'),
+		array('value' => 'mark_unpaid', 'label' => 'Mark Selected as Unpaid'),
+		array('value' => 'mark_paid', 'label' => 'Mark Selected as Paid'),
+		array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
+	);
+	echo modules::run('common/menu_dropdown', $data, 'invoice-action', 'Actions');
+?>
+</div>
+
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
-		<th class="center" width="20"></th>
+		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
 		<th class="center" width="80">Issued</th>
 		<th class="center" width="80">Due</th>
 		<th class="center">Inv #</th>
@@ -27,8 +40,7 @@
 	$user = modules::run('user/get_user', $invoice['issued_by']);
 ?>
 	<tr>
-		<td><input type="checkbox" />
-		</td>
+		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" /></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', strtotime($invoice['issued_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($invoice['issued_date']));?></span>
@@ -56,6 +68,25 @@
 </table>
 <? } ?>
 <script>
+$(function(){
+	var selected_invoices = new Array();
+	$('#selected_all_invoices').click(function(){
+		$('input.selected_invoice').prop('checked', this.checked);		
+	});
+	$('#menu-invoice-action ul li a[data-value="export"]').click(function(){
+		selected_invoices.length = 0;
+		$('.selected_invoice:checked').each(function(){
+			selected_invoices.push($(this).val());
+		});
+		var ids = selected_invoices.join(',');
+		if (ids != '') {
+			$('.bs-modal-lg').modal({
+				remote: '<?=base_url();?>invoice/ajax/load_export_modal/' + encodeURIComponent(ids),
+				show: true
+			});
+		}		
+	})
+})
 function mark_as_paid(invoice_id) {
 	$.ajax({
 		type: "POST",

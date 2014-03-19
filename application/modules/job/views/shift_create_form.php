@@ -122,7 +122,7 @@ $(function(){
 		forceParse: 1,
         minuteStep: 15,
         format: 'dd-mm-yyyy hh:ii',
-        startDate: "<?=date('Y-m-d');?>"
+        //startDate: "<?=date('Y-m-d');?>"
     }).on('changeDate', function(e) {
     	var start_date = moment(e.date.valueOf() - 11*60*60*1000);
     	var finish_date = $('input[name="finish_time"]').val();
@@ -142,7 +142,7 @@ $(function(){
 		forceParse: 1,
         minuteStep: 15,
         format: 'dd-mm-yyyy hh:ii',
-        startDate: "<?=date('Y-m-d');?>"
+        //startDate: "<?=date('Y-m-d');?>"
     }).on('changeDate', function(e) {
     	var finish_date = moment(e.date.valueOf() - 11*60*60*1000);
     	$('#break_start_time').datetimepicker('setEndDate', finish_date.format("DD-MM-YYYY HH:mm"));

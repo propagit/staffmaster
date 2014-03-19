@@ -139,14 +139,10 @@ class Timesheet extends MX_Controller {
 		}
 		
 		# Update expenses cost
-		$expenses_staff_cost = 0;
-		$expenses_client_cost = 0;
 		
 		$expenses = unserialize($timesheet['expenses']);
 		if (count($expenses) > 0) {
 			foreach($expenses as $exp) {
-				$expenses_staff_cost += $exp['staff_cost'];
-				$expenses_client_cost += $exp['client_cost'];
 				$exp['job_id'] = $timesheet['job_id'];
 				$exp['timesheet_id'] = $timesheet['timesheet_id'];
 				$exp['staff_id'] = $timesheet['staff_id'];
@@ -154,6 +150,8 @@ class Timesheet extends MX_Controller {
 				$this->expense_model->add_expense($exp);				
 			}
 		}
+		$expenses_staff_cost = $this->calculate_expenses($timesheet_id, 'staff');
+		$expenses_client_cost = $this->calculate_expenses($timesheet_id, 'client');
 		
 		return $this->timesheet_model->update_timesheet($timesheet_id, array(
 			'expenses_staff_cost' => $expenses_staff_cost,
@@ -244,5 +242,45 @@ class Timesheet extends MX_Controller {
 			$this->update_timesheet_hour_rate($timesheet_id);
 		}
 		redirect('timesheet');
+	}
+	
+	/**
+	*	@name: calculate_expenses
+	*	@desc: calculate total expenses of a timesheet
+	*	@access: public
+	*	@param: $timesheet_id
+	*	@return: $total_expenses
+	*/
+	function calculate_expenses($timesheet_id, $type='staff') {
+		if ($type != 'staff' && $type != 'client') { return 0; }
+		$type .= '_cost';
+		$total_expenses = 0;
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		
+		# If timesheet is not batched yet, include expenses in timesheet table
+		$expenses = unserialize($timesheet['expenses']);
+		if (is_array($expenses) && $timesheet['status'] < TIMESHEET_BATCHED) {
+			foreach($expenses as $e) {
+				$cost = $e[$type];
+				if ($e['tax'] == GST_ADD) {
+					$cost *= 1.1;
+				}
+				$total_expenses += $cost;
+			}
+		}
+		# If timesheet is not batched yet, only get expenses already paid expenses in expenses table
+		$status = EXPENSE_UNPAID;
+		if ($timesheet['status'] < TIMESHEET_BATCHED) {
+			$status = EXPENSE_PAID;
+		}
+		$paid_expenses = $this->expense_model->get_timesheet_expenses($timesheet_id, $status);
+		foreach($paid_expenses as $e) {
+			$cost = $e[$type];
+			if ($e['tax'] == GST_ADD) {
+				$cost *= 1.1;
+			}
+			$total_expenses += $cost;
+		}
+		return $total_expenses;
 	}
 }

@@ -88,8 +88,9 @@ class Expense_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	function get_timesheet_expenses($timesheet_id) {
+	function get_timesheet_expenses($timesheet_id, $status = EXPENSE_UNPAID) {
 		$this->db->where('timesheet_id', $timesheet_id);
+		$this->db->where('status >= ', $status);
 		$query = $this->db->get('expenses');
 		return $query->result_array();
 	}

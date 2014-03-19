@@ -30,3 +30,6 @@
 	color: #97040c;
 	font-weight: bold;
 }
+li a i {
+	padding-right: 8px;
+}

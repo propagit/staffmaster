@@ -11,6 +11,7 @@ class Invoice extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('invoice_model');
+		$this->load->model('expense/expense_model');
 	}
 	
 	
@@ -121,7 +122,8 @@ class Invoice extends MX_Controller {
 			
 			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
 			foreach($timesheets as $timesheet) {
-				$expenses = unserialize($timesheet['expenses']);
+				$expenses = $this->expense_model->get_timesheet_expenses($timesheet['timesheet_id']);
+				
 				if (count($expenses) > 0) {
 					foreach($expenses as $exp) {
 						$expenses_staff_cost += $exp['staff_cost'];
@@ -247,6 +249,12 @@ class Invoice extends MX_Controller {
 		$this->load->view('create/generated_view', isset($data) ? $data : NULL); 
 	}
 	
+	function row_client_job($job_id) {
+		$data['job'] = $this->invoice_model->get_job($job_id);
+		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
+		$this->load->view('source/client_job_row_view', isset($data) ? $data : NULL);
+	}
+	
 	
 	/**
 	*	@name: row_job
@@ -312,6 +320,16 @@ class Invoice extends MX_Controller {
 	function menu_dropdown_status($invoice_id) {
 		$data['invoice'] = $this->invoice_model->get_invoice($invoice_id);
 		$this->load->view('search/menu_dropdown_status', isset($data) ? $data : NULL);
+	}
+	
+	function field_select_export_templates($field_name, $field_value = null) {
+		$object = 'invoice';
+		$this->load->model('export/export_model');
+		$data['single'] = $this->export_model->get_templates($object, 'single');		
+		$data['batched'] = $this->export_model->get_templates($object, 'batched');
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('search/field_select_export_templates', isset($data) ? $data : NULL);
 	}
 	
 }

@@ -20,9 +20,7 @@
 		<td><?=$invoice['company_name'];?></td>
 		<td class="center"><?=$invoice['total_timesheets'];?></td>
 		<td class="center">
-			<? if($invoice['expenses'] > 0) { ?>
 			$<?=money_format('%i', $invoice['expenses']);?>
-			<? } ?>
 		</td>
 		<td class="center">$<?=money_format('%i', $invoice['total_amount']);?></td>
 		<td class="center">

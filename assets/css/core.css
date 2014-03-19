@@ -342,7 +342,9 @@ ol.example li.placeholder:before {
 #nav-wrap .nav{ 
 	margin-left:-10px;
 }
-
+#nav-wrap .nav li a i {
+	padding-right: 5px;
+}
 .nav > li > a{ 
 	padding:14px 10px 14px 10px; 
 	color:#fff;

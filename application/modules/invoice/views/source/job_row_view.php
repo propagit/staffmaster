@@ -1,6 +1,7 @@
 <?
 $total_amount = 0;
 $total_minutes = 0;
+$total_expenses = 0;
 $total_ready = 0;
 $processing = true;
 foreach($timesheets as $timesheet) {
@@ -8,16 +9,17 @@ foreach($timesheets as $timesheet) {
 		$total_ready++;
 		$total_amount += $timesheet['total_amount_client'];
 		$total_minutes += $timesheet['total_minutes'];
+		$total_expenses += $timesheet['expenses_client_cost'];
 	} else {
 		$processing = false;
 	}
 }
 ?>
-
 <tr class="row-open" id="row-timesheets-job-<?=$job['job_id'];?>">
 	<td width="20"></td>
 	<td colspan="3"><?=$job['name'];?></td>
-	<td colspan="2" class="center" width="200">
+	<td></td>
+	<td class="center" width="200">
 		<? if (count($timesheets) == $total_ready) { ?>
 		<span class="badge success"><?=$total_ready;?></span>
 		<? } else if($total_ready == 0) { ?>
@@ -27,7 +29,9 @@ foreach($timesheets as $timesheet) {
 		<span class="badge success"><?=$total_ready;?></span>
 		<? } ?>
 	</td>
-	<td class="center">$</td>
+	<td class="center">
+		$<?=money_format('%i', $total_expenses);?>
+	</td>
 	<td class="center">$<?=money_format('%i', $total_amount);?></td>
 	<td class="center">
 		<div class="btn-group">

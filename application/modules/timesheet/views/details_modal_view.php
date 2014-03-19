@@ -79,7 +79,7 @@
 						<th>Expenses</th>
 						<td><? if (!$expenses && count($paid_expenses) == 0) { echo 'No Expenses'; } ?></td>
 					</tr>
-					<? if ($expenses) { foreach($expenses as $expense) { $tax = 1; if ($expense['tax'] == GST_ADD) { $tax = 1.1; } ?>
+					<? if ($expenses && $timesheet['status'] < TIMESHEET_BATCHED) { foreach($expenses as $expense) { $tax = 1; if ($expense['tax'] == GST_ADD) { $tax = 1.1; } ?>
 					<tr>
 						<td><?=$expense['description'];?></td>						
 						<td>$<?=$expense['staff_cost'] * $tax;?> (<?=modules::run('common/reverse_field_gst', $expense['tax']);?>)</td>
