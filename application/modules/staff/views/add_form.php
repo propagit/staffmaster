@@ -25,7 +25,7 @@
 			</ul>
         
 	        <p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>
-			<form class="form-horizontal" role="form" id="form_add_staff">
+			<form class="form-horizontal" role="form" id="form_add_staff" method="post" action="<?=base_url();?>staff/add">
 			
 			<div class="row">
 				<div class="form-group">
@@ -125,6 +125,7 @@
 					</div>
 				</div>
 			</div>
+            <?php if(0){ ?>
 			<div class="row">
 				<div class="form-group">
 					<label for="department_id" class="col-md-2 control-label">Group</label>
@@ -133,6 +134,7 @@
 					</div>
 				</div>				
 			</div>
+            <?php } ?>
 			<div class="row">
 				<div class="form-group">
 					<label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
@@ -149,7 +151,7 @@
 			<div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
-						<button type="button" class="btn btn-core" id="btn_add_staff"><i class="fa fa-plus"></i> Add Staff</button>
+						<button type="submit" class="btn btn-core" id="btn_add_staff"><i class="fa fa-plus"></i> Add Staff</button>
 					</div>
 				</div>
 			</div>
@@ -162,7 +164,7 @@
 <!--end bottom box -->
 
 <script>
-$(function(){
+/* $(function(){
 	$('#btn_add_staff').click(function(){
 		$.ajax({
 			type: "POST",
@@ -174,5 +176,5 @@ $(function(){
 			}
 		})
 	})
-})
+}) */
 </script>

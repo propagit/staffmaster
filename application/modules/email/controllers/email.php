@@ -41,7 +41,7 @@ class Email extends MX_Controller {
 	*	@param: ([int] template id, [int] user id)
 	*	@return: returns object for a particular email template
 	*/
-	function get_email_obj($template_id,$user_id,$company)
+	function get_email_obj($template_id,$user_id,$company,$password = '')
 	{
 		$obj = array();
 		if($template_id && $user_id && $company){
@@ -49,7 +49,9 @@ class Email extends MX_Controller {
 			switch($template_id){
 				case 1:
 				//welcome
-				$password = modules::run('staff/reset_password',$user_id);
+				if(!$password){
+					$password = modules::run('user/reset_password',$user_id);
+				}
 				$obj = array(
 							'first_name' => $user['first_name'],
 							'last_name' => $user['last_name'],
@@ -155,6 +157,21 @@ class Email extends MX_Controller {
 	*	@param: (array) email data
 	*/
 	function send_email($data)
+	{
+		if(LIVE_SERVER){
+			$this->send_email_live($data);
+		}else{
+			$this->send_email_localhost($data);
+		}
+	}
+	
+	/**
+	*	@name: send_email_live
+	*	@desc: A central function to send all email in live server
+	*	@access: public
+	*	@param: (array) email data
+	*/
+	function send_email_live($data)
 	{
 		$to = '';
 		$from = '';

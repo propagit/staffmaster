@@ -59,10 +59,10 @@ class Staff extends MX_Controller {
 			array('field' => 'country', 'label' => 'Country', 'rules' => ''),
 			array('field' => 'postcode', 'label' => 'Postcode', 'rules' => ''),
 			array('field' => 'phone', 'label' => 'Phone', 'rules' => ''),
-			array('field' => 'email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email'),
+			array('field' => 'email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email|is_unique[users.email_address]'),
 			array('field' => 'password', 'label' => 'Password', 'rules' => 'required'),
-			array('field' => 'department_id', 'label' => 'Department', 'rules' => ''),
-			array('field' => 'role', 'label' => 'Role', 'rules' => ''),
+			//array('field' => 'department_id', 'label' => 'Department', 'rules' => ''),
+			//array('field' => 'role', 'label' => 'Role', 'rules' => ''),
 			array('field' => 'external_staff_id', 'label' => 'External Staff ID', 'rules' => ''),
 			array('field' => 'emergency_contact', 'label' => 'Emergency Contact', 'rules' => ''),
 			array('field' => 'emergency_phone', 'label' => 'Emergency Phone', 'rules' => '')
@@ -72,12 +72,12 @@ class Staff extends MX_Controller {
 		}
 		else
 		{
-			if ($this->user_model->check_username($this->input->post('email_address')))
+			/* if ($this->user_model->check_username($this->input->post('email_address')))
 			{
 				$data['username_exist'] = true;
 			}
 			else
-			{
+			{ */
 				$data = $this->input->post();
 				$user_data = array(
 					'status' => 1,
@@ -108,22 +108,45 @@ class Staff extends MX_Controller {
 					'external_staff_id' => $data['external_staff_id'],
 					'gender' => $data['gender'],
 					'dob' => date('Y-m-d',strtotime($data['dob_year'].'-'.$data['dob_month']. '-'.$data['dob_day'])),
-					'department_id' => $data['department_id'],
-					'role' => $data['role'],
+					//'department_id' => $data['department_id'],
+					//'role' => $data['role'],
 					'emergency_contact' => $data['emergency_contact'],
 					'emergency_phone' => $data['emergency_phone'],
 					's_choice' => 'employer',
 					's_name' =>  $data['first_name'].' '.$data['last_name'],
-					's_fund_name' => $company_profile['super_name']
+					's_fund_name' => $company_profile['super_fund_name']
 					
 				);
 				$staff_id = $this->staff_model->insert_staff($staff_data);
+				//send welcome email
+				$this->send_welcome_email($user_id,$data['email_address'],$data['password']);
 				redirect('staff/edit/' . $user_id);
-			}
+			//}
 		}
 		
 		
 		$this->load->view('add_form', isset($data) ? $data : NULL);
+	}
+	
+	function send_welcome_email($user_id,$email,$password = '')
+	{
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		$template_info = $this->email_template_model->get_template(1);
+		if($template_info->auto_send == 'yes'){
+			//get company profile
+			$company = $this->setting_model->get_profile();
+			//get receiver object	
+			$obj = modules::run('email/get_email_obj',1,$user_id,$company,$password);
+			$email_data = array(
+								'to' => $email,
+								'from' => $company['email_c_email'],
+								'from_text' => 'Admin @ '.$company['email_c_name'],
+								'subject' => $template_info->email_subject,
+								'message' => modules::run('email/format_template_body',$template_info->template_content,$obj)
+							);
+			modules::run('email/send_email',$email_data);
+		}
 	}
 	
 	/**
@@ -592,12 +615,6 @@ class Staff extends MX_Controller {
 		return $this->staff_modal->get_staff_groups($user_id);
 	}
 	
-	function reset_password($user_id)
-	{
-		$password = modules::run('common/generate_password');
-		$data = array('password' => md5($password));
-		$this->user_model->update_user($user_id,$data);
-		return $password;
-	}
+	
 	
 }

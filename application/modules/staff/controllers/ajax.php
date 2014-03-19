@@ -741,11 +741,7 @@ class Ajax extends MX_Controller {
 								'subject' => $email_subject,
 								'message' => modules::run('email/format_template_body',$email_body,$obj)
 							);
-					if(LIVE_SERVER){
-						modules::run('email/send_email',$email_data);
-					}else{
-						modules::run('email/send_email_localhost',$email_data);
-					}
+					modules::run('email/send_email',$email_data);
 				}
 			}
 		}
