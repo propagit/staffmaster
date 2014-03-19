@@ -28,5 +28,25 @@ class Ajax extends MX_Controller {
 		echo json_encode($data);
 	}
 	
-	
+	function get_sample_invoices() {
+		$data = array();
+		for($i=0; $i < 12; $i++) {
+			$data[] = rand(80,200) * 10;
+		}
+		return $data;
+	}
+	function get_sample_pays() {
+		$data = array();
+		for($i=0; $i < 12; $i++) {
+			$data[] = rand(40,100) * 10;
+		}
+		return $data;
+	}
+	function get_sample_expenses() {
+		$data = array();
+		for($i=0; $i < 12; $i++) {
+			$data[] = rand(10,50) * 10;
+		}
+		return $data;
+	}
 }
