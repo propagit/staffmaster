@@ -245,6 +245,33 @@ class Invoice_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_export_timesheets($invoice_id, $job_id) {
+		$sql = "SELECT js.*,
+					CONCAT(s.first_name, ' ', s.last_name) as `staff_name`,
+					c.company_name
+					FROM job_shift_timesheets js
+						LEFT JOIN users s ON s.user_id = js.staff_id
+						LEFT JOIN user_clients c ON c.user_id = js.client_id
+					WHERE js.job_id = " . $job_id . "
+					AND js.invoice_id = " . $invoice_id;
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function get_export_expenses($expense_id) {
+		$sql = "SELECT e.*,
+					CONCAT(s.first_name, ' ', s.last_name) as `staff_name`,
+					c.company_name,
+					js.break_time, js.job_date, js.start_time, js.finish_time, js.total_minutes
+					FROM expenses e
+						LEFT JOIN users s ON s.user_id = e.staff_id
+						LEFT JOIN user_clients c ON c.user_id = e.client_id
+						LEFT JOIN job_shift_timesheets ON js.timesheet_id = e.timesheet_id
+					WHERE e.expense_id = " . $expense_id;
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	/**
 	*	@name: add_job_to_invoice
 	*	@desc: add all time sheets of the job to the invoice

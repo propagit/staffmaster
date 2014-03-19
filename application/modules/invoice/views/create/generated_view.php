@@ -115,12 +115,12 @@
 					<td align="right">
 						<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
 						$<?=money_format('%i', $item['amount']/11);?>
-						<? } ?>
+						<? } else { echo '$0.00'; } ?>
 					</td>
 					<td align="right">
 						<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
 						$<?=money_format('%i', $item['amount']/11*10);?>
-						<? } ?>
+						<? } else { echo '$' . money_format('%i', $item['amount']); } ?>
 					</td>
 					<td align="right">$<?=money_format('%i', $item['amount']);?></td>
 				</tr>            
