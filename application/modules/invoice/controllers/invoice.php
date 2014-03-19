@@ -131,6 +131,7 @@ class Invoice extends MX_Controller {
 						$item_data = array(
 							'invoice_id' => $invoice_id,
 							'job_id' => $job['job_id'],
+							'expense_id' => $exp['expense_id'],
 							'title' => $exp['description'],
 							'tax' => $exp['tax'],
 							'amount' => $exp['client_cost']

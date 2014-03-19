@@ -592,38 +592,96 @@ class Ajax extends MX_Controller {
 		}
 		$i = 0;
 		foreach($ids as $invoice_id) {
-			$invoice = $this->invoice_model->get_invoice($invoice_id);
-			
-			$row++;
-			foreach($fields as $field) {
-				$value = $field['value']; # Convert $field, $timesheet
-				$tax = $expense['tax'];
-				$amount = $expense['staff_cost'];
-				$tax_amount = 0;
-				$ex_tax_amount = $amount;
-				$inc_tax_amount = $amount;
-				if ($tax == GST_YES) {
-					$tax_amount = $amount/11;
-					$ex_tax_amount = $amount * 10/11;
-					$inc_tax_amount = $amount;
-				} else if ($tax == GST_ADD) {
-					$tax_amount = $amount / 10;
-					$ex_tax_amount = $amount;
-					$inc_tax_amount = $amount * 1.1;
+			$invoice = $this->invoice_model->get_invoice($invoice_id);	
+			# Get all invoice item
+			$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
+			foreach($invoice_items as $item) {
+				if ($item['include_timesheets']) {
+					$timesheets = $this->invoice_model->get_export_timesheets($invoice_id, $item['job_id']);
+					foreach($timesheets as $timesheet) {
+						$row++;
+						foreach($fields as $field) {
+							$value = $field['value']; # Convert $field, $timesheet
+							
+							$amount = $timesheet['total_amount_client'];
+							$tax_amount = $amount/11;
+							$ex_tax_amount = $amount * 10/11;
+							$inc_tax_amount = $amount;
+							
+							$breaks = modules::run('common/break_time', $timesheet['break_time']);
+							$value = str_replace('{tax_amount}', '$' . money_format('%i', $tax_amount), $value);
+							$value = str_replace('{inc_tax_amount}', '$' . money_format('%i', $inc_tax_amount), $value);
+							$value = str_replace('{ex_tax_amount}', '$' . money_format('%i', $ex_tax_amount), $value);
+							
+							$value = str_replace('{company_name}', $timesheet['company_name'], $value);
+							$value = str_replace('{invoice_number}', $invoice['invoice_number'], $value);
+							$value = str_replace('{staff_name}', $timesheet['staff_name'], $value);
+							$value = str_replace('{job_date}', date('d/m/Y', strtotime($timesheet['job_date'])), $value);
+							$value = str_replace('{start_time}', date('H:i', $timesheet['start_time']), $value);
+							$value = str_replace('{finish_time}', date('H:i', $timesheet['finish_time']), $value);
+							$value = str_replace('{hours}', $timesheet['total_minutes']/60, $value);
+							$value = str_replace('{break}', $breaks/60, $value);
+							$value = str_replace('{type}', 'Staff Services', $value);
+							$value = str_replace('{description}', $item['title'], $value);
+							#$value = str_replace('{paid_on}', date('d/m/Y', strtotime($timesheet['paid_on'])), $value);
+							#$value = str_replace('{job_name}', $expense['job_name'], $value);
+							$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+							$i++;
+						}
+						$i=0;
+					}
+				} 
+				if ($item['expense_id'] != 0) {
+					$i = 0;
+					$expenses = $this->invoice_model->get_export_expenses($item['expense_id']);
+					foreach($expenses as $expense) {
+						$row++;
+						foreach($fields as $field) {
+							$value = $field['value']; # Convert $field, $timesheet
+							
+							$tax = $expense['tax'];
+							$amount = $expense['client_cost'];
+							$tax_amount = 0;
+							$ex_tax_amount = $amount;
+							$inc_tax_amount = $amount;
+							if ($tax == GST_YES) {
+								$tax_amount = $amount/11;
+								$ex_tax_amount = $amount * 10/11;
+								$inc_tax_amount = $amount;
+							} else if ($tax == GST_ADD) {
+								$tax_amount = $amount / 10;
+								$ex_tax_amount = $amount;
+								$inc_tax_amount = $amount * 1.1;
+							}
+							
+							$breaks = modules::run('common/break_time', $expense['break_time']);
+							
+							$value = str_replace('{tax_amount}', '$' . money_format('%i', $tax_amount), $value);
+							$value = str_replace('{inc_tax_amount}', '$' . money_format('%i', $inc_tax_amount), $value);
+							$value = str_replace('{ex_tax_amount}', '$' . money_format('%i', $ex_tax_amount), $value);
+							
+							$value = str_replace('{company_name}', $expense['company_name'], $value);
+							$value = str_replace('{invoice_number}', $invoice['invoice_number'], $value);
+							$value = str_replace('{staff_name}', $expense['staff_name'], $value);
+							$value = str_replace('{job_date}', date('d/m/Y', strtotime($expense['job_date'])), $value);
+							$value = str_replace('{start_time}', date('H:i', $expense['start_time']), $value);
+							$value = str_replace('{finish_time}', date('H:i', $expense['finish_time']), $value);
+							$value = str_replace('{hours}', $expense['total_minutes']/60, $value);
+							$value = str_replace('{break}', $breaks/60, $value);
+							$value = str_replace('{type}', 'Staff Expenses', $value);
+							$value = str_replace('{description}', $item['title'], $value);
+							#$value = str_replace('{paid_on}', date('d/m/Y', strtotime($timesheet['paid_on'])), $value);
+							#$value = str_replace('{job_name}', $expense['job_name'], $value);
+							$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+							$i++;
+						}
+						$i=0;
+					}
 				}
-				
-				$value = str_replace('{tax_amount}', '$' . money_format('%i', $tax_amount), $value);
-				$value = str_replace('{inc_tax_amount}', '$' . money_format('%i', $inc_tax_amount), $value);
-				$value = str_replace('{ex_tax_amount}', '$' . money_format('%i', $ex_tax_amount), $value);
-				$value = str_replace('{staff_first_name}', $expense['first_name'], $value);
-				$value = str_replace('{staff_last_name}', $expense['last_name'], $value);
-				$value = str_replace('{job_date}', date('d/m/Y', strtotime($expense['job_date'])), $value);
-				$value = str_replace('{paid_on}', date('d/m/Y', strtotime($expense['paid_on'])), $value);
-				$value = str_replace('{job_name}', $expense['job_name'], $value);
-				$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
-				$i++;
 			}
-			$i=0;
+			
+			
+			
 		}
 		
 		$objPHPExcel->getActiveSheet()->setTitle('invoice');
