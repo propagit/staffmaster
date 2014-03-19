@@ -593,6 +593,7 @@ class Ajax extends MX_Controller {
 		$i = 0;
 		foreach($ids as $invoice_id) {
 			$invoice = $this->invoice_model->get_invoice($invoice_id);
+			
 			$row++;
 			foreach($fields as $field) {
 				$value = $field['value']; # Convert $field, $timesheet

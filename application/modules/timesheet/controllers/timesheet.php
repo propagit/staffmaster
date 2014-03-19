@@ -239,7 +239,7 @@ class Timesheet extends MX_Controller {
 			$job = modules::run('job/get_job', $shift['job_id']);
 			$shift['client_id'] = $job['client_id'];
 			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
-			$this->update_timesheet_hour_rate($timesheet_id);
+			#$this->update_timesheet_hour_rate($timesheet_id);
 		}
 		redirect('timesheet');
 	}
