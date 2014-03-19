@@ -27,6 +27,21 @@ class Report extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
+	function fore_cast_view() {
+		$today = date('Y-m-d');
+		$months[] = date('Y-m');
+		for($i=1; $i <= 3; $i++) {
+			$months[] = date('Y-m', strtotime("$today +$i month"));
+		}
+		$categories = array();
+		foreach($months as $month) {
+			$categories[] = date('M Y', strtotime($month));
+		}
+		$data['categories'] = implode('\' , \'', $categories);
+		$data['months'] = $months;
+		$this->load->view('fore_cast_view', isset($data) ? $data : NULL);
+	}
+	
 	function field_select_financial_year($field_name, $field_value=null, $size=null) {
 		$years = array(
 			array('value' => '2013', 'label' => '2013-2014')
