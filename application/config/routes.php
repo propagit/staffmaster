@@ -80,7 +80,6 @@ $route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:
 $route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
 
 
-
 $route['attribute/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1';
 $route['attribute/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2';
 $route['attribute/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2/$3';

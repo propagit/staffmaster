@@ -60,4 +60,5 @@ class Ajax extends MX_Controller {
 		$data['venue'] = modules::run('attribute/venue/get_venue', $venue_id);
 		$this->load->view('staff/map', isset($data) ? $data : NULL);
 	}
+
 }

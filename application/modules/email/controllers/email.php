@@ -65,6 +65,11 @@ class Email extends MX_Controller {
 				
 				case 2:
 				//roster update
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'roster' => modules::run('roster/get_roster_email',$user_id)
+							);
 				break;
 				
 				case 3:
@@ -73,6 +78,13 @@ class Email extends MX_Controller {
 				
 				case 4:
 				//shift reminder
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'company_name' => $company['company_name'],
+							'system_url' => base_url(),
+							'shift_info' => '[Shift information will be inserted here such as Propagate World Wide at 12:30 PM]'
+							);
 				break;
 				
 				case 5:
@@ -81,6 +93,14 @@ class Email extends MX_Controller {
 				
 				case 6:
 				//forgot password
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'company_name' => $company['company_name'],
+							'system_url' => base_url(),
+							'username' => $user['username'],
+							'password' => modules::run('user/reset_password',$user_id)
+							);
 				break;
 				
 				case 7:
@@ -131,6 +151,7 @@ class Email extends MX_Controller {
 				$email = str_replace('{Password}',$obj['password'],$email);
 				$email = str_replace('{Roster}',$obj['roster'],$email);
 				$email = str_replace('{SelectedShifts}',$obj['selected_shifts'],$email);
+				$email = str_replace('{ShiftInfo}',$obj['shift_info'],$email);
 		}
 		return $email;
 		
@@ -164,7 +185,7 @@ class Email extends MX_Controller {
 			$this->send_email_localhost($data);
 		}
 	}
-	
+
 	/**
 	*	@name: send_email_live
 	*	@desc: A central function to send all email in live server
