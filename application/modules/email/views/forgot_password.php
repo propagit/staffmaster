@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <?=modules::run('email/description_merge_fields','forgot_password_email');?>
+        <?=modules::run('email/description_merge_fields','forgot_password_email',6);?>
     </div>
 </div>
 

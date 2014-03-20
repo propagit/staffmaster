@@ -1,0 +1,1 @@
+ALTER TABLE  `user_staffs` ADD  `welcome_email_sent` ENUM(  'yes',  'no' ) NOT NULL DEFAULT  'no';

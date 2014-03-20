@@ -146,6 +146,8 @@ class Staff extends MX_Controller {
 								'message' => modules::run('email/format_template_body',$template_info->template_content,$obj)
 							);
 			modules::run('email/send_email',$email_data);
+			//update welcome_email_sent status to yes
+			$this->staff_model->update_staff($user_id,array('welcome_email_sent' => 'yes'));
 		}
 	}
 	

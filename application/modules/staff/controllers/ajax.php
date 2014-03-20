@@ -721,7 +721,6 @@ class Ajax extends MX_Controller {
 		$selected_user_ids = $this->input->post('selected_user_ids',true);
 		$email_template_id = $this->input->post('email_template_select',true);
 		
-		$email_subject = 'Staff Master ';
 		if($email_template_id){
 			$template_info = $this->email_template_model->get_template($email_template_id);
 			$email_subject = $template_info->email_subject;
@@ -731,17 +730,28 @@ class Ajax extends MX_Controller {
 			//create obj parameters based on user and email template eg
 			$user_ids = json_decode($selected_user_ids);
 			foreach($user_ids as $user_id){
-				$email = $this->user_model->get_user_email_from_user_id($user_id);
-				$obj = modules::run('email/get_email_obj',$email_template_id,$user_id,$company);
-				if($email){
-					$email_data = array(
-								'to' => $email,
-								'from' => $company['email_c_email'],
-								'from_text' => 'Admin @ '.$company['email_c_name'],
-								'subject' => $email_subject,
-								'message' => modules::run('email/format_template_body',$email_body,$obj)
-							);
-					modules::run('email/send_email',$email_data);
+				//check if its is welcome email
+				$send_email = true;
+				if($template_info->email_template_id == 1){
+					//check if this staff has already received a welcome email
+					$staff = $this->staff_model->get_staff($user_id);
+					if($staff['welcome_email_sent'] == 'yes'){
+						$send_email = false;	
+					}
+				}
+				if($send_email){
+					$email = $this->user_model->get_user_email_from_user_id($user_id);
+					$obj = modules::run('email/get_email_obj',$email_template_id,$user_id,$company);
+					if($email){
+						$email_data = array(
+									'to' => $email,
+									'from' => $company['email_c_email'],
+									'from_text' => 'Admin @ '.$company['email_c_name'],
+									'subject' => $template_info->email_subject,
+									'message' => modules::run('email/format_template_body',$email_body,$obj)
+								);
+						modules::run('email/send_email',$email_data);
+					}
 				}
 			}
 		}
