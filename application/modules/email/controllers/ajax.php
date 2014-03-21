@@ -118,19 +118,17 @@ class Ajax extends MX_Controller {
 		$this->load->model('setting/setting_model');
 		$company = $this->setting_model->get_profile();	
 		$email_body = $this->input->post('email_body');
-		$email_subject = 'Staff Master Test Email';
 		$email_template_id = $this->input->post('email_template_select',true);
 		if($email_template_id){
 			$template_info = $this->email_template_model->get_template($email_template_id);
-			$email_subject = $template_info->email_subject;
 		}
 		$email_to = $this->input->post('sample_email_to',true);
 		if($email_to){
 			$email_data = array(
 						'to' => $email_to,
 						'from' => $company['email_c_email'],
-						'from_text' => 'Admin @ '.$company['email_c_name'],
-						'subject' => $email_subject,
+						'from_text' => $company['email_c_name'],
+						'subject' => $template_info->email_subject,
 						'message' => modules::run('email/format_template_body',$email_body)
 					);
 			modules::run('email/send_email',$email_data);
@@ -165,7 +163,7 @@ class Ajax extends MX_Controller {
 					$email_data = array(
 								'to' => $email,
 								'from' => $company['email_c_email'],
-								'from_text' => 'Admin @ '.$company['email_c_name'],
+								'from_text' => $company['email_c_name'],
 								'subject' => $email_subject,
 								'message' => modules::run('email/format_template_body',$email_body,$obj)
 							);

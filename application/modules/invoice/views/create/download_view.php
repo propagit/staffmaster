@@ -2,7 +2,7 @@
     <body>
         <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-            	<td width="65%"><img src="<?=base_url()?>assets/img/core/staffmaster-logo.jpg"></td>
+            	<td width="65%"><?=modules::run('setting/company_logo');?></td>
                 <td width="5%">&nbsp;</td>
                 <td width="30%" style="width:500px;" valign="bottom" class="padding-left-15">Bill Enquiries</td>
             </tr>
@@ -11,8 +11,8 @@
                     <table>
                        <tr>
                         <td class="padding-top-25">
-                            <?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?><br>
-                            ABN: <?=($invoice['profile_abn'] != '') ? $invoice['profile_abn'] : $company_profile['abn_acn'];?><br>
+                            <?=$company_profile['company_name'];?><br>
+                            ABN: <?=$company_profile['abn_acn'];?><br>
                             <br><b><?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?><br>
                             <?=($invoice['client_address'] != '') ? $invoice['client_address'] : $client['address'];?><br>
                             <?=($invoice['client_suburb'] != '') ? $invoice['client_suburb'] : $client['suburb'];?> <?=($invoice['client_state'] != '') ? $invoice['client_state'] : $client['state'];?> <?=($invoice['client_postcode'] != '') ? $invoice['client_postcode'] : $client['postcode'];?><br>
@@ -26,13 +26,13 @@
                 <td class="padding-left-15" valign="top">           
                     <table>
                         <tr>
-                            <td class="padding-top-25" style="width:100px;"><?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?></td> 
+                            <td class="padding-top-25" style="width:100px;"><?=$company_profile['company_name'];?></td> 
                         </tr>
                         <tr>
-                            <td>Tel:</td> <td> <?=($invoice['client_phone'] != '') ? $invoice['client_phone'] : $client['phone'];?></td>
+                            <td>Tel:</td> <td> <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?></td>
                         </tr>
                         <tr>
-                            <td>Email:</td> <td><?=($invoice['client_email_address'] != '') ? $invoice['client_email_address'] : $client['email_address'];?></td>
+                            <td>Email:</td> <td><?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?></td>
                         </tr>
                         <tr>
                             <td>Invoice Number:</td> <td><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></td>
@@ -170,7 +170,7 @@
                 <td width="5%"></td>
                 <td width="47%" style="padding-top:10px;"><b><?=(isset($company_profile['company_name'])) ? $company_profile['company_name'] : '' ?></b></td>
             </tr>
-            <b>
+
             <tr valign="top">
                 <td>
                     <table>
@@ -190,7 +190,7 @@
                 	<table>
                         <tr valign="top">
                             <td>
-                            	<span class="footer-invoice">Head Office:<br />
+                            	<span class="footer-invoice">Head Office:</span><br />
 	                            <span class="footer-invoice"><?=(isset($company_profile['address'])) ? $company_profile['address'] : '' ?></span><br />
 	                            <span class="footer-invoice"><?=(isset($company_profile['suburb'])) ? $company_profile['suburb'] : '' ?><?=(isset($company_profile['state'])) ? $company_profile['state'] : '' ?></span><br />
 	                            <span class="footer-invoice"><?=(isset($company_profile['country'])) ? $company_profile['country'] : '' ?> <?=(isset($company_profile['postcode'])) ? $company_profile['postcode'] : '' ?></span>
@@ -207,7 +207,7 @@
             </tr>
             <tr>
             	<td colspan="3" style="padding-top:10px;">
-            	    <span class="footer-invoice"><b>Credit Card</span></b>
+            	    <span class="footer-invoice"><b>Credit Card</b></span>
                     <br />      
                     <table width="100%">
                         <tr>

@@ -22,7 +22,7 @@ class Email_template_model extends CI_Model {
 	
 	function get_email_merge_fields_by_template_id($template_id)
 	{
-		$merge_fields = $this->db->where('email_template_id',$template_id)->get('email_merge_fields')->result();
+		$merge_fields = $this->db->where('email_template_id',$template_id)->order_by('merge_order','asc')->get('email_merge_fields')->result();
 		if($merge_fields){
 			return $merge_fields;
 		}

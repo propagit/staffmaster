@@ -741,16 +741,26 @@ class Ajax extends MX_Controller {
 				}
 				if($send_email){
 					$email = $this->user_model->get_user_email_from_user_id($user_id);
-					$obj = modules::run('email/get_email_obj',$email_template_id,$user_id,$company);
+					//get receiver obj
+					$email_obj_params = array(
+									'template_id' => $email_template_id,
+									'user_id' => $user_id,
+									'company' => $company
+								);
+					$obj = modules::run('email/get_email_obj',$email_obj_params);
 					if($email){
 						$email_data = array(
 									'to' => $email,
 									'from' => $company['email_c_email'],
-									'from_text' => 'Admin @ '.$company['email_c_name'],
-									'subject' => $template_info->email_subject,
+									'from_text' => $company['email_c_name'],
+									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
 									'message' => modules::run('email/format_template_body',$email_body,$obj)
 								);
 						modules::run('email/send_email',$email_data);
+						//if welcome email then mark this user has welcome email sent 
+						if($template_info->email_template_id == 1){
+							$this->staff_model->update_staff($user_id,array('welcome_email_sent' => 'yes'));
+						}
 					}
 				}
 			}

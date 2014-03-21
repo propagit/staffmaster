@@ -9,8 +9,8 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
 		<div class="table_action">		
-			<span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-print"></i> Print Rosters</span>
-			<span class="btn btn-core pull-right hidden-xs"><i class="fa fa-envelope-o"></i> Email Rosters</span>
+			<span class="btn btn-core pull-right visible-md visible-lg add-left-margin"><i class="fa fa-print"></i> Print Rosters</span>
+			<span class="btn btn-core pull-right hidden-xs add-left-margin"><i class="fa fa-envelope-o"></i> Email Rosters</span>
 			<span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-download"></i> Download Rosters</span>
 		</div>
 		

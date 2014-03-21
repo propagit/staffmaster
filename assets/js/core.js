@@ -152,7 +152,8 @@ var help = {
 		if(help.custom_select_open){
 			help.custom_select_open = false;	
 		}else{
-			var element = $(selector)[0], worked = false;
+			var element = $(selector)[0];
+			var worked = false;
 			if (document.createEvent) { // all browsers
 				var e = document.createEvent("MouseEvents");
 				e.initMouseEvent("mousedown", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);

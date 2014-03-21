@@ -136,13 +136,19 @@ class Staff extends MX_Controller {
 		if($template_info->auto_send == 'yes'){
 			//get company profile
 			$company = $this->setting_model->get_profile();
-			//get receiver object	
-			$obj = modules::run('email/get_email_obj',1,$user_id,$company,$password);
+			//get receiver object
+			$email_obj_params = array(
+									'template_id' => 1,
+									'user_id' => $user_id,
+									'company' => $company,
+									'password' => $password
+								);	
+			$obj = modules::run('email/get_email_obj',$email_obj_params);
 			$email_data = array(
 								'to' => $email,
 								'from' => $company['email_c_email'],
-								'from_text' => 'Admin @ '.$company['email_c_name'],
-								'subject' => $template_info->email_subject,
+								'from_text' => $company['email_c_name'],
+								'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
 								'message' => modules::run('email/format_template_body',$template_info->template_content,$obj)
 							);
 			modules::run('email/send_email',$email_data);

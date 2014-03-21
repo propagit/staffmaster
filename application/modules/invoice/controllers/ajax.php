@@ -690,4 +690,17 @@ class Ajax extends MX_Controller {
 		$objWriter->save("./exports/invoice/" . $file_name);
 		return $file_name;
 	}
+	
+	/**
+	*	@name: email_invoice
+	*	@desc: ajax function to email invoice to client
+	*	@access: public
+	*	@param: (POST) invoice_id or invoice ids
+	*	
+	*/
+	function email_invoice()
+	{
+		$invoice_ids = $this->input->post('invoice_ids',true);
+		echo modules::run('invoice/email_invoice',$invoice_ids);	
+	}
 }

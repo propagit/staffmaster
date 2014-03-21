@@ -11,6 +11,8 @@ class Email extends MX_Controller {
 		parent::__construct();
 		$this->load->model('email_template_model');
 		$this->load->model('user/user_model');
+		$this->load->model('client/client_model');
+		$this->load->model('invoice/invoice_model');
 	}
 	
 	public function index($method = '', $param1 = '',$param2 = '')
@@ -38,12 +40,17 @@ class Email extends MX_Controller {
 	*	@name: get_email_obj
 	*	@desc: Create the object needed for a particular template
 	*	@access: public
-	*	@param: ([int] template id, [int] user id)
+	*	@param: (array) email params
 	*	@return: returns object for a particular email template
 	*/
-	function get_email_obj($template_id,$user_id,$company,$password = '')
+	function get_email_obj($params)
 	{
+		$template_id = $params['template_id'];
+		$user_id = $params['user_id'];
+		$company = $params['company'];
+		$password = isset($params['passowrd']) ? $params['password'] : '';
 		$obj = array();
+		
 		if($template_id && $user_id && $company){
 			$user = $this->user_model->get_user($user_id);
 			switch($template_id){
@@ -105,6 +112,18 @@ class Email extends MX_Controller {
 				
 				case 7:
 				//client invoice
+				$client = $this->client_model->get_client($user_id);
+				$invoice = $this->invoice_model->get_invoice($params['invoice_id']);
+				$obj = array(
+							'company_name' => $company['company_name'],
+							'client_contact_name' => $user['full_name'],
+							'client_company_name' => $client['company_name'],
+							'system_url' => base_url(),
+							'invoice_number' => $invoice['invoice_id'],
+							'issue_date' => date('dS F, Y',strtotime($invoice['issued_date'])),
+							'amount_due' => $invoice['total_amount'],
+							'due_date' => date('dS F, Y',strtotime($invoice['due_date']))
+							);
 				break;
 				
 				case 8:
@@ -152,6 +171,12 @@ class Email extends MX_Controller {
 				$email = str_replace('{Roster}',$obj['roster'],$email);
 				$email = str_replace('{SelectedShifts}',$obj['selected_shifts'],$email);
 				$email = str_replace('{ShiftInfo}',$obj['shift_info'],$email);
+				$email = str_replace('{ClientContactName}',$obj['client_contact_name'],$email);
+				$email = str_replace('{ClientCompanyName}',$obj['client_company_name'],$email);
+				$email = str_replace('{InvoiceNumber}',$obj['invoice_number'],$email);
+				$email = str_replace('{IssueDate}',$obj['issue_date'],$email);
+				$email = str_replace('{AmountDue}',$obj['amount_due'],$email);
+				$email = str_replace('{DueDate}',$obj['due_date'],$email);
 		}
 		return $email;
 		
@@ -334,7 +359,7 @@ class Email extends MX_Controller {
 		$company_logo = modules::run('setting/company_logo');
 		$email_signature = modules::run('setting/get_email_footer');
 		$this->email->message($company_logo . '<br />'.$message . $email_signature);
-		
+		$this->email->attach($attachment);
 		if($this->email->send()){
 		  	echo 'Email sent.';
 		}else{

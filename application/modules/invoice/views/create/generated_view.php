@@ -3,15 +3,15 @@
 	<div class="wp-page-invoice">
         <table width="100%" cellpadding="10" cellspacing="0">
         	<tr>
-        		<td colspan="3"><img src="<?=base_url()?>assets/img/core/staffmaster-logo.jpg"><br /><br /></td>
+        		<td colspan="3"><?=modules::run('setting/company_logo');?><br /><br /></td>
         	</tr>
             <tr valign="top">
             	<td width="50%">            		
             		<table>
                        <tr>
                         <td class="padding-top-15">
-                            <?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?><br>
-                            ABN: <?=($invoice['profile_abn'] != '') ? $invoice['profile_abn'] : $company_profile['abn_acn'];?><br>
+                            <?=$company_profile['company_name'];?><br>
+                            ABN: <?=$company_profile['abn_acn'];?><br>
                             <br>
                             
                             <b>
@@ -29,13 +29,13 @@
                 <td width="5%"></td>
                 <td width="45%">
                 	<b>Bill Enquiries</b><br />
-                	<?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?><br />
+                	<?=$company_profile['company_name'];?><br />
                 	<table>
                         <tr>
-                            <td>Tel:</td><td width="20"></td> <td> <?=($invoice['client_phone'] != '') ? $invoice['client_phone'] : $client['phone'];?></td>
+                            <td>Tel:</td><td width="20"></td> <td><?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?></td>
                         </tr>
                         <tr>
-                            <td>Email:</td><td width="20"></td> <td><?=($invoice['client_email_address'] != '') ? $invoice['client_email_address'] : $client['email_address'];?></td>
+                            <td>Email:</td><td width="20"></td> <td><?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?></td>
                         </tr>
                         <tr>
                             <td>Invoice Number:</td><td width="20"></td> <td><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></td>
@@ -169,7 +169,6 @@
                 <td width="10%"></td>
                 <td><b><?=(isset($company_profile['company_name'])) ? $company_profile['company_name'] : '' ?></b></td>
             </tr>
-            <b>
             <tr valign="top">
                 <td>
                     <table>
@@ -260,10 +259,12 @@
         </table>
 	</div>
 </div>
-	
 </div>
 <? } ?>
 <br /><br /><br />
+<form id="email-invoice-form">
+	<input type="hidden" name="invoice_ids[]" value="<?=$invoice['invoice_id'];?>" />
+</form>
 <script>
 $(function(){
 	$('#btn-generate-invoice').remove();
@@ -275,5 +276,22 @@ $(function(){
 		$(this).prop('target', '_blank');
 		window.open('<?=base_url();?>invoice/download/<?=$invoice['invoice_id'];?>');
 	})
-})
+	
+	//email invoice
+	$('#btn-email-invoice').on('click',function(){
+		preloading($('body'));
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>invoice/ajax/email_invoice",
+			data: $('#email-invoice-form').serialize(),
+			success: function(html) {
+				$('#wrapper_loading').remove();
+			}
+		});
+
+	});
+	
+});//ready
+
+
 </script>

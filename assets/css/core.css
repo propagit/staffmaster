@@ -1595,4 +1595,6 @@ ol.example li.placeholder:before {
 	padding-left:0;
 	padding-right:0;
 }
-
+.add-left-margin{
+	margin-left:10px;	
+}
