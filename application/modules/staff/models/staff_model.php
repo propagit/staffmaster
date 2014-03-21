@@ -1,21 +1,101 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Staff_model extends CI_Model {
-		
+	
+	var $module = 'staff';
+	var $object = 'staff';
+	
+	function __construct() 
+	{
+		parent::__construct();
+		$this->load->model('user/user_model');
+		$this->load->model('log/log_model');
+	}
+	
 	function prepare_staff_data($data)
 	{
 				
 		return $data;
 	}
 	
+	/**
+	*	@name: insert_staff
+	*	@desc: create a new staff
+	*	@access: public
+	*	@param: $data = array()
+	*	@return: $staff_id
+	*/
 	function insert_staff($data)
 	{
 		$data = $this->prepare_staff_data($data);
 		$this->db->insert('user_staffs', $data);
-		return $this->db->insert_id();
+		$staff_id = $this->db->insert_id();
+		if (isset($data['user_id']))
+		{
+			$log_data = array(
+				'module' => $this->module,
+				'object' => $this->object,
+				'object_id' => $data['user_id'],
+				'action' => 'create'
+			);
+			$this->log_model->insert_log($log_data);
+		}		
+		return $staff_id;
 	}
 	
-	function search_staff_by_name($keyword='') {
+	/**
+	*	@name: update_staff
+	*	@desc: update staff information
+	*	@access: public
+	*	@param: $user_id, $data = array()
+	*	@return: (boolean)
+	*/
+	function update_staff($user_id, $data = array())
+	{
+		$data = $this->prepare_staff_data($data);
+		if (count($data) > 0)
+		{
+			$description = '';
+			if (isset($data['update_description'])) 
+			{
+				$description = $data['update_description'];
+				unset($data['update_description']);
+			}
+			$log_data = array(
+				'module' => $this->module,
+				'object' => $this->object,
+				'object_id' => $user_id,
+				'action' => 'update',
+				'description' => $description
+			);
+			$this->log_model->insert_log($log_data);
+		}
+		$this->db->where('user_id', $user_id);
+		return $this->db->update('user_staffs', $data);
+	}
+	
+	/**
+	*	@name: delete_staff
+	*	@desc: delete a staff account (update user status to 'Deleted')
+	*	@access: public
+	*	@param: $user_id
+	*	@return: (boolean)
+	*/
+	function delete_staff($user_id)
+	{
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $user_id,
+			'action' => 'delete'
+		);
+		$this->log_model->insert_log($log_data);
+		$this->user_model->delete_user($user_id);
+	}
+	
+	
+	function search_staff_by_name($keyword='') 
+	{
 		$sql = "SELECT * FROM users 
 				WHERE status = " . STAFF_ACTIVE . " 
 				AND  is_staff=1";
@@ -31,7 +111,7 @@ class Staff_model extends CI_Model {
 		$records_per_page = 30;
 		$sql = "SELECT s.*, u.* 
 				FROM user_staffs s 
-				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status != 2";
+				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status > " . USER_DELETED;
 		
 		if(isset($params['keyword']) && $params['keyword'] != '') { $sql .= " AND (u.first_name LIKE '%" . $params['keyword'] . "%' OR u.last_name LIKE '%" . $params['keyword'] . "%' OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $params['keyword'] . "%')"; }
 		if(isset($params['rating']) && $params['rating'] != ''){ $sql .= " AND s.rating >= ".$params['rating'];}
@@ -137,18 +217,7 @@ class Staff_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
-	function update_staff($user_id, $data)
-	{
-		$data = $this->prepare_staff_data($data);
-		$this->db->where('user_id', $user_id);
-		return $this->db->update('user_staffs', $data);
-	}
-		
-	function delete_staff($user_id)
-	{
-		$this->db->where('user_id', $user_id);
-		return $this->db->delete('user_staffs');
-	}
+	
 	
 	
 	function insert_availability_data($user_id,$data)

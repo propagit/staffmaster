@@ -1,9 +1,15 @@
 <div id="nav_shifts">
 <?
+	$selected_shifts = array();
+	if ($this->session->flashdata('selected_shifts')) {
+		$selected_shifts = $this->session->flashdata('selected_shifts');
+	}
+	
 	# Action menu
 	$data = array(
-		array('value' => 'copy', 'label' => '<i class="fa fa-copy"></i> Copy Shifts'),
-		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Shifts')
+		array('value' => 'copy', 'label' => '<i class="fa fa-copy"></i> Copy Selected'),
+		array('value' => 'edit', 'label' => '<i class="fa fa-pencil-square-o"></i> Edit Selected'),
+		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Selected')
 	);
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 	
@@ -51,7 +57,7 @@
 		<th>Role &nbsp; <a onclick="sort_shifts('role')"><i class="fa fa-sort"></i></a></th>
 		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
-		<th>Pay rate</th>
+		<th class="center">Pay rate</th>
 		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
 		<th class="center" colspan="2">Find</th>
 		<th class="center" colspan="2">Settings</th>
@@ -68,7 +74,7 @@
 	</tr>
 <? } else foreach($job_shifts as $shift) { ?>
 	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>">
-		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
+		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" <?=(in_array($shift['shift_id'], $selected_shifts)) ? 'checked' : '';?> /></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
@@ -89,7 +95,7 @@
 		<td class="center">
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
-		<td><a href="#" class="shift_payrate" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['payrate_id'];?>"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
+		<td class="center"><a href="#" class="shift_payrate" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['payrate_id'];?>"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
 		<td>
 			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
@@ -302,8 +308,19 @@ $(function(){
 			remote: "<?=base_url();?>job/ajax/load_shifts_copy/" + selected_shifts.join("~"),
 			show: true
 		});
+	});
+	$('#menu-day-action ul li a[data-value="edit"]').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		if (selected_shifts.length > 0) {
+			$('.bs-modal-lg').modal({
+				remote: "<?=base_url();?>job/ajax_shift/load_update_modal/" + selected_shifts.join("~"),
+				show: true
+			});
+		}
 		
-
 	});
 })
 function unlock_shift(pk) {

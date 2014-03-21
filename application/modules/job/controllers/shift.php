@@ -43,4 +43,25 @@ class Shift extends MX_Controller {
 		$this->load->view('shift/expense/add_form', isset($data) ? $data : NULL);
 	}
 	
+	function get_shift($shift_id) {
+		return $this->job_shift_model->get_job_shift($shift_id);
+	}
+	
+	function field_select_fields($field_name, $field_value=null, $size=null)
+	{
+		$fields = array(
+			#array('value' => 'job_date', 'label' => 'Job Date'),
+			#array('value' => 'start_time', 'label' => 'Start Time'),
+			#array('value' => 'finish_time', 'label' => 'Finish Time'),
+			#array('value' => 'break_time', 'label' => 'Break Time'),
+			array('value' => 'venue_id', 'label' => 'Venue'),
+			array('value' => 'role_id', 'label' => 'Role'),
+			array('value' => 'uniform_id', 'label' => 'Uniform'),
+			array('value' => 'payrate_id', 'label' => 'Pay Rate'),
+			array('value' => 'supervisor_id', 'label' => 'Supervisor'),
+			array('value' => 'staff_id', 'label' => 'Staff'),
+			array('value' => 'expenses', 'label' => 'Expenses')
+		);
+		return modules::run('common/field_select', $fields, $field_name, $field_value, $size);
+	}
 }

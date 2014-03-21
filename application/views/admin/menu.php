@@ -26,8 +26,9 @@ $menu = array(
 	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
 		array('path' => 'report', 'icon' => 'fa-dashboard', 'title' => 'Accounts Reports'),
 		array('path' => 'timesheet', 'icon' => 'fa-thumbs-up', 'title' => 'Time Sheets'),
-		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
 		array('path' => 'payrun', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Run'),
+		array('path' => 'expense', 'icon' => 'fa-dollar', 'title' => 'Staff Expenses'),
+		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
 		array('path' => '#', 'icon' => 'fa-plus', 'title' => 'Create Invoices'),
 		array('path' => '#', 'icon' => 'fa-search', 'title' => 'Search Accounts'),
 		array('path' => '#', 'icon' => 'fa-gears', 'title' => 'Accounts Settings'),
@@ -52,6 +53,7 @@ $menu = array(
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
 		array('path' => '#', 'icon' => 'fa-tint', 'title' => 'System Styles'),
 		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'SMS Message'),		
+		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs')
 	))
 );
 ?>

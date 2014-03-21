@@ -4,24 +4,26 @@
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h4 class="modal-title" id="myModalLabel">Copy <?=($shift) ? count($shifts) : 0;?> shift<?=(count($shifts) > 1) ? 's': '';?></h4>
 		</div>
-		<div class="modal-body">
-			
-			<? if($shift) { ?>
-			<div class="btn-group">
-				<a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a>
-				<span type="button" class="btn btn-info" id="modal-header-month"> &nbsp; </span>
-				<a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a>
+		<div class="col-md-12">
+			<div class="modal-body">
+				
+				<? if($shift) { ?>
+				<div class="btn-group">
+					<a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a>
+					<span type="button" class="btn btn-info" id="modal-header-month"> &nbsp; </span>
+					<a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a>
+				</div>
+				<div id="calendar-copy"></div>
+				<? } else { ?>
+				No shift selected yet
+				<? } ?>
+				<div class="has-error"><span class="help-block" id="error_day_selected"></span></div>
+				
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger btn-clear-days">Clear</button>
+				<button type="button" class="btn btn-primary btn-copy-selected-days">Copy to selected dates</button>
 			</div>
-			<div id="calendar-copy"></div>
-			<? } else { ?>
-			No shift selected yet
-			<? } ?>
-			<div class="has-error"><span class="help-block" id="error_day_selected"></span></div>
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-danger btn-clear-days">Clear</button>
-			<button type="button" class="btn btn-primary btn-copy-selected-days">Copy to selected dates</button>
 		</div>
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->

@@ -67,10 +67,20 @@ class User_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 	
+	/**
+	*
+	*
+	*
+	*
+	*
+	*/
 	function delete_user($user_id)
 	{
 		$this->db->where('user_id', $user_id);
-		return $this->db->delete('users');
+		return $this->db->update('users', array(
+			'status' => USER_DELETED
+		));
+		#return $this->db->delete('users');
 	}
 	/**
 	*	@name: update_rating_multi_staffs
