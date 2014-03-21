@@ -198,40 +198,43 @@ class Invoice extends MX_Controller {
 	*	@param: (int) $invoice_id
 	*	@return: (void)
 	*/
-	function download($invoice_id) {
+	function download($invoice_id,$redirect = true) {
 		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
 		$filename = "invoice_" . $invoice_id;
-		$pdfFilePath = "./uploads/pdf/$filename.pdf";
-		
-		$dir = './uploads/pdf/';
-		if(!is_dir($dir))
-		{
-		  mkdir($dir);
-		  chmod($dir,0777);
-		  $fp = fopen($dir.'/index.html', 'w');
-		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-		  fclose($fp);
+		if(!file_exists('/uploads/pdf/'.$filename.'.pdf')){
+			$pdfFilePath = "./uploads/pdf/$filename.pdf";
+			
+			$dir = './uploads/pdf/';
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			 
+			ini_set('memory_limit','32M'); # boost the memory limit if it's low 
+			
+			$invoice = $this->invoice_model->get_invoice($invoice_id);
+			$data['invoice'] = $invoice;
+			$data['client'] = modules::run('client/get_client', $invoice['client_id']);
+			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+			$data['company_profile'] = modules::run('setting/company_profile');
+			$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true); 
+	
+			
+					
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load(); 			
+			$stylesheet = file_get_contents('./assets/css/pdf.css');
+			$pdf->WriteHTML($stylesheet,1);
+			$pdf->WriteHTML($html,2);
+			$pdf->Output($pdfFilePath, 'F'); // save to file 
 		}
-		 
-		ini_set('memory_limit','32M'); # boost the memory limit if it's low 
-		
-		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		$data['invoice'] = $invoice;
-		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
-		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
-		$data['company_profile'] = modules::run('setting/company_profile');
-		$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true); 
-
-		
-				
-		$this->load->library('pdf');
-		$pdf = $this->pdf->load(); 			
-		$stylesheet = file_get_contents('./assets/css/pdf.css');
-		$pdf->WriteHTML($stylesheet,1);
-		$pdf->WriteHTML($html,2);
-		$pdf->Output($pdfFilePath, 'F'); // save to file 
-		 
-		redirect("./uploads/pdf/$filename.pdf"); 
+		if($redirect){ 
+			redirect("./uploads/pdf/$filename.pdf"); 
+		}
 	}
 	
 	/**
@@ -331,6 +334,53 @@ class Invoice extends MX_Controller {
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('search/field_select_export_templates', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@name: email_invoice
+	*	@desc: function to email invoice to client
+	*	@access: public
+	*	@param: ([array] or [ing]) of invoice ids
+	*	
+	*/
+	function email_invoice($invoice_ids)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		if($invoice_ids){
+			foreach($invoice_ids as $invoice_id){
+				//get client invoice template id = 7
+				$template_info = $this->email_template_model->get_template(7);	
+				$company = $this->setting_model->get_profile();
+				//get invoice details
+				$invoice = $this->invoice_model->get_invoice($invoice_id);
+				//get user
+				$user = $this->user_model->get_user($invoice['client_id']);
+				//get receiver object
+				$email_obj_params = array(
+										'template_id' => $template_info->email_template_id,
+										'user_id' => $invoice['client_id'],
+										'company' => $company,
+										'invoice_id' => $invoice_id
+									);	
+				$obj = modules::run('email/get_email_obj',$email_obj_params);
+				//check file for attachment
+				if(!file_exists('/uploads/pdf/invoice_'.$invoice_id.'.pdf')){
+					//create attachment	
+					modules::run('invoice/download',$invoice_id,false);
+				}
+				$email_data = array(
+									'to' => $user['email_address'],
+									'from' => $company['email_c_email'],
+									'from_text' => $company['email_c_name'],
+									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									'message' => modules::run('email/format_template_body',$template_info->template_content,$obj),
+									'attachment' => realpath(__DIR__.'/../../../../uploads/pdf/invoice_'.$invoice_id.'.pdf')	
+								);
+				modules::run('email/send_email',$email_data);
+			}
+		}
+		echo 'sent';
 	}
 	
 }
