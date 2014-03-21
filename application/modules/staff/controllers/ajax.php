@@ -57,6 +57,7 @@ class Ajax extends MX_Controller {
 			'postcode' => $data['postcode'],
 			'country' => $data['country'],
 			'phone' => $data['phone'],
+			'status' => $data['status'],
 			'modified_on' => date('Y-m-d H:i:s')
 		);
 		$this->user_model->update_user($data['user_id'], $user_data);
@@ -67,6 +68,7 @@ class Ajax extends MX_Controller {
 			'dob' => date('Y-m-d',strtotime($data['dob_year'].'-'.$data['dob_month']. '-'.$data['dob_day'])),
 			'emergency_contact' => $data['emergency_contact'],
 			'emergency_phone' => $data['emergency_phone'],
+			'update_description' => 'personal details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);		
 		echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
@@ -87,7 +89,8 @@ class Ajax extends MX_Controller {
 			'f_acc_number' => $data['f_acc_number'],
 			'f_tfn' => $data['f_tfn'],
 			'f_employed' => $data['f_employed'],
-			'f_abn' => $data['f_abn']
+			'f_abn' => $data['f_abn'],
+			'update_description' => 'financial details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 	}
@@ -110,6 +113,7 @@ class Ajax extends MX_Controller {
 			's_fund_state' => $data['s_fund_state'],
 			's_fund_postcode' => $data['s_fund_postcode'],
 			's_agree' => isset($data['s_agree']) ? $data['s_agree'] : 0,
+			'update_description' => 'super details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 	}
@@ -662,7 +666,7 @@ class Ajax extends MX_Controller {
 	function delete_staff()
 	{
 		$user_id = $this->input->post('user_id',true);
-		return $this->user_model->update_user($user_id,array('status' => 2));	
+		return $this->staff_model->delete_staff($user_id);
 	}
 	/**
 	*	@name: delete_staff
@@ -674,7 +678,10 @@ class Ajax extends MX_Controller {
 	function delete_multi_staffs()
 	{
 		$user_ids = $this->input->post('user_staff_selected_user_id');
-		return $this->user_model->delete_multi_users(implode(',',$user_ids));
+		foreach($user_ids as $user_id) 
+		{
+			$this->staff_model->delete_staff($user_id);
+		}
 	}
 	/**
 	*	@name: update_rating_multi_staffs

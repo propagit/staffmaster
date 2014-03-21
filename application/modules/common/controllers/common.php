@@ -294,6 +294,17 @@ class Common extends MX_Controller {
 			echo 0;
 		}
 	}
+	
+	function calculate_expenses($expenses)
+	{
+		$total = 0;
+		$expenses = unserialize($expenses);
+		foreach($expenses as $e)
+		{
+			$total += $e['staff_cost'];
+		}
+		return $total;
+	}
 		
 	function define_area()
 	{

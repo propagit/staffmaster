@@ -109,4 +109,49 @@ class Ajax_shift extends MX_Controller {
 			'expenses' => serialize($array)
 		));
 	}
+
+	function load_update_modal($shift_ids) 
+	{
+		$data['shift_ids'] = $shift_ids;
+		$this->load->view('shift/edit/modal_view', isset($data) ? $data : NULL);
+	}
+	
+	function load_field_inputs()
+	{
+		$field_id = $this->input->post('field_id');
+		$this->load->view('shift/edit/field/' . $field_id . '_view');
+	}
+	
+	function update_shifts()
+	{
+		$data = $this->input->post();
+		$shift_ids = explode('~', $data['shift_ids']);
+		$field_id = $data['field_id'];
+		$value = $data['value'];
+		
+		$data = array();
+		
+		if ($field_id == 'venue_id') {
+			$venue = modules::run('attribute/venue/get_venue_by_name', $value);
+			if (!$venue)
+			{
+				echo json_encode(array('ok' => false, 'error_id' => 'venue'));
+				return;
+			}
+			else
+			{
+				$data['venue_id'] = $venue['venue_id'];
+			}
+		}
+		else {
+			$data[$field_id] = $value;
+		}
+		
+		foreach($shift_ids as $shift_id) {
+			$this->job_shift_model->update_job_shift($shift_id, $data);
+		}
+		$this->session->set_flashdata('selected_shifts', $shift_ids);
+		$shift = $this->job_shift_model->get_job_shift($shift_ids[0]);
+		echo json_encode(array('ok' => true, 'job_id' => $shift['job_id']));
+	}
 }

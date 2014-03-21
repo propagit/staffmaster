@@ -2,30 +2,97 @@
 
 class Job_shift_model extends CI_Model {
 	
-	function insert_job_shift($data)
+	var $module = 'job';
+	var $object = 'shift';
+	
+	function __construct() 
 	{
-		$this->db->insert('job_shifts', $data);
-		return $this->db->insert_id();
+		parent::__construct();
+		$this->load->model('log/log_model');
 	}
 	
+	/**
+	*	@name: insert_job_shift
+	*	@desc: create a new shift
+	*	@access: public
+	*	@param: $data = array()
+	*	@return: $shift_id
+	*/
+	function insert_job_shift($data) 
+	{
+		$this->db->insert('job_shifts', $data);
+		$shift_id = $this->db->insert_id();
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $shift_id,
+			'action' => 'create'
+		);
+		$this->log_model->insert_log($log_data);
+		return $shift_id;
+	}
+	
+	/**
+	*	@name: update_job_shift
+	*	@desc: update a job shift
+	*	@access: public
+	*	@param: $shift_id, $data = array()
+	*	@return: (boolean)
+	*/
 	function update_job_shift($shift_id, $data = array())
 	{
 		if (count($data) > 0)
 		{
+			$log_data = array(
+				'module' => $this->module,
+				'object' => $this->object,
+				'object_id' => $shift_id,
+				'action' => 'update',
+				'description' => serialize($data)
+			);
+			$this->log_model->insert_log($log_data);
 			$data['modified_on'] = date('Y-m-d H:i:s');
 		}
 		$this->db->where('shift_id', $shift_id);
 		return $this->db->update('job_shifts', $data);
 	}	
 	
+	/**
+	*	@name: delete_job_shift
+	*	@desc: delete a job shift
+	*	@access: public
+	*	@param: $shift_id
+	*	@return: (boolean)
+	*/
+	function delete_job_shift($shift_id) 
+	{
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $shift_id,
+			'action' => 'delete'
+		);
+		$this->log_model->insert_log($log_data);
+		$this->db->where('shift_id', $shift_id);
+		#return $this->db->delete('job_shifts');
+		$this->db->update('job_shifts', array(
+			'status' => SHIFT_DELETED
+		));
+	}
 	
-	
-	
-	
-	
+	/**
+	*	@name: search_shifts
+	*	@desc: search shifts
+	*	@access: public
+	*	@param: $data = array(), $sort_key = 'date', $sort_value = 'asc'
+	*	@return: array of shifts
+	*/		
 	function search_shifts($data, $sort_key='date', $sort_value='asc')
 	{
-		$sql = "SELECT js.*, j.name as job_name, j.client_id, v.name as venue_name, r.name as role_name
+		$sql = "SELECT 
+					js.*, j.name as job_name, j.client_id, 
+					v.name as venue_name, 
+					r.name as role_name
 				FROM `job_shifts` js
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id
@@ -33,20 +100,20 @@ class Job_shift_model extends CI_Model {
 		if($data['search_shift_shift_status']){
 			switch($data['search_shift_shift_status']){
 				case 'active':
-					$sql .= " WHERE js.status > -2";	
+					$sql .= " WHERE js.status > " . SHIFT_DELETED;	
 				break;
 				case 'unassigned':
-					$sql .= " WHERE js.status = 0";
+					$sql .= " WHERE js.status = " . SHIFT_UNASSIGNED;
 				break;
 				case 'unconfirmed':
-					$sql .= " WHERE js.status = 1";
+					$sql .= " WHERE js.status = " . SHIFT_UNCONFIRMED;
 				break;
 				case 'confirmed':
-					$sql .= " WHERE js.status = 2";
+					$sql .= " WHERE js.status = " . SHIFT_CONFIRMED;
 				break;	
 			}
-		}else{
-			$sql .= " WHERE js.status > -2";
+		} else {
+			$sql .= " WHERE js.status > " . SHIFT_DELETED;
 		}
 				
 		if ($data['date_from'])
@@ -100,14 +167,24 @@ class Job_shift_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	/**
+	*	@name: get_job_shifts
+	*	@desc: get shifts in a job
+	*	@access: public
+	*	@param: $job_id, $job_date (YYYY-MM-DD), $sort_key = 'date', $sort_value = 'asc'
+	*	@return: array of shifts
+	*/
 	function get_job_shifts($job_id, $job_date=null, $sort_key='date', $sort_value='asc')
 	{
-		$sql = "SELECT js.*, v.name as venue_name, r.name as role_name 
+		$sql = "SELECT 
+					js.*, 
+					v.name as venue_name, 
+					r.name as role_name 
 				FROM `job_shifts` js
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id 
 				WHERE js.job_id = '" . $job_id . "'
-				AND js.status > -2";
+				AND js.status > " . SHIFT_DELETED;
 		$status = $this->session->userdata('shift_status_filter');
 		if ($status != '') {
 			$sql .= " AND js.status = " . $status;
@@ -141,7 +218,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT count(*) as `count`
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id' AND `status` > -2";
+				WHERE `job_id` = '$job_id' AND `status` > " . SHIFT_DELETED;
 		if ($job_date)
 		{
 			$sql .= " AND `job_date` = '$job_date'";
@@ -158,7 +235,7 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT DISTINCT(`job_date`)
 				FROM `job_shifts`
-				WHERE `job_id` = '$job_id' AND `status` > -2 ORDER BY `job_date` ASC";
+				WHERE `job_id` = '$job_id' AND `status` > " . SHIFT_DELETED . " ORDER BY `job_date` ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -184,16 +261,12 @@ class Job_shift_model extends CI_Model {
 	
 	
 	
-	function delete_job_shift($shift_id)
-	{
-		$this->db->where('shift_id', $shift_id);
-		return $this->db->delete('job_shifts');
-	}
+	
 	
 	function delete_job_shifts($job_id)
 	{
 		$this->db->where('job_id', $job_id);
-		return $this->db->delete('job_shifts');		
+		return $this->db->delete('job_shifts');	
 	}
 	
 	function delete_job_day_shift($job_id, $job_date)
@@ -229,19 +302,19 @@ class Job_shift_model extends CI_Model {
 		$sql .= " and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
 		switch($status){
 			case 'active':
-				$sql .= " and (s.status > -2)";	
+				$sql .= " and s.status > " . SHIFT_DELETED;	
 			break;
 			case 'unassigned':
-				$sql .= " and s.status = 0";
+				$sql .= " and s.status = " . SHIFT_UNASSIGNED;
 			break;
 			case 'unconfirmed':
-				$sql .= " and s.status = 1";
+				$sql .= " and s.status = " . SHIFT_UNCONFIRMED;
 			break;
 			case 'rejected':
-				$sql .= " and s.status = -1";
+				$sql .= " and s.status = " . SHIFT_REJECTED;
 			break;
 			case 'confirmed':
-				$sql .= " and s.status = 2";
+				$sql .= " and s.status = " . SHIFT_CONFIRMED;
 			break;	
 		}
 		if($only_total){
@@ -267,7 +340,7 @@ class Job_shift_model extends CI_Model {
 			$sql .= " where s.shift_id != ''";	
 		}
 				
-		$sql .= " and s.status > -2 and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
+		$sql .= " and s.status > " . SHIFT_DELETED . " and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
 		
 		if($only_total){
 			$sql .= " group by s.job_id order by s.job_date asc";

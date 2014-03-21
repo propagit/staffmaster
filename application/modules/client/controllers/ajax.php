@@ -125,7 +125,7 @@ class Ajax extends MX_Controller {
 	function delete_client()
 	{
 		$user_id = $this->input->post('user_id',true);
-		return $this->user_model->update_user($user_id,array('status' => 2));	
+		$this->client_model->delete_client($user_id);	
 	}
 	/**
 	*	@name: delete_multi_clients

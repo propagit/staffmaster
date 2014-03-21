@@ -45,8 +45,11 @@ define('COLOR_DARK', '#000000');
 
 define('CLIENT_ACTIVE', 1);
 define('CLIENT_INACTIVE', -1);
+define('CLIENT_DELETED', -2);
 
 define('ACTIVE', 1);
+
+define('USER_DELETED', -2);
 
 define('STAFF_DELETED', -2);
 define('STAFF_INACTIVE', -1);
@@ -94,6 +97,8 @@ define('GST_NO', 0);
 define('GST_YES', 1);
 define('GST_ADD', 2);
 define('TAX_FREE', 3);
+
+define('LOG_WATCHED', 1);
 
 define('LIVE_SERVER',false);
 define('DEV_CK_TOOLS',"['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor'],['Source']");
