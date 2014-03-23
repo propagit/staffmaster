@@ -13,7 +13,7 @@
 		<th class="center" width="100">Time Sheets</th>
 		<th class="center" width="120">Amount</th>
 		<th class="center" width="80">Export</th>
-		<th class="center" width="40"></th>
+		<!-- <th class="center" width="40"></th> -->
 	</tr>
 </thead>
 <tbody>
@@ -31,7 +31,7 @@
 		<td class="center"><?=$payrun['total_timesheets'];?></td>
 		<td class="center">$<?=$payrun['amount'];?></td>
 		<td class="center"><a data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>payrun/ajax/export_payrun/<?=$payrun['payrun_id'];?>"><i class="fa fa-download"></i></a></td>
-		<td class="center"><a><i class="fa fa-plus-square-o"></i></a></td>
+		<!-- <td class="center"><a><i class="fa fa-plus-square-o"></i></a></td> -->
 	</tr>
 <? } ?>
 </tbody>

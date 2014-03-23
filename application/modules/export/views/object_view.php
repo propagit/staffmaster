@@ -4,7 +4,7 @@
 	<h2>Configure Export</h2>	
 </div>
 <div class="col-md-5">
-	<? if($object != 'staff') { ?>
+	<? if($object != 'staff' && $object != 'expense') { ?>
 	<div class="alert alert-success clearfix">
 		<div class="col-md-6">
 			<label><input type="radio" name="format" checked value="single" /> &nbsp; Single Time Sheet</label>

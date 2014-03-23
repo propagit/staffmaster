@@ -19,7 +19,7 @@
 					<a href="<?=base_url();?>invoice">Client Invoices</a>
 				</li>
 				<li class="pull-right"><a href="<?=base_url();?>expense">Staff Expenses</a></li>
-				<li class="pull-right active"><a>Pay Run</a></li>
+				<li class="pull-right active"><a href="<?=base_url();?>payrun">Pay Run</a></li>
 				<li class="pull-right">
 					<a href="<?=base_url();?>timesheet">Time Sheets</a>
 				</li>

@@ -9,7 +9,7 @@
 			<input type="hidden" name="type" value="<?=$type;?>" />
 			<div class="modal-body">
 				<div class="form-group alert alert-info clearfix">
-					<input type="checkbox" id="check_to_export" /> &nbsp; Export to CSV
+					<input type="checkbox" id="check_to_export" checked /> &nbsp; Export to CSV
 					<h2 id="export_templates" class="hide">
 						<?=modules::run('payrun/field_select_export_templates', $type, 'export_id');?>
 					</h2>
@@ -28,15 +28,19 @@ $(function(){
 		save_payrun();
 	});
 	$('#check_to_export').click(function(){
-		if ($(this).is(':checked')) {
-			$('#add-save-payrun').html('Generate and Export Pay Run');
-			$('#export_templates').removeClass('hide');
-		} else {
-			$('#add-save-payrun').html('Generate Pay Run');
-			$('#export_templates').addClass('hide');
-		}
-	})
+		include_export();
+	});
+	include_export();
 })
+function include_export() {
+	if ($('#check_to_export').is(':checked')) {
+		$('#add-save-payrun').html('Generate and Export Pay Run');
+		$('#export_templates').removeClass('hide');
+	} else {
+		$('#add-save-payrun').html('Generate Pay Run');
+		$('#export_templates').addClass('hide');
+	}
+}
 function save_payrun() {
 	$.ajax({
 		type: "POST",
