@@ -17,6 +17,13 @@
 						</div>
 					</div>
 					<div id="field_inputs"></div>
+					<div id="msg-update-shifts" class="row hide">
+						<div class="form-group">
+							<div class="col-lg-9 col-lg-offset-3">
+								<div class="alert alert-success"><i class="fa fa-check"></i> &nbsp; Selected Shifts have been updated</div>
+							</div>
+						</div>
+					</div>
 					
 					<div id="field-submit" class="row hide">
 						<div class="form-group">
@@ -70,6 +77,10 @@ function update_shifts() {
 			}
 			else
 			{
+				$('#msg-update-shifts').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-update-shifts').addClass('hide');
+				}, 2000);
 				load_job_shifts(data.job_id);
 			}
 		}

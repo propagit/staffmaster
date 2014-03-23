@@ -51,27 +51,27 @@
 		<td class="center"><?=$shifts_count;?></td>
 		<td class="center">
 			<? if ($unassign > 0) { ?>
-			<span class="badge"><?=$unassign;?></span>
+			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_UNASSIGNED?>"><span class="badge"><?=$unassign;?></span></a>
 			<? } ?>
 		</td>
 		<td class="center">
 			<? if ($unconfirmed > 0) { ?>
-			<span class="badge warning"><?=$unconfirmed;?></span>
+			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_UNCONFIRMED?>"><span class="badge warning"><?=$unconfirmed;?></span></a>
 			<? } ?>
 		</td>
 		<td class="center">
 			<? if ($rejected > 0) { ?>
-			<span class="badge danger"><?=$rejected;?></span>
+			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_REJECTED?>"><span class="badge danger"><?=$rejected;?></span></a>
 			<? } ?>
 		</td>
 		<td class="center">
 			<? if ($confirmed > 0) { ?>
-			<span class="badge success"><?=$confirmed;?></span>
+			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_CONFIRMED?>"><span class="badge success"><?=$confirmed;?></span></a>
 			<? } ?>
 		</td>
 		<td class="center">
 			<? if ($completed > 0) { ?>
-			<span class="badge primary"><?=$completed;?></span>
+			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_FINISHED?>"><span class="badge primary"><?=$completed;?></span></a>
 			<? } ?>
 		</td>
 		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="fa fa-eye"></i></a></td>

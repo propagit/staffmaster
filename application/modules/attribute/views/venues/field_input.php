@@ -7,11 +7,11 @@
 	$data_source = implode(",", $data_source);
 ?>
 
-<input type="text" name="<?=$field_name;?>" class="typeahead-devs form-control" placeholder="enter venue name..." value="<?=$field_value;?>" />
+<input type="text" name="<?=$field_name;?>" class="typeahead-devs-venue-<?=$field_name;?> form-control" placeholder="enter venue name..." value="<?=$field_value;?>" />
 
 <script>
 $(function(){
-	$('input.typeahead-devs').typeahead({
+	$('input.typeahead-devs-venue-<?=$field_name;?>').typeahead({
 		name: '<?=$field_name;?>',
 		local: [<?=$data_source;?>]
 	});

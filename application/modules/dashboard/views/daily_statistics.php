@@ -2,33 +2,49 @@
 <p>Quick stats on whats up soon</p>
 <div class="dash-daily-stats-row">
     <div class="counter small">
-        <span>11</span>
+        <span><?=$today_shifts;?></span>
     </div>
     <div class="counter-label">
-        Jobs On (Today) <span class="pull"><i class="fa fa-calendar-o dash-stats-fa-icons"></i><i class="fa fa-bars dash-stats-fa-icons"></i></span>
+        Jobs On (Today) 
+        <span class="pull">
+        	<a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a>
+        	<a href="<?=base_url();?>dashboard/today_shifts"><i class="fa fa-bars dash-stats-fa-icons"></i></a>
+        </span>
     </div>
 </div>
 <div class="dash-daily-stats-row">
     <div class="counter small">
-        <span>14</span>
+        <span><?=$this_week_shifts;?></span>
     </div>
     <div class="counter-label">
-        Jobs On (Week) <span class="pull"><i class="fa fa-calendar-o dash-stats-fa-icons"></i><i class="fa fa-bars dash-stats-fa-icons"></i></span>
+        Jobs On (Week) 
+        <span class="pull">
+        	<a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a>
+        	<a href="<?=base_url();?>dashboard/this_week_shifts"><i class="fa fa-bars dash-stats-fa-icons"></i></a>
+        </span>
     </div>
 </div>
 <div class="dash-daily-stats-row">
     <div class="counter small">
-        <span>65</span>
+        <span><?=$this_month_shifts;?></span>
     </div>
     <div class="counter-label">
-        Jobs On (Month) <span class="pull"><i class="fa fa-calendar-o dash-stats-fa-icons"></i><i class="fa fa-bars dash-stats-fa-icons"></i></span>
+        Jobs On (Month) 
+        <span class="pull">
+        	<a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a>
+        	<a href="<?=base_url();?>dashboard/this_month_shifts"><i class="fa fa-bars dash-stats-fa-icons"></i></a>
+        </span>
     </div>
 </div>
 <div class="dash-daily-stats-row">
     <div class="counter small">
-        <span>105</span>
+        <span><?=$active_jobs;?></span>
     </div>
     <div class="counter-label">
-        Active Campaigns <span class="pull"><i class="fa fa-calendar-o dash-stats-fa-icons"></i><i class="fa fa-bars dash-stats-fa-icons"></i></span>
+        Active Campaigns 
+        <span class="pull">
+        	<a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a>
+        	<a href="<?=base_url();?>dashboard/active_campaigns"><i class="fa fa-bars dash-stats-fa-icons"></i></a>
+        </span>
     </div>
 </div>

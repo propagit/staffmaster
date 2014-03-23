@@ -9,8 +9,30 @@ class Payrate_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function count_payrate_shifts($payrate_id)
+	{
+		$sql = "SELECT count(*) as total
+					FROM job_shifts
+					WHERE status > " . SHIFT_DELETED . "
+					AND payrate_id = " . $payrate_id;
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		return $result['total'];
+	}
+	
+	function count_payrate_timesheets($payrate_id)
+	{
+		$sql = "SELECT count(*) as total
+					FROM job_shift_timesheets
+					WHERE payrate_id = " . $payrate_id;
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		return $result['total'];
+	}
+	
 	function get_payrates()
 	{
+		$this->db->where('status > ', PAYRATE_DELETED);
 		$query = $this->db->get('attribute_payrates');
 		return $query->result_array();
 	}

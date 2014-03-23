@@ -97,7 +97,7 @@ class Job_shift_model extends CI_Model {
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id
 					LEFT JOIN `jobs` j ON j.job_id = js.job_id";
-		if($data['search_shift_shift_status']){
+		if(isset($data['search_shift_shift_status']) && $data['search_shift_shift_status'] != ''){
 			switch($data['search_shift_shift_status']){
 				case 'active':
 					$sql .= " WHERE js.status > " . SHIFT_DELETED;	
@@ -116,23 +116,23 @@ class Job_shift_model extends CI_Model {
 			$sql .= " WHERE js.status > " . SHIFT_DELETED;
 		}
 				
-		if ($data['date_from'])
+		if (isset($data['date_from']) && $data['date_from'] != '')
 		{
 			$sql .= " AND js.job_date >= '" . date('Y-m-d', strtotime($data['date_from'])) . "'";
 		}
-		if ($data['date_to'])
+		if (isset($data['date_to']) && $data['date_to'] != '')
 		{
 			$sql .= " AND js.job_date <= '" . date('Y-m-d', strtotime($data['date_to'])) . "'";
 		}
-		if ($data['client_id'])
+		if (isset($data['client_id']) && $data['client_id'] != '')
 		{
 			$sql .= " AND j.client_id = '" . $data['client_id'] . "'";
 		}
-		if ($data['venue'])
+		if (isset($data['venue']) && $data['venue'] != '')
 		{
 			$sql .= " AND v.name LIKE '%" . $data['venue'] . "%'";
 		}
-		if ($data['role_id'])
+		if (isset($data['role_id']) && $data['role_id'] != '')
 		{
 			$sql .= " AND js.role_id = '" . $data['role_id'] . "'";
 		}

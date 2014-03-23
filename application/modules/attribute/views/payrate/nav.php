@@ -7,14 +7,25 @@
 			<span class="sr-only">Toggle Dropdown</span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a>Edit name</a></li>
-			<li><a>Duplicate</a></li>
-			<li><a>Delete</a></li>
+			<li><a onclick="edit_payrate_name(<?=$payrate['payrate_id'];?>)"><i class="fa fa-pencil-square-o"></i> Edit name</a></li>
+			<!-- <li><a>Duplicate</a></li> -->
+			<li><a onclick="delete_payrate(<?=$payrate['payrate_id'];?>)"><i class="fa fa-times"></i> Delete</a></li>
 		</ul>
 	</div>
 	<? }
 } ?>
 
 <script>
-
+function edit_payrate_name(payrate_id) {
+	$('.bs-modal-lg').modal({
+		remote: "<?=base_url();?>attribute/ajax_payrate/load_edit_name_modal/" + payrate_id,
+		show: true
+	});
+}
+function delete_payrate(payrate_id) {
+	$('.bs-modal-lg').modal({
+		remote: "<?=base_url();?>attribute/ajax_payrate/load_delete_modal/" + payrate_id,
+		show: true
+	});
+}
 </script>

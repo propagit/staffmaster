@@ -89,6 +89,8 @@ define('EXPENSE_UNPAID', 0);
 define('EXPENSE_PAID', 1);
 define('EXPENSE_DELETED', -1);
 
+define('PAYRATE_DELETED', -1);
+
 define('STAFF_TFN', 1);
 define('STAFF_ABN', 2);
 

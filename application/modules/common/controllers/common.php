@@ -305,6 +305,23 @@ class Common extends MX_Controller {
 		}
 		return $total;
 	}
+	
+	function the_week($date)
+	{
+		$timestamp = strtotime($date);
+		$day = date('N', $timestamp);
+		$dates = array();
+		for($i=1; $i < $day; $i++) {
+			$dates[] = $timestamp - ($day-$i) * 24*60*60;
+		}
+		for($i=$day; $i <= 7; $i++) {
+			$dates[] = $timestamp + ($i-$day) * 24*60*60;
+		}
+		return array(
+			'start' => min($dates),
+			'end' => max($dates)
+		);
+	}
 		
 	function define_area()
 	{

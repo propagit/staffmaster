@@ -69,7 +69,7 @@ class Job extends MX_Controller {
 		$this->load->view('create', isset($data) ? $data : NULL);
 	}
 	
-	function job_details($job_id, $job_date = '')
+	function job_details($job_id, $job_date = '', $status = '')
 	{
 		$this->session->unset_userdata('job_date');
 		if (!$job_id)
@@ -82,13 +82,21 @@ class Job extends MX_Controller {
 		$job = $this->job_model->get_job($job_id);
 		$data['job'] = $job;
 		$data['client'] = $this->client_model->get_client($job['client_id']);
-		
+		if ($status != '') {
+			$this->session->set_userdata('shift_status_filter', $status);
+		}
 		$this->load->view('job_details', isset($data) ? $data : NULL);		
 	}
 		
 	function search_jobs()
 	{
-		$data['search_shift_filters'] = array('client_user_id' => '','client_client_id' => '','shift_date' => date('d-m-Y'),'search_shift_date_to' => '','shift_status' => 'job_campaign');
+		$data['search_shift_filters'] = array(
+			'client_user_id' => '',
+			'client_client_id' => '',
+			'shift_date' => date('d-m-Y'),
+			'search_shift_date_to' => '',
+			'shift_status' => 'job_campaign'
+		);
 		if($this->session->flashdata('search_shift_filters')){
 			$data['search_shift_filters'] = $this->session->flashdata('search_shift_filters');	
 		}

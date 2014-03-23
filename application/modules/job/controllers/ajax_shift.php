@@ -124,10 +124,10 @@ class Ajax_shift extends MX_Controller {
 	
 	function update_shifts()
 	{
-		$data = $this->input->post();
-		$shift_ids = explode('~', $data['shift_ids']);
-		$field_id = $data['field_id'];
-		$value = $data['value'];
+		$input = $this->input->post();
+		$shift_ids = explode('~', $input['shift_ids']);
+		$field_id = $input['field_id'];
+		$value = $input['value'];
 		
 		$data = array();
 		
@@ -142,6 +142,10 @@ class Ajax_shift extends MX_Controller {
 			{
 				$data['venue_id'] = $venue['venue_id'];
 			}
+		}
+		else if ($field_id == 'expenses')
+		{
+			
 		}
 		else {
 			$data[$field_id] = $value;

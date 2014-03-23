@@ -20,10 +20,12 @@
 				<div class="has-error"><span class="help-block" id="error_day_selected"></span></div>
 				
 				
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-danger btn-clear-days">Clear</button>
-				<button type="button" class="btn btn-primary btn-copy-selected-days">Copy to selected dates</button>
 			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger btn-clear-days">Clear</button>
+			<button type="button" class="btn btn-primary btn-copy-selected-days">Copy to selected dates</button>
 		</div>
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->

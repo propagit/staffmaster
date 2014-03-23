@@ -58,9 +58,9 @@ class Shift extends MX_Controller {
 			array('value' => 'role_id', 'label' => 'Role'),
 			array('value' => 'uniform_id', 'label' => 'Uniform'),
 			array('value' => 'payrate_id', 'label' => 'Pay Rate'),
-			array('value' => 'supervisor_id', 'label' => 'Supervisor'),
-			array('value' => 'staff_id', 'label' => 'Staff'),
-			array('value' => 'expenses', 'label' => 'Expenses')
+			#array('value' => 'supervisor_id', 'label' => 'Supervisor'),
+			#array('value' => 'staff_id', 'label' => 'Staff'),
+			#array('value' => 'expenses', 'label' => 'Expenses')
 		);
 		return modules::run('common/field_select', $fields, $field_name, $field_value, $size);
 	}
