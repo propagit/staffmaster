@@ -60,16 +60,16 @@ function financial_year_chart() {
 			    },
 			    series: [{
 			        name: 'Profit',
-			        data: [<?=$profits;?>]
+			        data: json.profits
 			    }, {
 			        name: 'Client Invoice',
-			        data: [<?=$invoices;?>]
+			        data: json.invoices
 			    }, {
 			        name: 'Staff Pay',
-			        data: [<?=$pays;?>]
+			        data: json.pays
 			    }, {
 			        name: 'Expenses',
-			        data: [<?=$expenses;?>]
+			        data: json.expenses
 			    }]
 			});
 			loaded($('#chart-financial-year'));

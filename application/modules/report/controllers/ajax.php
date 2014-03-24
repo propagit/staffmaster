@@ -10,6 +10,7 @@ class Ajax extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('report/report_model');
 	}
 	
 	function load_financial_year_data() {
@@ -20,33 +21,24 @@ class Ajax extends MX_Controller {
 			$months[] = date('Y-m', strtotime("$start_month +$i month"));
 		}
 		$categories = array();
+		$expenses = array();
+		$staff_pays = array();
 		foreach($months as $month) {
 			$categories[] = date('M y', strtotime($month));
+			$expenses[] = (int) $this->report_model->get_expenses_cost($month);
+			$invoices[] = (int) $this->report_model->get_invoice_amount($month);
+			$pays[] = (int) $this->report_model->get_staff_cost($month);
 		}
-		
+		$profits = array();
+		for($i=0; $i<12; $i++) {
+			$profits[$i] = $invoices[$i] - $expenses[$i] - $pays[$i];
+		}
 		$data['categories'] = implode(',', $categories);
+		$data['expenses'] = $expenses;
+		$data['invoices'] = $invoices;
+		$data['pays'] = $pays;
+		$data['profits'] = $profits;
 		echo json_encode($data);
 	}
 	
-	function get_sample_invoices() {
-		$data = array();
-		for($i=0; $i < 12; $i++) {
-			$data[] = rand(80,200) * 10;
-		}
-		return $data;
-	}
-	function get_sample_pays() {
-		$data = array();
-		for($i=0; $i < 12; $i++) {
-			$data[] = rand(40,100) * 10;
-		}
-		return $data;
-	}
-	function get_sample_expenses() {
-		$data = array();
-		for($i=0; $i < 12; $i++) {
-			$data[] = rand(10,50) * 10;
-		}
-		return $data;
-	}
 }

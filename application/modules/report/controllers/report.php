@@ -10,6 +10,7 @@ class Report extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('report/report_model');
 	}
 	
 	
@@ -28,42 +29,9 @@ class Report extends MX_Controller {
 	}
 	
 	function financial_year_view() {
-		$invoices = $this->get_sample_invoices();
-		$data['invoices'] = implode(',', $invoices);
-		$pays = $this->get_sample_pays();
-		$data['pays'] = implode(',', $pays);
-		$expenses = $this->get_sample_expenses();
-		$data['expenses'] = implode(',', $expenses);
-		$profits = array();
-		for($i=0; $i < 12; $i++) {
-			$profits[] = $invoices[$i] - $expenses[$i] - $pays[$i];
-		}
-		$data['profits'] = implode(',', $profits);
 		$this->load->view('financial_year_view', isset($data) ? $data : NULL);
 	}
-	
-	function get_sample_invoices() {
-		$data = array();
-		for($i=0; $i < 12; $i++) {
-			$data[] = mt_rand(80,200) * 10;
-		}
-		return $data;
-	}
-	function get_sample_pays() {
-		$data = array();
-		for($i=0; $i < 12; $i++) {
-			$data[] = mt_rand(40,100) * 10;
-		}
-		return $data;
-	}
-	function get_sample_expenses() {
-		$data = array();
-		for($i=0; $i < 12; $i++) {
-			$data[] = mt_rand(10,50) * 10;
-		}
-		return $data;
-	}
-	
+		
 	function fore_cast_view() {
 		$today = date('Y-m-d');
 		$months[] = date('Y-m');
@@ -71,10 +39,33 @@ class Report extends MX_Controller {
 			$months[] = date('Y-m', strtotime("$today +$i month"));
 		}
 		$categories = array();
+		$expenses = array();
+		$invoices = array();
+		$pays = array();
+		$profits = array();
 		foreach($months as $month) {
 			$categories[] = date('M Y', strtotime($month));
+			$timesheets = $this->report_model->get_month_timesheets($month);
+			$expense = 0;
+			$invoice = 0;
+			$pay = 0;
+			$profit = 0;
+			foreach($timesheets as $timesheet)
+			{
+				$expense += $timesheet['expenses_staff_cost'];
+				$invoice += $timesheet['expenses_client_cost'] + $timesheet['total_amount_client'];
+				$pay += $timesheet['total_amount_staff'];
+			}
+			$expenses[] = (int) $expense;
+			$invoices[] = (int) $invoice;
+			$pays[] = (int) $pay;
+			$profits[] = (int) ($invoice - $expense - $pay);
 		}
 		$data['categories'] = '\'' . implode('\' , \'', $categories) . '\'';
+		$data['expenses'] = $expenses;
+		$data['invoices'] = $invoices;
+		$data['pays'] = $pays;
+		$data['profits'] = $profits;
 		$data['months'] = $months;
 		$this->load->view('fore_cast_view', isset($data) ? $data : NULL);
 	}

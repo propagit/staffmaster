@@ -353,7 +353,7 @@ class Ajax extends MX_Controller {
 	/**
 	*	@desc Displayes all the available groups in the system and the roles that has been asigned to the staff.
 	*
-	*   @name get_staff_roles
+	*   @name get_staff_groups
 	*	@access public
 	*	@param Post data - sort parameter and user id (staff id)
 	*	@return Lists all roles with roles that has been assigned to staffs checked

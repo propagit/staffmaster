@@ -51,16 +51,16 @@ var chart_forecast = new Highcharts.Chart({
     },
     series: [{
         name: 'Profit',
-        data: [502, 635, 809, 947]
+        data: [<?php echo '"'.implode('","', $profits).'"' ?>]
     }, {
         name: 'Client Invoice',
-        data: [106, 107, 111, 133]
+        data: [<?php echo '"'.implode('","', $invoices).'"' ?>]
     }, {
         name: 'Staff Pay',
-        data: [163, 203, 276, 408]
+        data: [<?php echo '"'.implode('","', $pays).'"' ?>]
     }, {
         name: 'Expenses',
-        data: [18, 31, 54, 156]
+        data: [<?php echo '"'.implode('","', $expenses).'"' ?>]
     }]
 });
 </script>
