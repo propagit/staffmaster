@@ -33,41 +33,7 @@ class Report extends MX_Controller {
 	}
 		
 	function fore_cast_view() {
-		$today = date('Y-m-d');
-		$months[] = date('Y-m');
-		for($i=1; $i <= 3; $i++) {
-			$months[] = date('Y-m', strtotime("$today +$i month"));
-		}
-		$categories = array();
-		$expenses = array();
-		$invoices = array();
-		$pays = array();
-		$profits = array();
-		foreach($months as $month) {
-			$categories[] = date('M Y', strtotime($month));
-			$timesheets = $this->report_model->get_month_timesheets($month);
-			$expense = 0;
-			$invoice = 0;
-			$pay = 0;
-			$profit = 0;
-			foreach($timesheets as $timesheet)
-			{
-				$expense += $timesheet['expenses_staff_cost'];
-				$invoice += $timesheet['expenses_client_cost'] + $timesheet['total_amount_client'];
-				$pay += $timesheet['total_amount_staff'];
-			}
-			$expenses[] = (int) $expense;
-			$invoices[] = (int) $invoice;
-			$pays[] = (int) $pay;
-			$profits[] = (int) ($invoice - $expense - $pay);
-		}
-		$data['categories'] = '\'' . implode('\' , \'', $categories) . '\'';
-		$data['expenses'] = $expenses;
-		$data['invoices'] = $invoices;
-		$data['pays'] = $pays;
-		$data['profits'] = $profits;
-		$data['months'] = $months;
-		$this->load->view('fore_cast_view', isset($data) ? $data : NULL);
+		$this->load->view('forecast_view', isset($data) ? $data : NULL);
 	}
 	
 	function field_select_financial_year($field_name, $field_value=null, $size=null) {
@@ -76,7 +42,7 @@ class Report extends MX_Controller {
 			$max_year++;
 		}
 		$years = array();
-		for($i=$max_year; $i > 2010; $i--) {
+		for($i=$max_year; $i > 2013; $i--) {
 			$years[] = array('value' => ($i - 1), 'label' => ($i - 1) . '-' . $i);
 		}
 		$field_value = $max_year - 1;

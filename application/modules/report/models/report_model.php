@@ -2,10 +2,30 @@
 
 class Report_model extends CI_Model {
 	
-	function get_month_timesheets($month)
+	function get_forecast($month)
 	{
-		$sql = "SELECT * FROM job_shift_timesheets
+		$sql = "SELECT * FROM forecast
 					WHERE job_date LIKE '$month%'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function clear_forecast()
+	{
+		$this->db->truncate('forecast'); 
+	}
+	
+	function add_forecast($data)
+	{
+		$this->db->insert('forecast', $data);
+		return $this->db->insert_id();
+	}
+	
+	function get_month_shifts($month)
+	{
+		$sql = "SELECT * FROM job_shifts
+					WHERE status > " . SHIFT_DELETED . "
+					AND job_date LIKE '$month%'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
