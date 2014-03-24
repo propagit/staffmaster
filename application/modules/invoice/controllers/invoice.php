@@ -126,8 +126,6 @@ class Invoice extends MX_Controller {
 				
 				if (count($expenses) > 0) {
 					foreach($expenses as $exp) {
-						$expenses_staff_cost += $exp['staff_cost'];
-						$expenses_client_cost += $exp['client_cost'];
 						$item_data = array(
 							'invoice_id' => $invoice_id,
 							'job_id' => $job['job_id'],
