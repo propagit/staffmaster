@@ -136,6 +136,7 @@ class Ajax extends MX_Controller {
 		$invoices = array();
 		$pays = array();
 		$profits = array();
+		$last_updated_on = null;
 		foreach($months as $month) {
 			$categories[] = date('M Y', strtotime($month));
 			$timesheets = $this->report_model->get_forecast($month);
@@ -148,12 +149,22 @@ class Ajax extends MX_Controller {
 				$expense += $timesheet['expenses_staff_cost'];
 				$invoice += $timesheet['expenses_client_cost'] + $timesheet['total_amount_client'];
 				$pay += $timesheet['total_amount_staff'];
+				$last_updated_on = $timesheet['created_on'];
 			}
 			$expenses[] = (int) $expense;
 			$invoices[] = (int) $invoice;
 			$pays[] = (int) $pay;
 			$profits[] = (int) ($invoice - $expense - $pay);
 		}
+		if ($last_updated_on != null && $last_updated_on != '0000-00-00 00:00:00')
+		{
+			$last_updated_on = date('H:i d-m-Y', strtotime($last_updated_on));
+		}
+		else
+		{
+			$last_updated_on = '';
+		}
+		$data['last_updated_on'] = $last_updated_on;
 		$data['categories'] = implode(',', $categories);
 		$data['expenses'] = $expenses;
 		$data['invoices'] = $invoices;
@@ -161,5 +172,19 @@ class Ajax extends MX_Controller {
 		$data['profits'] = $profits;
 		$data['months'] = $months;
 		echo json_encode($data);
+	}
+	
+	function load_top_clients_data()
+	{
+		$year = $this->input->post('year');
+		$month = $this->input->post('month');
+		$clients = $this->report_model->get_top_client($year, $month);
+		$array = array();
+		foreach($clients as $client)
+		{
+			$array[] = '[\'' . $client['company_name'] . '\', ' . (int)$client['total_amount'] . ']';
+		}
+		$data['clients'] = $array;
+		$this->load->view('top_clients_view', isset($data) ? $data : NULL);
 	}
 }

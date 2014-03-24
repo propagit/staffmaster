@@ -1,4 +1,6 @@
 <div class="pull-right">
+	<span id="last_updated_on"></span>
+	&nbsp; 
 	<button class="btn btn-core" id="run-forecase">Run Forecast</button>
 </div>
 <h2>Forecast</h2>
@@ -27,6 +29,11 @@ function forecast_chart() {
 		data: {year: year},
 		success: function(output) {
 			var json = $.parseJSON(output);
+			if (json.last_updated_on)
+			{
+				$('#last_updated_on').html('Last updated at ' + json.last_updated_on);
+			}
+			
 			var chart_forecast = new Highcharts.Chart({
 				chart: {
 					renderTo: 'chart-forecast',
