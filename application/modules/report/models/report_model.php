@@ -77,7 +77,7 @@ class Report_model extends CI_Model {
 		return $amount;
 	}
 	
-	function get_top_client($year, $month='')
+	function get_top_clients($year, $month='')
 	{
 		$paid_on = $year;
 		if ($month != '')
@@ -89,6 +89,27 @@ class Report_model extends CI_Model {
 					LEFT JOIN user_clients c ON c.user_id = i.client_id
 					WHERE i.paid_on LIKE '$paid_on%'
 					GROUP BY i.client_id
+					ORDER BY total_amount DESC
+					LIMIT 10";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function get_top_roles($year, $month='')
+	{
+		$date = $year;
+		if ($month != '')
+		{
+			$date .= '-' . $month;
+		}
+		$sql = "SELECT r.name, count(*) as total
+					FROM job_shifts js
+					LEFT JOIN attribute_roles r ON r.role_id = js.role_id
+					WHERE js.status > " . SHIFT_DELETED . "
+					AND js.role_id != 0
+					AND job_date LIKE '$date%'
+					GROUP BY js.role_id
+					ORDER BY total DESC
 					LIMIT 10";
 		$query = $this->db->query($sql);
 		return $query->result_array();

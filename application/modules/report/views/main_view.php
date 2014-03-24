@@ -38,7 +38,6 @@
 						<?=modules::run('report/field_select_month', 'client_month');?>
 					</div>
 					<div class="col-md-8" id="wp-char-top-clients">
-				    	<div id="chart-top-clients" style="height: 300px;"></div>
 					</div>
 				</div>
                 
@@ -54,11 +53,11 @@
                 
                 <div class="row">
                 	<div class="col-md-4 white-box">
-                		<?=modules::run('report/field_select_year', 'year');?><br /><br />
-                		<?=modules::run('report/field_select_month', 'month');?>
+                		<?=modules::run('report/field_select_year', 'role_year');?><br /><br />
+                		<?=modules::run('report/field_select_month', 'role_month');?>
                 	</div>
-                	<div class="col-md-8">
-	                	<div id="top-roles" style="height: 300px;"></div>
+                	<div class="col-md-8" id="wp-char-top-roles">
+	                	
                 	</div>
                 </div>
             </div>
@@ -106,8 +105,28 @@ $(function(){
 	$('#client_month').change(function(){
 		top_clients_chart();
 	});
+	$('#role_year').change(function(){
+		top_roles_chart();
+	});
+	$('#role_month').change(function(){
+		top_roles_chart();
+	});
 	top_clients_chart();
+	top_roles_chart();
 })
+function top_roles_chart() {
+	var year = $('#role_year').val();
+	var month = $('#role_month').val();
+	preloading($('#wp-char-top-roles'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>report/ajax/load_top_roles_data",
+		data: {year: year, month: month},
+		success: function(html) {
+			loaded($('#wp-char-top-roles'), html);
+		}
+	})
+}
 function top_clients_chart() {
 	var year = $('#client_year').val();
 	var month = $('#client_month').val();
@@ -233,45 +252,7 @@ $(function(){
                 }
             }
         }]
-    });
-	
-    $('#top-roles').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: 0,
-            plotShadow: false
-        },
-        title: {
-            text: '',
-            align: 'center',
-            verticalAlign: 'middle',
-            y: 50
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                shadow: false,
-                center: ['50%', '50%']
-            }
-        },
-        credits: {
-	    	enabled: false  
-        },
-        series: [{
-            type: 'pie',
-            name: 'Browser share',
-            innerSize: '50%',
-            data: [
-                ['Developer',   25.0],
-                ['Sale',       26.8],
-                ['Marketer', 22.8],
-                ['Chef',    8.5],
-                ['Manager',     16.2]
-            ]
-        }]
-    });   
+    });  
 	
 	
 });

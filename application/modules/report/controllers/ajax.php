@@ -178,7 +178,7 @@ class Ajax extends MX_Controller {
 	{
 		$year = $this->input->post('year');
 		$month = $this->input->post('month');
-		$clients = $this->report_model->get_top_client($year, $month);
+		$clients = $this->report_model->get_top_clients($year, $month);
 		$array = array();
 		foreach($clients as $client)
 		{
@@ -186,5 +186,19 @@ class Ajax extends MX_Controller {
 		}
 		$data['clients'] = $array;
 		$this->load->view('top_clients_view', isset($data) ? $data : NULL);
+	}
+	
+	function load_top_roles_data()
+	{
+		$year = $this->input->post('year');
+		$month = $this->input->post('month');
+		$roles = $this->report_model->get_top_roles($year, $month);
+		$array = array();
+		foreach($roles as $role)
+		{
+			$array[] = '[\'' . $role['name'] . '\', ' . (int)$role['total'] . ']';
+		}
+		$data['roles'] = $array;
+		$this->load->view('top_roles_view', isset($data) ? $data : NULL);
 	}
 }
