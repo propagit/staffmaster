@@ -36,6 +36,10 @@ class Report extends MX_Controller {
 		$this->load->view('forecast_view', isset($data) ? $data : NULL);
 	}
 	
+	function top_clients_view() {
+		$this->load->view('top_clients_view', isset($data) ? $data : NULL);
+	}
+	
 	function field_select_financial_year($field_name, $field_value=null, $size=null) {
 		$max_year = date('Y');
 		if (date('n') > 7) {
@@ -60,15 +64,15 @@ class Report extends MX_Controller {
 	function field_select_month($field_name, $field_value=null, $size=null) {
 		$months = array(
 			array('value' => '', 'label' => 'All Months'),
-			array('value' => '1', 'label' => 'January'),
-			array('value' => '2', 'label' => 'February'),
-			array('value' => '3', 'label' => 'March'),
-			array('value' => '4', 'label' => 'April'),
-			array('value' => '5', 'label' => 'May'),
-			array('value' => '6', 'label' => 'June'),
-			array('value' => '7', 'label' => 'July'),
-			array('value' => '8', 'label' => 'August'),
-			array('value' => '9', 'label' => 'September'),
+			array('value' => '01', 'label' => 'January'),
+			array('value' => '02', 'label' => 'February'),
+			array('value' => '03', 'label' => 'March'),
+			array('value' => '04', 'label' => 'April'),
+			array('value' => '05', 'label' => 'May'),
+			array('value' => '06', 'label' => 'June'),
+			array('value' => '07', 'label' => 'July'),
+			array('value' => '08', 'label' => 'August'),
+			array('value' => '09', 'label' => 'September'),
 			array('value' => '10', 'label' => 'October'),
 			array('value' => '11', 'label' => 'November'),
 			array('value' => '12', 'label' => 'December')

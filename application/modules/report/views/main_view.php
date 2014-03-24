@@ -31,16 +31,16 @@
     	<div class="col-md-6 white-box">
             <div class="inner-box">
                 <h2>Top 10 Clients</h2>
-                <p>This graph shows you the top 10 clients based on customer<br />spend from generated invoices for the time period chosen.</p>
-                <div class="row">
-                	<div class="col-md-4 white-box">
-                		<?=modules::run('report/field_select_year', 'year');?><br /><br />
-                		<?=modules::run('report/field_select_month', 'month');?>
-                	</div>
-                	<div class="col-md-8">
-	                	<div id="top-clients" style="height: 300px;"></div>
-                	</div>
-                </div>
+				<p>This graph shows you the top 10 clients based on customer<br />spend from generated invoices for the time period chosen.</p>
+				<div class="row">
+					<div class="col-md-4 white-box">
+						<?=modules::run('report/field_select_year', 'client_year');?><br /><br />
+						<?=modules::run('report/field_select_month', 'client_month');?>
+					</div>
+					<div class="col-md-8" id="wp-char-top-clients">
+				    	<div id="chart-top-clients" style="height: 300px;"></div>
+					</div>
+				</div>
                 
 
                 
@@ -99,6 +99,28 @@
 <!-- end bottom box with 2 separate boxes -->
 
 <script>
+$(function(){
+	$('#client_year').change(function(){
+		top_clients_chart();
+	});
+	$('#client_month').change(function(){
+		top_clients_chart();
+	});
+	top_clients_chart();
+})
+function top_clients_chart() {
+	var year = $('#client_year').val();
+	var month = $('#client_month').val();
+	preloading($('#wp-char-top-clients'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>report/ajax/load_top_clients_data",
+		data: {year: year, month: month},
+		success: function(html) {
+			loaded($('#wp-char-top-clients'), html);
+		}
+	})
+}
 $(function(){
 	$('#job-profit').highcharts({
         chart: {
@@ -212,43 +234,7 @@ $(function(){
             }
         }]
     });
-	$('#top-clients').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: 0,
-            plotShadow: false
-        },
-        title: {
-            text: '',
-            align: 'center',
-            verticalAlign: 'middle',
-            y: 50
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                shadow: false,
-                center: ['50%', '50%']
-            }
-        },
-        credits: {
-	    	enabled: false  
-        },
-        series: [{
-            type: 'pie',
-            name: 'Browser share',
-            innerSize: '50%',
-            data: [
-                ['Propagate',   45.0],
-                ['Samsung',       26.8],
-                ['Apple', 12.8],
-                ['Nike',    8.5],
-                ['Adidas',     6.2]
-            ]
-        }]
-    });
+	
     $('#top-roles').highcharts({
         chart: {
             plotBackgroundColor: null,

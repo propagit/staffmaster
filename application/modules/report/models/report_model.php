@@ -76,4 +76,21 @@ class Report_model extends CI_Model {
 		}
 		return $amount;
 	}
+	
+	function get_top_client($year, $month='')
+	{
+		$paid_on = $year;
+		if ($month != '')
+		{
+			$paid_on .= '-' . $month;
+		}
+		$sql = "SELECT c.company_name, sum(total_amount) as total_amount
+					FROM invoices i
+					LEFT JOIN user_clients c ON c.user_id = i.client_id
+					WHERE i.paid_on LIKE '$paid_on%'
+					GROUP BY i.client_id
+					LIMIT 10";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 }
