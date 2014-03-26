@@ -37,7 +37,7 @@
 		</thead>
 		<? foreach($fields as $field) { ?>
 		<tr>
-			<td><a onclick="fill_input('<?=$field['label'];?>','<?=$field['value'];?>')">{<?=$field['value'];?>}</a></td>
+			<td><a class="editable-click" onclick="fill_input('<?=$field['value'];?>')">{<?=$field['value'];?>}</a></td>
 			<td>
 				<?=$field['label'];?>
 			</td>
@@ -69,9 +69,11 @@ $(function(){
 		add_field(title, value);
 	});
 })
-function fill_input(label, value) {
-	$('#<?=$object;?>').find('input[name="field_title"]').val(label);
-	$('#<?=$object;?>').find('input[name="field_value"]').val('{' + value + '}');
+function fill_input(value) {
+	var old = $('#<?=$object;?>').find('input[name="field_value"]').val();
+	if (old != '') { old = old + ' '; }
+	value = old + '{' + value + '}';
+	$('#<?=$object;?>').find('input[name="field_value"]').val(value);
 }
 function add_field(title, value) {
 	var export_id = $('#<?=$object;?>').find('select[name="export_id"]').val();

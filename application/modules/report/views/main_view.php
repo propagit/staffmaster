@@ -1,6 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
+		<button class="btn btn-core pull-right" id="run-forecast"><i class="fa fa-refresh"></i> Update Stats</button>
 		<h2>Accounts Reports</h2>
 		<p>Welcome to your Staff Account dashboard. Your Dashboard will give you a quick overview of activity going on within [COMPANY PROFILE NAME]. Check back regularly to keep yourself up to date.</p>
 	</div>

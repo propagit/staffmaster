@@ -159,7 +159,7 @@ class Ajax extends MX_Controller {
 		}
 		if ($last_updated_on != null && $last_updated_on != '0000-00-00 00:00:00')
 		{
-			$last_updated_on = date('H:i d-m-Y', strtotime($last_updated_on));
+			$last_updated_on = date('H:i \o\n dS M Y', strtotime($last_updated_on));
 		}
 		else
 		{

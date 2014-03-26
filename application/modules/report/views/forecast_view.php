@@ -1,8 +1,4 @@
-<div class="pull-right">
-	<span id="last_updated_on"></span>
-	&nbsp; 
-	<button class="btn btn-core" id="run-forecase">Run Forecast</button>
-</div>
+<i class="pull-right" id="last_updated_on"></i>
 <h2>Forecast</h2>
 <p>This graph shows an estimated 3 month forecast for client invoicing, staff wages and expenses and a predicted profit.</p>
 <div id="chart-forecast" style="height:300px;"></div>
@@ -10,14 +6,14 @@
 <script>
 $(function(){
 	forecast_chart();
-	$('#run-forecase').click(function(){
+	$('#run-forecast').click(function(){
 		preloading($('#chart-forecast'));
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>report/ajax/run_forecast",
 			success: function(html) {
 				forecast_chart();
-				loaded($('#run-forecase'));
+				loaded($('#chart-forecast'));
 			}
 		})
 	})
