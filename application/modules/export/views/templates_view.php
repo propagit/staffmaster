@@ -83,7 +83,7 @@ function add_field(title, value) {
 		data: {export_id: export_id, title: title, value: value},
 		success: function(html) {
 			//load_template();
-			$('#wp-list-fields').append(html);
+			$('#<?=$object;?>').find('.wp-list-fields').append(html);
 		}
 	})
 }

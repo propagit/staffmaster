@@ -14,6 +14,7 @@ class Staff extends MX_Controller {
 		$this->load->model('user/user_model');
 		$this->load->model('staff_model');
 		$this->load->model('formbuilder/formbuilder_model');
+		$this->load->model('export/export_model');
 	}
 	
 	public function index($method='', $param='')
@@ -25,6 +26,9 @@ class Staff extends MX_Controller {
 				break;
 			case 'search':
 					$this->search_staffs();
+				break;
+			case 'import':
+					$this->import_view();
 				break;
 			case 'edit':
 					$this->edit_staff($param);
@@ -623,6 +627,17 @@ class Staff extends MX_Controller {
 		return $this->staff_modal->get_staff_groups($user_id);
 	}
 	
+	function import_view()
+	{
+		$this->load->view('import_view', isset($data) ? $data : NULL);
+	}
 	
+	function field_select_export_templates($field_name, $field_value = null) 
+	{
+		$data['single'] = $this->export_model->get_templates('staff', 'single');
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);
+	}
 	
 }

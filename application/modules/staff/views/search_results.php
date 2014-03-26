@@ -10,7 +10,7 @@
 				array('value' => 'delete-multi-staff','label' =>'<i class="fa fa-times"></i> Delete Staff'),
 				array('value' => 'update-multi-rating','label' =>'<i class="fa fa-star"></i> Update Selected Rating'),
 				array('value' => 'change-multi-status','label' =>'<i class="fa fa-thumbs-o-up"></i> Change Selected Status'),
-				array('value' => 'export-staff','label' =>'<i class="fa fa-download"></i> Export Selected')
+				array('value' => 'export','label' =>'<i class="fa fa-download"></i> Export Selected')
 				);
 
 	$id = 'search-staff-result-action';
