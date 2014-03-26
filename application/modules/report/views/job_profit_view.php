@@ -1,8 +1,8 @@
-<? if (!isset($billed)) { ?>
+<? if (!isset($forecast)) { ?>
 <div class="alert alert-warning">No data</div>
 <? } else { ?>
 <div id="chart-job-profit" style="height: 400px; min-width: 300px; margin: 0 auto;"></div>
-<table id="datatable" class="hide">
+<table id="datatable" >
 	<thead>
 		<tr>
 			<th></th>
@@ -13,22 +13,22 @@
 	<tbody>
 		<tr>
 			<th>Invoice</th>
-			<td><?=$billed['invoice'];?></td>
+			<td><?=$invoice;?></td>
 			<td><?=$forecast['invoice'];?></td>
 		</tr>
 		<tr>
 			<th>Staff Pay</th>
-			<td><?=$billed['staff'];?></td>
+			<td><?=$staff;?></td>
 			<td><?=$forecast['staff'];?></td>
 		</tr>
 		<tr>
 			<th>Staff Expenses</th>
-			<td><?=$billed['expense'];?></td>
+			<td><?=$expense;?></td>
 			<td><?=$forecast['expense'];?></td>
 		</tr>
 		<tr>
 			<th>Profit</th>
-			<td><?=$billed['invoice'] - $billed['staff'] - $billed['expense'];?></td>
+			<td><?=$invoice - $staff - $expense;?></td>
 			<td><?=$forecast['invoice'] - $forecast['staff'] - $forecast['expense'];?></td>
 		</tr>
 	</tbody>
@@ -54,7 +54,7 @@ $(function(){
         },
         tooltip: {
             formatter: function() {
-                return this.series.name +':<br/>'+ this.point.name + 
+                return this.series.name +' '+ this.point.name + ':<br/>' + 
                     '<b>$' + this.point.y + '</b>';
             }
         }

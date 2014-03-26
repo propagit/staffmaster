@@ -10,14 +10,34 @@ class Report_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	function get_job_timesheets($job_id) {
-		$sql = "SELECT sum(expenses_client_cost + total_amount_client) as invoice,
-						sum(total_amount_staff) as staff,
-						sum(expenses_staff_cost) as expense
+	function get_job_invoice($job_id) {
+		$sql = "SELECT sum(expenses_client_cost + total_amount_client) as total
 					FROM job_shift_timesheets
-					WHERE job_id = " . $job_id;
+					WHERE job_id = " . $job_id . "
+					AND status_invoice_client = " . INVOICE_PAID;
 		$query = $this->db->query($sql);
-		return $query->first_row('array');
+		$result = $query->first_row('array');
+		return $result['total'];
+	}
+	
+	function get_job_expense($job_id) {
+		$sql = "SELECT sum(expenses_staff_cost) as total
+					FROM job_shift_timesheets
+					WHERE job_id = " . $job_id . "
+					AND status_payrun_staff = " . PAYRUN_PAID;
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		return $result['total'];
+	}
+	
+	function get_job_staff($job_id) {
+		$sql = "SELECT sum(total_amount_staff) as total
+					FROM job_shift_timesheets
+					WHERE job_id = " . $job_id . "
+					AND status_payrun_staff = " . PAYRUN_PAID;
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		return $result['total'];
 	}
 	
 	function get_job_forecast($job_id) {

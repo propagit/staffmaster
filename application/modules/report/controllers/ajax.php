@@ -226,7 +226,9 @@ class Ajax extends MX_Controller {
 		$job = modules::run('job/get_job_by_name', $input['job_name']);
 		if ($job) 
 		{
-			$data['billed'] = $this->report_model->get_job_timesheets($job['job_id']);
+			$data['invoice'] = $this->report_model->get_job_invoice($job['job_id']);
+			$data['expense'] = $this->report_model->get_job_expense($job['job_id']);
+			$data['staff'] = $this->report_model->get_job_staff($job['job_id']);
 			$data['forecast'] = $this->report_model->get_job_forecast($job['job_id']);
 		}
 		$this->load->view('job_profit_view', isset($data) ? $data : NULL);
