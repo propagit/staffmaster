@@ -2,7 +2,7 @@
 	<?=modules::run('report/field_select_year', 'staff_year');?><br /><br />
 	<?=modules::run('report/field_select_month', 'staff_month');?>
 </div>
-<h2>Who's Working</h2>
+<h2>Who's Worked</h2>
 <p>This graph shows you the staff who have worked the most by month or year. Rollover the bar to get more details.</p>
 <div id="chart-top-staff" style="height: 400px;"></div>
 
