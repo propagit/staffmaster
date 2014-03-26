@@ -14,7 +14,6 @@
 	
 	<link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/calendar.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
 	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
 	<?=$_styles;?>
 	
@@ -52,6 +51,10 @@
 	<!-- select -->
 	<link href="<?=base_url();?>assets/css/bootstrap-select.min.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/js/bootstrap-select.min.js"></script>
+    
+    <!-- select2 -->
+	<link href="<?=base_url();?>assets/css/select2/select2.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/select2.min.js"></script>
 	
 	<!-- typeaheadjs -->
 	<link href="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet">
@@ -65,6 +68,7 @@
 	<script src="<?=base_url();?>assets/prettyCheckable/prettyCheckable.js" type="text/javascript" charset="utf-8"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
+    <link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
 	<script src="<?=base_url();?>assets/js/core.admin.js" type="text/javascript" charset="utf-8"></script>
     
     <!--flex slider2-->

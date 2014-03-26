@@ -724,3 +724,8 @@ span.dash-invoice-value{
 .display-inline{
 	display:inline !important;	
 }
+
+#staff_quick_search_result .profile_photo img{
+	width:48px;
+	height:48px;	
+}

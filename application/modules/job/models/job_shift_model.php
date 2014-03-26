@@ -292,29 +292,32 @@ class Job_shift_model extends CI_Model {
 		if($this->session->userdata('company_calendar_filter_client_id')){
 			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
 		}
-		$sql = "select s.job_date,count(s.shift_id) as total_shifts from job_shifts s";
+		$sql = "SELECT s.job_date,count(s.shift_id) AS total_shifts FROM job_shifts s";
 		if($client_user_id && $client_user_id != 'all'){
-			$sql .= " join jobs j on s.job_id = j.job_id and j.client_id = ".$client_user_id;	
+			$sql .= " JOIN jobs j ON s.job_id = j.job_id AND j.client_id = ".$client_user_id;	
 		}else{
-			$sql .= " where s.shift_id != ''";	
+			$sql .= " WHERE s.shift_id != ''";	
 		}
 				
-		$sql .= " and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
+		$sql .= " AND month(s.job_date) = '".$month."' AND year(s.job_date) = '".$year."'";
 		switch($status){
 			case 'active':
-				$sql .= " and s.status > " . SHIFT_DELETED;	
+				$sql .= " AND s.status > " . SHIFT_DELETED;	
 			break;
 			case 'unassigned':
-				$sql .= " and s.status = " . SHIFT_UNASSIGNED;
+				$sql .= " AND s.status = " . SHIFT_UNASSIGNED;
 			break;
 			case 'unconfirmed':
-				$sql .= " and s.status = " . SHIFT_UNCONFIRMED;
+				$sql .= " AND s.status = " . SHIFT_UNCONFIRMED;
 			break;
 			case 'rejected':
-				$sql .= " and s.status = " . SHIFT_REJECTED;
+				$sql .= " AND s.status = " . SHIFT_REJECTED;
 			break;
 			case 'confirmed':
-				$sql .= " and s.status = " . SHIFT_CONFIRMED;
+				$sql .= " AND s.status = " . SHIFT_CONFIRMED;
+			break;
+			case 'completed':
+				$sql .= " AND s.status = " . SHIFT_FINISHED;
 			break;	
 		}
 		if($only_total){
@@ -333,21 +336,21 @@ class Job_shift_model extends CI_Model {
 		if($this->session->userdata('company_calendar_filter_client_id')){
 			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
 		}
-		$sql = "select s.job_date,count(distinct s.job_id) as total_jobs from job_shifts s";
+		$sql = "SELECT s.job_date,count(DISTINCT s.job_id) AS total_jobs FROM job_shifts s";
 		if($client_user_id && $client_user_id != 'all'){
-			$sql .= " join jobs j on s.job_id = j.job_id and j.client_id = ".$client_user_id;	
+			$sql .= " join jobs j ON s.job_id = j.job_id AND j.client_id = ".$client_user_id;	
 		}else{
-			$sql .= " where s.shift_id != ''";	
+			$sql .= " WHERE s.shift_id != ''";	
 		}
 				
-		$sql .= " and s.status > " . SHIFT_DELETED . " and month(s.job_date) = '".$month."' and year(s.job_date) = '".$year."'";
+		$sql .= " AND s.status > " . SHIFT_DELETED . " AND month(s.job_date) = '".$month."' AND year(s.job_date) = '".$year."'";
 		
 		if($only_total){
-			$sql .= " group by s.job_id order by s.job_date asc";
+			$sql .= " GROUP BY s.job_id ORDER BY s.job_date asc";
 			$jobs = $this->db->query($sql)->result();
 			return count($jobs);
 		}else{
-			$sql .= " group by s.job_date order by s.job_date asc";
+			$sql .= " GROUP BY s.job_date ORDER BY s.job_date asc";
 			$jobs = $this->db->query($sql)->result();
 			return $jobs;
 		}	

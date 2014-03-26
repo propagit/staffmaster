@@ -50,6 +50,7 @@ class Ajax_calendar extends MX_Controller {
 		$data['unconfirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',true);//status 1
 		$data['rejected'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',true);//status -1
 		$data['confirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',true);//status 2
+		$data['completed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed',true);//status 3
 		echo json_encode($data);
 	}
 	/**
