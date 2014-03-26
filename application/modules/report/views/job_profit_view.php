@@ -2,7 +2,7 @@
 <div class="alert alert-warning">No data</div>
 <? } else { ?>
 <div id="chart-job-profit" style="height: 400px; min-width: 300px; margin: 0 auto;"></div>
-<table id="datatable" >
+<table id="datatable" class="hide">
 	<thead>
 		<tr>
 			<th></th>
