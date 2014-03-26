@@ -776,4 +776,124 @@ class Ajax extends MX_Controller {
 		echo 'success';
 	}
 	
+	function upload_staff_csv()
+	{
+		$config['upload_path'] = './uploads/import/';
+		$config['allowed_types'] = 'csv|xls';
+		$config['max_size'] = '2048'; // 2 MB
+		$this->load->library('upload', $config);
+		
+		if (!$this->upload->do_upload())
+		{
+			echo $this->upload->display_errors('','');
+		}
+		else
+		{
+			
+		}
+	}
+	
+	function load_export_modal($user_ids)
+	{
+		$data['user_ids'] = $user_ids;
+		$this->load->view('export_modal_view', isset($data) ? $data : NULL);
+	}
+	
+	function exporting() {
+		$user_ids = $this->input->post('user_ids');
+		$user_ids = explode('~', $user_ids);
+		$export_id = $this->input->post('export_id');
+		if ($export_id == '') {
+			return;
+		}
+		
+		$file_name = $this->_export_staff($user_ids, $export_id);
+		echo $file_name;
+	}
+	
+	private function _export_staff($user_ids, $export_id) 
+	{
+		$fields = modules::run('export/get_fields', $export_id);
+		
+		ini_set('memory_limit', '128M');
+		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Staff Master");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Staff Master");
+		$objPHPExcel->getProperties()->setTitle("Staff Data");
+		$objPHPExcel->getProperties()->setSubject("Staff Data");
+		$objPHPExcel->getProperties()->setDescription("Staff Data Excel file, generated from Staff Master.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$i = 0;
+		$row = 1;
+		foreach($fields as $field) {
+			if ($i < 26)
+			{
+				$letter = chr(97 + $i) . $row;
+			}
+			else
+			{
+				$letter = chr(97 + ($i-26)) . chr(97 + ($i-26)) . $row;
+			}
+			$objPHPExcel->getActiveSheet()->SetCellValue($letter, $field['title']);
+			$i++;
+		}
+		$i = 0;
+		foreach($user_ids as $user_id) {
+			$staff = $this->staff_model->get_export_staff($user_id);
+			$row++;
+			foreach($fields as $field) {
+				$value = $field['value']; # Convert $field, $timesheet
+				$value = str_replace('{title}', $staff['title'], $value);
+				$value = str_replace('{rating}', $staff['rating'], $value);
+				$value = str_replace('{first_name}', $staff['first_name'], $value);
+				$value = str_replace('{last_name}', $staff['last_name'], $value);
+				$value = str_replace('{gender}', $staff['gender'], $value);
+				$value = str_replace('{dob}', date('d/m/Y', strtotime($staff['dob'])), $value);
+				$value = str_replace('{address}', $staff['email_address'], $value);
+				$value = str_replace('{suburb}', $staff['suburb'], $value);
+				$value = str_replace('{city}', $staff['city'], $value);
+				$value = str_replace('{postcode}', $staff['postcode'], $value);
+				$value = str_replace('{state}', $staff['state'], $value);
+				$value = str_replace('{country}', $staff['country'], $value);
+				$value = str_replace('{email}', $staff['email_address'], $value);
+				$value = str_replace('{phone}', $staff['phone'], $value);
+				$value = str_replace('{external_id}', $staff['external_staff_id'], $value);
+				$value = str_replace('{emergency_contact}', $staff['emergency_contact'], $value);
+				$value = str_replace('{emergency_phone}', $staff['emergency_phone'], $value);
+				$value = str_replace('{account_name}', $staff['f_acc_name'], $value);
+				$value = str_replace('{bsb}', $staff['f_bsb'], $value);
+				$value = str_replace('{account_number}', $staff['f_acc_number'], $value);
+				$value = str_replace('{employed_as}', $staff['f_employed'], $value);
+				$value = str_replace('{tfn_number}', $staff['f_tfn'], $value);
+				$value = str_replace('{abn_number}', $staff['f_abn'], $value);
+				$value = str_replace('{super_fund}', $staff['s_name'], $value);
+				$value = str_replace('{super_employee_id}', $staff['s_employee_id'], $value);
+				$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
+				$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);
+				
+				if ($i < 26)
+				{
+					$letter = chr(97 + $i) . $row;
+				}
+				else
+				{
+					$letter = chr(97 + ($i-26)) . chr(97 + ($i-26)) . $row;
+				}
+				
+				$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+				$i++;
+			}
+			$i=0;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('staff');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
+		$file_name = 'staff_' . time() . ".csv";
+		$objWriter->save("./exports/staff/" . $file_name);
+		return $file_name;
+	}
 }

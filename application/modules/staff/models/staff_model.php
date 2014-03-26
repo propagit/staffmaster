@@ -209,6 +209,16 @@ class Staff_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function get_export_staff($user_id)
+	{
+		$sql = "SELECT u.*, s.*
+				FROM users u
+				LEFT JOIN user_staffs s ON s.user_id = u.user_id
+				WHERE u.user_id = " . $user_id;
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
 	function get_staff_by_name($name) {
 		$sql = "SELECT * FROM users 
 				WHERE status = " . STAFF_ACTIVE . " 

@@ -13,6 +13,7 @@
     	<div class="inner-box">
             
             <ul class="nav nav-tabs tab-respond">
+            	<li class="pull-right"><a href="<?=base_url();?>staff/import">Import Staff</a></li>
 				<li class="mobile-tab active"><a>Personal Details</a></li>
 				<li class="mobile-tab disabled"><a>Financial Details</a></li>
 				<li class="mobile-tab disabled"><a>Super Details</a></li>

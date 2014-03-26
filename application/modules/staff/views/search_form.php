@@ -273,8 +273,8 @@ function perform_multi_update(action){
 		case 'change-multi-status':
 			$('#updateMultiStatus').modal('show');
 		break;
-		case 'export-staff':
-		
+		case 'export':
+			export_staff();
 		break;	
 	}
 }
@@ -342,6 +342,17 @@ function contact_multi_staff(){
 		  }
 	  });
 		
+}
+
+function export_staff() {
+	var selected_staff = new Array();
+	$('.checkbox-multi-action:checked').each(function(){
+		selected_staff.push($(this).val());
+	});
+	$('.bs-modal-lg').modal({
+		remote: "<?=base_url();?>staff/ajax/load_export_modal/" + selected_staff.join("~"),
+		show: true
+	});
 }
 
 function send_email()

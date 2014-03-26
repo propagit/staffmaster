@@ -10,7 +10,7 @@
 		<th class="center" width="40"></th>
 	</tr>
 	</thead>
-	<tbody id="wp-list-fields">
+	<tbody class="wp-list-fields">
 	<? foreach($fields as $field) { ?>	
 	<tr class="field-sortable" id="field-<?=$field['field_id'];?>">
 		<td>
