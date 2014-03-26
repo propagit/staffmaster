@@ -36,12 +36,12 @@ class Job_model extends CI_Model {
 		# Select the job id that has shifts in selected date range
 		$sql_select_job_id = "SELECT job_id FROM job_shifts
 								WHERE status > " . SHIFT_DELETED;
-		if ($data['date_from'])
+		if (isset($data['date_from']) && $data['date_from'] != '')
 		{
 			$sql_select_job_id .= " AND (start_time >= " . strtotime($data['date_from']);
 			$sql_select_job_id .= " OR finish_time >= " . strtotime($data['date_from']) . ")";
 		}
-		if ($data['date_to'])
+		if (isset($data['date_to']) && $data['date_to'] != '')
 		{
 			$sql_select_job_id .= " AND (start_time <= " . strtotime($data['date_to']);
 			$sql_select_job_id .= " OR finish_time <= " . strtotime($data['date_to']) . ")";
@@ -68,7 +68,7 @@ class Job_model extends CI_Model {
 		*/
 		
 		$sql = "SELECT * FROM jobs WHERE job_id IN ($sql_select_job_id)";
-		if ($data['client_id'])
+		if (isset($data['client_id']) && $data['client_id'] != '')
 		{
 			$sql .= " AND client_id = " . $data['client_id'];
 		}

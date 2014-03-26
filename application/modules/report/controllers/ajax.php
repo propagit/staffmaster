@@ -27,9 +27,9 @@ class Ajax extends MX_Controller {
 		$staff_pays = array();
 		foreach($months as $month) {
 			$categories[] = date('M y', strtotime($month));
-			$expenses[] = (int) $this->report_model->get_expenses_cost($month);
-			$invoices[] = (int) $this->report_model->get_invoice_amount($month);
-			$pays[] = (int) $this->report_model->get_staff_cost($month);
+			$expenses[] = (double) $this->report_model->get_expenses_cost($month);
+			$invoices[] = (double) $this->report_model->get_invoice_amount($month);
+			$pays[] = (double) $this->report_model->get_staff_cost($month);
 		}
 		$profits = array();
 		for($i=0; $i<12; $i++) {
@@ -151,10 +151,10 @@ class Ajax extends MX_Controller {
 				$pay += $timesheet['total_amount_staff'];
 				$last_updated_on = $timesheet['created_on'];
 			}
-			$expenses[] = (int) $expense;
-			$invoices[] = (int) $invoice;
-			$pays[] = (int) $pay;
-			$profits[] = (int) ($invoice - $expense - $pay);
+			$expenses[] = (double) $expense;
+			$invoices[] = (double) $invoice;
+			$pays[] = (double) $pay;
+			$profits[] = (double) ($invoice - $expense - $pay);
 		}
 		if ($last_updated_on != null && $last_updated_on != '0000-00-00 00:00:00')
 		{
@@ -171,6 +171,23 @@ class Ajax extends MX_Controller {
 		$data['pays'] = $pays;
 		$data['profits'] = $profits;
 		$data['months'] = $months;
+		echo json_encode($data);
+	}
+	
+	function load_top_staff_data()
+	{
+		$year = $this->input->post('year');
+		$month = $this->input->post('month');
+		$staff = $this->report_model->get_top_staff($year, $month);
+		$names = array();
+		$minutes = array();
+		foreach($staff as $s)
+		{
+			$names[] = $s['first_name'] . ' ' . $s['last_name'];
+			$minutes[] = (double) $s['total_minutes'] / 60;
+		}
+		$data['names'] = implode(',', $names);
+		$data['minutes'] = $minutes;
 		echo json_encode($data);
 	}
 	
@@ -200,5 +217,10 @@ class Ajax extends MX_Controller {
 		}
 		$data['roles'] = $array;
 		$this->load->view('top_roles_view', isset($data) ? $data : NULL);
+	}
+	
+	function load_job_profit_data()
+	{
+		
 	}
 }

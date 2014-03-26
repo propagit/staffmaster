@@ -214,7 +214,8 @@ class Job extends MX_Controller {
 	
 	function field_input($field_name, $field_value=null, $size=null) {
 		$data['field_name'] = $field_name;
-		$data['jobs'] = $this->job_model->all_jobs();
+		$data['jobs'] = $this->job_model->search_jobs();
+		
 		$this->load->view('field_input', isset($data) ? $data : NULL);
 	}
 }

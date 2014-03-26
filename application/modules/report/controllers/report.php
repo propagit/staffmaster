@@ -40,6 +40,14 @@ class Report extends MX_Controller {
 		$this->load->view('top_clients_view', isset($data) ? $data : NULL);
 	}
 	
+	function top_staff_view() {
+		$this->load->view('top_staff_view', isset($data) ? $data : NULL);
+	}
+	
+	function per_job_view() {
+		$this->load->view('per_job_view', isset($data) ? $data : NULL);
+	}
+	
 	function field_select_financial_year($field_name, $field_value=null, $size=null) {
 		$max_year = date('Y');
 		if (date('n') > 7) {

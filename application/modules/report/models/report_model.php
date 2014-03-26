@@ -114,4 +114,23 @@ class Report_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	
+	function get_top_staff($year, $month='')
+	{
+		$date = $year;
+		if ($month != '')
+		{
+			$date .= '-' . $month;
+		}
+		$sql = "SELECT u.first_name, u.last_name, sum(t.total_minutes) as 'total_minutes'
+					FROM job_shift_timesheets t
+					LEFT JOIN users u ON u.user_id = t.staff_id
+					WHERE job_date LIKE '$date%'
+					AND total_minutes > 0
+					GROUP BY t.staff_id
+					ORDER BY total_minutes DESC
+					LIMIT 10";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 }

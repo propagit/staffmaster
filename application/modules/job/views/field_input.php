@@ -10,12 +10,10 @@
 <input type="text" name="<?=$field_name;?>" class="typeahead-devs-<?=$field_name;?> form-control" placeholder="keywords..." />
 
 <script>
-/*
 $(function(){
 	$('input.typeahead-devs-<?=$field_name;?>').typeahead({
 		name: '<?=$field_name;?>',
 		local: [<?=$data_source;?>]
 	});
 })
-*/
 </script>
