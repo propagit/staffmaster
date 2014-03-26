@@ -51,13 +51,19 @@ class Ajax extends MX_Controller {
 	
 	
 	function add_field() {
-		$data = array(
+		$field = array(
 			'export_id' => $this->input->post('export_id'),
 			'title' => $this->input->post('title'),
 			'value' => $this->input->post('value')
 		);
-		$field_id = $this->export_model->add_field($data);
+		$field_id = $this->export_model->add_field($field);
 		$this->export_model->update_field($field_id, array('order' => $field_id));
+		$data['field'] = array(
+			'field_id' => $field_id,
+			'title' => $field['title'],
+			'value' => $field['value']
+		);
+		$this->load->view('row_field_view', isset($data) ? $data : NULL);
 	}
 	
 	function update_fields_order() {

@@ -15,6 +15,13 @@ class Job_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function get_job_by_name($name)
+	{
+		$this->db->where('name', $name);
+		$query = $this->db->get('jobs');
+		return $query->first_row('array');
+	}
+	
 	function all_jobs() {
 		$query = $this->db->get('jobs');
 		return $query->result_array();

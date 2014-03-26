@@ -10,9 +10,9 @@
 		<th class="center" width="40"></th>
 	</tr>
 	</thead>
-	<tbody>
+	<tbody id="wp-list-fields">
 	<? foreach($fields as $field) { ?>	
-	<tr class="field-sortable">
+	<tr class="field-sortable" id="field-<?=$field['field_id'];?>">
 		<td>
 			<i class="fa fa-arrows-alt"></i>
 			<input type="hidden" name="order_<?=$field['field_id'];?>" value="<?=$field['field_id'];?>" />
@@ -39,7 +39,8 @@ function remove_field(field_id) {
 		url: "<?=base_url();?>export/ajax/remove_field",
 		data: {field_id: field_id},
 		success: function(html) {
-			load_template();
+			$('#field-' + field_id).remove();
+			//load_template();
 		}
 	})
 }
@@ -51,7 +52,8 @@ function init_sort() {
 		itemSelector: 'tr.field-sortable',
 		placeholder: '<tr class="placeholder"/>',
 		onDrop: function (item, container, _super) {
-			$('#order_values_<?=$export_id;?>').val(group.sortable("serialize").get().join("\n"));
+			var orders = group.sortable("serialize").get().join("\n");
+			$('#order_values_<?=$export_id;?>').val(orders);
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>export/ajax/update_fields_order",

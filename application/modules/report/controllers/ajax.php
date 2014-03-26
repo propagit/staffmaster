@@ -113,6 +113,7 @@ class Ajax extends MX_Controller {
 				
 				$data = array(
 					'shift_id' => $shift['shift_id'],
+					'job_id' => $shift['job_id'],
 					'job_date' => $shift['job_date'],
 					'expenses_staff_cost' => $expenses_staff_cost,
 					'expenses_client_cost' => $expenses_client_cost,
@@ -221,6 +222,13 @@ class Ajax extends MX_Controller {
 	
 	function load_job_profit_data()
 	{
-		
+		$input = $this->input->post();
+		$job = modules::run('job/get_job_by_name', $input['job_name']);
+		if ($job) 
+		{
+			$data['billed'] = $this->report_model->get_job_timesheets($job['job_id']);
+			$data['forecast'] = $this->report_model->get_job_forecast($job['job_id']);
+		}
+		$this->load->view('job_profit_view', isset($data) ? $data : NULL);
 	}
 }

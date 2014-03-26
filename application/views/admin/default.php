@@ -36,6 +36,7 @@
 	
 	<!-- highcharts -->
 	<script src="<?=base_url();?>assets/highcharts/highcharts.js"></script>
+	<script src="<?=base_url();?>assets/highcharts/modules/data.js"></script>
 	
 	<!-- datetimepicker (bootstrap 3)  -->
 	<link href="<?=base_url();?>assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">

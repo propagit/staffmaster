@@ -4,7 +4,7 @@
 </div>
 <h2>Who's Working</h2>
 <p>This graph shows you the staff who have worked the most by month or year. Rollover the bar to get more details.</p>
-<div id="chart-top-staff" style="height: 300px;"></div>
+<div id="chart-top-staff" style="height: 400px;"></div>
 
 <script>
 $(function(){
@@ -47,7 +47,6 @@ function top_staff_chart() {
 		            }
 		        },
 		        yAxis: {
-		            min: 0,
 		            title: {
 		                text: ''
 		            }
@@ -55,27 +54,27 @@ function top_staff_chart() {
 		        legend: {
 		            enabled: false
 		        },
+		        plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y} hours'
+                        }
+                    }
+                },
 		        tooltip: {
 		            pointFormat: '<b>{point.y:.1f} hours</b>',
 		        },
 		        credits: {
 			    	enabled: false  
 		        },
+		        colors: [
+			        '#8bbc21',
+			    ],
 		        series: [{
 		            name: '',
-		            data: json.minutes,
-		            dataLabels: {
-		                enabled: true,
-		                color: '#000',
-		                align: 'center',
-		                x: 0,
-		                y: 0,
-		                style: {
-		                    fontSize: '13px',
-		                    fontFamily: 'Verdana, sans-serif',
-		                    textShadow: '0 0 3px black'
-		                }
-		            }
+		            data: json.minutes
 		        }]				
 			});
 			loaded($('#chart-top-staff'));

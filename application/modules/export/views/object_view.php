@@ -1,10 +1,11 @@
 <br />
 <div class="clearfix">
 <div class="col-md-7">
-	<h2>Configure Export</h2>	
+	<h2>Configure <?=ucwords(str_replace('_',' ',$object));?> Export</h2>	
 </div>
 <div class="col-md-5">
-	<? if($object != 'staff' && $object != 'expense') { ?>
+	<? if($object != 'staff' && $object != 'expense' ) { ?>
+	<? /*
 	<div class="alert alert-success clearfix">
 		<div class="col-md-6">
 			<label><input type="radio" name="format" checked value="single" /> &nbsp; Single Time Sheet</label>
@@ -12,7 +13,9 @@
 		<div class="col-md-6">
 			<label><input type="radio" name="format" value="batched" /> &nbsp; Batched Time Sheets</label>
 		</div>
-	</div>
+	</div> */ 
+	?>
+	<input type="radio" name="format" value="single" checked class="hide" />
 	<? } else { ?>
 	<input type="radio" name="<?=$object;?>_format" checked value="single" class="hide" />
 	<? } ?>

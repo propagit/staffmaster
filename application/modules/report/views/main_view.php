@@ -62,7 +62,17 @@
         
         <div class="col-md-6 white-box">
             <div class="inner-box">
-	            <?=modules::run('report/per_job_view');?>
+	            <h2>Profit Per Campaign</h2>
+				<form id="load_job_profit_form">
+				<div class="form-group col-md-6 white-box">
+					<?=modules::run('job/field_input', 'job_name');?>
+				</div>
+				<div class="col-md-2">
+					<button type="button" class="btn btn-core" id="btn-load-job-profit">Get Data</button>
+				</div>
+				</form>
+				<div class="clearfix"></div>
+				<div id="wp-chart-job-profit"></div>
             </div>
         </div>        
 	</div>
@@ -83,8 +93,12 @@ $(function(){
 	$('#role_month').change(function(){
 		top_roles_chart();
 	});
+	$('#btn-load-job-profit').click(function(){
+		job_profit_chart();
+	});
 	top_clients_chart();
 	top_roles_chart();
+	job_profit_chart();
 })
 function top_roles_chart() {
 	var year = $('#role_year').val();
@@ -109,6 +123,17 @@ function top_clients_chart() {
 		data: {year: year, month: month},
 		success: function(html) {
 			loaded($('#wp-char-top-clients'), html);
+		}
+	})
+}
+function job_profit_chart() {
+	preloading($('#wp-chart-job-profit'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>report/ajax/load_job_profit_data",
+		data: $('#load_job_profit_form').serialize(),
+		success: function(html) {
+			loaded($('#wp-chart-job-profit'), html);
 		}
 	})
 }

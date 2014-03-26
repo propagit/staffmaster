@@ -10,6 +10,26 @@ class Report_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_job_timesheets($job_id) {
+		$sql = "SELECT sum(expenses_client_cost + total_amount_client) as invoice,
+						sum(total_amount_staff) as staff,
+						sum(expenses_staff_cost) as expense
+					FROM job_shift_timesheets
+					WHERE job_id = " . $job_id;
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
+	function get_job_forecast($job_id) {
+		$sql = "SELECT sum(expenses_client_cost + total_amount_client) as invoice,
+						sum(total_amount_staff) as staff,
+						sum(expenses_staff_cost) as expense
+					FROM forecast
+					WHERE job_id = " . $job_id;
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
 	function clear_forecast()
 	{
 		$this->db->truncate('forecast'); 
