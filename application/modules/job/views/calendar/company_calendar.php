@@ -1,10 +1,12 @@
 <!--calendar nav-->
-<div class="calendar-nav-wrap">
-    <ul class="nav nav-tabs nav-group tab-respond company-calendar-nav-tab">
-        <li class="active"><a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
-        <li class="active"><a id="header-company-calendar-month"> &nbsp; </a></li>
-        <li class="active"><a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>
-    </ul>
+<div id="nav_month_shifts" class="company-calendar-nav-wrap">
+	<div class="btn-group btn-nav">
+		<ul class="nav nav-tabs tab-respond">
+			<li class="active first-child"><a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
+			<li class="active mid-child"><a id="header-company-calendar-month"> &nbsp; </a></li>
+			<li class="active last-child"><a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>
+		</ul>
+	</div>
 </div>
 <!-- end calendar nav-->
 <div class="clearfix"></div>

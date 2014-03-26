@@ -6,11 +6,12 @@
         </div>
         <div class="col-md-2 remove-left-padding">
         	<ul class="calendar-job-stat-legend">
-            	<li>Active Job Campaigns <span id="job-campaigns-count" class="badge badge-xs dark-grey-bg">0</span></li>
-                <li>Unfilled Shifts <span id="unfilled-shifts-count" class="badge badge-xs grey-bg">0</span></li>
-                <li>Un-confirmed Shifts <span id="unconfirmed-shifts-count" class="badge badge-xs warning">0</span></li>
-                <li>Rejected Shifts <span id="rejected-shifts-count" class="badge badge-xs danger">0</span></li>
-                <li>Confirmed Shifts <span id="confirmed-shifts-count" class="badge badge-xs success">0</span></li>
+            	<li><span class="cal-legend-txt">Active Job Campaigns</span><span class="cal-home-shift-count-wrap"><span id="job-campaigns-count" class="badge dark-grey-bg">0</span></span></li>
+                <li><span class="cal-legend-txt">Unfilled Shifts</span><span class="cal-home-shift-count-wrap"><span id="unfilled-shifts-count" class="badge grey-bg">0</span></span></li>
+                <li><span class="cal-legend-txt">Un-confirmed Shifts</span><span class="cal-home-shift-count-wrap"><span id="unconfirmed-shifts-count" class="badge warning">0</span></span></li>
+                <li><span class="cal-legend-txt">Rejected Shifts</span><span class="cal-home-shift-count-wrap"><span id="rejected-shifts-count" class="badge danger">0</span></span></li>
+                <li><span class="cal-legend-txt">Confirmed Shifts</span><span class="cal-home-shift-count-wrap"><span id="confirmed-shifts-count" class="badge success">0</span></span></li>
+                <li><span class="cal-legend-txt">Completed Shifts</span><span class="cal-home-shift-count-wrap"><span id="completed-shifts-count" class="badge primary">0</span></span></li>
             </ul>
         </div>
     </div>
@@ -95,6 +96,7 @@ function get_calendar_data_summary(new_date){
 			$('#unconfirmed-shifts-count').html(data['unconfirmed']);
 			$('#rejected-shifts-count').html(data['rejected']);
 			$('#confirmed-shifts-count').html(data['confirmed']);
+			$('#completed-shifts-count').html(data['completed']);
 		}
 	});	
 }

@@ -71,6 +71,7 @@ class Calendar extends MX_Controller {
 		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed');//status 1
 		$rejected = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected');//status -1
 		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed');//status 2
+		$completed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed');//status 3
 		
 		
 		//merge the records in one array
@@ -92,6 +93,9 @@ class Calendar extends MX_Controller {
 		foreach($confirmed as $cs){
 			$merged_array[$cs->job_date]['confirmed']['count'] = $cs->total_shifts;
 		}
+		foreach($completed as $cmps){
+			$merged_array[$cmps->job_date]['completed']['count'] = $cmps->total_shifts;	
+		}
 		
 		foreach($merged_array as $key => $val){
 			$out[] = array(
@@ -100,6 +104,7 @@ class Calendar extends MX_Controller {
 							'unconfirmed_shift' => isset($val['unconfirmed']['count']) ? $val['unconfirmed']['count'] : '',
 							'rejected_shift' => isset($val['rejected']['count']) ? $val['rejected']['count'] : '',
 							'confirmed_shift' => isset($val['confirmed']['count']) ? $val['confirmed']['count'] : '',
+							'completed_shift' => isset($val['completed']['count']) ? $val['completed']['count'] : '',
 							'url' => 'test',
 							'start' => strtotime($key).'000',
 							'end' => strtotime($key).'000'
@@ -112,6 +117,7 @@ class Calendar extends MX_Controller {
 				'unconfirmed_shift' => '-',
 				'rejected_shift' => '-',
 				'confirmed_shift' => '-',
+				'completed_shift' => '-',
 				'url' => 'test',
 				'start' => strtotime($new_date).'000',
 				'end' => strtotime($new_date).'000'

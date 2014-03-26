@@ -442,6 +442,12 @@ ol.example li.placeholder:before {
 }
 
 /* company calendar */
+.company-calendar-nav-wrap{
+	width: 100%;
+	text-align: center;
+	float: left;
+	margin-top: -36px;
+}
 .company-calendar-actions{
 	width:100%;
 	text-align:center;	
@@ -489,8 +495,10 @@ ol.example li.placeholder:before {
 .calendar-job-stat-legend > li{
 		
 }
-.calendar-job-stat-legend > li > span{
-	margin-left:15px;	
+.cal-home-shift-count-wrap{
+	min-width: 70px;
+	display: inline-block;
+	text-align:center
 }
 .company-calendar-cell{
 	height:150px;	
@@ -1597,4 +1605,24 @@ ol.example li.placeholder:before {
 }
 .add-left-margin{
 	margin-left:10px;	
+}
+/* select 2 ovewrite to match our system styles */
+.select2-container{
+	margin-top:-8px;
+	padding:0;	
+}
+.select2-container .select2-choice{
+	height:33px;
+	line-height:32px;
+	border:none;
+	background:none;	
+}
+.select2-container .select2-choice .select2-arrow{
+	width:33px;	
+	border:none;
+	border-left: 1px solid #ccc;
+	border-radius: 0;
+}
+.select2-container .select2-choice .select2-arrow b{
+	background:url(../img/core/select-arrow.jpg) no-repeat;
 }

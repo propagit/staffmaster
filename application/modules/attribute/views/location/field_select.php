@@ -10,8 +10,9 @@
 	</optgroup>
 	<? } ?>
 </select>
+<?php if(0){ ?>
 <span class="input-group-addon select-addon" onclick="help.open_select('.select-<?=$field_name;?>');"><i class="fa fa-unsorted"></i></span>
-
+<?php } ?>
 <div class="wp_field_select_areas"></div>
 <script>
 $(function(){
@@ -34,4 +35,7 @@ function load_areas()
 		}
 	});
 }
+$(function(){
+	 $('select').select2();
+});
 </script>
