@@ -24,7 +24,7 @@
         	<form id="company-calendar-form">
             <div class="company-calendar-actions">
                 <div class="btn-group btn-nav company-calendar-filter">
-                    <button type="button" class="btn btn-core menu-label cc-filter-btn">Filter By Client</button>
+                    <button type="button" class="btn btn-core menu-label cc-filter-btn">Filter By Client <span id="current-client-filter"></span></button>
                     <button type="button" class="btn btn-core dropdown-toggle cc-filter-btn" data-toggle="dropdown">
                         <span class="caret"></span>
                     </button>
@@ -37,7 +37,7 @@
                 </div><!--end filter by client-->
                 
                 <div class="btn-group btn-nav company-calendar-filter">
-                    <button type="button" class="btn btn-core menu-label cc-filter-btn">Filter By State</button>
+                    <button type="button" class="btn btn-core menu-label cc-filter-btn">Filter By State <span id="current-state"></span></button>
                     <button type="button" class="btn btn-core dropdown-toggle cc-filter-btn" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
@@ -71,7 +71,7 @@ $(function(){
 		$(this).addClass('active-filter');
 		filter_client_user_id = $(this).attr('data-user-id');
 		set_filters($('#header-company-calendar-month').html());
-		
+		$('#current-client-filter').html(' - '+$(this).html());
 	});
 	
 	//state filter
@@ -80,7 +80,7 @@ $(function(){
 		$(this).addClass('active-filter');
 		filter_state_code = $(this).attr('data-state-code');
 		set_filters($('#header-company-calendar-month').html());
-		
+		$('#current-state').html(' - '+$(this).html());
 	});
 });
 

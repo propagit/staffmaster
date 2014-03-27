@@ -517,7 +517,7 @@ ol.example li.placeholder:before {
 /* dashboard - activity log*/
 
 #wrapper-outer{
-	border-radius:8px;
+	border-radius:0px 8px 8px 8px;
 	border:1px solid #cccccc;
 	background:#fff;
 	padding:15px;
@@ -556,6 +556,10 @@ ol.example li.placeholder:before {
 }
 .active-list{
 	background-color:#d4f1da;
+}
+.activity-log-nav{
+	position:relative;
+	margin-bottom:-1px;	
 }
 
 
