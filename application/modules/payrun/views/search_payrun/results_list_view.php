@@ -1,17 +1,19 @@
 <hr />
 <h2>Search Results</h2>
-<p>Your search returned <b><?=count($payruns);?></b> results</p>
-
+<p>Your search returned <b><?=count($total_payruns);?></b> results</p>
+<ul class="pagination pull">
+<?=modules::run('common/create_pagination',count($total_payruns),PAYRUN_PER_PAGE,$current_page)?>
+</ul>
 <? if (count($payruns) > 0) { ?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
-		<th class="center" width="80">Processed</th>
+		<th class="center" width="120">Processed <i class="fa fa-sort sort-result" sort-by="created_on"></i></th>
 		<th>Type</th>
 		<th class="center" width="100">Staff</th>
 		<th class="center" width="100">Time Sheets</th>
-		<th class="center" width="120">Amount</th>
+		<th class="center" width="120">Amount <i class="fa fa-sort sort-result" sort-by="amount"></i></th>
 		<th class="center" width="80">Export</th>
 		<!-- <th class="center" width="40"></th> -->
 	</tr>
@@ -37,3 +39,24 @@
 </tbody>
 </table>
 <? } ?>
+
+<script>
+$(function(){
+	$('.sort-result').on('click',function(){
+		var sort_order = $('#sort-order').val();
+		$('#sort-order').val(sort_order == 'asc' ? 'desc' : 'asc');
+		$('#sort-by').val($(this).attr('sort-by'));
+		reset_page();
+		search_payruns();
+	});	
+	
+	//go to page
+	$('.pagination li').on('click',function(e){
+		e.preventDefault();
+		scroll_to_form = false;
+		var clicked_page = $(this).attr('data-page-no');
+		$('#current_page').val(clicked_page);
+		search_payruns();
+	});
+});//ready
+</script>

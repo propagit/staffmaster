@@ -140,9 +140,11 @@
 
 
 <script>
+
 var sort_data = {
 	'sort_by':'name',
-	'sort_order':'asc'
+	'sort_order':'asc',
+	'current_page':1
 };
 
 var params = {

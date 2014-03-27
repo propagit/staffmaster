@@ -30,7 +30,8 @@ class Payrun_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	function search_payruns($params) {
+	function search_payruns($params,$total = false) {
+		$records_per_page = PAYRUN_PER_PAGE;
 		if (isset($params['type']) && $params['type'] != 0) {
 			$this->db->where('type', $params['type']);
 		}
@@ -41,6 +42,16 @@ class Payrun_model extends CI_Model {
 		if (isset($params['date_to']) && $params['date_to'] != '') {
 			$date_to = date('Y-m-d', strtotime($params['date_to']));
 			$this->db->where('created_on <=', $date_to);
+		}
+		//sort
+		if(isset($params['sort_by']) && $params['sort_by'] != ''){
+			$this->db->order_by($params['sort_by'],$params['sort_order']);	
+		}
+		if(!$total){
+			if(isset($params['current_page']) && $params['current_page'] != ''){
+				$offset = ($params['current_page']-1)*$records_per_page;
+				$this->db->limit($records_per_page,$offset);
+			}
 		}
 		$query = $this->db->get('payruns');
 		return $query->result_array();

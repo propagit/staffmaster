@@ -383,5 +383,22 @@ class Common extends MX_Controller {
 		}
 	}
 	
+	/**
+	*    @name: get_states
+	*    @desc: Queries database for all avaliable states.
+	*    @access public
+	*    @param: (null)
+	*    @return: Returns all sates
+	*/
+	function format_money($amount,$subscript_cents = true)
+	{
+		$rounded_figure = round($amount,2);
+		$money_format = number_format((float)$rounded_figure, 2, '.', '');
+		$arr = explode('.',$money_format);
+		$data['amount'] = $arr;
+		$data['subscript_cents'] = $subscript_cents;
+		$this->load->view('money_format',isset($data) ? $data : NULL);
+	}
+	
 
 }

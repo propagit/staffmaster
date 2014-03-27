@@ -26,8 +26,9 @@ class Venue_model extends CI_Model {
 	*	
 	*/
 
-	function get_venues($params = '')
+	function get_venues($params = '',$total = false)
 	{
+		$records_per_page = VENUES_PER_PAGE;
 		$sql = "select attribute_venues.*,
 				attribute_locations.location_id as location_id,
 				attribute_locations.parent_id as location_parent_id, 
@@ -39,6 +40,13 @@ class Venue_model extends CI_Model {
 			$sql .= " order by $sort_param->sort_by $sort_param->sort_order";
 		}else{
 			$sql .= " order by name asc";
+		}
+		
+		if(!$total){
+			$page = json_decode($params);
+			if(isset($page->current_page) && $page->current_page != ''){
+				$sql .= " LIMIT ".(($page->current_page-1)*$records_per_page)." ,".$records_per_page;
+			}
 		}
 		
 		$query = $this->db->query($sql);

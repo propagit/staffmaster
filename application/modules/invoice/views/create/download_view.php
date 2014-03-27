@@ -66,10 +66,10 @@
                                 	<tr><td class="break-15" colspan="2">&nbsp;</td></tr>
                                     <tr>
                                     	<td class="charge-box-line charge-first-width"><h1 class="invoice-title">Total Due</h1></td>	
-                                    	<td class="charge-box-line" align="right"><h1 class="invoice-title">$<?=money_format('%i', $invoice['total_amount']);?></h1></td>
+                                    	<td class="charge-box-line" align="right"><h1 class="invoice-title"><?=modules::run('common/format_money',$invoice['total_amount']);?></h1></td>
                                     </tr>
                                     <tr><td class="padding-top-15"><h2 class="due-date">Due Date</h2></td>	<td class="padding-top-15" align="right"><h2 class="due-date"><?=date('dS M Y', strtotime($invoice['due_date']));?></h2></td></tr>
-                                    <tr><td class="padding-gst">GST</td><td align="right" class="padding-gst">$<?=money_format('%i', $invoice['gst']);?></td></tr>
+                                    <tr><td class="padding-gst">GST</td><td align="right" class="padding-gst"><?=modules::run('common/format_money',$invoice['gst']);?></td></tr>
                                 </table>
                             </td>
                         </tr>                    
@@ -102,15 +102,15 @@
                 </td>
                 <td align="left">
                     <? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-                    $<?=money_format('%i', $item['amount']/11);?>
+                    <?=modules::run('common/format_money',($item['amount']/11));?>
                     <? } ?>
                 </td>
                 <td align="left">
                     <? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-                    $<?=money_format('%i', $item['amount']/11*10);?>
+                    <?=modules::run('common/format_money',($item['amount']/11*10));?>
                     <? } ?>
                 </td>
-                <td align="left">$<?=money_format('%i', $item['amount']);?></td>
+                <td align="left"><?=modules::run('common/format_money',$item['amount']);?></td>
             </tr>            
             <? 
 				$item_line++;
@@ -125,17 +125,17 @@
                 </td>
                 <td align="left">
                     <? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-                    $<?=money_format('%i', $item['amount']/11);?>
+                    <?=modules::run('common/format_money',($item['amount']/11));?>
                     <? } ?>
                 </td>
                 <td align="left">
                     <? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-                    $<?=money_format('%i', $item['amount']/11*10);?>
+                    <?=modules::run('common/format_money',($item['amount']/11*10));?>
                     <? } ?>
                 </td>
                 <td align="left">
                     <? if($item['amount'] != 0) { ?>
-                    $<?=money_format('%i', $item['amount']);?>
+                    <?=modules::run('common/format_money',$item['amount']);?>
                     <? } ?>
                 </td>
             </tr> 
@@ -254,7 +254,7 @@
                 <td width="9%"><?=modules::run('common/break_time', $timesheet['break_time']);?></td>
                 <td width="9%"><?=$timesheet['total_minutes']/60;?></td>
                 <td width="9%"><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
-                <td width="9%">$<?=$timesheet['total_amount_client'];?></td>
+                <td width="9%"><?=modules::run('common/format_money',$timesheet['total_amount_client']);?></td>
             </tr>
 			<? } ?>
 			<? } } ?>                       

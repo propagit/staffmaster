@@ -282,6 +282,8 @@ class Ajax extends MX_Controller {
 	function search_payruns() {
 		$params = $this->input->post();
 		$data['payruns'] = $this->payrun_model->search_payruns($params);
+		$data['total_payruns'] = $this->payrun_model->search_payruns($params,true);
+		$data['current_page'] = $this->input->post('current_page',true);
 		$this->load->view('search_payrun/results_list_view', isset($data) ? $data : NULL);
 	}
 	

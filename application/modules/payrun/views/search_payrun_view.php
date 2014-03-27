@@ -39,6 +39,9 @@
 		</div>
 	</div>
 </div>	
+<input type="hidden" name="sort_by" id="sort-by" value="created_on" />
+<input type="hidden" name="sort_order" id="sort-order" value="asc" />
+<input type="hidden" name="current_page"  id="current_page" value="1"  />
 </form>
 
 <div id="payrun-search-results">
@@ -87,5 +90,9 @@ function search_payruns() {
 			loaded($('#payrun-search-results'), html);
 		}
 	})
+}
+function reset_page()
+{
+	$('#current_page').val(1);
 }
 </script>

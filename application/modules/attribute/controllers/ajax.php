@@ -199,6 +199,9 @@ class Ajax extends MX_Controller {
 	{
 		$params = $this->input->post('params',true);
 		$data['venues'] = $this->venue_model->get_venues($params);
+		$data['total_venues'] = $this->venue_model->get_venues($params,true);
+		$page = json_decode($params);
+		$data['current_page'] = $page->current_page;
 		$this->load->view('venues/ajax_list_venues', isset($data) ? $data : NULL);
 	}
 	/**

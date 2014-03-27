@@ -2,7 +2,7 @@
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_clients);?></b> results</p>
 <ul class="pagination pull">
-<?=modules::run('common/create_pagination',count($total_clients),20,$current_page)?>
+<?=modules::run('common/create_pagination',count($total_clients),CLIENTS_PER_PAGE,$current_page)?>
 </ul>
 <?php
 	$array = array(

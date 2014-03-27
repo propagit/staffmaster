@@ -81,7 +81,7 @@ class Client_model extends CI_Model {
 
 	function search_clients($params = array(),$total=false)
 	{
-		$records_per_page = 20;
+		$records_per_page = CLIENTS_PER_PAGE;
 		$sql = "SELECT c.*, u.*
 				FROM user_clients c
 				LEFT JOIN users u ON c.user_id = u.user_id WHERE u.status > " . CLIENT_DELETED;

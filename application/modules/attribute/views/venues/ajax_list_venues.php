@@ -1,3 +1,9 @@
+<hr />
+<h2>Search Results</h2>
+<p>Your search returned <b><?=count($total_venues);?></b> results</p>
+<ul class="pagination pull">
+<?=modules::run('common/create_pagination',count($total_venues),VENUES_PER_PAGE,$current_page)?>
+</ul>
  <table class="table table-bordered table-hover table-middle table-expanded">
     <thead>
     <tr class="heading">
@@ -58,6 +64,16 @@ $(function(){
 				 help.load_content(params);
 			 }
 		});
+	});
+	
+	//go to page
+	$('.pagination li').on('click',function(e){
+		e.preventDefault();
+		scroll_to_form = false;
+		var clicked_page = $(this).attr('data-page-no');
+		sort_data.current_page = clicked_page;
+		params.data = JSON.stringify(sort_data);	
+		help.load_content(params);
 	});
 });
 </script>
