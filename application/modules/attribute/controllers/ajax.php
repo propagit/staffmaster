@@ -222,12 +222,15 @@ class Ajax extends MX_Controller {
 		}else{
 			$location_id = $data['parent_location_id'];	
 		}
+		//get location info to know state
+		$location = modules::run('attribute/location/get_location',$location_id);
 		$this->venue_model->insert_venue(array(
 				'location_id' => $location_id,
 				'name' => $data['name'], 
 				'address' => $data['address'],
 				'suburb' => $data['suburb'],
-				'postcode' => $data['postcode']
+				'postcode' => $data['postcode'],
+				'state' => $location['state']
 			));
 		echo 'success';
 	}
@@ -252,12 +255,15 @@ class Ajax extends MX_Controller {
 		}else{
 			$location_id = $data['parent_location_id_editing'];	
 		}
+		//get location info to know state
+		$location = modules::run('attribute/location/get_location',$location_id);
 		$this->venue_model->update_venue($data['venue_id'], array(
 				'location_id' => $location_id,
 				'name' => $data['name'], 
 				'address' => $data['address'],
 				'suburb' => $data['suburb'],
-				'postcode' => $data['postcode']
+				'postcode' => $data['postcode'],
+				'state' => $location['state']
 			)); 
 		echo 'success';
 	}

@@ -335,7 +335,13 @@ class Common extends MX_Controller {
 		
 	}
 	
-	
+	/**
+	*    @name: create_pagination
+	*    @desc: Generates Pagination for search results
+	*    @access public
+	*    @param: ([int] total records, [int] records per page, [int] current page number) 
+	*    @return: Loads page numbers for search results
+	*/
 	
 	function create_pagination($total_records,$records_per_page = 6,$current_page = 1)
 	{
@@ -344,7 +350,13 @@ class Common extends MX_Controller {
 		$data['current_page'] = $current_page;
 		$this->load->view('pagination',isset($data) ? $data : NULL);
 	}
-	
+	/**
+	*    @name: generate_password
+	*    @desc: Generates random string. Mostly used for password regeneration. The default length of the string is 6
+	*    @access public
+	*    @param: ([int] length of the string)
+	*    @return: Returns random string.
+	*/
 	function generate_password($password_length = 6)
 	{
 		$alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
@@ -356,5 +368,20 @@ class Common extends MX_Controller {
 		}
 		return implode($pass); 
 	}
+	/**
+	*    @name: get_states
+	*    @desc: Queries database for all avaliable states.
+	*    @access public
+	*    @param: (null)
+	*    @return: Returns all sates
+	*/
+	function get_states()
+	{
+		$states = $this->common_model->get_states();
+		if($states){
+			return $states;	
+		}
+	}
+	
 
 }

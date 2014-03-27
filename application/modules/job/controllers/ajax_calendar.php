@@ -64,8 +64,12 @@ class Ajax_calendar extends MX_Controller {
 	function set_company_calendar_filter()
 	{
 		$client_user_id = $this->input->post('client_user_id',true);
+		$state_code =  $this->input->post('state_code',true);
 		if($client_user_id){
 			$this->session->set_userdata('company_calendar_filter_client_id',$client_user_id);
+		}
+		if($state_code){
+			$this->session->set_userdata('company_calendar_filter_state_code',$state_code);	
 		}
 		echo 'filter set';
 	}
