@@ -288,16 +288,34 @@ class Job_shift_model extends CI_Model {
 	
 	function get_shift_by_year_and_month($month,$year,$status,$only_total = false)
 	{
+		$where_missing = true;
 		$client_user_id = 0;
 		if($this->session->userdata('company_calendar_filter_client_id')){
 			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
 		}
+		$state_code = 0;
+		if($this->session->userdata('company_calendar_filter_state_code')){
+			$state_code = $this->session->userdata('company_calendar_filter_state_code');
+		}
 		$sql = "SELECT s.job_date,count(s.shift_id) AS total_shifts FROM job_shifts s";
 		if($client_user_id && $client_user_id != 'all'){
-			$sql .= " JOIN jobs j ON s.job_id = j.job_id AND j.client_id = ".$client_user_id;	
-		}else{
-			$sql .= " WHERE s.shift_id != ''";	
+			$sql .= " INNER JOIN jobs j 
+					  ON s.job_id = j.job_id 
+					  AND j.client_id = ".$client_user_id;	
+			$where_missing = false;
+		} 
+		
+		if($state_code && $state_code != 'all'){
+			$sql .= " INNER JOIN attribute_venues av
+					  ON s.venue_id = av.venue_id
+					  AND av.state = '".$state_code."'";
+			$where_missing = false;	
 		}
+		
+		if($where_missing){
+			$sql .= " WHERE s.shift_id != ''";	
+		} 
+		
 				
 		$sql .= " AND month(s.job_date) = '".$month."' AND year(s.job_date) = '".$year."'";
 		switch($status){
@@ -320,6 +338,7 @@ class Job_shift_model extends CI_Model {
 				$sql .= " AND s.status = " . SHIFT_FINISHED;
 			break;	
 		}
+		
 		if($only_total){
 			$shift = $this->db->query($sql)->row();
 			return $shift->total_shifts;
@@ -332,17 +351,34 @@ class Job_shift_model extends CI_Model {
 	
 	function get_job_campaing_count_by_year_and_month($month,$year,$only_total = false)
 	{
+		$where_missing = true;
 		$client_user_id = 0;
 		if($this->session->userdata('company_calendar_filter_client_id')){
 			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
 		}
+		$state_code = 0;
+		if($this->session->userdata('company_calendar_filter_state_code')){
+			$state_code = $this->session->userdata('company_calendar_filter_state_code');
+		}
 		$sql = "SELECT s.job_date,count(DISTINCT s.job_id) AS total_jobs FROM job_shifts s";
 		if($client_user_id && $client_user_id != 'all'){
-			$sql .= " join jobs j ON s.job_id = j.job_id AND j.client_id = ".$client_user_id;	
-		}else{
-			$sql .= " WHERE s.shift_id != ''";	
+			$sql .= " INNER JOIN jobs j  
+					  ON s.job_id = j.job_id 
+					  AND j.client_id = ".$client_user_id;	
+			$where_missing = false;
 		}
-				
+		
+		if($state_code && $state_code != 'all'){
+			$sql .= " INNER JOIN attribute_venues av
+					  ON s.venue_id = av.venue_id
+					  AND av.state = '".$state_code."'";
+			$where_missing = false;	
+		}
+		
+		if($where_missing){
+			$sql .= " WHERE s.shift_id != ''";	
+		} 
+			
 		$sql .= " AND s.status > " . SHIFT_DELETED . " AND month(s.job_date) = '".$month."' AND year(s.job_date) = '".$year."'";
 		
 		if($only_total){

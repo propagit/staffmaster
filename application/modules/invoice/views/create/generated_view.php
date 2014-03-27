@@ -262,9 +262,6 @@
 </div>
 <? } ?>
 <br /><br /><br />
-<form id="email-invoice-form">
-	<input type="hidden" name="invoice_ids[]" value="<?=$invoice['invoice_id'];?>" />
-</form>
 <script>
 $(function(){
 	$('#btn-generate-invoice').remove();
@@ -280,10 +277,12 @@ $(function(){
 	//email invoice
 	$('#btn-email-invoice').on('click',function(){
 		preloading($('body'));
+		var invoice_ids = []
+		invoice_ids[0] = <?=$invoice['invoice_id']?>;
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>invoice/ajax/email_invoice",
-			data: $('#email-invoice-form').serialize(),
+			data: {invoice_ids:invoice_ids},
 			success: function(html) {
 				$('#wrapper_loading').remove();
 			}

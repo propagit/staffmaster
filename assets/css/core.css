@@ -379,7 +379,7 @@ ol.example li.placeholder:before {
 }
 .dropdown-menu{ 
 	margin-top:0; 
-	min-width:200px;
+	min-width:215px;
 }
 .dropdown-menu li a{ 
 	text-align:left;

@@ -43,7 +43,10 @@
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu filter-dropdown" role="menu">
-                    	<li></li>
+                   		<li class="state-list-li" data-state-code="all">All</li>
+                    	<?php if($states) { foreach($states as $s){?>
+                        <li class="state-list-li <?=($selected_state_code == $s['code']) ? 'active-filter' : '';?>" data-state-code="<?=$s['code'];?>"><?=$s['name']?></li>
+                        <?php }}?>
                    </ul>
                 </div><!--end filter by state-->
             </div>
@@ -57,15 +60,25 @@
 
 <script>
 var filter_client_user_id = '<?=$selected_client_user_id;?>';
-var filter_state_id = 0;
+var filter_state_code = '<?=$selected_state_code;?>';
 
 $(function(){
 	get_month_data('<?=date('F Y');?>');
 	
+	//client filter
 	$('.client-list-li').on('click',function(){
 		$('.client-list-li').removeClass('active-filter');
 		$(this).addClass('active-filter');
 		filter_client_user_id = $(this).attr('data-user-id');
+		set_filters($('#header-company-calendar-month').html());
+		
+	});
+	
+	//state filter
+	$('.state-list-li').on('click',function(){
+		$('.state-list-li').removeClass('active-filter');
+		$(this).addClass('active-filter');
+		filter_state_code = $(this).attr('data-state-code');
 		set_filters($('#header-company-calendar-month').html());
 		
 	});
@@ -106,7 +119,7 @@ function set_filters(new_date)
 	$.ajax({
 		type: 'POST',
 		url: '<?=base_url();?>job/ajax_calendar/set_company_calendar_filter',
-		data:{client_user_id:filter_client_user_id},
+		data:{client_user_id:filter_client_user_id,state_code:filter_state_code},
 		success: function(html){
 			get_month_data(new_date);
 		}

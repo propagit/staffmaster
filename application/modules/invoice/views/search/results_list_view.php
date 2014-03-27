@@ -61,7 +61,7 @@
 			<?=modules::run('invoice/menu_dropdown_status', $invoice['invoice_id']);?>
 		</td>
 		<td class="center"><a href="<?=base_url();?>invoice/view/<?=$invoice['invoice_id'];?>" target="_blank"><i class="fa fa-eye"></i></a></td>
-		<td class="center"><a><i class="fa fa-envelope-o"></i></a></td>
+		<td class="center"><a><i class="fa fa-envelope-o email-invoice" data-invoice-id="<?=$invoice['invoice_id'];?>"></i></a></td>
 	</tr>
 <? } ?>
 </tbody>
@@ -85,8 +85,26 @@ $(function(){
 				show: true
 			});
 		}		
-	})
-})
+	});
+	
+	//email invoice
+	$('.email-invoice').on('click',function(){
+		preloading($('.table-responsive'));
+		var invoice_ids = []
+		invoice_ids[0] = $(this).attr('data-invoice-id');
+		if(invoice_ids[0]){
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>invoice/ajax/email_invoice",
+				data: {invoice_ids:invoice_ids},
+				success: function(html) {
+					$('#wrapper_loading').remove();
+				}
+			});
+		}
+
+	});
+})//ready
 function mark_as_paid(invoice_id) {
 	$.ajax({
 		type: "POST",

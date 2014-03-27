@@ -29,9 +29,7 @@ $menu = array(
 		array('path' => 'payrun', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Run'),
 		array('path' => 'expense', 'icon' => 'fa-dollar', 'title' => 'Staff Expenses'),
 		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
-		array('path' => '#', 'icon' => 'fa-plus', 'title' => 'Create Invoices'),
-		array('path' => '#', 'icon' => 'fa-search', 'title' => 'Search Accounts'),
-		array('path' => '#', 'icon' => 'fa-gears', 'title' => 'Accounts Settings'),
+		array('path' => 'invoice', 'icon' => 'fa-plus', 'title' => 'Create Invoices'),
 		array('path' => '#', 'icon' => 'fa-credit-card', 'title' => 'Pay Bills'),
 		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Buy SMS Credits')
 	)),
@@ -51,8 +49,7 @@ $menu = array(
 		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
 		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
-		array('path' => '#', 'icon' => 'fa-tint', 'title' => 'System Styles'),
-		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'SMS Message'),		
+		array('path' => '#', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
 		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs')
 	))
 );

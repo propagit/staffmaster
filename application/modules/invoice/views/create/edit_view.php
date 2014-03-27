@@ -147,7 +147,7 @@
                 <td width="10%"></td>
                 <td><b><?=(isset($company_profile['company_name'])) ? $company_profile['company_name'] : '' ?></b></td>
             </tr>
-            <b>
+
             <tr valign="top">
                 <td>
                     <table>
