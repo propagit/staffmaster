@@ -1,3 +1,7 @@
+function init_select()
+{
+	$('select').select2();
+}
 /* Preloading data functions */
 function preloading(obj)
 {

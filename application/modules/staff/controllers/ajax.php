@@ -776,23 +776,7 @@ class Ajax extends MX_Controller {
 		echo 'success';
 	}
 	
-	function upload_staff_csv()
-	{
-		$config['upload_path'] = './uploads/import/';
-		$config['allowed_types'] = 'csv|xls';
-		$config['max_size'] = '2048'; // 2 MB
-		$this->load->library('upload', $config);
 		
-		if (!$this->upload->do_upload())
-		{
-			echo $this->upload->display_errors('','');
-		}
-		else
-		{
-			
-		}
-	}
-	
 	function load_export_modal($user_ids)
 	{
 		$data['user_ids'] = $user_ids;
@@ -846,14 +830,24 @@ class Ajax extends MX_Controller {
 			$staff = $this->staff_model->get_export_staff($user_id);
 			$row++;
 			foreach($fields as $field) {
+				$is_string = false;
 				$value = $field['value']; # Convert $field, $timesheet
+				if (strpos($value,'phone') !== false) 
+				{
+					$is_string = true;
+				}
+				$employed_as = 'tfn';
+				if ($staff['f_tfn'] == STAFF_ABN)
+				{
+					$employed_as = 'abn';
+				}
 				$value = str_replace('{title}', $staff['title'], $value);
 				$value = str_replace('{rating}', $staff['rating'], $value);
 				$value = str_replace('{first_name}', $staff['first_name'], $value);
 				$value = str_replace('{last_name}', $staff['last_name'], $value);
 				$value = str_replace('{gender}', $staff['gender'], $value);
 				$value = str_replace('{dob}', date('d/m/Y', strtotime($staff['dob'])), $value);
-				$value = str_replace('{address}', $staff['email_address'], $value);
+				$value = str_replace('{address}', $staff['address'], $value);
 				$value = str_replace('{suburb}', $staff['suburb'], $value);
 				$value = str_replace('{city}', $staff['city'], $value);
 				$value = str_replace('{postcode}', $staff['postcode'], $value);
@@ -867,7 +861,7 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{account_name}', $staff['f_acc_name'], $value);
 				$value = str_replace('{bsb}', $staff['f_bsb'], $value);
 				$value = str_replace('{account_number}', $staff['f_acc_number'], $value);
-				$value = str_replace('{employed_as}', $staff['f_employed'], $value);
+				$value = str_replace('{employed_as}', $employed_as, $value);
 				$value = str_replace('{tfn_number}', $staff['f_tfn'], $value);
 				$value = str_replace('{abn_number}', $staff['f_abn'], $value);
 				$value = str_replace('{super_fund}', $staff['s_name'], $value);
@@ -883,8 +877,16 @@ class Ajax extends MX_Controller {
 				{
 					$letter = chr(97 + ($i-26)) . chr(97 + ($i-26)) . $row;
 				}
+				if ($is_string) 
+				{
+					$objPHPExcel->getActiveSheet()->getStyle($letter)->getNumberFormat()->setFormatCode('@');
+					$objPHPExcel->getActiveSheet()->getCell($letter)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+				}
+				else
+				{
+					$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+				}
 				
-				$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
 				$i++;
 			}
 			$i=0;

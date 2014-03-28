@@ -169,7 +169,8 @@ class Common extends MX_Controller {
 		$array = array(
 			array('value' => 'Mr', 'label' => 'Mr'),
 			array('value' => 'Miss', 'label' => 'Miss'),
-			array('value' => 'Mrs', 'label' => 'Mrs')
+			array('value' => 'Mrs', 'label' => 'Mrs'),
+			array('value' => 'Ms', 'label' => 'Ms')
 		);
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}

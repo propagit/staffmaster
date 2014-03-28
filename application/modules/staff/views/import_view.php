@@ -16,8 +16,9 @@
 				<li class="mobile-tab active"><a>Import Multiple Staff</a></li>
 			</ul>
 			<br />
-			<h2>Step 1: Select File</h2>
-			<form class="form-inline" role="form" id="upload-staff-csv-form" enctype="multipart/form-data" action="<?=base_url();?>staff/ajax/upload_staff_csv" method="POST">
+			<h2>Select File</h2>
+			<br />
+			<form class="form-inline" role="form" id="upload-staff-csv-form" enctype="multipart/form-data" action="<?=base_url();?>staff/ajax_import/upload_csv" method="POST">
 			<div class="pull-left">
 				<div class="fileupload fileupload-staff" data-provides="fileupload" >        
 					<span class="btn btn-file">
@@ -26,15 +27,19 @@
 						<span class="fileupload-exists">Change</span>         
 						<input type="file" name="userfile"/>
 					</span>
-					<span class="fileupload-preview"></span>
+					<span class="fileupload-preview"></span> &nbsp; 
 					<a href="#" class="fileupload-exists" data-dismiss="fileupload" style="float: none"><i class="fa fa-trash-o"></i> &nbsp; </a>
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button type="submit" class="btn btn-core btn-block" id="btn-upload-staff-csv"><i class="fa fa-upload"></i> Upload</button>
+				<button type="button" class="btn btn-core btn-block" id="btn-upload-staff-csv"><i class="fa fa-upload"></i> Upload</button>
 			</div>
-				<span class="help-block" id="upload-result"></span>
+			<div class="clearfix"></div>
+			<div class="alert alert-danger hide" id="upload-result"></div>
 			</form>
+			
+			<hr />
+			<div id="wp-configure-import" class="tab-export"></div>
         </div>
     </div>
 </div>
@@ -42,22 +47,31 @@
 
 <script>
 $(function(){
-	$(document).on('click','#btn-upload-staff-csv',function(){
-		if(help.validate_form('upload-staff-csv-form')){
-			$('#upload-staff-csv-form').submit();	
-		}
-	});
-
-	$(document).on('submit','#upload-staff-csv-form',function(){
-		$(this).ajaxSubmit(function(html){
-			$('#upload-result').html(html);
-			setTimeout(function(){
-				//$('#msg-conversation-started-successfully').addClass('hide');
-			}, 2000);
-			//help.reload_conversations(container_id,action_url);	
-			//$('#wrapper_loading').remove();
-		});	
+	$('#btn-upload-staff-csv').click(function(){
+		$('#upload-staff-csv-form').ajaxSubmit(function(json){
+			json = $.parseJSON(json);
+			if (!json.ok) {
+				$('#upload-result').html(json.msg);
+				$('#upload-result').removeClass('hide');
+			}
+			else {
+				$('#upload-result').addClass('hide');
+				configure_import(json.upload_id);
+			}
+		});
 		return false;
 	});
 })
+function configure_import(upload_id)
+{
+	preloading($('#wp-configure-import'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>staff/ajax_import/configure_import",
+		data: {upload_id: upload_id},
+		success: function(html) {
+			loaded($('#wp-configure-import'), html);
+		}
+	})
+}
 </script>
