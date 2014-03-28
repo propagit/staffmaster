@@ -1634,3 +1634,7 @@ ol.example li.placeholder:before {
 	bottom:0;	
 	font-size:80%;
 }
+.action-nav-with-pagination{
+	width: auto;
+	margin-top: 47px;	
+}

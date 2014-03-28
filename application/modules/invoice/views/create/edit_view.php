@@ -41,25 +41,29 @@
                 <td width="5%"></td>
                 <td width="45%">
                 	<b>Bill Enquiries</b><br />
-                	<a href="#" class="inv_client_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
-						<?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?>
+                	<a href="#" class="inv_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
+						<?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?>
                     </a>
 					<br />
                 	<table>
                         <tr>
                             <td>Tel:</td><td width="20"></td> <td> 
-                            	<a href="#" class="inv_client_phone" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Phone"><?=($invoice['client_phone'] != '') ? $invoice['client_phone'] : $client['phone'];?></a> 							
+                            	<a href="#" class="inv_profile_phone" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Phone"><?=($invoice['profile_company_phone'] != '') ? $invoice['profile_company_phone'] : $company_profile['telephone'];?></a> 							
 							</td>
                         </tr>
                         <tr>
                             <td>Email:</td><td width="20"></td> <td>
-								<a href="#" class="inv_client_email_address" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Email Address">
-								<?=($invoice['client_email_address'] != '') ? $invoice['client_email_address'] : $client['email_address'];?></a> 															
+								<a href="#" class="inv_profile_email" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Email Address">
+								<?=($invoice['profile_company_email'] != '') ? $invoice['profile_company_email'] : $company_profile['email'];?></a> 															
                             </td>
                         </tr>
                         <tr>
                             <td>Invoice Number:</td><td width="20"></td> 
                             <td><a href="#" class="inv_number" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Number"><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></a></td>
+                        </tr>
+                        <tr>
+                            <td>PO Number:</td><td width="20"></td> 
+                            <td><a href="#" class="po_number invoice-grey" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="PO Number"><?=($invoice['po_number'] != '') ? $invoice['po_number'] : 'Unspecified';?></a></td>
                         </tr>
                     </table>
                 </td>
@@ -221,10 +225,21 @@ $(function(){
 	$('#btn-download-invoice').parent().addClass('disabled');
 	$('#btn-email-invoice').parent().addClass('disabled');
 	
-
+	
+	$('.inv_profile_phone').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_invoice_profile_phone',		
+	});
+	
+	$('.inv_profile_email').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_invoice_profile_email',		
+	});
 	
 	$('.inv_company_name').editable({
 		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_company_name',		
+	});
+	
+	$('.inv_client_company_name').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_company_name',		
 	});
 	
 	$('.inv_company_abn').editable({
@@ -249,8 +264,8 @@ $(function(){
 		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_number',		
 	});
 	
-	$('.inv_client_company_name').editable({
-		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_client_company_name',		
+	$('.po_number').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_client_invoice_po_number',	
 	});
 	
 	$('.inv_client_address').editable({

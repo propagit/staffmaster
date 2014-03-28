@@ -60,3 +60,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p{
 .bill-enquiries{
 	padding-left:25px;	
 }
+.invoice-grey{
+	color:#4d4d4f !important;	
+}

@@ -1,9 +1,11 @@
 <hr />
 <h2>Search Results</h2>
-<p>Your search returned <b><?=count($invoices);?></b> results</p>
-
+<p>Your search returned <b><?=count($total_invoices);?></b> results</p>
+<ul class="pagination pull">
+<?=modules::run('common/create_pagination',count($total_invoices),INVOICE_PER_PAGE,$current_page)?>
+</ul>
 <? if (count($invoices) > 0) { ?>
-<div id="nav_invoices">
+<div id="nav_invoices" class="action-nav-with-pagination">
 <?
 	# Action menu
 	$data = array(
@@ -26,7 +28,7 @@
 		<th class="center" width="120">Due <i class="fa fa-sort sort-result" sort-by="due_date"></i></th>
 		<th class="center">Inv # <i class="fa fa-sort sort-result" sort-by="invoice_number"></i></th>
 		<th class="center">PO # <i class="fa fa-sort sort-result" sort-by="po_number"></i></th>
-		<th>Client Name <i class="fa fa-sort sort-result" sort-by="company_name"></i></th>
+		<th>Client Name </th>
 		<th>Invoice Title <i class="fa fa-sort sort-result" sort-by="title"></i></th>
 		<th class="center">Amount <i class="fa fa-sort sort-result" sort-by="total_amount"></i></th>
 		<th>Issued By</th>
@@ -175,13 +177,12 @@ $(function(){
 	});	
 	
 	//go to page
-	/* $('.pagination li').on('click',function(e){
+	$('.pagination li').on('click',function(e){
 		e.preventDefault();
-		scroll_to_form = false;
 		var clicked_page = $(this).attr('data-page-no');
 		$('#current_page').val(clicked_page);
-		search_payruns();
-	}); */
+		search_invoices();
+	}); 
 });//ready
 
 

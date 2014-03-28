@@ -53,7 +53,6 @@ $(function(){
 	//go to page
 	$('.pagination li').on('click',function(e){
 		e.preventDefault();
-		scroll_to_form = false;
 		var clicked_page = $(this).attr('data-page-no');
 		$('#current_page').val(clicked_page);
 		search_payruns();

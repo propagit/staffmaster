@@ -110,9 +110,9 @@ define('LIVE_CK_TOOLS',"['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedLis
 define('CLIENTS_PER_PAGE',30);
 define('STAFF_PER_PAGE',30);
 define('DEFAULT_PER_PAGE',50);
-define('PAYRUN_PER_PAGE',5);
-define('VENUES_PER_PAGE',10);
-
+define('PAYRUN_PER_PAGE',50);
+define('VENUES_PER_PAGE',50);
+define('INVOICE_PER_PAGE',50);
 //email template id
 define('WELCOME_EMAIL_TEMPLATE_ID',1);
 define('ROSTER_UPDATE_EMAIL_TEMPLATE_ID',2);
