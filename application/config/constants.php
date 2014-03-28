@@ -112,5 +112,15 @@ define('STAFF_PER_PAGE',30);
 define('DEFAULT_PER_PAGE',50);
 define('PAYRUN_PER_PAGE',5);
 define('VENUES_PER_PAGE',10);
+
+//email template id
+define('WELCOME_EMAIL_TEMPLATE_ID',1);
+define('ROSTER_UPDATE_EMAIL_TEMPLATE_ID',2);
+define('APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID',3);
+define('SHIFT_REMINDER_EMAIL_TEMPLATE_ID',4);
+define('WORK_CONFIRMATION_EMAIL_TEMPLATE_ID',5);
+define('FORGOT_PASSWORD_EMAIL_TEMPLATE_ID',6);
+define('CLIENT_INVOICE_EMAIL_TEMPLATE_ID',7);
+define('CLIENT_QUOTE_EMAIL_TEMPLATE_ID',8);
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

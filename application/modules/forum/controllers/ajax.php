@@ -218,7 +218,7 @@ class Ajax extends MX_Controller {
 			  $path = $_FILES['userfile']['name'];
 			  $ext = pathinfo($path, PATHINFO_EXTENSION);
 			  $img_ext_chk = array('jpg','png','gif','jpeg');
-			  $doc_ext_chk = array('pdf','doc','docx');
+			  $doc_ext_chk = array('pdf','doc','docx','csv');
 			  
 			  $main_path = './uploads/conversation/';
 			  $this->load->library('upload');
@@ -243,7 +243,7 @@ class Ajax extends MX_Controller {
 				  $folder_name = $this->_create_folders('./uploads/conversation/docs',$salt);
 				  $file_path = $main_path.'docs/';
 				  $config['upload_path'] = $file_path.$folder_name;
-				  $config['allowed_types'] = 'pdf|doc|docx';
+				  $config['allowed_types'] = 'pdf|doc|docx|csv';
 				  $document_type = 'file';
 			  }
 	

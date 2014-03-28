@@ -1,3 +1,6 @@
+<script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/config.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="wp-page-invoice">
@@ -27,7 +30,7 @@
                      
             	</td>
                 <td width="5%"></td>
-                <td width="45%">
+                <td width="45%" class="bill-enquiries">
                 	<b>Bill Enquiries</b><br />
                 	<?=$company_profile['company_name'];?><br />
                 	<table>
@@ -48,7 +51,7 @@
             
             
             <tr>
-            	<td valign="middle">
+            	<td valign="top">
                 	<h2>Tax Invoice</h2>                    
                     Issue Date: <?=date('dS M Y', strtotime($invoice['issued_date']));?><br>
                     <h1><?=$invoice['title'];?></h1>
@@ -69,14 +72,18 @@
                             <td>
                             	<div id="charge-details">
                             		<table cellpadding="0" cellspacing="0" width="100%">
-										<tr>
-											<td><h3>Total Due</h3></td>	
-											<td align="right"><h3><?=modules::run('common/format_money',$invoice['total_amount']);?></h3></td>
+                                    	<tr><td colspan="2">&nbsp;</td></tr>
+                                        <tr><td colspan="2">&nbsp;</td></tr>
+										<tr class="dotted-border">
+											<td><h1 class="invoice-h1-margin-top">Total Due</h1></td>	
+											<td align="right"><h1 class="invoice-h1-margin-top"><?=modules::run('common/format_money',$invoice['total_amount']);?></h1></td>
 										</tr>
+                                        <tr><td colspan="2">&nbsp;</td></tr>
 										<tr>
-											<td><h4>Due Date</h4></td>	
-											<td align="right"><h4><?=date('dS M Y', strtotime($invoice['due_date']));?></h4></td>
+											<td><h2>Due Date</h2></td>	
+											<td align="right"><h2><?=date('dS M Y', strtotime($invoice['due_date']));?></h2></td>
 										</tr>
+                                        <tr><td colspan="2">&nbsp;</td></tr>
 										<tr>
 											<td class="padding-gst">GST</td>			
 											<td align="right" class="padding-gst"><?=modules::run('common/format_money',$invoice['gst']);?></td>
@@ -94,7 +101,7 @@
         <div id="list-items">
         	<table width="100%" cellpadding="10">
 				<tr>
-				    <td colspan="3"><h3>Expense Break Down</h3></td>
+				    <td colspan="3"><h2>Expense Break Down</h2></td>
 				</tr>
 				
 				<tr>
@@ -264,6 +271,13 @@
 </div>
 <? } ?>
 <br /><br /><br />
+<div id="ajax-email-invoice-modal"></div>
+<form id="invoice-email-form">
+<input type="hidden" name="user_staff_selected_user_id[]" value="<?=$client['user_id'];?>" />
+<input type="hidden" name="email_modal_header" value="Invoice Client" />
+<input type="hidden" name="email_template_id" value="<?=CLIENT_INVOICE_EMAIL_TEMPLATE_ID;?>" />
+<input type="hidden" name="selected_module_ids[]" value="<?=$invoice['invoice_id'];?>" />
+</form>
 <script>
 $(function(){
 	$('#btn-generate-invoice').remove();
@@ -276,23 +290,49 @@ $(function(){
 		window.open('<?=base_url();?>invoice/download/<?=$invoice['invoice_id'];?>');
 	})
 	
+	
 	//email invoice
+	$(document).on('click','.send-email-from-modal',function(){
+		email_invoice();
+	});
+	
 	$('#btn-email-invoice').on('click',function(){
-		preloading($('body'));
-		var invoice_ids = []
-		invoice_ids[0] = <?=$invoice['invoice_id']?>;
-		$.ajax({
-			type: "POST",
-			url: "<?=base_url();?>invoice/ajax/email_invoice",
-			data: {invoice_ids:invoice_ids},
-			success: function(html) {
-				$('#wrapper_loading').remove();
-			}
-		});
-
+		 get_email_model();
 	});
 	
 });//ready
 
+function get_email_model(){
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/get_send_email_modal",
+		  data: $('#invoice-email-form').serialize(),
+		  success: function(html) {
+			  $('#ajax-email-invoice-modal').html(html);
+			  $('#email-modal').modal('show');	
+		  }
+	  });
+		
+}
 
+function email_invoice(){
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/email_invoice",
+		data: $('#send-email-modal-form').serialize(),
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+			setTimeout(function(){
+				$('#email-modal').modal('hide');
+			}, 4000);
+		}
+	}); 
+}	
 </script>

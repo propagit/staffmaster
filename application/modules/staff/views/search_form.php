@@ -230,7 +230,7 @@ function reset_page()
 {
 	$('.basic-search-form .jRatingAverage').css({'width':0});
 	$('#rating').val(0);
-	$('#current_page').val(1);
+	reset_current_page();
 }
 
 function search_staffs() {
@@ -369,7 +369,10 @@ function send_email()
 			$('#msg-email-sent-successfully').removeClass('hide');
 			setTimeout(function(){
 				$('#msg-email-sent-successfully').addClass('hide');
-			}, 3000);		
+			}, 3000);	
+			setTimeout(function(){
+				$('#email-modal').modal('hide');
+			}, 4000);	
 		  }
 	  });	
 }

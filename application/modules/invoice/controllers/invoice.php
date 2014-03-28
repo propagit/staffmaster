@@ -337,18 +337,25 @@ class Invoice extends MX_Controller {
 	*	@name: email_invoice
 	*	@desc: function to email invoice to client
 	*	@access: public
-	*	@param: ([array] or [ing]) of invoice ids
+	*	@param: ([array]) email parameters such as body of email, user id, invoice id
 	*	
 	*/
-	function email_invoice($invoice_ids)
+	function email_invoice($params)
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
-		if($invoice_ids){
+		
+		//get post data from params
+		$selected_module_ids = $params['selected_module_ids'];
+		$email_body = $params['email_body'];
+		$selected_user_ids = $params['selected_user_ids'];
+		$email_template_id = $params['email_template_select'];
+		if($selected_module_ids){
+			$invoice_ids = json_decode($selected_module_ids);
 			foreach($invoice_ids as $invoice_id){
-				//get client invoice template id = 7
-				$template_info = $this->email_template_model->get_template(7);	
+				//get template info
+				$template_info = $this->email_template_model->get_template($email_template_id);	
 				$company = $this->setting_model->get_profile();
 				//get invoice details
 				$invoice = $this->invoice_model->get_invoice($invoice_id);
@@ -372,7 +379,7 @@ class Invoice extends MX_Controller {
 									'from' => $company['email_c_email'],
 									'from_text' => $company['email_c_name'],
 									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
-									'message' => modules::run('email/format_template_body',$template_info->template_content,$obj),
+									'message' => modules::run('email/format_template_body',$email_body,$obj),
 									'attachment' => realpath(__DIR__.'/../../../../uploads/pdf/invoice_'.$invoice_id.'.pdf')	
 								);
 				modules::run('email/send_email',$email_data);
