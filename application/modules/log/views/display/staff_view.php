@@ -16,6 +16,7 @@ switch($log['action']) {
 &nbsp;
 <?=$user['first_name'] . ' ' . $user['last_name'];?>
 &nbsp; 
+<? if ($log['total'] == 1) { ?>
 <?=$log['action'];?>d staff
 <a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>" target="_blank">
 <?=$staff['first_name'] . ' ' . $staff['last_name'];?></a>'s 
@@ -26,3 +27,10 @@ switch($log['action']) {
 <? if ($log['action'] == 'create' || $log['action'] == 'delete') {
 	echo 'account';
 } ?>
+
+<? } else { ?>
+imported
+<b><?=$log['total'];?></b> staff accounts
+<? } ?>
+
+

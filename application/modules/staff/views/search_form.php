@@ -26,7 +26,6 @@
 					</div>
 					<label for="rating" class="col-md-2 control-label">Rating</label>
 					<div class="col-md-4">
-                        <? //modules::run('common/field_rating', 'rating');?>
                         <?=modules::run('common/field_rating', 'rating', 0,'basic-search-form','wp-rating-0','no-user',false,false);?>
 					</div>
 				</div>
