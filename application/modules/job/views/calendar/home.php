@@ -1,10 +1,10 @@
 <div class="col-md-12">
 	<div class="box top-box">
-    	<div class="col-md-10 remove-left-padding">
+    	<div class="col-md-9 remove-left-padding">
         <h2>Company Calendar</h2>
         <p>As you create jobs they will plot to the company calendar below. All jobs in all job campaigns are displayed and colour coded based on "Un-filled, "Un-confirmed" or "Confirmed". Active jobs campaigns are show in charcoal. Click the numbers to quick jump to those jobs</p>
         </div>
-        <div class="col-md-2 remove-left-padding">
+        <div class="col-md-3 remove-left-padding">
         	<ul class="calendar-job-stat-legend">
             	<li><span class="cal-legend-txt">Active Job Campaigns</span><span class="cal-home-shift-count-wrap"><span id="job-campaigns-count" class="badge dark-grey-bg">0</span></span></li>
                 <li><span class="cal-legend-txt">Unfilled Shifts</span><span class="cal-home-shift-count-wrap"><span id="unfilled-shifts-count" class="badge grey-bg">0</span></span></li>
@@ -28,7 +28,7 @@
                     <button type="button" class="btn btn-core dropdown-toggle cc-filter-btn" data-toggle="dropdown">
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu filter-dropdown" role="menu">
+                    <ul id="ul-client-filter" class="dropdown-menu filter-dropdown" role="menu">
                     	<li class="client-list-li" data-user-id="all">All</li>
                         <?php if($clients) { foreach($clients as $c){?>
                         <li class="client-list-li <?=($selected_client_user_id == $c['user_id']) ? 'active-filter' : '';?>" data-user-id="<?=$c['user_id'];?>"><?=$c['company_name']?></li>
@@ -42,7 +42,7 @@
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu filter-dropdown" role="menu">
+                    <ul id="ul-state-filter" class="dropdown-menu filter-dropdown" role="menu">
                    		<li class="state-list-li" data-state-code="all">All</li>
                     	<?php if($states) { foreach($states as $s){?>
                         <li class="state-list-li <?=($selected_state_code == $s['code']) ? 'active-filter' : '';?>" data-state-code="<?=$s['code'];?>"><?=$s['name']?></li>
@@ -71,7 +71,7 @@ $(function(){
 		$(this).addClass('active-filter');
 		filter_client_user_id = $(this).attr('data-user-id');
 		set_filters($('#header-company-calendar-month').html());
-		$('#current-client-filter').html(' - '+$(this).html());
+		show_active_filters();
 	});
 	
 	//state filter
@@ -80,9 +80,28 @@ $(function(){
 		$(this).addClass('active-filter');
 		filter_state_code = $(this).attr('data-state-code');
 		set_filters($('#header-company-calendar-month').html());
-		$('#current-state').html(' - '+$(this).html());
+		show_active_filters();
 	});
+	
+	//show active filters
+	show_active_filters();
 });
+
+function show_active_filters(){
+	var cur_state = $('#ul-state-filter li');
+	var cur_client = $('#ul-client-filter li');
+	cur_state.each(function(){
+		if($(this).hasClass('active-filter')){
+			$('#current-state').html(' - '+$(this).html());	
+		}
+	});
+	
+	cur_client.each(function(){
+		if($(this).hasClass('active-filter')){
+			$('#current-client-filter').html(' - '+$(this).html());
+		}
+	});
+}
 
 
 function get_month_data(new_date){
@@ -91,8 +110,8 @@ function get_month_data(new_date){
 		url: '<?=base_url();?>job/ajax_calendar/get_calendar_data',
 		data:{new_date:new_date},
 		success: function(html){
-			get_calendar_data_summary(new_date);
 			$('#ajax-load-company-calenar').html(html);
+			get_calendar_data_summary(new_date);
 		}
 	});		
 }

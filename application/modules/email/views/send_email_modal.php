@@ -19,7 +19,7 @@
                             <form id="send-email-modal-form">
                                  <div class="form-group">
                                      <div class="col-sm-5 remove-left-gutter">
-                                            <?=modules::run('email/email_templates_dropdown','email_template_select');?>
+                                            <?=modules::run('email/email_templates_dropdown','email_template_select',$template_id);?>
                                      </div>
                                      <label for="add-button" class="col-sm-2 control-label">Send Sample Email</label>
                                       <div class="col-sm-5 remove-right-gutter">
@@ -49,6 +49,7 @@
                                      </div>
                                  </div>
                                  <input type="hidden" name="selected_user_ids" value='<?=$selected_user_ids;?>' />
+                                 <input type="hidden" name="selected_module_ids" value='<?=$selected_module_ids;?>' />
                             </form>
                             
                             
@@ -72,6 +73,12 @@
 <script>
 
 $(function(){
+	//load template on first load
+	setTimeout(function(){
+		load_template(<?=$template_id;?>);	
+	},500);
+
+	
 	$('#email_template_select').on('change',function(){
 		load_template($(this).val());
 	});

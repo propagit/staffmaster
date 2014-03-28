@@ -700,7 +700,7 @@ class Ajax extends MX_Controller {
 	*/
 	function email_invoice()
 	{
-		$invoice_ids = $this->input->post('invoice_ids',true);
-		echo modules::run('invoice/email_invoice',$invoice_ids);	
+		$params = $this->input->post();
+		echo modules::run('invoice/email_invoice',$params);	
 	}
 }

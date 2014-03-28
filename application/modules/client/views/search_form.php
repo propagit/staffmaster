@@ -83,15 +83,11 @@ $(function(){
 		  var code = e.keyCode || e.which; 
 		  if (code  == 13) {               
 			e.preventDefault();
-			reset_page();
+			reset_current_page();
 			search_clients();
 		  }
 	});
 })
-function reset_page()
-{
-	$('#current_page').val(1);
-}
 function search_clients() {
 	preloading($('#clients_search_results'));
 	$.ajax({
@@ -143,7 +139,7 @@ function delete_multi_clients(){
 						url: "<?=base_url();?>client/ajax/delete_multi_clients",
 						data: $('#client-search-results-form').serialize(),
 						success: function(html) {
-							reset_page();
+							reset_current_page();
 							search_clients();
 						}
 					});
@@ -162,7 +158,7 @@ function update_multiple_selected_status()
 		  data: $('#client-search-results-form').serialize(),
 		  success: function(html) {
 			  $('#updateMultiStatus').modal('hide');
-			  reset_page();
+			  reset_current_page();
 			  search_clients();
 		  }
 	  });

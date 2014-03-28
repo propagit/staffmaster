@@ -95,14 +95,25 @@ class Ajax extends MX_Controller {
 	{
 		$data['email_modal_header'] = "Contact User";
 		$selected_user_ids = $this->input->post('user_staff_selected_user_id',true);
-		if($this->input->post('modal_header',true)){
+		if($this->input->post('email_modal_header',true)){
 			$data['email_modal_header'] = $this->input->post('email_modal_header',true);	
+		}
+		
+		$data['template_id']= 0;
+		if($this->input->post('email_template_id',true)){
+			$data['template_id'] = $this->input->post('email_template_id',true);
 		}
 		$data['total'] = 0;
 		$data['selected_user_ids'] = '';
 		if($selected_user_ids){
 			$data['selected_user_ids'] = json_encode($selected_user_ids);	
 			$data['total'] = count($selected_user_ids);
+		}
+		//this is the selected modules ids such as invoice ids, shift ids 
+		$data['selected_module_ids'] = '';
+		$selected_module_ids = $this->input->post('selected_module_ids',true);
+		if($selected_module_ids){
+			$data['selected_module_ids'] = json_encode($selected_module_ids);	
 		}
 		$this->load->view('send_email_modal', isset($data) ? $data : NULL);
 	}

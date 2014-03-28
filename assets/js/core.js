@@ -35,6 +35,10 @@ $(document).on('hidden.bs.modal', function (e) {
 });
 
 
+/* Reset page number */
+function reset_current_page(){
+	$('#current_page').val(1);
+}
 /**  
 	Helper Scripts
 */

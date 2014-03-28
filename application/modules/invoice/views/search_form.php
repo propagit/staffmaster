@@ -69,6 +69,9 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" name="sort_by" id="sort-by" value="issued_date" />
+<input type="hidden" name="sort_order" id="sort-order" value="asc" />
+<input type="hidden" name="current_page"  id="current_page" value="1"  />
 </form>
 
 <div id="invoice-search-results">

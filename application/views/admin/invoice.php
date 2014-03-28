@@ -13,9 +13,6 @@
 	<![endif]-->
 	
 	<link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
-	<link href="<?=base_url();?>assets/css/invoice.css" rel="stylesheet" media="screen">
-	<?=$_styles;?>
 	
 	<script src="<?=base_url();?>assets/js/hogan.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
@@ -30,10 +27,17 @@
 	<script src="<?=base_url();?>assets/js/editable/time.js"></script>
 	<link href="<?=base_url();?>assets/js/editable/break.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/js/editable/breaks.js"></script>	
+    
+    <!-- select2 -->
+	<link href="<?=base_url();?>assets/css/select2/select2.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/select2.min.js"></script>
 	
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
     
+    <link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
+	<link href="<?=base_url();?>assets/css/invoice.css" rel="stylesheet" media="screen">
+	<?=$_styles;?>
 
 </head>
 <body>
