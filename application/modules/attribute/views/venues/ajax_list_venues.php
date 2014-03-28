@@ -69,7 +69,6 @@ $(function(){
 	//go to page
 	$('.pagination li').on('click',function(e){
 		e.preventDefault();
-		scroll_to_form = false;
 		var clicked_page = $(this).attr('data-page-no');
 		sort_data.current_page = clicked_page;
 		params.data = JSON.stringify(sort_data);	

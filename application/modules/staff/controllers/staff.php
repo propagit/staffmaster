@@ -640,4 +640,9 @@ class Staff extends MX_Controller {
 		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);
 	}
 	
+	function field_select_fields($field_name, $field_value = null)
+	{		
+		$fields = $this->export_model->get_template_fields('staff','single');
+		return modules::run('common/field_select', $fields, $field_name, $field_value);
+	}
 }

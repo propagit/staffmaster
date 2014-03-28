@@ -297,6 +297,8 @@ class Ajax extends MX_Controller {
 	function search_invoices() {
 		$params = $this->input->post();
 		$data['invoices'] = $this->invoice_model->search_invoices($params);
+		$data['total_invoices'] = $this->invoice_model->search_invoices($params,true);
+		$data['current_page'] = $this->input->post('current_page',true);
 		$this->load->view('search/results_list_view', isset($data) ? $data : NULL);
 	}
 	
@@ -399,6 +401,22 @@ class Ajax extends MX_Controller {
 	}
 	
 	/**
+	*	@name: edit_client_invoice_number
+	*	@desc: ajax function to edit template client invoice for Invoice Number
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_client_invoice_po_number() {
+		$invoice_id = $this->input->post('pk');
+		$data = array('po_number' => $this->input->post('value'));
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	
+	/**
 	*	@name: edit_client_invoice_company_name
 	*	@desc: ajax function to edit template client invoice for profile company name
 	*	@access: public
@@ -441,6 +459,36 @@ class Ajax extends MX_Controller {
 		$invoice_id = $this->input->post('pk');
 		$client_company_name = $this->input->post('value');
 		$data = array('client_company_name' => $client_company_name);
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_invoice_profile_phone
+	*	@desc: ajax function to edit template client invoice for profile company phone
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_invoice_profile_phone() {
+		$invoice_id = $this->input->post('pk');
+		$data = array('profile_company_phone' => $this->input->post('value'));
+		# Update invoice
+		$this->invoice_model->update_invoice($invoice_id, $data);	
+		
+	}
+	
+	/**
+	*	@name: edit_invoice_profile_email
+	*	@desc: ajax function to edit template client invoice for profile company email
+	*	@access: public
+	*	@param: (POST) invoice_id
+	*	
+	*/
+	function edit_invoice_profile_email() {
+		$invoice_id = $this->input->post('pk');
+		$data = array('profile_company_email' => $this->input->post('value'));
 		# Update invoice
 		$this->invoice_model->update_invoice($invoice_id, $data);	
 		
@@ -700,7 +748,7 @@ class Ajax extends MX_Controller {
 	*/
 	function email_invoice()
 	{
-		$invoice_ids = $this->input->post('invoice_ids',true);
-		echo modules::run('invoice/email_invoice',$invoice_ids);	
+		$params = $this->input->post();
+		echo modules::run('invoice/email_invoice',$params);	
 	}
 }

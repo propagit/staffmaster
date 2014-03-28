@@ -117,3 +117,7 @@ table{
 .footer-invoice{
 	font-size:10px;
 }
+.amount-cents-subscript{
+	bottom:0;	
+	font-size:80%;
+}

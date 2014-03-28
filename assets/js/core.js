@@ -1,3 +1,7 @@
+function init_select()
+{
+	$('select').select2();
+}
 /* Preloading data functions */
 function preloading(obj)
 {
@@ -31,6 +35,10 @@ $(document).on('hidden.bs.modal', function (e) {
 });
 
 
+/* Reset page number */
+function reset_current_page(){
+	$('#current_page').val(1);
+}
 /**  
 	Helper Scripts
 */

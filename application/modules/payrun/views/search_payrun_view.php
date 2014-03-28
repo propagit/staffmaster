@@ -91,8 +91,5 @@ function search_payruns() {
 		}
 	})
 }
-function reset_page()
-{
-	$('#current_page').val(1);
-}
+
 </script>

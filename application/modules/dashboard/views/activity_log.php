@@ -2,7 +2,7 @@
 <p>Your activity log will inform you of information updates</p>        
 
 <div class="table_action" >		
-    <ul class="nav nav-tabs nav-action">
+    <ul class="nav nav-tabs nav-action activity-log-nav">
         <li >
             <a id="activiy-log" href="#">New <span class="badge danger" style="margin-left:10px;"> 1 </span></a>					
         </li>

@@ -377,7 +377,8 @@ class Invoice_model extends CI_Model {
 	*	@param: (array)
 	*	@return: (array) of invoice objects
 	*/
-	function search_invoices($params) {
+	function search_invoices($params,$total = false) {
+		$records_per_page = INVOICE_PER_PAGE;
 		if (isset($params['client_id']) && $params['client_id'] != 0 ) {
 			$this->db->where('client_id', $params['client_id']);
 		}
@@ -399,6 +400,17 @@ class Invoice_model extends CI_Model {
 			$this->db->where('issued_date <=', $date_to);
 		}
 		$this->db->where('status > ', 0);
+		//sort
+		if(isset($params['sort_by']) && $params['sort_by'] != ''){
+			$this->db->order_by($params['sort_by'],$params['sort_order']);	
+		}
+		if(!$total){
+			if(isset($params['current_page']) && $params['current_page'] != ''){
+				$offset = ($params['current_page']-1)*$records_per_page;
+				$this->db->limit($records_per_page,$offset);
+			}
+		}
+		
 		$query = $this->db->get('invoices');
 		return $query->result_array();
 	}

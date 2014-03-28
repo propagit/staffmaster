@@ -1,6 +1,6 @@
 <table width="100%" cellpadding="10">
 <tr>
-    <td colspan="3"><h3>Expense Break Down</h3></td>
+    <td colspan="3"><h2>Expense Break Down</h2></td>
 </tr>
 
 <tr>
@@ -21,15 +21,17 @@
 	</td>
 	<td align="right">
 		<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-		$<?=money_format('%i', $item['amount']/11);?>
-		<? } else { echo '$0.00'; } ?>
+        <?=modules::run('common/format_money',($item['amount']/11));?>
+		<? } else { echo '$0.<sub class="amount-cents-subscript">00</sub>'; } ?>
 	</td>
 	<td align="right">
 		<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-		$<?=money_format('%i', $item['amount']/11*10);?>
-		<? } else { echo '$' . money_format('%i', $item['amount']); } ?>
+        <?=modules::run('common/format_money',($item['amount']/11*10));?>
+		<? } else { ?>
+        <?=modules::run('common/format_money',$item['amount']);?>
+        <? } ?>
 	</td>
-	<td align="right">$<?=money_format('%i', $item['amount']);?></td>
+	<td align="right"><?=modules::run('common/format_money',$item['amount']);?></td>
 	<td align="right"><a onclick="delete_item(<?=$item['item_id'];?>)"><i class="fa fa-times"></i></a></td>
 </tr>            
 <? } } ?>
@@ -41,17 +43,17 @@
 	</td>
 	<td align="right">
 		<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-		$<?=money_format('%i', $item['amount']/11);?>
+        <?=modules::run('common/format_money',($item['amount']/11));?>
 		<? } ?>
 	</td>
 	<td align="right">
 		<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
-		$<?=money_format('%i', $item['amount']/11*10);?>
+        <?=modules::run('common/format_money',($item['amount']/11*10));?>
 		<? } ?>
 	</td>
 	<td align="right">
 		<? if($item['amount'] != 0) { ?>
-		$<?=money_format('%i', $item['amount']);?>
+        <?=modules::run('common/format_money',$item['amount']);?>
 		<? } ?>
 	</td>
 	<td align="right"><a onclick="delete_item(<?=$item['item_id'];?>)"><i class="fa fa-times"></i></a></td>

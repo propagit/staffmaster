@@ -46,14 +46,13 @@ $(function(){
 		var sort_order = $('#sort-order').val();
 		$('#sort-order').val(sort_order == 'asc' ? 'desc' : 'asc');
 		$('#sort-by').val($(this).attr('sort-by'));
-		reset_page();
+		reset_current_page();
 		search_payruns();
 	});	
 	
 	//go to page
 	$('.pagination li').on('click',function(e){
 		e.preventDefault();
-		scroll_to_form = false;
 		var clicked_page = $(this).attr('data-page-no');
 		$('#current_page').val(clicked_page);
 		search_payruns();

@@ -128,5 +128,10 @@
 </div>
 
 <footer></footer>
+<script>
+$(function(){
+	init_select();
+});
+</script>
 </body>
 </html>

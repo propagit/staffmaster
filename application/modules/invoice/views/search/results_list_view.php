@@ -1,9 +1,11 @@
 <hr />
 <h2>Search Results</h2>
-<p>Your search returned <b><?=count($invoices);?></b> results</p>
-
+<p>Your search returned <b><?=count($total_invoices);?></b> results</p>
+<ul class="pagination pull">
+<?=modules::run('common/create_pagination',count($total_invoices),INVOICE_PER_PAGE,$current_page)?>
+</ul>
 <? if (count($invoices) > 0) { ?>
-<div id="nav_invoices">
+<div id="nav_invoices" class="action-nav-with-pagination">
 <?
 	# Action menu
 	$data = array(
@@ -17,19 +19,20 @@
 </div>
 
 <div class="table-responsive">
+<form>
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
-		<th class="center" width="80">Issued</th>
-		<th class="center" width="80">Due</th>
-		<th class="center">Inv #</th>
-		<th class="center">PO #</th>
-		<th>Client Name</th>
-		<th>Invoice Title</th>
-		<th class="center">Amount</th>
+		<th class="center" width="120">Issued <i class="fa fa-sort sort-result" sort-by="issued_date"></i></th>
+		<th class="center" width="120">Due <i class="fa fa-sort sort-result" sort-by="due_date"></i></th>
+		<th class="center">Inv # <i class="fa fa-sort sort-result" sort-by="invoice_number"></i></th>
+		<th class="center">PO # <i class="fa fa-sort sort-result" sort-by="po_number"></i></th>
+		<th>Client Name </th>
+		<th>Invoice Title <i class="fa fa-sort sort-result" sort-by="title"></i></th>
+		<th class="center">Amount <i class="fa fa-sort sort-result" sort-by="total_amount"></i></th>
 		<th>Issued By</th>
-		<th class="center" width="120">Status</th>
+		<th class="center" width="120">Status <i class="fa fa-sort sort-result" sort-by="status"></i></th>
 		<th class="center" width="40">View</th>
 		<th class="center" width="40">Email</th>
 	</tr>
@@ -61,12 +64,20 @@
 			<?=modules::run('invoice/menu_dropdown_status', $invoice['invoice_id']);?>
 		</td>
 		<td class="center"><a href="<?=base_url();?>invoice/view/<?=$invoice['invoice_id'];?>" target="_blank"><i class="fa fa-eye"></i></a></td>
-		<td class="center"><a><i class="fa fa-envelope-o email-invoice" data-invoice-id="<?=$invoice['invoice_id'];?>"></i></a></td>
+		<td class="center"><a><i class="fa fa-envelope-o email-invoice" data-invoice-id="<?=$invoice['invoice_id'];?>" data-user-id="<?=$invoice['client_id']?>"></i></a></td>
 	</tr>
 <? } ?>
 </tbody>
 </table>
+</form>
 <? } ?>
+<div id="ajax-email-invoice-modal"></div>
+<form id="single-invoice-email-form">
+<input type="hidden" id="selected-user-id" name="user_staff_selected_user_id[]" value="" />
+<input type="hidden" name="email_modal_header" value="Invoice Client" />
+<input type="hidden" name="email_template_id" value="<?=CLIENT_INVOICE_EMAIL_TEMPLATE_ID;?>" />
+<input type="hidden" id="selected-invoice-id" name="selected_module_ids[]" value="" />
+</form>
 <script>
 $(function(){
 	var selected_invoices = new Array();
@@ -87,24 +98,19 @@ $(function(){
 		}		
 	});
 	
-	//email invoice
+	//get email modal
 	$('.email-invoice').on('click',function(){
-		preloading($('.table-responsive'));
-		var invoice_ids = []
-		invoice_ids[0] = $(this).attr('data-invoice-id');
-		if(invoice_ids[0]){
-			$.ajax({
-				type: "POST",
-				url: "<?=base_url();?>invoice/ajax/email_invoice",
-				data: {invoice_ids:invoice_ids},
-				success: function(html) {
-					$('#wrapper_loading').remove();
-				}
-			});
-		}
+		$('#selected-user-id').val($(this).attr('data-user-id'));
+		$('#selected-invoice-id').val($(this).attr('data-invoice-id'));
+		get_email_model('#single-invoice-email-form');
 
 	});
-})//ready
+	
+	//email invoice
+	$(document).on('click','.send-email-from-modal',function(){
+		email_invoice();
+	});
+});//ready
 function mark_as_paid(invoice_id) {
 	$.ajax({
 		type: "POST",
@@ -125,4 +131,59 @@ function mark_as_unpaid(invoice_id) {
 		}
 	})
 }
+
+
+function get_email_model(form_id){
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/get_send_email_modal",
+		  data: $(form_id).serialize(),
+		  success: function(html) {
+			  $('#ajax-email-invoice-modal').html(html);
+			  $('#email-modal').modal('show');	
+		  }
+	  });
+		
+}
+
+function email_invoice(){
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/email_invoice",
+		data: $('#send-email-modal-form').serialize(),
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+			setTimeout(function(){
+				$('#email-modal').modal('hide');
+			}, 4000);
+		}
+	}); 
+}
+
+$(function(){
+	$('.sort-result').on('click',function(){
+		var sort_order = $('#sort-order').val();
+		$('#sort-order').val(sort_order == 'asc' ? 'desc' : 'asc');
+		$('#sort-by').val($(this).attr('sort-by'));
+		reset_current_page();
+		search_invoices();
+	});	
+	
+	//go to page
+	$('.pagination li').on('click',function(e){
+		e.preventDefault();
+		var clicked_page = $(this).attr('data-page-no');
+		$('#current_page').val(clicked_page);
+		search_invoices();
+	}); 
+});//ready
+
+
 </script>

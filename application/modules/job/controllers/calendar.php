@@ -41,13 +41,11 @@ class Calendar extends MX_Controller {
 	function home()
 	{
 		$selected_client_user_id = 0;
-		if($this->session->userdata('company_calendar_filter_client_id')){
-			$selected_client_user_id = $this->session->userdata('company_calendar_filter_client_id');
-		}
+		$this->session->unset_userdata('company_calendar_filter_client_id');
+		
 		$selected_state_code = 'all';
-		if($this->session->userdata('company_calendar_filter_state_code')){
-			$selected_state_code = $this->session->userdata('company_calendar_filter_state_code');
-		}
+		$this->session->unset_userdata('company_calendar_filter_state_code');
+		
 		$data['selected_client_user_id'] = $selected_client_user_id;
 		$data['selected_state_code'] = $selected_state_code;
 		$data['clients'] = modules::run('client/get_clients');
