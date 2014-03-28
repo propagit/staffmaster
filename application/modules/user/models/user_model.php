@@ -45,6 +45,7 @@ class User_model extends CI_Model {
 	function insert_user($data)
 	{
 		$data = $this->prepare_user_data($data);
+		$data['modified_on'] = date('Y-m-d H:i:s');
 		$this->db->insert('users', $data);
 		return $this->db->insert_id();
 	}

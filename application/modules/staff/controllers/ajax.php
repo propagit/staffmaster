@@ -841,12 +841,17 @@ class Ajax extends MX_Controller {
 				{
 					$employed_as = 'abn';
 				}
+				$dob = '';
+				if ($staff['dob'] != '0000-00-00' && $staff['dob'] != '' && $staff['dob'] != NULL)
+				{
+					$dob = date('d/m/Y', strtotime($staff['dob']));
+				}
 				$value = str_replace('{title}', $staff['title'], $value);
 				$value = str_replace('{rating}', $staff['rating'], $value);
 				$value = str_replace('{first_name}', $staff['first_name'], $value);
 				$value = str_replace('{last_name}', $staff['last_name'], $value);
 				$value = str_replace('{gender}', $staff['gender'], $value);
-				$value = str_replace('{dob}', date('d/m/Y', strtotime($staff['dob'])), $value);
+				$value = str_replace('{dob}', $dob, $value);
 				$value = str_replace('{address}', $staff['address'], $value);
 				$value = str_replace('{suburb}', $staff['suburb'], $value);
 				$value = str_replace('{city}', $staff['city'], $value);
@@ -864,7 +869,7 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{employed_as}', $employed_as, $value);
 				$value = str_replace('{tfn_number}', $staff['f_tfn'], $value);
 				$value = str_replace('{abn_number}', $staff['f_abn'], $value);
-				$value = str_replace('{super_fund}', $staff['s_name'], $value);
+				$value = str_replace('{super_choice}', $staff['s_choice'], $value);
 				$value = str_replace('{super_employee_id}', $staff['s_employee_id'], $value);
 				$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
 				$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);

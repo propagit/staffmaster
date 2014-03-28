@@ -3,7 +3,23 @@
 	<i class="fa fa-smile-o fa-2x pull-left"></i> 
 	<h4>Yea! - We found no issues with your data.</h4>
 </div>
-<button class="btn btn-core">Commit Upload</button>
+<button class="btn btn-core" id="btn-commit-upload">Commit Upload</button>
+<div id="commit-result"></div>
+<script>
+$(function(){
+	$('#btn-commit-upload').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>staff/ajax_import/commit_upload",
+			data: {records: <?=$records;?>},
+			success: function(html) {
+				$('#commit-result').html(html);
+			}
+		})
+	})
+})
+</script>
+
 <? } else { ?>
 <div class="alert alert-danger">
 	<i class="fa fa-frown-o fa-2x pull-left"></i> 
