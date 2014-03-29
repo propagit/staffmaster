@@ -13,7 +13,8 @@ $(function(){
 			url: "<?=base_url();?>staff/ajax_import/commit_upload",
 			data: {records: <?=$records;?>},
 			success: function(html) {
-				$('#commit-result').html(html);
+				//$('#commit-result').html(html);
+				window.location = '<?=base_url();?>staff/search';
 			}
 		})
 	})

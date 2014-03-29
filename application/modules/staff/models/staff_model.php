@@ -158,6 +158,13 @@ class Staff_model extends CI_Model {
 			}
 		}
 		
+		if (isset($params['date_from']) && $params['date_from'] != '') {
+			$sql .= " AND u.modified_on >= '" . date('Y-m-d', strtotime($params['date_from'])) . "'";
+		}
+		if (isset($params['date_to']) && $params['date_to'] != '') {
+			$sql .= " AND u.modified_on <= '" . date('Y-m-d', strtotime($params['date_to'])) . "'";
+		}
+		
 		//Custom Attributes
 		//normal elements
 		$custom_attrs = modules::run('staff/get_custom_attrs',$params);

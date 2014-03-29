@@ -846,6 +846,13 @@ class Ajax extends MX_Controller {
 				{
 					$dob = date('d/m/Y', strtotime($staff['dob']));
 				}
+				
+				$s_choice = "no";
+				if ($staff['s_choice'] == "employer")
+				{
+					$s_choice = "yes";	
+				}
+				
 				$value = str_replace('{title}', $staff['title'], $value);
 				$value = str_replace('{rating}', $staff['rating'], $value);
 				$value = str_replace('{first_name}', $staff['first_name'], $value);
@@ -869,7 +876,7 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{employed_as}', $employed_as, $value);
 				$value = str_replace('{tfn_number}', $staff['f_tfn'], $value);
 				$value = str_replace('{abn_number}', $staff['f_abn'], $value);
-				$value = str_replace('{super_choice}', $staff['s_choice'], $value);
+				$value = str_replace('{super_choice}', $s_choice, $value);
 				$value = str_replace('{super_employee_id}', $staff['s_employee_id'], $value);
 				$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
 				$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);

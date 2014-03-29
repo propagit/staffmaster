@@ -177,15 +177,22 @@ class Ajax_import extends MX_Controller {
 				'f_employed' => $employed_as,
 				'f_abn' => $data['abn_number'],
 				'f_tfn' => $data['tfn_number'],
-				's_name' =>  $data['super_fund'],
 				's_fund_name' => $data['super_fund_name'],
 				's_employee_id' => $data['super_employee_id'],
 				's_membership' => $data['super_membership_number']
 			);
 			
-			
+			if (strtolower($data['super_choice']) == "yes") 
+			{
+				$company_profile = $this->profile_model->get_profile();
+				$staff_data['s_choice'] = 'employer';
+				$staff_data['s_fund_name'] = $company_profile['super_fund_name'];
+			}
+			else
+			{
+				$staff_data['s_choice'] = 'owner';
+			}
 			$staff_id = $this->staff_model->insert_staff($staff_data);
-			
 		}
 	}
 	
@@ -309,6 +316,11 @@ class Ajax_import extends MX_Controller {
 		{
 			return in_array(strtolower($value), array('tfn','abn'));
 		}
+		if ($key == 'super_choice')
+		{
+			$choices = array('y','n','yes','no');
+			return in_array(strtolower($value), $choices);
+		}
 		return true;
 	}
 	
@@ -357,6 +369,10 @@ class Ajax_import extends MX_Controller {
 		if ($key == 'employed_as')
 		{
 			return 'TFN or ABN';
+		}
+		if ($key == 'super_choice')
+		{
+			return 'yes or no';
 		}
 		return true;
 	}

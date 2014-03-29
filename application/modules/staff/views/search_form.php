@@ -81,6 +81,27 @@
             
             <div class="row">
 				<div class="form-group">
+					<label for="date_from" class="col-md-2 control-label">Date From</label>
+					<div class="col-md-4">
+						<div class="input-group date" id="date_from">
+							<input type="text" class="form-control" name="date_from" readonly />
+							<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+					<label for="date_to" class="col-md-2 control-label">Date To</label>
+					<div class="col-md-4">
+						<div class="input-group date" id="date_to">
+							<input type="text" class="form-control" name="date_to" readonly />
+							<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+            
+            <div class="row">
+				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
                     	<a class="toggle-custom-attrs"><i id="toggle-custom-attrs-fa" class="fa fa-plus-square"></i> Custom Attributes</a>
 					</div>
@@ -186,6 +207,34 @@
 <script>
 var scroll_to_form = true;
 $(function(){
+	$('#date_from').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+        minView: 2,
+		forceParse: 1,
+        format: 'dd-mm-yyyy',
+    }).on('changeDate', function(e) {
+    	var date_from = moment(e.date.valueOf() - 11*60*60*1000);
+    	$('#date_to').datetimepicker('setStartDate', date_from.format("DD-MM-YYYY"));
+    });
+    $('#date_to').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+        minView: 2,
+		forceParse: 1,
+        format: 'dd-mm-yyyy',
+        pickerPosition: 'bottom-left'
+    }).on('changeDate', function(e) {
+    	var date_to = moment(e.date.valueOf() - 11*60*60*1000);
+    	$('#date_from').datetimepicker('setEndDate', date_to.format("DD-MM-YYYY"));
+    });
+    
 	//reset ratings
 	$('#reset').click(function(){
 		reset_page();
