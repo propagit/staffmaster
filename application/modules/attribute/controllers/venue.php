@@ -17,6 +17,9 @@ class Venue extends MX_Controller {
 	{
 		switch($method)
 		{
+			case 'import':
+					$this->import_view();
+				break;
 			default:
 					$this->list_venues();
 				break;
@@ -26,6 +29,11 @@ class Venue extends MX_Controller {
 	function list_venues()
 	{
 		$this->load->view('venues/list_venues', isset($data) ? $data : NULL);
+	}
+	
+	function import_view()
+	{
+		$this->load->view('venues/import_view', isset($data) ? $data : NULL);
 	}
 
 	function display_venue($venue_id)

@@ -1,0 +1,43 @@
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+   		 <h2>Venues</h2>
+		 <p>Venues are the location in which jobs take place. You can add a venue via the form below or add multiple venues at once by importing a venue list as a .CSV file (<a href="#">Download Sample File</a>). Enter your venue address accurately to ensure your map data gets plotted correctly. Staff select locations they can work in their profile information which relates to the locations of venues.</p>
+    </div>
+</div>
+<!--end top box-->
+
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+    	<div class="inner-box">
+            <ul class="nav nav-tabs tab-respond">
+            	<li class="pull-right"><a href="<?=base_url();?>attribute/venue">Add New Venue</a></li>
+				<li class="mobile-tab active"><a>Import Venues</a></li>
+			</ul>
+            <br />
+			<h2>Select File</h2>
+			<br />
+			<form class="form-inline" role="form" id="upload-venue-csv-form" enctype="multipart/form-data" action="<?=base_url();?>attribute/ajax_venue/upload_csv" method="POST">
+			<div class="pull-left">
+				<div class="fileupload fileupload-staff" data-provides="fileupload" >        
+					<span class="btn btn-file">
+						<i class="fa fa-paperclip"></i>
+						<span class="fileupload-new"> Attach File</span>
+						<span class="fileupload-exists">Change</span>         
+						<input type="file" name="userfile"/>
+					</span>
+					<span class="fileupload-preview"></span> &nbsp; 
+					<a href="#" class="fileupload-exists" data-dismiss="fileupload" style="float: none"><i class="fa fa-trash-o"></i> &nbsp; </a>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<button type="button" class="btn btn-core btn-block" id="btn-upload-venue-csv"><i class="fa fa-upload"></i> Upload</button>
+			</div>
+			<div class="clearfix"></div>
+			<div class="alert alert-danger hide" id="upload-result"></div>
+			</form>
+			
+        </div>
+    </div>
+</div>

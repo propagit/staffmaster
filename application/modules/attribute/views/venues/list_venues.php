@@ -15,7 +15,7 @@
 			<p>Add new venues by clicking the "Add New Venue" button or manage your existing venues via the below table.</p>
             
             <button id="open-add-venue-modal" class="btn btn-info btn-rt-margin"><i class="fa fa-plus"></i> Add New Venue</button>
-			<button class="btn btn-info"><i class="fa fa-upload"></i> Import Venues</button>
+			<a class="btn btn-info" href="<?=base_url();?>attribute/venue/import"><i class="fa fa-upload"></i> Import Venues</a>
             
             <div id="load-venues" class="attr-list-wrap">
                
