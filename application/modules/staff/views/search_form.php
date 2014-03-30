@@ -81,7 +81,7 @@
             
             <div class="row">
 				<div class="form-group">
-					<label for="date_from" class="col-md-2 control-label">Date From</label>
+					<label for="date_from" class="col-md-2 control-label">Worked From</label>
 					<div class="col-md-4">
 						<div class="input-group date" id="date_from">
 							<input type="text" class="form-control" name="date_from" readonly />
@@ -89,7 +89,7 @@
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 						</div>
 					</div>
-					<label for="date_to" class="col-md-2 control-label">Date To</label>
+					<label for="date_to" class="col-md-2 control-label">Worked To</label>
 					<div class="col-md-4">
 						<div class="input-group date" id="date_to">
 							<input type="text" class="form-control" name="date_to" readonly />
