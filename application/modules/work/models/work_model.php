@@ -3,9 +3,12 @@
 class Work_model extends CI_Model {
 	
 	var $user_id = null;
+	var $module = 'job';
+	var $object = 'work';
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('log/log_model');
 		$user = $this->session->userdata('user_data');
 		$this->user_id = $user['user_id'];
 	}
@@ -17,11 +20,26 @@ class Work_model extends CI_Model {
 			'staff_id' => $this->user_id
 		);
 		$this->db->insert('job_shift_staff_apply', $data);
-		return $this->db->insert_id();
+		$work_id = $this->db->insert_id();
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $shift_id,
+			'action' => 'applied'
+		);
+		$this->log_model->insert_log($log_data);
+		return $work_id;
 	}
 	
 	function delete_shift_staff($shift_id)
 	{
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $shift_id,
+			'action' => 'unapplied'
+		);
+		$this->log_model->insert_log($log_data);
 		$this->db->where('shift_id', $shift_id);
 		$this->db->where('staff_id', $this->user_id);
 		return $this->db->delete('job_shift_staff_apply');

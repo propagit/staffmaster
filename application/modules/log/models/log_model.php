@@ -13,6 +13,10 @@ class Log_model extends CI_Model {
 	function insert_log($data) 
 	{
 		$data['user_id'] = $this->user_id;
+		if ($data['object'] == 'work' || $data['object'] == 'roster')
+		{
+			$data['created_on'] = date('Y-m-d H:i') . ':' . rand(0,60);
+		}
 		$this->db->insert('logs', $data);
 		return $this->db->insert_id();
 	}

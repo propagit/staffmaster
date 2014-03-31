@@ -1,0 +1,1 @@
+ALTER TABLE `logs`  ADD `priority` INT NOT NULL AFTER `user_id`

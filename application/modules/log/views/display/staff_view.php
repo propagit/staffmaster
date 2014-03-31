@@ -29,7 +29,7 @@ switch($log['action']) {
 } ?>
 
 <? } else { ?>
-imported
+<?=$log['action'];?>d
 <b><?=$log['total'];?></b> staff accounts
 <? } ?>
 

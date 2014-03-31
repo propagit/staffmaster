@@ -67,14 +67,14 @@ $(function(){
 	$('#select_all_rosters').click(function(){
 		$('input.select_roster').prop('checked', this.checked);
 	})
-	$('.multi_confirm').click(function(){
+	$('#menu-roster-action ul li a[data-value="confirm"]').click(function(){
 		selected_rosters.length = 0;
 		$('.select_roster:checked').each(function(){
 			selected_rosters.push($(this).val());
 		});
 		confirm_selected(selected_rosters);
 	});
-	$('.multi_reject').click(function(){
+	$('#menu-roster-action ul li a[data-value="reject"]').click(function(){
 		selected_rosters.length = 0;
 		$('.select_roster:checked').each(function(){
 			selected_rosters.push($(this).val());

@@ -3,9 +3,13 @@
 class Roster_model extends CI_Model {
 	
 	var $user_id = null;
+	var $module = 'job';
+	var $object = 'roster';
+	
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('log/log_model');
 		$user = $this->session->userdata('user_data');
 		$this->user_id = $user['user_id'];
 	}
@@ -43,6 +47,15 @@ class Roster_model extends CI_Model {
 	
 	function update_roster($shift_id, $data)
 	{
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $shift_id,
+			'action' => 'update',
+			'description' => serialize($data)
+		);
+		$this->log_model->insert_log($log_data);
+		
 		$this->db->where('shift_id', $shift_id);
 		$this->db->where('staff_id', $this->user_id);
 		return $this->db->update('job_shifts', $data);
