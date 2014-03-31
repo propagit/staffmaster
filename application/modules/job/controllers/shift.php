@@ -64,4 +64,21 @@ class Shift extends MX_Controller {
 		);
 		return modules::run('common/field_select', $fields, $field_name, $field_value, $size);
 	}
+	
+	function status_to_text($status)
+	{
+		$text = '';
+		switch($status)
+		{
+			case SHIFT_REJECTED: $text = 'rejected';
+				break;
+			case SHIFT_UNCONFIRMED: $text = 'unconfirmed';
+				break;
+			case SHIFT_CONFIRMED: $text = 'confirmed';
+				break;
+			case SHIFT_FINISHED: $text = 'finished';
+				break;
+		}
+		return $text;
+	}
 }

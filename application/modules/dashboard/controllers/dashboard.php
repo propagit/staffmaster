@@ -125,6 +125,7 @@ class Dashboard extends MX_Controller {
 
 	public function activity_log()
 	{
+		$data['logs'] = modules::run('log/get_notifications');
 		$this->load->view('activity_log', isset($data) ? $data : NULL);
 	}	
 }

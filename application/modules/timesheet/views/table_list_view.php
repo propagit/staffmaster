@@ -18,7 +18,7 @@
 			<th>Campaign Name</th>
 			<th class="center">Start - Finish</th>
 			<th class="center">Break</th>
-			<th>Pay rate</th>
+			<th class="center">Pay rate</th>
 			<th>Staff Assigned</th>
 			<th class="center">Expenses</th>
 			<th class="center" width="40">View</th>

@@ -1,6 +1,9 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
+		<div class="pull-right">
+			<a class="btn btn-core" href="#">Generate Timesheets</a>
+		</div>
 		<h2>Time Sheets</h2>
 		<p>To process your pay we require you to submit your time sheets. As you complete your shifts time sheets will become availble below for you to submit.</p>
 	</div>

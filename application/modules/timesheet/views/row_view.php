@@ -34,7 +34,7 @@
 			<? } ?>
 		</a>
 	</td>
-	<td>
+	<td class="center">
 		<a href="#" class="ts_payrate" data-type="select" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=$timesheet['payrate_id'];?>">
 			<? if ($timesheet['payrate_id'] != $shift['payrate_id']) { ?>
 			<span class="text-red">
