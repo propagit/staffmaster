@@ -81,6 +81,16 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 	
+	function get_states()
+	{
+		return $this->common_model->get_states();
+	}
+	
+	function get_countries()
+	{
+		return $this->common_model->get_countries();
+	}
+	
 	/**
 	*	@name: field_select_countries
 	*	@desc: custom select countries field
@@ -369,20 +379,7 @@ class Common extends MX_Controller {
 		}
 		return implode($pass); 
 	}
-	/**
-	*    @name: get_states
-	*    @desc: Queries database for all avaliable states.
-	*    @access public
-	*    @param: (null)
-	*    @return: Returns all sates
-	*/
-	function get_states()
-	{
-		$states = $this->common_model->get_states();
-		if($states){
-			return $states;	
-		}
-	}
+	
 	
 	/**
 	*    @name: get_states

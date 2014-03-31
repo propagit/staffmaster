@@ -95,4 +95,16 @@ class Venue extends MX_Controller {
 		}		
 	}
 	
+	function field_select_fields($field_name, $field_value=null)
+	{
+		$fields = array(
+			array('value' => 'name', 'label' => 'Name'),
+			array('value' => 'address', 'label' => 'Address'),
+			array('value' => 'suburb', 'label' => 'Suburb'),
+			array('value' => 'postcode', 'label' => 'Postcode'),
+			array('value' => 'location', 'label' => 'Location'),
+			array('value' => 'area', 'label' => 'Area')
+		);
+		echo modules::run('common/field_select', $fields, $field_name, $field_value);
+	}
 }

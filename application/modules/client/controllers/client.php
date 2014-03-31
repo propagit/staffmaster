@@ -21,6 +21,9 @@ class Client extends MX_Controller {
 			case 'add':
 					$this->add_client();
 				break;
+			case 'import':
+					$this->import_view();
+				break;
 			case 'search':
 					$this->search_clients();
 				break;
@@ -53,6 +56,10 @@ class Client extends MX_Controller {
 		$this->load->view('add_form', isset($data) ? $data : NULL);
 	}
 	
+	function import_view() 
+	{
+		$this->load->view('import_view', isset($data) ? $data : NULL);
+	}
 	
 	function search_clients() {
 		$this->load->view('search_form', isset($data) ? $data : NULL);
@@ -160,5 +167,26 @@ class Client extends MX_Controller {
 			}
 		}
 		redirect('client/search');
+	}
+	
+	function field_select_fields($field_name, $field_value=null)
+	{
+		$fields = array(
+			array('value' => 'company_name', 'label' => 'Company Name'),
+			array('value' => 'abn', 'label' => 'ABN'),
+			array('value' => 'full_name', 'label' => 'Contact name'),
+			array('value' => 'phone', 'label' => 'Phone Number'),
+			array('value' => 'address', 'label' => 'Address'),
+			array('value' => 'suburb', 'label' => 'Suburb'),
+			array('value' => 'city', 'label' => 'City'),
+			array('value' => 'postcode', 'label' => 'Postcode'),
+			array('value' => 'state', 'label' => 'State'),
+			array('value' => 'country', 'label' => 'Country'),
+			array('value' => 'email_address', 'label' => 'Email Address'),
+			array('value' => 'passowrd', 'label' => 'Password'),
+			array('value' => 'status', 'label' => 'Account Status'),
+			array('value' => 'external_client_id', 'label' => 'External Client ID')
+		);
+		echo modules::run('common/field_select', $fields, $field_name, $field_value);
 	}
 }

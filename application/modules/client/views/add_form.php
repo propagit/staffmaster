@@ -13,6 +13,7 @@
     	<div class="inner-box">
             
             <ul class="nav nav-tabs tab-respond">
+				<li class="pull-right"><a href="<?=base_url();?>client/import">Import Clients</a></li>
 				<li class="active"><a>Client Details</a></li>
 				<li class="disabled"><a>Departments</a></li>
 			</ul>

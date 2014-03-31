@@ -24,25 +24,7 @@ class Ajax_import extends MX_Controller {
 		$config['upload_path'] = './uploads/import/';
 		$config['allowed_types'] = '*';
 		$config['max_size'] = '2048'; // 2 MB
-		$this->load->library('upload', $config);
-		
-		if (!$this->upload->do_upload())
-		{
-			$msg = $this->upload->display_errors('','');
-			echo json_encode(array(
-				'ok' => false,
-				'msg' => $msg
-			));
-		}
-		else
-		{
-			$data = $this->upload->data();
-			$upload_id = $this->upload_model->insert_upload($data);
-			echo json_encode(array(
-				'ok' => true,
-				'upload_id' => $upload_id
-			));
-		}
+		echo modules::run('upload/do_upload', $config);
 	}
 	
 	
