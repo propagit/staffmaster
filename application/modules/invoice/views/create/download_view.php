@@ -67,10 +67,10 @@
                         </tr>
                         <tr class="charge-box-detail">
                             <td class="charge-box-detail-td">                                
-                                <table cellpadding="0" cellspacing="0">
+                                <table cellpadding="0" cellspacing="0" width="500">
                                 	<tr><td class="break-15" colspan="2">&nbsp;</td></tr>
                                     <tr>
-                                    	<td class="charge-box-line charge-first-width"><h1 class="invoice-title">Total Due</h1></td>	
+                                    	<td class="charge-box-line"><h1 class="invoice-title">Total Due</h1></td>	
                                     	<td class="charge-box-line" align="right"><h1 class="invoice-title"><?=modules::run('common/format_money',$invoice['total_amount']);?></h1></td>
                                     </tr>
                                     <tr><td class="padding-top-15"><h2 class="due-date">Due Date</h2></td>	<td class="padding-top-15" align="right"><h2 class="due-date"><?=date('dS M Y', strtotime($invoice['due_date']));?></h2></td></tr>

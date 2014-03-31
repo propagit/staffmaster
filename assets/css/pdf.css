@@ -82,8 +82,11 @@ h2{font-size:18px;font-weight:bold;font-family: 'Lato', sans-serif;}
 .break-15{
 	height:15px;
 }
+.charge-amount-width{
+	width:250px;	
+}
 .charge-first-width{
-	width:290px;
+	width:270px;
 }
 .padding-gst{
 	padding-top:30px;
