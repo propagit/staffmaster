@@ -118,6 +118,8 @@ table{
 	font-size:10px;
 }
 .amount-cents-subscript{
-	bottom:0;	
 	font-size:80%;
+	position: relative;
+	line-height: 0;
+	vertical-align: baseline;
 }

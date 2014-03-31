@@ -802,6 +802,15 @@ ol.example li.placeholder:before {
 .messages .profile_photo{
 	margin-right:0 !important;	
 }
+
+.dash-start-conversation{
+	float:right;
+	margin-top:-50px;	
+}
+.editor-wrap{
+	float:left;
+	width:100%;	
+}
 /* begin - responsive */
 
 /* *

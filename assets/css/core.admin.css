@@ -366,10 +366,7 @@ a.default {
 .staff-contact-modal-body .control-label{
 	line-height: 32px;
 }
-.editor-wrap{
-	float:left;
-	width:100%;	
-}
+
 
 /* Admin Dash */
 .dash-invoice-stat-wrap{
@@ -497,10 +494,7 @@ span.dash-invoice-value{
 	-moz-box-shadow: rgba(255,255,255,0.1) 0 1px 0;
 	box-shadow: rgba(255,255,255,0.1) 0 1px 0;
 }
-.dash-start-conversation{
-	float:right;
-	margin-top:-50px;	
-}
+
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 

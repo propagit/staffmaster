@@ -55,7 +55,9 @@
                                       	 <?=modules::run('attribute/group/conversation_field_select','conversation_groups'); ?> 
                                      </div>
                                 	 <div class="col-sm-5 modal-add-left-padding modal-checkbox-wrap">
+                                     	 <span class="hidden">
                                       	 <input type="checkbox" name="send_by_email" /> Also send via email
+                                         </span>
                                          <button id="start-conversation" type="button" class="btn btn-info pull"><i class="fa fa-comments-o"></i> Post</button>
                                      </div>
                                  </div>
@@ -72,6 +74,8 @@
                             
                         </div><!--create conversation-->
                         
+                        
+                        <!-- begin create poll-->
                         <? if(!isset($conversation)){?>		
                         <div class="tab-pane" id="create-poll-tab">
                         	<p>
@@ -125,7 +129,7 @@
                             </form>
                         </div><!--create poll-->
                         <?php } ?>
-
+						<!-- end create poll-->
                     </div>
 			</div>
 		</div>

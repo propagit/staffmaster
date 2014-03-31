@@ -24,8 +24,8 @@
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
-		<th class="center" width="120">Issued <i class="fa fa-sort sort-result" sort-by="issued_date"></i></th>
-		<th class="center" width="120">Due <i class="fa fa-sort sort-result" sort-by="due_date"></i></th>
+		<th class="center" width="80">Issued <i class="fa fa-sort sort-result" sort-by="issued_date"></i></th>
+		<th class="center" width="80">Due <i class="fa fa-sort sort-result" sort-by="due_date"></i></th>
 		<th class="center">Inv # <i class="fa fa-sort sort-result" sort-by="invoice_number"></i></th>
 		<th class="center">PO # <i class="fa fa-sort sort-result" sort-by="po_number"></i></th>
 		<th>Client Name </th>
@@ -44,18 +44,18 @@
 ?>
 	<tr>
 		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" /></td>
-		<td class="wp-date" width="80">
+		<td class="wp-date center" width="80">
 			<span class="wk_day"><?=date('D', strtotime($invoice['issued_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($invoice['issued_date']));?></span>
 			<span class="wk_month"><?=date('M', strtotime($invoice['issued_date']));?></span>
 		</td>
-		<td class="wp-date" width="80">
+		<td class="wp-date center" width="80">
 			<span class="wk_day"><?=date('D', strtotime($invoice['due_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($invoice['due_date']));?></span>
 			<span class="wk_month"><?=date('M', strtotime($invoice['due_date']));?></span>
 		</td>
-		<td><?=$invoice['invoice_number'];?></td>
-		<td><?=$invoice['po_number'];?></td>
+		<td class="center"><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></td>
+		<td class="center"><?=($invoice['po_number'] != '') ? $invoice['po_number'] : 'Unspecified';?></td>
 		<td><?=$client['company_name'];?></td>
 		<td><?=$invoice['title'];?></td>
 		<td class="center">$<?=money_format('%i', $invoice['total_amount']);?></td>

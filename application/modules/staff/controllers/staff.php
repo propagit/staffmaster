@@ -639,7 +639,7 @@ class Staff extends MX_Controller {
 	*/
 	function get_staff_groups($user_id)
 	{
-		return $this->staff_modal->get_staff_groups($user_id);
+		return $this->staff_model->get_staff_groups($user_id);
 	}
 	
 	function import_view()
