@@ -26,7 +26,7 @@ class Ajax_staff extends MX_Controller {
 	
 	function submit_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
-		$this->timesheet_staff_model->update_timesheet($timesheet_id, array('status' => TIMESHEET_SUBMITTED));
+		$this->timesheet_staff_model->submit_timesheet($timesheet_id);
 	}
 
 }

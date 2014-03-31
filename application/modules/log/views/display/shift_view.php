@@ -24,8 +24,15 @@ switch($log['action']) {
 </a><? if ($log['action'] == 'update') {
 	echo '\'s ';
 	$desc = unserialize($log['description']);
+	$k = 0;
 	foreach($desc as $field => $value) {
+		if ($k > 0) 
+		{  
+			echo ', ';
+		}
 		switch($field) {
+			case 'status':	echo 'status to <b>' . modules::run('job/shift/status_to_text', $value) . '</b>';
+				break;
 			case 'start_time': echo 'start time to <b>' . date('H:i', $value) . '</b>';
 				break;
 			case 'finish_time': echo 'finish time to <b>' . date('H:i', $value) . '</b>';
@@ -52,5 +59,6 @@ switch($log['action']) {
 					echo 'expenses to <b>$' . modules::run('common/calculate_expenses', $value) . '</b>';
 				break;
 		}
+		$k++;
 	}
 } ?>

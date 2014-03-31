@@ -11,7 +11,19 @@
 <div id="activity_lists" class="clear">        
         <div id="wrapper-outer">
             <div id="wrap-list">
-            
+            	<? foreach($logs as $log) { ?>
+            	<div class="row">
+                    <div class="col-md-1 col-xs-1 wrap-list-date">                            
+                        <span class="wk_date"><?=date('d', strtotime($log['created_on']));?></span>
+                        <span class="wk_month"><?=date('M', strtotime($log['created_on']))?></span>
+                    </div>
+                    <div class="col-md-9 col-xs-8 wrap-list-activity">
+                    	<?=modules::run('log/display_notification', $log);?>
+                    </div>                                
+                </div>
+            	<? } ?>
+                
+                <? /*
                 <div class="row active-list">
                     <div class="col-md-1 col-xs-1 wrap-list-date">                            
                         <span class="wk_date"><?=date('d')?></span>
@@ -21,7 +33,6 @@
                         <span class="activity-warning"><i class="fa fa-exclamation-triangle"></i> Shift Rejected</span> - <b>James Blogs</b> rejected a shift on 21th March
                     </div>                                
                 </div>
-                
                 
                 <div class="row">
                     <div class="col-md-1 col-xs-1 wrap-list-date">                            
@@ -161,7 +172,9 @@
                     <div class="col-md-9 col-xs-8 wrap-list-activity">
                         <span class="activity-confirmation"><i class="fa fa-check-square"></i> Profile Updated</span> - Thanks for keeping your information up to date
                     </div>                                
-                </div>          
+                </div> 
+                
+                */ ?>         
             </div>                
         </div>
     </div>            

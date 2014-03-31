@@ -3,9 +3,13 @@
 class Timesheet_staff_model extends CI_Model {
 	
 	var $user_id = null;
+	var $module = 'job';
+	var $object = 'timesheet';
+	
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('log/log_model');
 		$user = $this->session->userdata('user_data');
 		$this->user_id = $user['user_id'];
 	}
@@ -33,4 +37,18 @@ class Timesheet_staff_model extends CI_Model {
 		return $this->db->update('job_shift_timesheets', $data);
 	}
 	
+	
+	function submit_timesheet($timesheet_id) 
+	{
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $timesheet_id,
+			'action' => 'submit'
+		);
+		$this->log_model->insert_log($log_data);
+		
+		$this->db->where('timesheet_id', $timesheet_id);
+		return $this->db->update('job_shift_timesheets', array('status' => TIMESHEET_SUBMITTED));
+	}
 }

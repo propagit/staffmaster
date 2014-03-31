@@ -26,6 +26,16 @@ class Log extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
+	function get_notifications()
+	{
+		return $this->log_model->get_notifications();
+	}
+	function display_notification($log)
+	{
+		$data['log'] = $log;
+		$this->load->view('notifications/' . $log['object'] . '_view', isset($data) ? $data : NULL);
+	}
+	
 	function get_logs_by_date($date) 
 	{
 		return $this->log_model->get_logs_by_date($date);

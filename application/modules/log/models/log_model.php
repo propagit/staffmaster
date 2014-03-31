@@ -47,4 +47,24 @@ class Log_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	
+	function get_notifications()
+	{
+		$courses = array(
+			'roster' => array('update'),
+			'work' => array('applied', 'unapplied'),
+			'timesheet' => array('submit'),
+			'staff' => array('delete'),
+			'client' => array('delete')
+		);
+		$sql = "SELECT * FROM `logs` WHERE";
+		foreach($courses as $object => $actions)
+		{
+			$sql .= " (`object` = '$object' AND `action` IN ('" . implode("','", $actions) . "')) OR ";
+		}
+		$sql .= " 1=0 ORDER BY `log_id` DESC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+		
+	}
 }
