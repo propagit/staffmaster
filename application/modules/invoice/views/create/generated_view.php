@@ -13,17 +13,17 @@
             		<table>
                        <tr>
                         <td class="padding-top-15">
-                            <?=$company_profile['company_name'];?><br>
-                            ABN: <?=$company_profile['abn_acn'];?><br>
-                            <br>
+                            <?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?><br />
+                            ABN: <?=($invoice['profile_abn'] != '') ? $invoice['profile_abn'] : $company_profile['abn_acn'];?><br />
+                            <br />
                             
                             <b>
-                            <?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?><br>
-                            <?=($invoice['client_address'] != '') ? $invoice['client_address'] : $client['address'];?><br>
+                            <?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?><br />
+                            <?=($invoice['client_address'] != '') ? $invoice['client_address'] : $client['address'];?><br />
                             <?=($invoice['client_suburb'] != '') ? $invoice['client_suburb'] : $client['suburb'];?> <?=($invoice['client_state'] != '') ? $invoice['client_state'] : $client['state'];?> <?=($invoice['client_postcode'] != '') ? $invoice['client_postcode'] : $client['postcode'];?>
                             </b>
-                            <br>
-                            <br>
+                            <br />
+                            <br />
                     	</td>
                        </tr>
                      </table> 
@@ -32,16 +32,19 @@
                 <td width="5%"></td>
                 <td width="45%" class="bill-enquiries">
                 	<b>Bill Enquiries</b><br />
-                	<?=$company_profile['company_name'];?><br />
+                	<?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?><br />
                 	<table>
                         <tr>
-                            <td>Tel:</td><td width="20"></td> <td><?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?></td>
+                            <td>Tel:</td><td width="20"></td> <td><?=($invoice['profile_company_phone'] != '') ? $invoice['profile_company_phone'] : $company_profile['telephone'];?></td>
                         </tr>
                         <tr>
-                            <td>Email:</td><td width="20"></td> <td><?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?></td>
+                            <td>Email:</td><td width="20"></td> <td><?=($invoice['profile_company_email'] != '') ? $invoice['profile_company_email'] : $company_profile['email'];?></td>
                         </tr>
                         <tr>
                             <td>Invoice Number:</td><td width="20"></td> <td><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></td>
+                        </tr>
+                         <tr>
+                            <td>PO Number:</td><td width="20"></td> <td><?=($invoice['po_number'] != '') ? $invoice['po_number'] : 'Unspecified';?></td>
                         </tr>
                     </table>
                 </td>
@@ -53,7 +56,7 @@
             <tr>
             	<td valign="top">
                 	<h2>Tax Invoice</h2>                    
-                    Issue Date: <?=date('dS M Y', strtotime($invoice['issued_date']));?><br>
+                    Issue Date: <?=date('dS M Y', strtotime($invoice['issued_date']));?><br />
                     <h1><?=$invoice['title'];?></h1>
                     <? if ($invoice['status'] == INVOICE_PAID) { ?>
                     <div id="badge-paid">
@@ -161,13 +164,13 @@
         </div>
         
         
-        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     	
         
         <b>Terms & Conditions of Payment</b><br />
         <?=(isset($company_profile['term_and_conditions'])) ? $company_profile['term_and_conditions'] : '' ?>
         
-        <br>
+        <br />
         <hr />
         <table>
             <tr>

@@ -802,6 +802,15 @@ ol.example li.placeholder:before {
 .messages .profile_photo{
 	margin-right:0 !important;	
 }
+
+.dash-start-conversation{
+	float:right;
+	margin-top:-50px;	
+}
+.editor-wrap{
+	float:left;
+	width:100%;	
+}
 /* begin - responsive */
 
 /* *
@@ -1612,7 +1621,6 @@ ol.example li.placeholder:before {
 }
 /* select 2 ovewrite to match our system styles */
 .select2-container{
-	margin-top:-8px;
 	padding:0;	
 }
 .select2-container .select2-choice{

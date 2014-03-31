@@ -113,6 +113,7 @@ define('DEFAULT_PER_PAGE',50);
 define('PAYRUN_PER_PAGE',50);
 define('VENUES_PER_PAGE',50);
 define('INVOICE_PER_PAGE',50);
+define('CONVERSATION_PER_PAGE',5);
 //email template id
 define('WELCOME_EMAIL_TEMPLATE_ID',1);
 define('ROSTER_UPDATE_EMAIL_TEMPLATE_ID',2);

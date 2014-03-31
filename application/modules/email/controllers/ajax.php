@@ -99,7 +99,7 @@ class Ajax extends MX_Controller {
 			$data['email_modal_header'] = $this->input->post('email_modal_header',true);	
 		}
 		
-		$data['template_id']= 0;
+		$data['template_id']= null;
 		if($this->input->post('email_template_id',true)){
 			$data['template_id'] = $this->input->post('email_template_id',true);
 		}

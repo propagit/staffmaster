@@ -65,7 +65,8 @@ class Forum_model extends CI_Model {
 	*/
 	function get_poll_answers($topic_id)
 	{
-		$sql = "SELECT * FROM forum_poll_answers WHERE topic_id = ".$topic_id;
+		$sql = "SELECT * FROM forum_poll_answers 
+				WHERE topic_id = ".$topic_id;
 		$sql .= " ORDER BY poll_answer_id ASC";
 		return $this->db->query($sql)->result();
 	}
@@ -78,7 +79,8 @@ class Forum_model extends CI_Model {
 	*/
 	function get_poll_answer_by_id($poll_answer_id)
 	{
-		$sql = "SELECT * FROM forum_poll_answers WHERE poll_answer_id = ".$poll_answer_id;
+		$sql = "SELECT * FROM forum_poll_answers 
+				WHERE poll_answer_id = ".$poll_answer_id;
 		return $this->db->query($sql)->row();
 	}
 	/**
@@ -90,7 +92,9 @@ class Forum_model extends CI_Model {
 	*/
 	function get_poll_answer_total_count($topic_id)
 	{
-		$sql = "SELECT SUM(answer_count) as total_answer FROM forum_poll_answers WHERE topic_id = ".$topic_id;
+		$sql = "SELECT SUM(answer_count) as total_answer 
+				FROM forum_poll_answers 
+				WHERE topic_id = ".$topic_id;
 		$result = $this->db->query($sql)->row();
 		if($result){
 			return $result->total_answer;	
@@ -108,7 +112,9 @@ class Forum_model extends CI_Model {
 	*/
 	function has_user_taken_poll($user_id,$topic_id)
 	{
-		$sql = "SELECT * FROM forum_user_poll_answers WHERE topic_id = ".$topic_id." AND user_id = ".$user_id;
+		$sql = "SELECT * FROM forum_user_poll_answers 
+				WHERE topic_id = ".$topic_id." 
+				AND user_id = ".$user_id;
 		$result = $this->db->query($sql)->row();
 		if($result){
 			return $result;	
@@ -135,16 +141,19 @@ class Forum_model extends CI_Model {
 	*/
 	function get_conversations($user,$params = array(),$total = false)
 	{
-		$records_per_page = 5;
+		$records_per_page = CONVERSATION_PER_PAGE;
 		
-		$sql = "SELECT ft.*,(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies, u.first_name, u.last_name FROM forum_topics ft
+		$sql = "SELECT ft.*,
+					(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies, 
+				u.first_name, u.last_name 
+				FROM forum_topics ft
 				LEFT JOIN users u ON ft.created_by = u.user_id";
 		//if user is not admin
 		if(!$user['is_admin']){
-			$staff_groups = modules::run('staff/get_staff_groups',$user['user_id']);
-			if($staff_groups){
-				$sql .= " WHERE (ft.group_id IN (".$staff_groups.") OR ft.group_id = 0)";
-			}
+			$staff_groups = "SELECT attribute_group_id
+							 FROM staff_groups
+							 WHERE user_id = ".$user['user_id'];
+			$sql .= " WHERE (ft.group_id IN (".$staff_groups.") OR ft.group_id = 0)";
 		}
 		$sql .= " GROUP BY ft.topic_id";
 		if($params){

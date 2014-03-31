@@ -13,7 +13,11 @@
     <? if ($this->session->userdata('force_staff')) { ?>
     <li><a title="Staff Account" href="<?=base_url();?>account/admin"><i class="fa fa-user"></i> <span>Admin Account</span></a></li>
     <? } else { ?>
+    <? if ($user_data['is_admin']) { ?>
     <li><a title="Staff Account" href="<?=base_url();?>account/staff"><i class="fa fa-user"></i> <span>Staff Account</span></a></li>
+    <?php }else{ ?>
+    <li><a title="Your Profile" href="<?=base_url();?>staff"><i class="fa fa-user"></i> <span>Your Profile</span></a></li>
+    <?php } ?>
     <? } ?>
 </ul>
 <div class="message-badge">

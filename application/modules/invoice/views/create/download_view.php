@@ -11,9 +11,11 @@
                     <table>
                        <tr>
                         <td class="padding-top-25">
-                            <?=$company_profile['company_name'];?><br>
-                            ABN: <?=$company_profile['abn_acn'];?><br>
-                            <br><b><?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?><br>
+                            <?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?><br />
+                            ABN: <?=($invoice['profile_abn'] != '') ? $invoice['profile_abn'] : $company_profile['abn_acn'];?><br />
+                            <br />
+                            
+                            <b><?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?><br>
                             <?=($invoice['client_address'] != '') ? $invoice['client_address'] : $client['address'];?><br>
                             <?=($invoice['client_suburb'] != '') ? $invoice['client_suburb'] : $client['suburb'];?> <?=($invoice['client_state'] != '') ? $invoice['client_state'] : $client['state'];?> <?=($invoice['client_postcode'] != '') ? $invoice['client_postcode'] : $client['postcode'];?><br>
                             </b>
@@ -26,16 +28,19 @@
                 <td class="padding-left-15" valign="top">           
                     <table>
                         <tr>
-                            <td class="padding-top-25" style="width:100px;"><?=$company_profile['company_name'];?></td> 
+                            <td class="padding-top-25" style="width:100px;"><?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?></td> 
                         </tr>
                         <tr>
-                            <td>Tel:</td> <td> <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?></td>
+                            <td>Tel:</td> <td> <?=($invoice['profile_company_phone'] != '') ? $invoice['profile_company_phone'] : $company_profile['telephone'];?></td>
                         </tr>
                         <tr>
-                            <td>Email:</td> <td><?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?></td>
+                            <td>Email:</td> <td><?=($invoice['profile_company_email'] != '') ? $invoice['profile_company_email'] : $company_profile['email'];?></td>
                         </tr>
                         <tr>
                             <td>Invoice Number:</td> <td><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></td>
+                        </tr>
+                        <tr>
+                            <td>PO Number:</td> <td><?=($invoice['po_number'] != '') ? $invoice['po_number'] : 'Unspecified';?></td>
                         </tr>
                     </table>
                     

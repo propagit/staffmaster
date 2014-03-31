@@ -73,6 +73,7 @@
 <script>
 
 $(function(){
+	load_template(<?=$template_id;?>);
 	//load template on first load
 	setTimeout(function(){
 		load_template(<?=$template_id;?>);	

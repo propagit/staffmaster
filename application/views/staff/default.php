@@ -17,28 +17,22 @@
 	<!--[if IE 7]>
 	<link rel="stylesheet" href="<?=base_url();?>assets/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
-	
-	<!-- Core styles -->
-	<link href="<?=base_url();?>assets/css/core.staff.css" rel="stylesheet" media="screen">
-	<?=$_styles;?>
-	
-	
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
-	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
-	<script src="<?=base_url();?>assets/js/core.staff.js" type="text/javascript" charset="utf-8"></script>
+
 	
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 	<![endif]-->
-	
+    <link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/bootstrap-fileupload.min.js"></script>
     <!-- typeaheadjs -->
 	<link href="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js"></script>
 	<script src="<?=base_url();?>assets/js/typeaheadjs/typeaheadjs.js"></script>
-    
+	<script src="<?=base_url();?>assets/js/jquery.form.js"></script> 
     <!--flex slider2-->
     <link href="<?=base_url();?>assets/flex-slider/flexslider.css" rel="stylesheet" media="screen" type="text/css" />
 	<script src="<?=base_url();?>assets/flex-slider/jquery.flexslider-min.js"></script>
@@ -47,10 +41,19 @@
     <link href="<?=base_url()?>assets/lightbox/magnific-popup.css" rel="stylesheet" media="screen">
     <script src="<?=base_url()?>assets/lightbox/jquery.magnific-popup.min.js"></script>
     
+    <!-- select2 -->
+	<link href="<?=base_url();?>assets/css/select2/select2.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/js/select2.min.js"></script>
+    
     <!--jrating-->
     <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
 	<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
-
+	
+   	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
+	<script src="<?=base_url();?>assets/js/core.staff.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Core styles -->
+	<link href="<?=base_url();?>assets/css/core.staff.css" rel="stylesheet" media="screen">
+	<?=$_styles;?>
 </head>
 <body>
 
@@ -85,6 +88,10 @@
 	</div>
 
 
+    <!-- Large modal -->
+    <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    
+    </div>
 	<!-- Bootstrap core JavaScript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
