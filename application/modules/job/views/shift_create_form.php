@@ -50,7 +50,7 @@
 	<div class="form-group" id="f_venue">
 		<label for="venue" class="col-lg-3 control-label">Venue</label>
 		<div class="col-lg-6">
-			<?=modules::run('attribute/venue/field_input', 'venue');?>
+			<?=modules::run('attribute/venue/field_select', 'venue_id');?>
 		</div>
 		<div class="col-lg-3 help-block">
 			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/venue/create" target="_blank">Create Venue</a>

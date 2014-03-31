@@ -98,23 +98,6 @@ class Ajax extends MX_Controller {
 			$breaks[] = $break_time;
 			$filter_data['break_time'] = json_encode($breaks);
 		}
-		if ($data['venue'])
-		{
-			$venue = modules::run('attribute/venue/get_venue_by_name', $data['venue']);
-			if (!$venue)
-			{
-				echo json_encode(array('ok' => false, 'error_id' => 'venue'));
-				return;
-			}
-			else
-			{
-				$filter_data['venue_id'] = $venue['venue_id'];
-			}
-		}
-		else
-		{
-			$filter_data['venue_id'] = $data['venue'];
-		}
 		
 		if ($data['supervisor'])
 		{
@@ -128,6 +111,7 @@ class Ajax extends MX_Controller {
 		}
 		
 		$filter_data['role_id'] = $data['role_id'];
+		$filter_data['venue_id'] = $data['venue_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
 		$filter_data['payrate_id'] = $data['payrate_id'];
 		#$filter_data['payrate_type'] = $data['payrate_type'];

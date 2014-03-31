@@ -69,6 +69,20 @@ class Venue extends MX_Controller {
 		$this->load->view('venues/field_input', isset($data) ? $data : NULL);
 	}
 	
+	function field_select($field_name, $field_value=null)
+	{
+		$venues = $this->venue_model->get_venues();
+		$array = array();
+		foreach($venues as $venue)
+		{
+			$array[] = array(
+				'value' => $venue['venue_id'],
+				'label' => $venue['name']
+			);
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
 	function dropdown($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;
