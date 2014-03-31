@@ -578,6 +578,21 @@ class Staff extends MX_Controller {
 		$data['staffs'] = $this->staff_model->search_staff_by_name();
 		$this->load->view('field_input', isset($data) ? $data : NULL);
 	}
+	
+	function field_select($field_name, $field_value=null)
+	{
+		$staffs = $this->staff_model->search_staff_by_name();
+		$array = array();
+		foreach($staffs as $staff)
+		{
+			$array[] = array(
+				'value' => $staff['user_id'],
+				'label' => $staff['first_name'] . ' ' . $staff['last_name']
+			);
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
 	/**
 	*	@desc this functio to get single image of staff with url on the image
 	*   @name profile_image

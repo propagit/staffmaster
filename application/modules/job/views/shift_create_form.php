@@ -97,7 +97,7 @@
 	<div class="form-group" id="f_supervisor">
 		<label for="supervisor" class="col-lg-3 control-label">Supervisor</label>
 		<div class="col-lg-6">
-			<?=modules::run('staff/field_input', 'supervisor');?>
+			<?=modules::run('staff/field_select', 'supervisor_id');?>
 		</div>
 	</div>	
 	

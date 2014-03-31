@@ -102,6 +102,7 @@ class Staff_model extends CI_Model {
 		if ($keyword != '') {
 			$sql .= " AND CONCAT(first_name, ' ', last_name) LIKE '%" . $keyword . "%'";
 		}
+		$sql .= " ORDER BY first_name ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

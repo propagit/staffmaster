@@ -1612,7 +1612,6 @@ ol.example li.placeholder:before {
 }
 /* select 2 ovewrite to match our system styles */
 .select2-container{
-	margin-top:-8px;
 	padding:0;	
 }
 .select2-container .select2-choice{

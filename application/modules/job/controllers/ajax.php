@@ -99,21 +99,12 @@ class Ajax extends MX_Controller {
 			$filter_data['break_time'] = json_encode($breaks);
 		}
 		
-		if ($data['supervisor'])
-		{
-			$supervisor = modules::run('staff/get_staff_by_name', $data['supervisor']);
-			if (!$supervisor) {
-				echo json_encode(array('ok' => false, 'error_id' => 'supervisor'));
-				return;
-			} else {
-				$filter_data['supervisor_id'] = $supervisor['user_id'];
-			}
-		}
 		
 		$filter_data['role_id'] = $data['role_id'];
 		$filter_data['venue_id'] = $data['venue_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
 		$filter_data['payrate_id'] = $data['payrate_id'];
+		$filter_data['supervisor_id'] = $data['supervisor_id'];
 		#$filter_data['payrate_type'] = $data['payrate_type'];
 		
 		$count = $data['count'];

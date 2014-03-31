@@ -6,22 +6,17 @@
 		</div>
 		<div class="col-md-7">
 			<div class="pull-right">
-				<form role="form">
-						<div class="form-group">
-							<label for="exampleInputEmail1">Search Job Campaigns</label>
-							<div class="input-group">
-								<?=modules::run('job/field_input', 'job_name');?>
-								<span class="input-group-addon"><i class="fa fa-search"></i></span>
-							</div>
-						</div>
-						<a href="<?=base_url();?>job/create" class="btn btn-core"><i class="fa fa-plus"></i> Create New Campaign</a>
-					</form>
+					<div class="form-group">
+						<label for="exampleInputEmail1">Search Job Campaigns</label>
+						<?=modules::run('job/field_select', 'job_name');?>
+					</div>
+					<a href="<?=base_url();?>job/create" class="btn btn-core"><i class="fa fa-plus"></i> Create New Campaign</a>
 			</div>
 			<? 
 				$shifts_count = modules::run('job/count_job_shifts', $job['job_id']);
 				$completed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_FINISHED); 
 				$confirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_CONFIRMED); 
-				$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED); 
+				$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED);
 				$unassigned = modules::run('job/count_job_shifts', $job['job_id'], null, '0'); 
 				$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED); 
 				$completed_percentage = 0;

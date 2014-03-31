@@ -217,6 +217,20 @@ class Job extends MX_Controller {
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
 	
+	function field_select($field_name, $field_value=null)
+	{
+		$jobs = $this->job_model->search_jobs();
+		$array = array();
+		foreach($jobs as $job)
+		{
+			$array[] = array(
+				'value' => $job['job_id'],
+				'label' => $job['name']
+			);
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
 	function field_input($field_name, $field_value=null, $size=null) {
 		$data['field_name'] = $field_name;
 		$data['jobs'] = $this->job_model->search_jobs();
