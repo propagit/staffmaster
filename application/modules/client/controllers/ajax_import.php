@@ -5,12 +5,12 @@
 *	@controller: ajax_venue
 */
 
-class Ajax_venue extends MX_Controller {
+class Ajax_import extends MX_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('venue_model');
+		$this->load->model('client_model');
 		$this->load->library('excel');
 	}
 	
@@ -48,7 +48,7 @@ class Ajax_venue extends MX_Controller {
 		$data['samples'] = $row2;
 		$data['total_records'] = $highestRow - 1;
 		$data['upload_id'] = $upload_id;
-		$this->load->view('attribute/venues/import/configure_view', isset($data) ? $data : NULL);
+		$this->load->view('client/import/configure_view', isset($data) ? $data : NULL);
 	}
 	
 	function verify_import()
@@ -103,7 +103,7 @@ class Ajax_venue extends MX_Controller {
 		$data['error_report_file'] = $this->generate_error_report($errors);
 		$data['records'] = json_encode($records);
 		$data['upload_id'] = $upload_id;
-		$this->load->view('attribute/venues/import/verify_view', isset($data) ? $data : NULL);
+		$this->load->view('client/import/verify_view', isset($data) ? $data : NULL);
 	}
 	
 	function commit_upload()
@@ -111,48 +111,78 @@ class Ajax_venue extends MX_Controller {
 		$records = $this->input->post('records');
 		foreach($records as $data)
 		{
-			$locationn_id = 0;
-			$location = modules::run('attribute/location/get_location_by_name', $data['location']);
-			if ($location)
+			$status = 0;
+			if (strtolower($data['status']) == 'active')
 			{
-				$location_id = $location['location_id'];
-				$area = modules::run('attribute/location/get_child_location_by_name', $location_id, $data['area']);
-				if ($area)
-				{
-					$location_id = $area['location_id'];
-				}
+				$status = CLIENT_ACTIVE;
 			}
-			
-			$data_venue = array(
-				'location_id' => $location_id,
-				'name' => $data['name'],
+			$user_data = array(
+				'status' => $status,
+				'is_admin' => 0,
+				'is_staff' => 0,
+				'is_client' => 1,
+				'email_address' => $data['email_address'],
+				'username' => $data['email_address'],
+				'full_name' => $data['full_name'],
 				'address' => $data['address'],
 				'suburb' => $data['suburb'],
+				'city' => $data['city'],
+				'state' => $data['state'],
 				'postcode' => $data['postcode'],
-				'state' => $location['state']
+				'country' => $data['country'],
+				'phone' => $data['phone']
 			);
-			$this->venue_model->insert_venue($data_venue);
+			$user_id = $this->user_model->insert_user($user_data);
+		
+			$client_data = array(
+				'user_id' => $user_id,
+				'external_client_id' => $data['external_client_id'],
+				'company_name' => $data['company_name'],
+				'abn' => $data['abn']
+			);
+			$client_id = $this->client_model->insert_client($client_data);
 		}
 	}
 	
 	function validate_field($key, $value)
 	{
+		if ($key == 'company_name')
+		{
+			return ($value != '');
+		}
 		if ($key == 'postcode')
 		{
 			return ($value == '' || (is_numeric((int)$value) && (int)$value < 10000 && (int)$value > 999));
 		}
-		if ($key == 'location')
+		if ($key == 'state')
 		{
-			if ($value == '') { return true; }
-			if (modules::run('attribute/location/get_location_by_name', $value))
-			{
-				return true;	
+			$states = modules::run('common/get_states');
+			$array = array();
+			foreach($states as $state) {
+				$array[] = strtolower($state['code']);
+				$array[] = strtolower($state['name']);
 			}
-			return false;
+			return ($value == '' || in_array(strtolower($value), $array));
 		}
-		if ($key == 'area')
+		if ($key == 'country')
 		{
-			if ($value == '') { return true; }
+			$countries = modules::run('common/get_countries');
+			$array = array();
+			foreach($countries as $country) {
+				$array[] = strtolower($country['code']);
+				$array[] = strtolower($country['name']);
+			}
+			return ($value == '' || in_array(strtolower($value), $array));
+		}
+		if ($key == 'email')
+		{
+			$this->load->helper('email');
+			return valid_email($value);
+		}
+		if ($key == 'status')
+		{
+			$status = array('active','inactive');
+			return in_array(strtolower($value), $status);
 		}
 		return true;
 	}
@@ -179,7 +209,7 @@ class Ajax_venue extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $errors[$i]['column']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $errors[$i]['key']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $errors[$i]['value']);
-			$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), 'Unrecognized location. Refer to the add venue / location dropdown for available locations');
+			$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), $this->get_sample($errors[$i]['key']));
 		}
 		
 		$objPHPExcel->getActiveSheet()->setTitle('error_report_');
@@ -187,5 +217,30 @@ class Ajax_venue extends MX_Controller {
 		$file_name = "error_report_" . time() . ".xlsx";
 		$objWriter->save("./exports/error/" . $file_name);
 		return $file_name;
+	}
+	
+	function get_sample($key)
+	{
+		if ($key == 'company_name')
+		{
+			return 'Required field';
+		}
+		if ($key == 'postcode')
+		{
+			return '4 digit number';
+		}
+		if ($key == 'state')
+		{
+			return 'VIC, NSW, QLD, TAS, ACT, SA, WA, NT';
+		}
+		if ($key == 'country')
+		{
+			return '';
+		}
+		if ($key == 'email')
+		{
+			return 'name@example.com';
+		}
+		return true;
 	}
 }

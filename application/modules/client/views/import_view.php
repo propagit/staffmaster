@@ -1,9 +1,9 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Venues</h2>
-		 <p>Venues are the location in which jobs take place. You can add a venue via the form below or add multiple venues at once by importing a venue list as a .CSV file (<a href="#">Download Sample File</a>). Enter your venue address accurately to ensure your map data gets plotted correctly. Staff select locations they can work in their profile information which relates to the locations of venues.</p>
-    </div>
+		<h2>Add Client</h2>
+		<p>Add clients using below form or import multiple clients.</p>
+	</div>
 </div>
 <!--end top box-->
 
@@ -12,13 +12,13 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
             <ul class="nav nav-tabs tab-respond">
-            	<li class="pull-right"><a href="<?=base_url();?>attribute/venue">Add New Venue</a></li>
-				<li class="mobile-tab active"><a>Import Venues</a></li>
+            	<li class="pull-right"><a href="<?=base_url();?>client/add">Add New Client</a></li>
+				<li class="mobile-tab active"><a>Import Clients</a></li>
 			</ul>
             <br />
 			<h2>Select File</h2>
 			<br />
-			<form class="form-inline" role="form" id="upload-venue-csv-form" enctype="multipart/form-data" action="<?=base_url();?>attribute/ajax_venue/upload_csv" method="POST">
+			<form class="form-inline" role="form" id="upload-client-csv-form" enctype="multipart/form-data" action="<?=base_url();?>client/ajax_import/upload_csv" method="POST">
 			<div class="pull-left">
 				<div class="fileupload fileupload-staff" data-provides="fileupload" >        
 					<span class="btn btn-file">
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button type="button" class="btn btn-core btn-block" id="btn-upload-venue-csv"><i class="fa fa-upload"></i> Upload</button>
+				<button type="button" class="btn btn-core btn-block" id="btn-upload-client-csv"><i class="fa fa-upload"></i> Upload</button>
 			</div>
 			<div class="clearfix"></div>
 			<div class="alert alert-danger hide" id="upload-result"></div>
@@ -45,8 +45,8 @@
 
 <script>
 $(function(){
-	$('#btn-upload-venue-csv').click(function(){
-		$('#upload-venue-csv-form').ajaxSubmit(function(json){
+	$('#btn-upload-client-csv').click(function(){
+		$('#upload-client-csv-form').ajaxSubmit(function(json){
 			json = $.parseJSON(json);
 			if (!json.ok) {
 				$('#upload-result').html(json.msg);
@@ -65,7 +65,7 @@ function configure_import(upload_id)
 	preloading($('#wp-configure-import'));
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>attribute/ajax_venue/configure_import",
+		url: "<?=base_url();?>client/ajax_import/configure_import",
 		data: {upload_id: upload_id},
 		success: function(html) {
 			loaded($('#wp-configure-import'), html);

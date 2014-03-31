@@ -103,6 +103,16 @@ class Location extends MX_Controller {
 		return $this->location_model->get_locations($parent_id);
 	}
 	
+	function get_location_by_name($name)
+	{
+		return $this->location_model->get_location_by_name($name);
+	}
+	
+	function get_child_location_by_name($parent_id, $name)
+	{
+		return $this->location_model->get_child_location_by_name($parent_id, $name);
+	}
+	
 	function field_select($field_name, $field_value=null,$child_value=null, $size=null)
 	{
 		$data['field_name'] = $field_name;
