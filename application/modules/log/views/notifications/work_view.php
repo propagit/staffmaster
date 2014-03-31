@@ -12,9 +12,9 @@ switch($log['action'])
 
 ?>
 <? if ($log['action'] == 'applied') { ?>
-<span class="activity-confirmation"><i class="fa fa-info-circle"></i> Book Me </span>
+<span class="activity-confirmation"><i class="fa fa-thumbs-o-up"></i> Book Me </span>
 <? } else { ?>
-<span class="activity-warning"><i class="fa fa-thumbs-o-up"></i> Unbook Me</span>
+<span class="activity-warning"><i class="fa fa-thumbs-o-down"></i> Unbook Me</span>
 <? } ?>
  - 
 <b><?=$user['first_name'] . ' ' . $user['last_name'];?></b> 

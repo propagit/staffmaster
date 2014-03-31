@@ -1,13 +1,6 @@
 <h2>Activity Log</h2>
 <p>Your activity log will inform you of information updates</p>        
-
-<div class="table_action" >		
-    <ul class="nav nav-tabs nav-action activity-log-nav">
-        <li >
-            <a id="activiy-log" href="#">New <span class="badge danger" style="margin-left:10px;"> 1 </span></a>					
-        </li>
-    </ul>			
-</div>                
+               
 <div id="activity_lists" class="clear">        
         <div id="wrapper-outer">
             <div id="wrap-list">
@@ -17,7 +10,7 @@
                         <span class="wk_date"><?=date('d', strtotime($log['created_on']));?></span>
                         <span class="wk_month"><?=date('M', strtotime($log['created_on']))?></span>
                     </div>
-                    <div class="col-md-9 col-xs-8 wrap-list-activity">
+                    <div class="col-md-10 col-xs-8 wrap-list-activity">
                     	<?=modules::run('log/display_notification', $log);?>
                     </div>                                
                 </div>
