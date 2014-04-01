@@ -34,6 +34,7 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-lightbulb-o', 'title' => 'Training Centre', 'sub' => array(
 		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
+		array('path' => 'brief', 'icon' => 'fa-book', 'title' => 'Create Brief'),
 		array('path' => '#', 'icon' => 'fa-question', 'title' => 'User Guide'),
 		array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
 		array('path' => '#', 'icon' => 'fa-folder-open-o', 'title' => 'Training Centre'),
@@ -42,7 +43,7 @@ $menu = array(
 		array('path' => '#', 'icon' => 'fa-bar-chart-o', 'title' => 'Create Survey'),
 		array('path' => '#', 'icon' => 'fa-youtube-play', 'title' => 'Create Video'),
 		array('path' => '#', 'icon' => 'fa-check', 'title' => 'Create Test'),
-		array('path' => '#', 'icon' => 'fa-file-o', 'title' => 'Create Webpage'),
+		array('path' => '#', 'icon' => 'fa-file-o', 'title' => 'Create Webpage')
 	)),
 	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
 		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),

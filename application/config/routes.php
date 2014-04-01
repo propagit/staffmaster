@@ -60,7 +60,7 @@ $route['login'] = 'auth/login_user';
 $route['logout'] = 'auth/logout_user';
 
 
-$modules = array('job', 'staff', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email_template', 'report|forum|log');
+$modules = array('job', 'staff', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email_template', 'report|forum|log','brief');
 $path = implode('|', $modules);
 $route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
 $route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
