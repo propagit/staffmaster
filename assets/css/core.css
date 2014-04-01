@@ -1527,6 +1527,74 @@ ol.example li.placeholder:before {
 	width: 55px;
 }
 
+/* brief */
+/* admin only */
+.brief-functions{
+	padding-top:10px;
+}
+
+.brief-func-dl{
+	font-size:16px;	
+}
+.brief-func-dl dt{
+	padding-top:20px;
+	font-weight:800;
+}
+.brief-func-dl dt:first-child{
+	padding-top:0;	
+}
+.brief-func-dl dd{
+	color:#00bbf8;	
+	font-weight:600;
+	cursor:pointer;
+}
+.brief-preview{
+	box-shadow: 0 4px 10px #aaa;
+	background-color: #fff;
+	padding: 25px;
+	margin-top: 10px;
+	float: left;
+	width: 100%;
+	margin-bottom:20px;	
+}
+.brief-elements{
+	margin-top:20px;	
+}
+.brief-add-btn-wrap{
+	margin-top:15px;
+	float: left;
+	width: 100%;
+	display:none;	
+}
+.brief-floating-box{
+	float:left;
+	width:100%;	
+}
+.remove-min-height{
+	min-height:inherit;	
+}
+/* brief preview */
+.brief-body{
+	margin:40px 0;
+}
+.brief-table,
+.brief-body h1,
+.brief-body p,
+.brief-body img{
+	margin-bottom:25px;	
+}
+.brief-body h1{
+	margin-top: 0;
+	font-size: 40px;
+	font-weight: 900;
+	font-family: 'Lato', sans-serif;
+	letter-spacing: -1px;
+	color: #3d3d3d;
+}
+
+.brief-body img{
+	max-width:100%;
+}
 @media(max-width:1500px){
 	.messages .message-img{
 		width:100%;
@@ -1645,4 +1713,10 @@ ol.example li.placeholder:before {
 .action-nav-with-pagination{
 	width: auto;
 	margin-top: 47px;	
+}
+.transparent-bg{
+	background-color:transparent !important;	
+}
+.grey-text{
+	color:#3d3d3d;	
 }
