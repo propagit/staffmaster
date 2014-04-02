@@ -1,7 +1,7 @@
 <hr />
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_venues);?></b> results</p>
-<ul class="pagination pull">
+<ul class="pagination custom-pagination no-action-menu pull">
 <?=modules::run('common/create_pagination',count($total_venues),VENUES_PER_PAGE,$current_page)?>
 </ul>
  <table class="table table-bordered table-hover table-middle table-expanded">

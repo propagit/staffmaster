@@ -21,12 +21,14 @@
 				case 4:$color = 'danger';break;	
 			} */
 	?>
-    <div class="col-md-3 remove-gutters">
-   		 <div class="survey-result-stat"><?=$pr->answer;?> (<?=$percentage?>%)</div> 	
-    </div>
-    <div class="col-md-9 remove-gutters">
-        <div class="progress survey-bar">
-          <div class="progress-bar progress-bar-<?=$color;?>" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <?=$percentage?>%"></div>
+    <div class="col-md-12 remove-gutters">
+        <div class="col-md-3 poll-question remove-gutters">
+             <div class="survey-result-stat"><?=$pr->answer;?> (<?=$percentage?>%)</div> 	
+        </div>
+        <div class="col-md-9 remove-gutters">
+            <div class="progress survey-bar">
+              <div class="progress-bar progress-bar-<?=$color;?>" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: <?=$percentage?>%"></div>
+            </div>
         </div>
     </div>
     <?php }}?>

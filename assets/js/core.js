@@ -309,3 +309,7 @@ var help = {
 $(function(){
 	help.go_to_top('#go-to-top');	
 });
+
+$( document ).ajaxComplete(function() {
+   init_select();
+});

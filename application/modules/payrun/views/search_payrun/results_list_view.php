@@ -1,7 +1,7 @@
 <hr />
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_payruns);?></b> results</p>
-<ul class="pagination pull">
+<ul class="pagination custom-pagination no-action-menu pull">
 <?=modules::run('common/create_pagination',count($total_payruns),PAYRUN_PER_PAGE,$current_page)?>
 </ul>
 <? if (count($payruns) > 0) { ?>

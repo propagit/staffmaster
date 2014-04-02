@@ -1,7 +1,7 @@
 <hr />
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_staff);?></b> results</p>
-<ul class="pagination pull">
+<ul class="pagination custom-pagination pull">
 <?=modules::run('common/create_pagination',count($total_staff),STAFF_PER_PAGE,$current_page)?>
 </ul>
 <?php

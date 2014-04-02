@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="left"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><?=$elm->element_content;?></a></td>
+                                <td class="left"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><?=$elm->document_name;?></a></td>
                                 <td class="center"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><i class="fa fa-download grey-text"></i></a></td>
                             </tr>
 

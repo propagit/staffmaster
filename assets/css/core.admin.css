@@ -340,8 +340,8 @@ a.default {
 }
 #menu-search-client-result-action,
 #menu-search-staff-result-action{
-	top:41px;
-	margin-bottom:41px;	
+	/* top:41px;
+	margin-bottom:41px;	 */
 }
 .staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
 	background-color:transparent;	
@@ -494,6 +494,13 @@ span.dash-invoice-value{
 	-moz-box-shadow: rgba(255,255,255,0.1) 0 1px 0;
 	box-shadow: rgba(255,255,255,0.1) 0 1px 0;
 }
+
+/* brief */
+.create-new-brief{
+	margin-bottom:40px;	
+}
+
+
 
 /* begin responsive */
 @media(max-width:1200px){

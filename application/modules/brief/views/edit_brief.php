@@ -36,9 +36,13 @@
         
         <div class="col-md-8 white-box">
             <div class="inner-box brief-floating-box">
-            	<h2>Your Brief Elements</h2>
+            	<h2>
+                	<a href="#" class="cur-brief-name" data-type="text"  data-pk="<?=$brief_id;?>" data-title="Brief Name">
+						<?=$brief->name;?>
+                    </a>
+                </h2>
                 <p>As you add your brief elements, it will appear here.</p>
-            	<form id="add-brief-form"  enctype="multipart/form-data" action="<?=base_url();?>brief/ajax/add_brief" method="POST">
+            	<form id="add-brief-form"  enctype="multipart/form-data" action="<?=base_url();?>brief/ajax/add_brief_elements" method="POST">
                     <div class="brief-elements" id="brief-generator">
                        
                     </div>
@@ -48,6 +52,7 @@
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-10">
                             <button class="btn btn-info" type="submit" id="add-brief-element">Add</button>
+                            <button class="btn btn-info" type="button" id="cancel-brief-element">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -79,6 +84,15 @@ $(function(){
 		return false;
 	});
 	
+	$('.cur-brief-name').editable({
+		url: '<?=base_url();?>brief/ajax/edit_brief_name',		
+	});
+	
+	//cancel
+	$('#cancel-brief-element').on('click',function(){
+		empty_brief_generator_box();
+	});
+	
 });//ready
 
 function empty_brief_generator_box()
@@ -91,6 +105,7 @@ function brief_elements(element_type)
 {
 	var element = '';
 	var element_label = '';
+	var form_row = '';
 	switch(element_type){
 		case 'header':
 			element = '<input type="text" class="form-control brief-elem" name="brief_content"  />';
@@ -108,9 +123,17 @@ function brief_elements(element_type)
 		break;
 	}
 	
+	//identify element type and add to form so that it can be read while adding to database.
 	$('#brief-element-type').val(element_type);
+	//show add button
 	$('.brief-add-btn-wrap').show();
-	var form_row = '<div class="form-group remove-min-height"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">'+element_label+'</label><div class="col-sm-10">'+element+'</div></div>';
+	
+	//since file download has two input element this will behave a bit differently
+	if(element_type == 'file-download'){
+		form_row = '<div class="form-group"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">Document Name</label><div class="col-sm-10"><input maxlength="255" type="text" class="form-control brief-elem" name="document_name"  /></div></div><div class="form-group remove-min-height"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">'+element_label+'</label><div class="col-sm-10">'+element+'</div></div>';
+	}else{
+		form_row = '<div class="form-group remove-min-height"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">'+element_label+'</label><div class="col-sm-10">'+element+'</div></div>';	
+	}
 	$('#brief-generator').html(form_row);
 	
 	if(element_type == 'desc-text'){

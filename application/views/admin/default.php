@@ -127,11 +127,12 @@
 
 </div>
 
+<!-- Normal modal -->
+<div class="modal fade bs-modal-sml" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+</div>
+
+
 <footer></footer>
-<script>
-$(function(){
-	init_select();
-});
-</script>
 </body>
 </html>
