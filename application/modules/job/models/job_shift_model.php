@@ -391,4 +391,67 @@ class Job_shift_model extends CI_Model {
 			return $jobs;
 		}	
 	}
+	
+	/**
+	*	@name: add_brief
+	*	@desc: Performs Database operation - add brief to shift
+	*	@access: public
+	*	@param: (array) brief info 
+	*	@return: insert id
+	*/
+	function add_brief($data)
+	{
+		$this->db->insert('shift_brief',$data);
+		return $this->db->insert_id();
+	}
+	
+	/**
+	*	@name: get_shift_briefs
+	*	@desc: Performs Database operation - to get brief attached to a shift
+	*	@access: public
+	*	@param: ([int] shift id)
+	*	@return: briefs attached to a shift
+	*/
+	function get_shift_briefs($shift_id)
+	{
+		$sql = "SELECT b.*, sb.shift_brief_id 
+				FROM brief b, shift_brief sb 
+				WHERE b.brief_id = sb.brief_id  
+				AND sb.shift_id = ".$shift_id;
+				
+		return $this->db->query($sql)->result();
+	}
+	
+	/**
+	*	@name: delete_shift_brief
+	*	@desc: Permanently removes a brief from a shift
+	*	@access: public
+	*	@param: ([int] shift_brief_id)
+	*	@return: rows affected 
+	*/
+	function delete_shift_brief($shift_brief_id)
+	{
+		$this->db->where('shift_brief_id', $shift_brief_id);
+		return $this->db->delete('shift_brief');
+	}
+	
+	/**
+	*	@name: get_shift_brief_by_shift_and_brief_id
+	*	@desc: Performs Database operation - to get brief attached to a shift by shift id and brief id
+	*	@access: public
+	*	@param: ([int] shift_id, brief_id )
+	*	@return: Database result
+	*/
+	function get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id)
+	{
+		$shift_brief = $this->db->where('shift_id',$shift_id)
+						  		->where('brief_id',$brief_id)
+						  		->get('shift_brief')
+						  		->row();
+		return $shift_brief;
+	}
+	
+	
+	
+	
 }

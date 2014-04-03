@@ -82,12 +82,33 @@ class Brief extends MX_Controller {
 	{
 		$brief_name = $this->input->post('brief_name');
 		$data_brief = array(
-				'name' => $brief_name,
-				'status' => 1
+				'name' => $brief_name
 				);
 		$insert_id = $this->brief_model->add_brief($data_brief);
 		redirect('brief/edit/'.$insert_id);
 	}
+	
+	/**
+	*	@name: select_brief
+	*	@desc: Creates new brief
+	*	@access: public
+	*	@param: ([via post] brief info such as brief name etc)
+	*	@return: Redirects to edit page where user will be provided with tools to add elements to the brief.
+	*/
+	function brief_select_field($field_name, $field_value=null)
+	{
+		$briefs = $this->brief_model->get_all_brief(true);
+		$array = array();
+		foreach($briefs as $brief)
+		{
+			$array[] = array(
+				'value' => $brief->brief_id,
+				'label' => $brief->name
+			);
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
 
 
 

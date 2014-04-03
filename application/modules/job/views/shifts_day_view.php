@@ -116,7 +116,7 @@
 			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><i class="fa fa-male"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="editable-click"><i class="fa fa-info-circle"></i></a>
+			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>brief/ajax/load_add_brief_single_shift/<?=$shift['shift_id'];?>"><i class="fa fa-info-circle"></i></a>
 		</td>
 		<td class="center" width="40">
 			<a class="editable-click" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-comment-o"></i></a>

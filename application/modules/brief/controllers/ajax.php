@@ -40,7 +40,8 @@ class Ajax extends MX_Controller {
 		//if a file has been uploaded
 		//this ignores previous files that has been uploaded as the system is cleaned every six month
 		if(isset($_FILES['userfile']['name'])){
-
+			//create main folders
+			modules::run('upload/create_upload_folders','./uploads/brief/');
 			$path = $_FILES['userfile']['name'];
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
 			$img_ext_chk = array('jpg','png','gif','jpeg');
@@ -56,7 +57,7 @@ class Ajax extends MX_Controller {
 		    }
 			$salt = 'brief'.$brief_id;
 			//create folders
-			$folder_name = modules::run('common/create_folders','./uploads/brief',$salt);
+			$folder_name = modules::run('upload/create_folders','./uploads/brief',$salt);
 			$config['upload_path'] = $main_path.$folder_name;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|csv';
 			$config['max_width']  = '2000';
@@ -109,10 +110,10 @@ class Ajax extends MX_Controller {
 		$this->load->view('create_brief_modal', isset($data) ? $data : NULL);	
 	}
 	/**
-	*	@name: load_create_brief_modal
-	*	@desc: This loads the preview of the brief.
+	*	@name: edit_brief_name
+	*	@desc: Ajax function for inline editing the brief header
 	*	@access: public
-	*	@param: ([int] brief id)
+	*	@param: ([vai post] brief id and new name)
 	*	@return: Loads a preview of brief
 	*/
 	function edit_brief_name()
@@ -157,7 +158,81 @@ class Ajax extends MX_Controller {
 			echo 'failed';	
 		}
 	}
+	/**
+	*	@name: delete_brief
+	*	@desc: Deletes brief and all its elements and documents.
+	*	@access: public
+	*	@param: ([via post] brief id)
+	*	@return: success or failed status
+	*/
+	function delete_brief()
+	{
+		$brief_id = $this->input->post('brief_id');
+		//delete files
+		$path = './uploads/brief/'.md5('brief'.$brief_id);
+		modules::run('upload/delete_dir_and_contents',$path);
+		//delete brief
+		$this->brief_model->delete_brief($brief_id);
+		//delete brief elements
+		$this->brief_model->delete_brief_elements_by_brief_id($brief_id);
+		echo 'success';
+	}
+	/**
+	*	@name: edit_brief_element
+	*	@desc: Ajax function for inline editing the brief element
+	*	@access: public
+	*	@param: ([vai post] brief element id and new content)
+	*	@return: Loads a preview of brief
+	*/
+	function edit_brief_element()
+	{
+		$brief_element_id = $this->input->post('pk');
+		$content = $this->input->post('value');
+		$data = array(
+					'element_content' => $content,
+					'modified' => date('Y-m-d H:i:s')
+					);
+		# Update brief element
+		$this->brief_model->update_brief_elements($brief_element_id, $data);
+	}
+	/**
+	*	@name: delete_brief
+	*	@desc: Deletes brief and all its elements and documents.
+	*	@access: public
+	*	@param: ([via post] brief id)
+	*	@return: success or failed status
+	*/
+	function delete_brief_element()
+	{
+		$brief_element_id = $this->input->post('brief_element_id');
+		$brief_element_info = $this->brief_model->get_brief_elements_by_brief_element_id($brief_element_id);
+
+		if($brief_element_info->element_type == 'document' || $brief_element_info->element_type == 'image'){
+			//delete files
+			$path = './uploads/brief/'.md5('brief'.$brief_element_info->brief_id).'/'.$brief_element_info->element_content;
+			if(file_exists($path)){
+				unlink($path);
+			}
+		}
+
+		//delete brief element
+		$this->brief_model->delete_brief_elements_by_brief_element_id($brief_element_id);
+		echo 'success';
+	}
+
+	#begin brief add to shift
 	
-	
+	/**
+	*	@name: load_add_brief_single_shift
+	*	@desc: This loads the UI to add brief to a single shift
+	*	@access: public
+	*	@param: ([int] shift_id)
+	*	@return: Loads a preview of brief
+	*/
+	function load_add_brief_single_shift($shift_id)
+	{
+		$data['shift_id'] = $shift_id;
+		$this->load->view('add_brief_single_shift_modal', isset($data) ? $data : NULL);	
+	}
 	
 }

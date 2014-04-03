@@ -55,4 +55,120 @@ class Upload extends MX_Controller {
 		return $this->upload_model->get_upload($upload_id);
 	}
 	
+	/**
+	*	@name: create_upload_folders
+	*	@desc: Creates main folder for documents in the upload folders. This not the folder with md5 hash names. These folders have distinct meaning such as staff_picture etc.
+	*	@access: public
+	*	@param: (string) path of the folder, (array) array of subfolders if applicable
+	*	@return: null
+	*/
+	function create_upload_folders($path,$subfolders = null)
+	{	
+		if($path){
+			$dir = $path;
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			
+			$sub_dir = '';
+			if($subfolders){
+				foreach($subfolders as $folder){
+					$sub_dir = $dir.'/'.$folder;	
+					if(!is_dir($sub_dir))
+					{
+					  mkdir($sub_dir);
+					  chmod($sub_dir,0777);
+					  $fp = fopen($sub_dir.'/index.html', 'w');
+					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+					  fclose($fp);
+					}		
+				}
+			}
+		}
+		
+	}
+	
+	/**
+	*	@name: create_folders
+	*	@desc: Creates folder for documents
+	*	@access: public
+	*	@param: (string) path of the folder, (string) salt, (array) array of subfolders if applicable
+	*	@return: returns the folder name to the control that called this function
+	*/
+	function create_folders($path,$salt,$subfolders = null)
+	{	
+		//create staff specific folders
+		if($path && $salt){
+			$newfolder = md5($salt);
+			$dir = $path."/".$newfolder;
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			
+			$sub_dir = '';
+			if($subfolders){
+				foreach($subfolders as $folder){
+					$sub_dir = $dir.'/'.$folder;	
+					if(!is_dir($sub_dir))
+					{
+					  mkdir($sub_dir);
+					  chmod($sub_dir,0777);
+					  $fp = fopen($sub_dir.'/index.html', 'w');
+					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+					  fclose($fp);
+					}		
+				}
+			}
+			return $newfolder;
+		}
+		
+	}
+	
+	/**
+	*	@name: resize_photo
+	*	@desc: Create thumbnails for images
+	*	@access: public
+	*	@param: (string) path of the folder, (string) salt, (array) array of subfolders if applicable
+	*	@return: returns the folder name to the control that called this function
+	*/
+	function resize_photo($name,$directory,$sub,$width,$height,$maintain_ratio = TRUE) 
+	{
+		$config = array();
+		$config['source_image'] = $directory."/".$name;
+		$config['create_thumb'] = FALSE;
+		$config['new_image'] = $directory."/".$sub."/".$name;
+		$config['maintain_ratio'] = $maintain_ratio;
+		$config['quality'] = 100;
+		$config['width'] = $width;
+		$config['height'] = $height;
+		$this->load->library('image_lib');
+		$this->image_lib->initialize($config);
+		$this->image_lib->resize();		
+		$this->image_lib->clear();	
+	}
+	
+	/**
+	*	@name: delete_dir_and_contents
+	*	@desc: Deletes the document contents,sub folders included and the directory iteself
+	*	@access: public
+	*	@param: (string) path of the folder
+	*	@return: NULL
+	*/
+	function delete_dir_and_contents($path)
+	{
+		$this->load->helper("file"); // load the helper
+		delete_files($path, true); // delete all files/folders
+		rmdir($path);	
+	}
+	
 }

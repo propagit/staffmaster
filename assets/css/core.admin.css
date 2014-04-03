@@ -499,6 +499,26 @@ span.dash-invoice-value{
 .create-new-brief{
 	margin-bottom:40px;	
 }
+.brief-elements-edit-wrap{
+	display: none;
+	width: auto;
+	position: absolute;
+	margin-top: -64px;
+	right: 33px;
+}
+.brief-preview-row:hover{
+	background:#e9e9e9;
+}
+.brief-preview-row:hover .brief-elements-edit-wrap{
+	display:block;	
+}
+.add-brief-to-shift-modal-form{
+	margin-top:20px;	
+}
+.add-brief-to-shift-select-wrap .select2-container{
+	margin-right:10px;
+	width:50%;
+}
 
 
 

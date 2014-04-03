@@ -398,46 +398,6 @@ class Common extends MX_Controller {
 		$this->load->view('money_format',isset($data) ? $data : NULL);
 	}
 	
-	/**
-	*	@name: _create_folders
-	*	@desc: Creates folder for documents
-	*	@access: private
-	*	@param: (string) path of the folder, (string) salt, (array) array of subfolders if applicable
-	*	@return: returns the folder name to the control that called this function
-	*/
-	function create_folders($path,$salt,$subfolders = null)
-	{	
-		//create staff specific folders
-		if($path && $salt){
-			$newfolder = md5($salt);
-			$dir = $path."/".$newfolder;
-			if(!is_dir($dir))
-			{
-			  mkdir($dir);
-			  chmod($dir,0777);
-			  $fp = fopen($dir.'/index.html', 'w');
-			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-			  fclose($fp);
-			}
-			
-			$sub_dir = '';
-			if($subfolders){
-				foreach($subfolders as $folder){
-					$sub_dir = $dir.'/'.$folder;	
-					if(!is_dir($sub_dir))
-					{
-					  mkdir($sub_dir);
-					  chmod($sub_dir,0777);
-					  $fp = fopen($sub_dir.'/index.html', 'w');
-					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-					  fclose($fp);
-					}		
-				}
-			}
-			return $newfolder;
-		}
-		
-	}
 	
 
 }

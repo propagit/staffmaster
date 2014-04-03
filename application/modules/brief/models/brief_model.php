@@ -31,6 +31,22 @@ class Brief_model extends CI_Model {
 		}
 		return false;
 	}
+	
+	/**
+	*	@name: get_all_brief
+	*	@desc: Performs Database operation - to get all briefs
+	*	@access: public
+	*	@param: ([bool] status )
+	*	@return: brief info or false if no brief elements exists
+	*/
+	function get_all_brief($active = false)
+	{
+		if($active){
+			$this->db->where('status',1);	
+		}
+		$query = $this->db->get('brief');
+		return $query->result();
+	}
 	/**
 	*	@name: update_brief
 	*	@desc: Performs Database operation - updates brief
@@ -88,6 +104,23 @@ class Brief_model extends CI_Model {
 		return false;
 	}
 	/**
+	*	@name: get_brief_elements_by_brief_element_id
+	*	@desc: Performs Database operation - to get brief elements by brief element id
+	*	@access: public
+	*	@param: ([int] brief_element_id)
+	*	@return: list of brief elements or false if no brief elements exists
+	*/
+	function get_brief_elements_by_brief_element_id($brief_element_id)
+	{
+		$brief_element = $this->db->where('brief_element_id',$brief_element_id)
+								   ->get('brief_elements')
+								   ->row();
+		if($brief_element){
+			return $brief_element;	
+		}
+		return false;
+	}
+	/**
 	*	@name: update_brief_elements
 	*	@desc: Performs Database operation - updates brief elements
 	*	@access: public
@@ -125,5 +158,44 @@ class Brief_model extends CI_Model {
 		
 		$query = $this->db->get('brief');
 		return $query->result();
+	}
+	
+	/**
+	*	@name: delete_brief
+	*	@desc: Permanently removes a brief from the system
+	*	@access: public
+	*	@param: ([int] brief_id)
+	*	@return: rows affected 
+	*/
+	function delete_brief($brief_id)
+	{
+		$this->db->where('brief_id', $brief_id);
+		return $this->db->delete('brief');
+	}
+	
+	/**
+	*	@name: delete_brief_elements_by_brief_id
+	*	@desc: Permanently removes all brief elements of a brief
+	*	@access: public
+	*	@param: ([int] brief_id)
+	*	@return: rows affected 
+	*/
+	function delete_brief_elements_by_brief_id($brief_id)
+	{
+		$this->db->where('brief_id', $brief_id);
+		return $this->db->delete('brief_elements');
+	}
+	
+	/**
+	*	@name: delete_brief_elements_by_brief_element_id
+	*	@desc: Permanently removes a single brief element 
+	*	@access: public
+	*	@param: ([int] brief_element_id)
+	*	@return: rows affected 
+	*/
+	function delete_brief_elements_by_brief_element_id($brief_element_id)
+	{
+		$this->db->where('brief_element_id', $brief_element_id);
+		return $this->db->delete('brief_elements');
 	}
 }

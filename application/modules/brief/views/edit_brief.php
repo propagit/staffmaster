@@ -42,7 +42,7 @@
                     </a>
                 </h2>
                 <p>As you add your brief elements, it will appear here.</p>
-            	<form id="add-brief-form"  enctype="multipart/form-data" action="<?=base_url();?>brief/ajax/add_brief_elements" method="POST">
+            	<form id="add-brief-elements-form"  enctype="multipart/form-data" action="<?=base_url();?>brief/ajax/add_brief_elements" method="POST">
                     <div class="brief-elements" id="brief-generator">
                        
                     </div>
@@ -51,7 +51,7 @@
                     <div class="form-group brief-add-btn-wrap">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-10">
-                            <button class="btn btn-info" type="submit" id="add-brief-element">Add</button>
+                            <button class="btn btn-info" type="button" id="add-brief-element">Add</button>
                             <button class="btn btn-info" type="button" id="cancel-brief-element">Cancel</button>
                         </div>
                     </div>
@@ -73,8 +73,15 @@ $(function(){
 	
 	load_brief_preview(<?=$brief_id;?>);
 	
-	$(document).on('submit','#add-brief-form',function(){
+	$('#add-brief-element').on('click',function(){
+		if(help.validate_form('add-brief-elements-form')){
+			$('#add-brief-elements-form').submit();	
+		}
+	});
+	
+	$(document).on('submit','#add-brief-elements-form',function(){
 		preloading($('body'));
+		update_ckeditor();
 		$(this).ajaxSubmit(function(html){
 			$('#wrapper_loading').remove();
 			$('#brief-id').val(html);
@@ -108,7 +115,7 @@ function brief_elements(element_type)
 	var form_row = '';
 	switch(element_type){
 		case 'header':
-			element = '<input type="text" class="form-control brief-elem" name="brief_content"  />';
+			element = '<input type="text" class="form-control brief-elem" name="brief_content" data="required"  />';
 			element_label = 'Header';
 		break;	
 		
@@ -130,7 +137,7 @@ function brief_elements(element_type)
 	
 	//since file download has two input element this will behave a bit differently
 	if(element_type == 'file-download'){
-		form_row = '<div class="form-group"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">Document Name</label><div class="col-sm-10"><input maxlength="255" type="text" class="form-control brief-elem" name="document_name"  /></div></div><div class="form-group remove-min-height"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">'+element_label+'</label><div class="col-sm-10">'+element+'</div></div>';
+		form_row = '<div class="form-group"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">Document Name</label><div class="col-sm-10"><input maxlength="255" type="text" class="form-control brief-elem" name="document_name"  data="required" /></div></div><div class="form-group remove-min-height"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">'+element_label+'</label><div class="col-sm-10">'+element+'</div></div>';
 	}else{
 		form_row = '<div class="form-group remove-min-height"><label for="brief-header" class="col-sm-2 control-label remove-left-padding">'+element_label+'</label><div class="col-sm-10">'+element+'</div></div>';	
 	}
@@ -167,6 +174,36 @@ function update_ckeditor()
 	for ( instance in CKEDITOR.instances ) {
             CKEDITOR.instances[instance].updateElement();
     }	
+}
+
+function delete_brief_element(brief_element_id)
+{
+	preloading($('#brief-preview-container'));
+	$.ajax({
+	type: "POST",
+	url: "<?=base_url();?>brief/ajax/delete_brief_element",
+	data: {brief_element_id:brief_element_id},
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			load_brief_preview(<?=$brief_id;?>);
+		}
+	});	
+}
+
+function edit_brief_element(obj)
+{
+	preloading($('#brief-preview-container'));
+	var new_content = obj.html();
+	var brief_element_id = obj.attr('data-pk');
+	$.ajax({
+	type: "POST",
+	url: "<?=base_url();?>brief/ajax/edit_brief_element",
+	data: {pk:brief_element_id,value:new_content},
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			load_brief_preview(<?=$brief_id;?>);
+		}
+	});	
 }
 
 </script>

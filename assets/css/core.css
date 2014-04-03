@@ -1580,6 +1580,9 @@ ol.example li.placeholder:before {
 .brief-body{
 	margin:40px 0;
 }
+.brief-table{
+	background:#fff;	
+}
 .brief-table,
 .brief-body h1,
 .brief-body p,
@@ -1597,6 +1600,10 @@ ol.example li.placeholder:before {
 
 .brief-body img{
 	max-width:100%;
+}
+.modal-link{
+	font-size:14px;
+	font-weight:600;	
 }
 /* pagination */
 .custom-pagination{

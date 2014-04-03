@@ -102,15 +102,11 @@ class Ajax extends MX_Controller {
 		if($conversation->document_type == 'image'){
 			//delete images
 			$path = './uploads/conversation/img/'.md5('forum'.$topic_id);
-			$this->load->helper("file"); // load the helper
-			delete_files($path, true); // delete all files/folders
-			rmdir($path);
+			modules::run('upload/delete_dir_and_contents',$path);
 		}elseif($conversation->document_type == 'file'){
 			//delete documents
 			$path = './uploads/conversation/docs/'.md5('forum'.$topic_id);
-			$this->load->helper("file"); // load the helper
-			delete_files($path, true); // delete all files/folders
-			rmdir($path);
+			modules::run('upload/delete_dir_and_contents',$path);
 		}
 		
 		//delete replies
@@ -213,8 +209,7 @@ class Ajax extends MX_Controller {
 		  if($_FILES['userfile']['name']){
 			  //create main folders if not exist
 			  $main_sub_folders = array('img','docs');
-			  $this->_create_upload_folders('./uploads/conversation/',$main_sub_folders);
-		
+			  modules::run('upload/create_upload_folders','./uploads/conversation/',$main_sub_folders);
 			  $path = $_FILES['userfile']['name'];
 			  $ext = pathinfo($path, PATHINFO_EXTENSION);
 			  $img_ext_chk = array('jpg','png','gif','jpeg');
@@ -228,7 +223,7 @@ class Ajax extends MX_Controller {
 				  $subfolders = array('thumb');
 				  $salt = 'forum'.$topic_id;
 				  //create folders
-				  $folder_name = $this->_create_folders('./uploads/conversation/img',$salt,$subfolders);
+				  $folder_name = modules::run('upload/create_folders','./uploads/conversation/img',$salt,$subfolders);
 				  $file_path = $main_path.'img/';
 				  $config['upload_path'] = $file_path.$folder_name;
 				  $config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -240,7 +235,7 @@ class Ajax extends MX_Controller {
 				  //documents
 				  $salt = 'forum'.$topic_id;
 				  //create folders
-				  $folder_name = $this->_create_folders('./uploads/conversation/docs',$salt);
+				  $folder_name = modules::run('upload/create_folders','./uploads/conversation/docs',$salt);
 				  $file_path = $main_path.'docs/';
 				  $config['upload_path'] = $file_path.$folder_name;
 				  $config['allowed_types'] = 'pdf|doc|docx|csv';
@@ -266,7 +261,7 @@ class Ajax extends MX_Controller {
 				  //create thumbnail if file type is image
 				  if (in_array($ext,$img_ext_chk)){
 					  $thumb_path = $main_path.'img/'.$folder_name;
-					  $this->_resize_photo($file_name,$thumb_path,"thumb",450,338);
+					   modules::run('upload/resize_photo',$file_name,$thumb_path,"thumb",450,338);
 				  }
 			  }
 		  }
@@ -323,108 +318,7 @@ class Ajax extends MX_Controller {
 		
 		echo 'success';
 	}
-	/**
-	*	@name: _create_upload_folders
-	*	@desc: Creates main folder for documents in the upload folders. This not the folder with md5 hash names. These folders have distinct meaning such as staff_picture etc.
-	*	@access: private
-	*	@param: (string) path of the folder, (array) array of subfolders if applicable
-	*	@return: null
-	*/
-	function _create_upload_folders($path,$subfolders = null)
-	{	
-		//create staff specific folders
-		if($path){
-			$dir = $path;
-			if(!is_dir($dir))
-			{
-			  mkdir($dir);
-			  chmod($dir,0777);
-			  $fp = fopen($dir.'/index.html', 'w');
-			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-			  fclose($fp);
-			}
-			
-			$sub_dir = '';
-			if($subfolders){
-				foreach($subfolders as $folder){
-					$sub_dir = $dir.'/'.$folder;	
-					if(!is_dir($sub_dir))
-					{
-					  mkdir($sub_dir);
-					  chmod($sub_dir,0777);
-					  $fp = fopen($sub_dir.'/index.html', 'w');
-					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-					  fclose($fp);
-					}		
-				}
-			}
-		}
-		
-	}
-	/**
-	*	@name: _create_folders
-	*	@desc: Creates folder for documents
-	*	@access: private
-	*	@param: (string) path of the folder, (string) salt, (array) array of subfolders if applicable
-	*	@return: returns the folder name to the control that called this function
-	*/
-	function _create_folders($path,$salt,$subfolders = null)
-	{	
-		//create staff specific folders
-		if($path && $salt){
-			$newfolder = md5($salt);
-			$dir = $path."/".$newfolder;
-			if(!is_dir($dir))
-			{
-			  mkdir($dir);
-			  chmod($dir,0777);
-			  $fp = fopen($dir.'/index.html', 'w');
-			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-			  fclose($fp);
-			}
-			
-			$sub_dir = '';
-			if($subfolders){
-				foreach($subfolders as $folder){
-					$sub_dir = $dir.'/'.$folder;	
-					if(!is_dir($sub_dir))
-					{
-					  mkdir($sub_dir);
-					  chmod($sub_dir,0777);
-					  $fp = fopen($sub_dir.'/index.html', 'w');
-					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-					  fclose($fp);
-					}		
-				}
-			}
-			return $newfolder;
-		}
-		
-	}
 	
-	
-	/**
-	*	@name: _resize_photo
-	*	@desc: Create thumbnails for images
-	*	@access: private
-	*	@param: (string) path of the folder, (string) salt, (array) array of subfolders if applicable
-	*	@return: returns the folder name to the control that called this function
-	*/
-	function _resize_photo($name,$directory,$sub,$width,$height,$maintain_ratio = TRUE) 
-	{
-		$config = array();
-		$config['source_image'] = $directory."/".$name;
-		$config['create_thumb'] = FALSE;
-		$config['new_image'] = $directory."/".$sub."/".$name;
-		$config['maintain_ratio'] = $maintain_ratio;
-		$config['quality'] = 100;
-		$config['width'] = $width;
-		$config['height'] = $height;
-		$this->load->library('image_lib');
-		$this->image_lib->initialize($config);
-		$this->image_lib->resize();		
-		$this->image_lib->clear();	
-	}
 	
 	
 }

@@ -81,4 +81,20 @@ function change_status(obj)
 		}
 	});	
 }
+
+function delete_brief(brief_id)
+{
+	preloading($('#ajax-brief-lists'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>brief/ajax/delete_brief",
+		data: {brief_id:brief_id},
+		success: function(html) {
+			if(html == 'success'){
+				$('#brief-row-'+brief_id).remove();
+			}
+			$('#wrapper_loading').remove();
+		}
+	});
+}
 </script>

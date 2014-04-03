@@ -158,4 +158,64 @@ class Ajax_shift extends MX_Controller {
 		$shift = $this->job_shift_model->get_job_shift($shift_ids[0]);
 		echo json_encode(array('ok' => true, 'job_id' => $shift['job_id']));
 	}
+	/**
+	*	@name: load_shift_briefs
+	*	@desc: Ajax function to load the shift's existing briefs
+	*	@access: public
+	*	@param: ([via post] shift id)
+	*	@return: Loads existing briefs of a shift
+	*/
+	function load_shift_briefs()
+	{
+		$shift_id = $this->input->post('shift_id');	
+		$data['briefs'] = $this->job_shift_model->get_shift_briefs($shift_id);
+		echo $this->load->view('shift/brief/ajax_existing_shift_brief_list', isset($data) ? $data : NULL);	
+	}
+	/**
+	*	@name: load_shift_briefs
+	*	@desc: Ajax function to load the shift's existing briefs
+	*	@access: public
+	*	@param: ([via post] shift id)
+	*	@return: Loads existing briefs of a shift
+	*/
+	function add_brief()
+	{
+		$shift_id = $this->input->post('shift_id');
+		$brief_id = $this->input->post('existing_brief');
+		$msg = '';
+		if($shift_id && $brief_id){
+			$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+			if(!$shift_brief_exist){
+				$data = array(
+							'shift_id' => $shift_id,
+							'brief_id' => $brief_id
+							);	
+				$this->job_shift_model->add_brief($data);
+				$msg = 'success';
+			}else{
+				$msg = 'duplicate';	
+			}
+		}else{
+			$msg = 'failed';	
+		}
+		echo $msg;
+		
+	}
+	
+	/**
+	*	@name: delete_brief
+	*	@desc: Deletes brief and all its elements and documents.
+	*	@access: public
+	*	@param: ([via post] brief id)
+	*	@return: success or failed status
+	*/
+	function delete_shift_brief()
+	{
+		$shift_brief_id = $this->input->post('shift_brief_id');
+
+		//delete brief element
+		$this->job_shift_model->delete_shift_brief($shift_brief_id);
+		echo 'success';
+	}
+	
 }
