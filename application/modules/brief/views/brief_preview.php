@@ -41,6 +41,8 @@
                                 <td class="center"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><i class="fa fa-download grey-text"></i></a></td>
                             </tr>
 				  <?php
+				      // if the next element is a document as well attach this with the previous document 
+					  // else proceed with loop
 				  	  $count = $i;
 					  while($doc_loop){
 						  $count++;
@@ -104,7 +106,7 @@ $(function(){
 	
 	//update ck content
 	$('.ck-edit').focusout(function(){
-		edit_brief_element($(this));	
+		edit_brief_element($(this));
 	});
 	
 	

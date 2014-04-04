@@ -436,6 +436,20 @@ class Job_shift_model extends CI_Model {
 	}
 	
 	/**
+	*	@name: delete_shift_brief
+	*	@desc: Permanently removes a brief from a shift
+	*	@access: public
+	*	@param: ([int] shift_brief_id)
+	*	@return: rows affected 
+	*/
+	function delete_shift_brief_by_shift_and_brief_id($shift_id,$brief_id)
+	{
+		$this->db->where('shift_id', $shift_id)
+				 ->where('brief_id',$brief_id);
+		return $this->db->delete('shift_brief');
+	}
+	
+	/**
 	*	@name: get_shift_brief_by_shift_and_brief_id
 	*	@desc: Performs Database operation - to get brief attached to a shift by shift id and brief id
 	*	@access: public

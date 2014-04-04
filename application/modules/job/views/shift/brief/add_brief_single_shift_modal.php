@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-12">
             <div class="modal-body">
-            	<h4 class="modal-body-title">Add Brief <a class="modal-link" target="_blank" href="<?=base_url();?>brief"><i class="fa fa-pencil"></i> Create New Brief</a></h4>
+            	<h4 class="modal-body-title">Add Brief <a class="modal-link" target="_blank" href="<?=base_url();?>brief">&nbsp;&nbsp;<i class="fa fa-pencil"></i> Create New Brief</a></h4>
                 <div class="form-group add-brief-to-shift-modal-form">
 					<label for="staff_name" class="col-md-2 control-label remove-gutters">Existing Briefs</label>
 					<div class="col-md-10 add-brief-to-shift-select-wrap">
@@ -18,7 +18,7 @@
                         <button type="button" class="btn btn-core" id="add-brief-to-shift"><i class="fa fa-plus"></i> Add</button>
 					</div>
 				</div>
-                
+                <h4 class="modal-body-title">Briefs Attached To This Shift</h4>
                 <div id="ajax-existing-brief"></div>
                 
                 <div class="form-group add-top-margin-20 hide"  id="msg-duplicate">
