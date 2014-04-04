@@ -107,6 +107,22 @@ class Staff_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function check_staff_time_collision($staff_id, $shift)
+	{
+		$start_time = $shift['start_time'];
+		$finish_time = $shift['finish_time'];
+		$sql = "SELECT * FROM job_shifts
+							WHERE shift_id != " . $shift['shift_id'] . "
+							AND status != " . SHIFT_DELETED . "
+							AND staff_id = $staff_id 
+							AND job_date = '" . $shift['job_date'] . "'
+							AND ((start_time >= $start_time AND start_time < $finish_time) 
+									OR (finish_time > $start_time AND finish_time <= $finish_time)
+									OR (start_time <= $start_time AND finish_time >= $finish_time))";
+		$query = $this->db->query($sql);
+		return $query->num_rows();
+	}
+	
 	function search_staffs($params = array(),$total=false)
 	{
 		$records_per_page = STAFF_PER_PAGE;
@@ -114,33 +130,75 @@ class Staff_model extends CI_Model {
 				FROM user_staffs s 
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status > " . USER_DELETED;
 		
-		if(isset($params['keyword']) && $params['keyword'] != '') { $sql .= " AND (u.first_name LIKE '%" . $params['keyword'] . "%' OR u.last_name LIKE '%" . $params['keyword'] . "%' OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $params['keyword'] . "%')"; }
-		if(isset($params['rating']) && $params['rating'] != ''){ $sql .= " AND s.rating >= ".$params['rating'];}
-		if(isset($params['status']) && $params['status'] != ''){ $sql .= " AND u.status = ".$params['status'];}
-		if(isset($params['gender']) && $params['gender'] != ''){ $sql .= " AND s.gender = '".$params['gender']."'";}
-		if(isset($params['state']) && $params['state'] != ''){ $sql .= " AND u.state = '".$params['state']."'";}
+		if (isset($params['keyword']) && $params['keyword'] != '') 
+		{ 
+			$sql .= " AND (u.first_name LIKE '%" . $params['keyword'] . "%' 
+							OR u.last_name LIKE '%" . $params['keyword'] . "%' 
+							OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $params['keyword'] . "%')"; 
+		}
+		if (isset($params['rating']) && $params['rating'] != '')
+		{ 
+			$sql .= " AND s.rating >= " . $params['rating'];
+		}
+		if (isset($params['status']) && $params['status'] != '')
+		{ 
+			$sql .= " AND u.status = " . $params['status'];
+		}
+		if (isset($params['gender']) && $params['gender'] != '')
+		{ 
+			$sql .= " AND s.gender = '" . $params['gender'] . "'";
+		}
+		if (isset($params['state']) && $params['state'] != '')
+		{ 
+			$sql .= " AND u.state = '" . $params['state'] . "'";
+		}
 		
-		// Group
-		if(isset($params['group_id']) && $params['group_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staff_groups.user_id as sg_uid from attribute_groups, staff_groups WHERE  attribute_groups.group_id = staff_groups.attribute_group_id AND group_id = ".$params['group_id'].")";}
+		# Group
+		if (isset($params['group_id']) && $params['group_id'] != '')
+		{ 
+			$sql .= " AND s.user_id IN 
+						(SELECT staff_groups.user_id as sg_uid 
+							FROM attribute_groups, staff_groups 
+							WHERE  attribute_groups.group_id = staff_groups.attribute_group_id 
+							AND group_id = " . $params['group_id'] . ")";
+		}
 		
-		//Role
-		if(isset($params['role_id']) && $params['role_id'] != ''){ $sql .= " AND s.user_id IN (SELECT staff_roles.user_id as sr_uid from attribute_roles, staff_roles WHERE  attribute_roles.role_id = staff_roles.attribute_role_id AND role_id = ".$params['role_id'].")";}	
+		# Role
+		if (isset($params['role_id']) && $params['role_id'] != '')
+		{ 
+			$sql .= " AND s.user_id IN 
+						(SELECT staff_roles.user_id as sr_uid 
+							FROM attribute_roles, staff_roles 
+							WHERE attribute_roles.role_id = staff_roles.attribute_role_id 
+							AND role_id = " . $params['role_id'] . ")";
+		}	
 		
-		//Location	
-		//if location id is set use this to filter the search
-		if(isset($params['location_id']) && $params['location_id'] != ''){ 
-			$sql .= " AND s.locations LIKE '%".$params['location_id']."%'";
-		}else{
-			//if location id is not set use parent location id from posted data to filter the search
-			if(isset($params['location_parent_id']) && $params['location_parent_id'] != ''){
-				$sql .= " AND s.locations LIKE '%".$params['location_parent_id']."%'";
+		# Location (if location id is set use this to filter the search)
+		if (isset($params['location_id']) && $params['location_id'] != '')
+		{ 
+			$sql .= " AND s.locations LIKE '%" . $params['location_id'] . "%'";
+		}
+		else
+		{
+			# If location id is not set use parent location id from posted data to filter the search
+			if(isset($params['location_parent_id']) && $params['location_parent_id'] != '')
+			{
+				$sql .= " AND s.locations LIKE '%" . $params['location_parent_id'] . "%'";
 			}
 		}
 		
-		//Availability
-		if(isset($params['availability']) && $params['availability'] != ''){ $sql .= " AND s.user_id IN (SELECT user_staff_availability.user_id as usa_uid FROM user_staff_availability WHERE day = ".$params['availability']." AND value = 1 GROUP BY user_id)";}
+		# Availability
+		if (isset($params['availability']) && $params['availability'] != '')
+		{ 
+			$sql .= " AND s.user_id IN 
+						(SELECT user_staff_availability.user_id as usa_uid 
+							FROM user_staff_availability 
+							WHERE day = " . $params['availability'] . "
+							AND value = 1 
+							GROUP BY user_id)";
+		}
 		
-		//Age
+		# Age
 		if(isset($params['age_groups']) && $params['age_groups'] != ''){ 
 			$cur_date = date('Y-m-d');
 			switch($params['age_groups']){

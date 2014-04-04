@@ -99,7 +99,7 @@
 		<td>
 			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
-				echo $staff['first_name'] . ' ' . $staff['last_name'];				
+				echo $staff['first_name'] . ' ' . $staff['last_name'];		
 			?>
 			<? } else { ?>
 			No Staff Assigned

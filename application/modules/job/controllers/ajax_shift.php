@@ -14,9 +14,28 @@ class Ajax_shift extends MX_Controller {
 		$this->load->model('staff/staff_model');
 	}
 	
-	function search_staffs() {
+	function search_staffs() 
+	{
 		$params = $this->input->post();
-		$data['staffs'] = $this->staff_model->search_staffs($params);
+		$staffs = $this->staff_model->search_staffs($params);
+		
+		$filter_staffs = array();
+		if (isset($params['is_available']) && $params['is_available'] == 1)
+		{
+			$shift = $this->job_shift_model->get_job_shift($params['shift_id']);
+			foreach($staffs as $staff)
+			{
+				if (!$this->staff_model->check_staff_time_collision($staff['user_id'], $shift)) 
+				{
+					$filter_staffs[] = $staff;
+				}
+			}
+		}
+		else
+		{
+			$filter_staffs = $staffs;
+		}
+		$data['staffs'] = $filter_staffs;
 		$this->load->view('shift/search_staff/results_table_view', isset($data) ? $data : NULL);
 	}
 	
