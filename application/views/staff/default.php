@@ -126,10 +126,5 @@
     <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     
     </div>
-	<!-- Bootstrap core JavaScript
-	================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
-	<script src="<?=base_url();?>assets/js/bootstrap.confirm.js"></script>
 </body>
 </html>

@@ -28,6 +28,7 @@ class Timesheet_staff extends MX_Controller {
 	
 	function main_view() {
 		$data['timesheets'] = $this->timesheet_staff_model->get_timesheets();
+		$data['supervised_timesheets'] = $this->timesheet_staff_model->get_supervised_timesheets();
 		$this->load->view('staff/main_view', isset($data) ? $data : NULL);
 	}
 	
