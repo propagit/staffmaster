@@ -6,7 +6,7 @@
 <thead>
 	<tr>
 		<th>Description</th>
-		<th class="center" width="100">Staff Cost</th>
+		<th class="center" width="100">Cost</th>
 		<th class="center" width="80">Tax</th>
 		<td class="center" width="40"></td>
 	</tr>
@@ -23,13 +23,11 @@
 	<? if (count($paid_expenses) > 0) { ?>
 	<tr class="success">
 		<th colspan="4">Paid Expenses</th>
-		<th class="center"><a href="<?=base_url();?>expense/view/<?=$paid_expenses[0]['timesheet_id'];?>" target="_blank"><i class="fa fa-eye"></i></a></th>
 	</tr>
 	<? foreach($paid_expenses as $expense) { $tax = 1; if ($expense['tax'] == GST_ADD) { $tax = 1.1; } ?>
 	<tr class="success">
 		<td><?=$expense['description'];?></td>
 		<td class="center">$<?=$expense['staff_cost'] * $tax;?></td>
-		<td class="center">$<?=$expense['client_cost'] * $tax;?></td>
 		<td class="center"><?=modules::run('common/reverse_field_gst', $expense['tax']);?></td>
 		<td class="center"></td>
 	</tr>

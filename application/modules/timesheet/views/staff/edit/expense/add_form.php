@@ -10,7 +10,7 @@
 	</div>
 	<div class="row">
 		<div class="form-group" id="f_staff_cost">
-			<label class="col-lg-3 control-label">Staff Cost</label>
+			<label class="col-lg-3 control-label">Cost</label>
 			<div class="col-lg-4">
 				<div class="input-group">
 					<span class="input-group-addon">$</span>
