@@ -97,7 +97,7 @@
 							</div>
 							<label class="col-md-2 control-label">Staff Name</label>
 							<div class="col-md-4">
-								<input type="text" class="form-control" name="staff_name" placeholder="enter staff name..." />
+								<input type="text" class="form-control" name="staff_name" placeholder="enter staff name..." value="<?=$search_shift_filters['staff_name'];?>" />
 							</div>
 						</div>
 					</div>

@@ -94,11 +94,14 @@
 			<a href="#" class="shift_finish_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['finish_time']);?>" data-title="Shift finish date/time"><?=date('H:i', $shift['finish_time']);?></a> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-danger">*</span>': '';?>
 		</td>
 		<td class="center">
-			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('common/break_time', $shift['break_time']);?></a>
+			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
 		<td class="center"><a href="#" class="shift_payrate" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['payrate_id'];?>"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
 		<td>
-			<a id="shift_staff_<?=$shift['shift_id'];?>" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
+			<? if($shift['staff_id']) { ?>
+			<i class="fa fa-clock-o staff_hours" data-toggle="popover" onclick="load_staff_hours(this)" data-pk="<?=$shift['staff_id'];?>"></i> 
+			<? } ?>
+			<a id="shift_staff_<?=$shift['shift_id'];?>" data-toggle="popover" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
 				echo $staff['first_name'] . ' ' . $staff['last_name'];		
 			?>
@@ -135,6 +138,7 @@
 <div id="wrapper_shift_break"></div>
 <div id="wrapper_shift_staff" class="hide"></div>
 <div id="wrapper_shift_supervisor" class="hide"></div>
+<div id="wrapper_staff_hours" class="hide"></div>
 
 <script>
 $(function(){
@@ -156,24 +160,7 @@ $(function(){
 		var pk = $(this).find('.shift_uniform').attr('data-pk');
 		$(this).find('.content-disabled').html('<a class="btn btn-default" onclick="unlock_shift(' + pk + ')"><i class="fa fa-lock"></i></a>');
 	});
-	$('.shift_venue').on('shown', function(e, editable) {
-		$('#wrapper_js').find('.popover-break').hide();
-	});
-	$('.shift_role').on('shown', function(e, editable) {
-		$('#wrapper_js').find('.popover-break').hide();
-	});
-	$('.shift_uniform').on('shown', function(e, editable) {
-		$('#wrapper_js').find('.popover-break').hide();
-	});
-	$('.shift_payrate').on('shown', function(e, editable) {
-		$('#wrapper_js').find('.popover-break').hide();
-	});
-	$('.shift_start_time').on('shown', function(e, editable) {
-		$('#wrapper_js').find('.popover-break').hide();
-	});
-	$('.shift_finish_time').on('shown', function(e, editable) {
-		$('#wrapper_js').find('.popover-break').hide();
-	});
+	
 	$('.shift_venue').editable({
 		title: 'Start typing venue...',
 		name: 'venue',
@@ -241,6 +228,15 @@ $(function(){
         }
     });
     
+    $('body').on('click', function (e) {
+	    $('[data-toggle=popover]').each(function () {
+	        // hide any open popovers when the anywhere else in the body is clicked
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+    });
+    
     
     var tmp = $.fn.popover.Constructor.prototype.show;
 	$.fn.popover.Constructor.prototype.show = function () {
@@ -260,6 +256,17 @@ $(function(){
 			return $('#wrapper_shift_break').html();
 		}
 	});
+	$('.staff_hours').popover({
+		html: true,
+		placement: 'bottom',
+		trigger: 'manual',
+		selector: false,
+		title: 'Staff Working Hours',
+		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+		content: function(){
+			return $('#wrapper_staff_hours').html();
+		}		
+	})
 	$('.shift_staff').popover({
 		html: true,
 		placement: 'bottom',
@@ -348,6 +355,23 @@ function unlock_shift(pk) {
 		}
 	})
 	
+}
+function load_staff_hours(obj)
+{
+	$('#wrapper_staff_hours').html('');
+	$('#wrapper_js').find('.popover-break').hide();
+	var pk = $(obj).attr('data-pk');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax_shift/load_staff_hours",
+		data: {staff_id: pk},
+		success: function(html)
+		{
+			$('#wrapper_staff_hours').html(html);
+		}
+	}).done(function(){
+		$(obj).popover('show');
+	})
 }
 function load_shift_staff(obj) {
 	$('#wrapper_shift_staff').html('');

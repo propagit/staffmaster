@@ -81,4 +81,19 @@ class Shift extends MX_Controller {
 		}
 		return $text;
 	}
+	
+	function get_shift_second($shift)
+	{
+		$s = $shift['finish_time'] - $shift['start_time'];
+		$a = json_decode($shift['break_time']);
+		
+		if (count($a) > 0) 
+		{
+			foreach($a as $break)
+			{
+				$s -= $break->length;
+			}
+		}
+		return $s;
+	}
 }

@@ -165,7 +165,7 @@ class Staff_model extends CI_Model {
 		}
 		return true;
 	}
-	
+		
 	function search_staffs($params = array(),$total=false)
 	{
 		$records_per_page = STAFF_PER_PAGE;
