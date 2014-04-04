@@ -350,6 +350,19 @@ class Ajax extends MX_Controller {
 		$hour = $fields[2];
 		$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
 	}
+	
+	function update_availabilities()
+	{
+		$value = $this->input->post('value_avail');
+		$names = $this->input->post('names');
+		foreach($names as $name)
+		{
+			$fields = explode('-', $name);		
+			$day = $fields[1];
+			$hour = $fields[2];
+			$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
+		}
+	}
 	/**
 	*	@desc Displayes all the available groups in the system and the roles that has been asigned to the staff.
 	*

@@ -79,23 +79,29 @@ $(function(){
 			success: function(html) {}
 		})
 	})	
-	
+	var names = new Array();
+	var checks = new Array();
 	$('#form_update_availability .checkbox-sm').change(function(){
 		var $this = $(this);
 		if($(this).is(':checked')){var check=true; var num=1;}else{var check=false; var num=0;}
 		var value = $(this).val();
+		//preloading($('#availablity_data'));
 		$('.'+value).each(function(index){
 			this.checked = check;	
 			var name = $(this).attr('name');		
 			if($(this).is(':checked')){$(this).parent().addClass('available-color');$(this).parent().removeClass('unavailable-color');}
 			else{$(this).parent().removeClass('available-color');$(this).parent().addClass('unavailable-color');}					
-			$.ajax({
-				type: "POST",
-				url: "<?=base_url();?>staff/ajax/update_availability",
-				data: {value_avail:num, name: name, user_id: <?=$user_id;?>},
-				success: function(html) {}
-			})
+			names.push(name);
 		});
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>staff/ajax/update_availabilities",
+			data: {value_avail:num, names: names, user_id: <?=$user_id;?>},
+			success: function(html)
+			{
+				//loaded($('#availablity_data'));
+			}
+		})
 	});
 })
 </script>
