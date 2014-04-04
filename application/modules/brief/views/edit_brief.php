@@ -1,6 +1,8 @@
 <script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
 <script src="<?=base_url()?>assets/ckeditor/config.js"></script>
 <script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
+<script src="<?=base_url()?>assets/js/ui_effects/jquery.ui.effect.min.js"></script>
+<script src="<?=base_url()?>assets/js/ui_effects/jquery.ui.effect-highlight.min.js"></script>
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
@@ -192,7 +194,6 @@ function delete_brief_element(brief_element_id)
 
 function edit_brief_element(obj)
 {
-	preloading($('#brief-preview-container'));
 	var new_content = obj.html();
 	var brief_element_id = obj.attr('data-pk');
 	$.ajax({
@@ -200,8 +201,7 @@ function edit_brief_element(obj)
 	url: "<?=base_url();?>brief/ajax/edit_brief_element",
 	data: {pk:brief_element_id,value:new_content},
 		success: function(html) {
-			$('#wrapper_loading').remove();
-			load_brief_preview(<?=$brief_id;?>);
+			obj.effect("highlight", { color: "#ffff99" }, 1000);
 		}
 	});	
 }

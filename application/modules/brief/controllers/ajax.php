@@ -120,8 +120,11 @@ class Ajax extends MX_Controller {
 	{
 		$brief_id = $this->input->post('pk');
 		$name = $this->input->post('value');
+		//remove the "encoded_url" on production
+		//as "encoded_url" was put later to avoide db re import this is added so that it can be quickly updated
 		$data = array(
 					'name' => $name,
+					'encoded_url' => md5('brief_url'.$brief_id),
 					'modified' => date('Y-m-d H:i:s')
 					);
 		# Update brief
@@ -220,19 +223,6 @@ class Ajax extends MX_Controller {
 		echo 'success';
 	}
 
-	#begin brief add to shift
 	
-	/**
-	*	@name: load_add_brief_single_shift
-	*	@desc: This loads the UI to add brief to a single shift
-	*	@access: public
-	*	@param: ([int] shift_id)
-	*	@return: Loads a preview of brief
-	*/
-	function load_add_brief_single_shift($shift_id)
-	{
-		$data['shift_id'] = $shift_id;
-		$this->load->view('add_brief_single_shift_modal', isset($data) ? $data : NULL);	
-	}
 	
 }

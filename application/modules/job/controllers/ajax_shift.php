@@ -158,6 +158,34 @@ class Ajax_shift extends MX_Controller {
 		$shift = $this->job_shift_model->get_job_shift($shift_ids[0]);
 		echo json_encode(array('ok' => true, 'job_id' => $shift['job_id']));
 	}
+	
+	#begin brief add to shift
+	
+	/**
+	*	@name: load_add_brief_single_shift
+	*	@desc: This loads the UI to add brief to a single shift
+	*	@access: public
+	*	@param: ([int] shift_id)
+	*	@return: Loads a preview of brief
+	*/
+	function load_add_brief_single_shift($shift_id)
+	{
+		$data['shift_id'] = $shift_id;
+		$this->load->view('shift/brief/add_brief_single_shift_modal', isset($data) ? $data : NULL);	
+	}
+	/**
+	*	@name: load_add_brief_multi_shift
+	*	@desc: This loads the UI to add brief to a multiple shift
+	*	@access: public
+	*	@param: ([int] shift_id)
+	*	@return: Loads a preview of brief
+	*/
+	function load_add_brief_multi_shift($shift_ids)
+	{
+		$data['shift_ids'] = $shift_ids;
+		$this->load->view('shift/brief/add_brief_multi_shift_modal', isset($data) ? $data : NULL);	
+	}
+	
 	/**
 	*	@name: load_shift_briefs
 	*	@desc: Ajax function to load the shift's existing briefs
@@ -173,7 +201,7 @@ class Ajax_shift extends MX_Controller {
 	}
 	/**
 	*	@name: load_shift_briefs
-	*	@desc: Ajax function to load the shift's existing briefs
+	*	@desc: Ajax function to add a brief to a single shift
 	*	@access: public
 	*	@param: ([via post] shift id)
 	*	@return: Loads existing briefs of a shift
@@ -199,6 +227,62 @@ class Ajax_shift extends MX_Controller {
 			$msg = 'failed';	
 		}
 		echo $msg;
+		
+	}
+	/**
+	*	@name: add_brief_multi_shift
+	*	@desc: Ajax function to add a brief to a multiple shift
+	*	@access: public
+	*	@param: ([via post] shift ids, brief id)
+	*	@return: Status of the operation
+	*/
+	function add_brief_multi_shift()
+	{
+		$shift_ids = $this->input->post('shift_ids');
+		$brief_id = $this->input->post('existing_brief');
+		$msg = '';
+		$shift_ids_arr = explode('~',$shift_ids);
+		if($shift_ids_arr){
+			foreach($shift_ids_arr as $shift_id){
+				if($shift_id && $brief_id){
+					$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+					if(!$shift_brief_exist){
+						$data = array(
+									'shift_id' => $shift_id,
+									'brief_id' => $brief_id
+									);	
+						$this->job_shift_model->add_brief($data);
+					}
+				}
+			}
+		}
+		echo 'success';
+		
+	}
+	/**
+	*	@name: remove_brief_multi_shift
+	*	@desc: Ajax function to add remove a brief from multiple shift
+	*	@access: public
+	*	@param: ([via post] shift ids, brief id)
+	*	@return: Status of the operation
+	*/
+	function remove_brief_multi_shift()
+	{
+		$shift_ids = $this->input->post('shift_ids');
+		$brief_id = $this->input->post('existing_brief');
+		$msg = '';
+		$shift_ids_arr = explode('~',$shift_ids);
+		if($shift_ids_arr){
+			foreach($shift_ids_arr as $shift_id){
+				if($shift_id && $brief_id){
+					$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+					if($shift_brief_exist){
+						$this->job_shift_model->delete_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+					}
+				}
+			}
+		}
+		echo 'success';
 		
 	}
 	

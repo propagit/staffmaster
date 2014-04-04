@@ -9,7 +9,8 @@
 	$data = array(
 		array('value' => 'copy', 'label' => '<i class="fa fa-copy"></i> Copy Selected'),
 		array('value' => 'edit', 'label' => '<i class="fa fa-pencil-square-o"></i> Edit Selected'),
-		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Selected')
+		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Selected'),
+		array('value' => 'attach_brief', 'label' => '<i class="fa fa-info-circle"></i> Attach Brief')
 	);
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 	
@@ -116,7 +117,7 @@
 			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><i class="fa fa-male"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>brief/ajax/load_add_brief_single_shift/<?=$shift['shift_id'];?>"><i class="fa fa-info-circle"></i></a>
+			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_add_brief_single_shift/<?=$shift['shift_id'];?>"><i class="fa fa-info-circle"></i></a>
 		</td>
 		<td class="center" width="40">
 			<a class="editable-click" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-comment-o"></i></a>
@@ -317,6 +318,20 @@ $(function(){
 		if (selected_shifts.length > 0) {
 			$('.bs-modal-lg').modal({
 				remote: "<?=base_url();?>job/ajax_shift/load_update_modal/" + selected_shifts.join("~"),
+				show: true
+			});
+		}
+		
+	});
+	//attach brief to multiple shift
+	$('#menu-day-action ul li a[data-value="attach_brief"]').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		if (selected_shifts.length > 0) {
+			$('.bs-modal-sml').modal({
+				remote: "<?=base_url();?>job/ajax_shift/load_add_brief_multi_shift/" + selected_shifts.join("~"),
 				show: true
 			});
 		}

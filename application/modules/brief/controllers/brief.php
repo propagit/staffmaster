@@ -85,6 +85,9 @@ class Brief extends MX_Controller {
 				'name' => $brief_name
 				);
 		$insert_id = $this->brief_model->add_brief($data_brief);
+		//add encoded url to this brief
+		$this->brief_model->update_brief($insert_id,array('encoded_url' => md5('brief_url'.$insert_id)));
+		
 		redirect('brief/edit/'.$insert_id);
 	}
 	
