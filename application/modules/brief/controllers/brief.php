@@ -13,9 +13,10 @@ class Brief extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('brief_model');
+		$this->load->model('job/job_shift_model');
 	}
 	
-	function index($method='', $param='')
+	function index($method='', $param='',$param2='')
 	{
 		
 		switch($method)
@@ -25,6 +26,10 @@ class Brief extends MX_Controller {
 			break;
 			case 'create_brief':
 				$this->create_brief();
+			break;
+			//loads in briev viewer template
+			case 'view_brief':
+				$this->view_brief($param,$param2);
 			break;
 			default:
 				$this->list_view($param);
@@ -57,21 +62,6 @@ class Brief extends MX_Controller {
 		$this->load->view('edit_brief', isset($data) ? $data : NULL);
 	}
 	/**
-	*	@name: load_brief_preview
-	*	@desc: This loads the preview of the brief.
-	*	@access: public
-	*	@param: ([int] brief id)
-	*	@return: Loads a preview of brief
-	*/
-	function load_brief_preview($brief_id = NULL)
-	{
-		if($brief_id){
-			$data['brief_elements'] = $this->brief_model->get_brief_elements($brief_id);	
-		}
-		$this->load->view('brief_preview', isset($data) ? $data : NULL);
-	}
-	
-	/**
 	*	@name: create_brief
 	*	@desc: Creates new brief
 	*	@access: public
@@ -100,7 +90,7 @@ class Brief extends MX_Controller {
 	*/
 	function brief_select_field($field_name, $field_value=null)
 	{
-		$briefs = $this->brief_model->get_all_brief(true);
+		$briefs = $this->brief_model->get_all_brief();
 		$array = array();
 		foreach($briefs as $brief)
 		{
@@ -110,6 +100,35 @@ class Brief extends MX_Controller {
 			);
 		}
 		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
+	/**
+	*	@name: select_brief
+	*	@desc: Creates new brief
+	*	@access: public
+	*	@param: ([via post] brief info such as brief name etc)
+	*	@return: Redirects to edit page where user will be provided with tools to add elements to the brief.
+	*/
+	function view_brief($shift_id,$brief_id = 0)
+	{
+		$data['shift_info'] = $this->job_shift_model->get_shift_info($shift_id);
+		$data['briefs'] = $this->job_shift_model->get_shift_brief_by_shif_id($shift_id);
+		$data['brief_id'] = $brief_id;
+		$data['referer'] = ($_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : base_url());
+		
+		$this->load->view('brief_viewer/view_brief', isset($data) ? $data : NULL);	
+	}
+	
+	/**
+	*	@name: select_brief
+	*	@desc: Creates new brief
+	*	@access: public
+	*	@param: ([via post] brief info such as brief name etc)
+	*	@return: Redirects to edit page where user will be provided with tools to add elements to the brief.
+	*/
+	function check_brief_status($brief_id)
+	{
+		return $this->brief_model->check_brief_status($brief_id);
 	}
 	
 

@@ -115,6 +115,14 @@ $template['invoice'] = array(
 		'content'
 	)
 );
+$template['brief'] = array(
+	'template' => 'brief/brief_viewer',
+	'regions' => array(
+		'title',
+		'menu',
+		'content'
+	)
+);
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */

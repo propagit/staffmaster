@@ -3,7 +3,7 @@
 	<tr>
 		<th class="center" width="100">Created <i class="fa fa-sort sort-result" sort-by="created"></i></th>
 		<th class="left">Brief Name <i class="fa fa-sort sort-result" sort-by="name"></i></th>
-		<th class="center" width="120">Status <i class="fa fa-sort sort-result" sort-by="status"></i></th>
+		<th class="center" width="120">Status</th>
 		<th class="center" width="100">View-Edit</th>
 		<th class="center" width="100">Email</th>
         <th class="center" width="100">Delete</th>
@@ -21,7 +21,8 @@
 		</td>
 		<td class="left"><?=$brief->name;?></td>
 		<td class="center">
-        	<?=($brief->status == 0) ? '<button type="button" class="btn btn-danger brief-status" data-brief="'.$brief->brief_id.'">Inactive</button>' : '<button type="button" class="btn btn-success brief-status" data-brief="'.$brief->brief_id.'">Active</button>';?>
+        	<? $brief_status = modules::run('brief/check_brief_status',$brief->brief_id);?>
+        	<?=(!$brief_status) ? '<button type="button" class="btn btn-danger brief-status" data-brief="'.$brief->brief_id.'">Inactive</button>' : '<button type="button" class="btn btn-success brief-status" data-brief="'.$brief->brief_id.'">Active</button>';?>
         </td>
 		<td class="center"><a href="<?=base_url();?>brief/edit/<?=$brief->brief_id?>"><i class="fa fa-eye"></i></a></td>
 		<td class="center"><i class="fa fa-envelope-o email-invoice"></i></td>
@@ -44,9 +45,9 @@ $(function(){
 	});	
 	
 	//change status
-	$('.brief-status').on('click',function(){
+	/* $('.brief-status').on('click',function(){
 		change_status($(this));
-	});
+	}); */
 	
 	//delete brief
 	$('.delete-brief').on('click',function(){

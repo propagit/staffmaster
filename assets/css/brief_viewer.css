@@ -1,0 +1,13 @@
+/* CSS Document */
+@import url("core.admin.css");
+@import url("invoice.css");
+
+.brief-viewer-header{
+	margin-bottom:20px;	
+}
+.active-brief{
+	background-color:#dff0d8;
+}
+.view-brief{
+	cursor:pointer;	
+}

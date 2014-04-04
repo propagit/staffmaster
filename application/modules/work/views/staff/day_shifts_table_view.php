@@ -31,7 +31,7 @@
 		<td class="center"><?=date('H:i', $shift['finish_time']);?> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="error">*</span>': '';?></td>
 		<td class="center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
 		<td class="center"></td>
-		<td class="center"><a data-toggle="modal" data-target="#modal_brief" href="<?=base_url();?>work/ajax/load_roster_brief"><i class="fa fa-eye"></i></a></td>
+		<td class="center"><a target="_blank" href="<?=base_url();?>brief/view_brief/<?=$shift['shift_id'];?>"><i class="fa fa-eye"></i></a></td>
 		<td class="center">
 			<? 
 			if(modules::run('work/ajax/is_shift_applied', $shift['shift_id'])) { ?>			

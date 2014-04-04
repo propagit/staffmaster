@@ -198,4 +198,37 @@ class Brief_model extends CI_Model {
 		$this->db->where('brief_element_id', $brief_element_id);
 		return $this->db->delete('brief_elements');
 	}
+	/**
+	*	@name: delete_shift_brief_by_brief_id
+	*	@desc: Permanently removes attached brief from shift brief
+	*	@access: public
+	*	@param: ([int] brief_id)
+	*	@return: rows affected 
+	*/
+	function delete_shift_brief_by_brief_id($brief_id)
+	{
+		$this->db->where('brief_id', $brief_id);
+		return $this->db->delete('shift_brief');
+	}
+	/**
+	*	@name: check_brief_status
+	*	@desc: Performs db operation to see if a brief has been attached to a shift or not.
+	*	@access: public
+	*	@param: ([int] brief_id)
+	*	@return: rows affected 
+	*/
+	function check_brief_status($brief_id)
+	{
+		$today = date('Y-m-d');
+		$sql = "SELECT sb.* FROM shift_brief sb 
+				INNER JOIN job_shifts js 
+				WHERE sb.shift_id = js.shift_id
+				AND js.job_date >= '".$today."' 
+				AND sb.brief_id = ".$brief_id;
+		$status = $this->db->query($sql)->result();
+		if($status){
+			return true;	
+		}
+		return false;
+	}
 }
