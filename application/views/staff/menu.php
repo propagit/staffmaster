@@ -11,8 +11,8 @@ $menu = array(
 	)),
 	array('path' => 'timesheet', 'icon' => 'clock-o', 'title' => 'Time Sheets', 'sub' => array(		
 	)),
-	array('path' => '#', 'icon' => 'book', 'title' => 'Training Centre', 'sub' => array(		
-	)),
+	#array('path' => '#', 'icon' => 'book', 'title' => 'Training Centre', 'sub' => array(		
+	#)),
 	array('path' => '#', 'icon' => 'phone', 'title' => 'Support', 'sub' => array(		
 	))
 );
