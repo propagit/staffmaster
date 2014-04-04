@@ -55,10 +55,20 @@ class Dispatcher extends MX_Controller {
 			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
 		}
 		
-		$content = modules::run($controller . '/' . $controller . '_staff/index', $param1, $param2, $param3, $param4);
-		$title = ucwords($controller);
 		
-		$this->template->set_template('staff');
+		if($controller == 'brief' && (($method == 'view_brief')))
+		{
+			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
+			$title = ucwords($controller);
+			$this->template->set_template('brief');	
+		}
+		else
+		{
+			$content = modules::run($controller . '/' . $controller . '_staff/index', $param1, $param2, $param3, $param4);
+			$title = ucwords($controller);
+			$this->template->set_template('staff');
+		}
+		
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'staff/menu');
 		$this->template->write('content', $content);
@@ -79,7 +89,12 @@ class Dispatcher extends MX_Controller {
 		{
 			$this->template->set_template('invoice');
 		}
-		else {
+		elseif($controller == 'brief' && (($method == 'view_brief')))
+		{
+			$this->template->set_template('brief');	
+		}
+		else 
+		{
 			$this->template->set_template('admin');
 		}
 		

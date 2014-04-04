@@ -96,7 +96,10 @@ class Ajax extends MX_Controller {
 	function load_brief_preview()
 	{
 		$brief_id = $this->input->post('brief_id');
-		echo modules::run('brief/load_brief_preview',$brief_id); 	
+		if($brief_id){
+			$data['brief_elements'] = $this->brief_model->get_brief_elements($brief_id);	
+		}
+		$this->load->view('brief_preview', isset($data) ? $data : NULL);	
 	}
 	/**
 	*	@name: load_create_brief_modal
@@ -178,6 +181,8 @@ class Ajax extends MX_Controller {
 		$this->brief_model->delete_brief($brief_id);
 		//delete brief elements
 		$this->brief_model->delete_brief_elements_by_brief_id($brief_id);
+		//delete shift brief
+		$this->brief_model->delete_shift_brief_by_brief_id($brief_id);
 		echo 'success';
 	}
 	/**
@@ -222,7 +227,21 @@ class Ajax extends MX_Controller {
 		$this->brief_model->delete_brief_elements_by_brief_element_id($brief_element_id);
 		echo 'success';
 	}
-
-	
+	/**
+	*	@name: load_brief_for_brief_viewer
+	*	@desc: Ajax function to load the preview of the brief in brief viewer templage.
+	*	@access: public
+	*	@param: ([via post] brief id)
+	*	@return: Loads a preview of brief
+	*/
+	function load_brief_for_brief_viewer()
+	{
+		$brief_id = $this->input->post('brief_id');
+		if($brief_id){
+			$data['brief'] = $this->brief_model->get_brief($brief_id);
+			$data['brief_elements'] = $this->brief_model->get_brief_elements($brief_id);	
+		}
+		$this->load->view('brief_viewer/brief_preview_brief_viewer', isset($data) ? $data : NULL);	
+	}
 	
 }

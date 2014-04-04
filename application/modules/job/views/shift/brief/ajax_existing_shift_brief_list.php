@@ -13,7 +13,7 @@
 	?>
         <tr>
             <td class="left"><?=$brief->name;?></td>
-            <td class="center"><a target="_blank" href="<?=base_url();?>brief/edit/<?=$brief->brief_id;?>"><i class="fa fa-eye"></i></a></td>
+            <td class="center"><a target="_blank" href="<?=base_url();?>brief/view_brief/<?=$brief->shift_id;?>/<?=$brief->brief_id;?>"><i class="fa fa-eye"></i></a></td>
             <td class="center"><a class="delete-shift-brief" delete-data-id="<?=$brief->shift_brief_id;?>"><i class="fa fa-times"></i></a></td>
         </tr>
      <?php

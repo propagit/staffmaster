@@ -3,7 +3,7 @@
 	box-shadow: 0 4px 10px #aaa;
 	margin: 40px -10px 0 -10px;
 	padding: 40px 60px;
-	color:#4d4d4f;
+	color:#3d3d3d;
 }
 .wp-page-invoice .charge-box-header {
 	background: #25c2f2;
@@ -61,5 +61,5 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p{
 	padding-left:25px;	
 }
 .invoice-grey{
-	color:#4d4d4f !important;	
+	color:#3d3d3d !important;	
 }

@@ -427,7 +427,7 @@ class Job_shift_model extends CI_Model {
 	*/
 	function get_shift_briefs($shift_id)
 	{
-		$sql = "SELECT b.*, sb.shift_brief_id 
+		$sql = "SELECT b.*, sb.shift_brief_id,sb.shift_id  
 				FROM brief b, shift_brief sb 
 				WHERE b.brief_id = sb.brief_id  
 				AND sb.shift_id = ".$shift_id;
@@ -476,6 +476,47 @@ class Job_shift_model extends CI_Model {
 						  		->get('shift_brief')
 						  		->row();
 		return $shift_brief;
+	}
+	
+	/**
+	*	@name: get_shift_brief_by_shif_id
+	*	@desc: Performs Database operation - to get brief attached to a shift by shift id
+	*	@access: public
+	*	@param: ([int] shift_id )
+	*	@return: List of shifts
+	*/
+	function get_shift_brief_by_shif_id($shift_id)
+	{
+		$sql = "SELECT b.* 
+				FROM brief b,shift_brief sb
+				WHERE b.brief_id = sb.brief_id
+				AND sb.shift_id = ".$shift_id; 
+		$shift_briefs = $this->db->query($sql)->result();
+				
+				
+		return $shift_briefs;
+	}
+	/**
+	*	@name: get_shift_info
+	*	@desc: Performs Database operation - to get shift information - mostly used while populating shift info for brief viewer
+	*	@access: public
+	*	@param: ([int] shift_id )
+	*	@return: Shift information
+	*/
+	function get_shift_info($shift_id)
+	{
+		$sql = "SELECT 
+					js.*, 
+					v.name as venue_name, 
+					j.name as campaign_name 
+				FROM `job_shifts` js
+					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
+					LEFT JOIN `jobs` j ON j.job_id = js.job_id 
+				WHERE js.shift_id = '" . $shift_id . "'";
+		$shift_info = $this->db->query($sql)->row();
+		
+		return $shift_info;
+			
 	}
 	
 	
