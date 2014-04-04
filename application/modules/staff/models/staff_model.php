@@ -107,6 +107,13 @@ class Staff_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	/**
+	*	@name: check_staff_time_collision
+	*	@desc: check staff double booking at the same time
+	*	@access: public
+	*	@param: (int) $staff_id, (array) $shift
+	*	@return: (boolean) true if collide, false if not collide
+	*/
 	function check_staff_time_collision($staff_id, $shift)
 	{
 		$start_time = $shift['start_time'];
@@ -120,7 +127,43 @@ class Staff_model extends CI_Model {
 									OR (finish_time > $start_time AND finish_time <= $finish_time)
 									OR (start_time <= $start_time AND finish_time >= $finish_time))";
 		$query = $this->db->query($sql);
-		return $query->num_rows();
+		if($query->num_rows() > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	*	@name: check_staff_time_availability
+	*	@desc: check if staff available to work for a particular shift
+	*	@access: public
+	*	@param: (int) $staff_id, (array) $shift
+	*	@return: (boolean) true if available, false if not available
+	*/
+	function check_staff_time_availability($staff_id, $shift)
+	{
+		$day = date('N', $shift['start_time']);
+		$start_hour = date('G', $shift['start_time']);
+		$finish_hour = date('G', $shift['finish_time']);
+		$sql = "SELECT * FROM user_staff_availability
+						WHERE user_id = $staff_id 
+						AND day = $day
+						AND value = 0";
+		$query = $this->db->query($sql);
+		$results = $query->result_array();
+		if ($finish_hour <= $start_hour)
+		{
+			$finish_hour = 23;
+		}
+		foreach($results as $result)
+		{
+			if ($result['hour'] >= $start_hour && $result['hour'] <= $finish_hour)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	function search_staffs($params = array(),$total=false)

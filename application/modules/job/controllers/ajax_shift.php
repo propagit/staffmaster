@@ -25,7 +25,8 @@ class Ajax_shift extends MX_Controller {
 			$shift = $this->job_shift_model->get_job_shift($params['shift_id']);
 			foreach($staffs as $staff)
 			{
-				if (!$this->staff_model->check_staff_time_collision($staff['user_id'], $shift)) 
+				if (!$this->staff_model->check_staff_time_collision($staff['user_id'], $shift)
+						&& $this->staff_model->check_staff_time_availability($staff['user_id'], $shift)) 
 				{
 					$filter_staffs[] = $staff;
 				}

@@ -41,7 +41,7 @@
 		<div class="form-group">
 			<label class="col-lg-2 control-label">Available</label>
 			<div class="col-lg-3">
-				<div class="radio"><input type="radio" name="is_available" value="1" /> Only Show</div>
+				<div class="radio"><input type="radio" name="is_available" value="1" checked /> Only Show</div>
 			</div>
 			<div class="col-lg-4">
 				<div class="radio"><input type="radio" name="is_available" value="0" /> Show All Staff</div>
