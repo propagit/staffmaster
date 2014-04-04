@@ -19,7 +19,13 @@
 							<a><?=$staff['first_name'];?> <?=$staff['last_name'];?></a>
 							<?=modules::run('common/field_rating', 'rating', $staff['rating'],true);?>
 						</td>
-						<td width="50"><a onclick="assign_new_staff(<?=$staff['user_id'];?>)" class="btn btn-core"><i class="fa fa-plus"></i> Assign</a></td>
+						<td width="50">
+							<? if ($shift['staff_id'] == $staff['user_id'] || $this->staff_model->check_staff_time_collision($staff['user_id'], $shift)) { ?>							
+							<span class="btn btn-default" disabled="disabled">Allocated</span>
+							<? } else { ?>
+							<a onclick="assign_new_staff(<?=$staff['user_id'];?>)" class="btn btn-core"><i class="fa fa-plus"></i> Assign</a>
+							<? } ?>
+						</td>
 					</tr>
 					<? } ?>
 				</tbody>

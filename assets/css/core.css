@@ -1302,7 +1302,10 @@ ol.example li.placeholder:before {
 	cursor:pointer;
 }
 
-
+.table .fa.staff_hours {
+	padding-left: 0;
+	padding-right: 5px;
+}
 
 .btn i {
 	margin: 0 3px;

@@ -96,9 +96,12 @@ class Job_shift_model extends CI_Model {
 				FROM `job_shifts` js
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id
-					LEFT JOIN `jobs` j ON j.job_id = js.job_id";
-		if(isset($data['search_shift_shift_status']) && $data['search_shift_shift_status'] != ''){
-			switch($data['search_shift_shift_status']){
+					LEFT JOIN `jobs` j ON j.job_id = js.job_id
+					LEFT JOIN `users` u ON u.user_id = js.staff_id";
+		if(isset($data['search_shift_shift_status']) && $data['search_shift_shift_status'] != '')
+		{
+			switch($data['search_shift_shift_status'])
+			{
 				case 'active':
 					$sql .= " WHERE js.status > " . SHIFT_DELETED;	
 				break;
@@ -112,10 +115,20 @@ class Job_shift_model extends CI_Model {
 					$sql .= " WHERE js.status = " . SHIFT_CONFIRMED;
 				break;	
 			}
-		} else {
+		} else 
+		{
 			$sql .= " WHERE js.status > " . SHIFT_DELETED;
 		}
-				
+		if (isset($data['staff_name']) && $data['staff_name'] != '')
+		{
+			$sql .= " AND (u.first_name LIKE '%" . $data['staff_name'] . "%' 
+							OR u.last_name LIKE '%" . $data['staff_name'] . "%' 
+							OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $data['staff_name'] . "%')"; 
+		}
+		if (isset($data['staff_id']) && $data['staff_id'] != '')
+		{
+			$sql .= " AND js.staff_id = " . $data['staff_id'];
+		}
 		if (isset($data['date_from']) && $data['date_from'] != '')
 		{
 			$sql .= " AND js.job_date >= '" . date('Y-m-d', strtotime($data['date_from'])) . "'";

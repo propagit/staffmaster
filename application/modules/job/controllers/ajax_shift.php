@@ -14,6 +14,50 @@ class Ajax_shift extends MX_Controller {
 		$this->load->model('staff/staff_model');
 	}
 	
+	/**
+	*	@name: load_staff_hours
+	*	@desc: calculate total hours the staff is working in this week and this month
+	*	@acces: public
+	*	@param: (POST) staff_id
+	*	@return: (HTML) view
+	*/
+	function load_staff_hours()
+	{
+		$staff_id = $this->input->post('staff_id');
+		$one_hour = 60 * 60;
+		$this_month = date('Y-m');
+		$params_month = array(
+			'staff_id' => $staff_id,
+			'date_from' => '01-' . date('m-Y'),
+			'date_to' => date('t-m-Y')
+		);
+		$shifts = $this->job_shift_model->search_shifts($params_month);
+		$month_hours = 0;
+		foreach($shifts as $shift)
+		{
+			$month_hours += modules::run('job/shift/get_shift_second', $shift) / $one_hour;
+		}
+		
+		$today = date('Y-m-d');
+		$this_week = modules::run('common/the_week', $today);
+		$params_week = array(
+			'staff_id' => $staff_id,
+			'date_from' => date('d-m-Y', $this_week['start']),
+			'date_to' => date('d-m-Y', $this_week['end'])
+		);
+		$shifts = $this->job_shift_model->search_shifts($params_week);
+		$week_hours = 0;
+		foreach($shifts as $shift)
+		{
+			$week_hours += modules::run('job/shift/get_shift_second', $shift) / $one_hour;
+		}
+		$data['month_hours'] = $month_hours;
+		$data['week_hours'] = $week_hours;
+		$data['params_month'] = urlencode(implode(',',$params_month));
+		$data['params_week'] = urlencode(implode(',', $params_week));
+		$this->load->view('shift/staff_hours_view', isset($data) ? $data : NULL);
+	}
+	
 	function search_staffs() 
 	{
 		$params = $this->input->post();

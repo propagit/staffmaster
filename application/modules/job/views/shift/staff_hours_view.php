@@ -1,0 +1,2 @@
+<b><?=$week_hours;?></b> hours <a href="<?=base_url();?>job/search/shift/<?=$params_week;?>" target="_blank">this week</a><br />
+<b><?=$month_hours;?></b> hours <a href="<?=base_url();?>job/search/shift/<?=$params_month;?>" target="_blank">this month</a>

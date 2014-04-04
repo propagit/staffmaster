@@ -199,6 +199,11 @@ class Staff extends MX_Controller {
 		return $this->staff_model->get_staff($user_id);
 	}
 	
+	function get_staff_working_hours($user_id)
+	{
+		
+	}
+	
 	function delete_client($user_id)
 	{
 		$this->client_model->delete_client($user_id);
