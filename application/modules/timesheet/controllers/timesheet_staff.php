@@ -27,12 +27,11 @@ class Timesheet_staff extends MX_Controller {
 	}
 	
 	function main_view() {
-		$data['timesheets'] = $this->timesheet_staff_model->get_timesheets();
 		$data['supervised_timesheets'] = $this->timesheet_staff_model->get_supervised_timesheets();
 		$this->load->view('staff/main_view', isset($data) ? $data : NULL);
 	}
 	
-	function row_timesheet($timesheet_id) {
+	function row_timesheet($timesheet_id, $is_supervised) {
 		$timesheet = $this->timesheet_staff_model->get_timesheet($timesheet_id);
 		$data['client'] = modules::run('client/get_client', $timesheet['client_id']);
 		$data['staff'] = modules::run('staff/get_staff', $timesheet['staff_id']);
@@ -59,7 +58,7 @@ class Timesheet_staff extends MX_Controller {
 			$total_expenses += $staff_cost;
 		}
 		$data['total_expenses'] = $total_expenses;
-		
+		$data['is_supervised'] = $is_supervised;
 		$this->load->view('staff/timesheet_row_view', isset($data) ? $data : NULL);
 	}
 	
