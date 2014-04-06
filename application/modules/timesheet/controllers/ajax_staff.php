@@ -17,12 +17,20 @@ class Ajax_staff extends MX_Controller {
 	
 	function list_timesheets() {
 		$data['timesheets'] = $this->timesheet_staff_model->get_timesheets();
+		$data['is_supervised'] = 0;
+		$this->load->view('staff/timesheets_list', isset($data) ? $data : NULL);
+	}
+	
+	function load_supervised_timesheets() {
+		$data['timesheets'] = $this->timesheet_staff_model->get_supervised_timesheets();
+		$data['is_supervised'] = 1;
 		$this->load->view('staff/timesheets_list', isset($data) ? $data : NULL);
 	}
 	
 	function refresh_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
-		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet_id);
+		$is_supervised = $this->input->post('is_supervised');
+		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet_id, $is_supervised);
 	}
 	
 	function submit_timesheet() {

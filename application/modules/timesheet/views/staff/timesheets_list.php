@@ -2,21 +2,22 @@
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
-		<th class="center" width="20"></th>
+		<th class="center" width="20"><input type="checkbox" class="selected_all_timesheets" /></th>
 		<th class="center">Date</th>
 		<th>Client</th>
 		<th>Venue</th>
+		<th>Staff</th>
 		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
 		<th class="center">Pay rate</th>
 		<th class="center">Expenses</th>
 		<th class="center" width="40">View</th>
-		<th class="center" width="200">Status</th>
+		<th class="center" width="120">Status</th>
 	</tr>
 </thead>
 <tbody>
 	<? foreach($timesheets as $timesheet) { 
-		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet['timesheet_id']); 
+		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet['timesheet_id'], $is_supervised); 
 	} ?>
 </tbody>
 </table>
@@ -25,8 +26,19 @@
 <script>
 $(function() {
 	init_edit();
+	
+	$('#menu-timesheet-action ul li a[data-value="submit"]').click(function(){
+		var selected_timesheets = new Array();
+		$('.selected_timesheet:checked').each(function(){
+			//selected_timesheets.push($(this).val());
+			submit_timesheet($(this).val());
+		});
+	});
 });
 function init_edit() {
+	$('.selected_all_timesheets').click(function(){
+		$(this).parent().parent().parent().parent().find('input.selected_timesheet').prop('checked', this.checked);		
+	});
 	$('.ts_start_time').editable({
 		combodate: {
             firstItem: '',
@@ -100,7 +112,7 @@ function refrest_timesheet(timesheet_id) {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>timesheet/ajax_staff/refresh_timesheet",
-		data: {timesheet_id: timesheet_id},
+		data: {timesheet_id: timesheet_id, is_supervised: <?=$is_supervised;?>},
 		success: function(html) {
 			$('#timesheet_' + timesheet_id).replaceWith(html);
 			init_edit();

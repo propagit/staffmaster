@@ -1,5 +1,9 @@
 <tr id="timesheet_<?=$timesheet['timesheet_id'];?>">
-	<td><input type="checkbox" value="<?=$timesheet['shift_id'];?>" /></td>
+	<td>
+		<? if ($timesheet['status'] < TIMESHEET_SUBMITTED) { ?>
+		<input type="checkbox" class="selected_timesheet" value="<?=$timesheet['timesheet_id'];?>" />
+		<? } ?>
+	</td>
 	<td class="wp-date" width="80">
 		<span class="wk_day"><?=date('D', strtotime($timesheet['job_date']));?></span>
 		<span class="wk_date"><?=date('d', strtotime($timesheet['job_date']));?></span>
@@ -13,6 +17,7 @@
 		Not Specified
 		<? } ?>
 	</td>
+	<td><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td>
 	<td class="center">
 		<a href="#" class="ts_start_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('Y-m-d H:i', $timesheet['start_time']);?>" data-title="Time sheet start date/time">
 			<? if ($timesheet['start_time'] != $shift['start_time']) { ?>
@@ -55,7 +60,7 @@
 		<? if ($timesheet['status'] < TIMESHEET_SUBMITTED) { ?>
 		<button class="btn btn-core btn-block" onclick="submit_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-arrow-right"></i> Submit</button>
 		<? } else if ($timesheet['status'] == TIMESHEET_SUBMITTED) { ?>
-		<button class="btn btn-warning btn-block"><i class="fa fa-check"></i>  Waiting for Approval</button>
+		<button class="btn btn-warning btn-block"><i class="fa fa-check"></i>  Pending</button>
 		<? } else if ($timesheet['status'] == TIMESHEET_APPROVED) { ?>
 		<button class="btn btn-success btn-block"><i class="fa fa-check"></i>  Approved</button>
 		<? } ?>
