@@ -62,7 +62,12 @@ class Log_model extends CI_Model {
 		{
 			$sql .= " (`object` = '$object' AND `action` IN ('" . implode("','", $actions) . "')) OR ";
 		}
-		$sql .= " 1=0 ORDER BY `log_id` DESC";
+		$sql .= " 1=0";
+		if (!modules::run('auth/is_admin'))
+		{
+			$sql .= " AND user_id = " . $this->user_id;
+		}
+		$sql .= " ORDER BY `log_id` DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 		
