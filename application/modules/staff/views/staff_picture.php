@@ -4,7 +4,7 @@ if(count($photo)>0)
 	$thumb_src = base_url().'uploads/staff/profile/'.md5($staff['user_id']).'/thumbnail2/'.$photo['name'];
 	$class="resize";
 ?>
-<div class="profile_photo">
+<div class="profile_photo popup-gallery-images">
 	<img class="<?=$class?>" src="<?=$thumb_src;?>" title="<?=$staff['first_name'].' '.$staff['last_name']?>" alt="<?=$photo['name']?>" />
 </div>
 <?php

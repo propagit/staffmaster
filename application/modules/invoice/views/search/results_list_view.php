@@ -1,40 +1,48 @@
 <hr />
 <h2>Search Results</h2>
-<p>Your search returned <b><?=count($total_invoices);?></b> results</p>
 <ul class="pagination custom-pagination pull">
 <?=modules::run('common/create_pagination',count($total_invoices),INVOICE_PER_PAGE,$current_page)?>
 </ul>
-<? if (count($invoices) > 0) { ?>
-<div id="nav_invoices" class="action-nav-with-pagination">
-<?
-	# Action menu
-	$data = array(
-		array('value' => 'export', 'label' => 'Export Selected'),
-		array('value' => 'mark_unpaid', 'label' => 'Mark Selected as Unpaid'),
-		array('value' => 'mark_paid', 'label' => 'Mark Selected as Paid'),
-		array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
-	);
-	echo modules::run('common/menu_dropdown', $data, 'invoice-action', 'Actions');
-?>
-</div>
+<p>Your search returned <b><?=count($total_invoices);?></b> results</p>
 
+<? if (count($invoices) > 0) { ?>
+	<? if (!$is_client) { ?>
+	<div id="nav_invoices" class="action-nav-with-pagination">
+	<?
+		# Action menu
+		$data = array(
+			array('value' => 'export', 'label' => 'Export Selected'),
+			array('value' => 'mark_unpaid', 'label' => 'Mark Selected as Unpaid'),
+			array('value' => 'mark_paid', 'label' => 'Mark Selected as Paid'),
+			array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
+		);
+		echo modules::run('common/menu_dropdown', $data, 'invoice-action', 'Actions');
+	?>
+	</div>
+	<? } else { echo '<br />'; } ?>
 <div class="table-responsive">
 <form>
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
+		<? if (!$is_client) { ?>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
+		<? } ?>
 		<th class="center" width="80">Issued <i class="fa fa-sort sort-result" sort-by="issued_date"></i></th>
 		<th class="center" width="80">Due <i class="fa fa-sort sort-result" sort-by="due_date"></i></th>
 		<th class="center">Inv # <i class="fa fa-sort sort-result" sort-by="invoice_number"></i></th>
 		<th class="center">PO # <i class="fa fa-sort sort-result" sort-by="po_number"></i></th>
+		<? if (!$is_client) { ?>
 		<th>Client Name </th>
+		<? } ?>
 		<th>Invoice Title <i class="fa fa-sort sort-result" sort-by="title"></i></th>
 		<th class="center">Amount <i class="fa fa-sort sort-result" sort-by="total_amount"></i></th>
 		<th>Issued By</th>
 		<th class="center" width="120">Status <i class="fa fa-sort sort-result" sort-by="status"></i></th>
 		<th class="center" width="40">View</th>
+		<? if (!$is_client) { ?>
 		<th class="center" width="40">Email</th>
+		<? } ?>
 	</tr>
 </thead>
 <tbody>
@@ -43,7 +51,9 @@
 	$user = modules::run('user/get_user', $invoice['issued_by']);
 ?>
 	<tr>
+		<? if (!$is_client) { ?>
 		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" /></td>
+		<? } ?>
 		<td class="wp-date center" width="80">
 			<span class="wk_day"><?=date('D', strtotime($invoice['issued_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($invoice['issued_date']));?></span>
@@ -56,7 +66,9 @@
 		</td>
 		<td class="center"><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></td>
 		<td class="center"><?=($invoice['po_number'] != '') ? $invoice['po_number'] : 'Unspecified';?></td>
+		<? if (!$is_client) { ?>
 		<td><?=$client['company_name'];?></td>
+		<? } ?>
 		<td><?=$invoice['title'];?></td>
 		<td class="center">$<?=money_format('%i', $invoice['total_amount']);?></td>
 		<td><?=$user['first_name'] . ' ' . $user['last_name'];?></td>
@@ -64,7 +76,9 @@
 			<?=modules::run('invoice/menu_dropdown_status', $invoice['invoice_id']);?>
 		</td>
 		<td class="center"><a href="<?=base_url();?>invoice/view/<?=$invoice['invoice_id'];?>" target="_blank"><i class="fa fa-eye"></i></a></td>
+		<? if (!$is_client) { ?>
 		<td class="center"><a><i class="fa fa-envelope-o email-invoice" data-invoice-id="<?=$invoice['invoice_id'];?>" data-user-id="<?=$invoice['client_id']?>"></i></a></td>
+		<? } ?>
 	</tr>
 <? } ?>
 </tbody>

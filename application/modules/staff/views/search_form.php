@@ -24,12 +24,16 @@
 					<div class="col-md-4">
 						<input type="text" class="form-control" id="keyword" name="keyword" tabindex="2" />
 					</div>
+					<? if (!$is_client) { ?>
 					<label for="rating" class="col-md-2 control-label">Rating</label>
 					<div class="col-md-4">
                         <?=modules::run('common/field_rating', 'rating', 0,'basic-search-form','wp-rating-0','no-user',false,false);?>
 					</div>
+					<? } ?>
 				</div>
 			</div>
+						
+			<? if (!$is_client) { ?>
 			<div class="row">
 				<div class="form-group">
 					<label for="department_id" class="col-md-2 control-label">Group</label>
@@ -41,7 +45,8 @@
 						<?=modules::run('staff/field_select_status', 'status');?>
 					</div>
 				</div>
-			</div>	
+			</div>
+			<? } ?>
 			<div class="row">
 				<div class="form-group">
 					<label for="state" class="col-md-2 control-label">State</label>
@@ -79,6 +84,7 @@
 				</div>				
 			</div>
             
+			<? if (!$is_client) { ?>
             <div class="row">
 				<div class="form-group">
 					<label for="date_from" class="col-md-2 control-label">Worked From</label>
@@ -99,6 +105,7 @@
 					</div>
 				</div>
 			</div>
+            <? } ?>
             
             <div class="row">
 				<div class="form-group">

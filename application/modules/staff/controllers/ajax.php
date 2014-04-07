@@ -7,6 +7,8 @@
 
 class Ajax extends MX_Controller {
 
+	var $user = null;
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
@@ -14,14 +16,24 @@ class Ajax extends MX_Controller {
 		$this->load->model('user/user_model');
 		$this->load->model('attribute/role_model');
 		$this->load->model('attribute/group_model');
+		$this->user = $this->session->userdata('user_data');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	function search_staffs()
 	{
-		$data['staffs'] = $this->staff_model->search_staffs($this->input->post());
-		$data['total_staff'] = $this->staff_model->search_staffs($this->input->post(),true);
+		$params = $this->input->post();
+		$data['staffs'] = $this->staff_model->search_staffs($params);
+		$data['total_staff'] = $this->staff_model->search_staffs($params,true);
 		$data['current_page'] = $this->input->post('current_page',true);
-		$this->load->view('search_results', isset($data) ? $data : NULL);		
+		if ($this->is_client) 
+		{
+			$this->load->view('client/search_results', isset($data) ? $data : NULL);
+		}
+		else
+		{
+			$this->load->view('search_results', isset($data) ? $data : NULL);
+		}				
 	}
 	
 	function add_staff()

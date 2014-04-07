@@ -133,9 +133,20 @@ class Dispatcher extends MX_Controller {
 			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
 		}		
 		
-		$content = modules::run($controller . '/' . $controller . '_client/index', $method, $param1, $param2, $param3, $param4);
-		$title = ucwords($controller);
-		$this->template->set_template('client');
+		if ($controller == 'invoice' && $method == 'view')
+		{
+			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
+			$title = ucwords($controller);
+			$this->template->set_template('invoice');	
+		}
+		else
+		{
+			$content = modules::run($controller . '/' . $controller . '_client/index', $method, $param1, $param2, $param3, $param4);
+			$title = ucwords($controller);
+			$this->template->set_template('client');
+		}
+		
+		
 				
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'client/menu');
