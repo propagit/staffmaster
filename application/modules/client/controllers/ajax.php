@@ -73,6 +73,7 @@ class Ajax extends MX_Controller {
 		$user_data = array(
 			'status' => $data['status'],
 			'email_address' => $data['email_address'],
+			'username' => $data['email_address'],
 			'password' => $data['password'],
 			'full_name' => $data['full_name'],
 			'address' => $data['address'],

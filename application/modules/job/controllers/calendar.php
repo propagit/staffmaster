@@ -7,13 +7,16 @@
 
 class Calendar extends MX_Controller {
 
+	var $user = null;
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
 		$this->output->enable_profiler();
 		$this->load->model('job_model');
 		$this->load->model('job_shift_model');
-		//$this->user = $this->session->userdata('user_data');
+		$this->user = $this->session->userdata('user_data');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	function index($method='', $param1='', $param2='', $param3='',$param4='')
@@ -81,7 +84,11 @@ class Calendar extends MX_Controller {
 		$filters = array(
 						'client_user_id' => $client_user_id,
 						'state_code' => $state_code
-						);
+					);
+		if ($this->is_client)
+		{
+			$filters['client_user_id'] = $this->user['user_id'];
+		}
 		$job_campaign = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters); 
 		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters);//status 0
 		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',$filters);//status 1

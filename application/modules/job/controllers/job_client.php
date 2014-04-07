@@ -24,7 +24,7 @@ class Job_client extends MX_Controller {
 		switch($method)
 		{
 			case 'calendar':
-					$this->calendar();	
+					echo modules::run('job/calendar/index', $param1, $param2, $param3, $param4);
 				break;
 			case 'create':
 					$this->create_job();
@@ -60,18 +60,5 @@ class Job_client extends MX_Controller {
 		$this->load->view('create', isset($data) ? $data : NULL);
 	}
 	
-	function calendar()
-	{
-		echo 'wait for kaustuv';
-	}
 	
-	function create_view()
-	{
-		
-	}
-	
-	function search_view()
-	{
-		
-	}
 }
