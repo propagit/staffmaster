@@ -74,8 +74,8 @@
 	<script src="<?=base_url();?>assets/prettyCheckable/prettyCheckable.js" type="text/javascript" charset="utf-8"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
-    <link href="<?=base_url();?>assets/css/core.staff.css" rel="stylesheet" media="screen">
-	<script src="<?=base_url();?>assets/js/core.staff.js" type="text/javascript" charset="utf-8"></script>
+    <link href="<?=base_url();?>assets/css/core.client.css" rel="stylesheet" media="screen">
+	<script src="<?=base_url();?>assets/js/core.client.js" type="text/javascript" charset="utf-8"></script>
     
     <!--flex slider2-->
     <link href="<?=base_url();?>assets/flex-slider/flexslider.css" rel="stylesheet" media="screen" type="text/css" />
@@ -100,10 +100,7 @@
        <div class="row profile-bar">
        		<div class="col-md-12">
             	<div class="logo">
-                	<?#=modules::run('setting/company_logo');?>
-                </div>
-
-                <div class="profile-menu">
+                	<?=modules::run('setting/company_logo');?>
                 </div>
             </div>
        </div> 
@@ -111,19 +108,25 @@
     </div>
 </header>
 
-	<div class="container-fluid">
-        <div class="row">
-            <?=$content;?>
-        </div>
-    </div><!-- /container -->
-
-	<!-- Map Modal -->
-	<div class="modal fade" id="modal_map" tabindex="-1" role="dialog" aria-hidden="true">
-	</div><!-- /.modal -->
-	
-    <!-- Large modal -->
-    <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    
+<div class="container-fluid">
+    <div class="row">
+        <?=$content;?>
     </div>
+</div><!-- /container -->
+
+<div id="sys-fixed-btns">
+	<button class="btn btn-info sys-rt-btn"><i class="fa fa-cogs"></i></button>
+    <a href="<?=base_url();?>logout"><div class="btn btn-info sys-rt-btn"><i class="fa fa-power-off"></i></div></a>
+    <button class="btn btn-info sys-rt-btn custom-hidden" id="go-to-top"><i class="fa fa-arrow-up"></i></button>
+</div>
+
+<div id="push"></div>
+
+<!-- Large modal -->
+<div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"></div>
+
+<!-- Normal modal -->
+<div class="modal fade bs-modal-sml" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"></div>
+
 </body>
 </html>

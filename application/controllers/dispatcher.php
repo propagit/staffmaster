@@ -15,7 +15,7 @@ class Dispatcher extends MX_Controller {
 	
 	public function index()
 	{
-		$this->user_dispatcher('dashboard');
+		$this->user_dispatcher();
 	}
 	
 	/**
@@ -38,14 +38,27 @@ class Dispatcher extends MX_Controller {
 		# If user is admin, login to admin portal
 		if ($user_data['is_admin'] && !$this->session->userdata('force_staff'))
 		{
+			if (!$controller)
+			{
+				$controller = 'dashboard';
+			}
 			$this->admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
 		}
 		else if ($user_data['is_staff'])
 		{
+			if (!$controller)
+			{
+				$controller = 'dashboard';
+			}
 			$this->staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
 		}
 		else if ($user_data['is_client'])
 		{
+			if (!$controller)
+			{
+				$controller = 'job';
+				$method = 'calendar';
+			}
 			$this->client_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
 		}		
 	}
@@ -106,17 +119,24 @@ class Dispatcher extends MX_Controller {
 		$this->template->render();
 	}
 	
+	/**
+	*	@name: client_dispatcher
+	*	@desc: call this dispatcher if the user is logged in as a client
+	*	@access: public
+	*	@param:
+	*	@return: (void)
+	*/
 	function client_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{		
 		if ( strpos($method, 'ajax') !== false)
 		{
 			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
-		}
-				
-		$content = modules::run($controller . '/' . $controller . '_client/index', $param1, $param2, $param3, $param4);
+		}		
+		
+		$content = modules::run($controller . '/' . $controller . '_client/index', $method, $param1, $param2, $param3, $param4);
 		$title = ucwords($controller);
 		$this->template->set_template('client');
-	
+				
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'client/menu');
 		$this->template->write('content', $content);

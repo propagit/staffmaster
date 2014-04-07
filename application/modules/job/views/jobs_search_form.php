@@ -30,6 +30,7 @@
 							</div>
 						</div>
 					</div>
+					<? if (!modules::run('auth/is_client')) { ?>
 					<div class="row">
 						<div class="form-group">
 							<label for="client_id" class="col-md-2 control-label">Client</label>
@@ -39,6 +40,7 @@
 							
 						</div>
 					</div>
+					<? } ?>
 					<div class="row">
 						<div class="form-group">
 							<label for="date_from" class="col-md-2 control-label">Date From</label>
@@ -79,33 +81,34 @@
 					<form class="form-horizontal" role="form" id="form_search_shifts">
 					<div class="row">
 						<div class="form-group">
-							<label class="col-md-2 control-label">Client</label>
-							<div class="col-md-4">
-								<?=modules::run('client/dropdown', 'client_id',$search_shift_filters['client_user_id']);?>
-							</div>
 							<label class="col-md-2 control-label">Campaign Name</label>
 							<div class="col-md-4">
 								<input type="text" class="form-control" name="keywords" placeholder="enter campaign name..." />
 							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
 							<label class="col-md-2 control-label">Venue</label>
 							<div class="col-md-4">
 								<?=modules::run('attribute/venue/field_input', 'venue');?>
 							</div>
-							<label class="col-md-2 control-label">Staff Name</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" name="staff_name" placeholder="enter staff name..." value="<?=$search_shift_filters['staff_name'];?>" />
-							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group">
+							<label class="col-md-2 control-label">Staff Name</label>
+							<div class="col-md-4">
+								<input type="text" class="form-control" name="staff_name" placeholder="enter staff name..." value="<?=$search_shift_filters['staff_name'];?>" />
+							</div>
 							<label for="position" class="col-md-2 control-label">Role</label>
 							<div class="col-md-4">
 								<?=modules::run('attribute/role/field_select', 'role_id');?>
+							</div>
+						</div>
+					</div>
+					<? if (!modules::run('auth/is_client')) { ?>
+					<div class="row">
+						<div class="form-group">							
+							<label class="col-md-2 control-label">Client</label>
+							<div class="col-md-4">
+								<?=modules::run('client/dropdown', 'client_id',$search_shift_filters['client_user_id']);?>
 							</div>
 							<label for="payrate" class="col-md-2 control-label">Payrate</label>
 							<div class="col-md-4">
@@ -113,6 +116,7 @@
 							</div>
 						</div>
 					</div>
+					<? } ?>
 					<div class="row">
 						<div class="form-group">
 							<label class="col-md-2 control-label">Date From</label>

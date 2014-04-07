@@ -8,7 +8,9 @@
 	<tr>
 		<th class="center" width="65">Start </th>
 		<th class="center" width="65">Finish </th>
+		<? if (!modules::run('auth/is_client')) { ?>
 		<th>Client &nbsp; <a onclick="sort_jobs('client_')"><i class="fa fa-sort"></i></a></th>
+		<? } ?>
 		<th>Campaign Name &nbsp; <a onclick="sort_jobs('campaign')"><i class="fa fa-sort"></i></a></th>
 		<th class="center">Total Shifts</th>
 		<th class="center" width="100">Unassigned</th>
@@ -17,7 +19,9 @@
 		<th class="center" width="100">Confirmed</th>
 		<th class="center" width="100">Completed</th>
 		<th class="center" width="40">View</th>
+		<? if (!modules::run('auth/is_client')) { ?>
 		<th class="center" width="40">Delete</th>
+		<? } ?>
 	</tr>
 	</thead>
 	<? foreach($jobs as $job) { 
@@ -46,7 +50,9 @@
 			<span class="wk_month"><?=date('M', $finish_time);?></span>
 			<? } ?>	
 		</td>
+		<? if (!modules::run('auth/is_client')) { ?>
 		<td><?=$client['company_name'];?></td>
+		<? } ?>
 		<td><?=$job['name'];?></td>
 		<td class="center"><?=$shifts_count;?></td>
 		<td class="center">
@@ -75,9 +81,11 @@
 			<? } ?>
 		</td>
 		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="fa fa-eye"></i></a></td>
+		<? if (!modules::run('auth/is_client')) { ?>
 		<td class="center">
 			<a onclick="delete_job(<?=$job['job_id'];?>)"><i class="fa fa-times"></i></a>
 		</td>
+		<? } ?>
 	</tr>
 	<? } ?>
 </table>

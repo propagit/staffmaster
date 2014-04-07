@@ -7,7 +7,9 @@
 	<thead>
 	<tr>
 		<th class="center" width="80">Date &nbsp; <a onclick="sort_search_shifts('date')"><i class="fa fa-sort"></i></a></th>
+		<? if (!modules::run('auth/is_client')) { ?>
 		<th>Client &nbsp; <a onclick="sort_search_shifts('client')"><i class="fa fa-sort"></i></a></th>
+		<? } ?>
 		<th>Campaign Name &nbsp; <a onclick="sort_search_shifts('campaign')"><i class="fa fa-sort"></i></a></th>
 		<th>Venue &nbsp; <a onclick="sort_search_shifts('venue')"><i class="fa fa-sort"></i></a></th>
 		<th>Role &nbsp; <a onclick="sort_search_shifts('role')"><i class="fa fa-sort"></i></a></th>
@@ -24,7 +26,9 @@
 			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
 			<span class="wk_month"><?=date('M', strtotime($shift['job_date']));?></span>
 		</td>
+		<? if (!modules::run('auth/is_client')) { ?>
 		<td><?=$client['company_name'];?></td>
+		<? } ?>
 		<td><?=$shift['job_name'];?></td>
 		<td><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></td>
 		<td><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>

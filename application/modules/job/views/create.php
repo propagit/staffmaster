@@ -22,6 +22,7 @@ a client will be able to filter jobs associated to them by the client department
                             </div>
                             <div class="col-lg-6"><span class="help-block">Enter a unique campaign name that you will be able to search for later</span></div>
                         </div>
+                        <? if (!modules::run('auth/is_client')) { ?>
                         <div class="form-group<?=form_error('client_id')? ' has-error' : '';?>">
                             <label for="client_id" class="col-lg-2 control-label">Client</label>
                             <div class="col-lg-4">
@@ -31,6 +32,7 @@ a client will be able to filter jobs associated to them by the client department
                             	<span class="help-block"><a><i class="fa fa-plus"></i></a> &nbsp; <a href="#">Create New Client</a></span>
                             </div>
                         </div>
+                        <? } ?>
                     </div>            
                 </div>
                 <div class="row">

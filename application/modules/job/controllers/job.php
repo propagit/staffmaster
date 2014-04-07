@@ -8,6 +8,7 @@
 class Job extends MX_Controller {
 
 	var $user = null;
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
@@ -15,6 +16,7 @@ class Job extends MX_Controller {
 		$this->load->model('job_shift_model');
 		$this->load->model('client/client_model');
 		$this->user = $this->session->userdata('user_data');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	public function index($method='', $param1='', $param2='', $param3='',$param4='')
@@ -85,6 +87,7 @@ class Job extends MX_Controller {
 		if ($status != '') {
 			$this->session->set_userdata('shift_status_filter', $status);
 		}
+		$data['is_client'] = $this->is_client;
 		$this->load->view('job_details', isset($data) ? $data : NULL);		
 	}
 		
@@ -92,7 +95,6 @@ class Job extends MX_Controller {
 	{
 		$data['search_shift_filters'] = array(
 			'client_user_id' => '',
-			'client_client_id' => '',
 			'staff_name' => '',
 			'shift_date' => date('d-m-Y'),
 			'search_shift_date_to' => '',
@@ -110,12 +112,18 @@ class Job extends MX_Controller {
 		}
 		if($this->session->flashdata('search_shift_filters'))
 		{
-			$data['search_shift_filters'] = $this->session->flashdata('search_shift_filters');	
+			$data['search_shift_filters'] = $this->session->flashdata('search_shift_filters');
 		}
-		if ($this->input->post())
+		#if ($this->input->post())
+		#{
+		#	$data['jobs'] = $this->job_model->search_jobs($this->input->post('keyword'));	
+		#}
+		
+		if (modules::run('auth/is_client'))
 		{
-			$data['jobs'] = $this->job_model->search_jobs($this->input->post('keyword'));	
+			$data['search_shift_filters']['client_user_id'] = $this->user['user_id'];
 		}
+		
 		$this->load->view('jobs_search_form', isset($data) ? $data : NULL);
 	}
 	

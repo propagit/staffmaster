@@ -17,6 +17,23 @@ a {
 	cursor: pointer;
 	color: #00bbf8;
 }
+/* system right hand side fixed buttons */
+#sys-fixed-btns{
+	position: fixed;
+	right: 0;
+	top: 250px;
+	width:46px;
+}
+.sys-rt-btn{
+	margin-bottom:6px;
+	border-radius: 6px 0 0 6px;
+	padding:10px 10px 8px 10px;
+	-webkit-box-shadow:2px 2px 6px rgba(0, 0, 0, 0.3);
+		box-shadow:2px 2px 6px rgba(0,0,0, 0.3);	
+}
+.sys-rt-btn .fa{
+	font-size:20px;	
+}
 .pointer {
 	cursor: pointer;
 }

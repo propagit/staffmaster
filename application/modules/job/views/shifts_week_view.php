@@ -1,10 +1,13 @@
 <div id="nav_week_shifts">
 	<?
-	# Action menu
-	$data = array(
-		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Shifts')
-	);
-	echo modules::run('common/menu_dropdown', $data, 'week-action', 'Actions');
+	if (!$is_client)
+	{
+		# Action menu
+		$data = array(
+			array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Shifts')
+		);
+		echo modules::run('common/menu_dropdown', $data, 'week-action', 'Actions');	
+	}
 	?>
 	<div class="btn-group btn-nav">
 		<ul class="nav nav-tabs tab-respond">
@@ -34,7 +37,11 @@
 		<th class="center">Unconfirmed</th>
 		<th class="center">Rejected</th>
 		<th class="center">Confirmed</th>
+		<? if (!$is_client) { ?>
 		<th class="center" colspan="2">Functions</th>
+		<? } else { ?>
+		<th class="center">Functions</th>
+		<? } ?>
 	</tr>
 </thead>
 <tbody>
@@ -88,11 +95,13 @@ $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 			<a class="day_shift_copy" data-toggle="modal" data-target="#copy_shift" href="<?=base_url();?>job/ajax/load_shifts_copy/<?=implode('~', $ids);?>"><i class="fa fa-copy"></i></a>
 			<? } ?>
 		</td>
+		<? if (!$is_client) { ?>
 		<td class="center" width="40">
 			<? if ($shifts_count > 0) { ?>
 			<a class="day_shift_delete" data-shifts="<?=implode(',', $ids);?>"><i class="fa fa-trash-o"></i></a>
 			<? } ?>
 		</td>
+		<? } ?>
 	</tr>
 <? } ?>
 </tbody>

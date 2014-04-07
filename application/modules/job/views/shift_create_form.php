@@ -52,18 +52,23 @@
 		<div class="col-lg-6">
 			<?=modules::run('attribute/venue/field_select', 'venue_id');?>
 		</div>
+		
+		<? if (!$is_client) { ?>
 		<div class="col-lg-3 help-block">
 			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/venue/create" target="_blank">Create Venue</a>
 		</div>
+		<? } ?>
 	</div>
 	<div class="form-group">
 		<label for="position" class="col-lg-3 control-label">Role</label>
 		<div class="col-lg-6">
 			<?=modules::run('attribute/role/field_select', 'role_id');?>
 		</div>
+		<? if (!$is_client) { ?>
 		<div class="col-lg-3 help-block">
 			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/role" target="_blank">Create Role</a>
 		</div>
+		<? } ?>
 	</div>
 	<div class="form-group" id="f_count">
 		<label for="unisex" class="col-lg-3 control-label">Staff Required</label>
@@ -79,16 +84,20 @@
 		<div class="col-lg-6">
 			<?=modules::run('attribute/uniform/field_select', 'uniform_id');?>
 		</div>
+		<? if (!$is_client) { ?>
 		<div class="col-lg-3 help-block">
 			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/uniform" target="_blank">Create Uniform</a>
 		</div>
+		<? } ?>
 	</div>
 	
+	<? if (!$is_client) { ?>
 	<div class="form-group">
 		<label for="payrate" class="col-lg-3 control-label">Payrate</label>
 		<div class="col-lg-6">
 			<?=modules::run('attribute/payrate/field_select', 'payrate_id');?>
 		</div>
+		
 		<div class="col-lg-3 help-block">
 			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/payrate" target="_blank">Create Payrate</a>
 		</div>
@@ -100,6 +109,7 @@
 			<?=modules::run('staff/field_select', 'supervisor_id');?>
 		</div>
 	</div>	
+	<? } ?>
 	
 	<div class="form-group">
 		<div class="col-lg-offset-3 col-lg-8">

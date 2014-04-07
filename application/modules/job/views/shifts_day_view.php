@@ -9,9 +9,12 @@
 	$data = array(
 		array('value' => 'copy', 'label' => '<i class="fa fa-copy"></i> Copy Selected'),
 		array('value' => 'edit', 'label' => '<i class="fa fa-pencil-square-o"></i> Edit Selected'),
-		array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Selected'),
-		array('value' => 'attach_brief', 'label' => '<i class="fa fa-info-circle"></i> Attach Brief')
 	);
+	if (!$is_client)
+	{
+		$data[] = array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Selected');
+		$data[] = array('value' => 'attach_brief', 'label' => '<i class="fa fa-info-circle"></i> Attach Brief');
+	}
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 	
 	# Filter menu
@@ -56,14 +59,24 @@
 		<th class="center">Date &nbsp; <a onclick="sort_shifts('date')"><i class="fa fa-sort"></i></a></th>
 		<th>Venue &nbsp; <a onclick="sort_shifts('venue')"><i class="fa fa-sort"></i></a></th>
 		<th>Role &nbsp; <a onclick="sort_shifts('role')"><i class="fa fa-sort"></i></a></th>
+		<? if ($is_client) { ?>
+		<th>Uniform</th>
+		<? } ?>
 		<th class="center">Start - Finish</th>
 		<th class="center">Break</th>
+		<? if (!$is_client) { ?>
 		<th class="center">Pay rate</th>
+		<? } ?>
 		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
+		
+		<? if (!$is_client) { ?>
 		<th class="center" colspan="2">Find</th>
 		<th class="center" colspan="2">Settings</th>
 		<th class="center" colspan="2" width="30">Brief</th>
 		<th class="center">Exp</th>
+		<? } else { ?>
+		<th class="center" colspan="2">Request</th>
+		<? } ?>
 	</tr>
 </thead>
 <tbody>
@@ -88,6 +101,13 @@
 		<td>
 			<a href="#" class="shift_role" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['role_id'];?>"><?=modules::run('attribute/role/display_role', $shift['role_id']);?></a>
 		</td>
+		
+		<? if ($is_client) { ?>
+		<td>
+			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><?=modules::run('attribute/uniform/display_uniform', $shift['uniform_id']);?></a>
+		</td>
+		<? } ?>
+		
 		<td class="center">
 			<a href="#" class="shift_start_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['start_time']);?>" data-title="Shift start date/time"><?=date('H:i', $shift['start_time']);?></a>
 			-
@@ -96,23 +116,46 @@
 		<td class="center">
 			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
+		<? if (!$is_client) { ?>
 		<td class="center"><a href="#" class="shift_payrate" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['payrate_id'];?>"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
+		<? } ?>
 		<td>
-			<? if($shift['staff_id']) { ?>
-			<i class="fa fa-clock-o staff_hours" data-toggle="popover" onclick="load_staff_hours(this)" data-pk="<?=$shift['staff_id'];?>"></i> 
-			<? } ?>
-			<a id="shift_staff_<?=$shift['shift_id'];?>" data-toggle="popover" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
-			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
-				echo $staff['first_name'] . ' ' . $staff['last_name'];		
+			<?
+			$staff_name = 'No Staff Assigned';
+			if($shift['staff_id']) 
+			{ 
+				$staff = modules::run('staff/get_staff', $shift['staff_id']); 
+				$staff_name = $staff['first_name'] . ' ' . $staff['last_name'];
+			}
 			?>
+			
+			<? if (!$is_client) { ?>
+				<? if($shift['staff_id']) { ?>
+				<i class="fa fa-clock-o staff_hours" data-toggle="popover" onclick="load_staff_hours(this)" data-pk="<?=$shift['staff_id'];?>"></i> 
+				<? } ?>
+				<a id="shift_staff_<?=$shift['shift_id'];?>" data-toggle="popover" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
+					<?=$staff_name;?>
+				</a>
 			<? } else { ?>
-			No Staff Assigned
+				<? if($shift['staff_id']) { ?>
+				<a class="editable-click" href="<?=base_url();?>staff/view/<?=$shift['staff_id'];?>" target="_blank">
+					<?=$staff_name;?>
+				</a>
+				<? } else { echo $staff_name; } ?>
 			<? } ?>
-			</a>
 		</td>
 
+		
+		<? if (!$is_client) { ?>
 		<td class="center" width="40"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/search_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-search"></i></a></td>
 		<td class="center" width="40"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
+		<? } else { ?>
+		<td class="center" colspan="2"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
+		<? } ?>
+		
+		
+		
+		<? if (!$is_client) { ?>
 		<td class="center" width="40">
 			<a id="shift_supervisor_<?=$shift['shift_id'];?>" onclick="load_shift_supervisor(this)" class="shift_supervisor editable-click" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-star"></i></a>
 		</td>
@@ -128,6 +171,7 @@
 		<td class="center" width="40">
 			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_expenses_modal/<?=$shift['shift_id'];?>"><i class="fa fa-dollar"></i></a>
 		</td>
+		<? } ?>
 	</tr>
 <? } ?>
 </tbody>
@@ -184,6 +228,7 @@ $(function(){
 		title: 'Select role',
 		source: [<?=modules::run('attribute/role/get_roles', 'data_source'); ?>]
 	});
+	<? if (!$is_client) { ?>
 	$('.shift_uniform').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_uniform',
 		name: 'uniform_id',
@@ -193,6 +238,14 @@ $(function(){
 			return;
 		}
 	});
+	<? } else { ?>
+	$('.shift_uniform').editable({
+		url: '<?=base_url();?>job/ajax/update_shift_uniform',
+		name: 'uniform_id',
+		title: 'Select Uniform',
+		source: [<?=modules::run('attribute/uniform/get_uniforms', 'data_source');?>]
+	});
+	<? } ?>
 	$('.shift_payrate').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_payrate',
 		name: 'payrate_id',

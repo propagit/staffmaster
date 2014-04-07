@@ -10,6 +10,16 @@ class User_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function get_user_client($user_id)
+	{
+		$sql = "SELECT u.*, uc.*
+					FROM users u
+					LEFT JOIN user_clients uc ON uc.user_id = u.user_id
+					WHERE u.user_id = $user_id";
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
 	function get_admin_users()
 	{
 		$this->db->where('is_admin', 1);

@@ -1,47 +1,18 @@
 <?
 $page = $this->uri->segment(1) ? $this->uri->segment(1) : 'dashboard';
 $menu = array(
-	array('path' => '#', 'icon' => 'fa-folder-open', 'title' => 'Manage Jobs', 'sub' => array(
-		array('path' => 'job/search', 'icon' => 'fa-search', 'title' => 'Search Jobs'),
+	array('path' => 'job', 'icon' => 'fa-calendar', 'title' => 'Manage Jobs', 'sub' => array(
+		array('path' => 'job/calendar', 'icon' => 'fa-calendar', 'title' => 'Company Calendar'),
 		array('path' => 'job/create', 'icon' => 'fa-plus', 'title' => 'Create Job'),
-		array('path' => 'job/calendar', 'icon' => 'fa-calendar', 'title' => 'Company Calendar')
+		array('path' => 'job/search', 'icon' => 'fa-search', 'title' => 'Search Jobs')
 	)),
-	array('path' => '#', 'icon' => 'fa-key', 'title' => 'Edit Attributes', 'sub' => array(		
-		array('path' => 'attribute/payrate', 'icon' => 'fa-usd', 'title' => 'Pay Rates'),
-		array('path' => 'attribute/role', 'icon' => 'fa-star', 'title' => 'Roles'),
-		array('path' => 'attribute/venue', 'icon' => 'fa-map-marker', 'title' => 'Venues'),
-		array('path' => 'attribute/uniform', 'icon' => 'fa-puzzle-piece', 'title' => 'Uniforms'),
-		array('path' => 'formbuilder', 'icon' => 'fa-pencil', 'title' => 'Custom Attributes'),
-		array('path' => 'attribute/group', 'icon' => 'fa-sitemap', 'title' => 'Groups')
+	array('path' => 'account', 'icon' => 'fa-user', 'title' => 'Your Profile', 'sub' => array(
 	)),
-	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
-		array('path' => 'report', 'icon' => 'fa-dashboard', 'title' => 'Accounts Reports'),
-		array('path' => 'timesheet', 'icon' => 'fa-thumbs-up', 'title' => 'Time Sheets'),
-		array('path' => 'payrun', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Run'),
-		array('path' => 'expense', 'icon' => 'fa-dollar', 'title' => 'Staff Expenses'),
-		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
-		array('path' => '#', 'icon' => 'fa-credit-card', 'title' => 'Pay Bills'),
-		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Buy SMS Credits')
+	array('path' => 'staff', 'icon' => 'fa-search', 'title' => 'Search Our Staff', 'sub' => array(
 	)),
-	array('path' => '#', 'icon' => 'fa-lightbulb-o', 'title' => 'Training Centre', 'sub' => array(
-		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
-		array('path' => 'brief', 'icon' => 'fa-book', 'title' => 'Brief Builder'),
-		array('path' => '#', 'icon' => 'fa-question', 'title' => 'User Guide'),
-		array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
-		array('path' => '#', 'icon' => 'fa-folder-open-o', 'title' => 'Training Centre'),
-		array('path' => '#', 'icon' => 'fa-refresh', 'title' => 'Create Work Process'),
-		array('path' => '#', 'icon' => 'fa-paperclip', 'title' => 'Create Document'),
-		array('path' => '#', 'icon' => 'fa-bar-chart-o', 'title' => 'Create Survey'),
-		array('path' => '#', 'icon' => 'fa-youtube-play', 'title' => 'Create Video'),
-		array('path' => '#', 'icon' => 'fa-check', 'title' => 'Create Test'),
-		array('path' => '#', 'icon' => 'fa-file-o', 'title' => 'Create Webpage')
+	array('path' => 'invoice', 'icon' => 'fa-clock-o', 'title' => 'Your Invoices', 'sub' => array(
 	)),
-	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
-		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
-		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
-		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
-		array('path' => '#', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
-		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs')
+	array('path' => 'support', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(		
 	))
 );
 ?>

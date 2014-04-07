@@ -1,17 +1,21 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- *	@desc: ajax controller, provides ajax functions for Job module
- *	@author: namnd86@gmail.com
+ *	@module: job
+ *	@controller: ajax
  */
 
 class Ajax extends MX_Controller {
 
+	var $user = null;
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('job_model');
 		$this->load->model('job_shift_model');
+		$this->user = $this->session->userdata('user_data');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	/** 
@@ -24,6 +28,10 @@ class Ajax extends MX_Controller {
 	function search_jobs()
 	{
 		$data = $this->input->post();
+		if (modules::run('auth/is_client'))
+		{
+			$data['client_id'] = $this->user['user_id'];
+		}
 		$data['jobs'] = $this->job_model->search_jobs($data);
 		$this->load->view('jobs_search_results_view', isset($data) ? $data : NULL);
 	}
@@ -42,6 +50,10 @@ class Ajax extends MX_Controller {
 	function search_shifts()
 	{
 		$data = $this->input->post();
+		if (modules::run('auth/is_client'))
+		{
+			$data['client_id'] = $this->user['user_id'];
+		}
 		$data['shifts'] = $this->job_shift_model->search_shifts($data,
 						$this->session->userdata('shifts_sort_key'),
 						$this->session->userdata('shifts_sort_value'));
@@ -103,8 +115,15 @@ class Ajax extends MX_Controller {
 		$filter_data['role_id'] = $data['role_id'];
 		$filter_data['venue_id'] = $data['venue_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
-		$filter_data['payrate_id'] = $data['payrate_id'];
-		$filter_data['supervisor_id'] = $data['supervisor_id'];
+		if (isset($data['payrate_id']))
+		{
+			$filter_data['payrate_id'] = $data['payrate_id'];
+		}
+		if (isset($data['supervisor_id']))
+		{
+			$filter_data['supervisor_id'] = $data['supervisor_id'];
+		}
+		
 		#$filter_data['payrate_type'] = $data['payrate_type'];
 		
 		$count = $data['count'];
@@ -227,6 +246,7 @@ class Ajax extends MX_Controller {
 		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $date,
 						$this->session->userdata('shifts_sort_key'),
 						$this->session->userdata('shifts_sort_value'));
+		$data['is_client'] = $this->is_client;
 		$this->load->view('shifts_day_view', isset($data) ? $data : NULL);
 	}
 	
@@ -281,11 +301,13 @@ class Ajax extends MX_Controller {
 			$data['custom_date'] = now();
 		}
 		$data['job_id'] = $job_id;
-		
-		if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week') {
+		$data['is_client'] = $this->is_client;
+		if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week') 
+		{
 			$this->load->view('shifts_week_view', isset($data) ? $data : NULL);	
 		} 
-		else if ($this->session->userdata('calendar_view') == 'month') {
+		else if ($this->session->userdata('calendar_view') == 'month') 
+		{
 			$out = array();
 			foreach($job_dates as $date)
 			{
