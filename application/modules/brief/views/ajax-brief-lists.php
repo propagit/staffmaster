@@ -19,19 +19,25 @@
 			<span class="wk_date inline-block full-width"><?=date('d', strtotime($brief->created));?></span>
 			<span class="wk_month inline-block full-width"><?=date('M', strtotime($brief->created));?></span>
 		</td>
-		<td class="left"><?=$brief->name;?></td>
+		<td class="left"><a target="_blank" href="<?=base_url();?>brief/view/<?=md5('brief_url'.$brief->brief_id)?>"><?=$brief->name;?></a></td>
 		<td class="center">
         	<? $brief_status = modules::run('brief/check_brief_status',$brief->brief_id);?>
         	<?=(!$brief_status) ? '<button type="button" class="btn btn-danger brief-status" data-brief="'.$brief->brief_id.'">Inactive</button>' : '<button type="button" class="btn btn-success brief-status" data-brief="'.$brief->brief_id.'">Active</button>';?>
         </td>
 		<td class="center"><a href="<?=base_url();?>brief/edit/<?=$brief->brief_id?>"><i class="fa fa-eye"></i></a></td>
-		<td class="center"><i class="fa fa-envelope-o email-invoice"></i></td>
+		<td class="center"><i class="fa fa-envelope-o email-brief"></i></td>
         <td class="center"><a class="delete-brief" delete-data-id="<?=$brief->brief_id;?>"><i class="fa fa-times"></i></a></td>
 	</tr>
 	<?php } }?>
 </tbody>
 </table>
-
+<div id="ajax-email-brief-modal"></div>
+<form id="email-brief-form">
+<input type="hidden" id="selected-user-id" name="user_staff_selected_user_id[]" value="" />
+<input type="hidden" name="email_modal_header" value="Email Brief" />
+<input type="hidden" name="email_template_id" value="<?=BRIEF_EMAIL_TEMPLATE_ID;?>" />
+<input type="hidden" name="selected_module_ids[]" value="" />
+</form>
 <script>
 
 $(function(){
@@ -43,11 +49,7 @@ $(function(){
 		reset_current_page();
 		search_brief();
 	});	
-	
-	//change status
-	/* $('.brief-status').on('click',function(){
-		change_status($(this));
-	}); */
+
 	
 	//delete brief
 	$('.delete-brief').on('click',function(){
@@ -60,6 +62,14 @@ $(function(){
 			 }
 		});
 	});
+	
+	//get email modal
+	$('.email-brief').on('click',function(){
+		$('#selected-user-id').val($(this).attr('data-user-id'));
+		get_email_model('#email-brief-form');
+
+	});
+
 
 });//ready
 </script>

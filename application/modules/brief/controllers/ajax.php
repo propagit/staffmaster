@@ -147,24 +147,6 @@ class Ajax extends MX_Controller {
 		$this->load->view('ajax-brief-lists', isset($data) ? $data : NULL);		
 	}
 	/**
-	*	@name: change_brief_status
-	*	@desc: Toggle brief status
-	*	@access: public
-	*	@param: ([via post] brief id and current status)
-	*	@return: success or failed status
-	*/
-	function change_brief_status()
-	{
-		$brief_id = $this->input->post('brief_id');
-		$cur_status = $this->input->post('cur_status');
-		$data = array('status' => $cur_status == 'active' ? 0 : 1 );
-		if($this->brief_model->update_brief($brief_id, $data)){
-			echo 'success';	
-		}else{
-			echo 'failed';	
-		}
-	}
-	/**
 	*	@name: delete_brief
 	*	@desc: Deletes brief and all its elements and documents.
 	*	@access: public

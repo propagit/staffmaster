@@ -15,6 +15,7 @@ class Dispatcher extends MX_Controller {
 	
 	public function index()
 	{
+		
 		$this->user_dispatcher();
 	}
 	
@@ -27,40 +28,40 @@ class Dispatcher extends MX_Controller {
 	*/
 	function user_dispatcher($controller='', $method='', $param1='',$param2='',$param3='',$param4='')
 	{
-		$is_user_logged_in = modules::run('auth/is_user_logged_in');
-		if (!$is_user_logged_in)
-		{
-			redirect('login');
-		}
-		
-		$user_data = $this->session->userdata('user_data');
-		
-		# If user is admin, login to admin portal
-		if ($user_data['is_admin'] && !$this->session->userdata('force_staff'))
-		{
-			if (!$controller)
-			{
-				$controller = 'dashboard';
-			}
-			$this->admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
-		}
-		else if ($user_data['is_staff'])
-		{
-			if (!$controller)
-			{
-				$controller = 'dashboard';
-			}
-			$this->staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
-		}
-		else if ($user_data['is_client'])
-		{
-			if (!$controller)
-			{
-				$controller = 'job';
-				$method = 'calendar';
-			}
-			$this->client_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
-		}		
+		  $is_user_logged_in = modules::run('auth/is_user_logged_in');
+		  if (!$is_user_logged_in)
+		  {
+			  redirect('login');
+		  }
+		  
+		  $user_data = $this->session->userdata('user_data');
+		  
+		  # If user is admin, login to admin portal
+		  if ($user_data['is_admin'] && !$this->session->userdata('force_staff'))
+		  {
+			  if (!$controller)
+			  {
+				  $controller = 'dashboard';
+			  }
+			  $this->admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
+		  }
+		  else if ($user_data['is_staff'])
+		  {
+			  if (!$controller)
+			  {
+				  $controller = 'dashboard';
+			  }
+			  $this->staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
+		  }
+		  else if ($user_data['is_client'])
+		  {
+			  if (!$controller)
+			  {
+				  $controller = 'job';
+				  $method = 'calendar';
+			  }
+			  $this->client_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
+		  }	
 	}
 	
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)

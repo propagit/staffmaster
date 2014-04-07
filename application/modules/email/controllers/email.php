@@ -129,6 +129,10 @@ class Email extends MX_Controller {
 				case 8:
 				//client quote
 				break;
+				
+				case 9:
+				//brief
+				break;
 			}
 		}
 		return $obj;
@@ -191,7 +195,7 @@ class Email extends MX_Controller {
 	{
 		$data['text_area_id'] = $text_area_id;
 		if(!$template_id){
-			$template_id = 1;	
+			$template_id = WELCOME_EMAIL_TEMPLATE_ID;	
 		}
 		$data['merge_fields'] = $this->email_template_model->get_email_merge_fields_by_template_id($template_id);
 		$this->load->view('description_merge_fields', isset($data) ? $data : NULL);
@@ -359,7 +363,7 @@ class Email extends MX_Controller {
 		$company_logo = modules::run('setting/company_logo');
 		$email_signature = modules::run('setting/get_email_footer');
 		$this->email->message($company_logo . '<br />'.$message . $email_signature);
-		$this->email->attach($attachment);
+		//$this->email->attach($attachment);
 		if($this->email->send()){
 		  	echo 'Email sent.';
 		}else{

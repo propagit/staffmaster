@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <?=modules::run('email/description_merge_fields','client_invoice_email',7);?>
+        <?=modules::run('email/description_merge_fields','client_invoice_email',CLIENT_INVOICE_EMAIL_TEMPLATE_ID);?>
     </div>
 </div>
 

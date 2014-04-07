@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <?=modules::run('email/description_merge_fields','shift_reminder_email',4);?>
+        <?=modules::run('email/description_merge_fields','shift_reminder_email',SHIFT_REMINDER_EMAIL_TEMPLATE_ID);?>
     </div>
 </div>
 

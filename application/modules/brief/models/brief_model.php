@@ -31,7 +31,20 @@ class Brief_model extends CI_Model {
 		}
 		return false;
 	}
-	
+	/**
+	*	@name: get_brief_by_encoded_url
+	*	@desc: Performs Database operation - to get brief by encoded url
+	*	@access: public
+	*	@param: ([string] encoded_url)
+	*	@return: brief info or false if no brief elements exists
+	*/
+	function get_brief_by_encoded_url($encoded_url)
+	{
+		$brief = $this->db->where('encoded_url',$encoded_url)
+						  ->get('brief')
+						  ->row();
+		return $brief;
+	}
 	/**
 	*	@name: get_all_brief
 	*	@desc: Performs Database operation - to get all briefs

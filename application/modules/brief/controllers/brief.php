@@ -31,6 +31,9 @@ class Brief extends MX_Controller {
 			case 'view_brief':
 				$this->view_brief($param,$param2);
 			break;
+			case 'view':
+				$this->view($param);
+			break;
 			default:
 				$this->list_view($param);
 			break;
@@ -82,11 +85,11 @@ class Brief extends MX_Controller {
 	}
 	
 	/**
-	*	@name: select_brief
-	*	@desc: Creates new brief
+	*	@name: brief_select_field
+	*	@desc: Create brief field select field
 	*	@access: public
-	*	@param: ([via post] brief info such as brief name etc)
-	*	@return: Redirects to edit page where user will be provided with tools to add elements to the brief.
+	*	@param: ([string] field name, [varchar] field value)
+	*	@return: Loads brief in field select 
 	*/
 	function brief_select_field($field_name, $field_value=null)
 	{
@@ -103,11 +106,11 @@ class Brief extends MX_Controller {
 	}
 	
 	/**
-	*	@name: select_brief
-	*	@desc: Creates new brief
+	*	@name: view_brief
+	*	@desc: Shows brief view by shift id and brief id, the brief id can be null
 	*	@access: public
-	*	@param: ([via post] brief info such as brief name etc)
-	*	@return: Redirects to edit page where user will be provided with tools to add elements to the brief.
+	*	@param: ([int] shift id, [int] brief id)
+	*	@return: Loads brief preview in the brief template
 	*/
 	function view_brief($shift_id,$brief_id = 0)
 	{
@@ -120,15 +123,34 @@ class Brief extends MX_Controller {
 	}
 	
 	/**
-	*	@name: select_brief
-	*	@desc: Creates new brief
+	*	@name: check_brief_status
+	*	@desc: Check brief status - a brief is marked as active if any active shifts (shifts in the future) is using this brief
 	*	@access: public
-	*	@param: ([via post] brief info such as brief name etc)
-	*	@return: Redirects to edit page where user will be provided with tools to add elements to the brief.
+	*	@param: ([int] brief id)
+	*	@return: [bool] true or false
 	*/
 	function check_brief_status($brief_id)
 	{
 		return $this->brief_model->check_brief_status($brief_id);
+	}
+	
+	/**
+	*	@name: view
+	*	@desc: Loads brief preview by encoded url. Mostly used when a user see it via link sent thru emails
+	*	@access: public
+	*	@param: ([via post] brief info such as brief name etc)
+	*	@return: Loads brief preview in brief template
+	*/
+	function view($encoded_url)
+	{
+		$brief = $this->brief_model->get_brief_by_encoded_url($encoded_url);
+		if($brief){
+			$data['brief'] = $brief;
+			$data['brief_elements'] = $this->brief_model->get_brief_elements($brief->brief_id);	
+			$this->load->view('public_view/view', isset($data) ? $data : NULL);	
+		}else{
+			redirect(base_url().'login');
+		}
 	}
 	
 
