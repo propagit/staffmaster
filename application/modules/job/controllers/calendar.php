@@ -70,12 +70,24 @@ class Calendar extends MX_Controller {
 			$year = date('Y');	
 		}
 		$new_date = $month.' '.$year;
-		$job_campaign = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year); 
-		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned');//status 0
-		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed');//status 1
-		$rejected = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected');//status -1
-		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed');//status 2
-		$completed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed');//status 3
+		$client_user_id = 0;
+		$state_code = 0;
+		if($this->session->userdata('company_calendar_filter_client_id')){
+			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
+		}
+		if($this->session->userdata('company_calendar_filter_state_code')){
+			$state_code = $this->session->userdata('company_calendar_filter_state_code');	
+		}
+		$filters = array(
+						'client_user_id' => $client_user_id,
+						'state_code' => $state_code
+						);
+		$job_campaign = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters); 
+		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters);//status 0
+		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',$filters);//status 1
+		$rejected = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',$filters);//status -1
+		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',$filters);//status 2
+		$completed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed',$filters);//status 3
 		
 		
 		//merge the records in one array

@@ -45,12 +45,24 @@ class Ajax_calendar extends MX_Controller {
 		$new_date = $this->input->post('new_date',true);
 		$month = date('m',strtotime($new_date));
 		$year = date('Y',strtotime($new_date));	
-		$data['job_campaign'] = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,true); 
-		$data['unassigned'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',true); //status 0
-		$data['unconfirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',true);//status 1
-		$data['rejected'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',true);//status -1
-		$data['confirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',true);//status 2
-		$data['completed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed',true);//status 3
+		$client_user_id = 0;
+		$state_code = 0;
+		if($this->session->userdata('company_calendar_filter_client_id')){
+			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
+		}
+		if($this->session->userdata('company_calendar_filter_state_code')){
+			$state_code = $this->session->userdata('company_calendar_filter_state_code');	
+		}
+		$filters = array(
+						'client_user_id' => $client_user_id,
+						'state_code' => $state_code
+						);
+		$data['job_campaign'] = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters,true); 
+		$data['unassigned'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters,true); //status 0
+		$data['unconfirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',$filters,true);//status 1
+		$data['rejected'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',$filters,true);//status -1
+		$data['confirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',$filters,true);//status 2
+		$data['completed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed',$filters,true);//status 3
 		echo json_encode($data);
 	}
 	/**
