@@ -44,8 +44,10 @@ class Dispatcher extends MX_Controller {
 		{
 			$this->staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
 		}
-		
-		
+		else if ($user_data['is_client'])
+		{
+			$this->client_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
+		}		
 	}
 	
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
@@ -100,6 +102,23 @@ class Dispatcher extends MX_Controller {
 		
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'admin/menu');
+		$this->template->write('content', $content);
+		$this->template->render();
+	}
+	
+	function client_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
+	{		
+		if ( strpos($method, 'ajax') !== false)
+		{
+			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+		}
+				
+		$content = modules::run($controller . '/' . $controller . '_client/index', $param1, $param2, $param3, $param4);
+		$title = ucwords($controller);
+		$this->template->set_template('client');
+	
+		$this->template->write('title', $title);
+		$this->template->write_view('menu', 'client/menu');
 		$this->template->write('content', $content);
 		$this->template->render();
 	}

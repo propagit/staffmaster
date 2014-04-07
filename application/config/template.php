@@ -107,6 +107,14 @@ $template['staff'] = array(
 		'content',
 	)
 );
+$template['client'] = array(
+	'template' => 'client/default',
+	'regions' => array(
+		'title',
+		'menu',
+		'content',
+	)
+);
 $template['invoice'] = array(
 	'template' => 'admin/invoice',
 	'regions' => array(
