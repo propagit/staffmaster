@@ -33,16 +33,20 @@
             </table>
         </div>
         
-        <hr class="full-width" />
+        <hr class="full-width push" />
         <?php 
 		} else{
 			echo '<h4>No brief attached to this shift.</h4>';	
 		}?>
-        <div id="ajax-brief-preview"></div>
+        <div id="ajax-brief-preview" class="push full-width"></div>
     </div>
 </div>
-<?php 
-	$header = str_replace(array("\r", "\r\n", "\n", ","), '-', $shift_info->campaign_name).' - '.str_replace(array("\r", "\r\n", "\n", ","), '-', $shift_info->venue_name).' - '.date('l dS F Y',strtotime($shift_info->job_date));
+<?php
+	if(isset($shift_info)){ 
+		$header = str_replace(array("\r", "\r\n", "\n", ","), '-', $shift_info->campaign_name).' - '.str_replace(array("\r", "\r\n", "\n", ","), '-', $shift_info->venue_name).' - '.date('l dS F Y',strtotime($shift_info->job_date));
+	}else{
+		$header = $brief_name;	
+	}
 ?>
 <script>
 $(function(){

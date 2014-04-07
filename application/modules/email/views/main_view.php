@@ -22,7 +22,8 @@
                 <li class="mobile-tab"><a href="#work_confirmation" data-toggle="tab">Work Confirmation</a></li>
                 <li class="mobile-tab"><a href="#forgot_password" data-toggle="tab">Forgot Password</a></li>
                 <li class="mobile-tab"><a href="#client_invoice" data-toggle="tab">Client Invoice</a></li> 
-                <li class="mobile-tab"><a href="#client_quote" data-toggle="tab">Client Quote</a></li>                             
+                <li class="mobile-tab"><a href="#client_quote" data-toggle="tab">Client Quote</a></li>
+                <li class="mobile-tab"><a href="#brief" data-toggle="tab">Brief</a></li>                              
 			</ul>
 			
 			
@@ -35,6 +36,7 @@
                 <div class="tab-pane" id="forgot_password"></div>
                 <div class="tab-pane" id="client_invoice"></div>
                 <div class="tab-pane" id="client_quote"></div>
+                <div class="tab-pane" id="brief"></div>
 			</div>
 			
 			<div class="clearfix"></div>

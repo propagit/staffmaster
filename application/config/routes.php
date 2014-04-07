@@ -60,7 +60,8 @@ $route['login'] = 'auth/login_user';
 $route['logout'] = 'auth/logout_user';
 
 
-$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','brief', 'account');
+
+$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account');
 $path = implode('|', $modules);
 $route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
 $route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
@@ -68,6 +69,7 @@ $route['(' . $path . ')/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
 $route['(' . $path . ')/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
 $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
 $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
+
 
 #$route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
 #$route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
@@ -101,6 +103,12 @@ $route['documentor/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2'
 $route['documentor/(:any)/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2/$3';
 $route['documentor/(:any)/(:any)/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2/$3/$4'; 
 
+//public view for brief
+$route['brief/view/(:any)'] = 'brief_dispacher/index/brief/view/$1';
+$route['brief'] = 'dispatcher/user_dispatcher/brief';
+$route['brief/create_brief'] = 'dispatcher/user_dispatcher/brief/create_brief';
+$route['brief/edit/(:any)'] = 'dispatcher/user_dispatcher/brief/edit/$1';
+$route['brief/view_brief/(:any)/(:any)'] = 'dispatcher/user_dispatcher/brief/view_brief/$1/$2';
 
 
 $route['404_override'] = '';

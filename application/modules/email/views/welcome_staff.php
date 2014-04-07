@@ -40,7 +40,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-5">
     	<? //params 'text field name so that the merge field can be inserted into the text area editor when clicked','Template id : Welcome Template = 1' ?>
-        <?=modules::run('email/description_merge_fields','welcome_email',1);?>
+        <?=modules::run('email/description_merge_fields','welcome_email',WELCOME_EMAIL_TEMPLATE_ID);?>
     </div>
 </div>
 

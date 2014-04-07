@@ -1,3 +1,6 @@
+<script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/config.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
@@ -36,7 +39,6 @@
     </div>
 </div>
 <!--end bottom box -->
-
 <script>
 $(function(){
 	search_brief();
@@ -60,28 +62,6 @@ function search_brief()
 	});
 }
 
-function change_status(obj)
-{
-	preloading($('#ajax-brief-lists'));
-	var brief_id = obj.attr('data-brief');
-	var cur_status = obj.hasClass('btn-danger') ? 'inactive' : 'active';
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>brief/ajax/change_brief_status",
-		data: {brief_id:brief_id,cur_status:cur_status},
-		success: function(html) {
-			if(html == 'success'){
-				if(cur_status == 'active'){
-					obj.removeClass('btn-success').addClass('btn-danger').html('Inactive');
-				}else{
-					obj.removeClass('btn-danger').addClass('btn-success').html('Active');
-				}
-			}
-			$('#wrapper_loading').remove();
-		}
-	});	
-}
-
 function delete_brief(brief_id)
 {
 	preloading($('#ajax-brief-lists'));
@@ -96,5 +76,18 @@ function delete_brief(brief_id)
 			$('#wrapper_loading').remove();
 		}
 	});
+}
+
+function get_email_model(form_id){
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/get_send_email_modal",
+		  data: $(form_id).serialize(),
+		  success: function(html) {
+			  $('#ajax-email-brief-modal').html(html);
+			  $('#email-modal').modal('show');	
+		  }
+	  });
+		
 }
 </script>

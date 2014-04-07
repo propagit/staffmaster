@@ -23,28 +23,31 @@ class Ajax extends MX_Controller {
 	function load_email_template($tab='welcome_staff') {
 		switch($tab){
 			case 'welcome_staff':
-				$data['template'] = $this->email_template_model->get_template(1);
+				$data['template'] = $this->email_template_model->get_template(WELCOME_EMAIL_TEMPLATE_ID);
 			break;	
 			case 'roster_update':
-				$data['template'] = $this->email_template_model->get_template(2);
+				$data['template'] = $this->email_template_model->get_template(ROSTER_UPDATE_EMAIL_TEMPLATE_ID);
 			break;
 			case 'apply_shift':
-				$data['template'] = $this->email_template_model->get_template(3);
+				$data['template'] = $this->email_template_model->get_template(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID);
 			break;
 			case 'shift_reminder':
-				$data['template'] = $this->email_template_model->get_template(4);
+				$data['template'] = $this->email_template_model->get_template(SHIFT_REMINDER_EMAIL_TEMPLATE_ID);
 			break;
 			case 'work_confirmation':
-				$data['template'] = $this->email_template_model->get_template(5);
+				$data['template'] = $this->email_template_model->get_template(WORK_CONFIRMATION_EMAIL_TEMPLATE_ID);
 			break;
 			case 'forgot_password':
-				$data['template'] = $this->email_template_model->get_template(6);
+				$data['template'] = $this->email_template_model->get_template(FORGOT_PASSWORD_EMAIL_TEMPLATE_ID);
 			break;
 			case 'client_invoice':
-				$data['template'] = $this->email_template_model->get_template(7);
+				$data['template'] = $this->email_template_model->get_template(CLIENT_INVOICE_EMAIL_TEMPLATE_ID);
 			break;
 			case 'client_quote':
-				$data['template'] = $this->email_template_model->get_template(8);
+				$data['template'] = $this->email_template_model->get_template(CLIENT_QUOTE_EMAIL_TEMPLATE_ID);
+			break;
+			case 'brief':
+				$data['template'] = $this->email_template_model->get_template(BRIEF_EMAIL_TEMPLATE_ID);
 			break;
 		}
 		$this->load->view($tab, isset($data) ? $data : NULL);

@@ -28,7 +28,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-5" style="padding-right:0px!important;">
     	<? //params 'text field name so that the merge field can be inserted into the text area editor when clicked','Template id : Roster Update Template = 2' ?>
-        <?=modules::run('email/description_merge_fields','roster_email',2);?>
+        <?=modules::run('email/description_merge_fields','roster_email',ROSTER_UPDATE_EMAIL_TEMPLATE_ID);?>
     </div>
 </div>
 

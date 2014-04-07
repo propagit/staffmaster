@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <?=modules::run('email/description_merge_fields','work_confirmation_email');?>
+        <?=modules::run('email/description_merge_fields','work_confirmation_email',WORK_CONFIRMATION_EMAIL_TEMPLATE_ID);?>
     </div>
 </div>
 

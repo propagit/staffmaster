@@ -124,5 +124,6 @@ define('WORK_CONFIRMATION_EMAIL_TEMPLATE_ID',5);
 define('FORGOT_PASSWORD_EMAIL_TEMPLATE_ID',6);
 define('CLIENT_INVOICE_EMAIL_TEMPLATE_ID',7);
 define('CLIENT_QUOTE_EMAIL_TEMPLATE_ID',8);
+define('BRIEF_EMAIL_TEMPLATE_ID',9);
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
