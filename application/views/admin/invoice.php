@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title><?=$title;?> &middot; Admin Portal &middot; Staff Master</title>
+	<title><?=$title;?> &middot; Staff Master</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap -->
 	<link href="<?=base_url();?>assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -50,7 +50,9 @@
 		            	<li><a id="btn-generate-invoice"><i class="fa fa-check-circle"></i> Generate Invoice</a></li>
 		            	
 		            	<li><a id="btn-download-invoice"><i class="fa fa-download"></i> Download Invoice</a></li>
+		            	<? if (!modules::run('auth/is_client')) { ?>
 		            	<li><a id="btn-email-invoice"><i class="fa fa-envelope-o"></i> Email Invoice</a></li>
+		            	<? } ?>
 						<li class="pull-right"><a id="btn-reset-invoice"><i class="fa fa-refresh"></i> Reset</a></li>
 		            </ul>
 		        </div>

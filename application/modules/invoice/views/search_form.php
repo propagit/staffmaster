@@ -1,6 +1,7 @@
 <h2>Search Invoices</h2>
-
+<br />
 <form class="form-horizontal" role="form" id="form_search_invoices">
+<? if (!$is_client) { ?>
 <div class="row">
 	<div class="form-group">
 		<label for="client_id" class="col-md-2 control-label">Client</label>
@@ -9,6 +10,7 @@
 		</div>
 	</div>
 </div>
+<? } ?>
 <div class="row">
 	<div class="form-group">
 		<label for="keyword" class="col-md-2 control-label">Campaign Name</label>

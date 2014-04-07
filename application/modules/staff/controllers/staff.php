@@ -7,6 +7,8 @@
 
 class Staff extends MX_Controller {
 
+	var $user = null;
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
@@ -15,6 +17,8 @@ class Staff extends MX_Controller {
 		$this->load->model('staff_model');
 		$this->load->model('formbuilder/formbuilder_model');
 		$this->load->model('export/export_model');
+		$this->user = $this->session->userdata('user_data');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	public function index($method='', $param='')
@@ -168,7 +172,7 @@ class Staff extends MX_Controller {
 	*	@param: (POST) array of search parameters
 	*	@return: (void) load search staffs form
 	*/
-	private function search_staffs()
+	function search_staffs()
 	{
 		$data['weekdays'] = array(
 							array('value' => 1, 'label' => 'Monday'),
@@ -185,6 +189,7 @@ class Staff extends MX_Controller {
 							array('value' => '26-35', 'label' => '26 - 35 Years Old'),
 							array('value' => '36-100', 'label' => '35+ Years Old')
 							);
+		$data['is_client'] = $this->is_client;
 		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
 	
@@ -631,6 +636,12 @@ class Staff extends MX_Controller {
 		$data['photo'] = $photo;
 
 		$this->load->view('staff_picture', isset($data) ? $data : NULL);
+	}
+	
+	function profile_hero_image($user_id)
+	{
+		$data['hero'] = $this->staff_model->get_hero($user_id);
+		$this->load->view('profile_hero_image', isset($data) ? $data : NULL);
 	}
 	
 	/**

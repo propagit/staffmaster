@@ -14,6 +14,9 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
 		<div class="inner-box">
+			<? if (modules::run('auth/is_client')) { ?>
+				<?=modules::run('invoice/search_form');?>
+			<? } else { ?>
 			<ul class="nav nav-tabs tab-respond" id="tab-invoice">
 				<li class="active"><a href="#create-invoice" data-toggle="tab">Create Invoice</a></li>
 				<li><a href="#search-invoices" data-toggle="tab">Search Invoices</a></li>
@@ -40,7 +43,7 @@
 					<?=modules::run('invoice/search_form');?>
 				</div>
 			</div>
-			
+			<? } ?>
 		</div>
 	</div>
 </div>

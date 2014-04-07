@@ -1,16 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Controller: Ajax
- * @author: namnd86@gmail.com
- */
+*	@module: invoice
+*	@controller: ajax
+*/
 
 class Ajax extends MX_Controller {
 
+	var $user = null;
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('invoice_model');
+		$this->user = $this->session->userdata('user_data');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	/**
@@ -296,9 +300,14 @@ class Ajax extends MX_Controller {
 	*/
 	function search_invoices() {
 		$params = $this->input->post();
+		if ($this->is_client)
+		{
+			$params['client_id'] = $this->user['user_id'];
+		}
 		$data['invoices'] = $this->invoice_model->search_invoices($params);
 		$data['total_invoices'] = $this->invoice_model->search_invoices($params,true);
 		$data['current_page'] = $this->input->post('current_page',true);
+		$data['is_client'] = $this->is_client;
 		$this->load->view('search/results_list_view', isset($data) ? $data : NULL);
 	}
 	

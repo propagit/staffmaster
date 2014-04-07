@@ -7,11 +7,15 @@
 
 class Invoice extends MX_Controller {
 
+	var $user = null;
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('invoice_model');
 		$this->load->model('expense/expense_model');
+		$this->user = $this->session->userdata('user_data');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	
@@ -72,7 +76,9 @@ class Invoice extends MX_Controller {
 	*	@param: (void)
 	*	@return: (html) load search form of the search invoice tab
 	*/
-	function search_form() {
+	function search_form() 
+	{
+		$data['is_client'] = $this->is_client;
 		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
 	
@@ -321,6 +327,7 @@ class Invoice extends MX_Controller {
 	*/
 	function menu_dropdown_status($invoice_id) {
 		$data['invoice'] = $this->invoice_model->get_invoice($invoice_id);
+		$data['is_client'] = $this->is_client;
 		$this->load->view('search/menu_dropdown_status', isset($data) ? $data : NULL);
 	}
 	
