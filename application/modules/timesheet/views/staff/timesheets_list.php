@@ -22,11 +22,9 @@
 </tbody>
 </table>
 
-<div id="wrapper_ts_break" class="hide"></div>
 <script>
 $(function() {
 	init_edit();
-	
 	$('#menu-timesheet-action ul li a[data-value="submit"]').click(function(){
 		var selected_timesheets = new Array();
 		$('.selected_timesheet:checked').each(function(){

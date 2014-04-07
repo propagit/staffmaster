@@ -37,14 +37,11 @@
 				<div class="tab-pane" id="supervised_timesheets">
 				</div>
 			</div>
-
-			
-			
 		</div>
 	</div>
 </div>
 <!--end bottom box -->
-
+<div id="wrapper_ts_break" class="hide"></div>
 <script>
 $(function(){
 	list_timesheets();
