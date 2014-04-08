@@ -1,6 +1,8 @@
 function init_select()
 {
-	$('select').select2();
+	if($(window).width() >= 768){
+		$('select').select2();
+	}
 }
 /* Preloading data functions */
 function preloading(obj)
@@ -298,8 +300,14 @@ var help = {
 				$('#'+container_id).html(html);
 			}
 		})	
+	},
+	
+	//inline - x-editable
+	make_x_editable_inline:function(){
+		if($(window).width() <= 768){
+			$.fn.editable.defaults.mode = 'inline';	
+		}	
 	}
-
 	
 	
 	
@@ -308,6 +316,11 @@ var help = {
 
 $(function(){
 	help.go_to_top('#go-to-top');	
+	help.make_x_editable_inline();
+});
+
+$(window).resize(function(){
+	help.make_x_editable_inline();
 });
 
 $( document ).ajaxComplete(function() {

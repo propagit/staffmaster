@@ -65,7 +65,7 @@ class Dispatcher extends MX_Controller {
 	}
 	
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
-	{		
+	{	
 		if ( strpos($method, 'ajax') !== false)
 		{
 			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	

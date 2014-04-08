@@ -108,6 +108,7 @@ $route['brief/view/(:any)'] = 'brief_dispacher/index/brief/view/$1';
 $route['brief'] = 'dispatcher/user_dispatcher/brief';
 $route['brief/create_brief'] = 'dispatcher/user_dispatcher/brief/create_brief';
 $route['brief/edit/(:any)'] = 'dispatcher/user_dispatcher/brief/edit/$1';
+$route['brief/view_brief/(:any)'] = 'dispatcher/user_dispatcher/brief/view_brief/$1';
 $route['brief/view_brief/(:any)/(:any)'] = 'dispatcher/user_dispatcher/brief/view_brief/$1/$2';
 
 

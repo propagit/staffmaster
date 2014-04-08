@@ -1,19 +1,19 @@
 <?
 $page = $this->uri->segment(1) ? $this->uri->segment(1) : 'dashboard';
 $menu = array(
-	array('path' => '', 'icon' => 'dashboard', 'title' => 'Dashboard', 'sub' => array(
+	array('path' => '', 'icon' => 'fa-dashboard', 'title' => 'Dashboard', 'sub' => array(
 	)),
-	array('path' => 'staff', 'icon' => 'user', 'title' => 'Your Profile', 'sub' => array(
+	array('path' => 'staff', 'icon' => 'fa-user', 'title' => 'Your Profile', 'sub' => array(
 	)),
-	array('path' => 'work', 'icon' => 'thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(		
+	array('path' => 'work', 'icon' => 'fa-thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(		
 	)),
-	array('path' => 'roster', 'icon' => 'calendar', 'title' => 'Your Roster', 'sub' => array(
+	array('path' => 'roster', 'icon' => 'fa-calendar', 'title' => 'Your Roster', 'sub' => array(
 	)),
-	array('path' => 'timesheet', 'icon' => 'clock-o', 'title' => 'Time Sheets', 'sub' => array(		
+	array('path' => 'timesheet', 'icon' => 'fa-clock-o', 'title' => 'Time Sheets', 'sub' => array(		
 	)),
 	#array('path' => '#', 'icon' => 'book', 'title' => 'Training Centre', 'sub' => array(		
 	#)),
-	array('path' => '#', 'icon' => 'phone', 'title' => 'Support', 'sub' => array(		
+	array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(		
 	))
 );
 ?>
@@ -25,7 +25,7 @@ $menu = array(
             <? foreach($menu as $item) { ?>
                  <li class="dropdown<?=($page == $item['path']) ? ' active' : '';?>">
                     <a href="<?=base_url() . $item['path'];?>">
-                      <i class="fa fa-<?=$item['icon'];?>"></i><span class="nav-label"><?=$item['title'];?></span>
+                      <i class="fa <?=$item['icon'];?>"></i><span class="nav-label"><?=$item['title'];?></span>
                     </a>
                   </li>
             <? } ?>
@@ -39,16 +39,16 @@ $menu = array(
     <div class="row desktop-hidden">
         <div class="navbar navbar-inverse">
             <div class="col-md-12">
-                <span class="mob-menu-head">MENU</span>
                 <button class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse" type="button">
                    <i class="fa fa-align-justify"></i>
                 </button>
+                <span class="mob-menu-head">MENU <i class="fa fa-angle-right"></i></span>
             </div>
             <div class="nav-collapse collapse" id="nav-collapse-header" style="height: auto;">
                 <ul class="nav">
                      <? foreach($menu as $item) { ?>
-                         <li <?=($page == $item['path']) ? ' class="active"' : '';?> class="dropdown">
-                            <a href="<?=base_url() . $item['path'];?>">
+                         <li class="dropdown <?=($page == $item['path']) ? 'active' : '';?>">
+                            <a class="dropdown-toggle" href="<?=base_url() . $item['path'];?>">
                               <i class="fa <?=$item['icon'];?>"></i><span class="nav-label"><?=$item['title'];?></span>
                             </a>
                           </li>

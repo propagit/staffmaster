@@ -12,7 +12,7 @@
 		<th class="center">Pay rate</th>
 		<th class="center">Expenses</th>
 		<th class="center" width="40">View</th>
-		<th class="center" width="120">Status</th>
+		<th class="center" width="140">Status</th>
 	</tr>
 </thead>
 <tbody>

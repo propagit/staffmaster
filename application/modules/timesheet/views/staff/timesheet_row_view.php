@@ -58,11 +58,11 @@
 	<td class="center"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/details/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a></td>
 	<td class="center">
 		<? if ($timesheet['status'] < TIMESHEET_SUBMITTED) { ?>
-		<button class="btn btn-core btn-block" onclick="submit_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-arrow-right"></i> Submit</button>
+		<button class="btn btn-core btn-block btn-rt-padding" onclick="submit_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-arrow-right"></i> Submit</button>
 		<? } else if ($timesheet['status'] == TIMESHEET_SUBMITTED) { ?>
-		<button class="btn btn-warning btn-block"><i class="fa fa-check"></i>  Pending</button>
+		<button class="btn btn-warning btn-block btn-rt-padding"><i class="fa fa-check"></i>  Pending</button>
 		<? } else if ($timesheet['status'] == TIMESHEET_APPROVED) { ?>
-		<button class="btn btn-success btn-block"><i class="fa fa-check"></i>  Approved</button>
+		<button class="btn btn-success btn-block btn-rt-padding"><i class="fa fa-check"></i>  Approved</button>
 		<? } ?>
 	</td>
 </tr>

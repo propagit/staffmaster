@@ -36,14 +36,14 @@
 		$completed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_FINISHED);
 	?>
 	<tr>
-		<td width="65" class="center">
+		<td class="wp-date" width="80">
 			<? if ($start_time) { ?>
 			<span class="wk_day"><?=date('D', $start_time);?></span>
 			<span class="wk_date"><?=date('d', $start_time);?></span>
 			<span class="wk_month"><?=date('M', $start_time);?></span>
 			<? } ?>
 		</td>
-		<td>
+		<td class="wp-date" width="80">
 			<? if ($finish_time) { ?>
 			<span class="wk_day"><?=date('D', $finish_time);?></span>
 			<span class="wk_date"><?=date('d', $finish_time);?></span>

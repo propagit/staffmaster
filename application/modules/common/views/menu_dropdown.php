@@ -1,4 +1,4 @@
-<div class="btn-group btn-nav" id="menu-<?=$id;?>">
+<div class="btn-group btn-nav mob-class" id="menu-<?=$id;?>">
 	<button type="button" class="btn btn-core menu-label"><?=$label;?></button>
 	<button type="button" class="btn btn-core dropdown-toggle" data-toggle="dropdown">
 		<span class="caret"></span>

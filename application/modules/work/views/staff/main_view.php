@@ -15,7 +15,7 @@
     				);
     				echo modules::run('common/menu_dropdown', $data, 'work-action', 'Actions');
     			?>
-    			<div class="btn-group btn-nav">
+    			<div class="btn-group btn-nav tab-respond">
     				<ul class="nav nav-tabs tab-respond">
 						<? foreach($months as $month) { ?>
 						<li<?=($month == strtotime($active_month)) ? ' class="active"' : '';?>><a onclick="load_month_works(this,<?=$month;?>)"><?=date('M Y', $month); ?></a></li>

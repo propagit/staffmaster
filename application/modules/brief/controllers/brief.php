@@ -112,12 +112,12 @@ class Brief extends MX_Controller {
 	*	@param: ([int] shift id, [int] brief id)
 	*	@return: Loads brief preview in the brief template
 	*/
-	function view_brief($shift_id,$brief_id = 0)
+	function view_brief($shift_id,$brief_id = '')
 	{
 		$data['shift_info'] = $this->job_shift_model->get_shift_info($shift_id);
 		$data['briefs'] = $this->job_shift_model->get_shift_brief_by_shif_id($shift_id);
 		$data['brief_id'] = $brief_id;
-		$data['referer'] = ($_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : base_url());
+		$data['referer'] = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url());
 		
 		$this->load->view('brief_viewer/view_brief', isset($data) ? $data : NULL);	
 	}

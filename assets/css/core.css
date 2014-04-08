@@ -1335,6 +1335,10 @@ ol.example li.placeholder:before {
 	background: #00b1eb;
 	color: #fff;
 }
+.wp-date{
+	min-width:65px;	
+	white-space:inherit !important;
+}
 .wp-date a:hover {
 	text-decoration: none;
 }
@@ -1377,6 +1381,7 @@ ol.example li.placeholder:before {
 	Responsive tabs - when the page has a lot of tabs such that it no longer fits or responds properly
 	add this class to the tab .tab-respond
  */
+
 .tab-respond li{
 	padding-top:5px;	
 }
@@ -1633,6 +1638,9 @@ ol.example li.placeholder:before {
 	margin:-45px 0 0 0;	
 }
 
+/* popover */
+
+
 @media(max-width:1500px){
 	.messages .message-img{
 		width:100%;
@@ -1653,6 +1661,11 @@ ol.example li.placeholder:before {
 }
 @media (max-width: 992px) {
 	
+	.modal-content .col-md-12{
+		float:left;
+		width:100%;
+	}
+	
 	.bottom-box .white-box:first-child{
 		padding-bottom:10px;
 		padding-right:0;	
@@ -1665,6 +1678,62 @@ ol.example li.placeholder:before {
 		
 	}
 }
+
+/* phone menu activates at this point */
+@media (max-width:820px){
+	.avatar {
+		position: absolute;
+		right: 15px;
+		margin-top: -26px;
+	}
+	.avatar img{
+		width:50px;
+		border-radius:50%;
+	}
+	.logo{
+		width:50%;	
+	}
+	.profile-menu{
+		width:50%;	
+		padding-right:12px;
+	}
+	.profile-menu ul{
+		width:auto;
+		margin-top:80px;
+		text-align:right;
+	}
+	.profile-menu ul li a span{
+		display:none;	
+	}
+	.profile-menu ul li a .fa{
+		font-size:30px;
+		padding-right: 2px;
+		padding-left: 20px;
+	}
+	.profile-menu ul li{	
+		width:auto;
+	}
+	.li-seprator{
+		display:none;
+	}
+	.message-badge{
+		margin-top: 36px;
+		right: 80px;
+		text-align: center;	
+	}
+	.message-badge .fa-caret-right{
+		display:none;	
+	}
+	.message-badge .fa-caret-down{
+		display:block;	
+	}
+	.logo img{
+		padding-left: 10px;	
+	}
+	
+
+}
+
 @media (max-width: 768px) {
 	.dob-day,.dob-mth,.dob-year{
 		width:30%;	
@@ -1674,8 +1743,101 @@ ol.example li.placeholder:before {
 		margin-top:0 !important;
 		margin-bottom:20px;	
 	}
+	.mob-class{
+		display:none;	
+	}
+	.mobile-tab{
+		width:100%;	
+	}
+		
+	.popover{
+		position:inherit;	
+		min-width:250px;
+	}
+	.box{
+		padding: 20px;	
+	}
+	.box h2{
+		font-size:30px;	
+	}
+	.bottom-box{
+		padding:10px;	
+	}
+	.inner-box{
+		padding:10px;	
+	}
+	.tab-respond{
+		width:100%;
+		margin-left:0;	
+	}
+	.tab-respond li{
+		text-align:center;
+		width:100%;
+	}
+	.datetimepicker{
+		left:54px !important;
+		min-width:200px;	
+	}
+	.btn-status{
+		min-width:134px;	
+	}
+	#list_works .wp-job{
+		width:auto;	
+	}
+	.btn-rt-padding{
+		padding-right:10px;	
+	}
+	.dropdown-relative{
+		position:relative;	
+	}
 }
-@media (max-width: 320px) {
+
+@media (max-width:490px){
+	.logo img{
+		width:100%;
+		vertical-align: bottom;
+		margin-bottom: 15px;
+	}
+	.profile-menu ul li a .fa{
+		font-size:26px;
+		padding-left:5px;	
+	}
+	.message-badge{
+		right:55px;	
+	}
+	#menu-search-staff-result-action{
+		top:0;	
+	}
+	.pagination{
+		width:100%;	
+	}
+	
+
+}
+
+@media (max-width:320px){
+	.avatar{
+		display:none;	
+	}
+	.message-badge{
+		margin-top:10px;	
+	}
+	.profile-menu ul{
+		margin-top:52px;	
+	}
+	
+	.logo{
+		min-height: 92px;
+		line-height: 92px;	
+	}
+
+	.profile-menu ul li a .fa{
+		padding-left:2px;	
+	}
+	
+	#btn_search_staffs{
+		margin-bottom:15px;	
+	}
 	.dob-day,.dob-mth,.dob-year{
 		width:100%;
 		margin-bottom:15px;	

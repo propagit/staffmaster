@@ -10,7 +10,7 @@
 			<th class="center">Finish</th>
 			<th class="center">Break</th>
 			<th class="center">Brief</th>
-			<th class="center">Status</th>
+			<th class="center" width="155">Status</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -37,15 +37,15 @@
 			<td class="center"><?=date('H:i', $roster['start_time']);?></td>
 			<td class="center"><?=date('H:i', $roster['finish_time']);?> <?=(date('d', $roster['finish_time']) != date('d', $roster['start_time'])) ? '<span class="error">*</span>': '';?></td>
 			<td class="center"><?=modules::run('common/break_time', $roster['break_time']);?></td>
-			<td class="center"><a href="#"><i class="fa fa-eye"></i></a></td>
+			<td class="center"><a target="_blank" href="<?=base_url();?>brief/view_brief/<?=$roster['shift_id'];?>"><i class="fa fa-eye"></i></a></td>
 			<td class="center" width="150">
 				<? if($roster['status'] == 1) { ?>
-				<div class="btn-group">
+				<div class="btn-group btn-status">
 					<button type="button" class="btn btn-danger">Unconfirmed</button>
 					<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>
 					</button>
-					<ul class="dropdown-menu" role="menu">
+					<ul class="dropdown-menu dropdown-relative" role="menu">
 						<li><a class="roster_confirm" data-shift-id="<?=$roster['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i> Confirm</a></li>
 						<li><a class="roster_reject" data-shift-id="<?=$roster['shift_id'];?>"><i class="fa fa-thumbs-o-down"></i> Reject</a></li>
 					</ul>
