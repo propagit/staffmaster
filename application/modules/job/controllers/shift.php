@@ -47,6 +47,28 @@ class Shift extends MX_Controller {
 		return $this->job_shift_model->get_job_shift($shift_id);
 	}
 	
+	/**
+	*	@name: field_select_status
+	*	@desc: custom select shift status field
+	*	@access: public
+	*	@param: - $field_name
+	*			- $field_value (optional)
+	*			- $size (optional)
+	*	@return: custom select staff status field
+	*/
+	function field_select_status($field_name, $field_value=null, $size=null)
+	{
+		$array = array(
+			array('value' => SHIFT_UNASSIGNED, 'label' => 'Un-Filled Shifts'),
+			array('value' => SHIFT_UNCONFIRMED, 'label' => 'Un-Confirmed Shifts'),
+			array('value' => SHIFT_REJECTED, 'label' => 'Rejected Shifts'),
+			array('value' => SHIFT_CONFIRMED, 'label' => 'Confirmed Shifts'),
+			array('value' => SHIFT_FINISHED, 'label' => 'Completed Shifts')
+		);
+		
+		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
+	}
+	
 	function field_select_fields($field_name, $field_value=null, $size=null)
 	{
 		$fields = array(

@@ -46,33 +46,17 @@ class Job_model extends CI_Model {
 		if (isset($data['date_from']) && $data['date_from'] != '')
 		{
 			$sql_select_job_id .= " AND (start_time >= " . strtotime($data['date_from']);
+			#$sql_select_job_id .= " OR (start_time < " . strtotime($data['date_from']) . " AND finish_time > " . strtotime($data['date_from']) . ")";
 			$sql_select_job_id .= " OR finish_time >= " . strtotime($data['date_from']) . ")";
 		}
 		if (isset($data['date_to']) && $data['date_to'] != '')
 		{
 			$sql_select_job_id .= " AND (start_time <= " . strtotime($data['date_to']);
+			#$sql_select_job_id .= " OR (start_time < " . strtotime($data['date_to']) . " AND finish_time > " . strtotime($data['date_to']) . ")";
 			$sql_select_job_id .= " OR finish_time <= " . strtotime($data['date_to']) . ")";
 		}
 		$sql_select_job_id .= " GROUP BY job_id";
 		
-		/* 
-		$sql_select_job_id = "SELECT job_id FROM job_shifts WHERE status > " . SHIFT_DELETED . " GROUP BY job_id";
-		if ($data['date_from'])
-		{
-			$sql_select_job_id .= " HAVING MIN(start_time) >= " . strtotime($data['date_from']);
-		}
-		if ($data['date_to'])
-		{
-			if ($data['date_from'])
-			{
-				$sql_select_job_id .= " AND MAX(finish_time) <= " . strtotime($data['date_to']);
-			}
-			else
-			{
-				$sql_select_job_id .= " HAVING MAX(finish_time) <= " . strtotime($data['date_to']);
-			}			
-		}
-		*/
 		
 		$sql = "SELECT * FROM jobs WHERE job_id IN ($sql_select_job_id)";
 		if (isset($data['client_id']) && $data['client_id'] != '')

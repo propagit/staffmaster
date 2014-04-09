@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- *	@desc: Calendar controller
- *	
- */
+*	@module: job
+*	@controller: calendar
+*/
 
 class Calendar extends MX_Controller {
 
@@ -12,7 +12,6 @@ class Calendar extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->output->enable_profiler();
 		$this->load->model('job_model');
 		$this->load->model('job_shift_model');
 		$this->user = $this->session->userdata('user_data');
@@ -26,12 +25,28 @@ class Calendar extends MX_Controller {
 			case 'get_company_calendar_data':
 				$this->get_company_calendar_data($param1,$param2);
 			break;
-			
+			case 'main':
+					$this->main_view();
+				break;
 			default:
-				$this->home();
+				$this->main_view();
+				#$this->home();
 			break;
 		}
 	}
+	
+	function main_view()
+	{
+		if ($this->is_client)
+		{
+			$this->session->set_userdata('company_calendar_filter_client_id', $this->user['user_id']);
+		}
+		$data['clients'] = modules::run('client/get_clients');
+		$data['states'] = modules::run('common/get_states');
+		$data['user_id'] = $this->user['user_id'];
+		$this->load->view('calendar/main_view', isset($data) ? $data : NULL);
+	}
+	
 	/**
 	*	@desc Loads company calendar which contains all the shift count for a month based on their status 
 	*

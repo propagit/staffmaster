@@ -4,12 +4,12 @@
 		<div class="events-list company-calendar-events" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
 			<% _.each(events, function(event) { %>
 				
-                <span onclick="redirect_search_shift('<%= data_day %>','job_campaign');" class="display-block"><span class="badge dark-grey-bg"><%= event.active_job_campaigns %></span></span>
-                <span onclick="redirect_search_shift('<%= data_day %>','unassigned');" class="badge grey-bg"><%= event.unfilled_shifts %></span>
-                <span onclick="redirect_search_shift('<%= data_day %>','unconfirmed');" class="badge warning"><%= event.unconfirmed_shift %></span>
-                <span onclick="redirect_search_shift('<%= data_day %>','rejected');" class="badge danger"><%= event.rejected_shift %></span>
-				<span onclick="redirect_search_shift('<%= data_day %>','confirmed');" class="badge success"><%= event.confirmed_shift %></span>
-                <span onclick="redirect_search_shift('<%= data_day %>','completed');" class="badge primary"><%= event.completed_shift %></span><br />
+                <span onclick="redirect_search_shift('<%= data_day %>', '');" class="display-block"><span class="badge dark-grey-bg"><%= event.active_job_campaigns %></span></span>
+                <span onclick="redirect_search_shift('<%= data_day %>', '0');" class="badge grey-bg"><%= event.unfilled_shifts %></span>
+                <span onclick="redirect_search_shift('<%= data_day %>', '1');" class="badge warning"><%= event.unconfirmed_shift %></span>
+                <span onclick="redirect_search_shift('<%= data_day %>', '-2');" class="badge danger"><%= event.rejected_shift %></span>
+				<span onclick="redirect_search_shift('<%= data_day %>', '2');" class="badge success"><%= event.confirmed_shift %></span>
+                <span onclick="redirect_search_shift('<%= data_day %>', '3');" class="badge primary"><%= event.completed_shift %></span><br />
 			<% }); %>
 		</div>
 	<% } %>

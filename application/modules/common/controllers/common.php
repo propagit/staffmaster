@@ -222,7 +222,7 @@ class Common extends MX_Controller {
 		{
 			$array[] = array(
 				'value' => $state['code'],
-				'label' => $state['name']
+				'label' => $state['code']
 			);
 		}
 		return $this->menu_dropdown($array, $id, $label);

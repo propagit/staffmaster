@@ -100,21 +100,7 @@ class Job_shift_model extends CI_Model {
 					LEFT JOIN `users` u ON u.user_id = js.staff_id";
 		if(isset($data['search_shift_shift_status']) && $data['search_shift_shift_status'] != '')
 		{
-			switch($data['search_shift_shift_status'])
-			{
-				case 'active':
-					$sql .= " WHERE js.status > " . SHIFT_DELETED;	
-				break;
-				case 'unassigned':
-					$sql .= " WHERE js.status = " . SHIFT_UNASSIGNED;
-				break;
-				case 'unconfirmed':
-					$sql .= " WHERE js.status = " . SHIFT_UNCONFIRMED;
-				break;
-				case 'confirmed':
-					$sql .= " WHERE js.status = " . SHIFT_CONFIRMED;
-				break;	
-			}
+			$sql .= " WHERE js.status = " . $data['search_shift_shift_status'];	
 		} else 
 		{
 			$sql .= " WHERE js.status > " . SHIFT_DELETED;

@@ -235,7 +235,8 @@ class Job extends MX_Controller {
 			array('value' => 'active', 'label' => 'All Active Shifts'),
 			array('value' => 'unassigned', 'label' => 'Un-Filled Shifts'),
 			array('value' => 'unconfirmed', 'label' => 'Un-Confirmed Shifts'),
-			array('value' => 'confirmed', 'label' => 'Confirmed Shifts')
+			array('value' => 'confirmed', 'label' => 'Confirmed Shifts'),
+			array('value' => 'completed', 'label' => 'Completed Shifts')
 		);
 		
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);

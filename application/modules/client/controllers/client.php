@@ -94,7 +94,7 @@ class Client extends MX_Controller {
 	
 	function field_select($field_name, $field_value=null)
 	{
-		$clients = $this->client_model->all_clients();
+		$clients = $this->get_clients();
 		$array = array();
 		foreach($clients as $client)
 		{
@@ -104,6 +104,35 @@ class Client extends MX_Controller {
 			);
 		}
 		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
+	function menu_dropdown($id, $label) {
+		$clients = $this->get_clients();
+		$data = array();
+		$data[] = array('value' => '', 'label' => 'Any');
+		foreach($clients as $client)
+		{
+			$data[] = array(
+				'value' => $client['user_id'],
+				'label' => $client['company_name']
+			);
+		}		
+		return modules::run('common/menu_dropdown', $data, $id, $label);
+	}
+	
+	function menu_dropdown_departments($user_id, $id, $label) 
+	{
+		$departments = $this->get_departments($user_id);
+		$data = array();
+		$data[] = array('value' => '', 'label' => 'Any');
+		foreach($departments as $department)
+		{
+			$data[] = array(
+				'value' => $department['department_id'],
+				'label' => $department['name']
+			);
+		}
+		return modules::run('common/menu_dropdown', $data, $id, $label);
 	}
 	
 	/**

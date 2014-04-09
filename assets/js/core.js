@@ -1,3 +1,10 @@
+function select_menu(id, value, label) {
+	$('#menu-' + id + ' ul li a').each(function(i, e){
+		if ($(this).attr('data-value') == value) {
+			$('#menu-' + id + ' .menu-label').html(label + ': ' + $(this).html());
+		}
+	});
+}
 function init_select()
 {
 	if($(window).width() >= 768){

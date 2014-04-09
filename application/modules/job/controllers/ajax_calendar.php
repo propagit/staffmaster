@@ -14,6 +14,40 @@ class Ajax_calendar extends MX_Controller {
 		$this->load->model('job_shift_model');
 	}
 	
+	function load_calendar()
+	{
+		$month = $this->input->post('month');
+		$data['custom_date'] = date('Y-m-d', strtotime($month));
+		$data['events_source'] = modules::run('job/calendar/get_company_calendar_data', date('m', strtotime($month)), date('Y', strtotime($month)));
+		$this->load->view('calendar/calendar_view', isset($data) ? $data : NULL);
+	}
+	
+	function load_month_summary()
+	{
+		$new_date = $this->input->post('month');
+		$month = date('m',strtotime($new_date));
+		$year = date('Y',strtotime($new_date));	
+		$client_user_id = 0;
+		$state_code = 0;
+		if($this->session->userdata('company_calendar_filter_client_id')){
+			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
+		}
+		if($this->session->userdata('company_calendar_filter_state_code')){
+			$state_code = $this->session->userdata('company_calendar_filter_state_code');	
+		}
+		$filters = array(
+						'client_user_id' => $client_user_id,
+						'state_code' => $state_code
+						);
+		$data['job_campaign'] = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters,true); 
+		$data['unassigned'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters,true); //status 0
+		$data['unconfirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',$filters,true);//status 1
+		$data['rejected'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',$filters,true);//status -1
+		$data['confirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',$filters,true);//status 2
+		$data['completed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed',$filters,true);//status 3
+		echo json_encode($data);
+	}
+	
 	/**
 	*	@desc Loads company calendar which contains all the shift count for a month based on their status 
 	*
@@ -86,6 +120,12 @@ class Ajax_calendar extends MX_Controller {
 		echo 'filter set';
 	}
 	
+	function set_filter()
+	{
+		$filter = $this->input->post();
+		$this->session->set_userdata('company_calendar_filter_' . $filter['name'], $filter['value']);
+	}
+	
 	
 	function redirect_to_shift_search()
 	{
@@ -98,7 +138,8 @@ class Ajax_calendar extends MX_Controller {
 						'client_client_id' => $client['client_id'],
 						'shift_date' => date('d-m-Y',strtotime($shift_date)),
 						'search_shift_date_to' => date('d-m-Y',strtotime($shift_date)),
-						'shift_status' => $shift_status
+						'shift_status' => $shift_status,
+						'staff_name' => ''
 					);
 		$this->session->set_flashdata('search_shift_filters',$data);
 		echo 'var sets';

@@ -1232,7 +1232,12 @@ ol.example li.placeholder:before {
 .grey-bg{
 	background-color: #b4b4b4;
 }
-
+#shifts_search_list .disabled {
+	background: #d9edf7;
+}
+#shifts_search_list .disabled:hover td {
+  	background-color: #c4e3f3;
+}
 .box {
 	background-color:rgba(255,255,255,0.5);
 	padding: 20px 30px;

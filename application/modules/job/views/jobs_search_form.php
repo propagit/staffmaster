@@ -12,14 +12,14 @@
 		<!-- begin inner box -->
     	<div class="inner-box">    		
             <ul class="nav nav-tabs tab-respond" id="tab-search">
-				<li class="<?=$search_shift_filters['shift_status'] == 'job_campaign' ? 'active' : '';?>"><a href="#search-campaigns" data-toggle="tab">Search Campaigns</a></li>
-				<li class="<?=$search_shift_filters['shift_status'] != 'job_campaign' ? 'active' : '';?>"><a href="#find-shifts" data-toggle="tab">Find Shifts</a></li>
+				<li class="active"><a href="#search-campaigns" data-toggle="tab">Search Campaigns</a></li>
+				<li><a href="#find-shifts" data-toggle="tab">Find Shifts</a></li>
 			</ul>
 			
 			
 			<div class="tab-content">
 				<!-- begin tab search campaigns -->
-				<div class="tab-pane <?=$search_shift_filters['shift_status'] == 'job_campaign' ? 'active' : '';?>" id="search-campaigns">
+				<div class="tab-pane active" id="search-campaigns">
 					<h2 class="lg">Search Campaigns</h2>
 					<form class="form-horizontal" role="form" id="form_search_jobs">
 					<div class="row">
@@ -76,7 +76,7 @@
 				</div><!-- end tab search campaigns -->
 				
 				<!-- begin tab search shifts -->
-				<div class="tab-pane <?=$search_shift_filters['shift_status'] != 'job_campaign' ? 'active' : '';?>" id="find-shifts">
+				<div class="tab-pane" id="find-shifts">
 					<h2 class="lg">Find Shifts</h2>
 					<form class="form-horizontal" role="form" id="form_search_shifts">
 					<div class="row">
@@ -137,11 +137,12 @@
 							</div>
 						</div>
 					</div>
+					
                     <div class="row">
 						<div class="form-group">
 							<label class="col-md-2 control-label">Status</label>
 							<div class="col-md-4">
-									<?=modules::run('job/field_select_shift_status', 'search_shift_shift_status',$search_shift_filters['shift_status']);?>
+									<?=modules::run('job/shift/field_select_status', 'search_shift_shift_status', $search_shift_filters['shift_status']);?>
 							</div>
 						</div>
 					</div>
@@ -169,6 +170,7 @@ $(function() {
 
 	//if search filters are already present initiate search
 	<?php if($search_shift_filters['shift_status'] != 'job_campaign'){ ?>
+		$('#tab-search a[href="#find-shifts"]').tab('show');
 		search_shifts();
 	<?php } ?>
 	<?php if($search_shift_filters['shift_status'] == 'job_campaign'){ ?>
