@@ -11,6 +11,7 @@ class Ajax_staff extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('timesheet_staff_model');
+		$this->load->model('timesheet_model');
 		$this->load->model('expense/expense_model');
 	}
 	
@@ -104,6 +105,48 @@ class Ajax_staff extends MX_Controller {
 		));
 		if ($updated) {
 			echo json_encode(array('ok' => true));
+		}
+	}
+	
+	/**
+	*	@name: update_timesheet_start_time
+	*	@desc: ajax function to update timesheet start time (inline edit)
+	*	@access: public
+	*	@param: (POST) pk, value
+	*	@return: (JSON) {status: boolean, value: $new_start_time}
+	*/
+	function update_timesheet_start_time() {
+		$timesheet_id = $this->input->post('pk');
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$old_start_date = date('Y-m-d',$timesheet['start_time']);
+		$new_start_time = strtotime($old_start_date.' '.$this->input->post('value') . ':00');
+		if ($new_start_time >= $timesheet['finish_time']) {
+			$this->output->set_status_header('400');
+			echo 'Start time cannot be greater than finish time';
+		} else {
+			$this->timesheet_model->update_timesheet($timesheet_id, array('start_time' => $new_start_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_start_time));
+		}
+	}
+	
+	/**
+	*	@name: update_timesheet_finish_time
+	*	@desc: ajax function to update timesheet finish time (inline edit)
+	*	@access: public
+	*	@param: (POST) pk, value
+	*	@return: (JSON) {status: boolean, value: $new_finish_time}
+	*/
+	function update_timesheet_finish_time() {
+		$timesheet_id = $this->input->post('pk');
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$old_finish_date = date('Y-m-d',$timesheet['finish_time']);
+		$new_finish_time = strtotime($old_finish_date.' '.$this->input->post('value') . ':00');
+		if ($new_finish_time <= $timesheet['start_time']) {
+			$this->output->set_status_header('400');
+			echo 'Finish time cannot be less than start time';
+		} else {
+			$this->timesheet_model->update_timesheet($timesheet_id, array('finish_time' => $new_finish_time));
+			echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
 		}
 	}
 }

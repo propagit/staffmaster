@@ -191,32 +191,60 @@ class Ajax_shift extends MX_Controller {
 		$input = $this->input->post();
 		$shift_ids = explode('~', $input['shift_ids']);
 		$field_id = $input['field_id'];
-		$value = $input['value'];
+		$value = isset($input['value']) ? $input['value'] : '';
+		$shift_time_mode = 'start_time';
 		
 		$data = array();
 		
-		if ($field_id == 'venue_id') {
-			$venue = modules::run('attribute/venue/get_venue_by_name', $value);
-			if (!$venue)
-			{
-				echo json_encode(array('ok' => false, 'error_id' => 'venue'));
-				return;
-			}
-			else
-			{
-				$data['venue_id'] = $venue['venue_id'];
-			}
-		}
-		else if ($field_id == 'expenses')
-		{
+		switch($field_id){
+			//venue
+			case 'venue_id':
+				$venue = modules::run('attribute/venue/get_venue_by_name', $value);
+				if (!$venue)
+				{
+					echo json_encode(array('ok' => false, 'error_id' => 'venue'));
+					return;
+				}
+				else
+				{
+					$data['venue_id'] = $venue['venue_id'];
+				}
+			break;
+			//expenses
+			case 'expenses':
 			
-		}
-		else {
-			$data[$field_id] = $value;
+			break;
+			//start time
+			case 'start_time':
+				$time_hour = $this->input->post('start_time_hour');
+				$time_minutes = $this->input->post('start_time_minutes');
+			break;
+			
+			//finish time
+			case 'finish_time':
+				$time_hour = $this->input->post('finish_time_hour');
+				$time_minutes = $this->input->post('finish_time_minutes');
+				$shift_time_mode = 'finish_time';
+			break;
+			
+			default:
+				$data[$field_id] = $value;
+			break;
+				
 		}
 		
-		foreach($shift_ids as $shift_id) {
-			$this->job_shift_model->update_job_shift($shift_id, $data);
+		if($field_id == 'start_time' || $field_id == 'finish_time'){
+			$params_change_shift_time = array(
+											'shift_ids' => $shift_ids,
+											'time_hour' => $time_hour,
+											'time_minutes' => $time_minutes,
+											'shift_time_mode' => $shift_time_mode	
+											);
+			modules::run('job/shift/update_shift_time',$params_change_shift_time);
+		}else{
+			foreach($shift_ids as $shift_id) {
+				$this->job_shift_model->update_job_shift($shift_id, $data);
+			}
 		}
 		$this->session->set_flashdata('selected_shifts', $shift_ids);
 		$shift = $this->job_shift_model->get_job_shift($shift_ids[0]);

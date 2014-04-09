@@ -341,10 +341,10 @@ ol.example li.placeholder:before {
 	#nav-wrap{ 
 		background-color:#00b1eb;
 	}
-	.nav .open > a, .nav .open > a:hover{ 
+	.top-nav .open > a, .top-nav .open > a:hover{ 
 		background-color:#00b1eb;
 	}
-	.nav > li > a:hover{  
+	.top-nav > li > a:hover{  
 		background-color:#00b1eb;
 	}
 */
@@ -356,13 +356,13 @@ ol.example li.placeholder:before {
 	border-bottom:1px solid #2fa5cc;
 }
 
-#nav-wrap .nav{ 
+#nav-wrap .top-nav{ 
 	margin-left:-10px;
 }
-#nav-wrap .nav li a i {
+#nav-wrap .top-nav li a i {
 	padding-right: 5px;
 }
-.nav > li > a{ 
+.top-nav > li > a{ 
 	padding:14px 10px 14px 10px; 
 	color:#fff;
 	border-radius:0; 
@@ -372,22 +372,22 @@ ol.example li.placeholder:before {
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{
 	background-color:transparent;
 }
-.nav .open > a, .nav .open > a:hover{ 
+.top-nav .open > a, .top-nav .open > a:hover{ 
 	background-color:#00b1eb;
 }
-.nav .open > a:focus,.nav > li > a:focus{ 
+.top-nav .open > a:focus,.top-nav > li > a:focus{ 
 	background-color: transparent;
 }
-.nav > li > a:hover{  
+.top-nav > li > a:hover{  
 	background-color:#00b1eb;
 }
-.desktop-visible .nav li:hover .dropdown-menu{ 
+.desktop-visible .top-nav li:hover .dropdown-menu{ 
 	display:block;
 }
 .nav-pills>li+li{ 
 	margin-left:0;
 }
-.nav a .fa{ 
+.top-nav a .fa{ 
 	font-size:18px; 
 	float:left;
 }
@@ -855,22 +855,22 @@ ol.example li.placeholder:before {
 	.nav-pills > li{ 
 		padding-right:0;
 	}
-	.nav li a{ 
+	.top-nav li a{ 
 		font-size:12px;
 	}
 	#nav-wrap{ 
 		min-height:39px;
 	}
-	.nav{ 
+	.top-nav{ 
 		margin-left:-10px;
 	}
-	.nav > li > a{ 
+	.top-nav > li > a{ 
 		padding:12px 7px 12px 7px;
 	}
 	.dropdown-menu{ 
 		min-width:175px;
 	}	
-	.nav .fa{ 
+	.top-nav .fa{ 
 		font-size:16px;
 	}
 }
@@ -947,20 +947,20 @@ ol.example li.placeholder:before {
 	.dropdown .fa{ 
 		display:block;
 	}
-	.desktop-hidden .nav ul > li{ 
+	.desktop-hidden .top-nav ul > li{ 
 		float:left; 
 		width:100%;
 	}
-	#nav-wrap .nav{ 
+	#nav-wrap .top-nav{ 
 		padding-left:10px;
 	}
-	#nav-wrap .nav li a{ 
+	#nav-wrap .top-nav li a{ 
 		font-size:20px;
 		padding-left:20px;
 		font-weight:100;
 		line-height:20px;
 	}
-	#nav-wrap .nav a .fa{ 
+	#nav-wrap .top-nav a .fa{ 
 		font-size:20px;
 		padding-right:18px;
 	}
@@ -990,16 +990,16 @@ ol.example li.placeholder:before {
 		margin-bottom: 10px;
 		border-radius: 0;
 	}
-	#nav-wrap .nav .open > a{
+	#nav-wrap .top-nav .open > a{
 		background-color:rgba(255,255,255,0.25) !important; 	
 	}
-	#nav-wrap .nav .fa-angle-down{
+	#nav-wrap .top-nav .fa-angle-down{
 		display:none;
 	}
-	#nav-wrap .nav .open .fa-angle-down{
+	#nav-wrap .top-nav .open .fa-angle-down{
 		display:block;
 	}
-	#nav-wrap .nav .open .fa-caret-down{
+	#nav-wrap .top-nav .open .fa-caret-down{
 		display:none;	
 	}
 	#nav-wrap .dropdown-menu > li > a{
@@ -1024,7 +1024,7 @@ ol.example li.placeholder:before {
 .btn-group.btn-nav .btn {
 	padding: 8px 12px;
 }
-.btn-group.btn-nav ul.nav {
+.btn-group.btn-nav ul.top-nav {
 	margin-top: -5px;
 }
 .btn-group.btn-nav .btn:first-child {
@@ -1383,7 +1383,7 @@ ol.example li.placeholder:before {
  */
 
 .tab-respond li{
-	padding-top:5px;	
+	/* padding-top:5px; */	
 }
 .tab-respond li a{
 	padding-left:10px;
@@ -1743,9 +1743,6 @@ ol.example li.placeholder:before {
 		margin-top:0 !important;
 		margin-bottom:20px;	
 	}
-	.mob-class{
-		display:none;	
-	}
 	.mobile-tab{
 		width:100%;	
 	}
@@ -1789,6 +1786,12 @@ ol.example li.placeholder:before {
 	}
 	.dropdown-relative{
 		position:relative;	
+	}
+	.combodate select{
+		display:inline;	
+	}
+	.staff_timesheet_time .editable-inline{
+		width:250px;	
 	}
 }
 

@@ -398,6 +398,28 @@ class Common extends MX_Controller {
 		$this->load->view('money_format',isset($data) ? $data : NULL);
 	}
 	
+	function field_select_edit_time($field_name, $field_value=null, $size=null, $title = false) {
+		$prefix = '0';
+		for($i = 0;$i<24;$i++){
+			$val = ($i < 10 ? $prefix.$i : $i);
+			$data['hours'][$i] = array('value' => $val, 'label' => $val);	
+		}
+		
+		$data['minutes'] = array(
+					array('value' => '00', 'label' => '00'),
+					array('value' => '15', 'label' => '15'),
+					array('value' => '30', 'label' => '30'),
+					array('value' => '45', 'label' => '45')
+				);
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$data['size'] = $size;
+		$data['title'] = $title;
+		
+		$this->load->view('field_select_time', isset($data) ? $data : NULL);
+	}
+
+	
 	
 
 }

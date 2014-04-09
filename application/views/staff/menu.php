@@ -20,8 +20,8 @@ $menu = array(
 
 <div id="nav-wrap">
 	<div class="row desktop-visible">
-    	<div class="col-md-12">
-            <ul class="nav nav-pills">
+    	<div class="col-md-12"> 
+            <ul class="nav nav-pills top-nav">
             <? foreach($menu as $item) { ?>
                  <li class="dropdown<?=($page == $item['path']) ? ' active' : '';?>">
                     <a href="<?=base_url() . $item['path'];?>">
@@ -45,7 +45,7 @@ $menu = array(
                 <span class="mob-menu-head">MENU <i class="fa fa-angle-right"></i></span>
             </div>
             <div class="nav-collapse collapse" id="nav-collapse-header" style="height: auto;">
-                <ul class="nav">
+                <ul class="nav top-nav">
                      <? foreach($menu as $item) { ?>
                          <li class="dropdown <?=($page == $item['path']) ? 'active' : '';?>">
                             <a class="dropdown-toggle" href="<?=base_url() . $item['path'];?>">

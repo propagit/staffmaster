@@ -35,8 +35,8 @@
 ?>
 	<div class="btn-group btn-nav">
 		<ul class="nav nav-tabs tab-respond">
-			<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
-			<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
+			<li class="pull-right"><a class="load_month_view"><i class="fa fa-calendar"></i></a></li>
+			<li class="pull-right"><a class="load_week_view"><i class="fa fa-list"></i></a></li>
 			<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
 			<? foreach($job_dates as $date) { ?>
 			<li<?=($this->session->userdata('job_date') == $date['job_date']) ? ' class="active"' : '';?>>
@@ -56,9 +56,9 @@
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_shifts" /></th>
-		<th class="center">Date &nbsp; <a onclick="sort_shifts('date')"><i class="fa fa-sort"></i></a></th>
-		<th>Venue &nbsp; <a onclick="sort_shifts('venue')"><i class="fa fa-sort"></i></a></th>
-		<th>Role &nbsp; <a onclick="sort_shifts('role')"><i class="fa fa-sort"></i></a></th>
+		<th class="center">Date <a onclick="sort_shifts('date')"><i class="fa fa-sort"></i></a></th>
+		<th>Venue <a onclick="sort_shifts('venue')"><i class="fa fa-sort"></i></a></th>
+		<th>Role <a onclick="sort_shifts('role')"><i class="fa fa-sort"></i></a></th>
 		<? if ($is_client) { ?>
 		<th>Uniform</th>
 		<? } ?>
