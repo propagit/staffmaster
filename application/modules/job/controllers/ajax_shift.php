@@ -366,4 +366,49 @@ class Ajax_shift extends MX_Controller {
 		echo 'success';
 	}
 	
+	function request_staff()
+	{
+		$data = $this->input->post();
+		$request_staff_data = array();
+		if ($data['shift_staff'])
+		{
+			$staff = modules::run('staff/get_staff', $data['shift_staff_id']);
+			
+			if ($staff)
+			{
+				$request_staff_data = array(
+					'shift_id' => $data['shift_id'],
+					'staff_id' => $data['shift_staff_id']
+				);
+				if ($this->job_shift_model->check_request_staff_shift($data['shift_id'],$data['shift_staff_id']))
+				{
+					echo json_encode(array('ok' => false, 'msg' => 'Staff already requested'));
+					return;
+				}
+			}
+			else 
+			{
+				echo json_encode(array('ok' => false, 'msg' => 'Staff not found'));
+				return;
+			}
+		}
+		$this->job_shift_model->add_request_staff($request_staff_data);
+		echo json_encode(array(
+			'ok' => true
+		));
+	}
+	
+	function get_request_staffs()
+	{
+		$shift_id = $this->input->post('shift_id');
+		$data['staffs'] = $this->job_shift_model->get_request_staffs($shift_id);
+		$this->load->view('client/shift/request_staff/list_requests', isset($data) ? $data : NULL);
+	}
+	
+	function remove_request()
+	{
+		$shift_id = $this->input->post('shift_id');
+		$staff_id = $this->input->post('staff_id');
+		$this->job_shift_model->remove_request($shift_id, $staff_id);
+	}
 }

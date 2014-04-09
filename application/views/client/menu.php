@@ -41,7 +41,7 @@ $menu = array(
 				<? } else { ?>
 				<li class="dropdown<?=($page == $item['path']) ? ' active' : '';?>">
 					<a href="<?=base_url() . $item['path'];?>">
-						<i class="fa fa-<?=$item['icon'];?>"></i>
+						<i class="fa <?=$item['icon'];?>"></i>
 						<span class="nav-label"><?=$item['title'];?></span>
 					</a>
 				</li>

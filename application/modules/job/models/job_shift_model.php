@@ -505,7 +505,32 @@ class Job_shift_model extends CI_Model {
 			
 	}
 	
+	function add_request_staff($data)
+	{
+		$this->db->insert('job_shift_client_request', $data);
+		return $this->db->insert_id();
+	}
 	
+	function get_request_staffs($shift_id)
+	{
+		$this->db->where('shift_id', $shift_id);
+		$query = $this->db->get('job_shift_client_request');
+		return $query->result_array();
+	}
 	
+	function remove_request($shift_id, $staff_id)
+	{
+		$this->db->where('shift_id', $shift_id);
+		$this->db->where('staff_id', $staff_id);
+		return $this->db->delete('job_shift_client_request');
+	}
+	
+	function check_request_staff_shift($shift_id, $staff_id)
+	{
+		$this->db->where('shift_id', $shift_id);
+		$this->db->where('staff_id', $staff_id);
+		$query = $this->db->get('job_shift_client_request');
+		return $query->num_rows();
+	}
 	
 }
