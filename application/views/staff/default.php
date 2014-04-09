@@ -118,13 +118,19 @@
         </div>
     </div><!-- /container -->
 
-	<!-- Map Modal -->
-	<div class="modal fade" id="modal_map" tabindex="-1" role="dialog" aria-hidden="true">
-	</div><!-- /.modal -->
-	
-    <!-- Large modal -->
-    <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    
-    </div>
+<div id="sys-fixed-btns">
+	<button class="btn btn-info sys-rt-btn"><i class="fa fa-cogs"></i></button>
+    <a href="<?=base_url();?>logout"><div class="btn btn-info sys-rt-btn"><i class="fa fa-power-off"></i></div></a>
+    <button class="btn btn-info sys-rt-btn custom-hidden" id="go-to-top"><i class="fa fa-arrow-up"></i></button>
+</div>
+
+<div id="push"></div>
+
+<!-- Large modal -->
+<div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"></div>
+
+<!-- Normal modal -->
+<div class="modal fade bs-modal-sml" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"></div>
+
 </body>
 </html>
