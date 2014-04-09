@@ -784,5 +784,13 @@ class Ajax extends MX_Controller {
 		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
 		$this->load->view('shift/applied_staff/modal_view', isset($data) ? $data : NULL);
 	}
+	
+	function load_client_departments() {
+		$user_id = $this->input->post('user_id');
+		if ($user_id)
+		{
+			echo modules::run('client/field_select_departments', $user_id, 'department_id');	
+		}
+	}
 		
 }

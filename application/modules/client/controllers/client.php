@@ -189,4 +189,20 @@ class Client extends MX_Controller {
 		);
 		echo modules::run('common/field_select', $fields, $field_name, $field_value);
 	}
+	
+	function get_departments($user_id)
+	{
+		return $this->client_model->get_client_departments($user_id);
+	}
+	
+	function field_select_departments($user_id, $field_name, $field_value=null)
+	{
+		$departments = $this->get_departments($user_id);
+		$data = array();
+		foreach($departments as $department)
+		{
+			$data[] = array('value' => $department['department_id'], 'label' => $department['name']);
+		}
+		echo modules::run('common/field_select', $data, $field_name, $field_value);
+	}
 }

@@ -26,6 +26,11 @@ class Auth extends MX_Controller {
 		return $user['is_admin'];
 	}
 	
+	function is_staff()
+	{
+		return $this->session->userdata('force_staff');
+	}
+	
 	function is_client()
 	{
 		$user = $this->session->userdata('user_data');
@@ -54,6 +59,16 @@ class Auth extends MX_Controller {
 			
 		}
 		$this->template->render();
+	}
+	
+	function staff() {
+		$this->session->set_userdata('force_staff', true);
+		redirect('');
+	}
+	
+	function admin() {
+		$this->session->unset_userdata('force_staff');
+		redirect('');
 	}
 	
 	function logout_user()

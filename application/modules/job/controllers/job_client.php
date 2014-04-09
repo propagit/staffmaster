@@ -57,7 +57,8 @@ class Job_client extends MX_Controller {
 			$job_id = $this->job_model->insert_job($data);
 			redirect('job/details/' . $job_id);
 		}
-		$this->load->view('create', isset($data) ? $data : NULL);
+		$data['user_id'] = $this->user['user_id'];
+		$this->load->view('client/create_job_form', isset($data) ? $data : NULL);
 	}
 	
 	

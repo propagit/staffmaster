@@ -1,8 +1,13 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Edit Client</h2>
-		 <p>Edit client using below form.</p>
+		<? if (modules::run('auth/is_client')) { ?>
+		<h2>Your Profile</h2>
+		<p>Edit your client profile information below.</p>
+		<? } else { ?>
+		<h2>Edit Client</h2>
+		<p>Edit client using below form.</p>
+		<? } ?>
     </div>
 </div>
 <!--end top box-->

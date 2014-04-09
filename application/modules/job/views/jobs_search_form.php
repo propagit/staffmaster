@@ -2,7 +2,7 @@
 	<!--begin top box--->
 	<div class="box top-box">
 		<h2>Your Campaigns - Shifts</h2>
-		<p>Find campaigns you have created be searching for a client or a campaign name. Search shifts by clicking the find a shift tab and entering the shift details.</p>
+		<p>Find campaigns you have created be searching for a client or a campaign name. Search shifts by clicking the find shift tab and entering the shift details.</p>
     </div><!--end top box-->
 </div>
 

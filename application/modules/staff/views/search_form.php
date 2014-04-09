@@ -5,7 +5,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Search Staff</h2>
-		 <p>Find your staff to communicate with them or view and edit their profile.</p>
+		 <p>Browse and search our staff profiles below.</p>
     </div>
 </div>
 <!--end top box-->
@@ -14,9 +14,8 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="inner-box">
-            <h2>Search Staff</h2>
-		 	<p>Find your staff to communicate with them or view and edit their profile.</p>
-            
+            <h2>Staff Attributes</h2>
+		 	<br />            
 			<form class="form-horizontal" id="form_search_staffs" role="form">
 			<div class="row">
 				<div class="form-group">
