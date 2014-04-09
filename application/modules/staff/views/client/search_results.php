@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="<?=base_url();?>assets/bootstrap-gallery/css/bootstrap-image-gallery.min.css">
+<script src="<?=base_url();?>assets/bootstrap-gallery/js/bootstrap-image-gallery.min.js"></script>
+
 <hr />
 <h2>Search Results</h2>
 <ul class="pagination custom-pagination pull">

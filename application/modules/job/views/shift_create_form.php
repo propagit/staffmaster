@@ -1,5 +1,5 @@
 <h2>Create Job Shifts</h2>
-<p>Create a job via the below form. Jobs can be duplicated to other days. Jobs created will be viewable in the weeks schedule to the right. The weeks shifts and the entire campaign can be duplicated.</p>
+<p>Create a job via the below form. Jobs can be duplicated to other days. Jobs created will be viewable in the weeks schedule to the right. The weeks shifts can be duplicated.</p>
 
 <form class="form-horizontal" role="form" id="form_create_js">
 	<input type="hidden" name="job_id" value="<?=$job_id;?>" />

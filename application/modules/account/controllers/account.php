@@ -21,20 +21,9 @@ class Account extends MX_Controller {
 		$this->load->view('account_menu', isset($data) ? $data : NULL);
 	}
 	
-	function staff() {
-		$this->session->set_userdata('force_staff', true);
-		redirect('');
-	}
 	
-	function is_staff()
-	{
-		return $this->session->userdata('force_staff');
-	}
 	
-	function admin() {
-		$this->session->unset_userdata('force_staff');
-		redirect('');
-	}
+	
 	
 	
 }

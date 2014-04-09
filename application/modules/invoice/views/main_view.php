@@ -4,8 +4,13 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
+		<? if (modules::run('auth/is_client')) { ?>
+		<h2>Your Invoices</h2>
+		<p>A record of recent issued invoices can be found, viewed and downloaded using the below form.</p>
+		<? } else { ?>
 		<h2>Client Invoices</h2>
 		<p>Create invoices and issue them to your clients. As time sheets are approved and batched they will be available to add to client invoice.</p>
+		<? } ?>
 	</div>
 </div>
 <!--end top box-->
