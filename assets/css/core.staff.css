@@ -49,3 +49,9 @@
 		display: inline !important;
 	}
 }
+
+@media (max-width: 768px){
+	.mob-class{
+		display:none;	
+	}
+}

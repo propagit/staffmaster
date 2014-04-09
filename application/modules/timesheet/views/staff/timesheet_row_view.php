@@ -18,8 +18,8 @@
 		<? } ?>
 	</td>
 	<td><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td>
-	<td class="center">
-		<a href="#" class="ts_start_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('Y-m-d H:i', $timesheet['start_time']);?>" data-title="Time sheet start date/time">
+	<td class="center staff_timesheet_time">
+		<a href="#" class="ts_start_time" data-type="combodate" data-template="HH: mm" data-format="HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('H:i', $timesheet['start_time']);?>" data-title="Time sheet start date/time">
 			<? if ($timesheet['start_time'] != $shift['start_time']) { ?>
 			<span class="text-red"><?=date('H:i', $timesheet['start_time']);?></span>
 			<? } else { ?>
@@ -27,7 +27,7 @@
 			<? } ?>
 		</a>
 		- 
-		<a href="#" class="ts_finish_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('Y-m-d H:i', $timesheet['finish_time']);?>" title="Time sheet finish date/time">
+		<a href="#" class="ts_finish_time" data-type="combodate" data-template="HH: mm" data-format="HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('H:i', $timesheet['finish_time']);?>" title="Time sheet finish date/time">
 			<? if ($timesheet['finish_time'] != $shift['finish_time']) { ?>
 			<span class="text-red"><?=date('H:i', $timesheet['finish_time']);?></span>
 			<? } else { ?>
@@ -36,7 +36,7 @@
 		</a> 
 		<?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-red">*</span>': '';?>
 	</td>
-	<td class="center">
+	<td class="center staff_timesheet_time">
 		<a id="ts_break_<?=$timesheet['timesheet_id'];?>" data-toggle="popover" onclick="load_ts_breaks(this)" class="ts_breaks editable-click" data-pk="<?=$timesheet['timesheet_id'];?>">
 			<? if ($timesheet['break_time'] != $shift['break_time']) { ?>
 			<span class="text-red"><?=modules::run('common/break_time', $timesheet['break_time']);?></span>

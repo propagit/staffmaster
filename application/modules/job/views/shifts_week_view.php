@@ -11,7 +11,7 @@
 	?>
 	<div class="btn-group btn-nav">
 		<ul class="nav nav-tabs tab-respond">
-			<li class="pull-right"><a class="load_month_view">&nbsp; <i class="fa fa-calendar"></i></a></li>
+			<li class="pull-right"><a class="load_month_view"><i class="fa fa-calendar"></i></a></li>
 			<li class="active first-child"><a step="-1" type="button" class="btn btn-info load_job_week"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
 			<?
 			if (date('D', $custom_date) == 'Mon') {

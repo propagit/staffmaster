@@ -73,8 +73,8 @@ class Shift extends MX_Controller {
 	{
 		$fields = array(
 			#array('value' => 'job_date', 'label' => 'Job Date'),
-			#array('value' => 'start_time', 'label' => 'Start Time'),
-			#array('value' => 'finish_time', 'label' => 'Finish Time'),
+			array('value' => 'start_time', 'label' => 'Start Time'),
+			array('value' => 'finish_time', 'label' => 'Finish Time'),
 			#array('value' => 'break_time', 'label' => 'Break Time'),
 			array('value' => 'venue_id', 'label' => 'Venue'),
 			array('value' => 'role_id', 'label' => 'Role'),
@@ -117,5 +117,24 @@ class Shift extends MX_Controller {
 			}
 		}
 		return $s;
+	}
+	/**
+	*	@name: update_shift_time
+	*	@desc: Update shift time - this function is mostly used while updating time for multiple shifts
+	*	@access: public
+	*	@param: ([array]) shift ids, start time or finish time to update, new time
+	*	@return: null
+	*/
+	function update_shift_time($params)
+	{
+		if(isset($params['shift_ids'])){
+			$shift_time_mode = $params['shift_time_mode'];
+			foreach($params['shift_ids'] as $shift_id){
+				$shift_info = $this->job_shift_model->get_job_shift($shift_id);
+				$old_shift_time_date_only = date('Y-m-d',$shift_info[$shift_time_mode]);
+				$new_shift_start_or_finish_time = strtotime($old_shift_time_date_only.' '.$params['time_hour'].':'.$params['time_minutes'].':'.'00');	
+				$this->job_shift_model->update_job_shift($shift_id, array($shift_time_mode => $new_shift_start_or_finish_time));
+			}
+		}
 	}
 }

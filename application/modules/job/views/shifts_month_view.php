@@ -1,11 +1,11 @@
 <div id="nav_month_shifts">
 	<div class="btn-group btn-nav">
 		<ul class="nav nav-tabs tab-respond">
-			<li class="pull-right"><a class="load_week_view">&nbsp; <i class="fa fa-list"></i></a></li>
+			<li class="pull-right"><a class="load_week_view"><i class="fa fa-list"></i></a></li>
 			<li class="active"><a data-calendar-nav="today">Today</a></li>
-			<li class="active first-child"><a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i> &nbsp;</a></li>
-			<li class="active mid-child"><a id="header-month"> &nbsp; </a></li>
-			<li class="active last-child"><a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i> &nbsp;</a></li>
+			<li class="active first-child"><a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a></li>
+			<li class="active mid-child"><a id="header-month"></a></li>
+			<li class="active last-child"><a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a></li>
 		</ul>
 	</div>
 </div>

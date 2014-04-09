@@ -42,7 +42,7 @@ function init_edit() {
             firstItem: '',
             minuteStep: 15
         },
-		url: '<?=base_url();?>timesheet/ajax/update_timesheet_start_time',
+		url: '<?=base_url();?>timesheet/ajax_staff/update_timesheet_start_time',
         success: function(response, newValue) {
 	        if (response.status == 'error') {
 				return response.msg;
@@ -57,7 +57,7 @@ function init_edit() {
             firstItem: '',
             minuteStep: 15
         },
-        url: '<?=base_url();?>timesheet/ajax/update_timesheet_finish_time',
+        url: '<?=base_url();?>timesheet/ajax_staff/update_timesheet_finish_time',
         success: function(response, newValue) {
 	        if (response.status == 'error') {
 				return response.msg;
