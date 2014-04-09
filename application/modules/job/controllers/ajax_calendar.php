@@ -133,12 +133,41 @@ class Ajax_calendar extends MX_Controller {
 		$shift_date = $this->input->post('shift_date',true);
 		$shift_status = $this->input->post('shift_status',true);
 		$client = modules::run('client/get_client',$client_user_id);
+		
+		$constant_shift_status = NULL;
+		switch($shift_status){
+			case -2:
+				$constant_shift_status = SHIFT_DELETED;
+			break;
+			
+			case -1:
+				$constant_shift_status = SHIFT_REJECTED;
+			break;
+	
+			case 0:
+				$constant_shift_status = SHIFT_UNASSIGNED;
+			break;
+			
+			case 1:
+				$constant_shift_status = SHIFT_UNCONFIRMED;
+			break;
+			
+			case 2:
+				$constant_shift_status = SHIFT_CONFIRMED;
+			break;
+			
+			case 3:
+				$constant_shift_status = SHIFT_FINISHED;
+			break;
+				
+		}
+		
 		$data = array(
 						'client_user_id' => $client_user_id,
 						'client_client_id' => $client['client_id'],
 						'shift_date' => date('d-m-Y',strtotime($shift_date)),
 						'search_shift_date_to' => date('d-m-Y',strtotime($shift_date)),
-						'shift_status' => $shift_status,
+						'shift_status' => $constant_shift_status,
 						'staff_name' => ''
 					);
 		$this->session->set_flashdata('search_shift_filters',$data);

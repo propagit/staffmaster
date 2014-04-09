@@ -106,7 +106,7 @@ class Job extends MX_Controller {
 		);
 		if ($shift_status == 'shift')
 		{
-			$data['search_shift_filters']['shift_status'] = 'shift';
+			//$data['search_shift_filters']['shift_status'] = 'shift';
 			$params = explode(',', urldecode($params));
 			$staff_id = $params[0];
 			$staff = modules::run('user/get_user', $staff_id);
