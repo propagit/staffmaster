@@ -1,6 +1,3 @@
-<link rel="stylesheet" href="<?=base_url();?>assets/bootstrap-gallery/css/bootstrap-image-gallery.min.css">
-<script src="<?=base_url();?>assets/bootstrap-gallery/js/bootstrap-image-gallery.min.js"></script>
-
 <hr />
 <h2>Search Results</h2>
 <ul class="pagination custom-pagination pull">
@@ -29,7 +26,7 @@
 			 ?>
             <tr id="search-result-tr-<?=$staff['user_id'];?>">
                 <td class="center">
-	        	    <a class="search-staff-avatar-img"  onclick="load_staff_photos(<?=$staff['user_id'];?>)">
+	        	    <a class="search-staff-avatar-img"  data-user-id="<?=$staff['user_id'];?>">
 	                	<?=modules::run('staff/profile_image',$staff['user_id']);?>
 	                 </a>
             	</td>
@@ -60,14 +57,21 @@ $(function(){
 		$('#current_page').val(clicked_page);
 		search_staffs();
 	});	
+	
+	$('.search-staff-avatar-img').on('click',function(){
+		load_staff_photos($(this).attr('data-user-id'));
+	});
 });
+
 function load_staff_photos(user_id) {
+	preloading($('.table-responsive'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>staff/ajax_photo/load_staff_photos",
 		data: {user_id: user_id},
 		success: function(html) {
-			//$('#staff_photos').html(html);
+			$('#wrapper_loading').remove();
+			$('#staff_photos').html(html);
 		}
 	})
 }

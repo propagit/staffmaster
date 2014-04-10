@@ -1,25 +1,15 @@
 <ul class="messages">
 	  <?php 
-	  	if($conversations){
-			foreach($conversations as $c){ 
+	  	if($support_tickets){
+			foreach($support_tickets as $c){ 
 	  ?>
       <li class="<?=($user['user_id'] == $c->created_by ? 'by-user' : 'by-me');?>">
           <a href="#" title="">
-			<?php
-             	 $created_by = modules::run('user/get_user',$c->created_by);
-             	 if($created_by['is_client']){
-              ?>
-                    <div class="profile_photo">
-                        <div class="default-avatar-photo">
-                            <i class="fa fa-male"></i>
-                        </div>
-                    </div>
-			  <?php
-                  }else{
-                      echo modules::run('staff/profile_image',$c->created_by);
-                  }
-              ?>
- 
+		  	<div class="profile_photo">
+                <div class="default-avatar-photo">
+                    <i class="fa fa-male"></i>
+                </div>
+            </div>
           </a>
           <div class="message-area">
               <span class="aro"><i class="fa <?=($user['user_id'] == $c->created_by ? 'fa-angle-left' : 'fa-angle-right');?> message-fa"></i></span>
@@ -27,18 +17,11 @@
                   <div class="col-md-1 col-xs-1 wrap-list-date time">                            
                       <span class="wk_date display-inline"><?=date('d',strtotime($c->created_on));?></span>
                       <span class="wk_month display-inline"><?=date('M',strtotime($c->created_on));?></span>
-                      <?php if($created_by['is_client']) {?>
-                      <span class="display-inline text-danger"> - <i class="fa fa-info-circle"></i> <?=$created_by['full_name'];?></span>
-                      <?php } ?>
                   </div>
                   <span class="title"><?=substr($c->title,0,200);?></span>
               </div>
               <?php 
-				  if($c->type == 'poll'){
-					   echo modules::run('forum/load_poll',$c->topic_id);	
-				  }else{
 					echo nl2br($c->message);
-				  }
 			  ?>
               <?=($c->document_name ? ($c->document_type == 'image' ? '<img class="message-img" src="'.base_url().'uploads/conversation/img/'.md5('forum'.$c->topic_id).'/thumb/'.$c->document_name.'" />' : '') : '');?>
               <div class="comments-wrap" id="comments-wrap-<?=$c->topic_id;?>">

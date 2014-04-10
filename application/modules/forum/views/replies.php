@@ -4,7 +4,22 @@
 		foreach($replies as $r){
 ?>
 <div class="reply-wrap">
-    <a class="<?=($user['user_id'] == $r->posted_by ? 'push' : 'pull');?>" href="#" title=""><?=modules::run('staff/profile_image',$r->posted_by);?></a>
+    <a class="<?=($user['user_id'] == $r->posted_by ? 'push' : 'pull');?>" href="#" title="">
+    	<?php
+			$reply_user = modules::run('user/get_user',$r->posted_by);
+			if($reply_user['is_client']){
+		?>
+        	<div class="profile_photo">
+                <div class="default-avatar-photo">
+                    <i class="fa fa-male"></i>
+                </div>
+            </div>
+        <?php
+			}else{
+				echo modules::run('staff/profile_image',$r->posted_by);
+			}
+		?>
+    </a>
     <div class="message-area <?=($user['user_id'] == $r->posted_by ? 'reply-by-user' : 'reply-by-me');?>">
         <span class="aro <?=($user['user_id'] == $r->posted_by ? 'aro-left' : 'aro-right');?>"><i class="fa <?=($user['user_id'] == $r->posted_by ? 'fa-angle-left' : 'fa-angle-right');?> message-fa"></i></span>
         <div class="info-row reply-row">

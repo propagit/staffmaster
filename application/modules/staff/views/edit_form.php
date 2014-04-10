@@ -6,9 +6,11 @@
    		 </div>
          <div class="staff-profile-bar-box">
              <h2><?=$staff['title'].'. '.$staff['first_name'].' '.$staff['last_name'];?></h2>
+             <? if(modules::run('auth/is_admin')){ ?>
              <div class="wp-rating grey-star">
                 <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],'basic','wp-rating',$staff['user_id'],true,false);?>
              </div>
+             <? } ?>
         </div>
     </div>
 </div>
@@ -24,12 +26,12 @@
                 <li class="mobile-tab"><a href="#pictures" data-toggle="tab">Pictures</a></li>
                 <li class="mobile-tab"><a href="#financial" data-toggle="tab">Financial Details</a></li>
                 <li class="mobile-tab"><a href="#super" data-toggle="tab">Super Details</a></li>
-                <? if(! modules::run('account/is_staff','','')){ ?>
+                <? if(modules::run('auth/is_admin')){ ?>
                 <li class="mobile-tab"><a href="#roles" data-toggle="tab">Roles</a></li>
                 <? } ?>
                 <li class="mobile-tab"><a href="#availability" data-toggle="tab">Availability</a></li>                
                 <li class="mobile-tab"><a href="#location" data-toggle="tab">Locations</a></li>
-                <? if(! modules::run('account/is_staff','','')){ ?>
+                <? if(modules::run('auth/is_admin')){ ?>
                 <li class="mobile-tab"><a href="#group" data-toggle="tab">Groups</a></li>
                 <? } ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>

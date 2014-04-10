@@ -34,12 +34,13 @@
 		<label for="dob" class="col-md-2 control-label">D.O.B(dd/mm/yy)</label>
 		<div class="col-md-4">
 			<?=modules::run('common/dropdown_dob', date('d',strtotime($staff['dob'])), date('m',strtotime($staff['dob'])),date('Y',strtotime($staff['dob'])));?>
-		</div>	
+		</div>
+        <? if(modules::run('auth/is_admin')){ ?>
         <label for="rating" class="col-md-2 control-label">Rating</label>
 		<div class="col-md-4 wp-rating" id="wp_rating">
             <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],'basic','wp-rating',$staff['user_id'],true,false);?>
 		</div>
-        
+        <? } ?>
 	</div>
 </div>
 <div class="row">
@@ -123,14 +124,16 @@
 		</div>
     </div>
 </div>
+<? if(modules::run('auth/is_admin')){ ?>	
 <div class="row">
 	<div class="form-group">
 		<label for="status" class="col-md-2 control-label">Status</label>
 		<div class="col-md-4">
 			<?=modules::run('staff/field_select_status', 'status', (int)$staff['status']);?>
 		</div>
-	</div>
-</div>		
+	</div> 
+</div>
+<? } ?>
 <div class="row">
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">

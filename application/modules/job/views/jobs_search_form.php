@@ -169,11 +169,11 @@
 $(function() {	
 
 	//if search filters are already present initiate search
-	<?php if($search_shift_filters['shift_status'] != 'job_campaign'){ ?>
+	<?php if($search_shift_filters['search_job_or_campaign'] == 'shift'){ ?>
 		$('#tab-search a[href="#find-shifts"]').tab('show');
 		search_shifts();
 	<?php } ?>
-	<?php if($search_shift_filters['shift_status'] == 'job_campaign'){ ?>
+	<?php if($search_shift_filters['search_job_or_campaign'] == 'job_campaign'){ ?>
 		search_jobs();
 	<?php } ?>
 

@@ -58,6 +58,7 @@ class Shift extends MX_Controller {
 	*/
 	function field_select_status($field_name, $field_value=null, $size=null)
 	{
+		$temp_field_value = $field_value;
 		$array = array(
 			array('value' => SHIFT_UNASSIGNED, 'label' => 'Un-Filled Shifts'),
 			array('value' => SHIFT_UNCONFIRMED, 'label' => 'Un-Confirmed Shifts'),
@@ -65,8 +66,13 @@ class Shift extends MX_Controller {
 			array('value' => SHIFT_CONFIRMED, 'label' => 'Confirmed Shifts'),
 			array('value' => SHIFT_FINISHED, 'label' => 'Completed Shifts')
 		);
-		
-		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
+		if(!$field_value){
+			$temp_field_value = 'Un-Filled Shifts';
+		}
+		if($field_value == -2){
+			$temp_field_value = 'Rejected Shifts';
+		}
+		return modules::run('common/field_select', $array, $field_name, $temp_field_value, $size);
 	}
 	
 	function field_select_fields($field_name, $field_value=null, $size=null)

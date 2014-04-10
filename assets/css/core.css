@@ -270,10 +270,14 @@ ol.example li.placeholder:before {
 .profile-menu{
 	float:right;	
 }
-
+/* 
+	Change width to 330px 
+	When the logout and message icons are added back to profile menu 
+*/
 .profile-menu ul{
 	text-align:left;
-	width:330px;
+	/* width:330px; */
+	width:160px;
 	list-style:none;
 	float:right;
 	display:block;
@@ -870,7 +874,7 @@ ol.example li.placeholder:before {
 	.dropdown-menu{ 
 		min-width:175px;
 	}	
-	.top-nav .fa{ 
+	.top-nav a .fa{ 
 		font-size:16px;
 	}
 }

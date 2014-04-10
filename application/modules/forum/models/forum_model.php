@@ -153,7 +153,7 @@ class Forum_model extends CI_Model {
 			$staff_groups = "SELECT attribute_group_id
 							 FROM staff_groups
 							 WHERE user_id = ".$user['user_id'];
-			$sql .= " WHERE (ft.group_id IN (".$staff_groups.") OR ft.group_id = 0)";
+			$sql .= " WHERE (ft.group_id IN (".$staff_groups.") OR ft.group_id = 0 AND ft.type != 'support')";
 		}
 		$sql .= " GROUP BY ft.topic_id";
 		if($params){
@@ -172,6 +172,31 @@ class Forum_model extends CI_Model {
 				$sql .= " ORDER BY ft.created_on DESC";	
 			}
 		}
+		return $this->db->query($sql)->result();
+	}
+	/**
+	*	@name: get_support
+	*	@desc: This performs database query to get the most recent conversation (support in this case) mostly 10. For admin dashboard the support will be displayed in the conversation.
+	*	@access: public
+	*	@param: ([obj] user)
+	*	@return: list of most recent supports
+	*/
+	function get_support($user)
+	{
+		$records_per_page = CONVERSATION_PER_PAGE;
+		
+		$sql = "SELECT ft.*,
+					(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies, 
+				u.first_name, u.last_name 
+				FROM forum_topics ft
+				LEFT JOIN users u ON ft.created_by = u.user_id 
+				WHERE type = 'support' 
+				GROUP BY ft.topic_id";
+				
+		$sql .= " ORDER BY ft.created_on DESC";	
+		$sql .= " LIMIT ".$records_per_page;
+		
+
 		return $this->db->query($sql)->result();
 	}
 	/**

@@ -7,7 +7,7 @@
     </div>
 </div>
 <ul>
-    <li><a title="Dashboard" href="<?=base_url();?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li><li class="li-seprator">|</li>
+    <li><a title="Dashboard" href="<?=base_url();?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li><!--<li class="li-seprator">|</li>-->
     <!-- <li><a title="Logout" href="<?=base_url();?>logout"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li> -->
     <!-- <li><a title="Message" href=""><i class="fa fa-comments"></i> <span>Message</span></a></li><li class="li-seprator">|</li> -->
     

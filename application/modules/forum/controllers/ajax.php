@@ -132,6 +132,17 @@ class Ajax extends MX_Controller {
 		echo modules::run('forum/load_conversation');	
 	}
 	/**
+	*	@name: reload_supports
+	*	@desc: This function reloads support tickets. Mostly after a new support ticket has been lodged etc.
+	*	@access: public
+	*	@param: (null)
+	*	@return: returns most recent support tickets
+	*/
+	function reload_supports()
+	{
+		echo modules::run('forum/load_support_tickets');	
+	}
+	/**
 	*	@name: post_reply
 	*	@desc: This functions posts reply to a conversation topic
 	*	@access: public
@@ -179,6 +190,10 @@ class Ajax extends MX_Controller {
 		$message = $this->input->post('conversation_message',true);
 		$group_id = $this->input->post('conversation_groups',true);
 		$send_by_email = $this->input->post('send_by_email',true);
+		$conversation_type = 'conversation';
+		if($this->input->post('conversation_type',true)){
+			$conversation_type = $this->input->post('conversation_type',true);
+		}
 		$update_id = $this->input->post('update_id',true);
 		
 		$user_info = $this->session->userdata('user_data');
@@ -199,6 +214,7 @@ class Ajax extends MX_Controller {
 						'title' => $title,
 						'message' => $message,
 						'group_id' => $group_id,
+						'type' => $conversation_type,
 						'created_by' => $user_info['user_id']
 						);
 			$insert_id = $this->forum_model->add_topic($data);

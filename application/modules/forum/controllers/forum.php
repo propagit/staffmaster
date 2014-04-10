@@ -1,12 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * Controller: Forum
- * @author: namnd86@gmail.com
- */
-
 class Forum extends MX_Controller {
-
+	/**
+	*	@class_desc Forum controller
+	*	
+	*
+	*/
 	function __construct()
 	{
 		parent::__construct();
@@ -50,7 +49,7 @@ class Forum extends MX_Controller {
 	*	@desc: Loads the most recent conversations
 	*	@access: public
 	*	@param: (session) user info stored in the session variable when a user logs in
-	*	@return: returns 10 most recent conversation
+	*	@return: returns most recent conversation
 	*/
 	function load_conversation()
 	{
@@ -82,7 +81,20 @@ class Forum extends MX_Controller {
 			$this->load->view('poll', isset($data) ? $data : NULL);
 		}
 	}
-	
+	/**
+	*	@name: load_support_tickets
+	*	@desc: Loads the most recent support requests
+	*	@access: public
+	*	@param: (session) user info stored in the session variable when a user logs in
+	*	@return: returns most recent supports
+	*/
+	function load_support_tickets()
+	{
+		$user = $this->session->userdata('user_data');
+		$data['user'] = $user;
+		$data['support_tickets'] = $this->forum_model->get_support($user);
+		$this->load->view('support_tickets', isset($data) ? $data : NULL);
+	}
 	/**
 	*	@name: get_reply_count
 	*	@desc: Gets the number of reply a conversation has

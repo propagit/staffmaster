@@ -102,7 +102,8 @@ class Job extends MX_Controller {
 			'staff_name' => '',
 			'shift_date' => date('d-m-Y'),
 			'search_shift_date_to' => '',
-			'shift_status' => 'job_campaign'
+			'shift_status' => '',
+			'search_job_or_campaign' => 'job_campaign'
 		);
 		if ($shift_status == 'shift')
 		{
