@@ -45,6 +45,7 @@ $(function(){
 		})	
 	});
 	$('.btn-copy-selected-days').click(function(){
+		preloading($('#calendar-copy'));
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>job/ajax/copy_selected_days",
@@ -63,11 +64,13 @@ $(function(){
 	})
 });
 function update_selected_days(ts) {
+	preloading($('#calendar-copy'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>job/ajax/update_selected_day",
 		data: {ts: ts},
 		success: function(data) {
+			loaded($('#calendar-copy'));
 			data = $.parseJSON(data);
 			if (data.success) {
 				$('#error_day_selected').html('');

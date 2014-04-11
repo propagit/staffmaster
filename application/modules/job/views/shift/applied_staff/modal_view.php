@@ -35,7 +35,7 @@
 				</table>
 				</div>
 				
-				<h4 class="modal-body-title">Request Staff</h4>
+				<h4 class="modal-body-title"><? if (!modules::run('auth/is_client')) { ?>Client - <? } ?>Request Staff</h4>
 				<? if (modules::run('auth/is_client')) { ?>
 				<p>Request one of our staff to fill this shift</p>
 				<form role="form" id="form_update_shift_staff">

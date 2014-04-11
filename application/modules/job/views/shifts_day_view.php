@@ -201,8 +201,10 @@ $(function(){
 	$.each($('tr.disabled'), function() {
 		$(this).find('input').remove();
 		disabled($(this));
+		<? if (!modules::run('auth/is_client')) { ?>
 		var pk = $(this).find('.shift_uniform').attr('data-pk');
 		$(this).find('.content-disabled').html('<a class="btn btn-default" onclick="unlock_shift(' + pk + ')"><i class="fa fa-lock"></i></a>');
+		<? } ?>
 	});
 	
 	$('.shift_venue').editable({

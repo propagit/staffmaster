@@ -758,7 +758,16 @@ class Ajax extends MX_Controller {
 						);
 					}
 					$new_shift['break_time'] = json_encode($new_breaks);
-					$this->job_shift_model->insert_job_shift($new_shift);
+					$new_shift_id = $this->job_shift_model->insert_job_shift($new_shift);
+					
+					$request_staffs = $this->job_shift_model->get_request_staffs($shift_id);
+					foreach($request_staffs as $request_staff)
+					{
+						$this->job_shift_model->add_request_staff(array(
+							'shift_id' => $new_shift_id,
+							'staff_id' => $request_staff['staff_id']
+						));
+					}
 				}				
 			}
 			$this->session->unset_userdata('all_ts');

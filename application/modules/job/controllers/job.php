@@ -114,6 +114,8 @@ class Job extends MX_Controller {
 			$data['search_shift_filters']['staff_name'] = $staff['first_name'] . ' ' . $staff['last_name'];
 			$data['search_shift_filters']['shift_date'] = $params[1];
 			$data['search_shift_filters']['search_shift_date_to'] = $params[2];
+			$data['search_shift_filters']['search_job_or_campaign'] = 'shift';
+			$data['search_shift_filters']['shift_status'] = 'all';
 		}
 		if($this->session->flashdata('search_shift_filters'))
 		{
