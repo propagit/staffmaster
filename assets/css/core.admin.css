@@ -519,9 +519,11 @@ span.dash-invoice-value{
 	margin-right:10px;
 	width:50%;
 }
-
-
-
+/* system styles */
+.system-styles-label{
+	line-height:34px;
+	font-weight:600;	
+}
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 

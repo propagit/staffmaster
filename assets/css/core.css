@@ -835,6 +835,18 @@ ol.example li.placeholder:before {
 	float:left;
 	width:100%;	
 }
+.support-text{
+	font-size:16px;	
+}
+.client_support_msg{
+	border:2px solid #eed6d5 !important;	
+}
+.client_msg_arrow_color{
+	color:#eed6d5;	
+}
+
+
+
 /* begin - responsive */
 
 /* *

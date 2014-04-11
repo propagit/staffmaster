@@ -26,6 +26,15 @@ class Setting extends MX_Controller {
 			case 'create_pdf':
 					$this->create_pdf();
 				break;
+			case 'system_styles':
+					$this->system_styles();
+				break;
+			case 'update_system_styles':
+					$this->update_system_styles();
+				break;
+			case 'custom_css':
+					$this->custom_css();
+				break;
 			default:
 					$this->company();
 			break;
@@ -147,5 +156,40 @@ class Setting extends MX_Controller {
 	function company_profile()
 	{
 		return $this->setting_model->get_profile();		
+	}
+	
+	/**
+	*	@name: system_styles
+	*	@desc: Provides UI to change system colour
+	*	@access: public
+	*	@param: (null)
+	*	@return: Loads UI to change system styles
+	*/
+	function system_styles()
+	{
+		$data['styles'] = array(
+							'primary_colour' => COLOUR_PRIM,
+							'rollover_colour' => COLOUR_ROLL,
+							'secondary_colour' => COLOUR_SECO,
+							'text_colour' => TEXT_COLOUR
+							);
+		$current_styles = $this->setting_model->get_system_styles(1);
+		if($current_styles){
+			$data['styles'] = $current_styles;	
+		}
+		$this->load->view('system_styles', isset($data) ? $data : NULL);
+	}
+	
+	function update_system_styles()
+	{
+		$data = array(
+					'primary_colour' => $this->input->post('primary_colour'),
+					'rollover_colour' => $this->input->post('rollover_colour'),
+					'secondary_colour' => $this->input->post('secondary_colour'),
+					'text_colour' => $this->input->post('text_colour'),
+					'modified' => date('Y-m-d H:i:s')
+				);
+		$this->setting_model->update_system_styles($data);
+		redirect('setting/system_styles');
 	}
 }

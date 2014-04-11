@@ -18,7 +18,7 @@
                       <span class="wk_date display-inline"><?=date('d',strtotime($c->created_on));?></span>
                       <span class="wk_month display-inline"><?=date('M',strtotime($c->created_on));?></span>
                   </div>
-                  <span class="title"><?=substr($c->title,0,200);?></span>
+                  <span class="title"><?=substr($c->title,0,100);?></span>
               </div>
               <?php 
 					echo nl2br($c->message);
