@@ -37,11 +37,11 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
-define('COLOR_PRIM', '#1868b1');
-define('COLOR_SECO', '#024c93');
-define('COLOR_HILI', '#ffffff');
-define('COLOR_MIDT', '#8799a3');
-define('COLOR_DARK', '#000000');
+define('COLOUR_PRIM', '#00b1eb');
+define('COLOUR_SECO', '#ffffff');
+define('COLOUR_ROLL', '#2a6496');
+define('TEXT_COLOUR', '#3d3d3d');
+
 
 define('CLIENT_ACTIVE', 1);
 define('CLIENT_INACTIVE', -1);
@@ -113,8 +113,9 @@ define('DEFAULT_PER_PAGE',50);
 define('PAYRUN_PER_PAGE',50);
 define('VENUES_PER_PAGE',50);
 define('INVOICE_PER_PAGE',50);
-define('CONVERSATION_PER_PAGE',5);
+define('CONVERSATION_PER_PAGE',20);
 define('BRIEF_PER_PAGE',50);
+define('SUPPORT_PER_PAGE',20);
 //email template id
 define('WELCOME_EMAIL_TEMPLATE_ID',1);
 define('ROSTER_UPDATE_EMAIL_TEMPLATE_ID',2);

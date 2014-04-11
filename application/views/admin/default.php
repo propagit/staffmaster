@@ -15,7 +15,6 @@
 	<link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/calendar.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
-	<?=$_styles;?>
 	
 	<script src="<?=base_url();?>assets/js/hogan.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
@@ -87,6 +86,7 @@
     <link rel="stylesheet" media="screen" type="text/css" href="<?=base_url()?>assets/js/colorpicker/colorpicker.css" />  
 	<script type="text/javascript" src="<?=base_url()?>assets/js/colorpicker/colorpicker.js"></script>
     
+    <?=$_styles;?>
 </head>
 <body>
 <header>
@@ -112,7 +112,6 @@
             <?=$content;?>
         </div>
     </div>
-
 
 <div id="sys-fixed-btns">
 	<button class="btn btn-info sys-rt-btn"><i class="fa fa-cogs"></i></button>

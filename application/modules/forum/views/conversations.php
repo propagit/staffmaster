@@ -4,34 +4,43 @@
 			foreach($conversations as $c){ 
 	  ?>
       <li class="<?=($user['user_id'] == $c->created_by ? 'by-user' : 'by-me');?>">
-          <a href="#" title="">
+          
 			<?php
+				 $client_msg_border = '';
+				 $client_msg_arrow_color = '';
              	 $created_by = modules::run('user/get_user',$c->created_by);
              	 if($created_by['is_client']){
+					 $client_msg_border = 'client_support_msg';
+					 $client_msg_arrow_color = 'client_msg_arrow_color';
+					 $client = modules::run('client/get_client',$c->created_by);	 
               ?>
-                    <div class="profile_photo">
-                        <div class="default-avatar-photo">
-                            <i class="fa fa-male"></i>
+              		<a href="<?=base_url();?>client/edit/<?=$c->created_by?>">
+                        <div class="profile_photo">
+                            <div class="default-avatar-photo">
+                                <i class="fa fa-male"></i>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 			  <?php
                   }else{
+					  echo '<a href="'.base_url().'staff/edit/'.$c->created_by.'">';
                       echo modules::run('staff/profile_image',$c->created_by);
+					  echo '</a>';
                   }
               ?>
- 
-          </a>
-          <div class="message-area">
-              <span class="aro"><i class="fa <?=($user['user_id'] == $c->created_by ? 'fa-angle-left' : 'fa-angle-right');?> message-fa"></i></span>
+			 
+          
+          <div class="message-area <?=$client_msg_border;?>">
+              <span class="aro"><i class="fa <?=($user['user_id'] == $c->created_by ? 'fa-angle-left' : 'fa-angle-right');?> message-fa <?=$client_msg_arrow_color;?>"></i></span>
               <div class="info-row">
                   <div class="col-md-1 col-xs-1 wrap-list-date time">                            
                       <span class="wk_date display-inline"><?=date('d',strtotime($c->created_on));?></span>
                       <span class="wk_month display-inline"><?=date('M',strtotime($c->created_on));?></span>
                       <?php if($created_by['is_client']) {?>
-                      <span class="display-inline text-danger"> - <i class="fa fa-info-circle"></i> <?=$created_by['full_name'];?></span>
+                      <span class="display-inline text-danger support-text"> &nbsp;<i class="fa fa-exclamation-triangle"></i> <b>Client Support</b> - <?=$client['company_name'];?> - <?=$created_by['full_name'];?></span>
                       <?php } ?>
                   </div>
-                  <span class="title"><?=substr($c->title,0,200);?></span>
+                  <span class="title"><?=substr($c->title,0,100);?></span>
               </div>
               <?php 
 				  if($c->type == 'poll'){

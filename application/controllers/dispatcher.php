@@ -114,6 +114,7 @@ class Dispatcher extends MX_Controller {
 			$this->template->set_template('admin');
 		}
 		
+		$this->template->add_css('custom_styles');
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'admin/menu');
 		$this->template->write('content', $content);

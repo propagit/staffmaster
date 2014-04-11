@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * Controller: Ajax
- * @author: namnd86@gmail.com
- */
 
 class Ajax extends MX_Controller {
-
+	/**
+	*	@class_desc Forum Module Ajax Controller 
+	*	
+	*
+	*/
 	function __construct()
 	{
 		parent::__construct();
@@ -130,17 +130,6 @@ class Ajax extends MX_Controller {
 	function reload_conversation()
 	{
 		echo modules::run('forum/load_conversation');	
-	}
-	/**
-	*	@name: reload_supports
-	*	@desc: This function reloads support tickets. Mostly after a new support ticket has been lodged etc.
-	*	@access: public
-	*	@param: (null)
-	*	@return: returns most recent support tickets
-	*/
-	function reload_supports()
-	{
-		echo modules::run('forum/load_support_tickets');	
 	}
 	/**
 	*	@name: post_reply
