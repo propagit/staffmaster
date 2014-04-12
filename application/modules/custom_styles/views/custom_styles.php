@@ -17,7 +17,7 @@ body,
     border-bottom:1px solid <?=$primary_colour?>;
 }
 .top-nav > li > a:hover{
-	background-color:<?=$rollover_colour?>;
+	background-color:<?=$primary_colour?>;
 }
 .top-nav > li > a{
 	color:<?=$secondary_colour?>;
@@ -35,20 +35,14 @@ a:hover,
 .action_image :hover{
 	color:<?=$rollover_colour?>;
 }
-.btn-info{
+.btn-info,
+.btn-core{
 	background-color:<?=$primary_colour?> !important;
     color:<?=$secondary_colour?>;
 }
-.btn-info:hover{
-	background-color:<?=$rollover_colour?> !important;
-    color:<?=$secondary_colour?>;
-}
-.btn-core{
-	background:<?=$primary_colour?>;
-    color:<?=$secondary_colour?>;
-}
+.btn-info:hover,
 .btn-core:hover{
-	background:<?=$rollover_colour?>;
+	background-color:<?=$primary_colour?> !important;
     color:<?=$secondary_colour?>;
 }
 .nav-tabs > li.active a, .nav-tabs > li.active a:hover, .nav-tabs > li.active a:focus{

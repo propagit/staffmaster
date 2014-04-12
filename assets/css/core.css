@@ -1349,13 +1349,16 @@ ol.example li.placeholder:before {
 	margin: 0 3px;
 }
 .btn-core {
-	background: #35c0ed;
-	color: #fff;
+	background-repeat:repeat;
+	background-color:#00b1eb !important;
+	background-image:url(../img/core/nav-texture-bg.png); 
+	border-color:rgba(255,255,255,0.25);
 }
 .btn-core:hover {
-	background: #00b1eb;
-	color: #fff;
+	background-image:none;
+	border-color:rgba(255,255,255,0.25);
 }
+
 .wp-date{
 	min-width:65px;	
 	white-space:inherit !important;
