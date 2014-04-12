@@ -16,6 +16,8 @@
 */
 $config['base_url']	= '';
 
+if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on"){$ssl_set = "s";} else{$ssl_set = "";}
+$config['base_url'] = 'http'.$ssl_set.'://'.$_SERVER['HTTP_HOST'];
 /*
 |--------------------------------------------------------------------------
 | Index File

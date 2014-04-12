@@ -1,7 +1,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
 		<h2>Your Dashboard</h2>
-		<p>Welcome to your Staff Account dashboard. Your Dashboard will give you a quick overview of activity going on within <?=$company['company_name']?>. Check back regularly to keep yourself up to date.</p>
+		<p>Welcome to your Staff Account dashboard. Your Dashboard will give you a quick overview of activity going on within <?=isset($company['company_name']) ? $company['company_name'] : '';?>. Check back regularly to keep yourself up to date.</p>
 	</div>
 </div>
 

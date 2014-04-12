@@ -72,8 +72,18 @@ if (defined('ENVIRONMENT'))
  * NO TRAILING SLASH!
  *
  */
-	$application_folder = 'application';
+ 
+$sub_domain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
 
+if($sub_domain != 'sm')
+{
+	$application_folder = 'application';
+}
+else
+{
+	$application_folder = 'public_app';
+}
+	
 /*
  * --------------------------------------------------------------------
  * DEFAULT CONTROLLER

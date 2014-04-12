@@ -47,11 +47,11 @@
 
 $active_group = 'default';
 $active_record = TRUE;
-
+$sub_domain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'root';
-$db['default']['database'] = 'staff_master';
+$db['default']['database'] = 'sm_' . $sub_domain; #'staff_master';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
