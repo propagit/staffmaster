@@ -10,7 +10,7 @@
     </div>
 </div>
 <!--end top box-->
-
+<? if (count($payrates) > 0) { ?>
 <!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
@@ -27,7 +27,7 @@
     	</div>
 	</div>
 </div>
-
+<? } ?>
 <!-- update payrate modal -->
 <div class="modal fade" id="add-payrate-modal" tabindex="-1" role="dialog" aria-labelledby="addPayrateLabel" aria-hidden="true">
 	<div class="modal-dialog">
