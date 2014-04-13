@@ -3,8 +3,8 @@
 		<div class="pull-right">
 			<div class="wp_loading"><img src="<?=base_url();?>assets/img/loading3.gif" /></div>
 		</div>
-		<h2>Creating Directories</h2>
-		<p class="result">Please wait a short moment while we set up your account directories...</p>
+		<h2>Creating Database</h2>
+		<p class="result">Please wait a short moment while we set up your account database...</p>
 	</div>
 </div>
 <!--
