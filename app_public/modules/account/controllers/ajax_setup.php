@@ -11,7 +11,7 @@ class Ajax_setup extends MX_Controller {
 	function create_database()
 	{
 		$username = $this->input->post('username');
-		$database = 'sm_' . $username;
+		$database = USER_PREFIX_DB . $username;
 		# In order to initialize the Forge & Dbutil classes, database driver must already be running, since the forge & dbutil classes relies on it.
 		$this->load->model('account_model');
 		

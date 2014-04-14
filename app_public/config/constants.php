@@ -37,6 +37,11 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 define('USER_ASSETS_PATH', 'user_assets');
+define('USER_PREFIX_DB', 'user_db_');
+define('DB_HOSTNAME', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', 'root');
+define('MASTER_DB', 'smcloud');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

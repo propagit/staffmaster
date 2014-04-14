@@ -4,10 +4,10 @@ class Setup_model extends CI_Model {
 	
 	function init($username)
 	{
-		$db['hostname'] = 'localhost';
-		$db['username'] = 'root';
-		$db['password'] = 'root';
-		$db['database'] = 'sm_' . $username;
+		$db['hostname'] = DB_HOSTNAME;
+		$db['username'] = DB_USERNAME;
+		$db['password'] = DB_PASSWORD;
+		$db['database'] = USER_PREFIX_DB . $username;
 		$db['dbdriver'] = 'mysql';
 		$db['dbprefix'] = '';
 		$db['pconnect'] = TRUE;
@@ -29,7 +29,7 @@ class Setup_model extends CI_Model {
 	function create_tables($username)
 	{
 		# Load schema.sql file as string
-		if( $sql = @file_get_contents('./../database/schema.sql') )
+		if( $sql = @file_get_contents('./../db/setup_schema.sql') )
 		{
 			return $this->import_sql($username, $sql);
 		} 

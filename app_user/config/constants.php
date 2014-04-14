@@ -1,5 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+# Include constant from public application
+include('./../app_public/config/constants.php');
+
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes

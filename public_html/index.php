@@ -75,13 +75,13 @@ if (defined('ENVIRONMENT'))
  
 $sub_domain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
 
-if($sub_domain != 'sm')
+if($sub_domain != 'sm' && $sub_domain != 'www')
 {
-	$application_folder = '../application';
+	$application_folder = '../app_user';
 }
 else
 {
-	$application_folder = '../public_app';
+	$application_folder = '../app_public';
 }
 	
 /*

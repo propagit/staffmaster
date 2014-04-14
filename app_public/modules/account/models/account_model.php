@@ -4,10 +4,10 @@ class Account_model extends CI_Model {
 	
 	function __construct()
 	{
-		$db['hostname'] = 'localhost';
-		$db['username'] = 'root';
-		$db['password'] = 'root';
-		$db['database'] = 'smcloud';
+		$db['hostname'] = DB_HOSTNAME;
+		$db['username'] = DB_USERNAME;
+		$db['password'] = DB_PASSWORD;
+		$db['database'] = MASTER_DB;
 		$db['dbdriver'] = 'mysql';
 		$db['dbprefix'] = '';
 		$db['pconnect'] = TRUE;
@@ -21,8 +21,8 @@ class Account_model extends CI_Model {
 		$db['stricton'] = FALSE;
 		
 		$this->load->database($db, FALSE, TRUE);
-		// False: don't return db object
-		// True: use as active record, so it replaces default $this->db
+		# False: don't return db object
+		# True: use as active record, so it replaces default $this->db
 	}
 	
 	function get_account($params)
