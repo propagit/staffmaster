@@ -1,0 +1,1 @@
+ALTER TABLE `jobs` ADD `department_id` INT NOT NULL AFTER `client_id`;

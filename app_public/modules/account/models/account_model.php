@@ -25,6 +25,16 @@ class Account_model extends CI_Model {
 		# True: use as active record, so it replaces default $this->db
 	}
 	
+	function get_accounts($params)
+	{
+		foreach($params as $key => $value)
+		{
+			$this->db->where($key, $value);
+		}
+		$query = $this->db->get('accounts');
+		return $query->result_array();
+	}
+	
 	function get_account($params)
 	{
 		foreach($params as $key => $value)

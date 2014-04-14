@@ -8,7 +8,7 @@
 -- PHP Version: 5.5.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET time_zone = "+07:00";
 
 --
 -- Database: `staff_master`
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `attribute_groups` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `attribute_locations` (
   `name` varchar(100) NOT NULL,
   `state` varchar(255) NOT NULL,
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=98 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `attribute_payrates` (
   `name` varchar(100) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '-1: deleted',
   PRIMARY KEY (`payrate_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `attribute_roles` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `attribute_uniforms` (
   `uniform_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`uniform_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `attribute_venues` (
   `postcode` varchar(10) NOT NULL,
   `state` varchar(255) NOT NULL,
   PRIMARY KEY (`venue_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `brief` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`brief_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `brief_elements` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`brief_element_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -220,6 +220,249 @@ CREATE TABLE IF NOT EXISTS `countries` (
   PRIMARY KEY (`country_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=238 ;
 
+--
+-- Dumping data for table `countries`
+--
+
+INSERT INTO `countries` (`country_id`, `code`, `name`) VALUES
+(1, 'AF', 'Afghanistan'),
+(2, 'AL', 'Albania'),
+(3, 'DZ', 'Algeria'),
+(4, 'AS', 'American Samoa'),
+(5, 'AD', 'Andorra'),
+(6, 'AO', 'Angola'),
+(7, 'AI', 'Anguilla'),
+(8, 'AQ', 'Antarctica'),
+(9, 'AG', 'Antigua And Barbuda'),
+(10, 'AR', 'Argentina'),
+(11, 'AM', 'Armenia'),
+(12, 'AW', 'Aruba'),
+(13, 'AU', 'Australia'),
+(14, 'AT', 'Austria'),
+(15, 'AZ', 'Azerbaijan'),
+(16, 'BS', 'Bahamas'),
+(17, 'BH', 'Bahrain'),
+(18, 'BD', 'Bangladesh'),
+(19, 'BB', 'Barbados'),
+(20, 'BY', 'Belarus'),
+(21, 'BE', 'Belgium'),
+(22, 'BZ', 'Belize'),
+(23, 'BJ', 'Benin'),
+(24, 'BM', 'Bermuda'),
+(25, 'BT', 'Bhutan'),
+(26, 'BO', 'Bolivia'),
+(27, 'BA', 'Bosnia And Herzegovina'),
+(28, 'BW', 'Botswana'),
+(29, 'BV', 'Bouvet Island'),
+(30, 'BR', 'Brazil'),
+(31, 'BN', 'Brunei Darussalam'),
+(32, 'BG', 'Bulgaria'),
+(33, 'BF', 'Burkina Faso'),
+(34, 'BI', 'Burundi'),
+(35, 'KH', 'Cambodia'),
+(36, 'CM', 'Cameroon'),
+(37, 'CA', 'Canada'),
+(38, 'CV', 'Cape Verde'),
+(39, 'KY', 'Cayman Islands'),
+(40, 'CF', 'Central African Republic'),
+(41, 'TD', 'Chad'),
+(42, 'CL', 'Chile'),
+(43, 'CN', 'China'),
+(44, 'CX', 'Christmas Island'),
+(45, 'CC', 'Cocos (Keeling) Islands'),
+(46, 'CO', 'Colombia'),
+(47, 'KM', 'Comoros'),
+(48, 'CG', 'Congo'),
+(49, 'CD', 'Congo, The Dem. Rep. Of'),
+(50, 'CK', 'Cook Islands'),
+(51, 'CR', 'Costa Rica'),
+(52, 'CI', 'Cote D''Ivoire'),
+(53, 'HR', 'Croatia'),
+(54, 'CU', 'Cuba'),
+(55, 'CY', 'Cyprus'),
+(56, 'CZ', 'Czech Republic'),
+(57, 'DK', 'Denmark'),
+(58, 'DJ', 'Djibouti'),
+(59, 'DM', 'Dominica'),
+(60, 'DO', 'Dominican Republic'),
+(61, 'EC', 'Ecuador'),
+(62, 'EG', 'Egypt'),
+(63, 'SV', 'El Salvador'),
+(64, 'GQ', 'Equatorial Guinea'),
+(65, 'ER', 'Eritrea'),
+(66, 'EE', 'Estonia'),
+(67, 'ET', 'Ethiopia'),
+(68, 'FK', 'Falkland Islands'),
+(69, 'FO', 'Faroe Islands'),
+(70, 'FJ', 'Fiji'),
+(71, 'FI', 'Finland'),
+(72, 'FR', 'France'),
+(73, 'GF', 'French Guiana'),
+(74, 'PF', 'French Polynesia'),
+(75, 'TF', 'French Southern Territories'),
+(76, 'GA', 'Gabon'),
+(77, 'GM', 'Gambia'),
+(78, 'GE', 'Georgia'),
+(79, 'DE', 'Germany'),
+(80, 'GH', 'Ghana'),
+(81, 'GI', 'Gibraltar'),
+(82, 'GR', 'Greece'),
+(83, 'GL', 'Greenland'),
+(84, 'GD', 'Grenada'),
+(85, 'GP', 'Guadeloupe'),
+(86, 'GU', 'Guam'),
+(87, 'GT', 'Guatemala'),
+(88, 'Gg', 'Guernsey'),
+(89, 'GN', 'Guinea'),
+(90, 'GW', 'Guinea-Bissau'),
+(91, 'GY', 'Guyana'),
+(92, 'HT', 'Haiti'),
+(93, 'HN', 'Honduras'),
+(94, 'HK', 'Hong Kong'),
+(95, 'HU', 'Hungary'),
+(96, 'IS', 'Iceland'),
+(97, 'IN', 'India'),
+(98, 'ID', 'Indonesia'),
+(99, 'IR', 'Iran'),
+(100, 'IQ', 'Iraq'),
+(101, 'IE', 'Ireland'),
+(102, 'IM', 'Isle Of Man'),
+(103, 'IL', 'Israel'),
+(104, 'IT', 'Italy'),
+(105, 'JM', 'Jamaica'),
+(106, 'JP', 'Japan'),
+(107, 'JE', 'Jersey'),
+(108, 'JO', 'Jordan'),
+(109, 'KZ', 'Kazakhstan'),
+(110, 'KE', 'Kenya'),
+(111, 'KI', 'Kiribati'),
+(112, 'KP', 'North Korea'),
+(113, 'KR', 'South Korea'),
+(114, 'KW', 'Kuwait'),
+(115, 'KG', 'Kyrgyzstan'),
+(116, 'LA', 'Laos'),
+(117, 'LV', 'Latvia'),
+(118, 'LB', 'Lebanon'),
+(119, 'LS', 'Lesotho'),
+(120, 'LR', 'Liberia'),
+(121, 'LY', 'Libya'),
+(122, 'LI', 'Liechtenstein'),
+(123, 'LT', 'Lithuania'),
+(124, 'LU', 'Luxembourg'),
+(125, 'MO', 'Macao'),
+(126, 'MK', 'Macedonia'),
+(127, 'MG', 'Madagascar'),
+(128, 'MW', 'Malawi'),
+(129, 'MY', 'Malaysia'),
+(130, 'MV', 'Maldives'),
+(131, 'ML', 'Mali'),
+(132, 'MT', 'Malta'),
+(133, 'MH', 'Marshall Islands'),
+(134, 'MQ', 'Martinique'),
+(135, 'MR', 'Mauritania'),
+(136, 'MU', 'Mauritius'),
+(137, 'YT', 'Mayotte'),
+(138, 'MX', 'Mexico'),
+(139, 'FM', 'Micronesia'),
+(140, 'MD', 'Moldova, Republic Of'),
+(141, 'MC', 'Monaco'),
+(142, 'MN', 'Mongolia'),
+(143, 'MS', 'Montserrat'),
+(144, 'MA', 'Morocco'),
+(145, 'MZ', 'Mozambique'),
+(146, 'MM', 'Myanmar'),
+(147, 'NA', 'Namibia'),
+(148, 'NR', 'Nauru'),
+(149, 'NP', 'Nepal'),
+(150, 'NL', 'Netherlands'),
+(151, 'AN', 'Netherlands Antilles'),
+(152, 'NC', 'New Caledonia'),
+(153, 'NZ', 'New Zealand'),
+(154, 'NI', 'Nicaragua'),
+(155, 'NE', 'Niger'),
+(156, 'NG', 'Nigeria'),
+(157, 'NU', 'Niue'),
+(158, 'NF', 'Norfolk Island'),
+(159, 'MP', 'Northern Mariana Islands'),
+(160, 'NO', 'Norway'),
+(161, 'OM', 'Oman'),
+(162, 'PK', 'Pakistan'),
+(163, 'PW', 'Palau'),
+(164, 'PS', 'Palestinian'),
+(165, 'PA', 'Panama'),
+(166, 'PG', 'Papua New Guinea'),
+(167, 'PY', 'Paraguay'),
+(168, 'PE', 'Peru'),
+(169, 'PH', 'Philippines'),
+(170, 'PN', 'Pitcairn'),
+(171, 'PL', 'Poland'),
+(172, 'PT', 'Portugal'),
+(173, 'PR', 'Puerto Rico'),
+(174, 'QA', 'Qatar'),
+(175, 'RE', 'Reunion'),
+(176, 'RO', 'Romania'),
+(177, 'RU', 'Russian Federation'),
+(178, 'RW', 'Rwanda'),
+(179, 'SH', 'St. Helena'),
+(180, 'KN', 'St. Kitts And Nevis'),
+(181, 'LC', 'St. Lucia'),
+(182, 'PM', 'St. Pierre And Miquelon'),
+(183, 'VC', 'St. Vincent And Grenadines'),
+(184, 'WS', 'Samoa'),
+(185, 'SM', 'San Marino'),
+(186, 'ST', 'Sao Tome And Principe'),
+(187, 'SA', 'Saudi Arabia'),
+(188, 'SN', 'Senegal'),
+(189, 'CS', 'Serbia And Montenegro'),
+(190, 'SC', 'Seychelles'),
+(191, 'SL', 'Sierra Leone'),
+(192, 'SG', 'Singapore'),
+(193, 'SK', 'Slovakia'),
+(194, 'SI', 'Slovenia'),
+(195, 'SB', 'Solomon Islands'),
+(196, 'SO', 'Somalia'),
+(197, 'ZA', 'South Africa'),
+(198, 'ES', 'Spain'),
+(199, 'LK', 'Sri Lanka'),
+(200, 'SD', 'Sudan'),
+(201, 'SR', 'Suriname'),
+(202, 'SJ', 'Svalbard And Jan Mayen'),
+(203, 'SZ', 'Swaziland'),
+(204, 'SE', 'Sweden'),
+(205, 'CH', 'Switzerland'),
+(206, 'SY', 'Syrian Arab Republic'),
+(207, 'TW', 'Taiwan, Province Of China'),
+(208, 'TJ', 'Tajikistan'),
+(209, 'TZ', 'Tanzania'),
+(210, 'TH', 'Thailand'),
+(211, 'TL', 'Timor-Leste'),
+(212, 'TG', 'Togo'),
+(213, 'TK', 'Tokelau'),
+(214, 'TO', 'Tonga'),
+(215, 'TT', 'Trinidad And Tobago'),
+(216, 'TN', 'Tunisia'),
+(217, 'TR', 'Turkey'),
+(218, 'TM', 'Turkmenistan'),
+(219, 'TC', 'Turks And Caicos Islands'),
+(220, 'TV', 'Tuvalu'),
+(221, 'UG', 'Uganda'),
+(222, 'UA', 'Ukraine'),
+(223, 'AE', 'United Arab Emirates'),
+(224, 'GB', 'United Kingdom'),
+(225, 'US', 'United States'),
+(226, 'UY', 'Uruguay'),
+(227, 'UZ', 'Uzbekistan'),
+(228, 'VU', 'Vanuatu'),
+(229, 'VE', 'Venezuela'),
+(230, 'VN', 'Viet Nam'),
+(231, 'VG', 'Virgin Islands, British'),
+(232, 'VI', 'Virgin Islands, U.S.'),
+(233, 'WF', 'Wallis And Futuna'),
+(234, 'EH', 'Western Sahara'),
+(235, 'YE', 'Yemen'),
+(236, 'ZM', 'Zambia'),
+(237, 'ZW', 'Zimbabwe');
+
 -- --------------------------------------------------------
 
 --
@@ -239,7 +482,7 @@ CREATE TABLE IF NOT EXISTS `custom_forms` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -254,7 +497,7 @@ CREATE TABLE IF NOT EXISTS `email_merge_fields` (
   `merge_field` varchar(255) NOT NULL,
   `merge_order` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`merge_field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -273,7 +516,7 @@ CREATE TABLE IF NOT EXISTS `email_templates` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`email_template_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -294,7 +537,7 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `client_cost` decimal(10,2) NOT NULL,
   `tax` tinyint(4) NOT NULL,
   PRIMARY KEY (`expense_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -309,7 +552,7 @@ CREATE TABLE IF NOT EXISTS `export_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`order`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -324,7 +567,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -339,7 +582,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=67 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -358,7 +601,7 @@ CREATE TABLE IF NOT EXISTS `forecast` (
   `total_amount_client` decimal(10,0) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`forecast_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -373,7 +616,7 @@ CREATE TABLE IF NOT EXISTS `forum_messages` (
   `posted_by` bigint(20) NOT NULL,
   `posted_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -388,7 +631,7 @@ CREATE TABLE IF NOT EXISTS `forum_poll_answers` (
   `answer_count` int(11) NOT NULL DEFAULT '0',
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`poll_answer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -409,7 +652,7 @@ CREATE TABLE IF NOT EXISTS `forum_topics` (
   `last_replied_by` bigint(20) NOT NULL,
   `last_replied_on` datetime NOT NULL,
   PRIMARY KEY (`topic_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -424,7 +667,7 @@ CREATE TABLE IF NOT EXISTS `forum_user_poll_answers` (
   `user_id` bigint(20) NOT NULL,
   `answered_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_poll_answer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -460,7 +703,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `profile_company_email` varchar(255) NOT NULL,
   `profile_company_phone` varchar(255) NOT NULL,
   PRIMARY KEY (`invoice_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -478,7 +721,7 @@ CREATE TABLE IF NOT EXISTS `invoice_items` (
   `tax` int(11) NOT NULL COMMENT '0: no, 1: yes, 2: tax free',
   `amount` decimal(10,2) NOT NULL,
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -490,11 +733,12 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `job_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status` tinyint(4) NOT NULL COMMENT '0: temporary, 1: created',
   `client_id` bigint(20) NOT NULL,
+  `department_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `createdon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`job_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -521,7 +765,7 @@ CREATE TABLE IF NOT EXISTS `job_shifts` (
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_on` datetime NOT NULL,
   PRIMARY KEY (`shift_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=339 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -589,7 +833,7 @@ CREATE TABLE IF NOT EXISTS `job_shift_timesheets` (
   `staff_paid_on` datetime NOT NULL,
   `client_paid_on` datetime NOT NULL,
   PRIMARY KEY (`timesheet_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=67 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -607,7 +851,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `description` text NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=322 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -628,7 +872,7 @@ CREATE TABLE IF NOT EXISTS `modules_functions` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=386 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -646,7 +890,7 @@ CREATE TABLE IF NOT EXISTS `modules_mvc` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=105 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -663,7 +907,7 @@ CREATE TABLE IF NOT EXISTS `payruns` (
   `status` tinyint(4) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`payrun_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -693,7 +937,7 @@ CREATE TABLE IF NOT EXISTS `project_modules` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -707,7 +951,7 @@ CREATE TABLE IF NOT EXISTS `shift_brief` (
   `brief_id` bigint(20) NOT NULL,
   `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`shift_brief_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -722,7 +966,7 @@ CREATE TABLE IF NOT EXISTS `staff_custom_attributes` (
   `attributes` text NOT NULL,
   `file_upload` enum('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`staff_custom_attribute_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -735,7 +979,7 @@ CREATE TABLE IF NOT EXISTS `staff_groups` (
   `user_id` int(11) NOT NULL,
   `attribute_group_id` int(11) NOT NULL,
   PRIMARY KEY (`staff_groups_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -748,7 +992,7 @@ CREATE TABLE IF NOT EXISTS `staff_roles` (
   `user_id` int(11) NOT NULL,
   `attribute_role_id` int(11) NOT NULL,
   PRIMARY KEY (`staff_roles_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=116 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -763,6 +1007,21 @@ CREATE TABLE IF NOT EXISTS `states` (
   PRIMARY KEY (`state_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
+--
+-- Dumping data for table `states`
+--
+
+INSERT INTO `states` (`state_id`, `code`, `name`) VALUES
+(1, 'ACT', 'Australian Capital Territory'),
+(2, 'NSW', 'New South Wales'),
+(3, 'NT', 'Northern Territory'),
+(4, 'QLD', 'Queensland'),
+(5, 'SA', 'South Australia'),
+(6, 'TAS', 'Tasmania'),
+(7, 'VIC', 'Victoria'),
+(8, 'WA', 'Western Australia');
+
+
 -- --------------------------------------------------------
 
 --
@@ -773,7 +1032,7 @@ CREATE TABLE IF NOT EXISTS `supers` (
   `super_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(127) NOT NULL,
   PRIMARY KEY (`super_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=122 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -800,7 +1059,7 @@ CREATE TABLE IF NOT EXISTS `uploads` (
   `image_type` varchar(10) NOT NULL,
   `image_size_str` varchar(255) NOT NULL,
   PRIMARY KEY (`upload_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -834,7 +1093,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_on` datetime NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -851,7 +1110,7 @@ CREATE TABLE IF NOT EXISTS `user_clients` (
   `total_jobs` int(11) NOT NULL,
   `total_jobs_current_year` int(11) NOT NULL,
   PRIMARY KEY (`client_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -864,7 +1123,7 @@ CREATE TABLE IF NOT EXISTS `user_client_departments` (
   `user_id` bigint(20) NOT NULL,
   `name` varchar(250) NOT NULL,
   PRIMARY KEY (`department_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -917,7 +1176,7 @@ CREATE TABLE IF NOT EXISTS `user_staffs` (
   `time_sheets_in_payrun` int(11) NOT NULL COMMENT 'number of unpaid time sheet in the payrun',
   `welcome_email_sent` enum('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`staff_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -945,4 +1204,4 @@ CREATE TABLE IF NOT EXISTS `user_staff_picture` (
   `hero` int(11) NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
