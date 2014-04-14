@@ -66,7 +66,7 @@
 	<? foreach($doc_ids as $file_id) { 
 		$file = $this->resource_model->get_resource_file($file_id);
 		if ($file) { ?>
-	<a href="<?=base_url();?>uploads/resources/<?=$file['file_name'];?>" target="_blank"><?=$file['orig_name'];?></a><br />
+	<a href="<?=base_url().UPLOADS_URL;?>/resources/<?=$file['file_name'];?>" target="_blank"><?=$file['orig_name'];?></a><br />
 	<? } } ?>	
 	<? } ?>
 	</p>

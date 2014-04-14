@@ -27,4 +27,17 @@ class Setting_model extends CI_Model {
 		$query = $this->db->get('company_profile_email_template');
 		return $query->first_row('array');
 	}
+	
+	function get_system_styles($id = 1)
+	{
+		$styles = $this->db->where('style_id',$id)
+						   ->get('system_styles')
+						   ->row_array();
+		return $styles;
+	}
+	
+	function update_system_styles($data)
+	{
+		return $this->db->where('style_id',1)->update('system_styles',$data);	
+	}
 }

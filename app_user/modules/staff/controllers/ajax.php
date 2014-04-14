@@ -413,7 +413,7 @@ class Ajax extends MX_Controller {
 	{
 		$user_id = $this->input->post('user_id');
 		
-		$path = "./uploads/staff";
+		$path = UPLOADS_PATH."/staff";
 		$dir = $path;
 		if(!is_dir($dir))
 		{
@@ -424,7 +424,7 @@ class Ajax extends MX_Controller {
 		  fclose($fp);
 		}
 		
-		$path = "./uploads/staff/profile";
+		$path = UPLOADS_PATH."/staff/profile";
 		$dir = $path;
 		if(!is_dir($dir))
 		{
@@ -436,7 +436,7 @@ class Ajax extends MX_Controller {
 		}
 		
 		
-		$path = "./uploads/staff/profile";
+		$path = UPLOADS_PATH."/staff/profile";
 		$newfolder = md5($user_id);
 		$dir = $path."/".$newfolder;
 		if(!is_dir($dir))
@@ -652,7 +652,7 @@ class Ajax extends MX_Controller {
 	{
 		$photo_id = $this->input->post('photo_id',true);
 		$photo = $this->staff_model->get_user_staff_photo_by_photo_id($photo_id);
-		$path = './uploads/staff/profile/'.md5($photo->user_id);
+		$path = UPLOADS_PATH.'/staff/profile/'.md5($photo->user_id);
 		$sub_folders = array('thumbnail','thumbnail2');
 		$file_name = $photo->name;
 		modules::run('staff/delete_files',$path,$file_name,$sub_folders);

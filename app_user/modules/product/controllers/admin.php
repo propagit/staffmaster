@@ -162,7 +162,7 @@ class Admin extends MX_Controller {
 		
 	function import_products()
 	{
-		$config['upload_path'] = './uploads/';
+		$config['upload_path'] = UPLOADS_PATH . '/';
 		$config['allowed_types'] = '*';
 		$config['max_size'] = '2048';
 		$this->load->library('upload', $config);
@@ -174,7 +174,7 @@ class Admin extends MX_Controller {
 		{
 			$this->db->truncate('products');
 			$file_data = $this->upload->data();
-			$file_name = "./uploads/" . $file_data['file_name'];
+			$file_name = UPLOADS_PATH . "/" . $file_data['file_name'];
 			$this->load->library('excel');
 			#$objPHPExcel = PHPExcel_IOFactory::load($file_name);		
 			#$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
@@ -271,7 +271,7 @@ class Admin extends MX_Controller {
 	
 	function import_product_categories()
 	{
-		$config['upload_path'] = './uploads/';
+		$config['upload_path'] = UPLOADS_PATH . '/';
 		$config['allowed_types'] = '*';
 		$config['max_size'] = '2048';
 		$this->load->library('upload', $config);
@@ -283,7 +283,7 @@ class Admin extends MX_Controller {
 		{
 			$this->db->truncate('categories');
 			$file_data = $this->upload->data();
-			$file_name = "./uploads/" . $file_data['file_name'];
+			$file_name = UPLOADS_PATH . "/" . $file_data['file_name'];
 			$this->load->library('excel');
 			$objPHPExcel = PHPExcel_IOFactory::load($file_name);			
 			$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
@@ -320,7 +320,7 @@ class Admin extends MX_Controller {
 	
 	function import_product_brands()
 	{
-		$config['upload_path'] = './uploads/';
+		$config['upload_path'] = UPLOADS_PATH . '/';
 		$config['allowed_types'] = '*';
 		$config['max_size'] = '2048';
 		$this->load->library('upload', $config);
@@ -332,7 +332,7 @@ class Admin extends MX_Controller {
 		{
 			$this->db->truncate('brands');
 			$file_data = $this->upload->data();
-			$file_name = "./uploads/" . $file_data['file_name'];
+			$file_name = UPLOADS_PATH . "/" . $file_data['file_name'];
 			$this->load->library('excel');
 			$objPHPExcel = PHPExcel_IOFactory::load($file_name);			
 			$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);

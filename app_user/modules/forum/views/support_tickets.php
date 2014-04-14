@@ -23,12 +23,12 @@
               <?php 
 					echo nl2br($c->message);
 			  ?>
-              <?=($c->document_name ? ($c->document_type == 'image' ? '<img class="message-img" src="'.base_url().'uploads/conversation/img/'.md5('forum'.$c->topic_id).'/thumb/'.$c->document_name.'" />' : '') : '');?>
+              <?=($c->document_name ? ($c->document_type == 'image' ? '<img class="message-img" src="'.base_url().UPLOADS_URL.'/conversation/img/'.md5('forum'.$c->topic_id).'/thumb/'.$c->document_name.'" />' : '') : '');?>
               <div class="comments-wrap" id="comments-wrap-<?=$c->topic_id;?>">
                   <span class="msg-comments reply text-blue" data-reply="<?=$c->topic_id;?>">Post Reply <?=($c->total_replies ? '('.$c->total_replies.' replies)' : '');?> <i class="fa fa-angle-down reply-arrow-down"></i></span> 
                   <?=($c->document_name ? ($c->document_type == 'file' ? '<span class="badge danger msg-badge">1</span>' : '') : '');?>
                   <span class="msg-comments download-docs text-blue">
-				  <?=($c->document_name ? ($c->document_type == 'file' ? '<a class="document-anchor" target="_blank" href="'.base_url().'uploads/conversation/doc/'.md5('forum'.$c->topic_id).'/'.$c->document_name.'" download>Download Documents</a>' : '') : '');?>
+				  <?=($c->document_name ? ($c->document_type == 'file' ? '<a class="document-anchor" target="_blank" href="'.base_url().UPLOADS_URL.'/conversation/doc/'.md5('forum'.$c->topic_id).'/'.$c->document_name.'" download>Download Documents</a>' : '') : '');?>
                   </span>
               </div>
               <!--reply-->

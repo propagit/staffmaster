@@ -9,9 +9,9 @@
 		<th class="center" width="65">Start </th>
 		<th class="center" width="65">Finish </th>
 		<? if (!modules::run('auth/is_client')) { ?>
-		<th>Client &nbsp; <a onclick="sort_jobs('client_')"><i class="fa fa-sort"></i></a></th>
+		<th>Client &nbsp; <i onclick="sort_jobs('client_')" class="fa fa-sort"></i></th>
 		<? } ?>
-		<th>Campaign Name &nbsp; <a onclick="sort_jobs('campaign')"><i class="fa fa-sort"></i></a></th>
+		<th>Campaign Name &nbsp; <i onclick="sort_jobs('campaign')" class="fa fa-sort"></i></th>
 		<th class="center">Total Shifts</th>
 		<th class="center" width="100">Unassigned</th>
 		<th class="center" width="100">Unconfirmed</th>

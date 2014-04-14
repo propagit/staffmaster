@@ -16,7 +16,7 @@
 	<link href="<?=base_url();?>assets/css/calendar.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/style.css" rel="stylesheet" media="screen">
 	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
-	<?=$_styles;?>
+	
 	
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
     <script src="<?=base_url();?>assets/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
@@ -55,6 +55,8 @@
 	<script src="<?=base_url();?>assets/prettyCheckable/prettyCheckable.js" type="text/javascript" charset="utf-8"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/global.js" type="text/javascript" charset="utf-8"></script>
+    
+    <?=$_styles;?>
 </head>
 <body>
 <? $user = $this->session->userdata('user_data'); ?>

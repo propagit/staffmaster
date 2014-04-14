@@ -36,7 +36,7 @@ class Config extends MX_Controller {
 
 	function upload_logo()
 	{
-		$config['upload_path'] = './uploads/logos/';
+		$config['upload_path'] = UPLOADS_PATH.'/logos/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size'] = '2048';
 		$config['max_width'] = '1024';
@@ -53,9 +53,9 @@ class Config extends MX_Controller {
 		{
 			$logo = $this->upload->data();
 			$user = $this->session->userdata('user_data');
-			if (file_exists('./uploads/logos/' . $user['logo_url']))
+			if (file_exists(UPLOADS_PATH.'/logos/' . $user['logo_url']))
 			{
-				#unlink('./uploads/logos/' . $user['logo_url']);
+				#unlink(UPLOADS_PATH.'/logos/' . $user['logo_url']);
 			}
 			$user['logo_url'] = $logo['file_name'];
 			$this->user_model->update_user($user['user_id'], array('logo_url' => $logo['file_name']));

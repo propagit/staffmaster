@@ -835,6 +835,18 @@ ol.example li.placeholder:before {
 	float:left;
 	width:100%;	
 }
+.support-text{
+	font-size:16px;	
+}
+.client_support_msg{
+	border:2px solid #eed6d5 !important;	
+}
+.client_msg_arrow_color{
+	color:#eed6d5;	
+}
+
+
+
 /* begin - responsive */
 
 /* *
@@ -1022,6 +1034,7 @@ ol.example li.placeholder:before {
 
 /* Custom styles for button */
 .btn-group.btn-nav {
+	background-repeat:repeat; 
 	margin-bottom: -1px;
 	margin-right: 5px;
 }
@@ -1061,21 +1074,18 @@ ol.example li.placeholder:before {
 	margin-right: 0;
 	margin-left: 5px;
 }
-.nav-tabs > li a,
-.nav-tabs > li a:hover {
-	background: #ebebeb;
-	border-color: #ccc;
-	color: #333;
+.nav-tabs > li a{
+	background-color: #ebebeb;
+	border-color: #ccc !important;
+	color: #fff;
 	border-radius: 5px 5px 0 0;
+	background-image:url(../img/core/nav-texture-bg.png);
+	background-repeat:repeat;
 }
-.nav-tabs > li.active a,
 .nav-tabs > li.active a:hover,
 .nav-tabs > li.active a:focus {
-	color: #fff;
-	background: #00b1eb;
-	border-color: #00b1eb;
 	cursor: pointer;
-	outline: none;
+	background-image:none;
 }
 .nav-tabs.nav-action {
 	float: left;
@@ -1337,13 +1347,16 @@ ol.example li.placeholder:before {
 	margin: 0 3px;
 }
 .btn-core {
-	background: #35c0ed;
-	color: #fff;
+	background-repeat:repeat;
+	background-color:#00b1eb !important;
+	background-image:url(../img/core/nav-texture-bg.png); 
+	border-color:rgba(255,255,255,0.25);
 }
 .btn-core:hover {
-	background: #00b1eb;
-	color: #fff;
+	background-image:none;
+	border-color:rgba(255,255,255,0.25);
 }
+
 .wp-date{
 	min-width:65px;	
 	white-space:inherit !important;
@@ -1398,7 +1411,7 @@ ol.example li.placeholder:before {
 	padding-left:10px;
 	padding-right:10px;
 	padding-top: 8px;
-	padding-bottom: 8px;
+	padding-bottom: 7px;
 }
 .tab-pane p:first-child{
 	margin-top:10px;	
@@ -1584,6 +1597,9 @@ ol.example li.placeholder:before {
 	color:#00bbf8;	
 	font-weight:600;
 	cursor:pointer;
+}
+.brief-func-dl dd:hover{
+	color:#0089b5;
 }
 .brief-preview{
 	box-shadow: 0 4px 10px #aaa;
@@ -1776,10 +1792,10 @@ ol.example li.placeholder:before {
 		width:100%;
 		margin-left:0;	
 	}
-	.tab-respond li{
+	/* .tab-respond li{
 		text-align:center;
 		width:100%;
-	}
+	} */
 	.datetimepicker{
 		left:54px !important;
 		min-width:200px;	
@@ -1857,7 +1873,14 @@ ol.example li.placeholder:before {
 	
 }
 
-
+/* editable - inline edits */
+.staff-submit,
+.break-submit,
+.editable-submit{
+	background-color:#35c0ed;
+	border:1px solid #35c0ed;
+	background-image:url(../img/core/nav-texture-bg.png);	
+}
 
 /* begin - helpers */
 .pull{ 
@@ -1940,4 +1963,7 @@ ol.example li.placeholder:before {
 }
 .full-width{
 	width:100%;	
+}
+.display-inline{
+	display:inline !important;	
 }

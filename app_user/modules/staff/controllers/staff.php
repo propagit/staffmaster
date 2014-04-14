@@ -351,9 +351,9 @@ class Staff extends MX_Controller {
 	{
 		$user_staff_id = $this->input->post('user_staff_id',true);
 		$salt = 'custom_files'.$user_staff_id;
-		$file_path = './uploads/staff/custom_attributes';
+		$file_path = UPLOADS_PATH.'/staff/custom_attributes';
 		//create folder
-		$folder_name = $this->_create_folders('./uploads/staff/custom_attributes',$salt);
+		$folder_name = $this->_create_folders(UPLOADS_PATH.'/staff/custom_attributes',$salt);
 		$this->load->library('upload');
 		foreach($_FILES as $key => $val){
 			if ($_FILES[$key]['name']){
@@ -460,7 +460,7 @@ class Staff extends MX_Controller {
 	function _delete_document($folder,$document_name)
 	{
 		if($document_name && $folder){
-			$main_path = "./uploads/staff/custom_attributes/".$folder;
+			$main_path = UPLOADS_PATH."/staff/custom_attributes/".$folder;
 			//delete doc
 			if(file_exists($main_path.'/'.$document_name)){
 				unlink($main_path.'/'.$document_name);

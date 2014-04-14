@@ -327,9 +327,9 @@ class Product extends MX_Controller {
 	
 	function photo($pic_url)
 	{
-		if (file_exists('./uploads/products/' . $pic_url))
+		if (file_exists(UPLOADS_PATH.'/products/' . $pic_url))
 		{
-			$pic_url = base_url() . 'uploads/products/' . $pic_url;
+			$pic_url = base_url() . UPLOADS_URL . '/products/' . $pic_url;
 		}
 		else
 		{

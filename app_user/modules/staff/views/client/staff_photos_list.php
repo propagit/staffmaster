@@ -1,8 +1,8 @@
 <ul class="slides popup-gallery staff-photos hidden">
  <?
       foreach($photos as $photo){
-          $photo_src_full = base_url().'uploads/staff/profile/'.md5($user_id).'/'.$photo['name'];                                
-          $thumb_src = base_url().'uploads/staff/profile/'.md5($user_id).'/thumbnail/'.$photo['name'];
+          $photo_src_full = base_url().UPLOADS_URL.'/staff/profile/'.md5($user_id).'/'.$photo['name'];                                
+          $thumb_src = base_url().UPLOADS_PATH.'/staff/profile/'.md5($user_id).'/thumbnail/'.$photo['name'];
       ?>
           <li class="flex-li popup-gallery-images" title="<?=$photo['name'];?>" href="<?=$photo_src_full?>"></li>
       <?

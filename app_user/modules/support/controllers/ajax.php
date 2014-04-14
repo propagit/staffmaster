@@ -1,10 +1,30 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-<body>
-</body>
-</html>
+
+class Ajax extends MX_Controller {
+	/**
+	*	@class_desc Support Module Ajax Controller 
+	*	
+	*
+	*/
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->model('support_model');
+	}
+	
+	
+	/**
+	*	@name: reload_supports
+	*	@desc: This function reloads support tickets. Mostly after a new support ticket has been lodged etc.
+	*	@access: public
+	*	@param: (null)
+	*	@return: returns most recent support tickets
+	*/
+	function reload_supports()
+	{
+		echo modules::run('support/load_support_tickets');	
+	}
+	
+	
+}

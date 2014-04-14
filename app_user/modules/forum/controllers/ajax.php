@@ -101,11 +101,11 @@ class Ajax extends MX_Controller {
 		$file_name = $conversation->document_name;
 		if($conversation->document_type == 'image'){
 			//delete images
-			$path = './uploads/conversation/img/'.md5('forum'.$topic_id);
+			$path = UPLOADS_PATH.'/conversation/img/'.md5('forum'.$topic_id);
 			modules::run('upload/delete_dir_and_contents',$path);
 		}elseif($conversation->document_type == 'file'){
 			//delete documents
-			$path = './uploads/conversation/docs/'.md5('forum'.$topic_id);
+			$path = UPLOADS_PATH.'/conversation/docs/'.md5('forum'.$topic_id);
 			modules::run('upload/delete_dir_and_contents',$path);
 		}
 		
@@ -225,13 +225,13 @@ class Ajax extends MX_Controller {
 		  if($_FILES['userfile']['name']){
 			  //create main folders if not exist
 			  $main_sub_folders = array('img','docs');
-			  modules::run('upload/create_upload_folders','./uploads/conversation/',$main_sub_folders);
+			  modules::run('upload/create_upload_folders',UPLOADS_PATH.'/conversation/',$main_sub_folders);
 			  $path = $_FILES['userfile']['name'];
 			  $ext = pathinfo($path, PATHINFO_EXTENSION);
 			  $img_ext_chk = array('jpg','png','gif','jpeg');
 			  $doc_ext_chk = array('pdf','doc','docx','csv');
 			  
-			  $main_path = './uploads/conversation/';
+			  $main_path = UPLOADS_PATH.'/conversation/';
 			  $this->load->library('upload');
 			  
 			  if (in_array($ext,$img_ext_chk)){
@@ -239,7 +239,7 @@ class Ajax extends MX_Controller {
 				  $subfolders = array('thumb');
 				  $salt = 'forum'.$topic_id;
 				  //create folders
-				  $folder_name = modules::run('upload/create_folders','./uploads/conversation/img',$salt,$subfolders);
+				  $folder_name = modules::run('upload/create_folders',UPLOADS_PATH.'/conversation/img',$salt,$subfolders);
 				  $file_path = $main_path.'img/';
 				  $config['upload_path'] = $file_path.$folder_name;
 				  $config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -251,7 +251,7 @@ class Ajax extends MX_Controller {
 				  //documents
 				  $salt = 'forum'.$topic_id;
 				  //create folders
-				  $folder_name = modules::run('upload/create_folders','./uploads/conversation/docs',$salt);
+				  $folder_name = modules::run('upload/create_folders',UPLOADS_PATH.'/conversation/docs',$salt);
 				  $file_path = $main_path.'docs/';
 				  $config['upload_path'] = $file_path.$folder_name;
 				  $config['allowed_types'] = 'pdf|doc|docx|csv';

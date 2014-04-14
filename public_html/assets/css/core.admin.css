@@ -360,8 +360,13 @@ a.default {
 }
 .sample-email-btn{
 	background-color:#35c0ed;
+	background-image:url(../img/core/nav-texture-bg.png);
+	background-repeat:repeat;
 	color:#fff;
 	border-radius:0;
+}
+.sample-email-btn:hover{
+	background-image:none;
 }
 .staff-contact-modal-body .control-label{
 	line-height: 32px;
@@ -519,9 +524,11 @@ span.dash-invoice-value{
 	margin-right:10px;
 	width:50%;
 }
-
-
-
+/* system styles */
+.system-styles-label{
+	line-height:34px;
+	font-weight:600;	
+}
 /* begin responsive */
 @media(max-width:1200px){
 	.row{ 
@@ -622,9 +629,6 @@ span.dash-invoice-value{
 }
 .add-top-margin-20{
 	margin-top:20px;	
-}
-.display-inline{
-	display:inline !important;	
 }
 
 #staff_quick_search_result .profile_photo img{

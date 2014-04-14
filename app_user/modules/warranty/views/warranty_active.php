@@ -203,7 +203,7 @@
 	</div>
 	<div class="modal-body">
 		<div class="box">
-			<div class="photo"><img src="<?=base_url();?>uploads/products/4.jpg" /></div>
+			<div class="photo"><img src="<?=base_url().UPLOADS_URL;?>/products/4.jpg" /></div>
 			<div class="info">
 				<h3 class="c2">MIELE G7762 DISHWASHER</h3>
 				<div class="row-fluid">

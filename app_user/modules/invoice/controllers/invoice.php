@@ -205,10 +205,10 @@ class Invoice extends MX_Controller {
 	function download($invoice_id,$redirect = true) {
 		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
 		$filename = "invoice_" . $invoice_id;
-		if(!file_exists('/uploads/pdf/'.$filename.'.pdf')){
-			$pdfFilePath = "./uploads/pdf/$filename.pdf";
+		if(!file_exists(UPLOADS_PATH.'/pdf/'.$filename.'.pdf')){
+			$pdfFilePath = UPLOADS_PATH."/pdf/$filename.pdf";
 			
-			$dir = './uploads/pdf/';
+			$dir = UPLOADS_PATH.'/pdf/';
 			if(!is_dir($dir))
 			{
 			  mkdir($dir);
@@ -237,7 +237,7 @@ class Invoice extends MX_Controller {
 			$pdf->Output($pdfFilePath, 'F'); // save to file 
 		}
 		if($redirect){ 
-			redirect("./uploads/pdf/$filename.pdf"); 
+			redirect(UPLOADS_PATH."/pdf/$filename.pdf"); 
 		}
 	}
 	
@@ -377,7 +377,7 @@ class Invoice extends MX_Controller {
 									);	
 				$obj = modules::run('email/get_email_obj',$email_obj_params);
 				//check file for attachment
-				if(!file_exists('/uploads/pdf/invoice_'.$invoice_id.'.pdf')){
+				if(!file_exists(UPLOADS_PATH.'/pdf/invoice_'.$invoice_id.'.pdf')){
 					//create attachment	
 					modules::run('invoice/download',$invoice_id,false);
 				}

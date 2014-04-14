@@ -5,7 +5,7 @@
             <div class="profile-company-logo">
             <? 
             if(isset($company['company_logo']) && $company['company_logo'] != NULL){?> 
-            	<img src="<?=base_url()?>uploads/company/logo/<?=md5($company['id'])?>/thumbnail/<?=$company['company_logo']?>">
+            	<img src="<?=base_url().UPLOADS_URL;?>/company/logo/<?=md5($company['id'])?>/thumbnail/<?=$company['company_logo']?>">
                 <div align="center" class="action_image" > 
                    <div class="action_icon delete-logo"><i class="fa fa-times" title="Remove this picture as your profile picture"></i></div>
                 </div>
