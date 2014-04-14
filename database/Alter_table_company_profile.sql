@@ -1,1 +1,0 @@
-ALTER TABLE `company_profile` ADD `term_and_conditions` TEXT NOT NULL AFTER `super_fund_website` ;

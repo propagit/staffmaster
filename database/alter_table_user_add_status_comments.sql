@@ -1,1 +1,0 @@
-ALTER TABLE  `users` CHANGE  `status`  `status` TINYINT( 4 ) NOT NULL COMMENT  '1 = active, 0 = pending, -1 = inactive, 2 = deleted';

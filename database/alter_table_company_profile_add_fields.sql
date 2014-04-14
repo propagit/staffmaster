@@ -1,1 +1,0 @@
-ALTER TABLE `company_profile` ADD `modified` DATETIME NOT NULL AFTER `email_font` ;

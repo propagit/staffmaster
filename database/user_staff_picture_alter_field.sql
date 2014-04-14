@@ -1,1 +1,0 @@
-ALTER TABLE `user_staff_picture` CHANGE `staff_id` `user_id` INT( 11 ) NOT NULL ;

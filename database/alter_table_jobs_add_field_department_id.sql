@@ -1,1 +1,0 @@
-ALTER TABLE `jobs`  ADD `department_id` BIGINT NOT NULL AFTER `client_id`
