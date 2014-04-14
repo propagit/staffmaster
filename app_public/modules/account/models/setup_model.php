@@ -56,8 +56,13 @@ class Setup_model extends CI_Model {
 		);
 		$this->db->insert('users', $user_data);
 		$user_id = $this->db->insert_id();
+		$this->db->insert('company_profile', array(
+			'company_name' => $account['company_name']
+		));
+		return $this->db->insert('user_staffs', array(
+			'user_id' => $user_id
+		));
 		
-		return $this->db->insert('user_staffs', array('user_id' => $user_id));
 	}
 	
 	function import_sql($subdomain, $sql)
