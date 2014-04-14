@@ -84,7 +84,7 @@ class Dispatcher extends MX_Controller {
 			$title = ucwords($controller);
 			$this->template->set_template('staff');
 		}
-		
+		$this->template->add_css('custom_styles');
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'staff/menu');
 		$this->template->write('content', $content);
@@ -113,7 +113,7 @@ class Dispatcher extends MX_Controller {
 		{
 			$this->template->set_template('admin');
 		}
-		
+		$this->template->add_css('custom_styles');
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'admin/menu');
 		$this->template->write('content', $content);
@@ -148,7 +148,7 @@ class Dispatcher extends MX_Controller {
 		}
 		
 		
-				
+		$this->template->add_css('custom_styles');		
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'client/menu');
 		$this->template->write('content', $content);

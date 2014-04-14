@@ -33,7 +33,7 @@
 				<? if (count($files) > 0) { ?>
 				<ul>
 					<? foreach($files as $file) { ?>
-					<li><a href="<?=base_url();?>uploads/resources/<?=$file['file_name'];?>" target="_blank"><?=$file['orig_name'];?></a></li>
+					<li><a href="<?=base_url().UPLOADS_URL;?>/resources/<?=$file['file_name'];?>" target="_blank"><?=$file['orig_name'];?></a></li>
 					<? } ?>
 				</ul>
 				<? } ?>

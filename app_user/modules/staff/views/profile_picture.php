@@ -1,7 +1,7 @@
 <?
 if(count($photo)>0)
 {
-	$thumb_src = base_url().'uploads/staff/profile/'.md5($staff['user_id']).'/thumbnail2/'.$photo['name'];
+	$thumb_src = base_url().UPLOADS_URL.'/staff/profile/'.md5($staff['user_id']).'/thumbnail2/'.$photo['name'];
 	$class="resize";
 ?>
 <div class="profile_photo">

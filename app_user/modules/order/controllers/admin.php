@@ -177,7 +177,7 @@ class Admin extends MX_Controller {
 	
 	function import_orders()
 	{
-		$config['upload_path'] = './uploads/';
+		$config['upload_path'] = UPLOADS_PATH.'/';
 		$config['allowed_types'] = '*';
 		$config['max_size'] = '2048';
 		$this->load->library('upload', $config);
@@ -188,8 +188,8 @@ class Admin extends MX_Controller {
 		else
 		{
 			$file_data = $this->upload->data();
-			$file_name = "./uploads/" . $file_data['file_name'];
-			#$file_name = "./uploads/orders.xls";
+			$file_name = UPLOADS_PATH."/".$file_data['file_name'];
+			#$file_name = UPLOADS_PATH."/orders.xls";
 			$this->load->library('excel');
 			$objPHPExcel = PHPExcel_IOFactory::load($file_name);		
 			$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);

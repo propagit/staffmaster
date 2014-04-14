@@ -125,9 +125,9 @@ class Admin extends MX_Controller {
 		$files = $this->resource_model->get_resource_files($resource_id);
 		foreach($files as $file)
 		{
-			if (file_exists('./uploads/resources/' . $file['file_name']))
+			if (file_exists(UPLOADS_PATH.'/resources/' . $file['file_name']))
 			{
-				unlink('./uploads/resources/' . $file['file_name']);
+				unlink(UPLOADS_PATH.'/resources/' . $file['file_name']);
 				$this->resource_model->delete_resource_file($file_id);
 			}
 		}
@@ -137,7 +137,7 @@ class Admin extends MX_Controller {
 	
 	function upload_file($resource_id)
 	{
-		$config['upload_path'] = './uploads/resources/';
+		$config['upload_path'] = UPLOADS_PATH.'/resources/';
 		$config['allowed_types'] = '*';
 		
 		$this->load->library('upload', $config);
@@ -171,9 +171,9 @@ class Admin extends MX_Controller {
 		{
 			redirect('admin/resource');
 		}
-		if (file_exists('./uploads/resources/' . $file['file_name']))
+		if (file_exists(UPLOADS_PATH.'/resources/' . $file['file_name']))
 		{
-			unlink('./uploads/resources/' . $file['file_name']);
+			unlink(UPLOADS_PATH.'/resources/' . $file['file_name']);
 			$this->resource_model->delete_resource_file($file_id);
 		}
 		redirect('admin/resource/edit/' . $file['resource_id']);

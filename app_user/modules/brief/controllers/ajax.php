@@ -40,14 +40,13 @@ class Ajax extends MX_Controller {
 		//if a file has been uploaded
 		//this ignores previous files that has been uploaded as the system is cleaned every six month
 		if(isset($_FILES['userfile']['name'])){
-			//create main folders
-			modules::run('upload/create_upload_folders','./uploads/brief/');
+
 			$path = $_FILES['userfile']['name'];
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
 			$img_ext_chk = array('jpg','png','gif','jpeg');
 			$doc_ext_chk = array('pdf','doc','docx','csv');
 			
-			$main_path = './uploads/brief/';
+			$main_path = UPLOADS_PATH.'/brief/';
 			$this->load->library('upload');
 			
 		   	if (in_array($ext,$img_ext_chk)){
@@ -57,7 +56,7 @@ class Ajax extends MX_Controller {
 		    }
 			$salt = 'brief'.$brief_id;
 			//create folders
-			$folder_name = modules::run('upload/create_folders','./uploads/brief',$salt);
+			$folder_name = modules::run('upload/create_folders',UPLOADS_PATH.'/brief',$salt);
 			$config['upload_path'] = $main_path.$folder_name;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|csv';
 			$config['max_width']  = '2000';
@@ -157,7 +156,7 @@ class Ajax extends MX_Controller {
 	{
 		$brief_id = $this->input->post('brief_id');
 		//delete files
-		$path = './uploads/brief/'.md5('brief'.$brief_id);
+		$path = $main_path = UPLOADS_PATH.'/brief/'.md5('brief'.$brief_id);
 		modules::run('upload/delete_dir_and_contents',$path);
 		//delete brief
 		$this->brief_model->delete_brief($brief_id);
@@ -199,7 +198,7 @@ class Ajax extends MX_Controller {
 
 		if($brief_element_info->element_type == 'document' || $brief_element_info->element_type == 'image'){
 			//delete files
-			$path = './uploads/brief/'.md5('brief'.$brief_element_info->brief_id).'/'.$brief_element_info->element_content;
+			$path = UPLOADS_PATH.'/brief/'.md5('brief'.$brief_element_info->brief_id).'/'.$brief_element_info->element_content;
 			if(file_exists($path)){
 				unlink($path);
 			}

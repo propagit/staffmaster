@@ -6,16 +6,16 @@
 <table class="table table-bordered table-hover table-middle">
 	<thead>
 	<tr>
-		<th class="center" width="80">Date &nbsp; <a onclick="sort_search_shifts('date')"><i class="fa fa-sort"></i></a></th>
+		<th class="center" width="80">Date &nbsp; <i onclick="sort_search_shifts('date')" class="fa fa-sort"></i></th>
 		<? if (!modules::run('auth/is_client')) { ?>
-		<th>Client &nbsp; <a onclick="sort_search_shifts('client')"><i class="fa fa-sort"></i></a></th>
+		<th>Client &nbsp; <i onclick="sort_search_shifts('client')" class="fa fa-sort"></i></th>
 		<? } ?>
-		<th>Campaign Name &nbsp; <a onclick="sort_search_shifts('campaign')"><i class="fa fa-sort"></i></a></th>
-		<th>Venue &nbsp; <a onclick="sort_search_shifts('venue')"><i class="fa fa-sort"></i></a></th>
-		<th>Role &nbsp; <a onclick="sort_search_shifts('role')"><i class="fa fa-sort"></i></a></th>
+		<th>Campaign Name &nbsp; <i onclick="sort_search_shifts('campaign')" class="fa fa-sort"></i></th>
+		<th>Venue &nbsp; <i onclick="sort_search_shifts('venue')" class="fa fa-sort"></i></th>
+		<th>Role &nbsp; <i onclick="sort_search_shifts('role')" class="fa fa-sort"></i></th>
 		<th class="center">Break</th>
 		<th class="center" width="120">Start - Finish</th>
-		<th>Staff Assigned &nbsp; <a onclick="sort_search_shifts('status')"><i class="fa fa-sort"></i></a></th>
+		<th>Staff Assigned &nbsp;<i onclick="sort_search_shifts('status')" class="fa fa-sort"></i></th>
 		<th class="center" width="40">View</th>
 	</tr>
 	</thead>

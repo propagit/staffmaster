@@ -14,7 +14,7 @@
                 break;
                 
                 case 'image':
-                    echo '<img src="'.base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content.'" />';	
+                    echo '<img src="'.base_url().UPLOADS_URL.'/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content.'" />';	
                 break;
                 
                 case 'document':
@@ -30,8 +30,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="left"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><?=$elm->document_name;?></a></td>
-                            <td class="center"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><i class="fa fa-download grey-text"></i></a></td>
+                            <td class="left"><a href="<?=base_url().UPLOADS_URL.'/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><?=$elm->document_name;?></a></td>
+                            <td class="center"><a href="<?=base_url().UPLOADS_URL.'/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><i class="fa fa-download grey-text"></i></a></td>
                         </tr>
               <?php
                   // if the next element is a document as well attach this with the previous document 
@@ -44,8 +44,8 @@
                           if($elm->element_type == 'document'){
               ?>
                             <tr>
-                                <td class="left"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><?=$elm->document_name;?></a></td>
-                                <td class="center"><a href="<?=base_url().'uploads/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><i class="fa fa-download grey-text"></i></a></td>
+                                <td class="left"><a href="<?=base_url().UPLOADS_URL.'/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><?=$elm->document_name;?></a></td>
+                                <td class="center"><a href="<?=base_url().UPLOADS_URL.'/brief/'.md5('brief'.$elm->brief_id).'/'.$elm->element_content;?>"><i class="fa fa-download grey-text"></i></a></td>
                             </tr>
               <?php
                           $i++;

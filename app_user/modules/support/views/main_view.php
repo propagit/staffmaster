@@ -21,7 +21,7 @@
              <div class="form-group">
                  <label for="add-button" class="col-sm-2 control-label">Title:</label>
                   <div class="col-sm-4">
-                       <input type="text" class="form-control" id="conversation_title" name="conversation_title" data="required" value="<? if(isset($conversation)){ echo $conversation->title; }?>">
+                       <input type="text" class="form-control" id="conversation_title" name="conversation_title" data="required" value="<? if(isset($conversation)){ echo $conversation->title; }?>" maxlength="100">
                   </div>
              </div>
              
@@ -58,7 +58,7 @@
         </form>
 		
         <div id="load-spports">
-			<?=modules::run('forum/load_support_tickets');?>
+			<?=modules::run('support/load_support_tickets');?>
         </div>        
         
         </div>
@@ -68,6 +68,6 @@
 <script>
 $(function(){
 	//create conversation
-	help.create_conversation('load-spports','<?=base_url();?>forum/ajax/reload_supports');
+	help.create_conversation('load-spports','<?=base_url();?>support/ajax/reload_supports');
 });//ready
 </script>

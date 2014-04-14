@@ -56,9 +56,9 @@
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_shifts" /></th>
-		<th class="center">Date <a onclick="sort_shifts('date')"><i class="fa fa-sort"></i></a></th>
-		<th>Venue <a onclick="sort_shifts('venue')"><i class="fa fa-sort"></i></a></th>
-		<th>Role <a onclick="sort_shifts('role')"><i class="fa fa-sort"></i></a></th>
+		<th class="center">Date <i onclick="sort_shifts('date')" class="fa fa-sort"></i></th>
+		<th>Venue <i onclick="sort_shifts('venue')" class="fa fa-sort"></i></th>
+		<th>Role <i onclick="sort_shifts('role')" class="fa fa-sort"></i></th>
 		<? if ($is_client) { ?>
 		<th>Uniform</th>
 		<? } ?>
@@ -67,7 +67,7 @@
 		<? if (!$is_client) { ?>
 		<th class="center">Pay rate</th>
 		<? } ?>
-		<th>Staff Assigned &nbsp; <a onclick="sort_shifts('status')"><i class="fa fa-sort"></i></a></th>
+		<th>Staff Assigned &nbsp; <i onclick="sort_shifts('status')" class="fa fa-sort"></i></th>
 		
 		<? if (!$is_client) { ?>
 		<th class="center" colspan="2">Find</th>

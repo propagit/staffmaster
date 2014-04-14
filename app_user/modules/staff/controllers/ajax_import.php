@@ -21,7 +21,7 @@ class Ajax_import extends MX_Controller {
 	
 	function upload_csv()
 	{
-		$config['upload_path'] = './uploads/import/';
+		$config['upload_path'] = UPLOADS_PATH.'/import/';
 		$config['allowed_types'] = '*';
 		$config['max_size'] = '2048'; // 2 MB
 		echo modules::run('upload/do_upload', $config);
@@ -34,7 +34,7 @@ class Ajax_import extends MX_Controller {
 		
 		# Extract minimal data for configuration
 		$upload = $this->upload_model->get_upload($upload_id);
-		$file_name = './uploads/import/' . $upload['file_name'];
+		$file_name = UPLOADS_PATH.'/import/' . $upload['file_name'];
 		$objReader = PHPExcel_IOFactory::createReader('CSV');
 		$objPHPExcel = $objReader->load($file_name);
 		
@@ -63,7 +63,7 @@ class Ajax_import extends MX_Controller {
 		$fields = $this->input->post('fields');
 		$upload_id = $this->input->post('upload_id');
 		$upload = $this->upload_model->get_upload($upload_id);
-		$file_name = './uploads/import/' . $upload['file_name'];	
+		$file_name = UPLOADS_PATH.'/import/' . $upload['file_name'];	
 		
 		$savedValueBinder = PHPExcel_Cell::getValueBinder();
         PHPExcel_Cell::setValueBinder(new TextValueBinder());

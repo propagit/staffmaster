@@ -46,14 +46,14 @@
     	<div id="nav-wrap">
 			<div class="row desktop-visible">
 		    	<div class="col-md-12">
-		            <ul class="nav nav-pills">
-		            	<li><a id="btn-generate-invoice"><i class="fa fa-check-circle"></i> Generate Invoice</a></li>
+		            <ul class="nav nav-pills top-nav">
+		            	<li  class="dropdown"><a id="btn-generate-invoice"><i class="fa fa-check-circle"></i> Generate Invoice</a></li>
 		            	
-		            	<li><a id="btn-download-invoice"><i class="fa fa-download"></i> Download Invoice</a></li>
+		            	<li  class="dropdown"><a id="btn-download-invoice"><i class="fa fa-download"></i> Download Invoice</a></li>
 		            	<? if (!modules::run('auth/is_client')) { ?>
 		            	<li><a id="btn-email-invoice"><i class="fa fa-envelope-o"></i> Email Invoice</a></li>
 		            	<? } ?>
-						<li class="pull-right"><a id="btn-reset-invoice"><i class="fa fa-refresh"></i> Reset</a></li>
+						<li class="dropdown pull-right"><a id="btn-reset-invoice"><i class="fa fa-refresh"></i> Reset</a></li>
 		            </ul>
 		        </div>
 		    </div>

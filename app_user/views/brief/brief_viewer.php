@@ -44,10 +44,10 @@
 <header>
     <div class="container-fluid">
     	<div id="nav-wrap">
-			<div class="row desktop-visible">
+			<div class="row">
 		    	<div class="col-md-12">
-		            <ul class="nav nav-pills">
-		            	<li><a href="#" id="brief-shift-info"></a></li>
+		            <ul class="nav nav-pills top-nav">
+                    	<li class="dropdown"><a href="#" id="brief-shift-info"></a></li>
 		            </ul>
 		        </div>
 		    </div>

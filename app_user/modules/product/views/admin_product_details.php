@@ -5,14 +5,14 @@
 <div class="box">
 	<div class="product_photo pull-left">
 		<?
-			if (file_exists('./uploads/products/' . $product['pic_url']))
+			if (file_exists(UPLOADS_PATH.'/products/' . $product['pic_url']))
 			{
-				$pic_url = base_url() . 'uploads/products/' . $product['pic_url'];
+				$pic_url = base_url() . UPLOADS_URL. '/products/' . $product['pic_url'];
 			}
 			else
 			{
 				$pic_url = base_url() . 'assets/img/no_image.gif';
-				$pic_url = base_url() . 'uploads/products/product.jpg';
+				$pic_url = base_url() . UPLOADS_URL . '/products/product.jpg';
 			}
 			
 		?>

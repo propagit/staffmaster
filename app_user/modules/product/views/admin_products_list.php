@@ -46,7 +46,7 @@
 	</thead>
 	<? foreach($products as $product) { 
 		$pic_url = base_url(). 'assets/img/no_image.gif';
-		if (file_exists('./uploads/products/'. $product['pic_url'])) { $pic_url = base_url() . 'uploads/products/' . $product['pic_url']; }
+		if (file_exists(UPLOADS_URL . './products/'. $product['pic_url'])) { $pic_url = base_url() . UPLOADS_URL . '/products/' . $product['pic_url']; }
 	?>
 	<tr>
 		<td><img src="<?=$pic_url;?>" class="img-rounded photo_thumbnail" /></td>

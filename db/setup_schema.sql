@@ -1205,3 +1205,27 @@ CREATE TABLE IF NOT EXISTS `user_staff_picture` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `system_styles`
+--
+
+CREATE TABLE IF NOT EXISTS `system_styles` (
+  `style_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `primary_colour` varchar(16) NOT NULL,
+  `rollover_colour` varchar(16) NOT NULL,
+  `secondary_colour` varchar(16) NOT NULL,
+  `text_colour` varchar(16) NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`style_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `system_styles`
+--
+
+INSERT INTO `system_styles` (`style_id`, `primary_colour`, `rollover_colour`, `secondary_colour`, `text_colour`, `modified`) VALUES
+(1, '#00b1eb', '#2a6496', '#ffffff', '#3d3d3d', '2014-04-11 07:46:58');
+

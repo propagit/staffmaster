@@ -123,7 +123,7 @@ class Ajax extends MX_Controller {
 		$company_id = $this->input->post('company_id');
 		
 		if($company_id==0){$comp_id=1;}else{$comp_id=$company_id;}
-		$path = "./uploads/company";
+		$path = UPLOADS_PATH."/company";
 		$dir = $path;
 		if(!is_dir($dir))
 		{
@@ -134,7 +134,7 @@ class Ajax extends MX_Controller {
 		  fclose($fp);
 		}
 		
-		$path = "./uploads/company/logo";
+		$path = UPLOADS_PATH."/company/logo";
 		$dir = $path;
 		if(!is_dir($dir))
 		{
@@ -144,7 +144,7 @@ class Ajax extends MX_Controller {
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
-		$path = "./uploads/company/logo";
+		$path = UPLOADS_PATH."/company/logo";
 		$newfolder = md5($comp_id);
 		$dir = $path."/".$newfolder;
 		if(!is_dir($dir))

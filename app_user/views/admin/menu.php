@@ -36,20 +36,20 @@ $menu = array(
 		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
 		array('path' => 'brief', 'icon' => 'fa-book', 'title' => 'Brief Builder'),
 		array('path' => '#', 'icon' => 'fa-question', 'title' => 'User Guide'),
-		array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
-		array('path' => '#', 'icon' => 'fa-folder-open-o', 'title' => 'Training Centre'),
-		array('path' => '#', 'icon' => 'fa-refresh', 'title' => 'Create Work Process'),
-		array('path' => '#', 'icon' => 'fa-paperclip', 'title' => 'Create Document'),
-		array('path' => '#', 'icon' => 'fa-bar-chart-o', 'title' => 'Create Survey'),
-		array('path' => '#', 'icon' => 'fa-youtube-play', 'title' => 'Create Video'),
-		array('path' => '#', 'icon' => 'fa-check', 'title' => 'Create Test'),
-		array('path' => '#', 'icon' => 'fa-file-o', 'title' => 'Create Webpage')
+		#array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
+		#array('path' => '#', 'icon' => 'fa-folder-open-o', 'title' => 'Training Centre'),
+		#array('path' => '#', 'icon' => 'fa-refresh', 'title' => 'Create Work Process'),
+		#array('path' => '#', 'icon' => 'fa-paperclip', 'title' => 'Create Document'),
+		#array('path' => '#', 'icon' => 'fa-bar-chart-o', 'title' => 'Create Survey'),
+		#array('path' => '#', 'icon' => 'fa-youtube-play', 'title' => 'Create Video'),
+		#array('path' => '#', 'icon' => 'fa-check', 'title' => 'Create Test'),
+		#array('path' => '#', 'icon' => 'fa-file-o', 'title' => 'Create Webpage')
 	)),
 	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
 		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
 		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
-		array('path' => '#', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
+		array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
 		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs')
 	))
 );

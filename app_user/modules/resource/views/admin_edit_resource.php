@@ -92,7 +92,7 @@
 	<? foreach($files as $file) { ?>
 	<tr>
 		<td><?=$file['file_id'];?></td>
-		<td><a href="<?=base_url();?>uploads/resources/<?=$file['file_name'];?>" target="_blank"><?=$file['file_name'];?></a></td>
+		<td><a href="<?=base_url().UPLOADS_URL;?>/resources/<?=$file['file_name'];?>" target="_blank"><?=$file['file_name'];?></a></td>
 		<td><?=$file['orig_name'];?></td>
 		<!-- <td><?=time_since($file['createdon']);?></td> -->
 		<td class="center">
