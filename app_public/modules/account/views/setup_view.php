@@ -22,7 +22,7 @@ function setup_database() {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>account/ajax_setup/create_database",
-		data: {username: '<?=$username;?>'},
+		data: {subdomain: '<?=$subdomain;?>'},
 		success: function(html) {
 			$('#wp_database').html(html);
 		}

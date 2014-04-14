@@ -2,12 +2,12 @@
 
 class Setup_model extends CI_Model {
 	
-	function init($username)
+	function init($subdomain)
 	{
 		$db['hostname'] = DB_HOSTNAME;
 		$db['username'] = DB_USERNAME;
 		$db['password'] = DB_PASSWORD;
-		$db['database'] = USER_PREFIX_DB . $username;
+		$db['database'] = USER_PREFIX_DB . $subdomain;
 		$db['dbdriver'] = 'mysql';
 		$db['dbprefix'] = '';
 		$db['pconnect'] = TRUE;
@@ -26,19 +26,19 @@ class Setup_model extends CI_Model {
 		# True: use as active record, so it replaces default $this->db
 	}
 		
-	function create_tables($username)
+	function create_tables($subdomain)
 	{
 		# Load schema.sql file as string
 		if( $sql = @file_get_contents('./../db/setup_schema.sql') )
 		{
-			return $this->import_sql($username, $sql);
+			return $this->import_sql($subdomain, $sql);
 		} 
 	}
 	
 	function create_account($account)
 	{
-		$this->init($account['username']);
-		$this->db->where('username', $account['username']);
+		$this->init($account['subdomain']);
+		$this->db->where('email_address', $account['email_address']);
 		$query = $this->db->get('users');
 		if ($query->num_rows() > 0)
 		{
@@ -51,7 +51,7 @@ class Setup_model extends CI_Model {
 			'is_staff' => 1,
 			'is_client' => 0,
 			'email_address' => $account['email_address'],
-			'username' => $account['username'],
+			'username' => $account['email_address'],
 			'password' => $account['password']
 		);
 		$this->db->insert('users', $user_data);
@@ -60,9 +60,9 @@ class Setup_model extends CI_Model {
 		return $this->db->insert('user_staffs', array('user_id' => $user_id));
 	}
 	
-	function import_sql($username, $sql)
+	function import_sql($subdomain, $sql)
 	{
-		$this->init($username);
+		$this->init($subdomain);
 		# Get the db connection platform
 		$platform = $this->db->platform();
 		

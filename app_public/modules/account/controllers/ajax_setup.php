@@ -10,8 +10,8 @@ class Ajax_setup extends MX_Controller {
 	
 	function create_database()
 	{
-		$username = $this->input->post('username');
-		$database = USER_PREFIX_DB . $username;
+		$subdomain = $this->input->post('subdomain');
+		$database = USER_PREFIX_DB . $subdomain;
 		# In order to initialize the Forge & Dbutil classes, database driver must already be running, since the forge & dbutil classes relies on it.
 		$this->load->model('account_model');
 		
@@ -22,40 +22,56 @@ class Ajax_setup extends MX_Controller {
 			$this->load->dbforge();
 			$this->dbforge->create_database($database);
 		}
-		$data['username'] = $username;
+		$data['subdomain'] = $subdomain;
 		$this->load->view('setup/create_database', isset($data) ? $data : NULL);
 	}
 	
 	function create_tables()
 	{
-		$username = $this->input->post('username');
+		$subdomain = $this->input->post('subdomain');
 		$this->load->model('account/setup_model');
-		$this->setup_model->create_tables($username);
-		$data['username'] = $username;
+		$this->setup_model->create_tables($subdomain);
+		$data['subdomain'] = $subdomain;
 		$this->load->view('setup/create_tables', isset($data) ? $data : NULL);
 	}
 	
 	function create_directories()
 	{
-		$username = $this->input->post('username');
-		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$username", array('exports','uploads'));
-		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$username/exports", 
+		$subdomain = $this->input->post('subdomain');
+		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$subdomain", array('exports','uploads'));
+		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$subdomain/exports", 
 				array('error','expense','invoice','payrun','staff'));
-		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$username/uploads", 
+		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$subdomain/uploads", 
 				array('brief','company','conversation','import','pdf','staff'));
-		$data['username'] = $username;
+		$data['subdomain'] = $subdomain;
 		$this->load->view('setup/create_directories', isset($data) ? $data : NULL);
 	}
 	
 	function create_account()
 	{
-		$username = $this->input->post('username');
+		$subdomain = $this->input->post('subdomain');
 		$this->load->model('account_model');
-		$account = $this->account_model->get_account(array('username' => $username));
+		$account = $this->account_model->get_account(array('subdomain' => $subdomain));
 		$this->load->model('account/setup_model');
 		$user_id = $this->setup_model->create_account($account);
-		$data['url'] = str_replace('//', '//' . $username . '.' , base_url());
+		$data['url'] = str_replace('//', '//' . $subdomain . '.' , base_url());
+		$data['account'] = $account;
 		$this->load->view('setup/create_account', isset($data) ? $data : NULL);
+	}
+	
+	function send_welcome_email()
+	{
+		$account = unserialize($this->input->post('account'));
+		$data['url'] = str_replace('//', '//' . $account['subdomain'] . '.' , base_url());
+		$data['email'] = $account['email_address'];
+		$message = $this->load->view('email/welcome', $data, true);
+		modules::run('email/send_email', array(
+			'to' => 'nam@propagate.com.au',
+			'from' => 'webmaster@sm.com',
+			'from_text' => 'Staff Master',
+			'subject' => 'Welcome to Staff Master',
+			'message' => $message
+		));
 	}
 	
 	function create_upload_folders($path, $subfolders = null)

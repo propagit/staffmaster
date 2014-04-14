@@ -35,14 +35,20 @@ class Account_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
-	function check_reserve_usernames($username)
-	{
-	}
-	
 	function create_account($data)
 	{
 		$this->db->insert('accounts', $data);
 		return $this->db->insert_id();
+	}
+	
+	function activate_account($account_id)
+	{
+		$this->db->where('account_id', $account_id);
+		return $this->db->update('accounts', array(
+			'status' => ACCOUNT_ACTIVE,
+			'activation_code' => null,
+			'activated_on' => date('Y-m-d H:i:s')
+		));
 	}
 	
 }
