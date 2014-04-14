@@ -1,5 +1,0 @@
-"Client Name","Invoice Number","Tax Amount","Ex Tax Amount","Inc Tax Amount","Employee","Description","Work Date","Start Time","Finish Time","Break","Hours"
-"{company_name}","{invoice_number}","$19.09","$190.91","$210.00","Lily Clipton","{description}","12/03/2014","{start_time}","{finish_time}","{break}","{hours}"
-"{company_name}","{invoice_number}","$33.41","$334.09","$367.50","Jess Killer","{description}","17/03/2014","{start_time}","{finish_time}","{break}","{hours}"
-"{company_name}","{invoice_number}","$25.91","$259.09","$285.00","Stafford Mastered","{description}","20/03/2014","{start_time}","{finish_time}","{break}","{hours}"
-"{company_name}","{invoice_number}","$43.41","$434.09","$477.50","Rachel Gibson","{description}","16/03/2014","{start_time}","{finish_time}","{break}","{hours}"

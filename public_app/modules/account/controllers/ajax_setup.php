@@ -38,10 +38,10 @@ class Ajax_setup extends MX_Controller {
 	function create_directories()
 	{
 		$username = $this->input->post('username');
-		$this->create_upload_folders("./public_html/$username", array('exports','uploads'));
-		$this->create_upload_folders("./public_html/$username/exports", 
+		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$username", array('exports','uploads'));
+		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$username/exports", 
 				array('error','expense','invoice','payrun','staff'));
-		$this->create_upload_folders("./public_html/$username/uploads", 
+		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$username/uploads", 
 				array('brief','company','conversation','import','pdf','staff'));
 		$data['username'] = $username;
 		$this->load->view('setup/create_directories', isset($data) ? $data : NULL);

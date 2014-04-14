@@ -36,12 +36,7 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
-
-define('COLOR_PRIM', '#1868b1');
-define('COLOR_SECO', '#024c93');
-define('COLOR_HILI', '#ffffff');
-define('COLOR_MIDT', '#8799a3');
-define('COLOR_DARK', '#000000');
+define('USER_ASSETS_PATH', 'user_assets');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

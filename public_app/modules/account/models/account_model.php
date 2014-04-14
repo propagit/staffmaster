@@ -35,6 +35,10 @@ class Account_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function check_reserve_usernames($username)
+	{
+	}
+	
 	function create_account($data)
 	{
 		$this->db->insert('accounts', $data);

@@ -29,7 +29,7 @@ class Setup_model extends CI_Model {
 	function create_tables($username)
 	{
 		# Load schema.sql file as string
-		if( $sql = @file_get_contents('./database/schema.sql') )
+		if( $sql = @file_get_contents('./../database/schema.sql') )
 		{
 			return $this->import_sql($username, $sql);
 		} 
