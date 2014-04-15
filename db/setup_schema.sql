@@ -52,6 +52,110 @@ CREATE TABLE IF NOT EXISTS `attribute_locations` (
   PRIMARY KEY (`location_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Dumping data for table `attribute_locations`
+--
+
+INSERT INTO `attribute_locations` (`location_id`, `parent_id`, `name`, `state`) VALUES
+(1, 0, 'Major Cities', ''),
+(2, 0, 'Regional', ''),
+(3, 1, 'Sydney', 'NSW'),
+(4, 1, 'Melbourne', 'VIC'),
+(5, 1, 'Brisbane', 'QLD'),
+(6, 1, 'Gold Coast', 'QLD'),
+(7, 1, 'Perth', 'WA'),
+(8, 1, 'Adelaide', 'SA'),
+(9, 1, 'Hobart', 'TAS'),
+(10, 1, 'Darwin', 'NT'),
+(11, 1, 'Canberra', 'ACT'),
+(12, 2, 'NSW', 'NSW'),
+(13, 2, 'VIC', 'VIC'),
+(14, 2, 'QLD', 'QLD'),
+(15, 2, 'WA', 'WA'),
+(16, 2, 'SA', 'SA'),
+(17, 2, 'TAS', 'TAS'),
+(18, 2, 'ACT', 'ACT'),
+(19, 2, 'NT', 'NT'),
+(20, 3, 'CBD, Inner West & Eastern Suburbs', 'NSW'),
+(21, 3, 'North Shore & Northen Beaches', 'NSW'),
+(22, 3, 'North West & Hills District', 'NSW'),
+(23, 3, 'Parramatta & Western Suburbs', 'NSW'),
+(24, 3, 'Ryde & Macquarie Park', 'NSW'),
+(25, 3, 'Southern Suburbs & Sutherland Shire', 'NSW'),
+(26, 3, 'South West & M5 Corridor', 'NSW'),
+(27, 4, 'CBD & Inner Suburbs', 'VIC'),
+(28, 4, 'Bayside & South Eastern Suburbs', 'VIC'),
+(29, 4, 'Eastern Suburbs', 'VIC'),
+(30, 4, 'Northern Suburbs', 'VIC'),
+(31, 4, 'Western Suburbs', 'VIC'),
+(32, 5, 'CBD & Inner Suburbs', 'QLD'),
+(33, 5, 'Bayside & Eastern Suburbs', 'QLD'),
+(34, 5, 'Northern Suburbs', 'QLD'),
+(35, 5, 'Southern Suburbs & Logan', 'QLD'),
+(36, 5, 'Western Suburbs & Ipswich', 'QLD'),
+(37, 7, 'CBD, Inner & Western Suburbs', 'WA'),
+(38, 7, 'Eastern Suburbs', 'WA'),
+(39, 7, 'Fremantle & Southern Suburbs', 'WA'),
+(40, 7, 'Northern Suburbs & Joondalup', 'WA'),
+(41, 7, 'Rockingham & Kwinana', 'WA'),
+(42, 12, 'Albury Wodonga & Murray', 'NSW'),
+(43, 12, 'Blue Mountains & Central West', 'NSW'),
+(44, 12, 'Coffs Harbour & North Coast', 'NSW'),
+(45, 12, 'Dubbo & Central NSW', 'NSW'),
+(46, 12, 'Far West & North Central NSW', 'NSW'),
+(47, 12, 'Gosford & Central Coast', 'NSW'),
+(48, 12, 'Goulburn & Southern Tablelands', 'NSW'),
+(49, 12, 'Lismore & Far North Coast', 'NSW'),
+(50, 12, 'Newcastle, Maitland & Hunter', 'NSW'),
+(51, 12, 'Port Macquarie & Mid North Coast', 'NSW'),
+(52, 12, 'Richmond & Hawkesbury', 'NSW'),
+(53, 12, 'Tamworth & North West NSW', 'NSW'),
+(54, 12, 'Tumut, Southern Highlands & Snowy', 'NSW'),
+(55, 12, 'Wagga Wagga & Riverina', 'NSW'),
+(56, 12, 'Wollongong, Illawarra & South Coast', 'NSW'),
+(57, 13, 'Bairnsdale & Gippsland', 'VIC'),
+(58, 13, 'Ballarat & Central Highlands', 'VIC'),
+(59, 13, 'Bendigo, Goldfields & Macedon Ranges', 'VIC'),
+(60, 13, 'Geelong & Great Ocean Road', 'VIC'),
+(61, 13, 'Horsham & Grampians', 'VIC'),
+(62, 13, 'Mildura & Murray', 'VIC'),
+(63, 13, 'Mornington Peninsula & Bass Coast', 'VIC'),
+(64, 13, 'Shepparton & Goulburn Valley', 'VIC'),
+(65, 13, 'Traralgon & La Trobe Valley', 'VIC'),
+(66, 13, 'Yarra Valley & High Country', 'VIC'),
+(67, 14, 'Bundaberg & Wide Bay Burnett', 'QLD'),
+(68, 14, 'Cairns & Far North', 'QLD'),
+(69, 14, 'Gladstone & Central QLD', 'QLD'),
+(70, 14, 'Hervey Bay & Fraser Coast', 'QLD'),
+(71, 14, 'Mackay & Coalfields', 'QLD'),
+(72, 14, 'Mt lsa & Western QLD', 'QLD'),
+(73, 14, 'Rockhampton & Capricorn Coast', 'QLD'),
+(74, 14, 'Somerset & Lockery', 'QLD'),
+(75, 14, 'Sunshine Coast', 'QLD'),
+(76, 14, 'Toowoomba & Darling Downs', 'QLD'),
+(77, 14, 'Townsville & Northern QLD', 'QLD'),
+(78, 15, 'Albany & Great Southern', 'WA'),
+(79, 15, 'Broome & Kimberley', 'WA'),
+(80, 15, 'Bunbury & South West', 'WA'),
+(81, 15, 'Geraldton, Gascoyne & Midwest', 'WA'),
+(82, 15, 'Kalgoorlie, Goldfields & Esperance', 'WA'),
+(83, 15, 'Mandurah & Peel', 'WA'),
+(84, 15, 'Northam & Wheatbelt', 'WA'),
+(85, 15, 'Port Hedland, Karratha & Pilbara', 'WA'),
+(86, 16, 'Adelaide Hills & Barossa', 'SA'),
+(87, 16, 'Coober Pedy & Outback SA', 'SA'),
+(88, 16, 'Fleurieu Peninsula & Kangaroo Island', 'SA'),
+(89, 16, 'Mt Gambier & Limestone Coast', 'SA'),
+(90, 16, 'Riverland & Murray Mallee', 'SA'),
+(91, 16, 'Whyalla & Eyre Peninsula', 'SA'),
+(92, 16, 'Yorke Peninsula & Clare Valley', 'SA'),
+(93, 17, 'Central & South East', 'TAS'),
+(94, 17, 'Davonport & North West', 'TAS'),
+(95, 17, 'Launceston & North East', 'TAS'),
+(96, 19, 'Alice Springs & Central Australia', 'NT'),
+(97, 19, 'Katherine & Northern Australia', 'NT');
+
+
 -- --------------------------------------------------------
 
 --
@@ -218,7 +322,8 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `code` varchar(250) NOT NULL,
   `name` varchar(250) NOT NULL,
   PRIMARY KEY (`country_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=238 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 
 --
 -- Dumping data for table `countries`
@@ -499,6 +604,47 @@ CREATE TABLE IF NOT EXISTS `email_merge_fields` (
   PRIMARY KEY (`merge_field_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+
+--
+-- Dumping data for table `email_merge_fields`
+--
+
+INSERT INTO `email_merge_fields` (`merge_field_id`, `email_template_id`, `merge_label`, `merge_field`, `merge_order`) VALUES
+(1, 1, 'Staff First Name', '{FirstName}', 1),
+(2, 1, 'Staff Family Name', '{FamilyName}', 2),
+(3, 1, 'Company Name', '{CompanyName}', 3),
+(4, 1, 'System URL', '{SystemURL}', 7),
+(5, 1, 'Username', '{UserName}', 5),
+(6, 1, 'Password', '{Password}', 6),
+(7, 2, 'Staff First Name', '{FirstName}', 1),
+(8, 2, 'Staff Family Name', 'FamilyName}', 2),
+(9, 2, 'Roster', '{Roster}', 3),
+(10, 3, 'Staff First Name', '{FirstName}', 1),
+(11, 3, 'Staff Family Name', '{FamilyName}', 2),
+(12, 3, 'System URL', '{SystemURL}', 5),
+(13, 3, 'Selected Shifts', '{SelectedShifts}', 4),
+(14, 6, 'Staff First Name', '{FirstName}', 1),
+(15, 6, 'Staff Family Name', '{FamilyName}', 2),
+(16, 6, 'Company Name', '{CompanyName}', 3),
+(17, 6, 'System URL', '{SystemURL}', 7),
+(18, 6, 'Username', '{UserName}', 5),
+(19, 6, 'Password', '{Password}', 6),
+(20, 4, 'Staff First Name', '{FirstName}', 1),
+(21, 4, 'Staff Family Name', '{FamilyName}', 2),
+(22, 4, 'Company Name', '{CompanyName}', 3),
+(23, 4, 'System URL', '{SystemURL}', 6),
+(24, 4, 'Shift Info', '{ShiftInfo}', 5),
+(25, 7, 'Client Contact Name', '{ClientContactName}', 1),
+(26, 7, 'Client Company Name', '{ClientCompanyName}', 2),
+(27, 7, 'Invoice Number', '{InvoiceNumber}', 3),
+(28, 7, 'Amount Due', '{AmountDue}', 4),
+(29, 7, 'Due Date', '{DueDate}', 5),
+(30, 7, 'Company Name', '{CompanyName}', 6),
+(31, 7, 'Issue Date', '{IssueDate}', 7),
+(32, 7, 'System URL', '{SystemURL}', 8),
+(33, 2, 'System URL', '{SystemURL}', 4);
+
+
 -- --------------------------------------------------------
 
 --
@@ -517,6 +663,24 @@ CREATE TABLE IF NOT EXISTS `email_templates` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`email_template_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+
+--
+-- Dumping data for table `email_templates`
+--
+
+INSERT INTO `email_templates` (`email_template_id`, `template_name`, `template_content`, `email_from`, `email_subject`, `default_template`, `auto_send`, `created`, `modified`) VALUES
+(1, 'Welcome Staff', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Welcome to the&nbsp;{CompanyName}&nbsp;team</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">We are thrilled to have you joint our team. Before completing your first shift with us we need you to logon to your staff account and complete your online induction.&nbsp;</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Completing your induction ensures that your details in the system are accurate, you get paid on time and can apply for shifts as they become availble.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">To log on to your staff account click this link {SystemURL}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">and login with the following details</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">User Name &nbsp; &nbsp; {UserName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Password &nbsp; &nbsp; &nbsp; {Password}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">We look forward to working with you.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind regards</span></span></p>\r\n', 'admin@smcloud.com.au', 'Welcome To Our Team', '', 'no', '2014-03-19 06:42:01', '2014-03-19 06:42:01'),
+(2, 'Roster Update', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear {FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your roster has recently been updated, please login to your staff account to confirm all shifts we have you working on.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your current roster is as follow:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{Roster}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind regards</span></span></p>\r\n', 'admin@smcloud.com.au', 'Roster Update', '', 'no', '2014-03-14 06:08:44', '2014-03-14 06:08:44'),
+(3, 'Apply For Shifts', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear {FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">We have just updated our system with a series of jobs. Please login to your staff account {SystemURL}&nbsp;and apply for jobs you would like to work on.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Some of the new shifts that have become available include:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{SelectedShifts}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind Regards</span></span></p>\r\n', 'admin@smcloud.com.au', 'Apply For Shifts', '', 'no', '2014-03-14 06:09:06', '2014-03-14 06:09:06'),
+(4, 'Shift Reminder', '<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">Dear&nbsp;{FirstName}</span></span></p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">Enjoy your shift tomorrow at&nbsp;{ShiftInfo}</span></span></p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">Please contact us immeadiatly if you have any questions regarding your shift.&nbsp;</span></span></p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">Kind regards</span></span></p>\r\n', 'admin@smcloud.com.au', 'Shift Reminder', '', 'no', '2014-03-20 06:32:37', '2014-03-20 06:32:37'),
+(5, 'Work Confirmation', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your roster has been updated and requires your attention.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please login to your account to confirm your shifts. Your Current Roster is as follows:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{Roster}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please contact us immeadiatly if you have any questions regarding your roster.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">To Login to your account click here</span></span></p>\r\n', 'admin@smcloud.com.au', 'Work Confirmation', '', 'no', '2014-03-14 06:09:20', '2014-03-14 06:09:20'),
+(6, 'Forgot Password', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{FirstName}</span></span></p>\r\n\r\n<p>We received a forgotten password request from you.</p>\r\n\r\n<p>Your new login details are as follows:</p>\r\n\r\n<p>Username:&nbsp;{UserName}</p>\r\n\r\n<p>Password:&nbsp;{Password}</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif; font-size:12px">Please contact us immeadiatly if you did not request this password request.&nbsp;</span></p>\r\n\r\n<p>&nbsp;</p>\r\n', 'admin@smcloud.com.au', 'Password Reset', '', 'no', '2014-03-20 04:47:51', '2014-03-20 04:47:51'),
+(7, 'Client Invoice', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{ClientContactName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please find attached an invoice from&nbsp;{CompanyName} for recent services for {ClientCompanyName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">The invoice details are as follows:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Invoice Number: &nbsp; {InvoiceNumber}<br />\r\nAmount Due: &nbsp; &nbsp; &nbsp; &nbsp; ${AmountDue}<br />\r\nDue Date: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{DueDate} &nbsp;&nbsp;</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">A downloadable invoice is attached or you can login to your member account to retrieve a copy of this invoice at any time.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind regards</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{CompanyName}</span></span></p>\r\n', 'admin@smcloud.com.au', '{CompanyName} Invoice Issued - {IssueDate}', '', 'no', '2014-03-21 06:12:06', '2014-03-21 06:12:06'),
+(8, 'Client Quote', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your roster has been updated and requires your attention.&nbsp;</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please login to your account to confirm your shifts. Your Current Roster is as follows:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{Roster}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please contact us immeadiatly if you have any questions regarding your roster.&nbsp;</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">To Login to your account click here</span></span></p>\r\n', 'admin@smcloud.com.au', 'Client Quote', '', 'no', '2014-03-14 06:09:40', '2014-03-14 06:09:40'),
+(9, 'Brief', '', 'admin@smcloud.com.au', 'Job Brief', '', 'no', '2014-04-07 06:27:00', '2014-04-07 06:27:00');
+
 
 -- --------------------------------------------------------
 
@@ -1005,7 +1169,7 @@ CREATE TABLE IF NOT EXISTS `states` (
   `code` varchar(250) NOT NULL,
   `name` varchar(250) NOT NULL,
   PRIMARY KEY (`state_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `states`
@@ -1220,7 +1384,7 @@ CREATE TABLE IF NOT EXISTS `system_styles` (
   `text_colour` varchar(16) NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`style_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `system_styles`
