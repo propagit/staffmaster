@@ -107,6 +107,7 @@
 			<div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
+                    	<div class="alert alert-success hide" id="msg-success"><i class="fa fa-check"></i> &nbsp; Client successfully added!</div>
 						<button type="button" class="btn btn-core" id="btn_add_client"><i class="fa fa-plus"></i> Add Client</button>
 					</div>
 				</div>
@@ -125,8 +126,12 @@ $(function(){
 				url: "<?=base_url();?>client/ajax/add_client",
 				data: $('#form_add_client').serialize(),
 				success: function(html) {
-					//alert(html);
-					window.location.href = '<?=base_url();?>client/edit/' + html;
+					$('#form_add_client')[0].reset();
+					$('#msg-success').removeClass('hide');
+					setTimeout(function(){
+						$('#msg-success').addClass('hide');
+					}, 2000);
+					//window.location.href = '<?=base_url();?>client/edit/' + html;
 				}
 			});
 		}		

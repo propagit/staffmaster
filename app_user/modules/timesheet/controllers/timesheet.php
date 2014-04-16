@@ -228,10 +228,15 @@ class Timesheet extends MX_Controller {
 	}
 	
 	function generate() {
+		$this->load->model('staff/staff_model');
 		$shifts = $this->timesheet_model->get_finished_shifts();
 		foreach($shifts as $shift)
 		{
 			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));
+			//Update user_staffs table field - last_worked_date
+			$data_user_staff = array('last_worked_date' => $shift['job_date'].' 00:00:00');
+			$this->staff_model->update_staff($shift['staff_id'],$data_user_staff);
+			
 			unset($shift['status']);
 			unset($shift['created_on']);
 			unset($shift['modified_on']);

@@ -169,9 +169,25 @@ class Staff_model extends CI_Model {
 	function search_staffs($params = array(),$total=false)
 	{
 		$records_per_page = STAFF_PER_PAGE;
-		$sql = "SELECT s.*, u.* 
+		$sql = "SELECT s.*, u.*
 				FROM user_staffs s 
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status > " . USER_DELETED;
+				
+		if(isset($params['timesheet_in_payrun']) && $params['timesheet_in_payrun'] != '')
+		{
+			$payrun_exist_sql = "(SELECT job_shift_timesheets.staff_id 
+								 FROM job_shift_timesheets 
+								 WHERE job_shift_timesheets.status = ".TIMESHEET_BATCHED.")";
+			if($params['timesheet_in_payrun'] == 'yes')
+			{
+				$sql .= " AND s.user_id IN ".$payrun_exist_sql;
+			}
+			if($params['timesheet_in_payrun'] == 'no')
+			{
+				$sql .= " AND s.user_id NOT IN ".$payrun_exist_sql;
+			}
+		}
+
 		
 		if (isset($params['keyword']) && $params['keyword'] != '') 
 		{ 
@@ -195,6 +211,7 @@ class Staff_model extends CI_Model {
 		{ 
 			$sql .= " AND u.state = '" . $params['state'] . "'";
 		}
+
 		
 		# Group
 		if (isset($params['group_id']) && $params['group_id'] != '')

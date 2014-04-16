@@ -418,6 +418,14 @@ class Common extends MX_Controller {
 		
 		$this->load->view('field_select_time', isset($data) ? $data : NULL);
 	}
+	
+	function field_select_yes_no($field_name, $field_value=null, $size=null, $title = false) {
+		$array = array(
+			array('value' => 'yes', 'label' => 'Yes'),
+			array('value' => 'no', 'label' => 'No')
+		);
+		return $this->field_select($array, $field_name, $field_value, $size, true);
+	}
 
 	
 	
