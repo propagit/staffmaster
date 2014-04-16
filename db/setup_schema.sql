@@ -52,7 +52,6 @@ CREATE TABLE IF NOT EXISTS `attribute_locations` (
   PRIMARY KEY (`location_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-
 --
 -- Dumping data for table `attribute_locations`
 --
@@ -155,6 +154,7 @@ INSERT INTO `attribute_locations` (`location_id`, `parent_id`, `name`, `state`) 
 (95, 17, 'Launceston & North East', 'TAS'),
 (96, 19, 'Alice Springs & Central Australia', 'NT'),
 (97, 19, 'Katherine & Northern Australia', 'NT');
+
 
 -- --------------------------------------------------------
 
@@ -603,6 +603,7 @@ CREATE TABLE IF NOT EXISTS `email_merge_fields` (
   PRIMARY KEY (`merge_field_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+
 --
 -- Dumping data for table `email_merge_fields`
 --
@@ -641,6 +642,7 @@ INSERT INTO `email_merge_fields` (`merge_field_id`, `email_template_id`, `merge_
 (31, 7, 'Issue Date', '{IssueDate}', 7),
 (32, 7, 'System URL', '{SystemURL}', 8),
 (33, 2, 'System URL', '{SystemURL}', 4);
+
 
 -- --------------------------------------------------------
 
@@ -1165,6 +1167,22 @@ CREATE TABLE IF NOT EXISTS `states` (
   `name` varchar(250) NOT NULL,
   PRIMARY KEY (`state_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+--
+-- Dumping data for table `states`
+--
+
+INSERT INTO `states` (`state_id`, `code`, `name`) VALUES
+(1, 'ACT', 'Australian Capital Territory'),
+(2, 'NSW', 'New South Wales'),
+(3, 'NT', 'Northern Territory'),
+(4, 'QLD', 'Queensland'),
+(5, 'SA', 'South Australia'),
+(6, 'TAS', 'Tasmania'),
+(7, 'VIC', 'Victoria'),
+(8, 'WA', 'Western Australia');
+
 
 -- --------------------------------------------------------
 
