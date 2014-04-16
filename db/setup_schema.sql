@@ -14,6 +14,23 @@ SET time_zone = "+07:00";
 -- Database: `staff_master`
 --
 
+
+--
+-- Table structure for table `account`
+--
+
+CREATE TABLE `account` (
+  `credits` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`credits`) VALUES
+(100);
+
+
 -- --------------------------------------------------------
 
 --
@@ -1221,6 +1238,35 @@ CREATE TABLE IF NOT EXISTS `modules_mvc` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
+
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `order_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `credits` bigint(20) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `result` varchar(200) NOT NULL,
+  `msg` text NOT NULL,
+  `firstname` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `state` varchar(100) NOT NULL,
+  `postcode` varchar(10) NOT NULL,
+  `country` varchar(100) NOT NULL,
+  `ccname` varchar(255) NOT NULL,
+  `ccnumber` varchar(40) NOT NULL,
+  `expmonth` varchar(10) NOT NULL,
+  `expyear` varchar(10) NOT NULL,
+  `ccv` varchar(4) NOT NULL,
+  `coupon` varchar(100) NOT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 
 --
 -- Table structure for table `payruns`
