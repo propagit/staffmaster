@@ -420,6 +420,29 @@ class Common extends MX_Controller {
 	}
 
 	
+	function field_select_month($field_name, $field_value=null, $size=null) {
+		$months = array(
+			array('value' => '01', 'label' => '01'),
+			array('value' => '02', 'label' => '02'),
+			array('value' => '03', 'label' => '03'),
+			array('value' => '04', 'label' => '04'),
+			array('value' => '05', 'label' => '05'),
+			array('value' => '06', 'label' => '06'),
+			array('value' => '07', 'label' => '07'),
+			array('value' => '08', 'label' => '08'),
+			array('value' => '09', 'label' => '09'),
+			array('value' => '10', 'label' => '10'),
+			array('value' => '11', 'label' => '11'),
+			array('value' => '12', 'label' => '12')
+		);
+		return modules::run('common/field_select', $months, $field_name, $field_value, $size, false);
+	}
 	
-
+	function field_select_year($field_name, $field_value=null, $size=null) {
+		$years = array();
+		for($i=2010; $i < 2020; $i++) {
+			$years[] = array('value' => $i, 'label' => $i);
+		}
+		return modules::run('common/field_select', $years, $field_name, $field_value, $size, false);
+	}
 }
