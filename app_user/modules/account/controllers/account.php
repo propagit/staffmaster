@@ -23,9 +23,7 @@ class Account extends MX_Controller {
 	
 	
 	
-	function box_credits()
-	{
-		$this->load->view('box_credits', isset($data) ? $data : NULL);
-	}
+	
+	
 	
 }
