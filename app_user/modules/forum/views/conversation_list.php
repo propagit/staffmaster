@@ -13,16 +13,10 @@
     <?php 
 	  	if($conversations){
 			foreach($conversations as $c){ 
-			$created_by = modules::run('user/get_user',$c->created_by);
-			$creator_profile_link = '<a href="'.base_url().'staff/edit/'.$c->created_by.'">'.$c->first_name.' '.$c->last_name.'</a>';
-			if($created_by['is_client']){
-				 $client = modules::run('client/get_client',$c->created_by);
-				 $creator_profile_link = '<a href="'.base_url().'client/edit/'.$c->created_by.'">'.$client['company_name'].' - '.$client['full_name'].'</a>';	
-			}
 	  ?>
 	<tr>
 		<td class="left"><?=$c->title;?> <?=($c->type == 'poll' ? '<strong>(Poll)</strong>' : '');?></td>
-        <td class="left"><?=$creator_profile_link;?></td>
+        <td class="left"><a href="<?=base_url();?>staff/edit/<?=$c->created_by;?>"><?=$c->first_name.' '.$c->last_name;?></a></td>
         <td class="center">
             <div class="col-md-1 col-xs-1 wrap-list-date time center-div-date">                            
                 <span class="wk_date"><?=date('d',strtotime($c->created_on));?></span>

@@ -4,6 +4,11 @@ $primary_colour = $styles['primary_colour'];
 $secondary_colour = $styles['secondary_colour'];
 $rollover_colour = $styles['rollover_colour'];
 $text_colour = $styles['text_colour'];
+
+$primary_rgb = modules::run('custom_styles/hex_2_rgb',$primary_colour);
+$secondary_rgb = modules::run('custom_styles/hex_2_rgb',$secondary_colour);
+$rollover_rgb = modules::run('custom_styles/hex_2_rgb',$rollover_colour);
+$text_rgb = modules::run('custom_styles/hex_2_rgb',$text_colour);
 ?>
 html,
 body,
@@ -77,6 +82,12 @@ a.editable-click:hover{
 	background-color:<?=$primary_colour?>;
     color:<?=$secondary_colour?>;
 }
+span.mob-menu-head{
+	color:<?=$secondary_colour?>;
+}
+.btn-navbar .fa{
+	color:<?=$secondary_colour;?>
+}
 
 /* select 2 */
 
@@ -112,6 +123,7 @@ a.editable-click:hover{
 .brief-table, .brief-body h1, .brief-body p{
 	color:<?=$text_colour?>;
 }
+.charge-box-header,
 .wp-page-invoice .charge-box-header{
 	background:<?=$primary_colour?>;
     color:<?=$secondary_colour?>;
@@ -140,6 +152,12 @@ a.editable-click:hover{
     color:<?=$secondary_colour?>;
     background-image:none;
 }
-
+#sm-footer-wrap,
+.footer-go-to-top-btn{
+	background-color:rgba(<?=implode(',',$primary_rgb)?>,0.25);
+}
+.footer-go-to-top-arrow{
+	color:<?=$secondary_colour?>;
+}
 
 

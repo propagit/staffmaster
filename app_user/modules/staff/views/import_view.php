@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Import Staff</h2>
-    	 <p>To import your staff, download <a>Sample File</a> and open it in a program such as Microsoft Excel. Enter your own information and save the file as a .csv then click the upload file button.</p>
+    	 <p>To import your staff, download the <a>Sample File</a> and open it in a program such as Microsoft Excel. Enter your own information and save the file as a .csv then click the upload file button.</p>
     </div>
 </div>
 <!--end top box-->

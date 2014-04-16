@@ -13,7 +13,7 @@ $menu = array(
 	)),
 	#array('path' => '#', 'icon' => 'book', 'title' => 'Training Centre', 'sub' => array(		
 	#)),
-	array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(		
+	array('path' => 'support', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(		
 	))
 );
 ?>

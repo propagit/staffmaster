@@ -22,7 +22,7 @@
                                  <div class="form-group">
                                      <label for="add-button" class="col-sm-2 control-label">Title:</label>
                                       <div class="col-sm-10 modal-add-left-padding">
-                                           <input type="text" class="form-control" id="conversation_title" name="conversation_title" data="required" value="<? if(isset($conversation)){ echo $conversation->title; }?>" maxlength="100">
+                                           <input type="text" class="form-control" id="conversation_title" name="conversation_title" data="required" value="<? if(isset($conversation)){ echo $conversation->title; }?>">
                                       </div>
                                  </div>
                                  

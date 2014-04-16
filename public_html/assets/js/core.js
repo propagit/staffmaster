@@ -314,6 +314,25 @@ var help = {
 		if($(window).width() <= 768){
 			$.fn.editable.defaults.mode = 'inline';	
 		}	
+	},
+	
+	sticky_footer:function(){
+		var wh = $(window).height();//window height
+		var hh = $('#sm-head-wrap').height();//header height
+		var bh = $('#sm-body-wrap').height();//body height	
+		var fh = $('#sm-footer-wrap').height();//footer height
+		var min_height = 0;
+		var sum_height = hh+bh+fh;
+		//if sum of all three is less than the window height
+		//initialize sticky footer
+		if(sum_height < wh){
+			//since hh and fh are pretty much constant
+			//adjust bh so that the footer sticks to the bottom
+			min_height = wh - (hh+fh);
+			$('#sm-body-wrap').css({'min-height':min_height});
+		}else{
+			$('#sm-body-wrap').css({'min-height':''});
+		}
 	}
 	
 	
@@ -322,12 +341,14 @@ var help = {
 };
 
 $(function(){
-	help.go_to_top('#go-to-top');	
+	help.go_to_top('.go-to-top');	
 	help.make_x_editable_inline();
+	help.sticky_footer();
 });
 
 $(window).resize(function(){
 	help.make_x_editable_inline();
+	help.sticky_footer();
 });
 
 $( document ).ajaxComplete(function() {
