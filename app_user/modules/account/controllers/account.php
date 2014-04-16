@@ -11,9 +11,29 @@ class Account extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$user = $this->session->userdata('user_data');
+		$this->user = $this->session->userdata('user_data');
 	}
 	
+	public function index($method='', $param='')
+	{
+		switch($method)
+		{
+			case 'buy_credits':
+					$this->buy_credits_view();
+				break;
+			default:
+					echo 'do nothing';
+				break;
+		}
+		
+	}
+	
+	function buy_credits_view()
+	{
+		$this->load->model('account_master_model');
+		$data['prices'] = $this->account_master_model->get_prices();
+		$this->load->view('buy_credits_view', isset($data) ? $data : NULL);
+	}
 	
 	function menu($user=array())
 	{
@@ -25,7 +45,13 @@ class Account extends MX_Controller {
 	
 	function box_credits()
 	{
+		$this->load->model('account_model');
 		$this->load->view('box_credits', isset($data) ? $data : NULL);
+	}
+	
+	function get_credits()
+	{
+		return $this->account_model->get_credits();
 	}
 	
 }

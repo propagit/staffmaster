@@ -2,7 +2,7 @@
 	<div class="box top-box dash-box-paddings">
     	<div class="col-md-9 remove-left-padding">
         <h2>Your Dashboard</h2>
-        <p>Welcome to your dashboard. Your dashboard will give you a quick overview of activity going on within Staffmaster. Check back regularly to keep yourself up to date.</p>
+        <p>Welcome to your dashboard. Your dashboard will give you a quick overview of activity going on within Staff Master. Check back regularly to keep yourself up to date.</p>
         </div>
         <div class="pull-right">
         	<?=modules::run('account/box_credits');?>
