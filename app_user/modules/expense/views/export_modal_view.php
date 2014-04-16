@@ -37,7 +37,7 @@ $(function(){
 					$('#export_templates').addClass('has-error');
 					return;
 				}
-				window.location = '<?=base_url();?>exports/expense/' + html;
+				window.location = '<?=base_url().EXPORTS_URL;?>/expense/' + html;
 				search_expenses();
 				$('.bs-modal-lg').modal('hide');
 			}

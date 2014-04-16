@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Venues</h2>
-		 <p>Venues are the location in which jobs take place. You can add a venue via the form below or add multiple venues at once by importing a venue list as a .CSV file (<a href="#">Download Sample File</a>). Enter your venue address accurately to ensure your map data gets plotted correctly. Staff select locations they can work in their profile information which relates to the locations of venues.</p>
+		 <p>Venues are the location in which jobs take place. You can add multiple venues at once by importing a venue list as a .CSV file (<a href="<?=base_url();?>assets/sample_docs/Venues.csv">Download Sample File</a>). Enter your venue address accurately to ensure your map data gets plotted correctly. Staff select locations they can work in their profile information which relates to the locations of venues.</p>
     </div>
 </div>
 <!--end top box-->

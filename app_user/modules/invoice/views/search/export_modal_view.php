@@ -37,7 +37,7 @@ $(function(){
 					$('#export_templates').addClass('has-error');
 					return;
 				}
-				window.location = '<?=base_url();?>exports/invoice/' + html;
+				window.location = '<?=base_url().EXPORTS_URL;?>/invoice/' + html;
 				search_invoices();
 				$('.bs-modal-lg').modal('hide');
 			}

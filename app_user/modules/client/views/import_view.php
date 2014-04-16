@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
 		<h2>Add Client</h2>
-		<p>To import your clients, download the <a href="<?=base_url().CUR_USER_ASSETS_URL.'/samples/ClientImport.csv'?>">Sample File</a> and open it in a program such as Microsoft Excel. Enter your own information and save the file as a .csv then click the upload file button.</p>
+		<p>To import your clients, download the <a href="<?=base_url();?>assets/sample_docs/ClientImport.csv">Sample File</a> and open it in a program such as Microsoft Excel. Enter your own information and save the file as a .csv then click the upload file button.</p>
 	</div>
 </div>
 <!--end top box-->

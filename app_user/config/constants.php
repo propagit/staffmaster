@@ -34,6 +34,7 @@ define('SUBDOMAIN', $sub_domain);
 define('UPLOADS_PATH' , './user_assets/'.$sub_domain.'/uploads');
 define('EXPORTS_PATH' , './user_assets/'.$sub_domain.'/exports');
 define('UPLOADS_URL','user_assets/'.$sub_domain.'/uploads');
+define('EXPORTS_URL' , 'user_assets/'.$sub_domain.'/exports');
 define('CUR_USER_ASSETS_URL','user_assets/'.$sub_domain);
 define('CUR_USER_ASSETS_PATH','./user_assets/'.$sub_domain);
 

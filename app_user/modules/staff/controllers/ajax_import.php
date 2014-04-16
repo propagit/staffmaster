@@ -206,7 +206,7 @@ class Ajax_import extends MX_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('error_report_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "error_report_" . time() . ".xlsx";
-		$objWriter->save("./exports/error/" . $file_name);
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		return $file_name;
 	}
 	

@@ -26,5 +26,5 @@ $(function(){
 	<i class="fa fa-frown-o fa-2x pull-left"></i> 
 	<h4>Oh No! - We found <b><?=count($errors);?></b> issues with your imported data</h4>
 </div>
-<a class="btn btn-core" href="<?=base_url();?>exports/error/<?=$error_report_file;?>" target="_blank">Download Error Report</a>
+<a class="btn btn-core" href="<?=base_url().EXPORTS_URL;?>/error/<?=$error_report_file;?>" target="_blank">Download Error Report</a>
 <? } ?>

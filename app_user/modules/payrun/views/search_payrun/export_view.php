@@ -32,7 +32,7 @@ $(function(){
 					$('#export_templates').addClass('has-error');
 					return;
 				}
-				window.location = '<?=base_url();?>exports/payrun/' + html;
+				window.location = '<?=base_url().EXPORTS_URL;?>/payrun/' + html;
 				$('.bs-modal-lg').modal('hide');
 			
 			}

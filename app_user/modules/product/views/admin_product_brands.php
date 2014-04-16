@@ -53,7 +53,7 @@ $(function(){
 			url: "<?=base_url();?>admin/product/brand/export",
 			success: function(html)
 			{
-				window.location = '<?=base_url();?>exports/' + html;				
+				window.location = '<?=base_url().EXPORTS_URL;?>/' + html;				
 				$('#exportModel').modal('hide');
 			}			
 		})

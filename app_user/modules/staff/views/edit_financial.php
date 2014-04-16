@@ -28,12 +28,12 @@
 		<label class="col-md-4 control-label">Employed As</label>
 		<div class="col-md-1">
 			<div class="radio">
-				<input type="radio" name="f_employed" value="0"<?=($staff['f_employed'] == 0) ? ' checked' : '';?> /> TFN
+				<input type="radio" name="f_employed" value="1"<?=($staff['f_employed'] == 1) ? ' checked' : '';?> /> TFN
 			</div>
 		</div>
 		<div class="col-md-1">
 			<div class="radio">
-				<input type="radio" name="f_employed" value="1"<?=($staff['f_employed'] == 1) ? ' checked' : '';?> /> ABN
+				<input type="radio" name="f_employed" value="2"<?=($staff['f_employed'] == 2) ? ' checked' : '';?> /> ABN
 			</div>
 		</div>
 	</div>

@@ -170,7 +170,7 @@ class Admin extends MX_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('order');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "orders_" . time() . ".csv";
-		$objWriter->save("./exports/" . $file_name);
+		$objWriter->save(EXPORTS_PATH . "/" . $file_name);
 		die($file_name);
 	}
 	

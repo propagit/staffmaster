@@ -53,7 +53,7 @@ function save_payrun() {
 					$('#export_templates').addClass('has-error');
 					return;
 				} else {
-					window.location = '<?=base_url();?>exports/payrun/' + data.file_name;
+					window.location = '<?=base_url().EXPORTS_URL;?>/payrun/' + data.file_name;
 				}
 				
 			}

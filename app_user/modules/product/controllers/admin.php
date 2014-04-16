@@ -156,7 +156,7 @@ class Admin extends MX_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('product');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
 		$file_name = "products_" . time() . ".csv";
-		$objWriter->save("./exports/" . $file_name);
+		$objWriter->save(EXPORTS_PATH . "/" . $file_name);
 		die($file_name);
 	}
 		
@@ -265,7 +265,7 @@ class Admin extends MX_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('category');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "categories_" . time() . ".xlsx";
-		$objWriter->save("./exports/" . $file_name);
+		$objWriter->save(EXPORTS_PATH . "/" . $file_name);
 		die($file_name);
 	}
 	
@@ -372,7 +372,7 @@ class Admin extends MX_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('brand');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "brands_" . time() . ".xlsx";
-		$objWriter->save("./exports/" . $file_name);
+		$objWriter->save(EXPORTS_PATH . "/" . $file_name);
 		die($file_name);
 	}
 	

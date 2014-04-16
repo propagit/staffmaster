@@ -122,7 +122,7 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('expense');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
 		$file_name = 'staff_expense_' . time() . ".csv";
-		$objWriter->save("./exports/expense/" . $file_name);
+		$objWriter->save(EXPORTS_PATH . "/expense/" . $file_name);
 		return $file_name;
 	} 
 }
