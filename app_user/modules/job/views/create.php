@@ -27,7 +27,7 @@ a client will be able to filter jobs associated to them by the client department
                             <?=modules::run('client/field_select', 'client_id', set_value('client_id'));?>
                         </div>
                         <div class="col-lg-4">
-                        	<span class="help-block"><a><i class="fa fa-plus"></i></a> &nbsp; <a target="_blank" href="<?=base_url();?>client/add">Create New Client</a></span>
+                        	<span class="help-block"><a><i class="fa fa-plus"></i></a> &nbsp; <a href="#">Create New Client</a></span>
                         </div>
                     </div>
                     <div class="form-group hide" id="wp_client_departments">

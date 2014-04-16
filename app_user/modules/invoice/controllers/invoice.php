@@ -232,10 +232,7 @@ class Invoice extends MX_Controller {
 			$this->load->library('pdf');
 			$pdf = $this->pdf->load(); 			
 			$stylesheet = file_get_contents('./assets/css/pdf.css');
-			$custom_styles = '<style>'.modules::run('custom_styles').'</style>';
-			//echo $custom_styles;exit();
 			$pdf->WriteHTML($stylesheet,1);
-			$pdf->WriteHTML($custom_styles,1);
 			$pdf->WriteHTML($html,2);
 			$pdf->Output($pdfFilePath, 'F'); // save to file 
 		}
@@ -390,7 +387,7 @@ class Invoice extends MX_Controller {
 									'from_text' => $company['email_c_name'],
 									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
 									'message' => modules::run('email/format_template_body',$email_body,$obj),
-									'attachment' => realpath(__DIR__.'/../../../../public_html/user_assets/'.SUBDOMAIN.'/uploads/pdf/invoice_'.$invoice_id.'.pdf')	
+									'attachment' => realpath(__DIR__.'/../../../../uploads/pdf/invoice_'.$invoice_id.'.pdf')	
 								);
 				modules::run('email/send_email',$email_data);
 			}

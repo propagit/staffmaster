@@ -17,10 +17,6 @@ class Support extends MX_Controller {
 	function index($method='', $param='') {
 		switch($method)
 		{
-			case 'admin_support':
-				$this->admin_support();
-			break;
-			
 			default:
 				$this->main_view();
 			break;
@@ -45,42 +41,6 @@ class Support extends MX_Controller {
 		$data['user'] = $user;
 		$data['support_tickets'] = $this->support_model->get_support($user);
 		$this->load->view('support_tickets', isset($data) ? $data : NULL);
-	}
-	/**
-	*	@name: admin_support
-	*	@desc: Provides UI to lodge support ticket by the admin. This support will be sent to StaffMaster support staff and is completely different from the support ticket lodged from Client or Staff portal.
-	*	@access: public
-	*	@param: (null)
-	*	@return: Loads Support ticket UI for admin
-	*/
-	function admin_support()
-	{
-		$this->load->view('admin_support', isset($data) ? $data : NULL);	
-	}
-	
-	/**
-	*	@name: email_templates_dropdown
-	*	@desc: 
-	*	@access: public
-	*	@param: 
-	*/
-	function support_type_dropdown($field_name, $field_value=null, $size=null)
-	{
-		$support_types = array('System Help','Function Request','Bug Notification','General Support');
-		$count = 0;
-		if($support_types){
-			foreach($support_types as $key=>$val){
-				  $array[$count] = array('value' => $val, 'label' => $val);
-				  $count++;
-			}
-		}
-		
-		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
-	}
-	
-	function load_admin_support_email_body($data)
-	{
-		$this->load->view('email/email_message', isset($data) ? $data : NULL);	
 	}
 	
 	

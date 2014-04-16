@@ -154,58 +154,5 @@ class Ajax extends MX_Controller {
 		return $this->user_model->update_status_multi_users(implode(',',$user_ids),$new_status);
 	}
 	
-	/**
-	*	@name: send_email
-	*	@desc: Send email to a particular email vai send email modal window UI. 
-	*	@access: private
-	*	@param: (via POST)
-	*	
-	*/
-	function send_email()
-	{
-		$this->load->model('setting/setting_model');
-		$this->load->model('email/email_template_model');
-		//get company profile
-		$company = $this->setting_model->get_profile();	
-		//get post data
-		$email_body = $this->input->post('email_body');
-		$selected_user_ids = $this->input->post('selected_user_ids',true);
-		$email_template_id = $this->input->post('email_template_select',true);
-		
-		if($email_template_id){
-			$template_info = $this->email_template_model->get_template($email_template_id);
-			$email_subject = $template_info->email_subject;
-		}
-		
-		if($selected_user_ids){
-			//create obj parameters based on user and email template eg
-			$user_ids = json_decode($selected_user_ids);
-			foreach($user_ids as $user_id){
-				$send_email = true;
-				if($send_email){
-					$email = $this->user_model->get_user_email_from_user_id($user_id);
-					//get receiver obj
-					$email_obj_params = array(
-									'template_id' => $email_template_id,
-									'user_id' => $user_id,
-									'company' => $company
-								);
-					$obj = modules::run('email/get_email_obj',$email_obj_params);
-					if($email){
-						$email_data = array(
-									'to' => $email,
-									'from' => $company['email_c_email'],
-									'from_text' => $company['email_c_name'],
-									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
-									'message' => modules::run('email/format_template_body',$email_body,$obj)
-								);
-						modules::run('email/send_email',$email_data);
-					}
-				}
-			}
-		}
-		$this->session->unset_userdata('selected_user_ids');
-		echo 'success';
-	}
 	
 }

@@ -38,11 +38,7 @@
                       <span class="wk_month display-inline"><?=date('M',strtotime($c->created_on));?></span>
                       <?php if($created_by['is_client']) {?>
                       <span class="display-inline text-danger support-text"> &nbsp;<i class="fa fa-exclamation-triangle"></i> <b>Client Support</b> - <?=$client['company_name'];?> - <?=$created_by['full_name'];?></span>
-                      <?php }else{ 
-					  		if($c->type == 'support'){
-					  ?>
-						<span class="display-inline text-danger support-text"> &nbsp;<i class="fa fa-exclamation-triangle"></i> <b>Staff Support</b> - <?=$created_by['first_name'].' '.$created_by['last_name'];?></span>  
-					  <?php }}?>
+                      <?php } ?>
                   </div>
                   <span class="title"><?=substr($c->title,0,100);?></span>
               </div>

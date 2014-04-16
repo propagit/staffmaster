@@ -14,6 +14,9 @@ class Account extends MX_Controller {
 			case 'setup':
 				$this->setup($param1, $param2);
 				break;
+			case 'update':
+				$this->update();
+				break;
 			default:	
 				$this->signup_form();
 				break;
@@ -26,20 +29,33 @@ class Account extends MX_Controller {
 		$this->load->view('signup_form', isset($data) ? $data : NULL);
 	}
 	
-	function setup($username, $code)
+	function setup($subdomain, $code)
 	{
-		if (!$username || !$code)
+		if (!$subdomain || !$code)
 		{
 			redirect('');
 		}
 		$this->load->model('account_model');
-		$account = $this->account_model->get_account(array('username' => $username, 'activation_code' => $code));
+		$account = $this->account_model->get_account(array('subdomain' => $subdomain, 'activation_code' => $code));
 		if (!$account)
 		{
 			redirect('');
 		}
-		$data['username'] = $username;
+		$this->account_model->activate_account($account['account_id']);
+		$data['subdomain'] = $subdomain;
 		$this->load->view('setup_view', isset($data) ? $data : NULL);
+	}
+	
+	function update()
+	{
+		$this->load->model('account_model');
+		$accounts = $this->account_model->get_accounts(array());
+		$sql = @file_get_contents('./../db/alter_jobs_department_id.sql');
+		foreach($accounts as $account)
+		{
+			$this->load->model('setup_model');
+			$this->setup_model->import_sql($account['subdomain'], $sql);
+		}
 	}
 	
 }

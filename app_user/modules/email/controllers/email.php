@@ -282,12 +282,10 @@ class Email extends MX_Controller {
 			$email_signature = modules::run('setting/ajax/get_template_footer');
 			$this->email->subject($subject);
 			$this->email->message($company_logo . '<br />'.$message . $email_signature);
-			if($attachment){
-				$this->email->attach($attachment);
-			}
+			//$this->email->attach($attachment);
 			$this->email->send();
 			$this->email->clear(true);	
-			return 'Email Sent';
+			return true;
 					
 		}else{
 			return false;	
@@ -365,9 +363,7 @@ class Email extends MX_Controller {
 		$company_logo = modules::run('setting/company_logo');
 		$email_signature = modules::run('setting/get_email_footer');
 		$this->email->message($company_logo . '<br />'.$message . $email_signature);
-		if($attachment){
-			$this->email->attach($attachment);
-		}
+		//$this->email->attach($attachment);
 		if($this->email->send()){
 		  	echo 'Email sent.';
 		}else{
