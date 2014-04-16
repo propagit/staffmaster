@@ -23,10 +23,9 @@ class Support_model extends CI_Model {
 		$sql = "SELECT ft.*,
 					(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies, 
 				u.first_name, u.last_name 
-				FROM forum_topics ft 
+				FROM forum_topics ft
 				LEFT JOIN users u ON ft.created_by = u.user_id 
-				WHERE type = 'support'
-				AND ft.created_by = ".$user['user_id']."  
+				WHERE type = 'support' 
 				GROUP BY ft.topic_id";
 				
 		$sql .= " ORDER BY ft.created_on DESC";	

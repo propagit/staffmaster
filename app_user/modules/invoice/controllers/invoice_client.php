@@ -42,14 +42,5 @@ class Invoice_client extends MX_Controller {
 		}
 		
 	}
-	
-	function download($invoice_id)
-	{
-		if($invoice_id){
-			redirect(base_url().UPLOADS_URL."/pdf/invoice_$invoice_id.pdf"); 	
-		}else{
-			redirect('invoice');	
-		}
-	}
 
 }

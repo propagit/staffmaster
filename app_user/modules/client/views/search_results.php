@@ -48,7 +48,6 @@
     <? } ?>
     </tbody>
 </table>
-<input type="hidden" name="email_modal_header" value="Contact Client" />
 </form>
 </div>
 <? } ?>

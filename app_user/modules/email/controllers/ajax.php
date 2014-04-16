@@ -97,14 +97,7 @@ class Ajax extends MX_Controller {
 	function get_send_email_modal()
 	{
 		$data['email_modal_header'] = "Contact User";
-		//for search staff
-		if($this->input->post('user_staff_selected_user_id',true)){
-			$selected_user_ids = $this->input->post('user_staff_selected_user_id',true);
-		}
-		//for search client
-		if($this->input->post('user_client_selected_user_id',true)){
-			$selected_user_ids = $this->input->post('user_client_selected_user_id',true);
-		}
+		$selected_user_ids = $this->input->post('user_staff_selected_user_id',true);
 		if($this->input->post('email_modal_header',true)){
 			$data['email_modal_header'] = $this->input->post('email_modal_header',true);	
 		}

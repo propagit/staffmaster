@@ -9,13 +9,6 @@ class Custom_styles extends MX_Controller {
 		$this->load->model('setting/setting_model');
 	}
 	
-	/**
-	*	@name: index
-	*	@desc: Main view to change system styles
-	*	@access: public
-	*	@param: (null)
-	*	@return: Loads view to change system styles
-	*/
 	function index()
 	{
 		$data['styles'] = array(
@@ -30,30 +23,5 @@ class Custom_styles extends MX_Controller {
 		}
 		$this->load->view('custom_styles', isset($data) ? $data : NULL);
 	}
-	
-	/**
-	*	@name: hex_2_rgb
-	*	@desc: This function changes hex value to RBG value
-	*	@access: public
-	*	@param: ([var char] hex value)
-	*	@return: returns rbg array
-	*/
-    function hex_2_rgb($hex) 
-    {
-	   $hex = str_replace("#", "", $hex);
-	
-	   if(strlen($hex) == 3) {
-		  $r = hexdec(substr($hex,0,1).substr($hex,0,1));
-		  $g = hexdec(substr($hex,1,1).substr($hex,1,1));
-		  $b = hexdec(substr($hex,2,1).substr($hex,2,1));
-	   } else {
-		  $r = hexdec(substr($hex,0,2));
-		  $g = hexdec(substr($hex,2,2));
-		  $b = hexdec(substr($hex,4,2));
-	   }
-	   $rgb = array($r, $g, $b);
-	   //return implode(",", $rgb); // returns the rgb values separated by commas
-	   return $rgb; // returns an array with the rgb values
-    }
 	
 }

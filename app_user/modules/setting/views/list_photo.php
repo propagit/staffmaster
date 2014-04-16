@@ -2,7 +2,7 @@
     <div class="col-md-2 staff-profile-hero-wrap remove-left-gutter">
         Company Logo <br /><br />
         <div class="picture-box">
-            <div class="profile-company-logo company-logo-thumb-preview">
+            <div class="profile-company-logo">
             <? 
             if(isset($company['company_logo']) && $company['company_logo'] != NULL){?> 
             	<img src="<?=base_url().UPLOADS_URL;?>/company/logo/<?=md5($company['id'])?>/thumbnail/<?=$company['company_logo']?>">

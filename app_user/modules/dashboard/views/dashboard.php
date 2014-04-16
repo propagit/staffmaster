@@ -4,22 +4,8 @@
         <h2>Your Dashboard</h2>
         <p>Welcome to your dashboard. Your dashboard will give you a quick overview of activity going on within Staffmaster. Check back regularly to keep yourself up to date.</p>
         </div>
-        <div class="col-md-3 remove-right-padding remove-left-padding">
-        	<div class="inner-box dash-invoice-stat-wrap">
-            	<div class="invoice-head-wrap">
-            		<span class="dash-invoice-head">Invoice Status</span><a class="invoice-pay-now">Pay Now</a>
-                </div>
-                <hr class="dash-invoice-hr" />
-                <div class="invoice-row">
-                	<span class="col-md-6 dash-invoice-label">System Invoice Due:</span><span class="col-md-6 dash-invoice-value">$885.90</span>
-                </div>
-                <div class="invoice-row">
-                    <span class="col-md-6 dash-invoice-label">Due Date:</span><span class="col-md-6 dash-invoice-value text-custom-danger">27 Days <span class="font-weight-600">(over due)</span></span>
-                </div>
-                <div class="invoice-row">
-                    <span class="col-md-6 dash-invoice-label">System Lock:</span><span class="col-md-6 dash-invoice-value text-custom-danger"><i class="fa fa-exclamation-triangle"></i> 3 Days</span>
-                </div>
-            </div>
+        <div class="pull-right">
+        	<?=modules::run('account/box_credits');?>
         </div>
     </div>
 </div>
