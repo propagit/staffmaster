@@ -10,7 +10,7 @@
 						<label for="exampleInputEmail1">Search Job Campaigns</label>
 						<?=modules::run('job/field_select', 'job_name');?>
 					</div>
-					<a href="<?=base_url();?>job/create" class="btn btn-core"><i class="fa fa-plus"></i> Create New Campaign</a>
+					<a href="<?=base_url();?>job/create" class="btn btn-core top-create-btn"><i class="fa fa-plus"></i> Create New Campaign</a>
 			</div>
 			<? 
 				$shifts_count = modules::run('job/count_job_shifts', $job['job_id']);

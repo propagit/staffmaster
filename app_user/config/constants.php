@@ -26,7 +26,9 @@ include('./../app_public/config/constants.php');
 | These modes are used when working with fopen()/popen()
 |
 */
-
+//SM Reserved Variables
+define('SMTEAM_EMAIL','team@staffmaster.com.au');
+//SM Reserved Variables
 
 $temp_sub_domain = explode(".",$_SERVER['HTTP_HOST']);
 $sub_domain = array_shift($temp_sub_domain);
@@ -34,6 +36,8 @@ define('SUBDOMAIN', $sub_domain);
 define('UPLOADS_PATH' , './user_assets/'.$sub_domain.'/uploads');
 define('EXPORTS_PATH' , './user_assets/'.$sub_domain.'/exports');
 define('UPLOADS_URL','user_assets/'.$sub_domain.'/uploads');
+define('CUR_USER_ASSETS_URL','user_assets/'.$sub_domain);
+define('CUR_USER_ASSETS_PATH','./user_assets/'.$sub_domain);
 
 define('COLOUR_PRIM', '#00b1eb');
 define('COLOUR_SECO', '#ffffff');
@@ -99,6 +103,7 @@ define('TAX_FREE', 3);
 
 define('LOG_WATCHED', 1);
 
+define('LIVE_SERVER',false);
 define('DEV_CK_TOOLS',"['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor'],['Source']");
 define('LIVE_CK_TOOLS',"['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor']");
 

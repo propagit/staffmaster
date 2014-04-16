@@ -97,7 +97,7 @@
 <body>
 
 <header>
-    <div class="container-fluid">
+    <div class="container-fluid" id="sm-head-wrap">
        <div class="row profile-bar">
        		<div class="col-md-12">
             	<div class="logo">
@@ -109,7 +109,7 @@
     </div>
 </header>
 
-<div class="container-fluid">
+<div class="container-fluid" id="sm-body-wrap">
     <div class="row">
         <?=$content;?>
     </div>
@@ -118,7 +118,7 @@
 <div id="sys-fixed-btns">
 	<button class="btn btn-info sys-rt-btn"><i class="fa fa-cogs"></i></button>
     <a href="<?=base_url();?>logout"><div class="btn btn-info sys-rt-btn"><i class="fa fa-power-off"></i></div></a>
-    <button class="btn btn-info sys-rt-btn custom-hidden" id="go-to-top"><i class="fa fa-arrow-up"></i></button>
+    <button class="btn btn-info sys-rt-btn custom-hidden go-to-top"><i class="fa fa-arrow-up"></i></button>
 </div>
 
 <div id="push"></div>
@@ -129,5 +129,12 @@
 <!-- Normal modal -->
 <div class="modal fade bs-modal-sml" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"></div>
 
+
+<footer>
+    <div id="sm-footer-wrap">
+        <div class="footer-copy">&copy; StaffMaster - www.staffmster.com.au</div>
+        <button class="btn footer-go-to-top-btn custom-hidden go-to-top"><i class="fa fa-long-arrow-up footer-go-to-top-arrow"></i></button>
+    </div>
+</footer>
 </body>
 </html>

@@ -8,7 +8,7 @@
 -- PHP Version: 5.5.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+07:00";
+SET time_zone = "+00:00";
 
 --
 -- Database: `staff_master`
@@ -567,7 +567,6 @@ INSERT INTO `countries` (`country_id`, `code`, `name`) VALUES
 (235, 'YE', 'Yemen'),
 (236, 'ZM', 'Zambia'),
 (237, 'ZW', 'Zimbabwe');
-
 -- --------------------------------------------------------
 
 --
@@ -663,7 +662,6 @@ CREATE TABLE IF NOT EXISTS `email_templates` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`email_template_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
 
 
 --
@@ -897,7 +895,6 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `job_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status` tinyint(4) NOT NULL COMMENT '0: temporary, 1: created',
   `client_id` bigint(20) NOT NULL,
-  `department_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `createdon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1171,6 +1168,7 @@ CREATE TABLE IF NOT EXISTS `states` (
   PRIMARY KEY (`state_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+
 --
 -- Dumping data for table `states`
 --
@@ -1392,4 +1390,3 @@ CREATE TABLE IF NOT EXISTS `system_styles` (
 
 INSERT INTO `system_styles` (`style_id`, `primary_colour`, `rollover_colour`, `secondary_colour`, `text_colour`, `modified`) VALUES
 (1, '#00b1eb', '#2a6496', '#ffffff', '#3d3d3d', '2014-04-11 07:46:58');
-

@@ -10,8 +10,8 @@
             <div class="col-md-12">
                 <div class="modal-body staff-contact-modal-body">
                 	<ul class="nav nav-tabs tab-respond" id="nav-contact-staff">
-                        <li class="mobile-tab active"><a class="contact-staff-tab-head" href="#send-email" data-toggle="tab">Send Email</a></li>
-                        <li class="mobile-tab"><a class="contact-staff-tab-head" href="#send-sms" data-toggle="tab">Send SMS</a></li>                            
+                        <li class="mobile-tab active"><a class="contact-staff-tab-head" href="#send-email-modal-window" data-toggle="tab">Send Email</a></li>
+                        <li class="mobile-tab"><a class="contact-staff-tab-head" href="#send-sms-modal-window" data-toggle="tab">Send SMS</a></li>                            
                     </ul>
                     
                     <div class="tab-content">
@@ -56,8 +56,9 @@
                         </div><!--send-email-->	
                         
                         		
-                        <div class="tab-pane" id="send-sms">
-                        
+                        <div class="tab-pane" id="send-sms-modal-window">
+                        	<h4 class="modal-title">Send SMS feature comming soon. </h4>
+                            <p>Don't forget to check the latest Staff Master Updates.</p>
                         </div>
 
                     </div>
