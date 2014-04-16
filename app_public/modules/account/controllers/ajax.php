@@ -5,6 +5,7 @@ class Ajax extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->output->enable_profiler();
 		$this->load->model('account_model');
 	}
 	
@@ -17,29 +18,29 @@ class Ajax extends MX_Controller {
 		
 		# Create account
 		$account_id = $this->account_model->create_account($data);
-		$this->send_activation_code($data);
 		echo json_encode(array(
-			'valid' => true,
-			'msg' => 'Please check your email address for activation instruction'));
+			'valid' => true, 
+			'username' => $data['username'],
+			'code' => $data['activation_code']));
 		
 	}
 	
 	function validate_account($input=array())
 	{
-		$subdomain = strtolower(trim($input['company_name']));
-		$subdomain = preg_replace('/\s+/', '', $subdomain);
+		$username = strtolower(trim($input['company_name']));
+		$username = preg_replace('/\s+/', '', $username);
 		
 		# Validate username length
-		if (strlen($subdomain) < 3 || strlen($subdomain) > 40)
+		if (strlen($username) < 3 || strlen($username) > 40)
 		{
-			echo json_encode(array('valid' => false, 'msg' => 'Invalid sub domain name'));
+			echo json_encode(array('valid' => false, 'msg' => 'Invalid company name'));
 			exit();
 		}
 		
 		# Check if username already exists
-		if ($this->account_model->get_account(array('subdomain' => $subdomain)))
+		if ($this->account_model->get_account(array('username' => $username)))
 		{
-			echo json_encode(array('valid' => false, 'msg' => 'Subdomain already existed'));
+			echo json_encode(array('valid' => false, 'msg' => 'Username already existed'));
 			exit();
 		}
 		
@@ -68,25 +69,11 @@ class Ajax extends MX_Controller {
 		
 		$activation_code = md5($password);
 		return array(
-			'company_name' => $input['company_name'],
-			'subdomain' => $subdomain,
+			'username' => $username,
 			'email_address' => $email_address,
 			'password' => $activation_code,
 			'activation_code' => $activation_code
 		);
 	}
 	
-	function send_activation_code($data)
-	{
-		$data['activation_url'] = base_url() . 'account/setup/' . $data['subdomain'] . '/' . $data['activation_code'];
-		
-		$message = $this->load->view('email/verify', $data, true);
-		modules::run('email/send_email', array(
-			'to' => 'nam@propagate.com.au',
-			'from' => 'webmaster@sm.com',
-			'from_text' => 'Staff Master',
-			'subject' => 'Verify your email address',
-			'message' => $message
-		));
-	}
 }

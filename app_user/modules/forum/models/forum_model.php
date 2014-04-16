@@ -221,7 +221,7 @@ class Forum_model extends CI_Model {
 	function get_replies($topic_id,$total = false)
 	{
 		$sql = "SELECT * FROM forum_messages WHERE topic_id = ".$topic_id;
-		$sql .= " ORDER BY posted_on DESC";
+		$sql .= " ORDER BY posted_on ASC";
 		if($total){
 			$total = $this->db->query($sql)->result();
 			return count($total);

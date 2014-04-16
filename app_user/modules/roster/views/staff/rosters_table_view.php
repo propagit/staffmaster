@@ -29,7 +29,7 @@
 			<td><? $client = modules::run('client/get_client', $roster['client_id']); echo $client['company_name']; ?></td>
 			<td>
 				<? if ($roster['venue_id']) { ?>			
-				<a data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>common/ajax/load_venue_map/<?=$roster['venue_id'];?>"><i class="fa fa-map-marker"></i> &nbsp; <?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?></a>			
+				<a data-toggle="modal" data-target=".venue-map" href="<?=base_url();?>common/ajax/load_venue_map/<?=$roster['venue_id'];?>"><i class="fa fa-map-marker"></i> &nbsp; <?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?></a>			
 				<? } else { ?>
 				Not Specified
 				<? } ?>
@@ -61,6 +61,10 @@
 	</tbody>
 	</table>
 </div>
+
+<div class="modal fade venue-map" tabindex="-1" role="dialog" aria-hidden="true">
+
+</div><!-- /.modal -->
 <script>
 $(function(){
 	var selected_rosters = new Array();	

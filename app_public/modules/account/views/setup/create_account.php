@@ -12,7 +12,7 @@
 		<div class="modal-content">
 			<h2 class="text-success">Awesome!</h2>
 			<p>You are all set and ready to go.<br />
-			Redirecting to your Admin Portal in a few seconds ...</p>
+			Redirecting to your Admin Portal in a few second ...</p>
 		</div>
 	</div>
 </div>
@@ -20,16 +20,8 @@
 <script>
 $(function(){
 	$('#redirectModal').modal('show');
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>account/ajax_setup/send_welcome_email",
-		data: {account: '<?=serialize($account);?>'},
-		success: function(html) {
-			setTimeout(function() {
-				window.location = '<?=$url;?>';
-			}, 2000);
-		}
-	})
-	
+	setTimeout(function() {
+		window.location = '<?=$url;?>';
+	}, 2000);
 })
 </script>

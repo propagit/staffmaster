@@ -50,7 +50,8 @@ $menu = array(
 		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
 		array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
-		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs')
+		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs'),
+		array('path' => 'support/admin_support', 'icon' => 'fa-phone', 'title' => 'Support')
 	))
 );
 ?>

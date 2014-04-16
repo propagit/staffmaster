@@ -1,3 +1,6 @@
+<script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/config.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <div class="col-md-12">
 	<div class="box top-box">
 		<h2>Search Clients</h2>
@@ -72,6 +75,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->   
 
+<div id="ajax-contact-client-modal"></div>
 <script>
 $(function(){
 	$('#btn_search_clients').click(function(){
@@ -86,6 +90,11 @@ $(function(){
 			reset_current_page();
 			search_clients();
 		  }
+	});
+	
+	//send email
+	$(document).on('click','.send-email-from-modal',function(){
+		send_email();
 	});
 })
 function search_clients() {
@@ -114,7 +123,7 @@ function delete_client(user_id){
 function perform_multi_update(action){
 	switch(action){
 		case 'contact-multi-clients':
-			
+			contact_multi_client();
 		break;
 		case 'delete-multi-clients':
 			delete_multi_clients();
@@ -162,5 +171,41 @@ function update_multiple_selected_status()
 			  search_clients();
 		  }
 	  });
+}
+
+function contact_multi_client(){
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/get_send_email_modal",
+		  data: $('#client-search-results-form').serialize(),
+		  success: function(html) {
+			  $('#ajax-contact-client-modal').html(html);
+			  $('#email-modal').modal('show');	
+		  }
+	  });
+		
+}
+
+
+function send_email()
+{
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>client/ajax/send_email",
+		  data: $('#send-email-modal-form').serialize(),
+		  success: function(html) {
+		    $('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);	
+			setTimeout(function(){
+				$('#email-modal').modal('hide');
+			}, 4000);	
+		  }
+	  });	
 }
 </script>

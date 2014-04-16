@@ -24,7 +24,7 @@ function setup_account() {
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>account/ajax_setup/create_account",
-		data: {subdomain: '<?=$subdomain;?>'},
+		data: {username: '<?=$username;?>'},
 		success: function(html) {
 			$('#wp_account').html(html);
 		}

@@ -156,7 +156,7 @@ class Ajax extends MX_Controller {
 		  fclose($fp);
 		}		
 		$config['upload_path'] = $dir;
-		$config['allowed_types'] = 'gif|jpg|png';
+		$config['allowed_types'] = 'gif|jpg|png|jpeg';
 		$config['max_size']	= '4096'; // 4 MB
 		$config['max_width']  = '2000';
 		$config['max_height']  = '2000';
@@ -201,7 +201,7 @@ class Ajax extends MX_Controller {
 			}						
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;
-			$this->imageResizer($target,$target,150,150);	
+			$this->imageResizer($target,$target,260,100);	
 			
 			
 		}
