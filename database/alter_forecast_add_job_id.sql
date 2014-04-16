@@ -1,1 +1,0 @@
-ALTER TABLE `forecast`  ADD `job_id` BIGINT NOT NULL AFTER `forecast_id`

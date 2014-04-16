@@ -1,1 +1,0 @@
-ALTER TABLE `user_staffs` ADD `f_require_gst` INT NOT NULL AFTER `f_abn_3` ;

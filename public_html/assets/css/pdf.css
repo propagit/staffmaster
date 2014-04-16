@@ -1,0 +1,127 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic);
+html,
+body {
+	height: 100%;
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	padding:0px!important;
+}
+
+h1{font-size:22px;font-weight:bold;font-family: 'Lato', sans-serif;}
+h2{font-size:18px;font-weight:bold;font-family: 'Lato', sans-serif;}
+.invoice-title{font-size:32px!important;}
+.tax-title{font-size:26px!important;}
+.expense-break{font-weight:lighter!important;}
+.due-date{font-weight:lighter!important;}
+.line{ 
+	
+	border-bottom: 0.4px dotted #231F20;   
+	height : 0px;
+	margin-bottom:20px;
+	margin-top:5px;
+	border-width:1px;
+}
+.bordernone{
+	border:none; border-collapse:collapse;
+}
+.bottom-10{
+	margin-bottom:10px;
+}
+.top-20{
+	margin-top:20px;
+}
+
+.wp-page-invoice .charge-box-header {
+	background: #25c2f2;
+	color: #fff;
+}
+.wp-page-invoice .charge-box-body {
+	background: #eee;
+}
+.indent {
+	padding-left: 20px;
+}
+.nav li.disabled a,
+.nav li.disabled a:hover {
+	color: #fff;
+}
+
+#badge-paid {
+	position: absolute;
+	width: 181px;
+	height: 79px;
+}
+#badge-paid span {
+	display: block;
+	margin-left: 50px;
+	color: #97040c;
+	font-weight: bold;
+}
+.padding-left-15{
+	padding-left:15px;
+}
+.padding-bottom-15{
+	padding-bottom:15px;
+}
+.padding-top-10{
+	padding-top:10px;
+}
+.padding-top-20{
+	padding-top:20px;
+}
+.padding-top-5{
+	padding-top:5px;
+}
+.padding-top-15{
+	padding-top:15px;
+}
+.padding-top-25{
+	padding-top:25px;
+}
+.break-15{
+	height:15px;
+}
+.charge-amount-width{
+	width:250px;	
+}
+.charge-first-width{
+	width:270px;
+}
+.padding-gst{
+	padding-top:30px;
+	padding-bottom:10px;
+}
+.charge-box-header{
+	background-color:#0AC0F1;
+}
+.charge-box-header-td{
+	height:40px; line-height:40px; width:450px;text-align:left;color:#fff; padding-left:15px;
+}
+.charge-box-detail{
+	background-color:#e9e8e8;height:400px;width:450px;
+}
+.charge-box-detail-td{
+	padding:12px; color:#4D4D4F;
+}
+.charge-box-line{
+border-top:1px dotted #A39B9D;border-bottom:1px dotted #A39B9D;  padding-top:12px;padding-bottom:12px;
+}
+table{
+	font-family: 'Lato', sans-serif;
+	border:none; border-collapse:collapse;
+}
+.expense-break{
+	padding-top:5px; padding-bottom:5px;
+}
+.ccard{
+	width:30px;
+}
+.footer-invoice{
+	font-size:10px;
+}
+.amount-cents-subscript{
+	font-size:80%;
+	position: relative;
+	line-height: 0;
+	vertical-align: baseline;
+}

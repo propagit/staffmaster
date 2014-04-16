@@ -1,1 +1,0 @@
-ALTER TABLE  `brief` ADD  `encoded_url` VARCHAR( 255 ) NOT NULL AFTER  `status` ;

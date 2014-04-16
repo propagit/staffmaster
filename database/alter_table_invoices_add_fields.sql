@@ -1,9 +1,0 @@
-ALTER TABLE `invoices` ADD `client_company_name` VARCHAR( 100 ) NOT NULL AFTER `paid_on` ;
-ALTER TABLE `invoices` ADD `client_address` VARCHAR( 100 ) NOT NULL AFTER `client_company_name` ;
-ALTER TABLE `invoices` ADD `client_suburb` VARCHAR( 100 ) NOT NULL AFTER `client_address` ;
-ALTER TABLE `invoices` ADD `client_state` VARCHAR( 100 ) NOT NULL AFTER `client_suburb` ;
-ALTER TABLE `invoices` ADD `client_postcode` VARCHAR( 100 ) NOT NULL AFTER `client_state` ;
-ALTER TABLE `invoices` ADD `client_phone` VARCHAR( 100 ) NOT NULL AFTER `client_postcode` ;
-ALTER TABLE `invoices` ADD `client_email_address` VARCHAR( 100 ) NOT NULL AFTER `client_phone` ;
-ALTER TABLE `invoices` ADD `profile_company_name` VARCHAR( 100 ) NOT NULL AFTER `client_email_address` ;
-ALTER TABLE `invoices` ADD `profile_abn` VARCHAR( 100 ) NOT NULL AFTER `profile_company_name` ;
