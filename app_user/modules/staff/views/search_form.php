@@ -108,6 +108,15 @@
             
             <div class="row">
 				<div class="form-group">
+					<label for="location" class="col-md-2 control-label">Time Sheet in Payrun</label>
+					<div class="col-md-4">
+						<?=modules::run('common/field_select_yes_no','timesheet_in_payrun');?>
+					</div>
+				</div>				
+			</div>
+            
+            <div class="row">
+				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
                     	<a class="toggle-custom-attrs"><i id="toggle-custom-attrs-fa" class="fa fa-plus-square"></i> Custom Attributes</a>
 					</div>

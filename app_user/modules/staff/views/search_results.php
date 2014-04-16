@@ -32,7 +32,6 @@
             <th class="center ">Rating <i class="fa fa-sort sort-result" sort-by="s.rating"></i></th>
             <th class="center col-md-2">Last Work Day <i class="fa fa-sort sort-result" sort-by="s.last_worked_date"></i></th>
 			<th class="center col-md-2">Last Profile Update <i class="fa fa-sort sort-result" sort-by="u.modified_on"></i></th>
-            <th class="center col-md-2">Time Sheets in Pay Run <i class="fa fa-sort sort-result" sort-by="s.time_sheets_in_payrun"></i></th>
             <th class="center col-md-1">Status <i class="fa fa-sort sort-result" sort-by="u.status"></i></th>
             <th class="center">View</th>
         	<th class="center">Delete</th>
@@ -70,7 +69,6 @@
                 </td>
                 <td class="center"><?=$last_worked;?></td>
                 <td class="center"><?=date('d M Y',strtotime(($staff['modified_on'] == '0000-00-00 00:00:00' ? $staff['created_on'] : $staff['modified_on'])));?></td>
-                <th class="center"><?=$staff['time_sheets_in_payrun'];?></th>
                 <td class="center"><?=($staff['status'] != 0 ? ($staff['status'] == 1 ? 'Active' : 'Inactive') : 'Pending');?></td>
                 <td class="center"><a  href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><i class="fa fa-eye"></i></a></td>
                 <td class="center"><i class="fa fa-times delete-staff" delete-data-id="<?=$staff['user_id'];?>"></i></td>
