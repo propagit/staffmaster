@@ -82,7 +82,7 @@ class Ajax extends MX_Controller {
 		
 		$message = $this->load->view('email/verify', $data, true);
 		modules::run('email/send_email', array(
-			'to' => 'nam@propagate.com.au',
+			'to' => $data['email_address'], #'nam@propagate.com.au',
 			'from' => 'webmaster@sm.com',
 			'from_text' => 'Staff Master',
 			'subject' => 'Verify your email address',

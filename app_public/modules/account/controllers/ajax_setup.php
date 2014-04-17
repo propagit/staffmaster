@@ -66,7 +66,7 @@ class Ajax_setup extends MX_Controller {
 		$data['email'] = $account['email_address'];
 		$message = $this->load->view('email/welcome', $data, true);
 		modules::run('email/send_email', array(
-			'to' => 'nam@propagate.com.au',
+			'to' => $account['email_address'], #'nam@propagate.com.au',
 			'from' => 'webmaster@sm.com',
 			'from_text' => 'Staff Master',
 			'subject' => 'Welcome to Staff Master',

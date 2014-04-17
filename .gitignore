@@ -1,5 +1,5 @@
 # Ignore files / Folder
-application/config/database.php
-application/config/config.php
+app_public/config/constants.php
+public_html/index.php
 .DS_Store?
 #project
