@@ -159,5 +159,8 @@ span.mob-menu-head{
 .footer-go-to-top-arrow{
 	color:<?=$secondary_colour?>;
 }
+.box_credits .title_bc{
+	background:<?=$primary_colour?>;
+}
 
 

@@ -1,6 +1,9 @@
 <hr />
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_clients);?></b> results</p>
+
+<? if(count($total_clients)){?>
+
 <ul class="pagination custom-pagination pull">
 <?=modules::run('common/create_pagination',count($total_clients),CLIENTS_PER_PAGE,$current_page)?>
 </ul>
@@ -98,3 +101,4 @@ $(function(){
 	});
 });//ready
 </script>
+<? } //if total clients?>

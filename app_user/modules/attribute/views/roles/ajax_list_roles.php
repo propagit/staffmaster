@@ -1,4 +1,5 @@
 <?php
+	if(count($roles)){
 	$role_params = json_decode($params);
 	$total_active_staffs = $role_params->total_active_staffs;	
 ?>
@@ -47,3 +48,4 @@ $(function(){
 	});
 });
 </script>
+<? } // if count roles ?>

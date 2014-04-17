@@ -61,9 +61,6 @@
 <!--end bottom box -->
 <script>
 $(function(){
-	//initialize select 2
-	init_select();
-	
 	//send support email
 	$('#lodge-support').on('click',function(){
 		if(help.validate_form('lodge-support-form')){

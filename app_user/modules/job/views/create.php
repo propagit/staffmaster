@@ -53,7 +53,6 @@ a client will be able to filter jobs associated to them by the client department
 
 <script>
 $(function(){
-	init_select();
 	load_client_departments();
 	$('#client_id').change(function(){
 		load_client_departments();

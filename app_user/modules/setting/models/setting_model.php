@@ -40,4 +40,18 @@ class Setting_model extends CI_Model {
 	{
 		return $this->db->where('style_id',1)->update('system_styles',$data);	
 	}
+	
+	function get_information_sheet_configuration($id = '')
+	{
+		if($id){
+			return $this->db->where('information_sheet_config_id',$id)->get('information_sheet_config')->row();
+		}else{
+			return $this->db->get('information_sheet_config')->result();
+		}
+	}
+	
+	function update_information_sheet_configuration($info_sheet_id,$data)
+	{
+		return $this->db->where('information_sheet_config_id',$info_sheet_id)->update('information_sheet_config',$data);	
+	}
 }

@@ -1704,6 +1704,13 @@ ol.example li.placeholder:before {
 	margin:-45px 0 0 0;	
 }
 
+/* information sheet */
+.info-sheet-hr{
+	border-bottom:1px dashed #4d4d4f;	
+}
+.info-sheet-label{
+	width:220px;	
+}
 /* popover */
 
 
@@ -2011,4 +2018,7 @@ ol.example li.placeholder:before {
 .top-create-btn{
 	margin-top:10px;
 	float:right;	
+}
+.v-align-bottom{
+	vertical-align:bottom;	
 }

@@ -143,6 +143,10 @@ class Upload extends MX_Controller {
 	*/
 	function resize_photo($name,$directory,$sub,$width,$height,$maintain_ratio = TRUE) 
 	{
+		$image_size = getimagesize($directory.'/'.$name);
+		if($image_size[0] < $width){
+			$width = $image_size[0];	
+		}
 		$config = array();
 		$config['source_image'] = $directory."/".$name;
 		$config['create_thumb'] = FALSE;

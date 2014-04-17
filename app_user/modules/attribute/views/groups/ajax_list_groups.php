@@ -1,4 +1,5 @@
 <?php
+if(count($groups)){ 
 	$group_params = json_decode($params);
 	$total_active_staffs = $group_params->total_active_staffs;	
 ?>
@@ -50,3 +51,4 @@ $(function(){
 
 });
 </script>
+<?php } //if count groups ?>

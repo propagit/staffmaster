@@ -34,6 +34,9 @@ class Brief extends MX_Controller {
 			case 'view':
 				$this->view($param);
 			break;
+			case 'view_information_sheet':
+				$this->view_information_sheet($param);
+			break;
 			default:
 				$this->list_view($param);
 			break;
@@ -153,6 +156,15 @@ class Brief extends MX_Controller {
 		}
 	}
 	
+	function view_information_sheet($shift_id = '')
+	{
+		$this->load->model('setting/setting_model');
+		$data['shift_info'] = $this->job_shift_model->get_shift_info($shift_id);
+		$data['info_sheet_config'] = $this->setting_model->get_information_sheet_configuration();
+		$data['company_info'] = $this->setting_model->get_profile();
+		
+		$this->load->view('brief_viewer/view_information_sheet', isset($data) ? $data : NULL);	
+	}	
 
 
 

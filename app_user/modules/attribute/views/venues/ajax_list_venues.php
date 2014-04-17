@@ -1,3 +1,4 @@
+<?php if(count($total_venues)){ ?>
 <hr />
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_venues);?></b> results</p>
@@ -76,3 +77,4 @@ $(function(){
 	});
 });
 </script>
+<?php }// if count total venues ?>

@@ -72,7 +72,7 @@ class Dispatcher extends MX_Controller {
 		}
 		
 		
-		if($controller == 'brief' && (($method == 'view_brief')))
+		if($controller == 'brief' && (($method == 'view_brief' || $method == 'view_information_sheet')))
 		{
 			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
 			$title = ucwords($controller);
@@ -105,7 +105,7 @@ class Dispatcher extends MX_Controller {
 		{
 			$this->template->set_template('invoice');
 		}
-		elseif($controller == 'brief' && (($method == 'view_brief')))
+		elseif($controller == 'brief' && (($method == 'view_brief' || $method == 'view_information_sheet')))
 		{
 			$this->template->set_template('brief');	
 		}

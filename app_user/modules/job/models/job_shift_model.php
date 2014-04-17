@@ -505,6 +505,29 @@ class Job_shift_model extends CI_Model {
 			
 	}
 	
+	/**
+	*	@name: get_shift_info_for_information_sheet
+	*	@desc: Performs Database operation - to get shift information - mostly used while populating shift info for shift information
+	*	@access: public
+	*	@param: ([int] shift_id )
+	*	@return: Shift information
+	*/
+	function get_shift_info_for_information_sheet($shift_id)
+	{
+		$sql = "SELECT 
+					js.*, 
+					v.*, 
+					j.name as campaign_name 
+				FROM `job_shifts` js
+					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
+					LEFT JOIN `jobs` j ON j.job_id = js.job_id 
+				WHERE js.shift_id = '" . $shift_id . "'";
+		$shift_info = $this->db->query($sql)->row();
+		
+		return $shift_info;
+			
+	}
+	
 	function add_request_staff($data)
 	{
 		$this->db->insert('job_shift_client_request', $data);

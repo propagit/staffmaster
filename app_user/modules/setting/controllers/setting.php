@@ -26,14 +26,14 @@ class Setting extends MX_Controller {
 			case 'create_pdf':
 					$this->create_pdf();
 				break;
-			case 'system_styles':
-					$this->system_styles();
-				break;
 			case 'update_system_styles':
 					$this->update_system_styles();
 				break;
 			case 'custom_css':
 					$this->custom_css();
+				break;
+			case 'system_settings':
+					$this->system_settings();
 				break;
 			default:
 					$this->company();
@@ -158,28 +158,14 @@ class Setting extends MX_Controller {
 		return $this->setting_model->get_profile();		
 	}
 	
-	/**
-	*	@name: system_styles
-	*	@desc: Provides UI to change system colour
-	*	@access: public
-	*	@param: (null)
-	*	@return: Loads UI to change system styles
-	*/
-	function system_styles()
-	{
-		$data['styles'] = array(
-							'primary_colour' => COLOUR_PRIM,
-							'rollover_colour' => COLOUR_ROLL,
-							'secondary_colour' => COLOUR_SECO,
-							'text_colour' => TEXT_COLOUR
-							);
-		$current_styles = $this->setting_model->get_system_styles(1);
-		if($current_styles){
-			$data['styles'] = $current_styles;	
-		}
-		$this->load->view('system_styles', isset($data) ? $data : NULL);
-	}
 	
+	/**
+	*	@name: update_system_styles
+	*	@desc: Updates System styles
+	*	@access: public
+	*	@param: ([vai post] primary colour, secondary colour, rollover colour, text colour)
+	*	@return: reloads system styles page
+	*/
 	function update_system_styles()
 	{
 		$data = array(
@@ -190,6 +176,38 @@ class Setting extends MX_Controller {
 					'modified' => date('Y-m-d H:i:s')
 				);
 		$this->setting_model->update_system_styles($data);
-		redirect('setting/system_styles');
+		redirect('setting/system_settings');
 	}
+	/**
+	*	@name: delete_company_logo
+	*	@desc: Deletes old company logo as new one is added to the system
+	*	@access: public
+	*	@param: ([string] path to the file, file name)
+	*	@return: null
+	*/
+	function delete_company_logo($path,$file_name)
+	{
+		//delete main image
+		if(file_exists($path.'/'.$file_name)){
+			unlink($path.'/'.$file_name);
+		}
+		//delete thumb
+		if(file_exists($path.'/thumbnail/'.$file_name)){
+			unlink($path.'/thumbnail/'.$file_name);
+		}	
+	}
+	
+	/**
+	*	@name: system_settings
+	*	@desc: Provides UI to update system settings such as system styles, information sheet configuration etc
+	*	@access: public
+	*	@param: (null)
+	*	@return: Loads UI to change system settings
+	*/
+	function system_settings()
+	{
+		$this->load->view('system_settings/main_view', isset($data) ? $data : NULL);
+	}
+	
+	
 }
