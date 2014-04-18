@@ -67,8 +67,10 @@ class Ajax extends MX_Controller {
 		
 		if ($result) # Successful transaction
 		{
+			# Add credits
 			$this->account_model->add_credits($credits);
 			# Send the receipt
+			
 			echo 'true';
 		}
 		

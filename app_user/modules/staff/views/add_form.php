@@ -15,14 +15,16 @@
             <ul class="nav nav-tabs tab-respond">
             	<li class="pull-right"><a href="<?=base_url();?>staff/import">Import Staff</a></li>
 				<li class="mobile-tab active"><a>Personal Details</a></li>
+				<li class="mobile-tab disabled"><a>Pictures</a></li>
 				<li class="mobile-tab disabled"><a>Financial Details</a></li>
 				<li class="mobile-tab disabled"><a>Super Details</a></li>
-				<li class="mobile-tab disabled"><a>Availability</a></li>
 				<li class="mobile-tab disabled"><a>Roles</a></li>
-				<li class="mobile-tab disabled"><a>Options</a></li>
-				<li class="mobile-tab disabled"><a>Location</a></li>
-				<li class="mobile-tab disabled"><a>Settings</a></li>
+				<li class="mobile-tab disabled"><a>Availability</a></li>
+				<li class="mobile-tab disabled"><a>Locations</a></li>
+				<li class="mobile-tab disabled"><a>Groups</a></li>
+				<li class="mobile-tab disabled"><a>Attributes</a></li>
 				<li class="mobile-tab disabled"><a>Documents</a></li>
+				<li class="mobile-tab disabled"><a>Settings</a></li>
 			</ul>
         
 	        <p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>

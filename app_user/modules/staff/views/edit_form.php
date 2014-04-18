@@ -36,7 +36,9 @@
                 <? } ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>
                 <li class="<?=($this->session->flashdata('load_document_tab')? 'active' : '');?>  mobile-tab"><a href="#documents" data-toggle="tab">Documents</a></li>
-                <li class="mobile-tab"><a href="#settings" data-toggle="tab">Settings</a></li>                                
+                <? if(modules::run('auth/is_admin')){ ?>
+                <li class="mobile-tab"><a href="#settings" data-toggle="tab">Settings</a></li>
+                <? } ?>
 			</ul>
 			
 			<div class="tab-content">

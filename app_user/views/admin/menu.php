@@ -29,8 +29,8 @@ $menu = array(
 		array('path' => 'payrun', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Run'),
 		array('path' => 'expense', 'icon' => 'fa-dollar', 'title' => 'Staff Expenses'),
 		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
-		array('path' => '#', 'icon' => 'fa-credit-card', 'title' => 'Pay Bills'),
-		array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Buy SMS Credits')
+		array('path' => 'account/buy_credits', 'icon' => 'fa-credit-card', 'title' => 'Buy Credits'),
+		#array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Buy SMS Credits')
 	)),
 	array('path' => '#', 'icon' => 'fa-lightbulb-o', 'title' => 'Training Centre', 'sub' => array(
 		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
