@@ -31,7 +31,12 @@ switch($log['action']) {
 			echo ', ';
 		}
 		switch($field) {
-			case 'status':	echo 'status to <b>' . modules::run('job/shift/status_to_text', $value) . '</b>';
+			case 'status': 
+					$status = modules::run('job/shift/status_to_text', $value);
+					if ($status != '')
+					{
+						echo 'status to <b>' . $status . '</b>';
+					}
 				break;
 			case 'start_time': echo 'start time to <b>' . date('H:i', $value) . '</b>';
 				break;
@@ -49,7 +54,14 @@ switch($log['action']) {
 				break;
 			case 'staff_id': 
 					$staff = modules::run('user/get_user', $value);
-					echo 'staff to <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b>';
+					if ($staff)
+					{
+						echo 'staff to <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b>';
+					}
+					else
+					{
+						echo 'staff to No Staff Assigned';
+					}
 				break;
 			case 'supervisor_id': 
 					$supervisor = modules::run('user/get_user', $value);

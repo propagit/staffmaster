@@ -57,12 +57,12 @@ class Log_model extends CI_Model {
 			'staff' => array('delete'),
 			'client' => array('delete')
 		);
-		$sql = "SELECT * FROM `logs` WHERE";
+		$sql = "SELECT * FROM `logs` WHERE (";
 		foreach($courses as $object => $actions)
 		{
-			$sql .= " (`object` = '$object' AND `action` IN ('" . implode("','", $actions) . "')) OR ";
+			$sql .= "(`object` = '$object' AND `action` IN ('" . implode("','", $actions) . "')) OR ";
 		}
-		$sql .= " 1=0";
+		$sql .= " 1=0)";
 		if (!modules::run('auth/is_admin'))
 		{
 			$sql .= " AND user_id = " . $this->user_id;
