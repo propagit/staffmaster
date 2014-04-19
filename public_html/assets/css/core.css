@@ -2022,3 +2022,6 @@ ol.example li.placeholder:before {
 .v-align-bottom{
 	vertical-align:bottom;	
 }
+.v-align-top{
+	vertical-align:top;	
+}

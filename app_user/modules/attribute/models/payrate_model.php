@@ -94,4 +94,14 @@ class Payrate_model extends CI_Model {
 		return $this->db->delete('attribute_payrate_data');
 	}
 	
+	function get_minimum_payrate($payrate_id,$payrate_type = 0)
+	{
+		$payrate = $this->db->select_min('value')
+							->where('payrate_id',$payrate_id)
+							->where('type',$payrate_type)
+							->get('attribute_payrate_data')
+							->row();
+		return $payrate->value;
+	}
+	
 }

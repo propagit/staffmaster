@@ -31,8 +31,7 @@
 
 <?php
 	//echo '<pre>'.print_r($shift_info,true).'</pre>';
-	$break = json_decode($shift_info->break_time);
-	//echo '<pre>'.print_r($break,true).'</pre>';
+	//echo '<pre>'.print_r($breaks,true).'</pre>';
 ?>
 <table width="100%">
 	<tr>
@@ -43,9 +42,13 @@
     	<td width="info-sheet-label">Client Name:</td>
         <td><?=$shift_info->campaign_name;?></td>
     </tr>
-    <tr>
+    <tr valign="top">
     	<td width="info-sheet-label">Venue:</td>
-        <td><?=$shift_info->venue_name;?></td>
+        <td>
+			<?=$shift_info->venue_name;?><br />
+        	<?=$shift_info->venue_address;?><br />
+        	<?=$shift_info->venue_suburb.' '.$shift_info->venue_postcode;?>
+        </td>
     </tr>
     <tr>
     	<td width="info-sheet-label">Shift Date:</td>
@@ -55,28 +58,37 @@
     	<td width="info-sheet-label">Shift Time:</td>
         <td><?=date('H:i',$shift_info->start_time).' - '.date('H:i',$shift_info->finish_time);?></td>
     </tr>
+    <?php 
+	if($breaks){ 
+		foreach($breaks as $key=>$val){
+	?>
     <tr>
     	<td width="info-sheet-label">Break:</td>
-        <td><?=$break[0]->length/100;?> Mins</td>
+        <td><?=$breaks[$key]->length/60;?> Mins</td>
     </tr>
     <tr>
     	<td width="info-sheet-label">Break Start:</td>
-        <td><?=date('H:i',$break[0]->start_at);?></td>
+        <td><?=date('H:i',$breaks[$key]->start_at);?></td>
     </tr>
+    <?		
+		}
+	}
+	?>
+    
     <tr>
     	<td width="info-sheet-label">Role:</td>
-        <td><?=$shift_info->role_id;?></td>
+        <td><?=$shift_info->role_name;?></td>
     </tr>
     <tr>
     	<td width="info-sheet-label">Pay Rate:</td>
-        <td><?=$shift_info->payrate_id;?></td>
+        <td><?=$payrate['name'] . ' ($' .modules::run('attribute/payrate/get_minimum_payrate',$shift_info->payrate_id).') penalty rates may apply';?></td>
     </tr>
     <tr>
     	<td width="info-sheet-label">Uniform:</td>
-        <td><?=$shift_info->uniform_id;?></td>
+        <td><?=$shift_info->uniform_name;?></td>
     </tr>
     <tr>
     	<td width="info-sheet-label">Expenses:</td>
-        <td><?=$shift_info->expenses;?></td>
+        <td><?=($shift_info->expenses ? $shift->expenses : 'None');?></td>
     </tr>
 </table>

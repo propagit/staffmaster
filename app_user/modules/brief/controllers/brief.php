@@ -159,10 +159,12 @@ class Brief extends MX_Controller {
 	function view_information_sheet($shift_id = '')
 	{
 		$this->load->model('setting/setting_model');
-		$data['shift_info'] = $this->job_shift_model->get_shift_info($shift_id);
+		$shift_info =  $this->job_shift_model->get_shift_info_for_information_sheet($shift_id);
+		$data['shift_info'] = $shift_info;
 		$data['info_sheet_config'] = $this->setting_model->get_information_sheet_configuration();
 		$data['company_info'] = $this->setting_model->get_profile();
-		
+		$data['breaks'] = json_decode($shift_info->break_time);
+		$data['payrate'] = modules::run('attribute/payrate/get_payrate',$shift_info->payrate_id);
 		$this->load->view('brief_viewer/view_information_sheet', isset($data) ? $data : NULL);	
 	}	
 

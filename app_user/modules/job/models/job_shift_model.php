@@ -516,11 +516,19 @@ class Job_shift_model extends CI_Model {
 	{
 		$sql = "SELECT 
 					js.*, 
-					v.*, 
-					j.name as campaign_name 
+					v.name as venue_name, 
+					v.address as venue_address, 
+					v.suburb as venue_suburb, 
+					v.postcode as venue_postcode, 
+					v.state as venue_state, 
+					u.name as uniform_name,
+					j.name as campaign_name,
+					r.name as role_name  
 				FROM `job_shifts` js
-					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
+					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id 
 					LEFT JOIN `jobs` j ON j.job_id = js.job_id 
+					LEFT JOIN `attribute_uniforms` u ON u.uniform_id = js.uniform_id 
+					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id 
 				WHERE js.shift_id = '" . $shift_id . "'";
 		$shift_info = $this->db->query($sql)->row();
 		
