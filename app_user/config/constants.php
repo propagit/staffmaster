@@ -38,6 +38,8 @@ define('EXPORTS_URL' , 'user_assets/'.$sub_domain.'/exports');
 define('CUR_USER_ASSETS_URL','user_assets/'.$sub_domain);
 define('CUR_USER_ASSETS_PATH','./user_assets/'.$sub_domain);
 
+define('GOOGLE_MAP_API', 'AIzaSyBXS2w40hmb0AKyCIRTj8AaVHSFQ4cnYEQ');
+
 define('COLOUR_PRIM', '#00b1eb');
 define('COLOUR_SECO', '#ffffff');
 define('COLOUR_ROLL', '#2a6496');

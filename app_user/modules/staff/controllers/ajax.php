@@ -375,6 +375,19 @@ class Ajax extends MX_Controller {
 			$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
 		}
 	}
+	
+	function update_level_access()
+	{
+		$user_id = $this->input->post('user_id');
+		$level = $this->input->post('level');
+		$data['is_admin'] = 0;
+		if ($level == 'admin')
+		{
+			$data['is_admin'] = 1;
+		}
+		$this->user_model->update_user($user_id, $data);
+	}
+	
 	/**
 	*	@desc Displayes all the available groups in the system and the roles that has been asigned to the staff.
 	*

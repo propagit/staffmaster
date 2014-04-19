@@ -1,18 +1,22 @@
 <div class="staff-profile-detail-box">
-	<h2> Settings </h2>
-	<p> Staff can choose the "setting" </p>
+	<h2>Settings</h2>
 </div>
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" id="form-level-access">
 <div class="row">
 	<div class="form-group">
 		<label for="title" class="col-md-2 control-label">Level Access</label>
 		<div class="col-md-4">
 			<?
+				$value = 'staff';
+				if ($staff['is_admin'])
+				{
+					$value = 'admin';
+				}
 				$array = array(
-					array('value' => 'Staff', 'label' => 'Staff'),
-					array('value' => 'Admin', 'label' => 'Admin')
+					array('value' => 'staff', 'label' => 'Staff'),
+					array('value' => 'admin', 'label' => 'Admin')
 				);
-				echo modules::run('common/field_select', $array, 'level_access');
+				echo modules::run('common/field_select', $array, 'level_access', $value);
 			?>
 		</div>
 	</div>
@@ -53,3 +57,20 @@
 	</div>
 	*/ ?>
 </div>
+
+<script>
+$(function(){
+	$('#level_access').change(function(){
+		preloading($('#form-level-access'));
+		var level = $(this).val();
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>staff/ajax/update_level_access",
+			data: {user_id: <?=$staff['user_id']?>, level: level},
+			success: function(html) {
+				loaded($('#form-level-access'));
+			}
+		})
+	})
+})
+</script>

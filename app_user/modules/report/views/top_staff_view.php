@@ -59,7 +59,7 @@ function top_staff_chart() {
                         borderWidth: 0,
                         dataLabels: {
                             enabled: true,
-                            format: '{point.y} hours'
+                            format: '{point.y}'
                         }
                     }
                 },

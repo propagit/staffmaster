@@ -18,14 +18,20 @@
     		<p>1 system credit allows you to create 1 shift for 1 staff</p>
     		<div class="row">
     		<? foreach($prices as $price) { ?>
-			<div class="box_credits col-md-2">
-    			<div class="title_bc">Buy <?=$price['min'];?>-<?=$price['max'];?> Credits</div>
-    			<div class="content_bc">
-    				<h2>$<?=money_format('%i', $price['unit_price']);?></h2>
-    				per credit
-    			</div>
-    		</div>
+				<div class="box_credits col-md-2">
+	    			<div class="title_bc">Buy <?=$price['min'];?>-<?=$price['max'];?> Credits</div>
+	    			<div class="content_bc">
+	    				<h2>$<?=money_format('%i', $price['unit_price']);?></h2>
+	    				per credit
+	    			</div>
+	    		</div>
     		<? } ?>
+    			<div class="box_credits col-md-2">
+	    			<div class="title_bc">Buy 25,000+ Credits</div>
+	    			<div class="content_bc">
+	    				<h2>Call Us</h2>&nbsp; 
+	    			</div>
+	    		</div>
     		</div>
     		<br /><br />
     		<form class="form-horizontal" id="form_buy_credits" role="form">

@@ -126,8 +126,8 @@ class Ajax extends MX_Controller {
 		
 		#$filter_data['payrate_type'] = $data['payrate_type'];
 		
-		$count = $data['count'];
-		if ($count < 1)
+		$count = (int) $data['count'];
+		if ($count < 1 || $count > modules::run('account/get_credits'))
 		{
 			echo json_encode(array('ok' => false, 'error_id' => 'count'));
 			return;

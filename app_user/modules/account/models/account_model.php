@@ -6,12 +6,12 @@ class Account_model extends CI_Model {
 	{
 		$query = $this->db->get('account');
 		$result = $query->first_row('array');
-		return $result['credits'];
+		return (int) $result['credits'];
 	}
 	
 	function add_credits($credits)
 	{
-		$credits += (int)$this->get_credits();
+		$credits += $this->get_credits();
 		return $this->db->update('account', array('credits' => $credits));
 	}
 	
