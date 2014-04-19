@@ -670,3 +670,9 @@ span.dash-invoice-value{
 	width:48px;
 	height:48px;	
 }
+
+#list-tasks .list-group-item h3 {
+	margin: 0;
+	padding: 10px 0;
+	font-weight: 600;
+}

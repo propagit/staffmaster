@@ -41,6 +41,9 @@ a:hover {
 	color: #0089b5;
 
 }
+h1, h2, h3, h4, h5, h6 {
+	font-family:'Lato', sans-serif;
+}
 .text-red {
 	color: #ff0000;
 }

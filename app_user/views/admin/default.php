@@ -5,7 +5,7 @@
 	<title><?=$title;?> &middot; Admin Portal &middot; Staff Master</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap -->
-	<link href="<?=base_url();?>assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="<?=base_url();?>assets/css/bootstrap.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="<?=base_url();?>assets/font-awesome/css/font-awesome.min.css">
 	
 	<!--[if IE 7]>

@@ -33,6 +33,16 @@ class Dashboard extends MX_Controller {
 		$this->load->view('dashboard', isset($data) ? $data : NULL);
 	}
 	
+	function welcome_view()
+	{
+		$data['company_profile'] = $this->dashboard_model->check_company_profile();
+		$data['has_staff'] = $this->dashboard_model->check_has_staff();
+		$data['has_client'] = $this->dashboard_model->check_has_client();
+		$data['has_payrate'] = $this->dashboard_model->check_has_payrate();
+		$data['has_venue'] = $this->dashboard_model->check_has_venue();
+		$this->load->view('welcome_view', isset($data) ? $data : NULL);
+	}
+	
 	function load_daily_statistics()
 	{
 		$today = date('Y-m-d');

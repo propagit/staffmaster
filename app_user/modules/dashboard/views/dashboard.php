@@ -13,6 +13,8 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="col-md-6 white-box">
+			<?=modules::run('dashboard/welcome_view');?>
+			
         	<div class="inner-box desktop-hidden-lg add-bottom-margin">
                 <?=modules::run('dashboard/load_daily_statistics');?>
             </div>
