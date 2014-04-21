@@ -224,5 +224,17 @@ class Ajax extends MX_Controller {
 		}
 		$this->load->view('brief_viewer/brief_preview_brief_viewer', isset($data) ? $data : NULL);	
 	}
+	/**
+	*	@name: load_brief_for_brief_viewer
+	*	@desc: Ajax function to load the preview of the shift information sheet
+	*	@access: public
+	*	@param: ([via post] shift id)
+	*	@return: Loads a preview of information sheet
+	*/
+	function load_information_sheet_for_brief_viewer()
+	{
+		$shift_id = $this->input->post('shift_id');
+		echo modules::run('brief/view_information_sheet',$shift_id);
+	}
 	
 }

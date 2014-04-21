@@ -20,12 +20,14 @@ body,
 	color:<?=$text_colour?>;
 }
 a,
+.forgot-password,
 .action_image,
 .text-blue,
 .profile-menu ul li a{
 	color:<?=$primary_colour?>;
 }
 a:hover,
+.forgot-password:hover,
 .profile-menu ul li a:hover,
 .action_image :hover{
 	color:<?=$rollover_colour?>;

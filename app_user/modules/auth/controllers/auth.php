@@ -39,7 +39,9 @@ class Auth extends MX_Controller {
 	
 	function login_user()
 	{
+		$this->template->add_css('custom_styles');
 		$this->template->write('title', 'Staff Master');
+		
 		if ($this->input->post())
 		{
 			if (isset($_POST['username']) && isset($_POST['password']))

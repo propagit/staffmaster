@@ -355,9 +355,9 @@ ol.example li.placeholder:before {
 #nav-wrap{ 
 	background-image:url(../img/core/nav-texture-bg.png); 
 	background-repeat:repeat; 
-	background-color:#00b1eb;
+	/* background-color:#00b1eb; */
 	min-height:49px; 
-	border-bottom:1px solid #2fa5cc;
+	/* border-bottom:1px solid #2fa5cc; */
 }
 
 #nav-wrap .top-nav{ 
@@ -1710,6 +1710,21 @@ ol.example li.placeholder:before {
 }
 .info-sheet-label{
 	width:220px;	
+}
+.info-sheet-h2{
+	margin-top:10px;	
+}
+.info-sheet-text{
+	font-size:18px;	
+}
+.info-sheet-details-table td{
+	padding-bottom:5px;
+}
+.info-sheet-bold-txt{
+	font-weight:600;
+}
+.info-sheet-bolder-txt{
+	font-weight:800;
 }
 /* popover */
 

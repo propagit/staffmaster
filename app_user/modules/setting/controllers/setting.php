@@ -209,5 +209,22 @@ class Setting extends MX_Controller {
 		$this->load->view('system_settings/main_view', isset($data) ? $data : NULL);
 	}
 	
+	/**
+	*	@name: get_information_sheet_config_status
+	*	@desc: This function checks if an element of the information sheet is set as active or not
+	*	@access: public
+	*	@param: ([int] information_sheet_config_id)
+	*	@return: returns information sheet status
+	*/
+	function get_information_sheet_config_status($information_sheet_config_id)
+	{
+		$info_sheet_status = $this->setting_model->get_information_sheet_configuration($information_sheet_config_id);
+		if($info_sheet_status->element_active == 'yes'){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	
 }

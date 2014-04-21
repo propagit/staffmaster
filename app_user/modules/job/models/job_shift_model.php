@@ -465,13 +465,13 @@ class Job_shift_model extends CI_Model {
 	}
 	
 	/**
-	*	@name: get_shift_brief_by_shif_id
+	*	@name: get_shift_brief_by_shift_id
 	*	@desc: Performs Database operation - to get brief attached to a shift by shift id
 	*	@access: public
 	*	@param: ([int] shift_id )
 	*	@return: List of shifts
 	*/
-	function get_shift_brief_by_shif_id($shift_id)
+	function get_shift_brief_by_shift_id($shift_id)
 	{
 		$sql = "SELECT b.* 
 				FROM brief b,shift_brief sb
@@ -523,6 +523,7 @@ class Job_shift_model extends CI_Model {
 					v.state as venue_state, 
 					u.name as uniform_name,
 					j.name as campaign_name,
+					j.client_id, 
 					r.name as role_name  
 				FROM `job_shifts` js
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id 
@@ -562,6 +563,16 @@ class Job_shift_model extends CI_Model {
 		$this->db->where('staff_id', $staff_id);
 		$query = $this->db->get('job_shift_client_request');
 		return $query->num_rows();
+	}
+	
+	function get_other_working_staff($shift)
+	{
+		$sql = "SELECT staff_id 
+				FROM job_shifts 
+				WHERE job_id = ".$shift->job_id." 
+				AND job_date = '".$shift->job_date."' 
+				AND (start_time >= '".$shift->start_time."' AND finish_time <= '".$shift->finish_time."')";
+		return $this->db->query($sql)->result();
 	}
 	
 }

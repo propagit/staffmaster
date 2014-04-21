@@ -143,4 +143,16 @@ class Shift extends MX_Controller {
 			}
 		}
 	}
+	
+	/**
+	*	@name: toggle_shift_information_sheet_status
+	*	@desc: Toggle information sheet from a shift. It is done by changing the information_sheet status to 0 'zero' or 1 'one' in job_shifts table
+	*	@access: public
+	*	@param: ([array] shift id, information sheet status)
+	*	@return: success or failed status
+	*/
+	function toggle_shift_information_sheet_status($params)
+	{	
+		return $this->job_shift_model->update_job_shift($params['shift_id'],array('information_sheet' => $params['status']));
+	}
 }

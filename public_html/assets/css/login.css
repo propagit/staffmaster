@@ -57,6 +57,12 @@ i {
 .pull{
 	float:right;	
 }
+.login-btn{
+	background-repeat:repeat;
+	background-color:#00b1eb;
+	background-image:url(../img/core/nav-texture-bg.png); 
+	border-color:rgba(255,255,255,0.25);
+}
 .btn-social{
 	margin-bottom:15px;	
 }

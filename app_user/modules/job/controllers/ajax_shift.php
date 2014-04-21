@@ -289,6 +289,7 @@ class Ajax_shift extends MX_Controller {
 	{
 		$shift_id = $this->input->post('shift_id');	
 		$data['briefs'] = $this->job_shift_model->get_shift_briefs($shift_id);
+		$data['shift_info'] = $this->job_shift_model->get_job_shift($shift_id);
 		echo $this->load->view('shift/brief/ajax_existing_shift_brief_list', isset($data) ? $data : NULL);	
 	}
 	/**
@@ -302,21 +303,31 @@ class Ajax_shift extends MX_Controller {
 	{
 		$shift_id = $this->input->post('shift_id');
 		$brief_id = $this->input->post('existing_brief');
-		$msg = '';
-		if($shift_id && $brief_id){
-			$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
-			if(!$shift_brief_exist){
-				$data = array(
-							'shift_id' => $shift_id,
-							'brief_id' => $brief_id
-							);	
-				$this->job_shift_model->add_brief($data);
-				$msg = 'success';
-			}else{
-				$msg = 'duplicate';	
-			}
+		if($brief_id == 'information_sheet'){
+			//add information sheet to this to this shift
+			$params = array(
+					'shift_id' => $shift_id,
+					'status' => 1
+					);
+			modules::run('job/shift/toggle_shift_information_sheet_status',$params);
+			$msg = 'success';	
 		}else{
-			$msg = 'failed';	
+		$msg = '';
+			if($shift_id && $brief_id){
+				$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+				if(!$shift_brief_exist){
+					$data = array(
+								'shift_id' => $shift_id,
+								'brief_id' => $brief_id
+								);	
+					$this->job_shift_model->add_brief($data);
+					$msg = 'success';
+				}else{
+					$msg = 'duplicate';	
+				}
+			}else{
+				$msg = 'failed';	
+			}
 		}
 		echo $msg;
 		
@@ -335,15 +346,26 @@ class Ajax_shift extends MX_Controller {
 		$msg = '';
 		$shift_ids_arr = explode('~',$shift_ids);
 		if($shift_ids_arr){
-			foreach($shift_ids_arr as $shift_id){
-				if($shift_id && $brief_id){
-					$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
-					if(!$shift_brief_exist){
-						$data = array(
-									'shift_id' => $shift_id,
-									'brief_id' => $brief_id
-									);	
-						$this->job_shift_model->add_brief($data);
+			if($brief_id == 'information_sheet'){
+				//add information sheet to this to these shift
+				foreach($shift_ids_arr as $shift_id){
+					$params = array(
+							'shift_id' => $shift_id,
+							'status' => 1
+							);
+					modules::run('job/shift/toggle_shift_information_sheet_status',$params);
+				}
+			}else{
+				foreach($shift_ids_arr as $shift_id){
+					if($shift_id && $brief_id){
+						$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+						if(!$shift_brief_exist){
+							$data = array(
+										'shift_id' => $shift_id,
+										'brief_id' => $brief_id
+										);	
+							$this->job_shift_model->add_brief($data);
+						}
 					}
 				}
 			}
@@ -365,11 +387,22 @@ class Ajax_shift extends MX_Controller {
 		$msg = '';
 		$shift_ids_arr = explode('~',$shift_ids);
 		if($shift_ids_arr){
-			foreach($shift_ids_arr as $shift_id){
-				if($shift_id && $brief_id){
-					$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
-					if($shift_brief_exist){
-						$this->job_shift_model->delete_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+			if($brief_id == 'information_sheet'){
+				//remove information sheet to from these shift
+				foreach($shift_ids_arr as $shift_id){
+					$params = array(
+							'shift_id' => $shift_id,
+							'status' => 0
+							);
+					modules::run('job/shift/toggle_shift_information_sheet_status',$params);
+				}
+			}else{
+				foreach($shift_ids_arr as $shift_id){
+					if($shift_id && $brief_id){
+						$shift_brief_exist = $this->job_shift_model->get_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+						if($shift_brief_exist){
+							$this->job_shift_model->delete_shift_brief_by_shift_and_brief_id($shift_id,$brief_id);
+						}
 					}
 				}
 			}
@@ -392,6 +425,21 @@ class Ajax_shift extends MX_Controller {
 		//delete brief element
 		$this->job_shift_model->delete_shift_brief($shift_brief_id);
 		echo 'success';
+	}
+	/**
+	*	@name: delete_shift_information_sheet
+	*	@desc: Remove information sheet from a shift. It is done by changing the information_sheet status to 0 'zero' in job_shifts table
+	*	@access: public
+	*	@param: ([via post] shift id, information sheet status)
+	*	@return: success or failed status
+	*/
+	function delete_shift_information_sheet()
+	{
+		$params = array(
+					'shift_id' => $this->input->post('shift_id'),
+					'status' => $this->input->post('status')
+					);
+		modules::run('job/shift/toggle_shift_information_sheet_status',$params);
 	}
 	
 	function request_staff()

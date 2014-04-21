@@ -98,6 +98,10 @@ class Brief extends MX_Controller {
 	{
 		$briefs = $this->brief_model->get_all_brief();
 		$array = array();
+		$array[] = array(
+			'value' => 'information_sheet',
+			'label' => 'Information Sheet'
+			);
 		foreach($briefs as $brief)
 		{
 			$array[] = array(
@@ -118,7 +122,7 @@ class Brief extends MX_Controller {
 	function view_brief($shift_id,$brief_id = '')
 	{
 		$data['shift_info'] = $this->job_shift_model->get_shift_info($shift_id);
-		$data['briefs'] = $this->job_shift_model->get_shift_brief_by_shif_id($shift_id);
+		$data['briefs'] = $this->job_shift_model->get_shift_brief_by_shift_id($shift_id);
 		$data['brief_id'] = $brief_id;
 		$data['referer'] = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url());
 		
@@ -161,10 +165,16 @@ class Brief extends MX_Controller {
 		$this->load->model('setting/setting_model');
 		$shift_info =  $this->job_shift_model->get_shift_info_for_information_sheet($shift_id);
 		$data['shift_info'] = $shift_info;
-		$data['info_sheet_config'] = $this->setting_model->get_information_sheet_configuration();
 		$data['company_info'] = $this->setting_model->get_profile();
 		$data['breaks'] = json_decode($shift_info->break_time);
 		$data['payrate'] = modules::run('attribute/payrate/get_payrate',$shift_info->payrate_id);
+		$data['user_data'] = $this->session->userdata('user_data');
+		$data['client'] = modules::run('client/get_client',$shift_info->client_id);
+		$data['supervisor'] = array();
+		if($shift_info->supervisor_id){
+			$data['supervisor'] = modules::run('user/get_user',$shift_info->supervisor_id);
+		}
+		$data['other_working_staffs'] = $this->job_shift_model->get_other_working_staff($shift_info);
 		$this->load->view('brief_viewer/view_information_sheet', isset($data) ? $data : NULL);	
 	}	
 
