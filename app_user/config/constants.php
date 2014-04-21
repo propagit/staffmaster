@@ -26,7 +26,7 @@ include('./../app_public/config/constants.php');
 | These modes are used when working with fopen()/popen()
 |
 */
-
+define('SMTEAM_EMAIL','team@staffmaster.com.au');
 
 $temp_sub_domain = explode(".",$_SERVER['HTTP_HOST']);
 $sub_domain = array_shift($temp_sub_domain);

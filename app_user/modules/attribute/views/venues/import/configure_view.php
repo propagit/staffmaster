@@ -38,7 +38,6 @@
 <div class="clearfix"></div>
 <script>
 $(function(){
-	init_select();
 	$('#btn-verify-import').click(function(){
 		preloading($('#wp-verify-import'));
 		$.ajax({

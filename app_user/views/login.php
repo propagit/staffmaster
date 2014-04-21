@@ -8,6 +8,8 @@
 	<link href="<?=base_url();?>assets/css/bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?=base_url();?>assets/font-awesome/css/font-awesome.min.css">
 	<link href="<?=base_url();?>assets/css/login.css" rel="stylesheet">
+    
+    <?=$_styles;?>
 </head>
 
 <body>
@@ -30,7 +32,7 @@
                         </a>
                     </div>
                     <div class="col-md-6">
-                         <button class="btn btn-large btn-info pull" type="submit"><i class="fa fa-unlock-alt"></i> Sign In</button>
+                         <button class="btn btn-large btn-info pull login-btn" type="submit"><i class="fa fa-unlock-alt"></i> Sign In</button>
                          <a class="forgot-password"><i class="fa fa-question-circle"></i> Forgot Your Details</a>
                     </div>
                 </div>

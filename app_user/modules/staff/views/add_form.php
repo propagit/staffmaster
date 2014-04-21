@@ -167,8 +167,6 @@
 <!--end bottom box -->
 
 <script>
-init_select();
-
 /* $(function(){
 	$('#btn_add_staff').click(function(){
 		$.ajax({

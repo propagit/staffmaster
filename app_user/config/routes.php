@@ -61,7 +61,7 @@ $route['logout'] = 'auth/logout_user';
 
 
 
-$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support');
+$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide');
 $path = implode('|', $modules);
 $route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
 $route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
@@ -110,7 +110,8 @@ $route['brief/create_brief'] = 'dispatcher/user_dispatcher/brief/create_brief';
 $route['brief/edit/(:any)'] = 'dispatcher/user_dispatcher/brief/edit/$1';
 $route['brief/view_brief/(:any)'] = 'dispatcher/user_dispatcher/brief/view_brief/$1';
 $route['brief/view_brief/(:any)/(:any)'] = 'dispatcher/user_dispatcher/brief/view_brief/$1/$2';
-
+$route['brief/view_information_sheet'] = 'dispatcher/user_dispatcher/brief/view_information_sheet';
+$route['brief/view_information_sheet/(:any)'] = 'dispatcher/user_dispatcher/brief/view_information_sheet/$1';
 
 $route['404_override'] = '';
 

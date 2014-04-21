@@ -344,6 +344,7 @@ $(function(){
 	help.go_to_top('.go-to-top');	
 	help.make_x_editable_inline();
 	help.sticky_footer();
+	init_select();
 });
 
 $(window).resize(function(){

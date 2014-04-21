@@ -139,4 +139,9 @@ class Payrate extends MX_Controller {
 	{
 		return $this->payrate_model->get_payrate($payrate_id);
 	}
+	
+	function get_minimum_payrate($payrate_id,$payrate_type = 0)
+	{
+		return $this->payrate_model->get_minimum_payrate($payrate_id,$payrate_type);	
+	}
 }

@@ -465,13 +465,13 @@ class Job_shift_model extends CI_Model {
 	}
 	
 	/**
-	*	@name: get_shift_brief_by_shif_id
+	*	@name: get_shift_brief_by_shift_id
 	*	@desc: Performs Database operation - to get brief attached to a shift by shift id
 	*	@access: public
 	*	@param: ([int] shift_id )
 	*	@return: List of shifts
 	*/
-	function get_shift_brief_by_shif_id($shift_id)
+	function get_shift_brief_by_shift_id($shift_id)
 	{
 		$sql = "SELECT b.* 
 				FROM brief b,shift_brief sb
@@ -505,6 +505,38 @@ class Job_shift_model extends CI_Model {
 			
 	}
 	
+	/**
+	*	@name: get_shift_info_for_information_sheet
+	*	@desc: Performs Database operation - to get shift information - mostly used while populating shift info for shift information
+	*	@access: public
+	*	@param: ([int] shift_id )
+	*	@return: Shift information
+	*/
+	function get_shift_info_for_information_sheet($shift_id)
+	{
+		$sql = "SELECT 
+					js.*, 
+					v.name as venue_name, 
+					v.address as venue_address, 
+					v.suburb as venue_suburb, 
+					v.postcode as venue_postcode, 
+					v.state as venue_state, 
+					u.name as uniform_name,
+					j.name as campaign_name,
+					j.client_id, 
+					r.name as role_name  
+				FROM `job_shifts` js
+					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id 
+					LEFT JOIN `jobs` j ON j.job_id = js.job_id 
+					LEFT JOIN `attribute_uniforms` u ON u.uniform_id = js.uniform_id 
+					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id 
+				WHERE js.shift_id = '" . $shift_id . "'";
+		$shift_info = $this->db->query($sql)->row();
+		
+		return $shift_info;
+			
+	}
+	
 	function add_request_staff($data)
 	{
 		$this->db->insert('job_shift_client_request', $data);
@@ -531,6 +563,16 @@ class Job_shift_model extends CI_Model {
 		$this->db->where('staff_id', $staff_id);
 		$query = $this->db->get('job_shift_client_request');
 		return $query->num_rows();
+	}
+	
+	function get_other_working_staff($shift)
+	{
+		$sql = "SELECT staff_id 
+				FROM job_shifts 
+				WHERE job_id = ".$shift->job_id." 
+				AND job_date = '".$shift->job_date."' 
+				AND (start_time >= '".$shift->start_time."' AND finish_time <= '".$shift->finish_time."')";
+		return $this->db->query($sql)->result();
 	}
 	
 }

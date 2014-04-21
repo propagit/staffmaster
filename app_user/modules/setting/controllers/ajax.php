@@ -115,6 +115,8 @@ class Ajax extends MX_Controller {
 	*	@desc: Upload logo of the company. the image will be resized with ratio 150:150 stored on thumbnail folder. There is no thumbnail needed for upload logo 
 	*	@access: public
 	*	@param: (via POST) (int) company_id
+	*	@updates: Resize image is now being called from upload modules, works for image type, jpeg,png and gif
+	*	@updated_by: Kaushtuv
 	*	
 	*/
 	function upload_logo()
@@ -173,6 +175,9 @@ class Ajax extends MX_Controller {
 		}	
 		else
 		{
+			//prep data so that old image can be safely removed
+			$old_company_logo_data = $this->setting_model->get_profile();
+			
 			$data = array('upload_data' => $this->upload->data());
 			$file_name = $data['upload_data']['file_name'];
 			$width = $data['upload_data']['image_width'];
@@ -199,11 +204,12 @@ class Ajax extends MX_Controller {
 			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 			  fclose($fp);
 			}						
-			copy($dir.'/'.$file_name, $dirs."/".$file_name);
-			$target = $dirs."/".$file_name;
-			$this->imageResizer($target,$target,260,100);	
-			
-			
+			//copy($dir.'/'.$file_name, $dirs."/".$file_name);
+			//$target = $dirs."/".$file_name;
+			//$this->imageResizer($target,$target,260,100);	
+			modules::run('upload/resize_photo',$file_name,$dir,'thumbnail',275,100,TRUE);
+			//delete old logo
+			modules::run('setting/delete_company_logo',$dir,$old_company_logo_data['company_logo']);
 		}
 	}
 	/**
@@ -274,10 +280,12 @@ class Ajax extends MX_Controller {
 	function get_template_footer()
 	{
 		$company = $this->setting_model->get_profile();
-		
-		$color = $company['email_background_colour'];
-		$font_color = $company['email_font_colour'];
-		
+		$color = COLOUR_PRIM;
+		$font_color = COLOUR_SECO;
+		if($company){
+			$color = $company['email_background_colour'];
+			$font_color = $company['email_font_colour'];
+		}
 		if($_POST){
 			$color = $this->input->post('color');
 			$font_color = $this->input->post('font_color');
@@ -336,6 +344,55 @@ class Ajax extends MX_Controller {
 	{
 		echo modules::run('setting/company_logo');	
 	}	
+	
+	
+	/**
+	*	@name: edit_system_styles
+	*	@desc: Provides UI to change system colour
+	*	@access: public
+	*	@param: (null)
+	*	@return: Loads UI to change system styles
+	*/
+	function edit_system_styles()
+	{
+		$data['styles'] = array(
+							'primary_colour' => COLOUR_PRIM,
+							'rollover_colour' => COLOUR_ROLL,
+							'secondary_colour' => COLOUR_SECO,
+							'text_colour' => TEXT_COLOUR
+							);
+		$current_styles = $this->setting_model->get_system_styles(1);
+		if($current_styles){
+			$data['styles'] = $current_styles;	
+		}
+		$this->load->view('system_settings/edit_system_styles', isset($data) ? $data : NULL);
+	}
+	
+	/**
+	*	@name: edit_information_sheet
+	*	@desc: Provides UI to change information sheet configuration
+	*	@access: public
+	*	@param: (null)
+	*	@return: Loads UI to change information sheet configuration
+	*/
+	function edit_information_sheet()
+	{
+		$data['info_sheet_configs'] = $this->setting_model->get_information_sheet_configuration();
+		$this->load->view('system_settings/edit_information_sheet', isset($data) ? $data : NULL);
+	}
+	
+	function update_information_sheet()
+	{
+		$information_sheet_id = $this->input->post('information_sheet_id');	
+		$cur_status = $this->setting_model->get_information_sheet_configuration($information_sheet_id);
+		$update_status = ($cur_status->element_active == 'yes') ? 'no' : 'yes';
+		$data = array(
+					'element_active' => $update_status,
+					'modified' => date('Y-m-d H:i:s')
+					);
+		echo $this->setting_model->update_information_sheet_configuration($information_sheet_id,$data);
+	}
+
 	
 	
 }

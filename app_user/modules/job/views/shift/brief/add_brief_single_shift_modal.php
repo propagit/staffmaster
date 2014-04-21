@@ -83,4 +83,16 @@ function delete_shift_brief(shift_brief_id)
 	});	
 }
 
+function delete_shift_information_sheet(shift_id)
+{
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax_shift/delete_shift_information_sheet",
+		data: {shift_id:shift_id,status:0},
+		success: function(html) {
+			load_existing_shift_briefs(<?=$shift_id;?>);
+		}
+	});	
+}
+
 </script>

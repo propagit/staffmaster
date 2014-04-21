@@ -40,9 +40,3 @@
         </div><!--inner box-->
 	</div><!--box-->
 </div>
-
-<script>
-$(function(){
-	init_select();
-})
-</script>

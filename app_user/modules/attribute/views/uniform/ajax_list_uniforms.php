@@ -1,3 +1,4 @@
+<?php if(count($uniforms)){ ?>
 <table class="table table-bordered table-hover table-middle table-expanded">
     <thead>
     <tr class="heading">
@@ -44,3 +45,4 @@ $(function(){
 	});
 });
 </script>
+<?php } //if count uniforms?>

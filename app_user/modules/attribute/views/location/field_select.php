@@ -32,7 +32,6 @@ function load_areas()
 				$('#<?=$field_name;?>').css('margin-bottom', '0');
 			}
 			$('.wp_field_select_areas').html(html);
-			init_select();
 		}
 	});
 }

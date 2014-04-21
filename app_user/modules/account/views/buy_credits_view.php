@@ -170,7 +170,6 @@
 </div>
 <script>
 $(function(){
-	init_select();
 	$('#btn-add-credits').click(function(){
 		calculate_amount();
 	});
