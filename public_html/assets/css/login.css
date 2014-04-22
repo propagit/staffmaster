@@ -90,7 +90,10 @@ i {
 	margin-top:20px;
 	cursor:pointer;	
 }
-
+.back-to-login{
+	margin-top:7px;
+	margin-right:15px;
+}
 .forgot-password:hover{
 	color:#00bbf8;
 }

@@ -58,6 +58,7 @@ $route['default_controller'] = "dispatcher";
 
 $route['login'] = 'auth/login_user';
 $route['logout'] = 'auth/logout_user';
+$route['forgot-password'] = 'auth/forgot_password';
 
 
 

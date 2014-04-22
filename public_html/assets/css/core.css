@@ -1667,6 +1667,9 @@ ol.example li.placeholder:before {
 	float:left;
 	width:100%;	
 }
+#ajax-brief-preview{
+	margin-bottom:35px;	
+}
 .remove-min-height{
 	min-height:inherit;	
 }
@@ -1728,6 +1731,24 @@ ol.example li.placeholder:before {
 }
 .info-sheet-bolder-txt{
 	font-weight:800;
+}
+.shift-info-notes-ul{
+	list-style:none;
+	margin-top:25px;	
+}
+.shift-info-notes-ul li:before{ 
+	content:"-"; 
+	position:relative; 
+	left:-30px;
+}
+.shift-info-notes-ul li{ 
+	text-indent:-5px; 
+}
+.shift-info-notes-ul li{
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: normal;
+	padding-bottom: 18px;
 }
 /* popover */
 
@@ -2042,4 +2063,8 @@ ol.example li.placeholder:before {
 }
 .v-align-top{
 	vertical-align:top;	
+}
+.modal-vertical-scroll{
+	max-height:300px;
+	overflow:auto;	
 }

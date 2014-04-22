@@ -168,7 +168,8 @@ class Brief extends MX_Controller {
 		$data['company_info'] = $this->setting_model->get_profile();
 		$data['breaks'] = json_decode($shift_info->break_time);
 		$data['payrate'] = modules::run('attribute/payrate/get_payrate',$shift_info->payrate_id);
-		$data['user_data'] = $this->session->userdata('user_data');
+		$data['shift_notes'] = $this->job_shift_model->get_job_shift_notes($shift_id);
+		$data['user_data'] = modules::run('user/get_user',$shift_info->staff_id);
 		$data['client'] = modules::run('client/get_client',$shift_info->client_id);
 		$data['supervisor'] = array();
 		if($shift_info->supervisor_id){

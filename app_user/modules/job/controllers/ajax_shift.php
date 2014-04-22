@@ -487,4 +487,63 @@ class Ajax_shift extends MX_Controller {
 		$staff_id = $this->input->post('staff_id');
 		$this->job_shift_model->remove_request($shift_id, $staff_id);
 	}
+	
+	/**
+	*	@name: load_add_shift_note_modal
+	*	@desc: This loads the UI to add note to a shift
+	*	@access: public
+	*	@param: ([int] shift_id)
+	*	@return: Loads Modal window to add note to a shift
+	*/
+	function load_add_shift_note_modal($shift_id)
+	{
+		$data['shift_id'] = $shift_id;
+		$this->load->view('shift/notes/add_note_modal', isset($data) ? $data : NULL);	
+	}
+	
+	/**
+	*	@name: add_note
+	*	@desc: Add note to a shift
+	*	@access: public
+	*	@param: ([via post] shift_id, note)
+	*	@return: null
+	*/
+	function add_note()
+	{
+		$shift_id = $this->input->post('shift_id');
+		$note = $this->input->post('note');
+		$user = $this->session->userdata('user_data');
+		$data = array(
+					'shift_id' => $shift_id,
+					'note' => $note,
+					'added_by_user_id' => $user['user_id']
+					);
+		echo $this->job_shift_model->add_note($data);
+	}
+	
+	/**
+	*	@name: load_shift_notes
+	*	@desc: Ajax function to load the shift's existing briefs
+	*	@access: public
+	*	@param: ([via post] shift id)
+	*	@return: Loads existing briefs of a shift
+	*/
+	function load_shift_notes()
+	{
+		$shift_id = $this->input->post('shift_id');	
+		$data['shift_notes'] = $this->job_shift_model->get_job_shift_notes($shift_id);
+		echo $this->load->view('shift/notes/ajax_existing_shift_notes', isset($data) ? $data : NULL);	
+	}
+	/**
+	*	@name: delete_shift_note
+	*	@desc: Ajax function to delete shift note
+	*	@access: public
+	*	@param: ([via post] job shift note id)
+	*	@return: Affected rows
+	*/
+	function delete_shift_note()
+	{
+		$job_shift_note_id = $this->input->post('job_shift_note_id');
+		echo $this->job_shift_model->delete_note($job_shift_note_id);
+	}
 }
