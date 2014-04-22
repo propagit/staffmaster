@@ -96,7 +96,7 @@
 				<div class="form-group">
 					<label for="email_address" class="col-md-2 control-label">Account Status</label>
 					<div class="col-md-4">
-						<?=modules::run('client/field_select_status', 'status');?>
+						<?=modules::run('client/field_select_status', 'status', CLIENT_ACTIVE);?>
 					</div>
 					<label for="external_client_id" class="col-md-2 control-label">External Client ID</label>
 					<div class="col-md-4">

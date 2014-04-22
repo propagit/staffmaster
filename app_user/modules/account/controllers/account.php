@@ -19,10 +19,8 @@ class Account extends MX_Controller {
 		switch($method)
 		{
 			case 'buy_credits':
+			default:					
 					$this->buy_credits_view();
-				break;
-			default:
-					echo 'do nothing';
 				break;
 		}
 		
@@ -31,6 +29,7 @@ class Account extends MX_Controller {
 	function buy_credits_view()
 	{
 		$this->load->model('account_master_model');
+		$data['credits'] = $this->get_credits();
 		$data['prices'] = $this->account_master_model->get_prices();
 		$this->load->view('buy_credits_view', isset($data) ? $data : NULL);
 	}

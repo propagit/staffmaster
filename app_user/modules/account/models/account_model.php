@@ -15,6 +15,12 @@ class Account_model extends CI_Model {
 		return $this->db->update('account', array('credits' => $credits));
 	}
 	
+	function deduct_credits($credits)
+	{
+		$credits = $this->get_credits() - $credits;
+		return $this->db->update('account', array('credits' => $credits));
+	}
+	
 	function create_order($data)
 	{
 		$this->db->insert('orders', $data);

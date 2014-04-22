@@ -31,7 +31,9 @@
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
+		<? if (!$is_client) { ?>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_days" /></th>
+		<? } ?>
 		<th class="center" width="80">Date</th>
 		<th class="center">Unassigned</th>
 		<th class="center">Unconfirmed</th>
@@ -57,11 +59,13 @@ $shifts_count = $unassign + $unconfirmed + $rejected + $confirmed;
 $ids = modules::run('job/get_day_shifts', $job_id, $date_ts);
 ?>
 	<tr>
+		<? if (!$is_client) { ?>
 		<td class="center">
 			<? if ($shifts_count > 0) { ?>
 			<input type="checkbox" class="selected_shift_days" value="<?=implode(',', $ids);?>" />
 			<? } ?>
 		</td>
+		<? } ?>
 		<td class="wp-date" width="80">
 			<a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', $date_ts);?>', <?=($shifts_count > 0) ? 'true' : 'false';?>)" class="<?=($shifts_count == 0) ? 'default' : ''; ?><?=($this->session->userdata('job_date') == date('Y-m-d',$date_ts) && ($shifts_count != 0)) ? ' active': '';?>">
 				<span class="wk_day"><?=date('D', $date_ts);?></span>

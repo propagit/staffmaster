@@ -22,6 +22,20 @@ class Ajax extends MX_Controller {
 		$this->load->view('purchase_summary_view', isset($data) ? $data : NULL);
 	}
 	
+	function validate_form()
+	{
+		$input = $this->input->post();
+		foreach($input as $key => $value)
+		{
+			if (!$value)
+			{
+				echo json_encode(array('ok' => false, 'error_id' => $key));
+				return;
+			}
+		}
+		echo json_encode(array('ok' => true));
+	}
+	
 	function buy_credits()
 	{
 		$input = $this->input->post();
@@ -40,6 +54,14 @@ class Ajax extends MX_Controller {
 		$total *= 1.1; # GST				
 		$total = money_format('%i',$total); # Money format the total
 		$total = str_replace('.','',$total); # Money in cent
+		
+		foreach($input as $key => $value)
+		{
+			if ($value != '')
+			{
+				return;
+			}
+		}
 		
 		# Record order		
 		$order = array(
