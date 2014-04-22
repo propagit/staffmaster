@@ -39,11 +39,11 @@
         <div class="col-md-8 white-box">
             <div class="inner-box brief-floating-box">
             	<h2>
-                	<a href="#" class="cur-brief-name" data-type="text"  data-pk="<?=$brief_id;?>" data-title="Brief Name">
+                	<a href="#" class="cur-brief-name prim-color-to-txt-color" data-type="text"  data-pk="<?=$brief_id;?>" data-title="Brief Name">
 						<?=$brief->name;?>
                     </a>
                 </h2>
-                <p>As you add your brief elements, it will appear here.</p>
+                <p>Use the elements on the left hand menu bar to build your brief. For example to add a Header to your brief, click "Add Header". </p>
             	<form id="add-brief-elements-form"  enctype="multipart/form-data" action="<?=base_url();?>brief/ajax/add_brief_elements" method="POST">
                     <div class="brief-elements" id="brief-generator">
                        

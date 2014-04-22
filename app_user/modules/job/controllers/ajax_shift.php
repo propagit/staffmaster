@@ -546,4 +546,47 @@ class Ajax_shift extends MX_Controller {
 		$job_shift_note_id = $this->input->post('job_shift_note_id');
 		echo $this->job_shift_model->delete_note($job_shift_note_id);
 	}
+	
+	/**
+	*	@name: load_add_note_multi_shift
+	*	@desc: This loads the UI to add note to a multiple shift
+	*	@access: public
+	*	@param: ([int] shift_id)
+	*	@return: Loads a preview of brief
+	*/
+	function load_add_note_multi_shift($shift_ids)
+	{
+		$data['shift_ids'] = $shift_ids;
+		$this->load->view('shift/notes/add_note_multi_shift_modal', isset($data) ? $data : NULL);	
+	}
+	
+	/**
+	*	@name: add_note_multi_shift
+	*	@desc: Ajax function to add a note to a multiple shift
+	*	@access: public
+	*	@param: ([via post] shift ids, note)
+	*	@return: Status of the operation
+	*/
+	function add_note_multi_shift()
+	{
+		$user = $this->session->userdata('user_data');
+		$shift_ids = $this->input->post('shift_ids');
+		$note = $this->input->post('note');
+		$msg = '';
+		$shift_ids_arr = explode('~',$shift_ids);
+		if($shift_ids_arr && $note){
+			foreach($shift_ids_arr as $shift_id){
+				if($shift_id){
+					  $data = array(
+								'shift_id' => $shift_id,
+								'note' => $note,
+								'added_by_user_id' => $user['user_id']
+								);
+					 $this->job_shift_model->add_note($data);
+				}
+			}
+		}
+		echo 'success';
+		
+	}
 }

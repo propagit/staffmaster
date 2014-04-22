@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="modal-body">
                 <h4 class="modal-body-title">Add Note to a Shift</h4>
-                <div class="form-group">
+                <div class="form-group editor-wrap">
                     <label for="name" class="col-sm-2 control-label">Note</label>
                     <div class="col-sm-10">
                       <form id="add-note-form">
@@ -17,15 +17,14 @@
                       </form>
                     </div>
                 </div>
-                <br />
-                <div class="form-group">
+                <div class="form-group push full-width">
                      <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
                     <div class="col-sm-10">
                       <button id="add-note" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Add Note</button>
                     </div>
                 </div>
                 
-                <div id="ajax-existing-notes" class="modal-vertical-scroll"></div>
+                <div id="ajax-existing-notes" class="modal-vertical-scroll push full-width"></div>
                 
        		 </div>
         </div>
