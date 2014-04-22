@@ -9,7 +9,7 @@
 				echo '<div class="brief-preview-row">';
 				switch($elm->element_type){
 					case 'header':
-						echo '<h1><a href="#" class="edit-brief-header" data-type="text"  data-pk="'.$elm->brief_element_id.'" data-title="'.$elm->element_content.'">'.$elm->element_content.'</a></h1>';
+						echo '<h1><a href="#" class="edit-brief-header prim-color-to-txt-color" data-type="text"  data-pk="'.$elm->brief_element_id.'" data-title="'.$elm->element_content.'">'.$elm->element_content.'</a></h1>';
 					break;
 					
 					case 'desc-text':

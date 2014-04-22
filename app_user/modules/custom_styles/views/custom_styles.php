@@ -165,4 +165,8 @@ span.mob-menu-head{
 	background:<?=$primary_colour?>;
 }
 
+/* primary color overwritten with text color, mostly where anchor color needs to be ovewriten */
+.prim-color-to-txt-color{
+	color:<?=$text_colour?> !important;
+}
 

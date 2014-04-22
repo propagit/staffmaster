@@ -1,6 +1,6 @@
 <?php if(count($shift_notes)){ ?>
 <h4 class="modal-body-title">Existing Shift Notes</h4>
-<table class="table table-bordered table-hover table-middle table-expanded">
+<table class="table table-bordered table-hover table-middle table-expanded" width="100%">
     <thead>
     <tr class="heading">
         <th class="left">Notes</th>

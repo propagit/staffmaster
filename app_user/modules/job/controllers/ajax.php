@@ -740,6 +740,33 @@ class Ajax extends MX_Controller {
 							'staff_id' => $request_staff['staff_id']
 						));
 					}
+					//copy notes
+					$notes = $this->job_shift_model->get_job_shift_notes($shift_id);
+					if($notes)
+					{
+						foreach($notes as $note)
+						{
+							$data_note = array(
+									'shift_id' => $new_shift_id,
+									'note' => $note->note,
+									'added_by_user_id' => $note->added_by_user_id
+									);
+						    $this->job_shift_model->add_note($data_note);
+						}
+					}
+					//copy briefs
+					$briefs = $this->job_shift_model->get_shift_brief_by_shift_id($shift_id);
+					if($briefs)
+					{
+						foreach($briefs as $brief)
+						{
+							$data_brief = array(
+										'shift_id' => $new_shift_id,
+										'brief_id' => $brief->brief_id
+										);	
+							$this->job_shift_model->add_brief($data_brief);
+						}
+					}
 				}				
 			}
 			$this->session->unset_userdata('all_ts');

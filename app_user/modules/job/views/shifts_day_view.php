@@ -14,6 +14,7 @@
 	{
 		$data[] = array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Selected');
 		$data[] = array('value' => 'attach_brief', 'label' => '<i class="fa fa-info-circle"></i> Attach Brief');
+		$data[] = array('value' => 'attach_note', 'label' => '<i class="fa fa-comment-o"></i> Add Note');
 	}
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 	
@@ -386,6 +387,20 @@ $(function(){
 		if (selected_shifts.length > 0) {
 			$('.bs-modal-sml').modal({
 				remote: "<?=base_url();?>job/ajax_shift/load_add_brief_multi_shift/" + selected_shifts.join("~"),
+				show: true
+			});
+		}
+		
+	});
+	//attach notes to multiple shift
+	$('#menu-day-action ul li a[data-value="attach_note"]').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		if (selected_shifts.length > 0) {
+			$('.bs-modal-sml').modal({
+				remote: "<?=base_url();?>job/ajax_shift/load_add_note_multi_shift/" + selected_shifts.join("~"),
 				show: true
 			});
 		}
