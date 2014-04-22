@@ -93,6 +93,10 @@ class Dispatcher extends MX_Controller {
 	
 	function admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{
+		if (modules::run('account/get_credits') < 0 && $controller != 'account')
+		{
+			redirect('account/buy_credits');
+		}
 		if ( strpos($method, 'ajax') !== false)
 		{
 			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	

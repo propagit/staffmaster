@@ -14,6 +14,16 @@ class Timesheet_client_model extends CI_Model {
 		$this->user_id = $user['user_id'];
 	}
 	
+	function get_finished_shifts() {
+		$sql = "SELECT * FROM `job_shifts`
+				WHERE `status` = " . SHIFT_CONFIRMED . "
+				AND `supervisor_id` = " . $this->user_id . "
+				AND `shift_id` NOT IN
+					(SELECT `shift_id` FROM `job_shift_timesheets`)";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	function get_supervised_timesheets()
 	{
 		$sql = "SELECT t.*, j.name as job_name, j.client_id, v.name as venue_name, r.name as role_name

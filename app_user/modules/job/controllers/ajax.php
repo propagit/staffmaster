@@ -134,16 +134,29 @@ class Ajax extends MX_Controller {
 		}
 		
 		$count = (int) $data['count'];
-		if ($count < 1 || $count > modules::run('account/get_credits'))
+		if ($count < 1 || $count > 1000)
 		{
 			echo json_encode(array('ok' => false, 'error_id' => 'count'));
 			return;
+		}
+		else if (!$this->is_client)
+		{
+			if ($count > modules::run('account/get_credits'))
+			{
+				echo json_encode(array('ok' => false, 'error_id' => 'count'));
+				return;
+			}
 		}
 		
 		for($i=0; $i < $count; $i++)
 		{
 			$this->job_shift_model->insert_job_shift($filter_data);
 		}
+
+		# Take the credits out
+		$this->load->model('account/account_model');
+		$this->account_model->deduct_credits($count);
+	
 		echo json_encode(array('ok' => true, 'job_date' => $filter_data['job_date']));
 	}
 	

@@ -371,16 +371,21 @@ a.default {
 .staff-search-result-table>tbody>tr:hover>td, .staff-search-result-table>tbody>tr:hover>th{
 	background-color:transparent;	
 }
-#waitingModal .modal-content {
+#waitingModal .modal-content,
+#alertModal .modal-content {
 	padding: 30px 50px;
 	text-align: center;
 }
-#waitingModal .modal-content h2 {
+#waitingModal .modal-content h2,
+#alertModal .modal-content h2 {
 	margin-top: 0;
 	font-size:40px;
 	font-weight:900;
 	font-family:'Lato', sans-serif;
 	letter-spacing:-1px;
+}
+#alertModal .modal-content .modal-footer {
+	text-align: center;
 }
 /* modal */
 .contact-modal{

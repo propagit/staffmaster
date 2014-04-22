@@ -61,18 +61,22 @@
     				<br />
     				<div class="row">
 						<div class="form-group">
-							<label for="firstname" class="col-md-2 control-label">First Name</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="firstname" name="firstname" />
+							<div id="f_firstname">
+								<label for="firstname" class="col-md-2 control-label">First Name</label>
+								<div class="col-md-4">
+									<input type="text" class="form-control" id="firstname" name="firstname" />
+								</div>
 							</div>
-							<label for="lastname" class="col-md-2 control-label">Last Name</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="lastname" name="lastname" />
+							<div id="f_lastname">
+								<label for="lastname" class="col-md-2 control-label">Last Name</label>
+								<div class="col-md-4">
+									<input type="text" class="form-control" id="lastname" name="lastname" />
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group">
+						<div class="form-group" id="f_address">
 							<label for="address" class="col-md-2 control-label">Address</label>
 							<div class="col-md-10">
 								<input type="text" class="form-control" id="address" name="address" />
@@ -81,25 +85,33 @@
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="city" class="col-md-2 control-label">City</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="city" name="city" />
+							<div id="f_city">
+								<label for="city" class="col-md-2 control-label">City</label>
+								<div class="col-md-4">
+									<input type="text" class="form-control" id="city" name="city" />
+								</div>
 							</div>
-							<label for="postcode" class="col-md-2 control-label">Postcode</label>
-							<div class="col-md-4">
-								<input type="text" class="form-control" id="postcode" name="postcode" />
+							<div id="f_postcode">
+								<label for="postcode" class="col-md-2 control-label">Postcode</label>
+								<div class="col-md-4">
+									<input type="text" class="form-control" id="postcode" name="postcode" />
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group">
-							<label for="card_name" class="col-md-2 control-label">State</label>
-							<div class="col-md-4">
-								<?=modules::run('common/field_select_states', 'state');?>
+							<div id="f_state">
+								<label for="card_name" class="col-md-2 control-label">State</label>
+								<div class="col-md-4">
+									<?=modules::run('common/field_select_states', 'state');?>
+								</div>
 							</div>
-							<label for="card_name" class="col-md-2 control-label">Country</label>
-							<div class="col-md-4">
-								<?=modules::run('common/field_select_countries', 'country');?>
+							<div id="f_country">
+								<label for="card_name" class="col-md-2 control-label">Country</label>
+								<div class="col-md-4">
+									<?=modules::run('common/field_select_countries', 'country');?>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -119,7 +131,7 @@
     				<p>Enter your credit card details to make a secure online payment</p>
     				<br />
     				<div class="row">
-						<div class="form-group">
+						<div class="form-group" id="f_ccname">
 							<label for="ccname" class="col-md-4 control-label">Name On Card:</label>
 							<div class="col-md-8">
 								<input type="text" class="form-control" id="ccname" name="ccname" />
@@ -127,7 +139,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group">
+						<div class="form-group" id="f_ccnumber">
 							<label for="ccnumber" class="col-md-4 control-label">Card Number:</label>
 							<div class="col-md-8">
 								<input type="text" class="form-control" id="ccnumber" name="ccnumber" />
@@ -143,9 +155,11 @@
 							<div class="col-md-3">
 								<?=modules::run('common/field_select_year','expyear');?>
 							</div>
-							<label for="ccv" class="col-md-1 control-label">Secure </label>
-							<div class="col-md-2">
-								<input type="text" class="form-control" name="ccv" id="ccv" placeholder="CCV" />
+							<div id="f_ccv">
+								<label for="ccv" class="col-md-1 control-label">Secure </label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" name="ccv" id="ccv" placeholder="CCV" />
+								</div>
 							</div>
 						</div>
 					</div>
@@ -168,17 +182,35 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="credit-alert">
+			<div class="modal-body">
+				<h2 class="text-danger">System Alert!</h2>
+				<p>Your credit balance is currently <b class="text-danger"><?=$credits;?></b>. To top up your credit balance and continue using the system please update your credit balance.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Buy Credits</button>
+			</div>
+		</div>		
+	</div>
+</div>
+
 <script>
 $(function(){
+	<? if ($credits < 0) { ?>
+	$('#alertModal').modal({
+		show: true
+	})
+	<? } ?>
 	$('#btn-add-credits').click(function(){
 		calculate_amount();
 	});
 	$('#btn-buy-credits').click(function(){
-		$('#waitingModal').modal('show');
-		setTimeout(function() {
-			buy_credits();
-		}, 2000);
-		
+		validate_form();
 	});
 	$('#waitingModal').modal({
 		backdrop: 'static',
@@ -186,6 +218,25 @@ $(function(){
 		show: false
 	})
 });
+function validate_form() {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>account/ajax/validate_form",
+		data: $('#form_buy_credits').serialize(),
+		success: function(html) {
+			var data = $.parseJSON(html);
+			if (!data.ok) {
+				$('#f_' + data.error_id).addClass('has-error');
+				$('#' + data.error_id).focus();
+			} else {
+				$('#waitingModal').modal('show');
+				setTimeout(function() {
+					buy_credits();
+				}, 2000);
+			}
+		}
+	})
+}
 function buy_credits() {
 	$.ajax({
 		type: "POST",

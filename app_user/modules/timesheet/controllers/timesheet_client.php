@@ -67,7 +67,7 @@ class Timesheet_client extends MX_Controller {
 	function generate()
 	{
 		$this->load->model('staff/staff_model');
-		$shifts = $this->timesheet_staff_model->get_finished_shifts();
+		$shifts = $this->timesheet_client_model->get_finished_shifts();
 		foreach($shifts as $shift)
 		{
 			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));

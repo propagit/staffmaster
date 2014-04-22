@@ -4,11 +4,13 @@ class Job_shift_model extends CI_Model {
 	
 	var $module = 'job';
 	var $object = 'shift';
+	var $is_client = false;
 	
 	function __construct() 
 	{
 		parent::__construct();
 		$this->load->model('log/log_model');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	/**
@@ -53,7 +55,11 @@ class Job_shift_model extends CI_Model {
 			$this->log_model->insert_log($log_data);
 			$data['modified_on'] = date('Y-m-d H:i:s');
 		}
-		$data['is_alert'] = 0;
+		if (!$this->is_client)
+		{
+			$data['is_alert'] = 0;
+		}
+		
 		$this->db->where('shift_id', $shift_id);
 		return $this->db->update('job_shifts', $data);
 	}	
