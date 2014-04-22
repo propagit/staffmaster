@@ -61,7 +61,7 @@
 <script>
 $(function(){
 	<?php
-		if($shift_info->information_sheet){
+		if($shift_info->information_sheet && !$brief_id){
 	?>
 	//load information sheet
 	load_information_sheet(<?=$shift_info->shift_id?>);

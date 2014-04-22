@@ -10,4 +10,14 @@ class Auth_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function get_user_by_username($username)
+	{
+		$user = $this->db->where('username',$username)
+						 ->where('status',1)
+						 ->get('users')
+						 ->row();
+		return $user;
+			
+	}
+	
 }

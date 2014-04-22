@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Login &middot; <?=$title;?></title>
+	<title>Forgot Password &middot; <?=$title;?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link href="<?=base_url();?>assets/css/bootstrap.css" rel="stylesheet">
@@ -18,22 +18,18 @@
         	<div class="logo-wrap">
                 <?=modules::run('setting/company_logo');?>
         	</div> 
+            <div class="row">
+            	<div class="col-md-12">
+                	<p><br />To reset your password, enter your email in the text field below and hit <b>Reset</b> button. An email containing your new password will be sent your email.</p>
+                </div>
+            </div>
             <form class="login-form" method="post" action="" >
-                <input type="text" name="username"  class="form-control" placeholder="User Name">
-                <input type="password" name="password" class="form-control" placeholder="Password">
-                <?=$msg_error;?>
+                <input type="text" name="username"  class="form-control" placeholder="Username">
+                <?=$msg;?>
                 <div class="row">
-                    <div class="col-md-6">
-                    	<a class="btn btn-block btn-social btn-facebook">
-                            <i class="fa fa-facebook"></i> Sign in with Facebook
-                        </a>
-						<a class="btn btn-block btn-social btn-linkedin">
-                            <i class="fa fa-linkedin"></i> Sign in with Linkedin
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                         <button class="btn btn-large btn-info pull login-btn" type="submit"><i class="fa fa-unlock-alt"></i> Sign In</button>
-                         <a href="<?=base_url();?>forgot-password" class="forgot-password"><i class="fa fa-question-circle"></i> Forgot Your Details</a>
+                    <div class="col-md-12">
+                         <button class="btn btn-large btn-info pull login-btn" type="submit"><i class="fa fa-refresh"></i> Reset</button>
+                         <a href="<?=base_url();?>login" class="forgot-password back-to-login"><i class="fa fa-arrow-circle-left"></i> Back to Login Page</a>
                     </div>
                 </div>
             </form>

@@ -168,7 +168,7 @@
 			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_add_brief_single_shift/<?=$shift['shift_id'];?>"><i class="fa fa-info-circle"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="editable-click" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-comment-o"></i></a>
+			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_add_shift_note_modal/<?=$shift['shift_id'];?>"><i class="fa fa-comment-o"></i></a>
 		</td>
 		<td class="center" width="40">
 			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_expenses_modal/<?=$shift['shift_id'];?>"><i class="fa fa-dollar"></i></a>

@@ -47,8 +47,9 @@ class User extends MX_Controller {
 	
 	function reset_password($user_id)
 	{
-		$password = modules::run('common/generate_password');
-		$data = array('password' => md5($password));
+		$temp_password = modules::run('common/generate_password');
+		$password = trim($temp_password);
+		$data = array('password' => $password);
 		$this->user_model->update_user($user_id,$data);
 		return $password;
 	}

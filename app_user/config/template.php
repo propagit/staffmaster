@@ -75,6 +75,14 @@ $template['login'] = array(
 		'title'
 	)
 );
+$template['forgot_password'] = array(
+	'template' => 'forgot_password',
+	'regions' => array(
+		'content',
+		'msg',
+		'title'
+	)
+);
 $template['user'] = array(
 	'template' => 'user/default',
 	'regions' => array(

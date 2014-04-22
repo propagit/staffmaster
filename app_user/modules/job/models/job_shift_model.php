@@ -565,14 +565,61 @@ class Job_shift_model extends CI_Model {
 		return $query->num_rows();
 	}
 	
+	/**
+	*	@name: get_other_working_staff
+	*	@desc: Performs Database operation - to get other staff working on that venue on the same date and within that time
+	*	@access: public
+	*	@param: ([obj] shift)
+	*	@return: Staff ids working on that venue
+	*/
 	function get_other_working_staff($shift)
 	{
 		$sql = "SELECT staff_id 
 				FROM job_shifts 
 				WHERE job_id = ".$shift->job_id." 
 				AND job_date = '".$shift->job_date."' 
+				AND venue_id = ".$shift->venue_id."
+				AND staff_id != ".$shift->staff_id."
 				AND (start_time >= '".$shift->start_time."' AND finish_time <= '".$shift->finish_time."')";
 		return $this->db->query($sql)->result();
+	}
+	/**
+	*	@name: add_note
+	*	@desc: Add new note to a shift
+	*	@access: public
+	*	@param: ([array] shift id, note, creater user id)
+	*	@return: Insert id
+	*/
+	function add_note($data) 
+	{
+		$this->db->insert('job_shift_notes',$data);
+		return $this->db->insert_id();
+	}
+	/**
+	*	@name: get_job_shift_notes
+	*	@desc: Performs Database operation - to get shift notes
+	*	@access: public
+	*	@param: ([int] shift_id )
+	*	@return: Shift Notes
+	*/
+	function get_job_shift_notes($shift_id)
+	{
+		$shift_notes = $this->db->where('shift_id',$shift_id)
+								->order_by('created','desc')
+								->get('job_shift_notes')
+								->result();
+		return $shift_notes;
+	}
+	/**
+	*	@name: delete_note
+	*	@desc: Performs Database operation - to delete shift note
+	*	@access: public
+	*	@param: ([int] job_shift_note_id )
+	*	@return: Shift Notes
+	*/
+	function delete_note($job_shift_note_id)
+	{
+		return $this->db->where('job_shift_note_id',$job_shift_note_id)->delete('job_shift_notes');
 	}
 	
 }

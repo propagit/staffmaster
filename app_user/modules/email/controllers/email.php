@@ -48,7 +48,7 @@ class Email extends MX_Controller {
 		$template_id = $params['template_id'];
 		$user_id = $params['user_id'];
 		$company = $params['company'];
-		$password = isset($params['passowrd']) ? $params['password'] : '';
+		$password = isset($params['password']) ? $params['password'] : '';
 		$obj = array();
 		
 		if($template_id && $user_id && $company){
