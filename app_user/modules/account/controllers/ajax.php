@@ -42,12 +42,14 @@ class Ajax extends MX_Controller {
 		$credits = $input['credits'];
 		if (!is_numeric($credits))
 		{
+			echo 'invalid credits';
 			return;
 		}
 		$this->load->model('account_master_model');
 		$price = $this->account_master_model->get_price($credits);
 		if (!$price)
 		{
+			echo 'system error';
 			return;
 		}
 		$total = $price['unit_price'] * $credits;
@@ -55,13 +57,6 @@ class Ajax extends MX_Controller {
 		$total = money_format('%i',$total); # Money format the total
 		$total = str_replace('.','',$total); # Money in cent
 		
-		foreach($input as $key => $value)
-		{
-			if ($value != '')
-			{
-				return;
-			}
-		}
 		
 		# Record order		
 		$order = array(
@@ -81,10 +76,10 @@ class Ajax extends MX_Controller {
 			'ccv' => $input['ccv']
 		);
 		$this->load->model('account_model');
-		$order_id = $this->account_model->create_order($order);
-				
+		#$order_id = $this->account_model->create_order($order);
+		
 		$result = true; #$this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
-		$this->account_model->update_order($order_id, array('result' => $result));
+		#$this->account_model->update_order($order_id, array('result' => $result));
 		
 		if ($result) # Successful transaction
 		{
@@ -94,7 +89,10 @@ class Ajax extends MX_Controller {
 			
 			echo 'true';
 		}
-		
+		else
+		{
+			echo 'false';
+		}		
 	}
 	
 	function process_eWay($order_id,$firstname,$lastname,$email,$address,$postcode,$cardname,$cardnumber,$expmonth,$expyear,$cvv,$total) {

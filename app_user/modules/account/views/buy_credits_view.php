@@ -210,7 +210,10 @@ $(function(){
 		calculate_amount();
 	});
 	$('#btn-buy-credits').click(function(){
-		validate_form();
+		$('#waitingModal').modal('show');
+		setTimeout(function() {
+			buy_credits();
+		}, 2000);
 	});
 	$('#waitingModal').modal({
 		backdrop: 'static',
