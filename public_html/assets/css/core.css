@@ -1268,9 +1268,22 @@ ol.example li.placeholder:before {
 	border-radius: 1.3em;
 	text-align: center;
 }
+.badge.badge-child {
+	position: absolute;
+	font-size: .6em;
+	border-radius: .9em;
+	margin-left: .2em;
+	margin-top: -.7em;
+}
 .badge.badge-xs {
 	font-size: .9em;
 	border-radius: .9em;
+}
+.purple {
+	background: #6548b5;
+}
+tr.purple {
+	background: #e0daf0;
 }
 .success {
 	background-color: #2cb308;

@@ -141,13 +141,13 @@ class Job extends MX_Controller {
 	*	@param: (int) $job_id, (int - timestamp) $job_date
 	*	@return: (int)
 	*/
-	function count_job_shifts($job_id, $job_date = null, $status = null)
+	function count_job_shifts($job_id, $job_date = null, $status = null, $is_alert = false)
 	{
 		if ($job_date)
 		{
 			$job_date = date('Y-m-d', $job_date);
 		}
-		echo $this->job_shift_model->count_job_shifts($job_id, $job_date, $status);
+		echo $this->job_shift_model->count_job_shifts($job_id, $job_date, $status, $is_alert);
 	}
 	/**
 	*	@name: get_day_shifts

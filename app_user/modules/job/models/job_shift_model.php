@@ -53,6 +53,7 @@ class Job_shift_model extends CI_Model {
 			$this->log_model->insert_log($log_data);
 			$data['modified_on'] = date('Y-m-d H:i:s');
 		}
+		$data['is_alert'] = 0;
 		$this->db->where('shift_id', $shift_id);
 		return $this->db->update('job_shifts', $data);
 	}	
@@ -213,7 +214,7 @@ class Job_shift_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	function count_job_shifts($job_id, $job_date=null, $status=null)
+	function count_job_shifts($job_id, $job_date=null, $status=null, $is_alert=false)
 	{
 		$sql = "SELECT count(*) as `count`
 				FROM `job_shifts`
@@ -226,6 +227,11 @@ class Job_shift_model extends CI_Model {
 		{
 			$sql .= " AND `status` = '" . $status . "'";
 		}
+		if ($is_alert)
+		{
+			$sql .= " AND `is_alert` = 1";
+		}
+		
 		$query = $this->db->query($sql);
 		return $query->row()->count;
 	}
@@ -285,7 +291,7 @@ class Job_shift_model extends CI_Model {
 	*	
 	*/
 	
-	function get_shift_by_year_and_month($month,$year,$status,$filters = null,$only_total = false)
+	function get_shift_by_year_and_month($month,$year,$status,$filters = null,$only_total = false,$is_alert=false)
 	{
 		$where_missing = true;
 		$client_user_id = 0;
@@ -336,6 +342,10 @@ class Job_shift_model extends CI_Model {
 			case 'completed':
 				$sql .= " AND s.status = " . SHIFT_FINISHED;
 			break;	
+		}
+		if ($is_alert)
+		{
+			$sql .= " AND s.is_alert = 1";
 		}
 		
 		if($only_total){

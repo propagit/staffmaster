@@ -29,6 +29,7 @@
 		$start_time = modules::run('job/get_job_start_date', $job['job_id']);
 		$finish_time = modules::run('job/get_job_finish_date', $job['job_id']);
 		$shifts_count = modules::run('job/count_job_shifts', $job['job_id']);
+		$unassign_alert = modules::run('job/count_job_shifts', $job['job_id'], null, '0', true);
 		$unassign = modules::run('job/count_job_shifts', $job['job_id'], null, '0');
 		$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED);
 		$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED);
@@ -57,7 +58,11 @@
 		<td class="center"><?=$shifts_count;?></td>
 		<td class="center">
 			<? if ($unassign > 0) { ?>
-			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_UNASSIGNED?>"><span class="badge"><?=$unassign;?></span></a>
+			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_UNASSIGNED?>"><span class="badge"><?=$unassign;?>
+				<? if ($unassign_alert > 0) { ?>
+				<span class="badge badge-child purple"><?=$unassign_alert;?></span>
+				<? } ?>
+			</span></a>
 			<? } ?>
 		</td>
 		<td class="center">

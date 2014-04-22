@@ -21,7 +21,8 @@
 	</thead>
 	<tbody>
 	<? foreach($shifts as $shift) { $client = modules::run('client/get_client', $shift['client_id']); ?>
-	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>">
+	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>
+				<?=($shift['is_alert']) ? ' purple' : '';?>">
 		<td class="wp-date" width="70">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
@@ -33,7 +34,7 @@
 		<td><?=$shift['job_name'];?></td>
 		<td><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></td>
 		<td><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>
-		<td><?=modules::run('common/break_time', $shift['break_time']);?></td>
+		<td class="center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
 		<td class="center"><?=date('H:i', $shift['start_time']);?> - <?=date('H:i', $shift['finish_time']);?><?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-red">*</span>': '';?></td>
 		<td>
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
