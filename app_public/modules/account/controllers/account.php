@@ -49,8 +49,8 @@ class Account extends MX_Controller {
 	function update()
 	{
 		$this->load->model('account_model');
-		$accounts = $this->account_model->get_accounts(array());
-		$sql = @file_get_contents('./../db/alter_jobs_department_id.sql');
+		$accounts = $this->account_model->get_accounts(array('status' => 1));
+		$sql = @file_get_contents('./../db/update_20140422.sql');
 		foreach($accounts as $account)
 		{
 			$this->load->model('setup_model');
