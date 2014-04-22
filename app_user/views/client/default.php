@@ -74,6 +74,7 @@
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
     <link href="<?=base_url();?>assets/css/core.client.css" rel="stylesheet" media="screen">
+    <?=$_styles;?>
 	<script src="<?=base_url();?>assets/js/core.client.js" type="text/javascript" charset="utf-8"></script>
     
     <!--flex slider2-->
@@ -92,7 +93,6 @@
     <link rel="stylesheet" media="screen" type="text/css" href="<?=base_url()?>assets/js/colorpicker/colorpicker.css" />  
 	<script type="text/javascript" src="<?=base_url()?>assets/js/colorpicker/colorpicker.js"></script>
     
-    <?=$_styles;?>
 </head>
 <body>
 

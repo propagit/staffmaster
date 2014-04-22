@@ -10,7 +10,7 @@
                    <div class="action_icon uset-hero"><i class="fa fa-times" title="Remove this picture as your profile picture"></i></div>
                 </div>
 			<? }else{?>
-                    <i class="fa <?=(modules::run('staff/get_staff_gender',$user_id) == 'm' ? 'fa-male': 'fa-female');?> default-profile-photo"></i>
+                    <i class="fa fa-user default-profile-photo"></i>
             <? } ?>
             </div>
         </div>
