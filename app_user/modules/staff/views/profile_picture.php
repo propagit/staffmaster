@@ -14,7 +14,7 @@ else
 ?>
 <div class="profile_photo">
 	<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><div class="default-avatar-photo">
-		<i class="fa <?=(modules::run('staff/get_staff_gender',$staff['user_id']) == 'm' ? 'fa-male': 'fa-female');?>"></i>
+		<i class="fa fa-user"></i>
     </div></a>
 </div>
 <?php
