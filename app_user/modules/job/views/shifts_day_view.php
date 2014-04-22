@@ -89,7 +89,7 @@
 	</tr>
 <? } else foreach($job_shifts as $shift) { ?>
 	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>
-				<?=($shift['is_alert']) ? ' purple': '';?>">
+				<?=($shift['is_alert'] && !$is_client) ? ' purple': '';?>">
 		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>

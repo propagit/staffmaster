@@ -193,7 +193,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Buy Credits</button>
+				<button type="button" class="btn btn-core" data-dismiss="modal">Buy Credits</button>
 			</div>
 		</div>		
 	</div>
