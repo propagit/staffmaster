@@ -136,7 +136,7 @@ class Payrate extends MX_Controller {
 	function display_payrate($payrate_id)
 	{
 		$payrate = $this->get_payrate($payrate_id);
-		echo ($payrate) ? $payrate['name'] : 'Not Specified';
+		echo ($payrate) ? $payrate['name'] : '<span class="text-danger">Not Specified</span>';
 	}
 	
 	function get_payrate($payrate_id)

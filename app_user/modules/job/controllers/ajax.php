@@ -74,6 +74,7 @@ class Ajax extends MX_Controller {
 		$data = $this->input->post();
 		$filter_data = array();
 		$filter_data['job_id'] = $data['job_id'];
+		
 		$filter_data['job_date'] = date('Y-m-d', strtotime($data['job_date']));
 		
 		if (strtotime($data['job_date']) <= now() && false)
@@ -116,21 +117,21 @@ class Ajax extends MX_Controller {
 		$filter_data['role_id'] = $data['role_id'];
 		$filter_data['venue_id'] = $data['venue_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
-		if (isset($data['payrate_id']))
+		
+		if ($this->is_client)
 		{
-			if ($data['payrate_id'] != '')
+			$filter_data['is_alert'] = 1;
+		}
+		else
+		{
+			if ($data['payrate_id'] == '')
 			{
 				echo json_encode(array('ok' => false, 'error_id' => 'payrate_id'));
 				return;
 			}
 			$filter_data['payrate_id'] = $data['payrate_id'];
-		}
-		if (isset($data['supervisor_id']))
-		{
 			$filter_data['supervisor_id'] = $data['supervisor_id'];
 		}
-		
-		#$filter_data['payrate_type'] = $data['payrate_type'];
 		
 		$count = (int) $data['count'];
 		if ($count < 1 || $count > modules::run('account/get_credits'))

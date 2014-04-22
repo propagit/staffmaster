@@ -87,37 +87,37 @@
 		</td>
 	</tr>
 <? } else foreach($job_shifts as $shift) { ?>
-	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>">
+	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>
+				<?=($shift['is_alert']) ? ' purple': '';?>">
 		<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
 			<span class="wk_month"><?=date('M', strtotime($shift['job_date']));?></span>
 		</td>
-		<td>
-			
-			<a href="#" class="shift_venue" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
+		<td>			
+			<a href="#" class="update_link shift_venue" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
 		</td>
 		<td>
-			<a href="#" class="shift_role" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['role_id'];?>"><?=modules::run('attribute/role/display_role', $shift['role_id']);?></a>
+			<a href="#" class="update_link shift_role" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['role_id'];?>"><?=modules::run('attribute/role/display_role', $shift['role_id']);?></a>
 		</td>
 		
 		<? if ($is_client) { ?>
 		<td>
-			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><?=modules::run('attribute/uniform/display_uniform', $shift['uniform_id']);?></a>
+			<a href="#" class="update_link shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><?=modules::run('attribute/uniform/display_uniform', $shift['uniform_id']);?></a>
 		</td>
 		<? } ?>
 		
 		<td class="center">
-			<a href="#" class="shift_start_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['start_time']);?>" data-title="Shift start date/time"><?=date('H:i', $shift['start_time']);?></a>
+			<a href="#" class="update_link shift_start_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['start_time']);?>" data-title="Shift start date/time"><?=date('H:i', $shift['start_time']);?></a>
 			-
-			<a href="#" class="shift_finish_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['finish_time']);?>" data-title="Shift finish date/time"><?=date('H:i', $shift['finish_time']);?></a> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-danger">*</span>': '';?>
+			<a href="#" class="update_link shift_finish_time" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$shift['shift_id'];?>" data-value="<?=date('Y-m-d H:i', $shift['finish_time']);?>" data-title="Shift finish date/time"><?=date('H:i', $shift['finish_time']);?></a> <?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-danger">*</span>': '';?>
 		</td>
 		<td class="center">
-			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover"><?=modules::run('common/break_time', $shift['break_time']);?></a>
+			<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="update_link shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 		</td>
 		<? if (!$is_client) { ?>
-		<td class="center"><a href="#" class="shift_payrate" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['payrate_id'];?>"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
+		<td class="center"><a href="#" class="update_link shift_payrate" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['payrate_id'];?>"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
 		<? } ?>
 		<td>
 			<?
@@ -157,21 +157,21 @@
 		
 		<? if (!$is_client) { ?>
 		<td class="center" width="40">
-			<a href="#" class="shift_supervisor" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['supervisor_id'];?>"><i class="fa fa-star"></i></a>
+			<a href="#" class="update_link shift_supervisor" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['supervisor_id'];?>"><i class="fa fa-star"></i></a>
 		</td>
 		
 		
 		<td class="center" width="40">
-			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><i class="fa fa-male"></i></a>
+			<a href="#" class="update_link shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><i class="fa fa-male"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_add_brief_single_shift/<?=$shift['shift_id'];?>"><i class="fa fa-info-circle"></i></a>
+			<a class="update_link editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_add_brief_single_shift/<?=$shift['shift_id'];?>"><i class="fa fa-info-circle"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_add_shift_note_modal/<?=$shift['shift_id'];?>"><i class="fa fa-comment-o"></i></a>
+			<a class="update_link editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_add_shift_note_modal/<?=$shift['shift_id'];?>"><i class="fa fa-comment-o"></i></a>
 		</td>
 		<td class="center" width="40">
-			<a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_expenses_modal/<?=$shift['shift_id'];?>"><i class="fa fa-dollar"></i></a>
+			<a class="update_link editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax_shift/load_expenses_modal/<?=$shift['shift_id'];?>"><i class="fa fa-dollar"></i></a>
 		</td>
 		<? } ?>
 	</tr>
@@ -187,6 +187,9 @@
 
 <script>
 $(function(){
+	$('.update_link').on('save', function(e, params) {
+		$(this).parent().parent().removeClass('purple');
+	});
 	$('#menu-status ul li a').click(function(){
 		var value = $(this).attr('data-value');
 		$.ajax({

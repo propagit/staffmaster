@@ -1128,6 +1128,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
 CREATE TABLE IF NOT EXISTS `job_shifts` (
   `shift_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status` tinyint(4) NOT NULL COMMENT '-2: deleted, -1: rejected, 0: not assigned, 1: unconfirmed, 2: confirmed, 3: finished',
+  `is_alert` TINYINT NOT NULL COMMENT '0: no, 1: yes',
   `job_id` bigint(20) NOT NULL,
   `staff_id` bigint(20) NOT NULL DEFAULT '0',
   `supervisor_id` bigint(20) NOT NULL,

@@ -106,6 +106,7 @@ class Calendar extends MX_Controller {
 		}
 		$job_campaign = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters); 
 		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters);//status 0
+		$unassigned_alert = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters, false, true);//status 0
 		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',$filters);//status 1
 		$rejected = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',$filters);//status -1
 		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',$filters);//status 2
@@ -118,6 +119,12 @@ class Calendar extends MX_Controller {
 		
 		foreach($job_campaign as $jc){
 			$merged_array[$jc->job_date]['job_campaign']['count'] = $jc->total_jobs;
+		}
+		if (!$this->is_client)
+		{
+			foreach($unassigned_alert as $ua){
+				$merged_array[$ua->job_date]['unassigned_alert']['count'] = $ua->total_shifts;
+			}
 		}
 		foreach($unassigned as $ua){
 			$merged_array[$ua->job_date]['unassigned']['count'] = $ua->total_shifts;
@@ -138,7 +145,8 @@ class Calendar extends MX_Controller {
 		foreach($merged_array as $key => $val){
 			$out[] = array(
 							'active_job_campaigns' => isset($val['job_campaign']['count']) ? $val['job_campaign']['count'] : '',
-							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',
+							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',							
+							'alert_shifts' => isset($val['unassigned_alert']['count']) ? $val['unassigned_alert']['count'] : '',
 							'unconfirmed_shift' => isset($val['unconfirmed']['count']) ? $val['unconfirmed']['count'] : '',
 							'rejected_shift' => isset($val['rejected']['count']) ? $val['rejected']['count'] : '',
 							'confirmed_shift' => isset($val['confirmed']['count']) ? $val['confirmed']['count'] : '',

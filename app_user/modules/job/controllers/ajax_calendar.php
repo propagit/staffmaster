@@ -39,7 +39,7 @@ class Ajax_calendar extends MX_Controller {
 						'client_user_id' => $client_user_id,
 						'state_code' => $state_code
 						);
-		$data['job_campaign'] = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters,true); 
+		$data['job_campaign'] = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters,true);
 		$data['unassigned'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters,true); //status 0
 		$data['unconfirmed'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',$filters,true);//status 1
 		$data['rejected'] = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',$filters,true);//status -1
