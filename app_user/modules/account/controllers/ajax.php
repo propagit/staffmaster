@@ -82,8 +82,7 @@ class Ajax extends MX_Controller {
 		);
 		$this->load->model('account_model');
 		$order_id = $this->account_model->create_order($order);
-		$order_reference = 
-		
+				
 		$result = true; #$this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
 		$this->account_model->update_order($order_id, array('result' => $result));
 		
