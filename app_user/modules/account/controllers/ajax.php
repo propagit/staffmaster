@@ -84,7 +84,7 @@ class Ajax extends MX_Controller {
 		$order_id = $this->account_model->create_order($order);
 		$order_reference = 
 		
-		$result = $this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
+		$result = true; #$this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
 		$this->account_model->update_order($order_id, array('result' => $result));
 		
 		if ($result) # Successful transaction
@@ -100,10 +100,10 @@ class Ajax extends MX_Controller {
 	
 	function process_eWay($order_id,$firstname,$lastname,$email,$address,$postcode,$cardname,$cardnumber,$expmonth,$expyear,$cvv,$total) {
 		# Payment config
-		$eWAY_CustomerID = "87654321"; // eWAY Customer ID
-		#$eWAY_CustomerID = "12229578"; // eWAY Propagate
+		# $eWAY_CustomerID = "87654321"; // eWAY Customer ID
+		$eWAY_CustomerID = "12229578"; // eWAY Propagate
 		$eWAY_PaymentMethod = 'REAL_TIME_CVN'; // payment gatway to use (REAL_TIME, REAL_TIME_CVN or GEO_IP_ANTI_FRAUD)
-		$eWAY_UseLive = false; // true to use the live gateway
+		$eWAY_UseLive = true; // true to use the live gateway
 		
 		$this->load->model('Eway_model');			
 		$this->Eway_model->init($eWAY_CustomerID, $eWAY_PaymentMethod, $eWAY_UseLive);
