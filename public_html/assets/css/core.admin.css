@@ -676,6 +676,21 @@ span.dash-invoice-value{
 	height:48px;	
 }
 
+#staff_quick_search_result .profile_photo{
+	width:48px;
+	height:48px;	
+}
+#staff_quick_search_result .profile_photo .default-avatar-photo{
+	width:48px;
+	height:48px;
+	line-height:48px;
+	margin-top:0;	
+}
+#staff_quick_search_result .profile_photo .default-avatar-photo > .fa{
+	font-size:40px;
+	line-height:40px;
+}
+
 #list-tasks .list-group-item h3 {
 	margin: 0;
 	padding: 10px 0;

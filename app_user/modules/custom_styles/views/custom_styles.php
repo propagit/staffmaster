@@ -166,7 +166,12 @@ span.mob-menu-head{
 }
 
 /* primary color overwritten with text color, mostly where anchor color needs to be ovewriten */
+.update_link, 
 .prim-color-to-txt-color{
 	color:<?=$text_colour?> !important;
+}
+.update_link:hover,
+.prim-color-to-txt-color:hover{
+	color:<?=$rollover_colour?> !important;
 }
 

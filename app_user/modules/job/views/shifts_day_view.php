@@ -134,12 +134,12 @@
 				<? if($shift['staff_id']) { ?>
 				<i class="fa fa-clock-o staff_hours" data-toggle="popover" onclick="load_staff_hours(this)" data-pk="<?=$shift['staff_id'];?>"></i> 
 				<? } ?>
-				<a id="shift_staff_<?=$shift['shift_id'];?>" data-toggle="popover" onclick="load_shift_staff(this)" class="shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
+				<a id="shift_staff_<?=$shift['shift_id'];?>" data-toggle="popover" onclick="load_shift_staff(this)" class="update_link shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
 					<?=$staff_name;?>
 				</a>
 			<? } else { ?>
 				<? if($shift['staff_id']) { ?>
-				<a class="editable-click" href="<?=base_url();?>staff/view/<?=$shift['staff_id'];?>" target="_blank">
+				<a class="update_link editable-click" href="<?=base_url();?>staff/view/<?=$shift['staff_id'];?>" target="_blank">
 					<?=$staff_name;?>
 				</a>
 				<? } else { echo $staff_name; } ?>
@@ -148,10 +148,10 @@
 
 		
 		<? if (!$is_client) { ?>
-		<td class="center" width="40"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/search_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-search"></i></a></td>
-		<td class="center" width="40"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
+		<td class="center" width="40"><a class="update_link editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/search_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-search"></i></a></td>
+		<td class="center" width="40"><a class="update_link editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
 		<? } else { ?>
-		<td class="center" colspan="2"><a class="editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
+		<td class="center" colspan="2"><a class="update_link editable-click" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>job/ajax/applied_staffs/<?=$shift['shift_id'];?>"><i class="fa fa-thumbs-o-up"></i></a></td>
 		<? } ?>
 		
 		
