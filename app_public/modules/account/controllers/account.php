@@ -51,11 +51,16 @@ class Account extends MX_Controller {
 		$this->load->model('account_model');
 		$accounts = $this->account_model->get_accounts(array('status' => 1));
 		$sql = @file_get_contents('./../db/update_20140422.sql');
+		$count = 0;
+		$this->load->model('setup_model');
 		foreach($accounts as $account)
 		{
-			$this->load->model('setup_model');
-			$this->setup_model->import_sql($account['subdomain'], $sql);
+			if ($this->setup_model->import_sql($account['subdomain'], $sql))
+			{
+				$count++;
+			}
 		}
+		echo $count . ' accounts have been updated';
 	}
 	
 }
