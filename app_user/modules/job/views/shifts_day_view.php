@@ -96,7 +96,7 @@
 		</td>
 		<td>
 			
-			<a href="#" class="shift_venue" data-type="typeaheadjs" data-pk="<?=$shift['shift_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
+			<a href="#" class="shift_venue" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></a>
 		</td>
 		<td>
 			<a href="#" class="shift_role" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['role_id'];?>"><?=modules::run('attribute/role/display_role', $shift['role_id']);?></a>
@@ -157,8 +157,10 @@
 		
 		<? if (!$is_client) { ?>
 		<td class="center" width="40">
-			<a id="shift_supervisor_<?=$shift['shift_id'];?>" onclick="load_shift_supervisor(this)" class="shift_supervisor editable-click" data-pk="<?=$shift['shift_id'];?>"><i class="fa fa-star"></i></a>
+			<a href="#" class="shift_supervisor" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['supervisor_id'];?>"><i class="fa fa-star"></i></a>
 		</td>
+		
+		
 		<td class="center" width="40">
 			<a href="#" class="shift_uniform" data-type="select" data-pk="<?=$shift['shift_id'];?>" data-value="<?=$shift['uniform_id'];?>"><i class="fa fa-male"></i></a>
 		</td>
@@ -181,7 +183,6 @@
 
 <div id="wrapper_shift_break"></div>
 <div id="wrapper_shift_staff" class="hide"></div>
-<div id="wrapper_shift_supervisor" class="hide"></div>
 <div id="wrapper_staff_hours" class="hide"></div>
 
 <script>
@@ -206,23 +207,11 @@ $(function(){
 		$(this).find('.content-disabled').html('<a class="btn btn-default" onclick="unlock_shift(' + pk + ')"><i class="fa fa-lock"></i></a>');
 		<? } ?>
 	});
-	
 	$('.shift_venue').editable({
-		title: 'Start typing venue...',
-		name: 'venue',
-		typeahead: {
-            name: 'venue',
-            local: [<?=modules::run('attribute/venue/get_venues','data_source');?>]
-        },
-		tpl: '<input type="text" size="30" />',
 		url: '<?=base_url();?>job/ajax/update_shift_venue',
-		success: function(response, newValue)
-		{
-			if (response.status == 'error')
-			{
-				return response.msg;
-			}
-		}
+		name: 'venue_id',
+		title: 'Select venue',
+		source: [<?=modules::run('attribute/venue/get_venues', 'data_source'); ?>]
 	});
 	$('.shift_role').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_role',
@@ -240,6 +229,16 @@ $(function(){
 			return;
 		}
 	});
+	$('.shift_supervisor').editable({
+		url: '<?=base_url();?>job/ajax/update_shift_supervisor',
+		name: 'supervisor_id',
+		title: 'Select Supervisor',
+		source: [<?=modules::run('user/get_users', 'data_source');?>],
+		display: function(value, sourceData) {
+			return;
+		}
+	});
+	
 	<? } else { ?>
 	$('.shift_uniform').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_uniform',
@@ -333,17 +332,7 @@ $(function(){
 			return $('#wrapper_shift_staff').html();
 		}
 	})
-	$('.shift_supervisor').popover({
-		html: true,
-		placement: 'bottom',
-		trigger: 'manual',
-		selector: false,
-		title: 'Supervisor',
-		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
-		content: function(){
-			return $('#wrapper_shift_supervisor').html();
-		}
-	})
+	
 	
     var selected_shifts = new Array();
     	
@@ -439,23 +428,6 @@ function load_shift_staff(obj) {
 		success: function(html)
 		{
 			$('#wrapper_shift_staff').html(html);
-		}
-	}).done(function(){
-		$(obj).popover('show');
-	})
-	
-}
-function load_shift_supervisor(obj) {
-	$('#wrapper_shift_supervisor').html('');
-	$('#wrapper_js').find('.popover-break').hide();
-	var pk = $(obj).attr('data-pk');
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>job/ajax/load_shift_supervisor",
-		data: {pk: pk},
-		success: function(html)
-		{
-			$('#wrapper_shift_supervisor').html(html);
 		}
 	}).done(function(){
 		$(obj).popover('show');

@@ -57,17 +57,27 @@
 					</tr>
 					<?
 						$hours = modules::run('attribute/payrate/extract_payrate', $timesheet);
+						if ($hours) {
 						foreach($hours as $rate=>$length) { ?>
 					<tr>
 						<td></td>
 						<td><b><?=$length/60;?></b> hours at $<?=$rate;?></td>
 					</tr>
-					<? } ?>
+					<? } } ?>
 					<tr>
 						<td>Supervisor</td>
 						<td>
-							<? if($timesheet['supervisor_id']) { $supervisor = modules::run('staff/get_staff', $timesheet['supervisor_id']); 
-								echo $supervisor['first_name'] . ' ' . $supervisor['last_name'];				
+							<? if($timesheet['supervisor_id']) { $supervisor = modules::run('user/get_user', $timesheet['supervisor_id']); 
+								if ($supervisor['is_client'])
+								{
+									$supervisor = modules::run('user/get_user_client', $supervisor['user_id']);
+									echo $supervisor['company_name'];
+								}
+								else
+								{
+									echo $supervisor['first_name'] . ' ' . $supervisor['last_name'];
+								}
+												
 							?>
 							<? } else { ?>
 							No Supervisor Assigned

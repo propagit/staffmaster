@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Timesheet_staff_model extends CI_Model {
+class Timesheet_client_model extends CI_Model {
 	
 	var $user_id = null;
 	var $module = 'job';
@@ -14,17 +14,6 @@ class Timesheet_staff_model extends CI_Model {
 		$this->user_id = $user['user_id'];
 	}
 	
-	function get_finished_shifts() {
-		$sql = "SELECT * FROM `job_shifts`
-				WHERE `status` = " . SHIFT_CONFIRMED . "
-				AND (`supervisor_id` = " . $this->user_id . "
-					OR `staff_id` = " . $this->user_id . ") 
-				AND `shift_id` NOT IN
-					(SELECT `shift_id` FROM `job_shift_timesheets`)";
-		$query = $this->db->query($sql);
-		return $query->result_array();
-	}
-	
 	function get_supervised_timesheets()
 	{
 		$sql = "SELECT t.*, j.name as job_name, j.client_id, v.name as venue_name, r.name as role_name
@@ -33,7 +22,6 @@ class Timesheet_staff_model extends CI_Model {
 					LEFT JOIN `attribute_roles` r ON r.role_id = t.role_id
 					LEFT JOIN `jobs` j ON j.job_id = t.job_id
 				WHERE t.supervisor_id = " . $this->user_id . "
-				AND t.staff_id != " . $this->user_id . "
 				AND t.status < " . TIMESHEET_SUBMITTED;
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -45,24 +33,11 @@ class Timesheet_staff_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
-	function get_timesheets() {
-		$sql = "SELECT t.*, j.name as job_name, j.client_id, v.name as venue_name, r.name as role_name
-				FROM `job_shift_timesheets` t
-					LEFT JOIN `attribute_venues` v ON v.venue_id = t.venue_id
-					LEFT JOIN `attribute_roles` r ON r.role_id = t.role_id
-					LEFT JOIN `jobs` j ON j.job_id = t.job_id
-				WHERE t.staff_id = " . $this->user_id . "
-				AND t.status < " . TIMESHEET_SUBMITTED;
-		$query = $this->db->query($sql);
-		return $query->result_array();
-	}
-	
 	function update_timesheet($timesheet_id, $data) {
 		$this->db->where('timesheet_id', $timesheet_id);
 		$this->db->where('status < ', TIMESHEET_SUBMITTED);
 		return $this->db->update('job_shift_timesheets', $data);
 	}
-	
 	
 	function submit_timesheet($timesheet_id) 
 	{

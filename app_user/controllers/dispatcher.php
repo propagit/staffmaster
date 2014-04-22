@@ -80,7 +80,7 @@ class Dispatcher extends MX_Controller {
 		}
 		else
 		{
-			$content = modules::run($controller . '/' . $controller . '_staff/index', $param1, $param2, $param3, $param4);
+			$content = modules::run($controller . '/' . $controller . '_staff/index', $method, $param1, $param2, $param3, $param4);
 			$title = ucwords($controller);
 			$this->template->set_template('staff');
 		}
@@ -132,7 +132,7 @@ class Dispatcher extends MX_Controller {
 		if ( strpos($method, 'ajax') !== false)
 		{
 			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
-		}		
+		}	
 		
 		if ($controller == 'invoice' && $method == 'view')
 		{

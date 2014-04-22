@@ -10,6 +10,8 @@ $menu = array(
 	)),
 	array('path' => 'staff', 'icon' => 'fa-search', 'title' => 'Search Our Staff', 'sub' => array(
 	)),
+	array('path' => 'timesheet', 'icon' => 'fa-clock-o', 'title' => 'Time Sheets', 'sub' => array(		
+	)),
 	array('path' => 'invoice', 'icon' => 'fa-clock-o', 'title' => 'Your Invoices', 'sub' => array(
 	)),
 	array('path' => 'support', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(		

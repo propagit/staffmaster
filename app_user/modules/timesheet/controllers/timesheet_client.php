@@ -1,11 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * Controller: Job
- * @author: namnd86@gmail.com
- */
 
-class Timesheet_staff extends MX_Controller {
+class Timesheet_client extends MX_Controller {
 
 	function __construct()
 	{
@@ -32,11 +28,11 @@ class Timesheet_staff extends MX_Controller {
 	
 	function main_view() {
 		$data['supervised_timesheets'] = $this->timesheet_staff_model->get_supervised_timesheets();
-		$this->load->view('staff/main_view', isset($data) ? $data : NULL);
+		$this->load->view('client/main_view', isset($data) ? $data : NULL);
 	}
 	
-	function row_timesheet($timesheet_id, $is_supervised) {
-		$timesheet = $this->timesheet_staff_model->get_timesheet($timesheet_id);
+	function row_timesheet($timesheet_id) {
+		$timesheet = $this->timesheet_client_model->get_timesheet($timesheet_id);
 		$data['client'] = modules::run('client/get_client', $timesheet['client_id']);
 		$data['staff'] = modules::run('staff/get_staff', $timesheet['staff_id']);
 		$data['timesheet'] = $timesheet;
@@ -46,38 +42,27 @@ class Timesheet_staff extends MX_Controller {
 		$expenses = unserialize($timesheet['expenses']);
 		if (is_array($expenses)) {
 			foreach($expenses as $e) {
-				$staff_cost = $e['staff_cost'];
+				$client_cost = $e['client_cost'];
 				if ($e['tax'] == GST_ADD) {
-					$staff_cost *= 1.1;
+					$client_cost *= 1.1;
 				}
-				$total_expenses += $staff_cost;
+				$total_expenses += $client_cost;
 			}
 		}
 		$paid_expenses = $this->expense_model->get_timesheet_expenses($timesheet_id);
 		foreach($paid_expenses as $e) {
-			$staff_cost = $e['staff_cost'];
+			$client_cost = $e['client_cost'];
 			if ($e['tax'] == GST_ADD) {
-				$staff_cost *= 1.1;
+				$client_cost *= 1.1;
 			}
-			$total_expenses += $staff_cost;
+			$total_expenses += $client_cost;
 		}
 		$data['total_expenses'] = $total_expenses;
-		$data['is_supervised'] = $is_supervised;
-		$this->load->view('staff/timesheet_row_view', isset($data) ? $data : NULL);
+		$this->load->view('client/timesheet_row_view', isset($data) ? $data : NULL);
 	}
 	
 	
-	/**
-	*	@name: add_expense_form
-	*	@desc: load add expense form view
-	*	@access: public
-	*	@param: $timesheet_id
-	*	@return: (html) add expense form view
-	*/
-	function add_expense_form($timesheet_id) {
-		$data['timesheet_id'] = $timesheet_id;
-		$this->load->view('staff/edit/expense/add_form', isset($data) ? $data : NULL);
-	}
+	
 	
 	function generate()
 	{

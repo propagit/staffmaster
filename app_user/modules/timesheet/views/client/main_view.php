@@ -14,7 +14,7 @@
 	<div class="box bottom-box">
 		<div class="inner-box">
 			
-			<h2>Your Time Sheets</h2>
+			<h2>Your Supervised Time Sheets</h2>
 			<p>If your shift differed from the originally planned shift then make an amendment and hit the submit button</p>
 			<?
 				$data = array(
@@ -22,19 +22,8 @@
 				);
 				echo modules::run('common/menu_dropdown', $data, 'timesheet-action', 'Actions');
 			?>
-			<div class="btn-group btn-nav tab-respond mob-class">
-				<ul class="nav nav-tabs tab-respond">
-					<li class="active"><a href="#yours_timesheets" data-toggle="tab">Your Time Sheets</a></li>
-					<? if (count($supervised_timesheets) > 0) { ?>
-					<li><a href="#supervised_timesheets" data-toggle="tab">Your Supervised Time Sheets</a></li>
-					<? } ?>
-				</ul>
-			</div>
-			<div class="tab-content">
-				<div class="tab-pane active" id="yours_timesheets">
-				</div>
-				<div class="tab-pane" id="supervised_timesheets">
-				</div>
+			
+			<div id="supervised_timesheets">
 			</div>
 		</div>
 	</div>
@@ -43,32 +32,14 @@
 <div id="wrapper_ts_break" class="hide"></div>
 <script>
 $(function(){
-	list_timesheets();
 	load_supervised_timesheets();
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-		//e.target // activated tab
-		//e.relatedTarget // previous tab
-		$('input.selected_all_timesheets').prop('checked', false);
-		$('input.selected_timesheet').prop('checked', false);
-	})
-
 })
 
-function list_timesheets() {
-	preloading($('#yours_timesheets'));
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>timesheet/ajax_staff/list_timesheets",
-		success: function(html) {
-			loaded($('#yours_timesheets'), html);
-		}
-	})
-}
 function load_supervised_timesheets() {
 	preloading($('#supervised_timesheets'));
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>timesheet/ajax_staff/load_supervised_timesheets",
+		url: "<?=base_url();?>timesheet/ajax_client/load_supervised_timesheets",
 		success: function(html) {
 			loaded($('#supervised_timesheets'), html);
 		}

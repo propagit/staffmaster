@@ -112,11 +112,17 @@ class Ajax extends MX_Controller {
 		}
 		
 		
+		
 		$filter_data['role_id'] = $data['role_id'];
 		$filter_data['venue_id'] = $data['venue_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
 		if (isset($data['payrate_id']))
 		{
+			if ($data['payrate_id'] != '')
+			{
+				echo json_encode(array('ok' => false, 'error_id' => 'payrate_id'));
+				return;
+			}
 			$filter_data['payrate_id'] = $data['payrate_id'];
 		}
 		if (isset($data['supervisor_id']))
@@ -353,17 +359,7 @@ class Ajax extends MX_Controller {
 	function update_shift_venue()
 	{
 		$shift_id = $this->input->post('pk');
-		$venue = modules::run('attribute/venue/get_venue_by_name', $this->input->post('value'));
-		if (!$venue)
-		{
-			$this->output->set_status_header('400');
-			echo 'Venue not found. Please try again';
-		}
-		else
-		{
-			$this->job_shift_model->update_job_shift($shift_id, array('venue_id' => $venue['venue_id']));
-			echo json_encode(array('status' => 'success', 'value' => $this->input->post('value')));
-		}
+		$this->job_shift_model->update_job_shift($shift_id, array('venue_id' => $this->input->post('value')));
 	}
 	function update_shift_role()
 	{
@@ -374,6 +370,12 @@ class Ajax extends MX_Controller {
 	function update_shift_uniform() {
 		$shift_id = $this->input->post('pk');
 		$this->job_shift_model->update_job_shift($shift_id, array('uniform_id' => $this->input->post('value')));	
+	}
+	
+	
+	function update_shift_supervisor() {
+		$shift_id = $this->input->post('pk');
+		$this->job_shift_model->update_job_shift($shift_id, array('supervisor_id' => $this->input->post('value')));
 	}
 	
 	function update_shift_payrate()
@@ -501,38 +503,7 @@ class Ajax extends MX_Controller {
 			'class_name' => modules::run('job/status_to_class', $update_shift_data['status'])
 		));
 	}
-	
-	function update_shift_supervisor() {
-		$data = $this->input->post();
-		$update_shift_data = array();
-		if ($data['shift_staff'])
-		{
-			$staff = modules::run('staff/get_staff', $data['shift_staff_id']);
-			
-			if ($staff)
-			{
-				$update_shift_data = array(
-					'supervisor_id' => $data['shift_staff_id']
-				);
-			}
-			else {
-				echo json_encode(array('ok' => false, 'msg' => 'Staff not found'));
-				return;
-			}
-		}
-		else {
-			$update_shift_data = array(
-				'supervisor_id' => 0
-			);
-		}
 		
-		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
-		echo json_encode(array(
-			'ok' => true, 
-			'shift_id' => $data['shift_id']
-		));
-	}
-	
 	/**
 	*	@name: load_shift_breaks
 	*	@desc: ajax function to load all breaks of the shift

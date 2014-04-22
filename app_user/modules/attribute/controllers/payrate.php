@@ -69,6 +69,10 @@ class Payrate extends MX_Controller {
 	}
 	
 	function extract_payrate($object) {
+		if (!isset($object['payrate_id']) || $object['payrate_id'] != '')
+		{
+			return false;
+		}
 		$payrate_id = $object['payrate_id'];
 		$start_time = $object['start_time'];
 		$finish_time = $object['finish_time'];

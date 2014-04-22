@@ -29,8 +29,11 @@ class User_model extends CI_Model {
 	
 	function get_users()
 	{
-		$this->db->where('parent_id', 0);
-		$query = $this->db->get('users');
+		$sql = "SELECT u.user_id, u.is_client, u.first_name, u.last_name, c.company_name
+					FROM users u
+					LEFT JOIN user_clients c ON c.user_id = u.user_id
+				WHERE u.status = " . ACTIVE;
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 	

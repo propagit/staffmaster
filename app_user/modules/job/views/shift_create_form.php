@@ -92,21 +92,21 @@
 	</div>
 	
 	<? if (!$is_client) { ?>
-	<div class="form-group">
+	<div class="form-group" id="f_payrate_id">
 		<label for="payrate" class="col-lg-3 control-label">Payrate</label>
 		<div class="col-lg-6">
 			<?=modules::run('attribute/payrate/field_select', 'payrate_id');?>
 		</div>
 		
 		<div class="col-lg-3 help-block">
-			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/payrate" target="_blank">Create Payrate</a>
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/payrate" target="_blank">Create Pay rate</a>
 		</div>
 	</div>
 	
 	<div class="form-group" id="f_supervisor">
 		<label for="supervisor" class="col-lg-3 control-label">Supervisor</label>
 		<div class="col-lg-6">
-			<?=modules::run('staff/field_select', 'supervisor_id');?>
+			<?=modules::run('user/field_select', 'supervisor_id');?>
 		</div>
 	</div>	
 	<? } ?>

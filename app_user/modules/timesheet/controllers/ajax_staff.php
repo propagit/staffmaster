@@ -124,7 +124,7 @@ class Ajax_staff extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Start time cannot be greater than finish time';
 		} else {
-			$this->timesheet_model->update_timesheet($timesheet_id, array('start_time' => $new_start_time));
+			$this->timesheet_staff_model->update_timesheet($timesheet_id, array('start_time' => $new_start_time));
 			echo json_encode(array('status' => 'success', 'value' => $new_start_time));
 		}
 	}
@@ -145,7 +145,7 @@ class Ajax_staff extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Finish time cannot be less than start time';
 		} else {
-			$this->timesheet_model->update_timesheet($timesheet_id, array('finish_time' => $new_finish_time));
+			$this->timesheet_staff_model->update_timesheet($timesheet_id, array('finish_time' => $new_finish_time));
 			echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
 		}
 	}

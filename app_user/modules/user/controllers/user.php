@@ -52,5 +52,51 @@ class User extends MX_Controller {
 		$this->user_model->update_user($user_id,$data);
 		return $password;
 	}
+	
+	function get_users($format=null)
+	{
+		$users = $this->user_model->get_users();
+		if (!$format) {
+			return $users;
+		}
+		if ($format == 'data_source')
+		{
+			$data_source = array();
+			foreach($users as $user)
+			{
+				if ($user['is_client'])
+				{
+					$name = $user['company_name'];
+				}
+				else
+				{
+					$name = $user['first_name'] . ' ' . $user['last_name'];
+				}
+				$data_source[] = '{value:' . $user['user_id'] . ', text: \'' . $name . '\'}';
+			}
+			$data_source = implode(",", $data_source);
+			return $data_source;
+		}	
+	}
+	
+	function field_select($field_name, $field_value=null, $size=null)
+	{
+		$users = $this->user_model->get_users();
+		$array = array();
+		foreach($users as $user)
+		{
+			$e['value'] = $user['user_id'];
+			if ($user['is_client'])
+			{
+				$e['label'] = $user['company_name'];
+			}
+			else
+			{
+				$e['label'] = $user['first_name'] . ' ' . $user['last_name'];
+			}
+			$array[] = $e;
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
 		
 }

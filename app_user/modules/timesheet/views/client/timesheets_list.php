@@ -22,10 +22,11 @@ There is no time sheet at the moment
 </thead>
 <tbody>
 	<? foreach($timesheets as $timesheet) { 
-		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet['timesheet_id'], $is_supervised); 
+		echo modules::run('timesheet/timesheet_client/row_timesheet', $timesheet['timesheet_id']); 
 	} ?>
 </tbody>
 </table>
+
 
 <script>
 $(function() {
@@ -47,7 +48,7 @@ function init_edit() {
             firstItem: '',
             minuteStep: 15
         },
-		url: '<?=base_url();?>timesheet/ajax_staff/update_timesheet_start_time',
+		url: '<?=base_url();?>timesheet/ajax_client/update_timesheet_start_time',
         success: function(response, newValue) {
 	        if (response.status == 'error') {
 				return response.msg;
@@ -62,7 +63,7 @@ function init_edit() {
             firstItem: '',
             minuteStep: 15
         },
-        url: '<?=base_url();?>timesheet/ajax_staff/update_timesheet_finish_time',
+        url: '<?=base_url();?>timesheet/ajax_client/update_timesheet_finish_time',
         success: function(response, newValue) {
 	        if (response.status == 'error') {
 				return response.msg;
@@ -104,7 +105,7 @@ function init_edit() {
 function submit_timesheet(timesheet_id) {
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>timesheet/ajax_staff/submit_timesheet",
+		url: "<?=base_url();?>timesheet/ajax_client/submit_timesheet",
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
 			refrest_timesheet(timesheet_id);
@@ -114,8 +115,8 @@ function submit_timesheet(timesheet_id) {
 function refrest_timesheet(timesheet_id) {
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>timesheet/ajax_staff/refresh_timesheet",
-		data: {timesheet_id: timesheet_id, is_supervised: <?=$is_supervised;?>},
+		url: "<?=base_url();?>timesheet/ajax_client/refresh_timesheet",
+		data: {timesheet_id: timesheet_id},
 		success: function(html) {
 			$('#timesheet_' + timesheet_id).replaceWith(html);
 			init_edit();

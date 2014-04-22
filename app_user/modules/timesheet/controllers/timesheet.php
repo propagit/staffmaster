@@ -6,6 +6,8 @@
  */
 
 class Timesheet extends MX_Controller {
+	
+	var $user = null;
 
 	function __construct() {
 		parent::__construct();
@@ -13,6 +15,7 @@ class Timesheet extends MX_Controller {
 		$this->load->model('job/job_shift_model');
 		$this->load->model('attribute/payrate_model');
 		$this->load->model('expense/expense_model');
+		$this->user = $this->session->userdata('user_data');
 	}
 	
 	
@@ -227,13 +230,15 @@ class Timesheet extends MX_Controller {
 		$this->load->view('edit/expense/add_form', isset($data) ? $data : NULL);
 	}
 	
-	function generate() {
+	function generate() 
+	{
+		
 		$this->load->model('staff/staff_model');
 		$shifts = $this->timesheet_model->get_finished_shifts();
 		foreach($shifts as $shift)
 		{
 			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));
-			//Update user_staffs table field - last_worked_date
+			# Update user_staffs table field - last_worked_date
 			$data_user_staff = array('last_worked_date' => $shift['job_date'].' 00:00:00');
 			$this->staff_model->update_staff($shift['staff_id'],$data_user_staff);
 			
@@ -256,7 +261,8 @@ class Timesheet extends MX_Controller {
 	*	@param: $timesheet_id
 	*	@return: $total_expenses
 	*/
-	function calculate_expenses($timesheet_id, $type='staff') {
+	function calculate_expenses($timesheet_id, $type='staff') 
+	{
 		if ($type != 'staff' && $type != 'client') { return 0; }
 		$type .= '_cost';
 		$total_expenses = 0;
