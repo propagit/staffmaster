@@ -1,13 +1,12 @@
 <div class="staff-profile-detail-box">
 	<h2> Super Details </h2>
-	<p> Staff can choose the "Super" </p>
 </div>
 <form class="form-horizontal" role="form" id="form_update_staff_super">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">
 	<div class="form-group">
-		<label class="col-md-2 control-label">Choice of superannuation fund</label>
-		<div class="col-md-2">
+		<label class="col-md-2 control-label">Superannuation choice</label>
+		<div class="col-md-4">
 			<div class="radio">
 				<input type="radio" name="s_choice" id="employer" value="employer"<?=($staff['s_choice'] == 'employer') ? ' checked' : '';?> /> my employer's superannuation fund
 			</div>
@@ -119,7 +118,7 @@
 </div>
 <div class="row">
 	<div class="form-group">
-		<div class="col-md-offset-2 col-md-3">
+		<div class="col-md-offset-2 col-md-5">
         	<div class="checkbox">
 				<input type="checkbox" name="s_agree" value="1"<?=($staff['s_agree']) ? ' checked' : '';?> /> I have read and agreed to the above statements.
             </div>

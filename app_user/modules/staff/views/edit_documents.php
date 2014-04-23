@@ -1,6 +1,5 @@
 <div class="staff-profile-detail-box">
 	<h2> Documents </h2>
-	<p> Staff can choose the "Documents" </p>
 </div>
 
 <form class="form-horizontal" role="form" enctype="multipart/form-data" method="post" action="<?=base_url();?>staff/upload_custom_document">

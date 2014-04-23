@@ -5,8 +5,9 @@
 			<?=modules::run('staff/get_profile_picture',$staff['user_id']);?>
    		 </div>
          <div class="staff-profile-bar-box">
-             <h2><?=$staff['title'].'. '.$staff['first_name'].' '.$staff['last_name'];?></h2>
-             <? if(modules::run('auth/is_admin')){ ?>
+             <h2><span id="staff-title"><?=($staff['title'] != '') ? $staff['title'] .'. ' : '';?></span>
+             <span id="staff-name"><?=$staff['first_name'].' '.$staff['last_name'];?></span></h2>
+             <? if(!modules::run('auth/is_staff')){ ?>
              <div class="wp-rating grey-star">
                 <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],'basic','wp-rating',$staff['user_id'],true,false);?>
              </div>
@@ -26,17 +27,17 @@
                 <li class="mobile-tab"><a href="#pictures" data-toggle="tab">Pictures</a></li>
                 <li class="mobile-tab"><a href="#financial" data-toggle="tab">Financial Details</a></li>
                 <li class="mobile-tab"><a href="#super" data-toggle="tab">Super Details</a></li>
-                <? if(modules::run('auth/is_admin')){ ?>
+                <? if(!modules::run('auth/is_staff')){ ?>
                 <li class="mobile-tab"><a href="#roles" data-toggle="tab">Roles</a></li>
                 <? } ?>
                 <li class="mobile-tab"><a href="#availability" data-toggle="tab">Availability</a></li>                
                 <li class="mobile-tab"><a href="#location" data-toggle="tab">Locations</a></li>
-                <? if(modules::run('auth/is_admin')){ ?>
+                <? if(!modules::run('auth/is_staff')){ ?>
                 <li class="mobile-tab"><a href="#group" data-toggle="tab">Groups</a></li>
                 <? } ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>
                 <li class="<?=($this->session->flashdata('load_document_tab')? 'active' : '');?>  mobile-tab"><a href="#documents" data-toggle="tab">Documents</a></li>
-                <? if(modules::run('auth/is_admin')){ ?>
+                <? if(!modules::run('auth/is_staff')){ ?>
                 <li class="mobile-tab"><a href="#settings" data-toggle="tab">Settings</a></li>
                 <? } ?>
 			</ul>

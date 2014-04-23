@@ -1,6 +1,5 @@
 <div class="staff-profile-detail-box">
 	<h2> Personal Details </h2>
-	<p> Staff can choose the "Personal" </p>
 </div>
 <p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>
 <form class="form-horizontal" role="form" id="form_update_staff_personal">
@@ -11,7 +10,7 @@
 		<div class="col-md-4">
 			<?=modules::run('common/field_select_title', 'title', $staff['title']);?>
 		</div>
-        <label for="gender" class="col-md-2 control-label">Gender <span class="text-danger">**</span></label>
+        <label for="gender" class="col-md-2 control-label">Gender</label>
 		<div class="col-md-4">
 			<?=modules::run('common/field_select_genders', 'gender', $staff['gender']);?>
 		</div>		
@@ -35,7 +34,7 @@
 		<div class="col-md-4">
 			<?=modules::run('common/dropdown_dob', date('d',strtotime($staff['dob'])), date('m',strtotime($staff['dob'])),date('Y',strtotime($staff['dob'])));?>
 		</div>
-        <? if(modules::run('auth/is_admin')){ ?>
+        <? if(!modules::run('auth/is_staff')){ ?>
         <label for="rating" class="col-md-2 control-label">Rating</label>
 		<div class="col-md-4 wp-rating" id="wp_rating">
             <?=modules::run('common/field_rating', 'profile_rating', $staff['rating'],'basic','wp-rating',$staff['user_id'],true,false);?>
@@ -124,7 +123,7 @@
 		</div>
     </div>
 </div>
-<? if(modules::run('auth/is_admin')){ ?>	
+<? if(!modules::run('auth/is_staff')){ ?>	
 <div class="row">
 	<div class="form-group">
 		<label for="status" class="col-md-2 control-label">Status</label>
@@ -156,6 +155,10 @@ $(function(){
 				url: "<?=base_url();?>staff/ajax/update_personal",
 				data: $('#form_update_staff_personal').serialize(),
 				success: function(html) {
+					var title = $('#title').val();
+					if (title) { $('#staff-title').html(title + ". "); }
+					else { $('#staff-title').html(''); }
+					$('#staff-name').html($('#first_name').val() + " " + $('#last_name').val());
 					$('#wp-rating').html(html);
 					$('#msg-update-personal').removeClass('hide');
 					setTimeout(function(){

@@ -1,6 +1,5 @@
 <div class="staff-profile-detail-box">
 	<h2> Attributes </h2>
-	<p> Staff can choose the "Attributes" </p>
 </div>
 <form class="form-horizontal" role="form" id="staff-custom-attributes-form">
 <input type="hidden" name="user_staff_id" value="<?=$staff['user_id'];?>" />

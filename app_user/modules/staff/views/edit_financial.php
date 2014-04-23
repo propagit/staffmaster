@@ -1,6 +1,5 @@
 <div class="staff-profile-detail-box">
 	<h2> Financial Details </h2>
-	<p> Staff can choose the "Financial" </p>
 </div>
 <p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>
 <form class="form-horizontal" role="form" id="form_update_staff_financial">
@@ -150,10 +149,8 @@
 			?>
 		</div>
 	</div>
-</div>
-<div class="row">
 	<div class="form-group">
-		<div class="col-md-12">
+		<div class="col-lg-4 col-lg-offset-4">
 			<div class="alert alert-success hide" id="msg-update-financial"><i class="fa fa-check"></i> &nbsp; Staff financial details has been updated successfully!</div>
 			<button type="button" class="btn btn-core" id="btn_update_financial"><i class="fa fa-save"></i> Update Financial Details</button>
 		</div>

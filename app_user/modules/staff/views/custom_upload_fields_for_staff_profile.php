@@ -32,7 +32,7 @@
 		</div>
 <?php
 	}else{
-		if(modules::run('auth/is_admin')){
+		if(!modules::run('auth/is_staff')){
 			echo 'You have not created any document upload requirements yet. To create documentation for you staff go to "Edit Attributes" and then "Custom Attributes" and then add a "File Upload"';	
 		}
 	}

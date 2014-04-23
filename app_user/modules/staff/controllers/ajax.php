@@ -69,13 +69,13 @@ class Ajax extends MX_Controller {
 			'postcode' => $data['postcode'],
 			'country' => $data['country'],
 			'phone' => $data['phone'],
-			'status' => $data['status'],
+			#'status' => $data['status'],
 			'modified_on' => date('Y-m-d H:i:s')
 		);
 		$this->user_model->update_user($data['user_id'], $user_data);
 		$staff_data = array(
 			'external_staff_id' => $data['external_staff_id'],
-			'rating' => $data['profile_rating'],
+			#'rating' => $data['profile_rating'],
 			'gender' => $data['gender'],
 			'dob' => date('Y-m-d',strtotime($data['dob_year'].'-'.$data['dob_month']. '-'.$data['dob_day'])),
 			'emergency_contact' => $data['emergency_contact'],
@@ -83,7 +83,7 @@ class Ajax extends MX_Controller {
 			'update_description' => 'personal details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);		
-		echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
+		#echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
 	}
 	
 	function update_financial()
