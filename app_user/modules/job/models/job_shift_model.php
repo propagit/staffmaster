@@ -134,9 +134,9 @@ class Job_shift_model extends CI_Model {
 		{
 			$sql .= " AND j.client_id = '" . $data['client_id'] . "'";
 		}
-		if (isset($data['venue']) && $data['venue'] != '')
+		if (isset($data['venue_id']) && $data['venue_id'] != '')
 		{
-			$sql .= " AND v.name LIKE '%" . $data['venue'] . "%'";
+			$sql .= " AND js.venue_id = " . $data['venue_id'];
 		}
 		if (isset($data['role_id']) && $data['role_id'] != '')
 		{

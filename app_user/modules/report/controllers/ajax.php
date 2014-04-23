@@ -223,7 +223,7 @@ class Ajax extends MX_Controller {
 	function load_job_profit_data()
 	{
 		$input = $this->input->post();
-		$job = modules::run('job/get_job_by_name', $input['job_name']);
+		$job = modules::run('job/get_job', $input['job_id']);
 		if ($job) 
 		{
 			$data['invoice'] = $this->report_model->get_job_invoice($job['job_id']);

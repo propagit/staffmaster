@@ -278,10 +278,15 @@ class Email extends MX_Controller {
 			$this->email->to($to);
 			$this->email->cc($cc);
 			$this->email->bcc($bcc);
-			$company_logo = modules::run('setting/company_logo');
-			$email_signature = modules::run('setting/ajax/get_template_footer');
+			if (!isset($data['overwrite']))
+			{
+				$company_logo = modules::run('setting/company_logo');
+				$email_signature = modules::run('setting/ajax/get_template_footer');
+				$message = $company_logo . '<br />'.$message . $email_signature;
+			}
+			
 			$this->email->subject($subject);
-			$this->email->message($company_logo . '<br />'.$message . $email_signature);
+			$this->email->message($message);
 			if($attachment){
 				$this->email->attach($attachment);
 			}
@@ -315,6 +320,16 @@ class Email extends MX_Controller {
 		  'charset' => 'iso-8859-1',
 		  'wordwrap' => TRUE
 		);
+		
+		$to = '';
+		$from = '';
+		$cc = '';
+		$bcc = '';
+		$from_text = '';
+		$subject = ''; 
+		$message = ''; 
+		$attachment = ''; 
+		$bcc = '';
 		
 		if($data){
 		foreach($data as $key=>$val){
@@ -362,9 +377,17 @@ class Email extends MX_Controller {
 		$this->email->from('propagate.au@gmail.com',$from_text); // change it to yours
 		$this->email->to($to);// change it to yours
 		$this->email->subject($subject);
-		$company_logo = modules::run('setting/company_logo');
-		$email_signature = modules::run('setting/get_email_footer');
-		$this->email->message($company_logo . '<br />'.$message . $email_signature);
+		if (!isset($data['overwrite']))
+		{
+			$company_logo = modules::run('setting/company_logo');
+			$email_signature = modules::run('setting/ajax/get_template_footer');
+			$message = $company_logo . '<br />'.$message . $email_signature;
+		}
+		
+		$this->email->subject($subject);
+		$this->email->message($message);
+			
+			
 		if($attachment){
 			$this->email->attach($attachment);
 		}

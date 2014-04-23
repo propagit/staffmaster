@@ -27,7 +27,8 @@
     	</div>
 	</div>
 </div>
-<!-- update payrate modal -->
+<? } ?>
+<!-- Add payrate modal -->
 <div class="modal fade" id="add-payrate-modal" tabindex="-1" role="dialog" aria-labelledby="addPayrateLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -136,5 +137,3 @@ function load_nav_payrates(payrate_id)
 	})
 }
 </script>
-
-<? } ?>

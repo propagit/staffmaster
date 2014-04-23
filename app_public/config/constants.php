@@ -43,7 +43,7 @@ define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'root');
 define('MASTER_DB', 'smcloud');
 
-define('LIVE_SERVER',false);
+define('LIVE_SERVER', false);
 
 define('ACCOUNT_ACTIVE', 1);
 define('ACCOUNT_INACTIVE', -1);

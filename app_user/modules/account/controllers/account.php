@@ -18,7 +18,7 @@ class Account extends MX_Controller {
 	{
 		switch($method)
 		{
-			case 'buy_credits':
+			#case 'buy_credits':
 			default:					
 					$this->buy_credits_view();
 				break;

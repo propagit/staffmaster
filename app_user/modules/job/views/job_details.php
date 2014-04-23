@@ -1,3 +1,7 @@
+<!-- highcharts -->
+<script src="<?=base_url();?>assets/highcharts/highcharts.js"></script>
+<script src="<?=base_url();?>assets/highcharts/modules/data.js"></script>
+
 <div class="col-md-12">
 	<div class="box top-box">
 		<div class="col-md-5">

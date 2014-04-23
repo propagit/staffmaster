@@ -53,6 +53,9 @@ class Expense_model extends CI_Model {
 		if (isset($params['staff_name']) && $params['staff_name'] != '') {
 			$sql .= " AND CONCAT(s.first_name, ' ', s.last_name) LIKE '%" . $params['staff_name'] . "%'";
 		}
+		if (isset($params['staff_id']) && $params['staff_id'] != '') {
+			$sql .= " AND s.user_id = " . $params['staff_id'];
+		}
 		if (isset($params['description']) && $params['description'] != '') {
 			$sql .= " AND e.description LIKE '%" . $params['description'] . "%'";
 		}

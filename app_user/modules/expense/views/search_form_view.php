@@ -3,7 +3,7 @@
 	<div class="form-group">
 		<label for="staff_name" class="col-md-2 control-label">Staff Name</label>
 		<div class="col-md-4">
-			<?=modules::run('staff/field_input', 'staff_name');?>
+			<?=modules::run('staff/field_select', 'staff_id');?>
 		</div>
 		<label for="description" class="col-md-2 control-label">Description</label>
 		<div class="col-md-4">

@@ -87,7 +87,7 @@
 							</div>
 							<label class="col-md-2 control-label">Venue</label>
 							<div class="col-md-4">
-								<?=modules::run('attribute/venue/field_input', 'venue');?>
+								<?=modules::run('attribute/venue/field_select', 'venue_id');?>
 							</div>
 						</div>
 					</div>

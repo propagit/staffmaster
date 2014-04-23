@@ -14,7 +14,6 @@
 	
 	<link href="<?=base_url();?>assets/css/bootstrap-fileupload.min.css" rel="stylesheet">
 	<link href="<?=base_url();?>assets/css/calendar.css" rel="stylesheet">
-	<link href="<?=base_url();?>assets/prettyCheckable/prettyCheckable.css" rel="stylesheet" media="screen" type="text/css" />
 	
 	<script src="<?=base_url();?>assets/js/hogan.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.min.js"></script>
@@ -32,10 +31,7 @@
 	<link href="<?=base_url();?>assets/css/adminflare.custom.css" rel="stylesheet" media="screen">
 	<script src="<?=base_url();?>assets/js/adminflare.min.js"></script>
 	
-	<!-- highcharts -->
-	<script src="<?=base_url();?>assets/highcharts/highcharts.js"></script>
-	<script src="<?=base_url();?>assets/highcharts/modules/data.js"></script>
-	
+		
 	<!-- datetimepicker (bootstrap 3)  -->
 	<link href="<?=base_url();?>assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
@@ -55,16 +51,9 @@
 	<link href="<?=base_url();?>assets/css/select2/select2.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/js/select2.min.js"></script>
 	
-	<!-- typeaheadjs -->
-	<link href="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet">
-	<script src="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js"></script>
-	<script src="<?=base_url();?>assets/js/typeaheadjs/typeaheadjs.js"></script>
-	
-
 	
 	<script src="<?=base_url();?>assets/js/bootstrap-fileupload.min.js"></script>
 	<script src="<?=base_url();?>assets/js/calendar.js"></script>
-	<script src="<?=base_url();?>assets/prettyCheckable/prettyCheckable.js" type="text/javascript" charset="utf-8"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
     <link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
@@ -82,10 +71,6 @@
     <!--jrating-->
     <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
 	<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
-    
-	<!-- Color Picker -->
-    <link rel="stylesheet" media="screen" type="text/css" href="<?=base_url()?>assets/js/colorpicker/colorpicker.css" />  
-	<script type="text/javascript" src="<?=base_url()?>assets/js/colorpicker/colorpicker.js"></script>
     
     
 	

@@ -76,17 +76,18 @@ class Ajax extends MX_Controller {
 			'ccv' => $input['ccv']
 		);
 		$this->load->model('account_model');
-		#$order_id = $this->account_model->create_order($order);
+		$order_id = $this->account_model->create_order($order);
 		
 		$result = true; #$this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
-		#$this->account_model->update_order($order_id, array('result' => $result));
+		$this->account_model->update_order($order_id, array('result' => $result));
 		
 		if ($result) # Successful transaction
 		{
 			# Add credits
 			$this->account_model->add_credits($credits);
 			# Send the receipt
-			
+			$order['purchase_id'] = 'SMC-' . $this->user['user_id'] . '-' . $order_id;
+			$this->send_receipt_email($order);
 			echo 'true';
 		}
 		else
@@ -139,5 +140,18 @@ class Ajax extends MX_Controller {
 			print "Error: An invalid response was recieved from the payment gateway.";
 			return false;
 		}		
+	}
+	
+	function send_receipt_email($order)
+	{
+		$message = $this->load->view('receipt_email_view', isset($order) ? $order : NULL, true);
+		modules::run('email/send_email', array(
+			'to' => $this->user['email_address'],
+			'from' => SMTEAM_EMAIL,
+			'from_text' => 'Staff Master',
+			'subject' => 'Your Order Receipt',
+			'message' => $message,
+			'overwrite' => true
+		));
 	}
 }

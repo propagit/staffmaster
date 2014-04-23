@@ -1,3 +1,8 @@
+<!-- highcharts -->
+<script src="<?=base_url();?>assets/highcharts/highcharts.js"></script>
+<script src="<?=base_url();?>assets/highcharts/modules/data.js"></script>
+
+
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
@@ -66,7 +71,7 @@
 	            <h2>Profit Per Campaign</h2>
 				<form id="load_job_profit_form">
 				<div class="form-group col-md-6 white-box">
-					<?=modules::run('job/field_input', 'job_name');?>
+					<?=modules::run('job/field_select', 'job_id');?>
 				</div>
 				<div class="col-md-2">
 					<button type="button" class="btn btn-core" id="btn-load-job-profit">Get Data</button>
