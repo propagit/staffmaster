@@ -27,7 +27,7 @@ class Timesheet_client extends MX_Controller {
 	}
 	
 	function main_view() {
-		$data['supervised_timesheets'] = $this->timesheet_staff_model->get_supervised_timesheets();
+		$data['supervised_timesheets'] = $this->timesheet_client_model->get_supervised_timesheets();
 		$this->load->view('client/main_view', isset($data) ? $data : NULL);
 	}
 	
