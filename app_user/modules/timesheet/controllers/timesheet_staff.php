@@ -95,6 +95,7 @@ class Timesheet_staff extends MX_Controller {
 			unset($shift['modified_on']);
 			unset($shift['payrate_type']);			
 			unset($shift['is_alert']);
+			unset($shift['information_sheet']);
 			$job = modules::run('job/get_job', $shift['job_id']);
 			$shift['client_id'] = $job['client_id'];
 			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
