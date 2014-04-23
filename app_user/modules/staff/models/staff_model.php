@@ -689,4 +689,22 @@ class Staff_model extends CI_Model {
 		return false;
 		
 	}
+	/**
+	*	@desc Get staff user ids by group id
+	*
+	*   @name get_staff_user_ids_by_group_id
+	*	@access public
+	*	@param null
+	*	@return Returns staff user id 
+	*	
+	*/
+	function get_staff_user_ids_by_group_id($group_id)
+	{
+		$user_ids = $this->db->select('user_id')
+							 ->where('attribute_group_id',$group_id)
+							 ->get('staff_groups')
+							 ->result();
+		return $user_ids;
+	}
+	
 }

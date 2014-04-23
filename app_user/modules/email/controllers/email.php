@@ -13,6 +13,7 @@ class Email extends MX_Controller {
 		$this->load->model('user/user_model');
 		$this->load->model('client/client_model');
 		$this->load->model('invoice/invoice_model');
+		$this->load->model('brief/brief_model');
 	}
 	
 	public function index($method = '', $param1 = '',$param2 = '')
@@ -54,7 +55,7 @@ class Email extends MX_Controller {
 		if($template_id && $user_id && $company){
 			$user = $this->user_model->get_user($user_id);
 			switch($template_id){
-				case 1:
+				case WELCOME_EMAIL_TEMPLATE_ID:
 				//welcome
 				if(!$password){
 					$password = modules::run('user/reset_password',$user_id);
@@ -70,7 +71,7 @@ class Email extends MX_Controller {
 				
 				break;
 				
-				case 2:
+				case ROSTER_UPDATE_EMAIL_TEMPLATE_ID:
 				//roster update
 				$obj = array(
 							'first_name' => $user['first_name'],
@@ -79,11 +80,11 @@ class Email extends MX_Controller {
 							);
 				break;
 				
-				case 3:
+				case APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID:
 				//apply for shifts
 				break;
 				
-				case 4:
+				case SHIFT_REMINDER_EMAIL_TEMPLATE_ID:
 				//shift reminder
 				$obj = array(
 							'first_name' => $user['first_name'],
@@ -94,11 +95,11 @@ class Email extends MX_Controller {
 							);
 				break;
 				
-				case 5:
+				case WORK_CONFIRMATION_EMAIL_TEMPLATE_ID:
 				//work confirmation
 				break;
 				
-				case 6:
+				case FORGOT_PASSWORD_EMAIL_TEMPLATE_ID:
 				//forgot password
 				$obj = array(
 							'first_name' => $user['first_name'],
@@ -110,7 +111,7 @@ class Email extends MX_Controller {
 							);
 				break;
 				
-				case 7:
+				case CLIENT_INVOICE_EMAIL_TEMPLATE_ID:
 				//client invoice
 				$client = $this->client_model->get_client($user_id);
 				$invoice = $this->invoice_model->get_invoice($params['invoice_id']);
@@ -126,12 +127,21 @@ class Email extends MX_Controller {
 							);
 				break;
 				
-				case 8:
+				case CLIENT_QUOTE_EMAIL_TEMPLATE_ID:
 				//client quote
+				
 				break;
 				
-				case 9:
+				case BRIEF_EMAIL_TEMPLATE_ID:
 				//brief
+				$brief = $this->brief_model->get_brief($params['brief_id']);
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'company_name' => $company['company_name'],
+							'system_url' => base_url(),
+							'brief_url' => base_url().'brief/view/'.$brief->encoded_url,
+							);
 				break;
 			}
 		}
@@ -144,14 +154,27 @@ class Email extends MX_Controller {
 	*	@access: public
 	*	@param: 
 	*/
-	function email_templates_dropdown($field_name, $field_value=null, $size=null)
+	function email_templates_dropdown($params)
 	{
+		$field_name = $params['field_name'];
+		$field_value = $params['field_value'];
+		$size = $params['size'];
+		$allowed_template_ids = $params['allowed_template_ids'];
 		$templates = $this->email_template_model->get_all_templates();
 		$count = 0;
 		if($templates){
-			foreach($templates as $template){
-				  $array[$count] = array('value' => $template->email_template_id, 'label' => $template->template_name);
-				  $count++;
+			if($allowed_template_ids != 'all'){
+				foreach($templates as $template){
+					  if(in_array($template->email_template_id,$allowed_template_ids)){
+						  $array[$count] = array('value' => $template->email_template_id, 'label' => $template->template_name);
+						  $count++;
+					  }
+				}
+			}else{
+				foreach($templates as $template){
+					  $array[$count] = array('value' => $template->email_template_id, 'label' => $template->template_name);
+					  $count++;
+				}
 			}
 		}
 		
@@ -181,6 +204,7 @@ class Email extends MX_Controller {
 				$email = str_replace('{IssueDate}',$obj['issue_date'],$email);
 				$email = str_replace('{AmountDue}',$obj['amount_due'],$email);
 				$email = str_replace('{DueDate}',$obj['due_date'],$email);
+				$email = str_replace('{BriefURL}',$obj['brief_url'],$email);
 		}
 		return $email;
 		

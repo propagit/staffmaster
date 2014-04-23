@@ -320,6 +320,13 @@ a.default {
 	font-size:11px;
 	padding:15px;	
 }
+.email-modal-receiver-list{
+	margin-top:20px;
+	max-height:200px;
+	overflow:auto;	
+	float:left;
+	width:100%;
+}
 /* Styles fdr search staff profile photo */
 .staff_search_profile{
 	float:left;

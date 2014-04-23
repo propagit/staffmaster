@@ -25,7 +25,7 @@
         	<?=(!$brief_status) ? '<button type="button" class="btn btn-danger brief-status" data-brief="'.$brief->brief_id.'">Inactive</button>' : '<button type="button" class="btn btn-success brief-status" data-brief="'.$brief->brief_id.'">Active</button>';?>
         </td>
 		<td class="center"><a href="<?=base_url();?>brief/edit/<?=$brief->brief_id?>"><i class="fa fa-eye"></i></a></td>
-		<td class="center"><i class="fa fa-envelope-o email-brief"></i></td>
+		<td class="center"><i class="fa fa-envelope-o email-brief" data-brief-id="<?=$brief->brief_id;?>"></i></td>
         <td class="center"><a class="delete-brief" delete-data-id="<?=$brief->brief_id;?>"><i class="fa fa-times"></i></a></td>
 	</tr>
 	<?php } }?>
@@ -33,10 +33,11 @@
 </table>
 <div id="ajax-email-brief-modal"></div>
 <form id="email-brief-form">
-<input type="hidden" id="selected-user-id" name="user_staff_selected_user_id[]" value="" />
 <input type="hidden" name="email_modal_header" value="Email Brief" />
 <input type="hidden" name="email_template_id" value="<?=BRIEF_EMAIL_TEMPLATE_ID;?>" />
-<input type="hidden" name="selected_module_ids[]" value="" />
+<input id="selected-brief-id" type="hidden" name="selected_module_ids[]" value="" />
+<?php $allowed_email_templates = array(BRIEF_EMAIL_TEMPLATE_ID);?>
+<input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
 </form>
 <script>
 
@@ -65,10 +66,11 @@ $(function(){
 	
 	//get email modal
 	$('.email-brief').on('click',function(){
-		$('#selected-user-id').val($(this).attr('data-user-id'));
+		$('#selected-brief-id').val($(this).attr('data-brief-id'));
 		get_email_model('#email-brief-form');
 
 	});
+
 
 
 });//ready

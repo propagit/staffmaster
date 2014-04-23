@@ -99,5 +99,10 @@ class User extends MX_Controller {
 		}
 		return modules::run('common/field_select', $array, $field_name, $field_value);
 	}
+	
+	function get_users_from_user_ids($user_ids)
+	{
+		return $this->user_model->get_users_from_ids(implode(',',$user_ids));	
+	}
 		
 }

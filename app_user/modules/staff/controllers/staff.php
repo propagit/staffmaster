@@ -676,4 +676,9 @@ class Staff extends MX_Controller {
 		$fields = $this->export_model->get_template_fields('staff','single');
 		return modules::run('common/field_select', $fields, $field_name, $field_value);
 	}
+	
+	function get_staff_user_ids_by_group_id($group_id)
+	{
+		return $this->staff_model->get_staff_user_ids_by_group_id($group_id);	
+	}
 }

@@ -304,11 +304,11 @@ function search_staffs() {
 		data: $('#form_search_staffs').serialize(),
 		success: function(html) {
 			loaded($('#staffs_search_results'), html);
-			/* if(scroll_to_form){
+			if(scroll_to_form){
 				setTimeout(function(){
-					$('body').scrollTo('#form_search_staffs', 500 );
+					$('body').scrollTo('#form_search_staffs', 800 );
 				},200);
-			} */
+			} 
 		}
 	})
 }

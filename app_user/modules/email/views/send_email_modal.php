@@ -17,9 +17,9 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="send-email-modal-window">
                             <form id="send-email-modal-form">
-                                 <div class="form-group">
+                               <div class="form-group">
                                      <div class="col-sm-5 remove-left-gutter">
-                                            <?=modules::run('email/email_templates_dropdown','email_template_select',$template_id);?>
+                                            <?=modules::run('email/email_templates_dropdown',$email_template_select_params);?>
                                      </div>
                                      <label for="add-button" class="col-sm-2 control-label">Send Sample Email</label>
                                       <div class="col-sm-5 remove-right-gutter">
@@ -37,21 +37,36 @@
                                       	 <textarea id="email_body" name="email_body"></textarea> 
                                      </div>
                                  </div>
-                                 
+                                 <input type="hidden" id="selected-user-ids" name="selected_user_ids" value='<?=$selected_user_ids;?>' />
+                                 <input type="hidden" id="selected-module-ids" name="selected_module_ids" value='<?=$selected_module_ids;?>' />
+                            </form>
                              	 <div class="form-group">
-                                	 <div class="col-sm-12 remove-left-gutter remove-right-gutter">
-                                      	 <button type="button" class="btn btn-info send-email-from-modal"><i class="fa fa-envelope-o"></i> Send Mail</button>
+                                	 <div class="col-sm-6 remove-left-gutter remove-left-gutter">
+                                      	 <button id="send-email-from-modal" type="button" class="btn no-user-in-send-list"><i class="fa fa-envelope-o"></i> Send Mail</button>
 										 &nbsp;&nbsp;
-                                         (Selected Recipients: <b><?=$total;?></b>) 
+                                         (Selected Recipients: <b id="total-selected-receiver"><?=$total;?></b>) 
                                          &nbsp;&nbsp;
-                                         <a href="#"><i class="fa fa-eye"> </i> View Send List</a>
+                                         <a href="#" id="view-send-list"><i class="fa fa-eye"> </i> View Send List</a>
                                          <div class="alert alert-success add-top-margin-20 hide" id="msg-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; Email Successfully Sent</div>
                                      </div>
+                                     <?php
+									 	if($template_id != CLIENT_INVOICE_EMAIL_TEMPLATE_ID && $template_id != CLIENT_QUOTE_EMAIL_TEMPLATE_ID){
+									 ?>
+                                     <div class="col-sm-6 remove-left-gutter remove-right-gutter">
+                                       <label for="add-button" class="col-sm-2 control-label">Groups</label>
+                                        <div class="col-sm-10 remove-right-gutter">
+                                     		<?=modules::run('attribute/group/field_select','send_email_modal_groups');?>
+                                        </div>
+                                     </div>
+                                     <?php
+										}
+									 ?>
                                  </div>
-                                 <input type="hidden" name="selected_user_ids" value='<?=$selected_user_ids;?>' />
-                                 <input type="hidden" name="selected_module_ids" value='<?=$selected_module_ids;?>' />
-                            </form>
+                                 
                             
+                            
+                            
+                            <div id="ajax-receiver-list" class="email-modal-receiver-list"></div>
                             
                         </div><!--send-email-->	
                         
@@ -72,7 +87,8 @@
 </div><!-- /.modal -->
 
 <script>
-
+var receiver_list_visible = false;
+var receiver_list_loaded = false;
 $(function(){
 	load_template(<?=$template_id;?>);
 	//load template on first load
@@ -84,31 +100,39 @@ $(function(){
 	$('#email_template_select').on('change',function(){
 		load_template($(this).val());
 	});
+	
+	//view receiver list
+	$('#view-send-list').on('click',function(e){
+		e.preventDefault();
+		if(receiver_list_visible){
+			receiver_list_visible = false;
+			$('#ajax-receiver-list').hide();
+		}else{
+			receiver_list_visible = true;
+			$('#ajax-receiver-list').show();
+			if(!receiver_list_loaded){
+				preloading($('#send-email-modal-window'));
+				load_receiver_list();
+			}
+		}
+	});
+	
+	
+	//add user belonging to group to selected list
+	$('#send_email_modal_groups').on('change',function(){
+		add_group_users($(this).val());
+	});
+	
+	toggle_send_mail_btn();
+	
+	$('.no-user-in-send-list').on('click',function(){
+		if($('#total-selected-receiver').html() == '0'){
+			$('#ajax-receiver-list').html('<div class="email-modal-receiver-list-error-msg">You have no user in your send list.</div>');
+		}
+	});
+
 });//ready
-<?php if(0){?>
-/* 
 
-//Function for reference only.
-//Write this function from where ever the modal window is being called
-//Since the email can be sent to different users such as client or staff with different parameters
-//It is wise to gather those info in the individual page itself then pass it to the send email function 
-
-function send_email()
-{
-	update_ckeditor();
-	$.ajax({
-		  type: "POST",
-		  url: "<?=base_url();?>email/ajax/send_email",
-		  data: $('#send-email-modal-form').serialize(),
-		  success: function(html) {
-			$('#msg-email-sent-successfully').removeClass('hide');
-			setTimeout(function(){
-				$('#msg-email-sent-successfully').addClass('hide');
-			}, 3000);		
-		  }
-	  });	
-} */
-<?php } ?>
 function send_sample_email()
 {
 	preloading($('#send-email-modal-window'));
@@ -156,4 +180,87 @@ function load_template(template_id)
 	  });		
 }
 
+function load_receiver_list()
+{
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/load_receiver_list",
+		  data:{selected_user_ids:$('#selected-user-ids').val()},
+		  success: function(html) {
+			  $('#ajax-receiver-list').html(html);
+			  $('#wrapper_loading').remove();
+			  receiver_list_loaded = true;
+		  }
+	  });	
+}
+
+
+function delete_receiver(delete_receiver_id)
+{
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/delete_receiver",
+		  data: {delete_receiver_id:delete_receiver_id,selected_user_ids:$('#selected-user-ids').val()},
+		  dataType: "json",
+		  success: function(data) {
+			$('#receiver-list-tr-'+delete_receiver_id).remove();
+			$('#selected-user-ids').val(data['selected_user_ids']);
+			$('#total-selected-receiver').html(data['total_selected_users']);
+			if(!data['total_selected_users']){
+				load_receiver_list();	
+				toggle_send_mail_btn();
+			}
+		  }
+	  });	
+}
+
+function add_group_users(group_id)
+{
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/add_group_users_to_email_list",
+		  data: {group_id:group_id},
+		  dataType: "json",
+		  success: function(data) {
+			$('#selected-user-ids').val(data['selected_user_ids']);
+			$('#total-selected-receiver').html(data['total_selected_users']);
+			load_receiver_list();
+			toggle_send_mail_btn();
+		  }
+	  });	
+}
+
+function toggle_send_mail_btn()
+{
+	if($('#total-selected-receiver').html() != '0'){
+		$('#send-email-from-modal').addClass('btn-info').addClass('send-email-from-modal').removeClass('no-user-in-send-list');
+	}else{
+		$('#send-email-from-modal').removeClass('btn-info').removeClass('send-email-from-modal').addClass('no-user-in-send-list');;
+	}
+}
+
+<?php if(0){?>
+/* 
+
+//Function for reference only.
+//Write this function from where ever the modal window is being called
+//Since the email can be sent to different users such as client or staff with different parameters
+//It is wise to gather those info in the individual page itself then pass it to the send email function 
+
+function send_email()
+{
+	update_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>email/ajax/send_email",
+		  data: $('#send-email-modal-form').serialize(),
+		  success: function(html) {
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);		
+		  }
+	  });	
+} */
+<?php } ?>
 </script>

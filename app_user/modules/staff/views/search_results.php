@@ -77,6 +77,15 @@
         </tbody>
     </table>
     <input type="hidden" name="email_modal_header" value="Contact Staff" />
+    <?php
+		$allowed_email_templates = array(
+										WELCOME_EMAIL_TEMPLATE_ID,
+										ROSTER_UPDATE_EMAIL_TEMPLATE_ID,
+										FORGOT_PASSWORD_EMAIL_TEMPLATE_ID,
+										);
+								
+	?>
+    <input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
     </form>
 </div>
 <script>
@@ -105,8 +114,17 @@
 		});
 	
 		$('#menu-search-staff-result-action ul li a').on('click',function(){
-			var action = $(this).attr('data-value');
-			perform_multi_update(action);
+			var checked = false;
+			$('.checkbox-multi-action').each(function(){
+				if(this.checked){
+					checked = true;
+					return false;
+				}
+			})
+			if(checked){
+				var action = $(this).attr('data-value');
+				perform_multi_update(action);
+			}
 		})
 		
 		//go to page

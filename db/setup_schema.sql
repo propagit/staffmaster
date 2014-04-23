@@ -659,7 +659,12 @@ INSERT INTO `email_merge_fields` (`merge_field_id`, `email_template_id`, `merge_
 (30, 7, 'Company Name', '{CompanyName}', 6),
 (31, 7, 'Issue Date', '{IssueDate}', 7),
 (32, 7, 'System URL', '{SystemURL}', 8),
-(33, 2, 'System URL', '{SystemURL}', 4);
+(33, 2, 'System URL', '{SystemURL}', 4),
+(34, 9, 'Staff First Name', '{FirstName}', 1),
+(35, 9, 'Staff Family Name', '{FamilyName}', 2),
+(36, 9, 'Company Name', '{CompanyName}', 3),
+(37, 9, 'System URL', '{SystemURL}', 4),
+(38, 9, 'Brief URL', '{BriefURL}', 5);
 
 
 -- --------------------------------------------------------
@@ -696,7 +701,7 @@ INSERT INTO `email_templates` (`email_template_id`, `template_name`, `template_c
 (6, 'Forgot Password', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{FirstName}</span></span></p>\r\n\r\n<p>We received a forgotten password request from you.</p>\r\n\r\n<p>Your new login details are as follows:</p>\r\n\r\n<p>Username:&nbsp;{UserName}</p>\r\n\r\n<p>Password:&nbsp;{Password}</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif; font-size:12px">Please contact us immeadiatly if you did not request this password request.&nbsp;</span></p>\r\n\r\n<p>&nbsp;</p>\r\n', 'admin@smcloud.com.au', 'Password Reset', '', 'no', '2014-03-20 04:47:51', '2014-03-20 04:47:51'),
 (7, 'Client Invoice', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{ClientContactName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please find attached an invoice from&nbsp;{CompanyName} for recent services for {ClientCompanyName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">The invoice details are as follows:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Invoice Number: &nbsp; {InvoiceNumber}<br />\r\nAmount Due: &nbsp; &nbsp; &nbsp; &nbsp; ${AmountDue}<br />\r\nDue Date: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{DueDate} &nbsp;&nbsp;</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">A downloadable invoice is attached or you can login to your member account to retrieve a copy of this invoice at any time.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind regards</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{CompanyName}</span></span></p>\r\n', 'admin@smcloud.com.au', '{CompanyName} Invoice Issued - {IssueDate}', '', 'no', '2014-03-21 06:12:06', '2014-03-21 06:12:06'),
 (8, 'Client Quote', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp;{FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your roster has been updated and requires your attention.&nbsp;</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please login to your account to confirm your shifts. Your Current Roster is as follows:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{Roster}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please contact us immeadiatly if you have any questions regarding your roster.&nbsp;</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">To Login to your account click here</span></span></p>\r\n', 'admin@smcloud.com.au', 'Client Quote', '', 'no', '2014-03-14 06:09:40', '2014-03-14 06:09:40'),
-(9, 'Brief', '', 'admin@smcloud.com.au', 'Job Brief', '', 'no', '2014-04-07 06:27:00', '2014-04-07 06:27:00');
+(9, 'Brief', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">You can view the brief from this url.&nbsp;{BriefURL}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Regards</span></span></p>\r\n\r\n<p>&nbsp;</p>', 'admin@smcloud.com.au', 'Job Brief', '', 'no', '2014-04-07 06:27:00', '2014-04-07 06:27:00');
 
 
 -- --------------------------------------------------------
