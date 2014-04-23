@@ -8,7 +8,7 @@
         <tr>
             <th class="left">Role <i class="fa fa-sort sort-table" sort-by="name"></i></th>
             <th class="center col-md-2">Staff Assigned To Role <i class="fa fa-sort sort-table" sort-by="frequency"></i></th>
-            <th class="center col-md-1">Role Assigned</th>
+            <th class="center col-md-2">Role Assigned</th>
         </tr>
     </thead>
     <tbody>

@@ -9,22 +9,6 @@
 </div>
 <!--end top box-->
 
-<!--begin bottom box -->
-<div class="col-md-12">
-	<div class="box bottom-box">
-    	<div class="inner-box">
-            <h2>Add - Edit Venues</h2>
-			<p>Add new venues by clicking the "Add New Venue" button or manage your existing venues via the below table.</p>
-            
-            
-            
-            <div id="load-venues" class="attr-list-wrap">
-               
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Add Venue Modal -->
 <div class="modal fade" id="addVenue" tabindex="-1" role="dialog" aria-labelledby="addVenueLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -192,6 +176,7 @@ function add_venue(){
 		url: '<?=base_url();?>attribute/ajax/add_venue',
 		data:$('#add-new-venue-form').serialize(),
 		success: function(html) {
+			window.location = '<?=base_url();?>attribute/venue';
 			help.load_content(params);
 			$('#addVenue').modal('hide');
 		}

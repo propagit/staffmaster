@@ -8,7 +8,7 @@
 	<div class="box top-box">
 		<button class="btn btn-core pull-right" id="run-forecast"><i class="fa fa-refresh"></i> Update Stats</button>
 		<h2>Accounts Reports</h2>
-		<p>Welcome to your Staff Account dashboard. Your Dashboard will give you a quick overview of activity going on within [COMPANY PROFILE NAME]. Check back regularly to keep yourself up to date.</p>
+		<p>Welcome to your Staff Account dashboard. Your Dashboard will give you a quick overview of activity going on within your company. Check back regularly to keep yourself up to date.</p>
 	</div>
 </div>
 <!--end top box-->
@@ -70,12 +70,9 @@
             <div class="inner-box">
 	            <h2>Profit Per Campaign</h2>
 				<form id="load_job_profit_form">
-				<div class="form-group col-md-6 white-box">
-					<?=modules::run('job/field_select', 'job_id');?>
-				</div>
-				<div class="col-md-2">
-					<button type="button" class="btn btn-core" id="btn-load-job-profit">Get Data</button>
-				</div>
+					<div class="form-group col-md-6 white-box">
+						<?=modules::run('job/field_select', 'job_id', null, null, false);?>
+					</div>
 				</form>
 				<div class="clearfix"></div>
 				<div id="wp-chart-job-profit"></div>
@@ -99,7 +96,7 @@ $(function(){
 	$('#role_month').change(function(){
 		top_roles_chart();
 	});
-	$('#btn-load-job-profit').click(function(){
+	$('#job_id').change(function(){
 		job_profit_chart();
 	});
 	top_clients_chart();

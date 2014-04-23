@@ -1,6 +1,5 @@
 <div class="staff-profile-detail-box">
 	<h2> Groups </h2>
-	<p> Staff can choose the "Groups" </p>
 </div>
 
 <div id="load-groups" class="attr-list-wrap"></div>

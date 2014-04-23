@@ -1,4 +1,5 @@
 <?php
+if (count($groups) > 0) { 
 	$group_params = json_decode($params);
 	$staff_id = $group_params->user_staff_id;
 	$total_active_staffs = $group_params->total_active_staffs;	
@@ -8,7 +9,7 @@
 	<tr class="heading">
 		<th class="left">Group Name <i class="fa fa-sort sort-table" sort-by="name"></i></td>
         <th class="center col-md-2">Staff Assigned To Group <i class="fa fa-sort sort-table" sort-by="frequency"></i></th>
-		<th class="center col-md-1">Group Assigned</th>
+		<th class="center col-md-2">Group Assigned</th>
 	</tr>
 	</thead>
     <tbody>
@@ -42,3 +43,4 @@ $(function(){
 
 });
 </script>
+<? } ?>

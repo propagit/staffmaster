@@ -150,6 +150,7 @@
 	<div class="form-group">
     	<div class="col-md-3"> 
         	<div style="float:left">Background Colour </div><div style="float:left; margin-left:10px;"class="cPicker" id="cPicker"><div style="background-color:#09F;"></div><span>Choose color...</span></div>
+        	
             <input type="hidden" name="email_background_colour" id="email_background_colour" value="<?=(isset($company['email_background_colour']) && $company['email_background_colour'] !='') ? $company['email_background_colour'] : '00bbf8' ?>">
         </div>
 		<div class="col-md-3">

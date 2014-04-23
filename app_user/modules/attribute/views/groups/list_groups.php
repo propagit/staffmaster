@@ -1,30 +1,20 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Groups</h2>
+   		 <h2>Manage Groups</h2>
 		 <p>
          	Groups are used to group staff together so you can communicate with a group of staff.
          	Staff can be assigned to the groups you create below. You can select group to communicate 
             with via the conversation module and the comm centre.
         </p>
+        <button class="btn btn-info btn-rt-margin" data-toggle="modal" href="#addGroup" ><i class="fa fa-plus"></i> Add New Group</button>
     </div>
 </div>
 <!--end top box-->
 
 <!--begin bottom box -->
-<div class="col-md-12">
-	<div class="box bottom-box">
-    	<div class="inner-box">
-            <h2>Add - Edit Groups</h2>
-		 	<p>Add groups by clicking the "Add Group" button or manage your existing groups via the below table.</p>
-            <button class="btn btn-info btn-rt-margin" data-toggle="modal" href="#addGroup" ><i class="fa fa-plus"></i> Add New Group</button>
-
-			<div id="load-groups" class="attr-list-wrap">
-               
-            </div>
-            
-        </div>
-    </div>
+<div class="col-md-12" id="load-groups" >
+	
 </div>
 <!--end bottom box -->
 

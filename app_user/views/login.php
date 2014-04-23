@@ -19,7 +19,7 @@
                 <?=modules::run('setting/company_logo');?>
         	</div> 
             <form class="login-form" method="post" action="" >
-                <input type="text" name="username"  class="form-control" placeholder="User Name">
+                <input type="text" name="username"  class="form-control" placeholder="Email">
                 <input type="password" name="password" class="form-control" placeholder="Password">
                 <?=$msg_error;?>
                 <div class="row">

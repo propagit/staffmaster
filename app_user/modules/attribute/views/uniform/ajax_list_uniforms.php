@@ -1,22 +1,32 @@
 <?php if(count($uniforms)){ ?>
-<table class="table table-bordered table-hover table-middle table-expanded">
-    <thead>
-    <tr class="heading">
-        <th class="left">Uniform <i class="fa fa-sort sort-table" sort-by="name"></i></a></th>
-        <th class="center col-md-1">Edit Uniform</th>
-        <th class="center col-md-1">Delete Uniform</th>
-    </tr>
-    </thead>
-    <tbody>
-        <? foreach($uniforms as $uniform) { ?>
-        <tr>
-            <td class="left"><?=$uniform['name'];?></td>
-            <td class="center"><a class="edit-uniform" edit-data-id="<?=$uniform['uniform_id'];?>" edit-data-name="<?=$uniform['name'];?>"><i class="fa fa-pencil"></i></a></td>
-            <td class="center"><a class="delete-uniform" delete-data-id="<?=$uniform['uniform_id'];?>"><i class="fa fa-times"></i></a></td>
-        </tr>
-        <? } ?>
-    </tbody>
-</table>
+<div class="box bottom-box">
+	<div class="inner-box">
+        <h2>Your Uniforms</h2>
+		<p>Add new uniforms by clicking the "Add New Uniforms" button or manage your existing uniforms via the below table.</p>
+        <div class="attr-list-wrap">
+        	<table class="table table-bordered table-hover table-middle table-expanded">
+			    <thead>
+			    <tr class="heading">
+			        <th class="left">Uniform <i class="fa fa-sort sort-table" sort-by="name"></i></a></th>
+			        <th class="center col-md-2">Edit Uniform</th>
+			        <th class="center col-md-2">Delete Uniform</th>
+			    </tr>
+			    </thead>
+			    <tbody>
+			        <? foreach($uniforms as $uniform) { ?>
+			        <tr>
+			            <td class="left"><?=$uniform['name'];?></td>
+			            <td class="center"><a class="edit-uniform" edit-data-id="<?=$uniform['uniform_id'];?>" edit-data-name="<?=$uniform['name'];?>"><i class="fa fa-pencil"></i></a></td>
+			            <td class="center"><a class="delete-uniform" delete-data-id="<?=$uniform['uniform_id'];?>"><i class="fa fa-times"></i></a></td>
+			        </tr>
+			        <? } ?>
+			    </tbody>
+			</table>
+        </div>
+    </div>
+</div>
+
+
 
 <script>
 $(function(){

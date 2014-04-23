@@ -45,7 +45,7 @@ body {
       <p>Thank you for considering StaffMaster as your workforce management system. We're here to help you set up your system and grow your business.</p>
       <p>To activate your system and start creating jobs please click the link below</p>
       <p><a style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#00aeec" href="<?=$activation_url;?>"><?=$activation_url;?></a></p>
-      <p>Once activate you will be sent your username, password and unique web address for activating the system</p>
+      <p>Once activated you will be sent your username, password and unique web address for activating the system</p>
       <p>The system is designed for you to be able to configure it to best suit your business by:</p>
       </span>
    <ul>

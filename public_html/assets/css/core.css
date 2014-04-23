@@ -17,6 +17,9 @@ a {
 	cursor: pointer;
 	color: #00bbf8;
 }
+a:focus {	
+	outline: none;
+}
 /* system right hand side fixed buttons */
 #sys-fixed-btns{
 	position: fixed;

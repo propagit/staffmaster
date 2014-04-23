@@ -3,26 +3,36 @@ if(count($groups)){
 	$group_params = json_decode($params);
 	$total_active_staffs = $group_params->total_active_staffs;	
 ?>
-<table class="table table-bordered table-hover table-middle table-expanded">
-	<thead>
-	<tr class="heading">
-		<th class="left">Group Name <i class="fa fa-sort sort-table" sort-by="name"></i></td>
-        <th class="center col-md-2">Staff Assigned To Gruop <i class="fa fa-sort sort-table" sort-by="name"></i></th>
-		<th class="center col-md-1"><i class="icon-eye-open"></i> Edit Group</td>
-		<th class="center col-md-1"><i class="icon-trash"></i> Delete Group</td>
-	</tr>
-	</thead>
-    <tbody>
-	<? foreach($groups as $group) { ?>
-	<tr>
-		<td class="left"><?=$group['name'];?></td>
-        <td class="center"><?=$group['frequency'];?>/<?=$total_active_staffs;?></td>
-		<td class="center"><a class="edit-group" edit-data-id="<?=$group['group_id'];?>" edit-data-name="<?=$group['name'];?>"><i class="fa fa-pencil"></i></a></td>
-		<td class="center"><a class="delete-group" delete-data-id="<?=$group['group_id'];?>"><i class="fa fa-times"></i></a></td>
-	</tr>
-	<? } ?>
-    </tbody>
-</table>
+<div class="box bottom-box">
+	<div class="inner-box">
+        <h2>Your Groups</h2>
+	 	<p>Add groups by clicking the "Add Group" button or manage your existing groups via the below table.</p>      
+
+		<div class="attr-list-wrap">          
+       
+			<table class="table table-bordered table-hover table-middle table-expanded">
+				<thead>
+				<tr class="heading">
+					<th class="left">Group Name <i class="fa fa-sort sort-table" sort-by="name"></i></td>
+			        <th class="center col-md-2">Staff Assigned To Gruop <i class="fa fa-sort sort-table" sort-by="name"></i></th>
+					<th class="center col-md-1"><i class="icon-eye-open"></i> Edit Group</td>
+					<th class="center col-md-1"><i class="icon-trash"></i> Delete Group</td>
+				</tr>
+				</thead>
+			    <tbody>
+				<? foreach($groups as $group) { ?>
+				<tr>
+					<td class="left"><?=$group['name'];?></td>
+			        <td class="center"><?=$group['frequency'];?>/<?=$total_active_staffs;?></td>
+					<td class="center"><a class="edit-group" edit-data-id="<?=$group['group_id'];?>" edit-data-name="<?=$group['name'];?>"><i class="fa fa-pencil"></i></a></td>
+					<td class="center"><a class="delete-group" delete-data-id="<?=$group['group_id'];?>"><i class="fa fa-times"></i></a></td>
+				</tr>
+				<? } ?>
+			    </tbody>
+			</table>
+		 </div>        
+    </div>
+</div>
 <script>
 $(function(){
 	

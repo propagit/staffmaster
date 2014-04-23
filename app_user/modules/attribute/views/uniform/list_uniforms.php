@@ -1,29 +1,19 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Uniforms</h2>
+   		 <h2>Manage Uniforms</h2>
 		 <p>
          	Uniforms can be added to job details when you create jobs. 
             Add common dress attire your staff will be required to wear when working on jobs.
-         </p>
+         </p>         
+        <button class="btn btn-info" data-toggle="modal" href="#addUniform" ><i class="fa fa-plus"></i> Add New Uniform</button>
     </div>
 </div>
 <!--end top box-->
 
 <!--begin bottom box -->
-<div class="col-md-12">
-	<div class="box bottom-box">
-    	<div class="inner-box">
-            <h2>Add - Edit Uniforms</h2>
-			<p>Add new uniforms by clicking the "Add New Uniforms" button or manage your existing uniforms via the below table.</p>
-            
-            <button class="btn btn-info" data-toggle="modal" href="#addUniform" ><i class="fa fa-plus"></i> Add New Uniform</button>
-
-            <div id="load-uniforms" class="attr-list-wrap">
-            	
-            </div>
-        </div>
-    </div>
+<div class="col-md-12" id="load-uniforms">
+	
 </div>
 <!--end bottom box -->
 
@@ -39,9 +29,6 @@
                 <form id="add-uniform-form" data-url="<?=base_url();?>attribute/ajax/add_uniform">
                 <div class="modal-body">
                     <h4 class="modal-body-title">Enter Uniform Name</h4>
-                    <p>
-                    The Uniform.
-                    </p>
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
