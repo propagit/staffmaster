@@ -7,13 +7,7 @@
     </div>
 </div>
 <!--end top box-->
-<? if (count($payrates) == 0) { ?>
-<div class="col-md-12">       
-	<div class="alert alert-warning">
-		There is no pay rate in the system at the moment. Click on the Add Pay Rate button to creating the first pay rate.
-	</div>
-</div>
-<? } else { ?>
+<? if (count($payrates) > 0) { ?>
 <link href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" media="screen" type="text/css" />
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
