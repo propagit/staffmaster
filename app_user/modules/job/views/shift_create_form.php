@@ -55,7 +55,7 @@
 		
 		<? if (!$is_client) { ?>
 		<div class="col-lg-3 help-block">
-			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/venue/create" target="_blank">Create Venue</a>
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/venue/create">Create Venue</a>
 		</div>
 		<? } ?>
 	</div>
@@ -66,7 +66,7 @@
 		</div>
 		<? if (!$is_client) { ?>
 		<div class="col-lg-3 help-block">
-			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/role" target="_blank">Create Role</a>
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/role">Create Role</a>
 		</div>
 		<? } ?>
 	</div>
@@ -86,7 +86,7 @@
 		</div>
 		<? if (!$is_client) { ?>
 		<div class="col-lg-3 help-block">
-			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/uniform" target="_blank">Create Uniform</a>
+			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/uniform">Create Uniform</a>
 		</div>
 		<? } ?>
 	</div>
