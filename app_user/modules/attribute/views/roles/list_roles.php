@@ -1,19 +1,19 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Roles</h2>
+   		 <h2>Manage Roles</h2>
 		 <p>A role is the skill required for a staff member to perform on a shift. When you create a job you will be asked for the role the staff member is required to perform on the job. You can set roles that staff can work on via their personal profiles. The roles you set staff to work will effect what jobs they can apply for and what staff will appear when you search for staff by the role.</p>
+            <button class="btn btn-info" data-toggle="modal" href="#addRole" ><i class="fa fa-plus"></i> Add New Role</button>  
     </div>
 </div>
 <!--end top box-->
-
+<? if (count($roles) > 0) { ?>
 <!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="inner-box">
-            <h2>Add - Edit Roles</h2>
-			<p>Add new roles by clicking the "Add New Roles" button or manage your existing roles via the below table.</p>
-            <button class="btn btn-info" data-toggle="modal" href="#addRole" ><i class="fa fa-plus"></i> Add New Role</button>           
+            <h2>Your Roles</h2>
+			<p>Add new roles by clicking the "Add New Roles" button or manage your existing roles via the below table.</p>         
            
            	<div id="load-roles" class="attr-list-wrap"></div>
            
@@ -21,7 +21,7 @@
     </div>
 </div>
 <!--end bottom box -->
-
+<? } ?>
 
 
 

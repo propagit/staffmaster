@@ -25,6 +25,7 @@ class Role extends MX_Controller {
 	
 	function list_roles()
 	{
+		$data['roles'] = $this->role_model->get_roles();
 		$this->load->view('roles/list_roles', isset($data) ? $data : NULL);
 	}
 	

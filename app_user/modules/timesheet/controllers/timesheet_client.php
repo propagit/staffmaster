@@ -7,7 +7,7 @@ class Timesheet_client extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('timesheet_model');
-		$this->load->model('timesheet_staff_model');
+		$this->load->model('timesheet_client_model');
 		$this->load->model('job/job_shift_model');
 		$this->load->model('expense/expense_model');
 	}
