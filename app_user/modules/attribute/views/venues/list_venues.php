@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Venues</h2>
+   		 <h2>Manage Venues</h2>
 		 <p>Venues are the location in which jobs take place. You can add a venue via the form below or add multiple venues at once by importing a venue list as a .CSV file (<a href="<?=base_url();?>assets/sample_docs/Venues.csv">Download Sample File</a>). Enter your venue address accurately to ensure your map data gets plotted correctly. Staff select locations they can work in their profile information which relates to the locations of venues.</p>
 		 <button id="open-add-venue-modal" class="btn btn-info btn-rt-margin"><i class="fa fa-plus"></i> Add New Venue</button>
 		<a class="btn btn-info" href="<?=base_url();?>attribute/venue/import"><i class="fa fa-upload"></i> Import Venues</a>
@@ -10,19 +10,8 @@
 <!--end top box-->
 
 <!--begin bottom box -->
-<div class="col-md-12">
-	<div class="box bottom-box">
-    	<div class="inner-box">
-            <h2>Add - Edit Venues</h2>
-			<p>Add new venues by clicking the "Add New Venue" button or manage your existing venues via the below table.</p>
-            
-            
-            
-            <div id="load-venues" class="attr-list-wrap">
-               
-            </div>
-        </div>
-    </div>
+<div class="col-md-12" id="load-venues">
+	
 </div>
 
 <!-- Add Venue Modal -->
