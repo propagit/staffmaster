@@ -24,7 +24,7 @@ class Payrate extends MX_Controller {
 					$this->delete_payrate($param);
 				break;
 			default:
-					$this->list_payrates();
+					$this->main_view();
 				break;
 		}
 	}
@@ -38,7 +38,7 @@ class Payrate extends MX_Controller {
 	*    
 	*/
 	
-	function list_payrates()
+	function main_view()
 	{
 		$data['payrates'] = $this->payrate_model->get_payrates();
 		$this->load->view('payrate/main_view', isset($data) ? $data : NULL);

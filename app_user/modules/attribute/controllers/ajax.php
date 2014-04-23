@@ -38,6 +38,11 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
+		$count = count($this->payrate_model->get_payrates());
+		if ($count == 1)
+		{
+			return;
+		}
 		echo $payrate_id;
 	}
 	
