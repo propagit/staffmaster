@@ -123,5 +123,18 @@ class User_model extends CI_Model {
 		return false;
 	}
 	
+	/**
+	*	@name: get_users_from_ids
+	*	@desc: Get users from user ids
+	*	@access: public
+	*	@param: ([string]) user ids
+	*/
+	function get_users_from_ids($user_ids)
+	{
+		$sql = "SELECT * from users WHERE user_id IN (".$user_ids.")";
+		$users = $this->db->query($sql)->result();
+		return $users;
+	}
+	
 	
 }

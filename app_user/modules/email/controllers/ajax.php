@@ -11,6 +11,7 @@ class Ajax extends MX_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('email_template_model');	
+		$this->load->model('user/user_model');	
 	}
 	
 	/**
@@ -97,6 +98,7 @@ class Ajax extends MX_Controller {
 	function get_send_email_modal()
 	{
 		$data['email_modal_header'] = "Contact User";
+		$selected_user_ids = '';
 		//for search staff
 		if($this->input->post('user_staff_selected_user_id',true)){
 			$selected_user_ids = $this->input->post('user_staff_selected_user_id',true);
@@ -109,15 +111,19 @@ class Ajax extends MX_Controller {
 			$data['email_modal_header'] = $this->input->post('email_modal_header',true);	
 		}
 		
-		$data['template_id']= null;
+		$template_id = null;
 		if($this->input->post('email_template_id',true)){
-			$data['template_id'] = $this->input->post('email_template_id',true);
+			$template_id = $this->input->post('email_template_id',true);
 		}
+		$data['template_id'] = $template_id;
+		
 		$data['total'] = 0;
 		$data['selected_user_ids'] = '';
 		if($selected_user_ids){
-			$data['selected_user_ids'] = json_encode($selected_user_ids);	
-			$data['total'] = count($selected_user_ids);
+			$data['selected_user_ids'] = json_encode($selected_user_ids);
+			if($selected_user_ids != ''){	
+				$data['total'] = count($selected_user_ids);
+			}
 		}
 		//this is the selected modules ids such as invoice ids, shift ids 
 		$data['selected_module_ids'] = '';
@@ -125,6 +131,22 @@ class Ajax extends MX_Controller {
 		if($selected_module_ids){
 			$data['selected_module_ids'] = json_encode($selected_module_ids);	
 		}
+		
+		//get allowed templates 
+		$allowed_template_ids = 'all';
+		if($this->input->post('allowed_template_ids')){
+			$allowed_template_ids_post = $this->input->post('allowed_template_ids');
+			$allowed_template_ids = json_decode($allowed_template_ids_post);
+		}
+		
+		//field select params
+		$data['email_template_select_params'] = $params = array(
+															 'field_name' => 'email_template_select',
+															 'field_value' => $template_id,
+															 'size' => '',
+															 'allowed_template_ids' => $allowed_template_ids
+															 );
+		
 		$this->load->view('send_email_modal', isset($data) ? $data : NULL);
 	}
 	/**
@@ -196,5 +218,79 @@ class Ajax extends MX_Controller {
 		}
 		$this->session->unset_userdata('selected_user_ids');
 		echo 'success';
+	}
+	/**
+	*	@name: load_receiver_list
+	*	@desc: Load the list of user who are receiving the email
+	*	@access: public
+	*	@param: ([via POST] user ids)
+	*	
+	*/
+	function load_receiver_list()
+	{
+		$selected_user_ids = $this->input->post('selected_user_ids');
+		if($selected_user_ids){
+			$user_ids = json_decode($selected_user_ids);
+			if(count($user_ids)){
+				$data['users'] = modules::run('user/get_users_from_user_ids',$user_ids);
+			}
+		}
+		$this->load->view('receivers/receiver_lists', isset($data) ? $data : NULL);
+	}
+	/**
+	*	@name: send_email
+	*	@desc: Send email to a particular email vai send email modal window UI. This is a sample function only. 
+	*	@access: public
+	*	@param: (via POST)
+	*	
+	*/
+	function delete_receiver()
+	{
+		$selected_user_ids = $this->input->post('selected_user_ids');
+		$delete_receiver_id = $this->input->post('delete_receiver_id');	
+		
+		if($selected_user_ids && $delete_receiver_id){
+			$user_ids = json_decode($selected_user_ids);
+			if(($key = array_search($delete_receiver_id, $user_ids)) !== false) {
+				unset($user_ids[$key]);
+			}
+		}
+		
+		$data['total_selected_users'] = count($user_ids);
+		$data['selected_user_ids'] = $this->_format_selected_user_ids($user_ids);
+		echo json_encode($data);
+	}
+	
+	function add_group_users_to_email_list()
+	{
+		$group_id = $this->input->post('group_id');
+		$users_ids_in_group = modules::run('staff/get_staff_user_ids_by_group_id',$group_id);
+		$selected_user_ids = array();
+		if($users_ids_in_group){
+			foreach($users_ids_in_group as $user_id)
+			{
+				$selected_user_ids[] = $user_id->user_id;	
+			}
+		}
+		$data['total_selected_users'] = count($users_ids_in_group);
+		$data['selected_user_ids'] = json_encode($selected_user_ids);
+		echo json_encode($data);
+	}
+	
+	/**
+	*	@name: _format_selected_user_ids
+	*	@desc: Format user ids in json format for email module - selected user ids. This was used as default json encode had issues 
+	*	@access: private
+	*	@param: ([array] user ids)
+	*	
+	*/
+	function _format_selected_user_ids($user_ids)
+	{
+		$temp_ids = '';
+		foreach($user_ids as $id){
+			$temp_ids .= '"'.$id.'",';
+		}
+		$temp_ids = rtrim($temp_ids, ',');
+		return 	'['.$temp_ids.']';
 	}
 }

@@ -143,7 +143,7 @@ class Ajax extends MX_Controller {
 	{
 		$params = $this->input->post();
 		$data['briefs'] = $this->brief_model->search_brief($params);
-		$this->load->view('ajax-brief-lists', isset($data) ? $data : NULL);		
+		$this->load->view('ajax_brief_lists', isset($data) ? $data : NULL);		
 	}
 	/**
 	*	@name: delete_brief
@@ -236,5 +236,55 @@ class Ajax extends MX_Controller {
 		$shift_id = $this->input->post('shift_id');
 		echo modules::run('brief/view_information_sheet',$shift_id);
 	}
+	
+	/**
+	*	@name: email_brief
+	*	@desc: function to email invoice to client
+	*	@access: public
+	*	@param: ([via post]) email parameters such as body of email, user id, invoice id
+	*	
+	*/
+	function email_brief()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		
+		//get post data 
+		$brief_ids = $this->input->post('selected_module_ids');
+		$email_body = $this->input->post('email_body');
+		$selected_user_ids = $this->input->post('selected_user_ids');
+		$email_template_id = $this->input->post('email_template_select');
+		if($selected_user_ids){
+			$user_ids = json_decode($selected_user_ids);
+			$brief_ids = json_decode($brief_ids);
+			$brief_id = $brief_ids[0];
+			foreach($user_ids as $user_id){
+				//get user
+				$user = $this->user_model->get_user($user_id);
+				//get template info
+				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$company = $this->setting_model->get_profile();
+				//get receiver object
+				$email_obj_params = array(
+										'template_id' => $template_info->email_template_id,
+										'user_id' => $user_id,
+										'company' => $company,
+										'brief_id' => $brief_id
+									);	
+				$obj = modules::run('email/get_email_obj',$email_obj_params);
+				$email_data = array(
+									'to' => $user['email_address'],
+									'from' => $company['email_c_email'],
+									'from_text' => $company['email_c_name'],
+									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									'message' => modules::run('email/format_template_body',$email_body,$obj)
+								);
+				modules::run('email/send_email',$email_data);
+			}
+		}
+		echo 'sent';
+	}
+	
 	
 }

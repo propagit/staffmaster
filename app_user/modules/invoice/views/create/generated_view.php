@@ -280,6 +280,8 @@
 <input type="hidden" name="email_modal_header" value="Invoice Client" />
 <input type="hidden" name="email_template_id" value="<?=CLIENT_INVOICE_EMAIL_TEMPLATE_ID;?>" />
 <input type="hidden" name="selected_module_ids[]" value="<?=$invoice['invoice_id'];?>" />
+<?php $allowed_email_templates = array(CLIENT_INVOICE_EMAIL_TEMPLATE_ID);?>
+<input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
 </form>
 <script>
 $(function(){

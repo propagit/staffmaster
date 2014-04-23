@@ -777,7 +777,7 @@ class Ajax extends MX_Controller {
 			foreach($user_ids as $user_id){
 				//check if its is welcome email
 				$send_email = true;
-				if($template_info->email_template_id == 1){
+				if($template_info->email_template_id == WELCOME_EMAIL_TEMPLATE_ID){
 					//check if this staff has already received a welcome email
 					$staff = $this->staff_model->get_staff($user_id);
 					if($staff['welcome_email_sent'] == 'yes'){
@@ -803,14 +803,13 @@ class Ajax extends MX_Controller {
 								);
 						modules::run('email/send_email',$email_data);
 						//if welcome email then mark this user has welcome email sent 
-						if($template_info->email_template_id == 1){
+						if($template_info->email_template_id == WELCOME_EMAIL_TEMPLATE_ID){
 							$this->staff_model->update_staff($user_id,array('welcome_email_sent' => 'yes'));
 						}
 					}
 				}
 			}
 		}
-		$this->session->unset_userdata('selected_user_ids');
 		echo 'success';
 	}
 	
