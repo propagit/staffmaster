@@ -65,7 +65,19 @@ switch($log['action']) {
 				break;
 			case 'supervisor_id': 
 					$supervisor = modules::run('user/get_user', $value);
-					echo 'supervisor to <b>' . $supervisor['first_name'] . ' ' . $supervisor['last_name'] . '</b>';
+					if ($supervisor)
+					{
+						if ($supervisor['is_client'])
+						{
+							$client = modules::run('user/get_user_client', $supervisor['user_id']);
+							echo $client['company_name'];
+						}
+						else
+						{
+							echo 'supervisor to <b>' . $supervisor['first_name'] . ' ' . $supervisor['last_name'] . '</b>';
+						}
+					}
+										
 				break;
 			case 'expenses':
 					echo 'expenses to <b>$' . modules::run('common/calculate_expenses', $value) . '</b>';
