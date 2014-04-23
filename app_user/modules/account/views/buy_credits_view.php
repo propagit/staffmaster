@@ -249,7 +249,6 @@ function buy_credits() {
 		url: "<?=base_url();?>account/ajax/buy_credits",
 		data: $('#form_buy_credits').serialize(),
 		success: function(html) {
-			alert(html);
 			if (html == 'true') {
 				$('#order-message').html('<i class="fa fa-done fa-check-circle fa-3x text-success"></i><h2 class="text-success">Payment Successful!</h2><p>Credit Card Transaction Sucsessfull, your credit ballance has been updated</p>');
 				setTimeout(function() {
