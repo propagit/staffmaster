@@ -1,6 +1,6 @@
 <h2>Activity Log</h2>
 <p>Your activity log will inform you of important activities and iterations from your users.</p>
- 
+<? if (count($logs) > 0) { ?>
 <div id="activity_lists" class="clear">
 	<div id="wrapper-outer">
 		<div id="wrap-list">
@@ -18,4 +18,6 @@
 		</div>
 	</div>
 </div>            
-     
+<? } else { ?>
+<div class="alert alert-warning">No activity log</div>
+<? } ?>

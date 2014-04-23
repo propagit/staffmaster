@@ -8,7 +8,7 @@
     <div class="counter-label">
         Active Campaigns (Today)
         <span class="pull">
-        	<a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a>
+        	<!-- <a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a> -->
         	<a href="<?=base_url();?>dashboard/active_campaigns"><i class="fa fa-bars dash-stats-fa-icons"></i></a>
         </span>
     </div>
@@ -20,7 +20,7 @@
     <div class="counter-label">
         Shifts On (Today) 
         <span class="pull">
-        	<a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a>
+        	<!-- <a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a> -->
         	<a href="<?=base_url();?>dashboard/today_shifts"><i class="fa fa-bars dash-stats-fa-icons"></i></a>
         </span>
     </div>
@@ -32,7 +32,7 @@
     <div class="counter-label">
         Shifts On (Week) 
         <span class="pull">
-        	<a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a>
+        	<!-- <a href="<?=base_url();?>job/calendar"><i class="fa fa-calendar-o dash-stats-fa-icons"></i></a> -->
         	<a href="<?=base_url();?>dashboard/this_week_shifts"><i class="fa fa-bars dash-stats-fa-icons"></i></a>
         </span>
     </div>

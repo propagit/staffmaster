@@ -602,7 +602,7 @@ ol.example li.placeholder:before {
 }
 #wrap-list{
 	overflow-y:scroll;	
-	height:418px;
+	max-height:418px;
 }
 .activity-information{
 	color:#015da4;
