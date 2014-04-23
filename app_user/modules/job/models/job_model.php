@@ -33,6 +33,7 @@ class Job_model extends CI_Model {
 					FROM job_shifts 
 					WHERE status > " . SHIFT_DELETED . "
 					AND status < " . SHIFT_FINISHED . "
+					AND job_date = '" . date('Y-m-d') . "'
 					GROUP BY job_id";
 		$query = $this->db->query($sql);
 		return $query->num_rows();

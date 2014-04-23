@@ -74,12 +74,14 @@ class Dashboard extends MX_Controller {
 	function today_shifts()
 	{
 		$data = array(
-						'client_user_id' => '',
-						'client_client_id' => '',
-						'shift_date' => date('d-m-Y', now()),
-						'search_shift_date_to' => date('d-m-Y', now()),
-						'shift_status' => 'shifts'
-					);
+			'client_user_id' => '',
+			'client_client_id' => '',
+			'shift_date' => date('d-m-Y', now()),
+			'search_shift_date_to' => date('d-m-Y', now()),
+			'shift_status' => 'all',
+			'staff_name' => '',
+			'search_job_or_campaign' => 'shift'
+		);
 		$this->session->set_flashdata('search_shift_filters',$data);
 		redirect('job/search');
 	}
@@ -87,14 +89,17 @@ class Dashboard extends MX_Controller {
 	function this_week_shifts()
 	{
 		$today = date('Y-m-d');
-		$this_week = modules::run('common/the_week', $today);
+		$this_week = modules::run('common/the_week', $today);	
 		$data = array(
-						'client_user_id' => '',
-						'client_client_id' => '',
-						'shift_date' => date('d-m-Y', $this_week['start']),
-						'search_shift_date_to' => date('d-m-Y', $this_week['end']),
-						'shift_status' => 'shifts'
-					);
+			'client_user_id' => '',
+			'client_client_id' => '',
+			'shift_date' => date('d-m-Y', $this_week['start']),
+			'search_shift_date_to' => date('d-m-Y', $this_week['end']),
+			'shift_status' => 'all',
+			'staff_name' => '',
+			'search_job_or_campaign' => 'shift'
+		);
+		
 		$this->session->set_flashdata('search_shift_filters',$data);
 		redirect('job/search');
 	}
@@ -103,14 +108,16 @@ class Dashboard extends MX_Controller {
 	{
 		$start = date('Y-m') . '-01';
 		$month_days = date('t');
-		$end = date('Y-m') . '-' . $month_days;
+		$end = date('Y-m') . '-' . $month_days;		
 		$data = array(
-						'client_user_id' => '',
-						'client_client_id' => '',
-						'shift_date' => date('d-m-Y', strtotime($start)),
-						'search_shift_date_to' => date('d-m-Y', strtotime($end)),
-						'shift_status' => 'shifts'
-					);
+			'client_user_id' => '',
+			'client_client_id' => '',
+			'shift_date' => date('d-m-Y', strtotime($start)),
+			'search_shift_date_to' => date('d-m-Y', strtotime($end)),
+			'shift_status' => 'all',
+			'staff_name' => '',
+			'search_job_or_campaign' => 'shift'
+		);
 		$this->session->set_flashdata('search_shift_filters',$data);
 		redirect('job/search');
 	}
@@ -118,12 +125,14 @@ class Dashboard extends MX_Controller {
 	function active_campaigns()
 	{
 		$data = array(
-						'client_user_id' => '',
-						'client_client_id' => '',
-						'shift_date' => '',
-						'search_shift_date_to' => '',
-						'shift_status' => 'job_campaign'
-					);
+			'client_user_id' => '',
+			'client_client_id' => '',
+			'shift_date' => date('d-m-Y', now()),
+			'search_shift_date_to' => date('d-m-Y', now()),
+			'shift_status' => '',
+			'staff_name' => '',
+			'search_job_or_campaign' => 'job_campaign'
+		);
 		$this->session->set_flashdata('search_shift_filters',$data);
 		redirect('job/search');
 	}
