@@ -7,21 +7,11 @@
     </div>
 </div>
 <!--end top box-->
-<? if (count($roles) > 0) { ?>
 <!--begin bottom box -->
-<div class="col-md-12">
-	<div class="box bottom-box">
-    	<div class="inner-box">
-            <h2>Your Roles</h2>
-			<p>Add new roles by clicking the "Add New Roles" button or manage your existing roles via the below table.</p>         
-           
-           	<div id="load-roles" class="attr-list-wrap"></div>
-           
-        </div>
-    </div>
+<div class="col-md-12" id="load-roles">
+	
 </div>
 <!--end bottom box -->
-<? } ?>
 
 
 
