@@ -111,17 +111,21 @@ class Ajax_venue extends MX_Controller {
 		$records = $this->input->post('records');
 		foreach($records as $data)
 		{
-			$locationn_id = 0;
-			$location = modules::run('attribute/location/get_location_by_name', $data['location']);
-			if ($location)
+			$location_id = 0;
+			if (isset($data['location']))
 			{
-				$location_id = $location['location_id'];
-				$area = modules::run('attribute/location/get_child_location_by_name', $location_id, $data['area']);
-				if ($area)
+				$location = modules::run('attribute/location/get_location_by_name', $data['location']);
+				if ($location)
 				{
-					$location_id = $area['location_id'];
+					$location_id = $location['location_id'];
+					$area = modules::run('attribute/location/get_child_location_by_name', $location_id, $data['area']);
+					if ($area)
+					{
+						$location_id = $area['location_id'];
+					}
 				}
 			}
+			
 			
 			$data_venue = array(
 				'location_id' => $location_id,
