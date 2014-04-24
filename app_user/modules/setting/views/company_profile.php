@@ -2,6 +2,7 @@
 <link rel="stylesheet" media="screen" type="text/css" href="<?=base_url()?>assets/js/colorpicker/colorpicker.css" />  
 <script type="text/javascript" src="<?=base_url()?>assets/js/colorpicker/colorpicker.js"></script>
 
+<?=modules::run('wizard/main_view', 'company');?>
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">

@@ -27,7 +27,8 @@ class Auth extends MX_Controller {
 	
 	function is_staff()
 	{
-		return $this->session->userdata('force_staff');
+		$user = $this->session->userdata('user_data');
+		return ($this->session->userdata('force_staff') || $user['is_staff']);
 	}
 	
 	function is_client()
@@ -75,10 +76,10 @@ class Auth extends MX_Controller {
 	
 	function logout_user()
 	{
-		#$this->session->sess_destroy();
-		$this->session->unset_userdata('user_data');
-		$this->session->unset_userdata('is_user_logged_in');
-		$this->session->unset_userdata('force_staff');
+		$this->session->sess_destroy();
+		#$this->session->unset_userdata('user_data');
+		#$this->session->unset_userdata('is_user_logged_in');
+		#$this->session->unset_userdata('force_staff');
 		redirect('');
 	}	
 	

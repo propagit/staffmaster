@@ -1,3 +1,5 @@
+<?=modules::run('wizard/main_view', 'role');?>
+
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">

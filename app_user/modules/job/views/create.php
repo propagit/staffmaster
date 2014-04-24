@@ -1,3 +1,5 @@
+<?=modules::run('wizard/main_view', 'job');?>
+
 <div class="col-md-12">
 	<div class="box top-box">
         <h2>Create Jobs</h2>

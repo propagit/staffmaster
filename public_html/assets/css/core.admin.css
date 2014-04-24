@@ -379,20 +379,31 @@ a.default {
 	background-color:transparent;	
 }
 #waitingModal .modal-content,
-#alertModal .modal-content {
+#alertModal .modal-content,
+#welcomeModal .modal-content {
 	padding: 30px 50px;
 	text-align: center;
 }
+#welcomeModal .modal-content .modal-body {
+	border: 0;
+	background: transparent;
+}
 #waitingModal .modal-content h2,
-#alertModal .modal-content h2 {
+#alertModal .modal-content h2,
+#welcomeModal .modal-content h2 {
 	margin-top: 0;
 	font-size:40px;
 	font-weight:900;
 	font-family:'Lato', sans-serif;
 	letter-spacing:-1px;
 }
-#alertModal .modal-content .modal-footer {
+#alertModal .modal-content .modal-footer,
+#welcomeModal .modal-content .modal-footer {
 	text-align: center;
+}
+#welcomeModal .modal-content .modal-footer {
+	border: 0;
+	margin: -30px 0 20px 0;
 }
 /* modal */
 .contact-modal{
@@ -680,7 +691,6 @@ span.dash-invoice-value{
 	width:48px;
 	height:48px;	
 }
-
 #staff_quick_search_result .profile_photo{
 	width:48px;
 	height:48px;	
@@ -700,4 +710,52 @@ span.dash-invoice-value{
 	margin: 0;
 	padding: 10px 0;
 	font-weight: 600;
+}
+
+#setup_wizard {
+	margin-bottom: -20px;
+}
+#setup_wizard .wp_wizard {
+	float: left;
+	margin-top: 10px;
+}
+#setup_wizard .wp_wizard hr {
+	border: 3px solid #ddd;
+	margin-bottom: -33px;
+	margin-right: 50px;
+	margin-left: 50px;
+}
+#setup_wizard .wp_wizard .steps {
+	position: relative;
+	z-index: 100;
+}
+#setup_wizard .wizard_step {
+	float: left;
+	text-align: center;
+	display: block;
+	width: 150px;
+}
+#setup_wizard .wizard_step.first-child {
+	width: auto;
+	margin-right: 10px;
+}
+.step_label {
+	padding: 10px 0;
+	text-align: center;
+}
+.c1 {
+	margin: auto;
+	width: 60px;
+	height: 60px;
+	text-align: center;
+	line-height: 50px;
+	background: #ccc;
+	border-radius: 30px;
+	border: 10px solid #ddd;
+}
+.c1.current {
+	background: orange;
+}
+.c1.done {
+	background: green;
 }

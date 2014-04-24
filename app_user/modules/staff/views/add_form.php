@@ -1,3 +1,4 @@
+<?=modules::run('wizard/main_view', 'staff');?>
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
