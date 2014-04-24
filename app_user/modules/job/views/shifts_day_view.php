@@ -294,6 +294,27 @@ $(function(){
 		}
 		
 	});
+		
+	//contact staff
+	$('#menu-day-action ul li a[data-value="contact_staff"]').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		if (selected_shifts.length > 0) {
+			$('#selected-module-ids').val(selected_shifts);
+			$.ajax({
+			  type: "POST",
+			  url: "<?=base_url();?>email/ajax/get_send_email_modal",
+			  data: $('#apply-shift-contact-email-form').serialize(),
+			  success: function(html) {
+				  $('#ajax-email-apply-shift-modal').html(html);
+				  $('#email-modal').modal('show');	
+			  }
+		  });
+		}
+		
+	});
 })
 function init_inline_edit() {
 	$('.update_link').on('save', function(e, params) {
@@ -421,102 +442,7 @@ function init_inline_edit() {
 			return $('#wrapper_shift_staff').html();
 		}
 	})
-
 }
-
-	
-	
-    var selected_shifts = new Array();
-    	
-
-	$('#selected_all_shifts').click(function(){
-		$('input.selected_shifts').prop('checked', this.checked);		
-	});
-	$('#menu-day-action ul li a[data-value="delete"]').confirmModal({
-		confirmTitle: 'Delete selected shifts',
-		confirmMessage: 'Are you sure you want to delete selected shifts?',
-		confirmCallback: function(e) {
-			selected_shifts.length = 0;
-			$('.selected_shifts:checked').each(function(){
-				selected_shifts.push($(this).val());
-			});
-			delete_shifts(selected_shifts);
-		}
-	});
-	$('#menu-day-action ul li a[data-value="copy"]').click(function(){
-		selected_shifts.length = 0;
-		$('.selected_shifts:checked').each(function(){
-			selected_shifts.push($(this).val());
-		});
-		$('#copy_shift').modal({
-			remote: "<?=base_url();?>job/ajax/load_shifts_copy/" + selected_shifts.join("~"),
-			show: true
-		});
-	});
-	$('#menu-day-action ul li a[data-value="edit"]').click(function(){
-		selected_shifts.length = 0;
-		$('.selected_shifts:checked').each(function(){
-			selected_shifts.push($(this).val());
-		});
-		if (selected_shifts.length > 0) {
-			$('.bs-modal-lg').modal({
-				remote: "<?=base_url();?>job/ajax_shift/load_update_modal/" + selected_shifts.join("~"),
-				show: true
-			});
-		}
-		
-	});
-	//attach brief to multiple shift
-	$('#menu-day-action ul li a[data-value="attach_brief"]').click(function(){
-		selected_shifts.length = 0;
-		$('.selected_shifts:checked').each(function(){
-			selected_shifts.push($(this).val());
-		});
-		if (selected_shifts.length > 0) {
-			$('.bs-modal-sml').modal({
-				remote: "<?=base_url();?>job/ajax_shift/load_add_brief_multi_shift/" + selected_shifts.join("~"),
-				show: true
-			});
-		}
-		
-	});
-	//attach notes to multiple shift
-	$('#menu-day-action ul li a[data-value="attach_note"]').click(function(){
-		selected_shifts.length = 0;
-		$('.selected_shifts:checked').each(function(){
-			selected_shifts.push($(this).val());
-		});
-		if (selected_shifts.length > 0) {
-			$('.bs-modal-sml').modal({
-				remote: "<?=base_url();?>job/ajax_shift/load_add_note_multi_shift/" + selected_shifts.join("~"),
-				show: true
-			});
-		}
-		
-	});
-	
-	//contact staff
-	$('#menu-day-action ul li a[data-value="contact_staff"]').click(function(){
-		selected_shifts.length = 0;
-		$('.selected_shifts:checked').each(function(){
-			selected_shifts.push($(this).val());
-		});
-		if (selected_shifts.length > 0) {
-			$('#selected-module-ids').val(selected_shifts);
-			$.ajax({
-			  type: "POST",
-			  url: "<?=base_url();?>email/ajax/get_send_email_modal",
-			  data: $('#apply-shift-contact-email-form').serialize(),
-			  success: function(html) {
-				  $('#ajax-email-apply-shift-modal').html(html);
-				  $('#email-modal').modal('show');	
-			  }
-		  });
-		}
-		
-	});
-	
-});
 
 
 //this function is called from job/views/job_details.php
@@ -541,7 +467,6 @@ function email_apply_for_shift(){
 		}
 	}); 
 }
-
 
 
 function unlock_shift(pk) {
