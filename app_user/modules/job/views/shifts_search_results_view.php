@@ -2,10 +2,22 @@
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($shifts);?></b> results</p>
 <? if (count($shifts) > 0) { ?>
+<div id="nav_shifts">
+<?
+	# Action menu
+	$data = array(
+		array('value' => 'contact_staff', 'label' => '<i class="fa fa-envelope-o"></i> Contact Staff')
+	);
+	echo modules::run('common/menu_dropdown', $data, 'search-shift-action', 'Actions');
+
+?>
+	
+</div>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle">
 	<thead>
 	<tr>
+    	<th class="center"><input type="checkbox" id="search_shift_select_all_shifts" /></th>
 		<th class="center" width="80">Date &nbsp; <i onclick="sort_search_shifts('date')" class="fa fa-sort"></i></th>
 		<? if (!modules::run('auth/is_client')) { ?>
 		<th>Client &nbsp; <i onclick="sort_search_shifts('client')" class="fa fa-sort"></i></th>
@@ -23,6 +35,7 @@
 	<? foreach($shifts as $shift) { $client = modules::run('client/get_client', $shift['client_id']); ?>
 	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>
 				<?=($shift['is_alert']) ? ' purple' : '';?>">
+        <td class="center"><? if($shift['status'] == SHIFT_CONFIRMED) {?><input type="checkbox" class="search_shift_selected_shifts" value="<?=$shift['shift_id'];?>" data-staff-user-id="<?=$shift['staff_id'];?>" /><?php }else { echo '&nbsp;';} ?></td>
 		<td class="wp-date" width="70">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
@@ -50,3 +63,43 @@
 	</tbody>
 </table>
 <? } ?>
+
+<!--email-->
+<div id="ajax-email-apply-shift-modal"></div>
+<form id="apply-shift-contact-email-form">
+<input type="hidden" name="email_modal_header" value="Invoice Client" />
+<input type="hidden" name="email_template_id" value="<?=APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID;?>" />
+<input type="hidden" id="selected-module-ids" name="selected_module_ids[]" value="" />
+<?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID);?>
+<input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
+</form>
+<!--end email-->
+
+<script>
+$(function(){
+	$('#search_shift_select_all_shifts').click(function(){
+		$('input.search_shift_selected_shifts').prop('checked', this.checked);		
+	});	
+	
+	//contact staff
+	/* $('#menu-search-shift-action ul li a[data-value="contact_staff"]').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		if (selected_shifts.length > 0) {
+			$('#selected-module-ids').val(selected_shifts);
+			$.ajax({
+			  type: "POST",
+			  url: "<?=base_url();?>email/ajax/get_send_email_modal",
+			  data: $('#apply-shift-contact-email-form').serialize(),
+			  success: function(html) {
+				  $('#ajax-email-apply-shift-modal').html(html);
+				  $('#email-modal').modal('show');	
+			  }
+		  });
+		}
+		
+	}); */
+});
+</script>

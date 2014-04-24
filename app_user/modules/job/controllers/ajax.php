@@ -509,7 +509,6 @@ class Ajax extends MX_Controller {
 			);
 		}
 		
-		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
 		echo json_encode(array(
 			'ok' => true, 
 			'shift_id' => $data['shift_id'], 

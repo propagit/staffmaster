@@ -60,6 +60,18 @@ class Ajax_shift extends MX_Controller {
 		}
 		
 		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
+		
+		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
+		//send work confirmation email if confirmed and auto send email is checked
+		if($update_shift_data['status'] == SHIFT_CONFIRMED){
+			//check if work confirmation is set as auto send	
+			if(modules::run('email/is_email_set_as_autosend',WORK_CONFIRMATION_EMAIL_TEMPLATE_ID)){
+				//if marked as autosend, send work confirmation email
+				$params['user_id'] = $data['shift_staff_id'];
+				$params['shift_id'] = $data['shift_id'];
+			    modules::run('job/shift/email_work_confirmation',$params);
+			}
+		}
 		echo json_encode(array(
 			'ok' => true, 
 			'html' => modules::run('job/shift/row_view', $data['shift_id']),
