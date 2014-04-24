@@ -1,3 +1,6 @@
+<script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/config.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <div class="col-md-12">
 	<!--begin top box--->
 	<div class="box top-box">

@@ -65,12 +65,13 @@
 <? } ?>
 
 <!--email-->
-<div id="ajax-email-apply-shift-modal"></div>
-<form id="apply-shift-contact-email-form">
+<div id="ajax-email-shift-reminder-modal"></div>
+<form id="shift-reminder-contact-email-form">
+<input type="hidden" id="email-selected-staff-ids" name="user_staff_selected_user_id[]" value="" />
 <input type="hidden" name="email_modal_header" value="Invoice Client" />
-<input type="hidden" name="email_template_id" value="<?=APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID;?>" />
-<input type="hidden" id="selected-module-ids" name="selected_module_ids[]" value="" />
-<?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID);?>
+<input type="hidden" name="email_template_id" value="<?=SHIFT_REMINDER_EMAIL_TEMPLATE_ID;?>" />
+<input type="hidden" id="email-selected-module-ids" name="selected_module_ids[]" value="" />
+<?php $allowed_email_templates = array(SHIFT_REMINDER_EMAIL_TEMPLATE_ID);?>
 <input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
 </form>
 <!--end email-->
@@ -80,26 +81,29 @@ $(function(){
 	$('#search_shift_select_all_shifts').click(function(){
 		$('input.search_shift_selected_shifts').prop('checked', this.checked);		
 	});	
-	
+	var search_shift_selected_shifts = new Array();
+	var shift_user_id_selected_shifts = new Array();
 	//contact staff
-	/* $('#menu-search-shift-action ul li a[data-value="contact_staff"]').click(function(){
-		selected_shifts.length = 0;
-		$('.selected_shifts:checked').each(function(){
-			selected_shifts.push($(this).val());
+	$('#menu-search-shift-action ul li a[data-value="contact_staff"]').click(function(){
+		search_shift_selected_shifts.length = 0;
+		$('.search_shift_selected_shifts:checked').each(function(){
+			search_shift_selected_shifts.push($(this).val());
+			shift_user_id_selected_shifts.push($(this).attr('data-staff-user-id'));
 		});
-		if (selected_shifts.length > 0) {
-			$('#selected-module-ids').val(selected_shifts);
+		if (search_shift_selected_shifts.length > 0) {
+			$('#email-selected-module-ids').val(search_shift_selected_shifts);
+			$('#email-selected-staff-ids').val(shift_user_id_selected_shifts);
 			$.ajax({
 			  type: "POST",
 			  url: "<?=base_url();?>email/ajax/get_send_email_modal",
-			  data: $('#apply-shift-contact-email-form').serialize(),
+			  data: $('#shift-reminder-contact-email-form').serialize(),
 			  success: function(html) {
-				  $('#ajax-email-apply-shift-modal').html(html);
+				  $('#ajax-email-shift-reminder-modal').html(html);
 				  $('#email-modal').modal('show');	
 			  }
 		  });
 		}
 		
-	}); */
+	}); 
 });
 </script>
