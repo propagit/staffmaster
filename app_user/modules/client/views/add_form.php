@@ -128,6 +128,7 @@ $(function(){
 				url: "<?=base_url();?>client/ajax/add_client",
 				data: $('#form_add_client').serialize(),
 				success: function(html) {
+					reload_wizard('client');
 					$('#form_add_client')[0].reset();
 					$('#msg-success').removeClass('hide');
 					setTimeout(function(){

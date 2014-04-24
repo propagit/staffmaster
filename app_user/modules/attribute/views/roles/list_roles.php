@@ -117,6 +117,7 @@ function add_role(){
 		success: function(html) {
 			help.load_content(params);
 			$('#addRole').modal('hide');
+			reload_wizard('role');
 		}
 	});	 
 }
@@ -129,6 +130,7 @@ function delete_role(role_id){
 		success: function(html) {
 			help.load_content(params);
 			$('#confirm_delete_modal').modal('hide');
+			reload_wizard('role');
 		}
 	});	 
 }

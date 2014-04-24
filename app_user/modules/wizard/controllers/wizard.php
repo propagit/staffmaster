@@ -45,12 +45,13 @@ class Wizard extends MX_Controller {
 				else
 				{
 					$data['step'] = $step;
-					$this->load->view('main_view', isset($data) ? $data : NULL);
+					$this->load->view('main_view', array('data' => $data));
 					return;
 				}				
 			}
 		}
 		
 	}
+	
 	
 }

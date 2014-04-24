@@ -1,4 +1,21 @@
 "use strict";
+
+function reload_wizard(step) {
+	if ($('#setup_wizard').length)
+	{
+		$.ajax({
+			type: "POST",
+			url: base_url + 'wizard/ajax/reload_wizard',
+			data: {step: step},
+			success: function(html) {
+				$('#list-steps').html(html);
+				$('body').scrollTo('#setup_wizard', 500 );
+			}
+		})		
+	}	
+}
+
+
 /**
  * job_id: (int), date: (string) YYYY-MM-DD format
  */

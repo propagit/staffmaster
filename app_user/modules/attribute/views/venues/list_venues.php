@@ -185,6 +185,7 @@ function add_venue(){
 		success: function(html) {
 			help.load_content(params);
 			$('#addVenue').modal('hide');
+			reload_wizard('venue');
 		}
 	});	 
 }
@@ -197,6 +198,7 @@ function delete_venue(venue_id){
 		success: function(html) {
 			help.load_content(params);
 			$('#confirm_delete_modal').modal('hide');
+			reload_wizard('venue');
 		}
 	});	 
 }

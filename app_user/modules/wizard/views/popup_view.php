@@ -7,7 +7,7 @@
 				<p>We can see you are new to Staff Master, to help you get familiar with the system and guide you through the process of creating your first job we have created a set up wizard.</p>
 			</div>
 			<div class="modal-footer">
-				<a type="button" class="btn btn-core btn-lg" href="<?=base_url();?>setting/company"><i class="fa fa-smile-o"></i> Yes! Help Me Set Up</a>
+				<a type="button" class="btn btn-core btn-lg" href="<?=base_url();?>setting/company#setup_wizard"><i class="fa fa-smile-o"></i> Yes! Help Me Set Up</a>
 				<button type="button" class="btn btn-default btn-lg" id="btn-dismiss"><i class="fa fa-frown-o"></i> No! Thanks</button>
 				
 			</div>

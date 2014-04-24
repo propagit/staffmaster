@@ -1,4 +1,4 @@
-<?=modules::run('wizard', 'uniform');?>
+<?=modules::run('wizard/main_view', 'uniform');?>
 
 <!--begin top box--->
 <div class="col-md-12">
@@ -114,6 +114,7 @@ $(function(){
 			if(success){
 				$('#addUniform').modal('hide');
 				help.load_content(params);
+				reload_wizard('uniform');
 			}
 		 });
 	});
