@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <textarea id="shift_reminder_email" name="shift_reminder_email"><?=$template->template_content;?></textarea>   
+        <textarea id="shift_reminder_email" name="shift_reminder_email"><?=$template->template_content;?></textarea> 
         <br>     
         <button type="button" class="btn btn-info" onclick="update_template('shift-reminder-update-email-template-form')"><i class="fa fa-check-square"></i> Save</button>  
         <input name="template_update_id" type="hidden" value="<?=$template->email_template_id;?>"  />

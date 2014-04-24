@@ -76,12 +76,21 @@ class Email extends MX_Controller {
 				$obj = array(
 							'first_name' => $user['first_name'],
 							'last_name' => $user['last_name'],
+							'system_url' => base_url(),
+							'company_name' => $company['company_name'],
 							'roster' => modules::run('roster/get_roster_email',$user_id)
 							);
 				break;
 				
 				case APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID:
 				//apply for shifts
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'system_url' => base_url(),
+							'company_name' => $company['company_name'],
+							'selected_shifts' => modules::run('job/shift/get_apply_for_shift_email',$params['shift_ids'])
+							);
 				break;
 				
 				case SHIFT_REMINDER_EMAIL_TEMPLATE_ID:
@@ -97,6 +106,13 @@ class Email extends MX_Controller {
 				
 				case WORK_CONFIRMATION_EMAIL_TEMPLATE_ID:
 				//work confirmation
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'company_name' => $company['company_name'],
+							'system_url' => base_url(),
+							'shift_info' => modules::run('job/shift/get_shift_info_for_email',$params['shift_id'])
+							);
 				break;
 				
 				case FORGOT_PASSWORD_EMAIL_TEMPLATE_ID:
@@ -205,6 +221,7 @@ class Email extends MX_Controller {
 				$email = str_replace('{AmountDue}',$obj['amount_due'],$email);
 				$email = str_replace('{DueDate}',$obj['due_date'],$email);
 				$email = str_replace('{BriefURL}',$obj['brief_url'],$email);
+				$email = str_replace('{SelectedShifts}',$obj['selected_shifts'],$email);
 		}
 		return $email;
 		

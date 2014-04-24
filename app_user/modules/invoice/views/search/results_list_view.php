@@ -121,11 +121,7 @@ $(function(){
 		get_email_model('#single-invoice-email-form');
 
 	});
-	
-	//email invoice
-	$(document).on('click','.send-email-from-modal',function(){
-		email_invoice();
-	});
+
 });//ready
 function mark_as_paid(invoice_id) {
 	$.ajax({
@@ -161,7 +157,8 @@ function get_email_model(form_id){
 	  });
 		
 }
-
+//this function is called from invoice/views/search_form
+//this is because if included in this page an event listner will be added for each time a search request is made and multiple email request will be triggered
 function email_invoice(){
 	//update_ckeditor() function in send_email_modal view file
 	preloading($('#send-email-modal-window'));
