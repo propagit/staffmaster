@@ -1,7 +1,9 @@
 <!-- highcharts -->
 <script src="<?=base_url();?>assets/highcharts/highcharts.js"></script>
 <script src="<?=base_url();?>assets/highcharts/modules/data.js"></script>
-
+<script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/config.js"></script>
+<script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <div class="col-md-12">
 	<div class="box top-box">
 		<div class="col-md-5">
@@ -144,6 +146,11 @@ $(function(){
 	}));
 			
 	load_job_shifts(<?=$job['job_id'];?>);
+	
+	//email apply for shift
+	$(document).on('click','.send-email-from-modal',function(){
+		email_apply_for_shift();
+	});
 })
 function sort_shifts(key) {
 	$.ajax({

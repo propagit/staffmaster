@@ -637,5 +637,19 @@ class Job_shift_model extends CI_Model {
 	{
 		return $this->db->where('job_shift_note_id',$job_shift_note_id)->delete('job_shift_notes');
 	}
+	/**
+	*	@name: get_job_shifts_by_shift_ids
+	*	@desc: Performs Database operation - to get shift by shift ids
+	*	@access: public
+	*	@param: ([string] comma separated shift ids )
+	*	@return: Shifts
+	*/
+	function get_job_shifts_by_shift_ids($shift_ids)
+	{
+		$sql = "SELECT * FROM job_shifts  
+				WHERE shift_id IN (".$shift_ids.") 
+				ORDER BY job_date ASC";
+		return $this->db->query($sql)->result_array();	
+	}
 	
 }

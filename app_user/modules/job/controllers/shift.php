@@ -155,4 +155,71 @@ class Shift extends MX_Controller {
 	{	
 		return $this->job_shift_model->update_job_shift($params['shift_id'],array('information_sheet' => $params['status']));
 	}
+	/**
+	*	@name: get_apply_for_shift_email
+	*	@desc: Loads shift details for apply to work email
+	*	@access: public
+	*	@param: ([array] shift ids) 
+	*	
+	*/
+	function get_apply_for_shift_email($shift_ids)
+	{
+		$comma_separate_shift_ids = implode(',',$shift_ids);
+		$data['shifts'] = $this->job_shift_model->get_job_shifts_by_shift_ids($comma_separate_shift_ids);
+		$this->load->view('shift/email/apply_for_shift_template', isset($data) ? $data : NULL);	
+	}
+	/**
+	*	@name: get_apply_for_shift_email
+	*	@desc: loads shift details for work confirmation and shift reminder email
+	*	@access: public
+	*	@param: ([int] shift id) 
+	*	
+	*/
+	function get_shift_info_for_email($shift_id)
+	{
+		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
+		$this->load->view('shift/email/shift_info_email_template', isset($data) ? $data : NULL);	
+	}
+	/**
+	*	@name: email_work_confirmation
+	*	@desc: function to email work confirmation to a staff
+	*	@access: public
+	*	@param: ([via post]) email parameters such as body of email, user id, invoice id
+	*	
+	*/
+	function email_work_confirmation($params)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		
+		$shift_id = $params['shift_id'];
+		$user_id = $params['user_id'];
+		$email_template_id = WORK_CONFIRMATION_EMAIL_TEMPLATE_ID;
+		if($user_id && $shift_id){
+			  //get user
+			  $user = $this->user_model->get_user($user_id);
+			  //get template info
+			  $template_info = $this->email_template_model->get_template($email_template_id);	
+			  $company = $this->setting_model->get_profile();
+			  //get receiver object
+			  $email_obj_params = array(
+									  'template_id' => $template_info->email_template_id,
+									  'user_id' => $user_id,
+									  'company' => $company,
+									  'shift_id' => $shift_id
+								  );	
+			  $obj = modules::run('email/get_email_obj',$email_obj_params);
+			  $email_data = array(
+								  'to' => $user['email_address'],
+								  'from' => $company['email_c_email'],
+								  'from_text' => $company['email_c_name'],
+								  'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+								  'message' => modules::run('email/format_template_body',$email_body,$obj)
+							  );
+			  modules::run('email/send_email',$email_data);
+
+		}
+		echo 'sent';
+	}
 }

@@ -23,7 +23,7 @@ function list_temp_invoices() {
 		}
 	})
 }
-function list_clients(client_id=null) {
+function list_clients(client_id) {
 	preloading($('#list_clients'));
 	$.ajax({
 		type: "POST",

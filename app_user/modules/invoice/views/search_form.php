@@ -111,6 +111,12 @@ $(function(){
     	var date_to = moment(e.date.valueOf() - 11*60*60*1000);
     	$('#date_from').datetimepicker('setEndDate', date_to.format("DD-MM-YYYY"));
     });
+	
+		
+	//email invoice
+	$(document).on('click','.send-email-from-modal',function(){
+		email_invoice();
+	});
 })
 function search_invoices() {
 	preloading($('#invoice-search-results'));

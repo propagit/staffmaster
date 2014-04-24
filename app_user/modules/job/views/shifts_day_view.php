@@ -15,6 +15,7 @@
 		$data[] = array('value' => 'delete', 'label' => '<i class="fa fa-times"></i> Delete Selected');
 		$data[] = array('value' => 'attach_brief', 'label' => '<i class="fa fa-info-circle"></i> Attach Brief');
 		$data[] = array('value' => 'attach_note', 'label' => '<i class="fa fa-comment-o"></i> Add Note');
+		$data[] = array('value' => 'contact_staff', 'label' => '<i class="fa fa-envelope-o"></i> Contact Staff');
 	}
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 	
@@ -185,6 +186,18 @@
 <div id="wrapper_shift_break"></div>
 <div id="wrapper_shift_staff" class="hide"></div>
 <div id="wrapper_staff_hours" class="hide"></div>
+
+<!--email-->
+<div id="ajax-email-apply-shift-modal"></div>
+<form id="apply-shift-contact-email-form">
+<input type="hidden" name="email_modal_header" value="Invoice Client" />
+<input type="hidden" name="email_template_id" value="<?=APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID;?>" />
+<input type="hidden" id="selected-module-ids" name="selected_module_ids[]" value="" />
+<?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID);?>
+<input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
+</form>
+<!--end email-->
+
 
 <script>
 $(function(){
@@ -406,7 +419,55 @@ $(function(){
 		}
 		
 	});
-})
+	
+	//contact staff
+	$('#menu-day-action ul li a[data-value="contact_staff"]').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		if (selected_shifts.length > 0) {
+			$('#selected-module-ids').val(selected_shifts);
+			$.ajax({
+			  type: "POST",
+			  url: "<?=base_url();?>email/ajax/get_send_email_modal",
+			  data: $('#apply-shift-contact-email-form').serialize(),
+			  success: function(html) {
+				  $('#ajax-email-apply-shift-modal').html(html);
+				  $('#email-modal').modal('show');	
+			  }
+		  });
+		}
+		
+	});
+	
+});
+
+
+//this function is called from job/views/job_details.php
+//this is because if included in this page an event listner will be added for each time a search request is made and multiple email request will be triggered
+function email_apply_for_shift(){
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax_shift/email_apply_for_shift",
+		data: $('#send-email-modal-form').serialize(),
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+			setTimeout(function(){
+				$('#email-modal').modal('hide');
+			}, 4000);
+		}
+	}); 
+}
+
+
 function unlock_shift(pk) {
 	 $.ajax({
 		type: "POST",
