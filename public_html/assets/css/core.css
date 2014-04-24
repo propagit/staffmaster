@@ -50,6 +50,23 @@ h1, h2, h3, h4, h5, h6 {
 .text-red {
 	color: #ff0000;
 }
+.table > thead > tr > .white,
+.table > tbody > tr > .white,
+.table > tfoot > tr > .white,
+.table > thead > .white > td,
+.table > tbody > .white > td,
+.table > tfoot > .white > td,
+.table > thead > .white > th,
+.table > tbody > .white > th,
+.table > tfoot > .white > th {
+  background-color: #fff;
+}
+.table-hover > tbody > tr > .white:hover,
+.table-hover > tbody > .white:hover > td,
+.table-hover > tbody > .white:hover > th {
+  background-color: #fff;
+}
+
 /* style for drag & drop */
 body.dragging, body.dragging * {
   cursor: move !important;

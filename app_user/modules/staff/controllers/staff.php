@@ -193,6 +193,11 @@ class Staff extends MX_Controller {
 		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
 	
+	function check_staff_time_collision($staff_id, $shift)
+	{
+		return $this->staff_model->check_staff_time_collision($staff_id, $shift);
+	}
+	
 	function edit_staff($user_id)
 	{
 		$data['staff'] = $this->staff_model->get_staff($user_id);

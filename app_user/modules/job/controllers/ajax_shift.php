@@ -15,6 +15,58 @@ class Ajax_shift extends MX_Controller {
 	}
 	
 	/**
+	*	@name: update_shift_staff
+	*	@desc: ajax function to update staff assign / status to the shift
+	*	@access: public
+	*	@param: (via POST)
+	*			- shift_id
+	*			- shift_staff_id: (int) id of staff
+	*			- status: (int) 1 assigned / 2 confirmed / 3 rejected
+	*			- shift_staff: (string) staff first name and last name
+	*	@return: json encode
+	*/
+	function update_shift_staff()
+	{
+		$data = $this->input->post();
+		$update_shift_data = array();
+		if ($data['shift_staff'])
+		{
+			$staff = modules::run('staff/get_staff', $data['shift_staff_id']);
+			
+			if ($staff)
+			{
+				$update_shift_data = array(
+					'staff_id' => $data['shift_staff_id'],
+					'status' => $data['status']
+				);
+				$shift = modules::run('job/shift/get_shift', $data['shift_id']);
+				if ($this->staff_model->check_staff_time_collision($data['shift_staff_id'], $shift))
+				{
+					echo json_encode(array('ok' => false, 'msg' => 'This staff has already booked for a shift on the same time'));
+					return;
+				}
+				
+			}
+			else {
+				echo json_encode(array('ok' => false, 'msg' => 'Staff not found'));
+				return;
+			}
+		}
+		else {
+			$update_shift_data = array(
+				'staff_id' => 0,
+				'status' => 0
+			);
+		}
+		
+		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
+		echo json_encode(array(
+			'ok' => true, 
+			'html' => modules::run('job/shift/row_view', $data['shift_id']),
+		));
+	}
+	
+	/**
 	*	@name: load_staff_hours
 	*	@desc: calculate total hours the staff is working in this week and this month
 	*	@acces: public
@@ -61,12 +113,14 @@ class Ajax_shift extends MX_Controller {
 	function search_staffs() 
 	{
 		$params = $this->input->post();
+		$params['sort_by'] = 'rating';
+		$params['sort_order'] = 'desc';
 		$staffs = $this->staff_model->search_staffs($params);
 		
+		$shift = $this->job_shift_model->get_job_shift($params['shift_id']);
 		$filter_staffs = array();
 		if (isset($params['is_available']) && $params['is_available'] == 1)
 		{
-			$shift = $this->job_shift_model->get_job_shift($params['shift_id']);
 			foreach($staffs as $staff)
 			{
 				if (!$this->staff_model->check_staff_time_collision($staff['user_id'], $shift)
@@ -81,6 +135,7 @@ class Ajax_shift extends MX_Controller {
 			$filter_staffs = $staffs;
 		}
 		$data['staffs'] = $filter_staffs;
+		$data['shift'] = $shift;
 		$this->load->view('shift/search_staff/results_table_view', isset($data) ? $data : NULL);
 	}
 	
@@ -93,10 +148,7 @@ class Ajax_shift extends MX_Controller {
 			'staff_id' => $staff_id,
 			'status' => SHIFT_UNCONFIRMED
 		));
-		echo json_encode(array(
-			'job_id' => $shift['job_id'],
-			'job_date' => $shift['job_date']
-		));
+		echo modules::run('job/shift/row_view', $shift_id);
 	}
 	
 	function set_status_filter() {

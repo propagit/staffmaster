@@ -7,10 +7,12 @@
 
 class Shift extends MX_Controller {
 
+	var $is_client = false;
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('job_shift_model');
+		$this->is_client = modules::run('auth/is_client');
 	}
 	
 	
@@ -18,6 +20,13 @@ class Shift extends MX_Controller {
 	{
 		$data['job_id'] = $job_id;
 		$this->load->view('shift_create_form', isset($data) ? $data : NULL);
+	}
+	
+	function row_view($shift_id)
+	{
+		$data['is_client'] = $this->is_client;
+		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
+		$this->load->view('shift/row_view', isset($data) ? $data : NULL);
 	}
 	
 	function search_staff_form($shift_id) {

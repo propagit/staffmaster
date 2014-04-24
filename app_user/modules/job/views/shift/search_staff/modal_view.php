@@ -42,10 +42,11 @@ function add_staff_to_shift(user_id) {
 		type: "POST",
 		url: "<?=base_url();?>job/ajax_shift/add_staff",
 		data: {shift_id: <?=$shift_id;?>, user_id: user_id},
-		success: function(data) {
+		success: function(html) {
 			$('.bs-modal-lg').modal('hide');
-			data = $.parseJSON(data);
-			load_job_shifts(data.job_id, data.job_date);
+			//load_job_shifts(data.job_id, data.job_date);
+			$('#shift_<?=$shift_id;?>').replaceWith(html);
+			init_inline_edit();
 		}
 	})
 }
