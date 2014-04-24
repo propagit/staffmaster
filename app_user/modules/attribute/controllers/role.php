@@ -69,5 +69,11 @@ class Role extends MX_Controller {
 			);
 		}
 		return modules::run('common/field_select', $array, $field_name, $field_value);
+	}
+	
+	function get_role_name($role_id)
+	{
+		$role = $this->role_model->get_role($role_id);
+		return $role['name'];
 	}	
 }

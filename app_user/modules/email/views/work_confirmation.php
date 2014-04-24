@@ -17,6 +17,14 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="email_from" class="col-md-2 control-label">Auto Send</label>
+                <div class="col-md-4 first-left">
+                    <input type="checkbox" id="work_confirmation_auto_send" name="work_confirmation_auto_send" <?=$template->auto_send == 'yes' ? 'checked="checked"' : '';?>/>
+                </div>
+            </div>
+        </div>
         <textarea id="work_confirmation_email" name="work_confirmation_email"><?=$template->template_content;?></textarea>   
         <br>     
         <button type="button" class="btn btn-info" onclick="update_template('work-confirmation-update-email-template-form')"><i class="fa fa-check-square"></i> Save</button> 
