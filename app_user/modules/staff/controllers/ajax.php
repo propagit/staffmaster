@@ -38,7 +38,67 @@ class Ajax extends MX_Controller {
 	
 	function add_staff()
 	{
+		$input = $this->input->post();
+		if (!$input['first_name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'first_name'));
+			return;
+		}
+		if (!$input['last_name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'last_name'));
+			return;
+		}
+		if (!$input['email_address'] || !valid_email($input['email_address'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address'));
+			return;
+		}
+		if (!$input['password']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'password'));
+			return;
+		}
+		$user_data = array(
+			'status' => 1,
+			'is_admin' => 0,
+			'is_staff' => 1,
+			'is_client' => 0,
+			'email_address' => $input['email_address'],
+			'username' => $input['email_address'],
+			'password' => $input['password'],
+			'title' => $input['title'],
+			'first_name' => $input['first_name'],
+			'last_name' => $input['last_name'],
+			'address' => $input['address'],
+			'suburb' => $input['suburb'],
+			'city' => $input['city'],
+			'state' => $input['state'],
+			'postcode' => $input['postcode'],
+			'country' => $input['country'],
+			'phone' => $input['phone']					
+		);
+		$user_id = $this->user_model->insert_user($user_data);
 		
+		if ($input['group_id']) {
+			$this->staff_model->update_staff_group($user_id, $input['group_id']);
+		}
+		
+		
+		
+		$this->load->model('profile/profile_model');
+		$company_profile = $this->profile_model->get_profile();
+		
+		$staff_data = array(
+			'user_id' => $user_id,
+			'external_staff_id' => $input['external_staff_id'],
+			'gender' => $input['gender'],
+			'dob' => date('Y-m-d',strtotime($input['dob_year'].'-'.$input['dob_month']. '-'.$input['dob_day'])),
+			'emergency_contact' => $input['emergency_contact'],
+			'emergency_phone' => $input['emergency_phone'],
+			's_choice' => 'employer',
+			's_name' =>  $input['first_name'].' '.$input['last_name'],
+			's_fund_name' => $company_profile['super_fund_name']			
+		);
+		$staff_id = $this->staff_model->insert_staff($staff_data);
+		modules::run('staff/send_welcome_email', $user_id, $input['email_address'], $input['password']);
+		echo json_encode(array('ok' => true, 'user_id' => $user_id));
 	}
 	
 	/**

@@ -24,9 +24,11 @@
 			<form class="form-horizontal" role="form" id="form_add_client">
 			<div class="row">
 				<div class="form-group">
-					<label for="company_name" class="col-md-2 control-label">Company Name <span class="text-danger">**</span></label>
-					<div class="col-md-4">
-						<input type="text" class="form-control" id="company_name" name="company_name" data="required" />
+					<div id="f_company_name">
+						<label for="company_name" class="col-md-2 control-label">Company Name <span class="text-danger">**</span></label>
+						<div class="col-md-4">
+							<input type="text" class="form-control" id="company_name" name="company_name" />
+						</div>
 					</div>
 					<label for="abn" class="col-md-2 control-label">ABN</label>
 					<div class="col-md-4">
@@ -84,13 +86,17 @@
 			</div>
 			<div class="row">
 				<div class="form-group">
-					<label for="email_address" class="col-md-2 control-label">Email Address <span class="text-danger">**</span></label>
-					<div class="col-md-4">
-						<input type="text" class="form-control" id="email_address" name="email_address" data="email" />
+					<div id="f_email_address">
+						<label for="email_address" class="col-md-2 control-label">Email Address <span class="text-danger">**</span></label>
+						<div class="col-md-4">
+							<input type="text" class="form-control" id="email_address" name="email_address" />
+						</div>
 					</div>
-					<label for="password" class="col-md-2 control-label">Password <span class="text-danger">**</span></label>
-					<div class="col-md-4">
-						<input type="password" class="form-control" id="password" name="password" data="required" />
+					<div id="f_password">
+						<label for="password" class="col-md-2 control-label">Password <span class="text-danger">**</span></label>
+						<div class="col-md-4">
+							<input type="password" class="form-control" id="password" name="password" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -109,8 +115,7 @@
 			<div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
-                    	<div class="alert alert-success hide" id="msg-success"><i class="fa fa-check"></i> &nbsp; Client successfully added!</div>
-						<button type="button" class="btn btn-core" id="btn_add_client"><i class="fa fa-plus"></i> Add Client</button>
+						<button type="button" class="btn btn-core" id="btn_add_client" data-loading-text="Adding client..."><i class="fa fa-plus"></i> Add Client</button>
 					</div>
 				</div>
 			</div>
@@ -121,23 +126,23 @@
 <script>
 $(function(){
 	$('#btn_add_client').click(function(){
-		var valid = help.validate_form('form_add_client');
-		if (valid) {
-			$.ajax({
-				type: "POST",
-				url: "<?=base_url();?>client/ajax/add_client",
-				data: $('#form_add_client').serialize(),
-				success: function(html) {
-					reload_wizard('client');
-					$('#form_add_client')[0].reset();
-					$('#msg-success').removeClass('hide');
-					setTimeout(function(){
-						$('#msg-success').addClass('hide');
-					}, 2000);
-					//window.location.href = '<?=base_url();?>client/edit/' + html;
+		var btn = $(this);
+		btn.button('loading');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>client/ajax/add_client",
+			data: $('#form_add_client').serialize(),
+			success: function(data) {
+				data = $.parseJSON(data);
+				if (!data.ok) {
+					btn.button('reset');
+					$('#f_' + data.error_id).addClass('has-error');
+					$('#' + data.error_id).focus();
+				} else {
+					window.location = '<?=base_url();?>client/edit/' + data.user_id;
 				}
-			});
-		}		
+			}
+		});
 	});
 });
 </script>

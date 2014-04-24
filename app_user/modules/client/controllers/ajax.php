@@ -15,35 +15,46 @@ class Ajax extends MX_Controller {
 	}
 	
 	function add_client() {
-		$data = $this->input->post();
-		
+		$input = $this->input->post();
+		if (!$input['company_name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'company_name'));
+			return;
+		}
+		if (!$input['email_address'] || !valid_email($input['email_address'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address'));
+			return;
+		}
+		if (!$input['password']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'password'));
+			return;
+		}
 		$user_data = array(
-			'status' => $data['status'],
+			'status' => $input['status'],
 			'is_admin' => 0,
 			'is_staff' => 0,
 			'is_client' => 1,
-			'email_address' => $data['email_address'],
-			'username' => $data['email_address'],
-			'full_name' => $data['full_name'],
-			'address' => $data['address'],
-			'suburb' => $data['suburb'],
-			'city' => $data['city'],
-			'state' => $data['state'],
-			'postcode' => $data['postcode'],
-			'country' => $data['country'],
-			'phone' => $data['phone']
+			'email_address' => $input['email_address'],
+			'username' => $input['email_address'],
+			'full_name' => $input['full_name'],
+			'address' => $input['address'],
+			'suburb' => $input['suburb'],
+			'city' => $input['city'],
+			'state' => $input['state'],
+			'postcode' => $input['postcode'],
+			'country' => $input['country'],
+			'phone' => $input['phone']
 		);
 		
 		$user_id = $this->user_model->insert_user($user_data);
 		
 		$client_data = array(
 			'user_id' => $user_id,
-			'external_client_id' => $data['external_client_id'],
-			'company_name' => $data['company_name'],
-			'abn' => $data['abn']
+			'external_client_id' => $input['external_client_id'],
+			'company_name' => $input['company_name'],
+			'abn' => $input['abn']
 		);
 		$client_id = $this->client_model->insert_client($client_data);
-		echo $user_id;
+		echo json_encode(array('ok' => true, 'user_id' => $user_id));
 	}
 	
 	function search_clients()

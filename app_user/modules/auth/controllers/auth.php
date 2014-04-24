@@ -28,7 +28,7 @@ class Auth extends MX_Controller {
 	function is_staff()
 	{
 		$user = $this->session->userdata('user_data');
-		return ($this->session->userdata('force_staff') || $user['is_staff']);
+		return ($this->session->userdata('force_staff') || ($user['is_staff'] && !$user['is_admin']));
 	}
 	
 	function is_client()

@@ -21,7 +21,7 @@ class Wizard extends MX_Controller {
 	
 	function main_view($step) 
 	{
-		if ($this->session->userdata('turnoff_wizard'))
+		if ($this->session->userdata('turnoff_wizard') || modules::run('auth/is_staff'))
 		{
 			return;
 		}
