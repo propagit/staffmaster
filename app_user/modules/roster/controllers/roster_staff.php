@@ -39,12 +39,5 @@ class Roster_staff extends MX_Controller {
 		
 		$this->load->view('staff/main_view', isset($data) ? $data : NULL);
 	}
-	
-	function get_roster_email($user_id = '')
-	{
-		$active_month = date('Y-m');
-		$data['rosters'] = $this->roster_model->get_rosters(date('Y-m', $active_month));
-		$this->load->view('email/email_roster_table', isset($data) ? $data : NULL);	
-	}
-		
+
 }
