@@ -6,7 +6,7 @@
         <h2>Your Dashboard</h2>
         <p>Welcome to your dashboard. Your dashboard will give you a quick overview of activity going on within Staff Master. Check back regularly to keep yourself up to date.</p>
         </div>
-        <div class="pull-right">
+        <div class="dash-credit-box pull">
         	<?=modules::run('account/box_credits');?>
         </div>
     </div>

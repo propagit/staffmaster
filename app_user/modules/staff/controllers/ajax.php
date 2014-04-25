@@ -821,6 +821,7 @@ class Ajax extends MX_Controller {
 	{
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
+		$this->load->model('roster/roster_model');
 		//get company profile
 		$company = $this->setting_model->get_profile();	
 		//get post data
@@ -844,6 +845,12 @@ class Ajax extends MX_Controller {
 					$staff = $this->staff_model->get_staff($user_id);
 					if($staff['welcome_email_sent'] == 'yes'){
 						$send_email = false;	
+					}
+				}elseif($template_info->email_template_id == ROSTER_UPDATE_EMAIL_TEMPLATE_ID){
+					$active_month = date('Y-m');
+					$rosters = $this->roster_model->get_user_rosters_by_month($user_id,$active_month);
+					if(!count($rosters)){
+						$send_email = false;
 					}
 				}
 				if($send_email){
