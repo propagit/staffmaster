@@ -110,8 +110,8 @@
 		<div class="col-md-10">
 			<ol type="a" class="super_attached">
 			<li>A letter from the trustee stating that this is a complying fund or retirement savings account (RSA) or, for a self managed superannuation fund, a copy of documentation from the ATO confirming the fund is regulated</li>
-			<li>written evidence from the fund stating that they will accept contributions from my employer, and</li>
-			<li>details about how my employer can make contributions to this fund.</li>
+			<li>Written evidence from the fund stating that they will accept contributions from my employer, and</li>
+			<li>Details about how my employer can make contributions to this fund.</li>
 		</ol>					
 		</div>
 	</div>
@@ -157,6 +157,7 @@ $(function(){
 })
 function load_s_choice()
 {
+	var employee_super_name = '<?=modules::run('setting/superinformasi', 'super_fund_name','')?>'; 
 	var s_choice = $('input[name="s_choice"]:checked').val();
 	if (s_choice == "own") {
 		$('#own_choice').show();
@@ -171,6 +172,7 @@ function load_s_choice()
 		$('input[name="s_fund_name"]').attr('readonly','readonly');
 		$('#employer').prop('checked',true);
 		$('#own_choice').hide();
+		$('input[name="s_fund_name"]').val(employee_super_name);
 	}
 }
 </script>

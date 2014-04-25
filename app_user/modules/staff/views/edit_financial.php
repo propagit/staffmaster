@@ -26,12 +26,12 @@
 		<label class="col-md-4 control-label">Employed As</label>
 		<div class="col-md-1">
 			<div class="radio">
-				<input type="radio" name="f_employed" value="1"<?=($staff['f_employed'] == 1) ? ' checked' : '';?> /> TFN
+				<input type="radio" name="f_employed" value="1" <?=($staff['f_employed'] == 1) ? ' checked' : '';?> /> TFN
 			</div>
 		</div>
 		<div class="col-md-1">
 			<div class="radio">
-				<input type="radio" name="f_employed" value="2"<?=($staff['f_employed'] == 2) ? ' checked' : '';?> /> ABN
+				<input type="radio" name="f_employed" value="2" <?=($staff['f_employed'] == 2) ? ' checked' : '';?> /> ABN
 			</div>
 		</div>
 	</div>
@@ -216,8 +216,8 @@ function load_f_employed()
 		$('#f_gst').show();
 	} else
 	{
-		$('#f_tfn_number').show();
-		$('#f_abn_number').hide();
+		$('#f_tfn_number').hide();
+		$('#f_abn_number').show();
 		$('#f_gst').hide();
 	}
 }
