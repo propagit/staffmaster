@@ -104,9 +104,9 @@
 <!--email-->
 <div id="ajax-email-apply-shift-modal"></div>
 <form id="apply-shift-contact-email-form">
-<input type="hidden" name="email_modal_header" value="Invoice Client" />
+<div id="selected-shift-email-info"></div>
+<input type="hidden" name="email_modal_header" value="Apply For Shift" />
 <input type="hidden" name="email_template_id" value="<?=APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID;?>" />
-<input type="hidden" id="selected-module-ids" name="selected_module_ids[]" value="" />
 <?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID);?>
 <input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
 </form>
@@ -213,12 +213,13 @@ $(function(){
 		
 	//contact staff
 	$('#menu-day-action ul li a[data-value="contact_staff"]').click(function(){
-		selected_shifts.length = 0;
+		var shift_selected = false;
+		$('#selected-shift-email-info').html('');
 		$('.selected_shifts:checked').each(function(){
-			selected_shifts.push($(this).val());
+			shift_selected = true;
+			$('#selected-shift-email-info').append('<input type="hidden" name="selected_module_ids[]" value="'+$(this).val()+'" />');
 		});
-		if (selected_shifts.length > 0) {
-			$('#selected-module-ids').val(selected_shifts);
+		if (shift_selected) {
 			$.ajax({
 			  type: "POST",
 			  url: "<?=base_url();?>email/ajax/get_send_email_modal",

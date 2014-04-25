@@ -20,7 +20,13 @@ class Staff_staff extends MX_Controller {
 	public function index($method='', $param='')
 	{
 		switch($method)
-		{							
+		{
+			case 'upload_custom_document':
+					modules::run('staff/upload_custom_document');
+				break;	
+			case 'delete_custom_document':
+					modules::run('staff/delete_custom_document',$param);
+				break;						
 			default:
 					$this->edit_staff();
 			break;

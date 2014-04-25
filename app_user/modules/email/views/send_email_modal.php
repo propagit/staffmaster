@@ -50,7 +50,7 @@
                                          <div class="alert alert-success add-top-margin-20 hide" id="msg-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; Email Successfully Sent</div>
                                      </div>
                                      <?php
-									 	if($template_id != CLIENT_INVOICE_EMAIL_TEMPLATE_ID && $template_id != CLIENT_QUOTE_EMAIL_TEMPLATE_ID){
+									 	if($template_id != CLIENT_INVOICE_EMAIL_TEMPLATE_ID && $template_id != CLIENT_QUOTE_EMAIL_TEMPLATE_ID && $template_id != SHIFT_REMINDER_EMAIL_TEMPLATE_ID){
 									 ?>
                                      <div class="col-sm-6 remove-left-gutter remove-right-gutter">
                                        <label for="add-button" class="col-sm-2 control-label">Groups</label>

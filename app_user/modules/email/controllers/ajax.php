@@ -120,9 +120,10 @@ class Ajax extends MX_Controller {
 		$data['total'] = 0;
 		$data['selected_user_ids'] = '';
 		if($selected_user_ids){
-			$data['selected_user_ids'] = json_encode($selected_user_ids);
-			if($selected_user_ids != ''){	
-				$data['total'] = count($selected_user_ids);
+			$unique_selected_user_ids = array_unique($selected_user_ids);
+			$data['selected_user_ids'] = json_encode($unique_selected_user_ids);
+			if($unique_selected_user_ids != ''){	
+				$data['total'] = count($unique_selected_user_ids);
 			}
 		}
 		//this is the selected modules ids such as invoice ids, shift ids 
