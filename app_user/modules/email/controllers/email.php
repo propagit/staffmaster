@@ -338,7 +338,7 @@ class Email extends MX_Controller {
 			if (!isset($data['overwrite']))
 			{
 				$company_logo = modules::run('setting/company_logo');
-				$email_signature = modules::run('setting/ajax/get_template_footer');
+				$email_signature = modules::run('setting/get_email_footer');
 				$message = $company_logo . '<br />'.$message . $email_signature;
 			}
 			
@@ -437,7 +437,7 @@ class Email extends MX_Controller {
 		if (!isset($data['overwrite']))
 		{
 			$company_logo = modules::run('setting/company_logo');
-			$email_signature = modules::run('setting/ajax/get_template_footer');
+			$email_signature = modules::run('setting/get_email_footer');
 			$message = $company_logo . '<br />'.$message . $email_signature;
 		}
 		

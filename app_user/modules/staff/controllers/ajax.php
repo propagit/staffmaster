@@ -579,6 +579,7 @@ class Ajax extends MX_Controller {
 			copy($dir.'/'.$file_name, $dirs_thumb2."/".$file_name);
 			$target_thumb2 = $dirs_thumb2."/".$file_name;
 			$this->scale_image($target_thumb2,$target_thumb2,$thumb2_width,$thumb2_height);
+
 		}
 	}
 	function scale_image($image,$target,$thumbnail_width,$thumbnail_height)
@@ -586,6 +587,7 @@ class Ajax extends MX_Controller {
 	  if(!empty($image)) //the image to be uploaded is a JPG I already checked this
 	  {		
 		list($width_orig, $height_orig) = getimagesize($image);   
+		$myImage = imagecreatefromjpeg($image);
 		$myImage = imagecreatefromjpeg($image);
 		$ratio_orig = $width_orig/$height_orig;
 		echo $ratio_orig;

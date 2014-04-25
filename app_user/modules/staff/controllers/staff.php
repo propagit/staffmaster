@@ -354,7 +354,6 @@ class Staff extends MX_Controller {
 	*/
 	function upload_custom_document()
 	{
-	
 		$user_staff_id = $this->input->post('user_staff_id',true);
 		$salt = 'custom_files'.$user_staff_id;
 		$file_path = UPLOADS_PATH.'/staff/custom_attributes';

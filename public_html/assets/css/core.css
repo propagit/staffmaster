@@ -472,6 +472,7 @@ ol.example li.placeholder:before {
 	background-repeat:repeat; 
 	background-color:rgba(0,177,234,0.25);
 	min-height:49px; 
+	margin-top:50px;
 }
 .footer-copy{
 	line-height:49px;
