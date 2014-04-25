@@ -116,16 +116,18 @@ class Setting extends MX_Controller {
 	function get_email_footer()
 	{
 		$company = $this->setting_model->get_profile();
-		if($_POST){
-			$color = $this->input->post('color');
-			$font_color = $this->input->post('font_color');
+		$color = COLOUR_PRIM;
+		$font_color = COLOUR_SECO;
+		$color = COLOUR_PRIM;
+		$font_color = COLOUR_SECO;
+		if($company){
+			if($company['email_background_colour']){
+				$color = $company['email_background_colour'];
+			}
+			if($company['email_font_colour']){
+				$font_color = $company['email_font_colour'];
+			}
 		}
-		else
-		{
-			$color = $company['email_background_colour'];
-			$font_color = $company['email_font_colour'];
-		}
-		
 		
 		$data['color'] = $color;
 		$data['font_color'] = $font_color;

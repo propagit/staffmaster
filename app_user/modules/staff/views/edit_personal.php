@@ -20,11 +20,11 @@
 	<div class="form-group">
 		<label for="first_name" class="col-md-2 control-label">First Name <span class="text-danger">**</span></label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="first_name" name="first_name" value="<?=$staff['first_name'];?>" tabindex="2" data="required"/>
+			<input type="text" class="form-control" id="first_name" name="first_name" value="<?=$staff['first_name'];?>" data="required"/>
 		</div>
 		<label for="last_name" class="col-md-2 control-label">Family Name <span class="text-danger">**</span></label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="last_name" name="last_name" value="<?=$staff['last_name'];?>" tabindex="3" data="required"/>
+			<input type="text" class="form-control" id="last_name" name="last_name" value="<?=$staff['last_name'];?>" data="required"/>
 		</div>                
 	</div>
 </div>
@@ -46,11 +46,11 @@
 	<div class="form-group">
 		<label for="address" class="col-md-2 control-label">Address</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="address" name="address" value="<?=$staff['address'];?>" tabindex="8" />
+			<input type="text" class="form-control" id="address" name="address" value="<?=$staff['address'];?>" />
 		</div>					
 		<label for="suburb" class="col-md-2 control-label">Suburb</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="suburb" name="suburb" value="<?=$staff['suburb'];?>" tabindex="9" />
+			<input type="text" class="form-control" id="suburb" name="suburb" value="<?=$staff['suburb'];?>"  />
 		</div>
         
 	</div>
@@ -59,7 +59,7 @@
 	<div class="form-group">		
 		<label for="postcode" class="col-md-2 control-label">Postcode</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control auto-width" id="postcode" name="postcode" value="<?=$staff['postcode'];?>" tabindex="10" />
+			<input type="text" class="form-control auto-width" id="postcode" name="postcode" value="<?=$staff['postcode'];?>"  />
 		</div>
         
         <label for="state" class="col-md-2 control-label">State</label>
@@ -78,7 +78,7 @@
         
         <label for="mobile" class="col-md-2 control-label">Mobile Phone</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="mobile" name="mobile" value="<?=$staff['mobile'];?>" tabindex="11" />
+			<input type="text" class="form-control" id="mobile" name="mobile" value="<?=$staff['mobile'];?>"  />
 		</div>
         
 	</div>
@@ -87,11 +87,11 @@
 	<div class="form-group">						
         <label for="phone" class="col-md-2 control-label">Telephone</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="phone" name="phone" value="<?=$staff['phone'];?>" tabindex="12" />
+			<input type="text" class="form-control" id="phone" name="phone" value="<?=$staff['phone'];?>"  />
 		</div>
         <label for="email_address" class="col-md-2 control-label">Email <span class="text-danger">**</span></label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>" tabindex="13" data="email" />
+			<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>"  data="email" />
 		</div>
         	
 	</div>
@@ -102,11 +102,11 @@
 	<div class="form-group">
 		<label for="password" class="col-md-2 control-label">Password </label>
 		<div class="col-md-4">
-			<input type="password" class="form-control" id="password" name="password" value="" tabindex="20" />
+			<input type="password" class="form-control" id="password" name="password" value=""  />
 		</div>	
         <label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=$staff['emergency_contact'];?>" tabindex="18" />
+			<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=$staff['emergency_contact'];?>"  />
 		</div>
 		
 	</div>				
@@ -115,11 +115,11 @@
 	<div class="form-group">
     	<label for="emergency_phone" class="col-md-2 control-label">Emergency Phone</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="emergency_phone" name="emergency_phone" value="<?=$staff['emergency_phone'];?>" tabindex="19" />
+			<input type="text" class="form-control" id="emergency_phone" name="emergency_phone" value="<?=$staff['emergency_phone'];?>" />
 		</div>
         <label for="external_id" class="col-md-2 control-label">External Staff ID</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="external_staff_id" name="external_staff_id" value="<?=$staff['external_staff_id'];?>" tabindex="19" />
+			<input type="text" class="form-control" id="external_staff_id" name="external_staff_id" value="<?=$staff['external_staff_id'];?>"  />
 		</div>
     </div>
 </div>
