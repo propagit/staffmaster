@@ -42,7 +42,7 @@
 		
 		<? if (!$is_client) { ?>
 			<? if($shift['staff_id']) { ?>
-			<i class="fa fa-clock-o staff_hours" data-toggle="popover" onclick="load_staff_hours(this)" data-pk="<?=$shift['staff_id'];?>"></i> 
+			<i class="fa fa-clock-o staff_hours" data-toggle="popover" onclick="load_staff_hours(this)" data-pk="<?=$shift['staff_id'];?>" data-date="<?=$shift['job_date'];?>"></i> 
 			<? } ?>
 			<a id="shift_staff_<?=$shift['shift_id'];?>" data-toggle="popover" onclick="load_shift_staff(this)" class="update_link shift_staff editable-click" data-pk="<?=$shift['shift_id'];?>">
 				<?=$staff_name;?>

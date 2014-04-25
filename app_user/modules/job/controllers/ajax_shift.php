@@ -88,12 +88,15 @@ class Ajax_shift extends MX_Controller {
 	function load_staff_hours()
 	{
 		$staff_id = $this->input->post('staff_id');
+		$date = $this->input->post('date');
+		$date_ts = strtotime($date);
+		
 		$one_hour = 60 * 60;
 		$this_month = date('Y-m');
 		$params_month = array(
 			'staff_id' => $staff_id,
-			'date_from' => '01-' . date('m-Y'),
-			'date_to' => date('t-m-Y')
+			'date_from' => '01-' . date('m-Y', $date_ts),
+			'date_to' => date('t-m-Y', $date_ts)
 		);
 		$shifts = $this->job_shift_model->search_shifts($params_month);
 		$month_hours = 0;
@@ -102,7 +105,7 @@ class Ajax_shift extends MX_Controller {
 			$month_hours += modules::run('job/shift/get_shift_second', $shift) / $one_hour;
 		}
 		
-		$today = date('Y-m-d');
+		$today = date('Y-m-d', $date_ts);
 		$this_week = modules::run('common/the_week', $today);
 		$params_week = array(
 			'staff_id' => $staff_id,

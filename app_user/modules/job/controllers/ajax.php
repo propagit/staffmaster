@@ -641,68 +641,6 @@ class Ajax extends MX_Controller {
 		$this->load->view('shifts_copy', isset($data) ? $data : NULL);
 	}	
 	
-	/**
-	*	@name: update_selected_day
-	*	@desc: ajax function to update selected day (to the sessions of array of all selected days) for copying shift function
-	*	@access: public
-	*	@param: null
-	*	@return: json encode {success: true/false, msg: ''}
-	*/
-	function update_selected_day()
-	{
-		$ts = $this->input->post('ts');
-		$all_ts = $this->session->userdata('all_ts');
-		if (!$all_ts) {
-			$all_ts = array();
-		}
-		$key = array_search($ts, $all_ts);
-		if ($key !== false) {
-			unset($all_ts[$key]);
-		}
-		else
-		{
-			if ($ts > now())
-			{
-				$all_ts[] = $ts;
-			}
-			else
-			{				
-				echo json_encode(array('success' => false, 'msg' => 'Cannot copy to date in the past'));
-				return;
-			}
-		}
-		
-		$this->session->set_userdata('all_ts', $all_ts);
-		echo json_encode(array('success' => true));	
-	}
-	function get_selected_days()
-	{
-		$all_ts = $this->session->userdata('all_ts');
-		$out = array();
-		
-		if ($all_ts) foreach($all_ts as $ts)
-		{
-			$out[] = array(
-				'class' => 'selected',
-				'start' => $ts . '000',
-				'end' => $ts . '000'
-			);
-		}
-	
-		echo json_encode(array('success' => 1, 'result' => $out));
-	}
-	
-	/**
-	*	@name: clear_selected_days
-	*	@desc: ajax function to clear session of selected days for copy
-	*	@access: public
-	*	@param: (none)
-	*	@return: (void)
-	*/
-	function clear_selected_days()
-	{
-		$this->session->unset_userdata('all_ts');
-	}
 	
 	/**
 	*	@name: copy_selected_days
@@ -713,11 +651,12 @@ class Ajax extends MX_Controller {
 	*/
 	function copy_selected_days()
 	{
-		$all_ts = $this->session->userdata('all_ts');
-		if ($all_ts)
+		$dates = $this->input->post('dates');
+		if ($dates)
 		{
 			$shifts = $this->input->post('shifts');
-			foreach($all_ts as $ts)
+			$count = 0;
+			foreach($dates as $date)
 			{
 				foreach($shifts as $shift_id)
 				{
@@ -726,6 +665,7 @@ class Ajax extends MX_Controller {
 					unset($new_shift['shift_id']);
 					unset($new_shift['created_on']);
 					unset($new_shift['modified_on']);
+					$ts = strtotime($date);
 					$new_shift['job_date'] = date('Y-m-d', $ts);
 					$start_time = strtotime(date('Y-m-d', $ts) . ' ' . date('H:i', $shift['start_time']));
 					$finish_time = $start_time + $shift['finish_time'] - $shift['start_time'];
@@ -744,15 +684,20 @@ class Ajax extends MX_Controller {
 					$new_shift['break_time'] = json_encode($new_breaks);
 					$new_shift_id = $this->job_shift_model->insert_job_shift($new_shift);
 					
+					# Copy request staff
 					$request_staffs = $this->job_shift_model->get_request_staffs($shift_id);
-					foreach($request_staffs as $request_staff)
+					if($request_staffs)
 					{
-						$this->job_shift_model->add_request_staff(array(
-							'shift_id' => $new_shift_id,
-							'staff_id' => $request_staff['staff_id']
-						));
+						foreach($request_staffs as $request_staff)
+						{
+							$this->job_shift_model->add_request_staff(array(
+								'shift_id' => $new_shift_id,
+								'staff_id' => $request_staff['staff_id']
+							));
+						}
 					}
-					//copy notes
+					
+					# copy notes
 					$notes = $this->job_shift_model->get_job_shift_notes($shift_id);
 					if($notes)
 					{
@@ -766,7 +711,7 @@ class Ajax extends MX_Controller {
 						    $this->job_shift_model->add_note($data_note);
 						}
 					}
-					//copy briefs
+					# copy briefs
 					$briefs = $this->job_shift_model->get_shift_brief_by_shift_id($shift_id);
 					if($briefs)
 					{
@@ -781,12 +726,11 @@ class Ajax extends MX_Controller {
 					}
 				}				
 			}
-			$this->session->unset_userdata('all_ts');
-			echo json_encode(array('success' => true));
+			echo json_encode(array('ok' => true, 'date' => $date));
 		}
 		else
 		{
-			echo json_encode(array('success' => false, 'msg' => 'No day selected'));
+			echo json_encode(array('ok' => false, 'msg' => 'No day selected'));
 		}		
 	}
 	

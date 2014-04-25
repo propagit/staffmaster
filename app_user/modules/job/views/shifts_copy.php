@@ -31,66 +31,47 @@
 </div><!-- /.modal-dialog -->
 
 <script>
-var clicked_date = '<?=$shift['job_date'];?>';
 var selected_dates = new Array();
 
 $(function(){
 	load_copy_calendar();
 	$('.btn-clear-days').click(function(){
-		$.ajax({
-			url: "<?=base_url();?>job/ajax/clear_selected_days",
-			success: function(data) {
-				load_copy_calendar();
-			}
-		})	
+		selected_dates.length = 0;
+		$('#calendar-copy').find('.events-list').remove();
 	});
 	$('.btn-copy-selected-days').click(function(){
 		preloading($('#calendar-copy'));
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>job/ajax/copy_selected_days",
-			data: {shifts: <?=json_encode($shifts);?>},
+			data: {shifts: <?=json_encode($shifts);?>, dates: selected_dates},
 			success: function(data) {
 				data = $.parseJSON(data);
-				if (data.success) {
-					location.reload();
+				if (data.ok) {
+					load_job_shifts(<?=$shift['job_id'];?>, data.date);
+					$('#copy_shift').modal('hide');
+					//location.reload();
 				}
 				else
 				{
+					loaded($('#calendar-copy'));
 					$('#error_day_selected').html(data.msg);
+					setTimeout(function(){
+						$('#error_day_selected').html('');
+					}, 1500);					
 				}
 			}
 		})
 	})
 });
-function update_selected_days(ts) {
-	preloading($('#calendar-copy'));
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>job/ajax/update_selected_day",
-		data: {ts: ts},
-		success: function(data) {
-			loaded($('#calendar-copy'));
-			data = $.parseJSON(data);
-			if (data.success) {
-				$('#error_day_selected').html('');
-				load_copy_calendar();
-			}
-			else
-			{
-				$('#error_day_selected').html(data.msg);
-			}
-		}
-	})
-}
 function load_copy_calendar()
 {
 	var options = {
-		events_source: "<?=base_url();?>job/ajax/get_selected_days",
+		events_source: function () { return []; },
 		view: 'month',
 		tmpl_path: "<?=base_url();?>assets/bootstrap-calendar/shift_copy/",
 		tmpl_cache: false,
-		day: clicked_date,
+		day: '<?=$shift['job_date'];?>',
 		onAfterViewLoad: function(view) {
 			$('#modal-header-month').text(this.getTitle());
 		},
@@ -100,18 +81,27 @@ function load_copy_calendar()
 		var $this = $(this);
 		$this.click(function() {
 			calendar.navigate($this.data('calendar-nav'));
-			$('.modal-dialog').find('*[data-cal-date]').parent().click(function() {
-				clicked_date = $(this).find('[data-cal-date]').data('cal-date');
-				ts = moment(clicked_date).unix();
-				update_selected_days(ts);
-			});	
+			select_dates();
+			update_date();
 		});
 	});
+	update_date();
+}
+function select_dates() {
+	for(var i =0; i < selected_dates.length; i++) {
+		$('#calendar-copy').find('[data-cal-date=' + selected_dates[i] + ']').parent().append('<div class="events-list" data-cal-start="' + selected_dates[i] + '" data-cal-end="' + selected_dates[i] + '"><i class="fa fa-check fa-1x"></i></div>');
+	}
+}
+function update_date() {
 	$('.modal-dialog').find('*[data-cal-date]').parent().click(function() {
 		clicked_date = $(this).find('[data-cal-date]').data('cal-date');
-		ts = moment(clicked_date).unix();
-		alert(ts);
-		//update_selected_days(ts);
+		if ($.inArray(clicked_date, selected_dates) != -1) { // in array
+			selected_dates.splice($.inArray(clicked_date, selected_dates),1);
+			$(this).find('.events-list').remove();
+		} else { // not in array
+			selected_dates.push(clicked_date);
+			$(this).append('<div class="events-list" data-cal-start="' + clicked_date + '" data-cal-end="' + clicked_date + '"><i class="fa fa-check fa-1x"></i></div>');
+		}
 	});
 }
 </script>
