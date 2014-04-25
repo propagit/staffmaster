@@ -13,7 +13,7 @@
 					<span type="button" class="btn btn-info" id="modal-header-month"> &nbsp; </span>
 					<a data-calendar-nav="next" type="button" class="btn btn-info"><i class="fa fa-arrow-right"></i></a>
 				</div>
-				<div id="calendar-copy"></div>
+				<div id="calendar-copy" style="min-height:380px;"></div>
 				<? } else { ?>
 				No shift selected yet
 				<? } ?>
@@ -110,7 +110,8 @@ function load_copy_calendar()
 	$('.modal-dialog').find('*[data-cal-date]').parent().click(function() {
 		clicked_date = $(this).find('[data-cal-date]').data('cal-date');
 		ts = moment(clicked_date).unix();
-		update_selected_days(ts);
+		alert(ts);
+		//update_selected_days(ts);
 	});
 }
 </script>

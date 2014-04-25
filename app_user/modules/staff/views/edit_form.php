@@ -1,5 +1,8 @@
 <?=modules::run('wizard/main_view', 'staff');?>
-
+<!-- typeaheadjs -->
+<link href="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js-bootstrap.css" rel="stylesheet">
+<script src="<?=base_url();?>assets/js/typeaheadjs/lib/typeahead.js"></script>
+<script src="<?=base_url();?>assets/js/typeaheadjs/typeaheadjs.js"></script>
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
