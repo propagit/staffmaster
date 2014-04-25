@@ -12,7 +12,7 @@
 						if($staff_custom_attribute['attributes']!=''){
 					?>
                     	<a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/custom_attributes/<?=md5('custom_files'.$user_id);?>/<?=$staff_custom_attribute['attributes'];?>"><?=$staff_custom_attribute['attributes'];?></a>
-                        <i title="Delete Document" class="fa fa-times custom-file-delete" delete-data-id="<?=$staff_custom_attribute['staff_custom_attributes_id'];?>"></i>
+                        <i title="Delete Document" class="fa fa-times custom-file-delete" delete-data-id="<?=$staff_custom_attribute['staff_custom_attribute_id'];?>"></i>
                     <?php			
 						}else{ 
 					?>

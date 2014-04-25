@@ -651,5 +651,20 @@ class Job_shift_model extends CI_Model {
 				ORDER BY job_date ASC";
 		return $this->db->query($sql)->result_array();	
 	}
+	/**
+	*	@name: get_user_job_shifts_by_shift_ids
+	*	@desc: Performs Database operation - to get user shift by shift ids and user id
+	*	@access: public
+	*	@param: ([int] user id,[string] comma separated shift ids )
+	*	@return: Shifts
+	*/
+	function get_user_job_shifts_by_shift_ids($user_id,$shift_ids)
+	{
+		$sql = "SELECT * FROM job_shifts 
+				WHERE staff_id = ".$user_id."  
+				AND shift_id IN (".$shift_ids.")  
+				ORDER BY job_date ASC";
+		return $this->db->query($sql)->result_array();
+	}
 	
 }

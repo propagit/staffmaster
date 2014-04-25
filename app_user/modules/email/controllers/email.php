@@ -109,12 +109,14 @@ class Email extends MX_Controller {
 				
 				case SHIFT_REMINDER_EMAIL_TEMPLATE_ID:
 				//shift reminder
+				$shift_reminder_email_params['shift_ids'] = $params['shift_ids'];
+				$shift_reminder_email_params['user_id'] = $user_id;
 				$obj = array(
 							'first_name' => $user['first_name'],
 							'last_name' => $user['last_name'],
 							'company_name' => $company['company_name'],
 							'system_url' => base_url(),
-							'shift_info' => '[Shift information will be inserted here such as Propagate World Wide at 12:30 PM]'
+							'shift_info' => modules::run('job/shift/get_shift_reminders_email',$shift_reminder_email_params)
 							);
 				break;
 				
