@@ -1,10 +1,10 @@
 <table style="background:<?=(isset($color) && $color !='') ? '#'.$color : '#00bbf8' ?>; color:<?=(isset($font_color) && $font_color !='') ? '#'.$font_color : '#fff' ?>; font-size:11px; font-family:Arial, Helvetica, sans-serif;padding:15px;" width="100%">
 	<tr valign="bottom">
     	<td style="padding:15px;" width="35%">
-        	<?=(isset($company['email_c_name'])&& $company['email_c_name']!='') ? $company['email_c_name'].'<br />' : '';?>
+        	<?=(isset($company['email_c_name'])&& $company['email_c_name']!='') ? '<span style="font-size:14px; font-weight:bold;">'.$company['email_c_name'].'</span><br /><br />' : '';?>
 			<?=(isset($company['email_c_address']) && $company['email_c_address']!='') ? $company['email_c_address'].'<br />' : '';?>
             <?=(isset($company['email_c_state']) && $company['email_c_state']!='') ? $company['email_c_state'].'&nbsp;' : '';?> 
-            <?=(isset($company['email_c_country']) && $company['email_c_country']!='') ? $company['email_c_country'].'&nbsp;' : '';?> 
+            <?=(isset($company['email_c_country']) && $company['email_c_country']!='') ? modules::run('common/get_country_name_from_country_code',$company['email_c_country']).'&nbsp;' : '';?> 
             <?=(isset($company['email_c_postcode']) && $company['email_c_postcode']!='') ? $company['email_c_postcode'] : '';?>
         </td>
         <td style="padding:15px;" width="65%" align="right">

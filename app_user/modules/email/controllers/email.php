@@ -339,7 +339,7 @@ class Email extends MX_Controller {
 			{
 				$company_logo = modules::run('setting/company_logo');
 				$email_signature = modules::run('setting/get_email_footer');
-				$message = $company_logo . '<br />'.$message . $email_signature;
+				$message = $company_logo . '<br /><br /><br />'.$message . $email_signature;
 			}
 			
 			$this->email->subject($subject);
@@ -438,7 +438,7 @@ class Email extends MX_Controller {
 		{
 			$company_logo = modules::run('setting/company_logo');
 			$email_signature = modules::run('setting/get_email_footer');
-			$message = $company_logo . '<br />'.$message . $email_signature;
+			$message = $company_logo . '<br /><br /><br />'.$message . $email_signature;
 		}
 		
 		$this->email->subject($subject);

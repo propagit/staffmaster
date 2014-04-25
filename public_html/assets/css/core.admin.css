@@ -220,6 +220,7 @@ a.default {
 	background: #fff;
 	border-radius: 5px;
 	min-width: 200px;
+	margin-bottom:15px;
 }
 .box_credits .title_bc {
 	background: #00B1EB;
@@ -606,7 +607,12 @@ span.dash-invoice-value{
 		display: inline-block;
 		width: 50%;
 	}
+	.dash-credit-box{
+		float:left !important;
+		margin-top:15px;	
+	}
 }
+
 	
 /* end responsive */
 

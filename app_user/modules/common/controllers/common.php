@@ -453,4 +453,10 @@ class Common extends MX_Controller {
 		}
 		return modules::run('common/field_select', $years, $field_name, $field_value, $size, false);
 	}
+	
+	function get_country_name_from_country_code($country_code)
+	{
+		$country = $this->common_model->get_country_name_from_country_code($country_code);
+		return $country->name;
+	}
 }
