@@ -85,7 +85,7 @@
 			<a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all/<?=SHIFT_FINISHED?>"><span class="badge primary"><?=$completed;?></span></a>
 			<? } ?>
 		</td>
-		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>"><i class="fa fa-eye"></i></a></td>
+		<td class="center"><a href="<?=base_url();?>job/details/<?=$job['job_id'];?>/all"><i class="fa fa-eye"></i></a></td>
 		<? if (!modules::run('auth/is_client')) { ?>
 		<td class="center">
 			<a onclick="delete_job(<?=$job['job_id'];?>)"><i class="fa fa-times"></i></a>

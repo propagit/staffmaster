@@ -1,6 +1,6 @@
 <div class="staff-profile-detail-box">
 	<h2> Locations </h2>
-	<p> Staff can choose the "Locations" they would like to work in. When searching for staff you can search by location. <br />Staff will only be able to apply for shifts in locations they can work in.</p>
+	<p>Please select the locations you can work in. If you can work in all locations in an area leave the secondary menu on "Please Select" and hit the "Add Location" button and all locations in that are are will be added.</p>
 </div>
 <form class="form-horizontal" role="form" id="form_add_staff_location">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />

@@ -1,7 +1,6 @@
 <div class="staff-profile-detail-box">
 	<h2> Your Availability </h2>
-	<p> Staff availability can be set by check box selection. Red indicates unavailable and green indicated available. <br />
-Staff can be search for by availability which will reference the below availability table.</p>
+	<p>Set your availability by check box selection. Red indicates unavailable and green indicated available.</p>
 </div>
 <div id="list_availability"></div>
 

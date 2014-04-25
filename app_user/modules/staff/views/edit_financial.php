@@ -1,7 +1,6 @@
 <div class="staff-profile-detail-box">
 	<h2> Financial Details </h2>
 </div>
-<p class="lg">Please note <span class="text-danger">**</span> denotes a required field</p>
 <form class="form-horizontal" role="form" id="form_update_staff_financial">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">
