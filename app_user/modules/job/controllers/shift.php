@@ -224,7 +224,7 @@ class Shift extends MX_Controller {
 								  'from' => $company['email_c_email'],
 								  'from_text' => $company['email_c_name'],
 								  'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
-								  'message' => modules::run('email/format_template_body',$email_body,$obj)
+								  'message' => modules::run('email/format_template_body',$template_info->template_content,$obj)
 							  );
 			  modules::run('email/send_email',$email_data);
 

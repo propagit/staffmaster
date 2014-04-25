@@ -38,6 +38,20 @@ class Email extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	/**
+	*	@name: is_email_set_as_autosend
+	*	@desc: Checks if email template is marked as auto send
+	*	@access: public
+	*	@param: ([int] email template id)
+	*	@return: return true for false - true if auto send is checked in UI and turned to 'yes' in database
+	*/
+	function is_email_set_as_autosend($email_template_id){
+		$template = $this->email_template_model->get_template($email_template_id);
+		if($template->auto_send == 'yes'){
+			return true;	
+		}
+		return false;
+	}
+	/**
 	*	@name: get_email_obj
 	*	@desc: Create the object needed for a particular template
 	*	@access: public
