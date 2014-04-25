@@ -67,10 +67,9 @@
 <!--email-->
 <div id="ajax-email-shift-reminder-modal"></div>
 <form id="shift-reminder-contact-email-form">
-<input type="hidden" id="email-selected-staff-ids" name="user_staff_selected_user_id[]" value="" />
-<input type="hidden" name="email_modal_header" value="Invoice Client" />
+<div id="selected-shift-email-info"></div>
+<input type="hidden" name="email_modal_header" value="Shift Reminder" />
 <input type="hidden" name="email_template_id" value="<?=SHIFT_REMINDER_EMAIL_TEMPLATE_ID;?>" />
-<input type="hidden" id="email-selected-module-ids" name="selected_module_ids[]" value="" />
 <?php $allowed_email_templates = array(SHIFT_REMINDER_EMAIL_TEMPLATE_ID);?>
 <input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
 </form>
@@ -81,18 +80,17 @@ $(function(){
 	$('#search_shift_select_all_shifts').click(function(){
 		$('input.search_shift_selected_shifts').prop('checked', this.checked);		
 	});	
-	var search_shift_selected_shifts = new Array();
-	var shift_user_id_selected_shifts = new Array();
 	//contact staff
 	$('#menu-search-shift-action ul li a[data-value="contact_staff"]').click(function(){
-		search_shift_selected_shifts.length = 0;
+		var shift_selected = false;
+		$('#selected-shift-email-info').html('');
 		$('.search_shift_selected_shifts:checked').each(function(){
-			search_shift_selected_shifts.push($(this).val());
-			shift_user_id_selected_shifts.push($(this).attr('data-staff-user-id'));
+			shift_selected = true;
+			$('#selected-shift-email-info').append('<input type="hidden" name="selected_module_ids[]" value="'+$(this).val()+'" />');
+			$('#selected-shift-email-info').append('<input type="hidden" name="user_staff_selected_user_id[]" value="'+$(this).attr('data-staff-user-id')+'" />');
+
 		});
-		if (search_shift_selected_shifts.length > 0) {
-			$('#email-selected-module-ids').val(search_shift_selected_shifts);
-			$('#email-selected-staff-ids').val(shift_user_id_selected_shifts);
+		if (shift_selected) {
 			$.ajax({
 			  type: "POST",
 			  url: "<?=base_url();?>email/ajax/get_send_email_modal",
@@ -106,4 +104,27 @@ $(function(){
 		
 	}); 
 });
+
+//this function is called from job/views/jobs_search_form.php
+//this is because if included in this page an event listner will be added for each time a search request is made and multiple email request will be triggered
+function email_shift_reminder(){
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax_shift/email_shift_reminder",
+		data: $('#send-email-modal-form').serialize(),
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+			setTimeout(function(){
+				$('#email-modal').modal('hide');
+			}, 4000);
+		}
+	}); 
+}
 </script>

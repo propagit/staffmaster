@@ -190,6 +190,20 @@ class Shift extends MX_Controller {
 		$this->load->view('shift/email/shift_info_email_template', isset($data) ? $data : NULL);	
 	}
 	/**
+	*	@name: get_shift_reminders_email
+	*	@desc: Loads shift details for shift reminder email
+	*	@access: public
+	*	@param: ([array] shift ids) 
+	*	
+	*/
+	function get_shift_reminders_email($shift_params)
+	{
+		$comma_separate_shift_ids = implode(',',$shift_params['shift_ids']);
+		$user_id = $shift_params['user_id'];
+		$data['shifts'] = $this->job_shift_model->get_user_job_shifts_by_shift_ids($user_id,$comma_separate_shift_ids);
+		$this->load->view('shift/email/shift_reminder_email', isset($data) ? $data : NULL);	
+	}
+	/**
 	*	@name: email_work_confirmation
 	*	@desc: function to email work confirmation to a staff
 	*	@access: public
