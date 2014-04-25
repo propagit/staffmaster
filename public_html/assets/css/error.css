@@ -1,0 +1,21 @@
+/* CSS Document */
+@import url("core.css");
+
+#nav-wrap {
+background-color: #00B1EB;
+border-bottom: 1px solid #00B1EB;
+color: #fff;
+text-align: center;
+line-height: 45px;
+}
+
+.box {
+	margin-top: 100px;
+	text-align: center;
+	padding: 150px;
+}
+a,
+a.btn:hover,
+a:focus {
+	color: #fff;
+}

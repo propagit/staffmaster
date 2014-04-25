@@ -75,11 +75,14 @@ class Shift extends MX_Controller {
 			array('value' => SHIFT_CONFIRMED, 'label' => 'Confirmed Shifts'),
 			array('value' => SHIFT_FINISHED, 'label' => 'Completed Shifts')
 		);
-		if(!$field_value){
-			$temp_field_value = 'Un-Filled Shifts';
+		if($field_value == "" || $field_value == "all") {
+			$temp_field_value = null;
 		}
-		if($field_value == -2){
-			$temp_field_value = 'Rejected Shifts';
+		else if($field_value === 0){
+			$temp_field_value = SHIFT_UNASSIGNED; #'Un-Filled Shifts';
+		}
+		else if($field_value == -2){
+			$temp_field_value = SHIFT_REJECTED; #'Rejected Shifts';
 		}
 		return modules::run('common/field_select', $array, $field_name, $temp_field_value, $size);
 	}

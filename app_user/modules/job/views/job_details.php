@@ -76,7 +76,8 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
     		<h2>Days Shifts</h2>
-			<p>All shifts for the day on this job campaign are displayed below. Click the columns to perform in-line editing. Using the checkbox to select shifts  will allow you to perform group functions such as deleting and duplicating.</p><br />
+
+			<p>All shifts for the day on this job campaign are displayed below. Click the columns to perform in-line editing. <br />Using the checkbox to select shifts  will allow you to perform group functions such as deleting and duplicating.</p><br />
 			
 			<div id="wrapper_js">
 			</div>           
@@ -152,6 +153,7 @@ $(function(){
 		email_apply_for_shift();
 	});
 })
+
 function sort_shifts(key) {
 	$.ajax({
 		type: "POST",

@@ -1,10 +1,5 @@
 <div id="nav_shifts">
-<?
-	$selected_shifts = array();
-	if ($this->session->flashdata('selected_shifts')) {
-		$selected_shifts = $this->session->flashdata('selected_shifts');
-	}
-	
+<?	
 	# Action menu
 	$data = array(
 		array('value' => 'copy', 'label' => '<i class="fa fa-copy"></i> Copy Selected'),
@@ -53,7 +48,7 @@
 	</div>
 </div>
                  
-<div class="table-responsive">
+<div class="table-responsive" id="shifts_search_list">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
@@ -392,7 +387,8 @@ function unlock_shift(pk) {
 		url: "<?=base_url();?>job/ajax/unlock_shift",
 		data: {pk: pk},
 		success: function(html) {
-			load_job_shifts(<?=$job_id;?>);
+			//load_job_shifts(<?=$job_id;?>);
+			$('#shift_' + pk).replaceWith(html);
 		}
 	})
 	

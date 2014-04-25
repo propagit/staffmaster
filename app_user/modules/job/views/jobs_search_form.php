@@ -145,7 +145,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Status</label>
 							<div class="col-md-4">
-									<?=modules::run('job/shift/field_select_status', 'search_shift_shift_status', $search_shift_filters['shift_status']);?>
+								<?=modules::run('job/shift/field_select_status', 'search_shift_shift_status', $search_shift_filters['shift_status']);?>
 							</div>
 						</div>
 					</div>
