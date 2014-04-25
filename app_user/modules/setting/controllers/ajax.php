@@ -283,8 +283,12 @@ class Ajax extends MX_Controller {
 		$color = COLOUR_PRIM;
 		$font_color = COLOUR_SECO;
 		if($company){
-			$color = $company['email_background_colour'];
-			$font_color = $company['email_font_colour'];
+			if($company['email_background_colour']){
+				$color = $company['email_background_colour'];
+			}
+			if($company['email_font_colour']){
+				$font_color = $company['email_font_colour'];
+			}
 		}
 		if($_POST){
 			$color = $this->input->post('color');
