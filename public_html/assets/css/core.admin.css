@@ -739,6 +739,18 @@ span.dash-invoice-value{
 	padding: 10px 0;
 	text-align: center;
 }
+
+#shifts_badge .shift_badge {
+	float: left;
+	margin-top: 10px;
+	text-align: center;
+	margin-right: 60px;
+}
+#shifts_badge .shift_badge.first-child {
+	width: auto;
+	margin-right: 30px;
+}
+
 .c1 {
 	margin: auto;
 	width: 60px;

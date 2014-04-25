@@ -7,10 +7,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Manage Company Profile</h2>
-		 <p>
-         	Your company profile information is used in various areas of the system such as email corospondance
-			your invoices, your quotes and login screen, Please ensure the below information is accurate.
-         </p>
+		 <p>Your company profile information is used in various areas of the system such as email correspondence, your invoices, your quotes and login screen, Please ensure the below information is accurate.</p>
     </div>
 </div>
 <!--end top box-->

@@ -655,7 +655,14 @@ class Ajax extends MX_Controller {
 		if ($dates)
 		{
 			$shifts = $this->input->post('shifts');
+			if (count($dates) * count($shifts) > modules::run('account/get_credits'))
+			{
+				echo json_encode(array('ok' => false, 'msg' => 'Not enough credits.'));
+				return;
+			}
+			
 			$count = 0;
+			
 			foreach($dates as $date)
 			{
 				foreach($shifts as $shift_id)
@@ -724,8 +731,13 @@ class Ajax extends MX_Controller {
 							$this->job_shift_model->add_brief($data_brief);
 						}
 					}
+					$count++;
 				}				
 			}
+			
+			# Take the credits out
+			$this->load->model('account/account_model');
+			$this->account_model->deduct_credits($count);
 			echo json_encode(array('ok' => true, 'date' => $date));
 		}
 		else

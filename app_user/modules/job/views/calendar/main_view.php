@@ -1,22 +1,36 @@
 <div class="col-md-12">
 	<div class="box top-box">
-    	<div class="col-md-9 remove-left-padding">
         <h2>Company Calendar</h2>
-        <p>As you create jobs they will plot to the company calendar below. All jobs in all job campaigns are displayed and colour coded based on "Un-filled, "Un-confirmed" or "Confirmed". Active jobs campaigns are show in charcoal. Click the numbers to quick jump to those jobs</p>
-        </div>
-        
-        <div class="col-md-3 remove-left-padding">
-        	<ul class="calendar-job-stat-legend">
-            	<li><span class="cal-legend-txt">Active Job Campaigns</span><span class="cal-home-shift-count-wrap"><span id="job-campaigns-count" class="badge dark-grey-bg">0</span></span></li>
-            	<? if (!modules::run('auth/is_client')) { ?> 
-                <li><span class="cal-legend-txt">Created by Client</span><span class="cal-home-shift-count-wrap"><span id="client-shifts-count" class="badge purple">0</span></span></li>
-                <? } ?>
-                <li><span class="cal-legend-txt">Unfilled Shifts</span><span class="cal-home-shift-count-wrap"><span id="unfilled-shifts-count" class="badge grey-bg">0</span></span></li>
-                <li><span class="cal-legend-txt">Un-confirmed Shifts</span><span class="cal-home-shift-count-wrap"><span id="unconfirmed-shifts-count" class="badge warning">0</span></span></li>
-                <li><span class="cal-legend-txt">Rejected Shifts</span><span class="cal-home-shift-count-wrap"><span id="rejected-shifts-count" class="badge danger">0</span></span></li>
-                <li><span class="cal-legend-txt">Confirmed Shifts</span><span class="cal-home-shift-count-wrap"><span id="confirmed-shifts-count" class="badge success">0</span></span></li>
-                <li><span class="cal-legend-txt">Completed Shifts</span><span class="cal-home-shift-count-wrap"><span id="completed-shifts-count" class="badge primary">0</span></span></li>
-            </ul>
+        <p>As you create jobs they will plot to the company calendar below. All shifts on all job campaigns are displayed and colour coded based on unfilled, unconfirmed, confirmed, rejected or completed. Active job campaigns are  show in charcoal and shifts created by clients will be shown in purple . Click the numbers to quick jump to those jobs.</p>
+        <div id="shifts_badge">
+			<div class="shift_badge first-child">
+				<span id="job-campaigns-count" class="badge dark-grey-bg">0</span>
+				<div class="step_label">Active Job Campaigns</div>
+			</div>
+			<div class="shift_badge">
+				<span id="client-shifts-count" class="badge purple">0</span>
+				<div class="step_label">Created by Client</div>
+			</div>
+			<div class="shift_badge">
+				<span id="unfilled-shifts-count" class="badge grey-bg">0</span>
+				<div class="step_label">Unfilled Shifts</div>
+			</div>
+			<div class="shift_badge">
+				<span id="unconfirmed-shifts-count" class="badge warning">0</span>
+				<div class="step_label">Unconfirmed Shifts</div>
+			</div>
+			<div class="shift_badge">
+				<span id="rejected-shifts-count" class="badge danger">0</span>
+				<div class="step_label">Rejected Shifts</div>
+			</div>
+			<div class="shift_badge">
+				<span id="confirmed-shifts-count" class="badge success">0</span>
+				<div class="step_label">Confirmed Shifts</div>
+			</div>
+			<div class="shift_badge">
+				<span id="completed-shifts-count" class="badge primary">0</span>
+				<div class="step_label">Completed Shifts</div>
+			</div>
         </div>
     </div>
 </div>
@@ -116,6 +130,7 @@ function load_month_summary(month){
 		dataType:'json',
 		success: function(data){
 			$('#job-campaigns-count').html(data['job_campaign']);
+			$('#client-shifts-count').html(data['client']);
 			$('#unfilled-shifts-count').html(data['unassigned']);
 			$('#unconfirmed-shifts-count').html(data['unconfirmed']);
 			$('#rejected-shifts-count').html(data['rejected']);
