@@ -45,13 +45,13 @@
                     The "Pay Rate Name" should be a name that is easily identifiable. The pay rate name is used when assigning a pay rate to jobs you create. 
                     </p>
 		            <form class="form-horizontal" role="form" id="form_add_payrate">
-					<div class="form-group">
+					<div class="form-group" id="f_name">
 						<label for="inputEmail3" class="col-sm-3 control-label">Name</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" name="name" placeholder="Enter pay rate name">
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" id="f_staff_rate">
 						<label for="inputPassword3" class="col-sm-3 control-label">Staff Rate</label>
 						<div class="col-sm-4">
 							<div class="input-group">
@@ -60,7 +60,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" id="f_client_rate">
 						<label for="inputPassword3" class="col-sm-3 control-label">Client Rate</label>
 						<div class="col-sm-4">
 							<div class="input-group">
@@ -71,7 +71,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-3">
-							<button type="button" class="btn btn-core" id="btn_add_payrate"><i class="fa fa-plus"></i> Add Pay Rate</button>
+							<button type="button" class="btn btn-core" id="btn_add_payrate" data-loading-text="Adding pay rate..."><i class="fa fa-plus"></i> Add Pay Rate</button>
 						</div>
 					</div>
 					</form>
@@ -87,20 +87,26 @@
 $(function(){
 	$('#btn_add_payrate').click(function(){
 		preloading($('#add-payrate-modal .modal-content'));
+		$('.form-group').removeClass('has-error');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>attribute/ajax/add_payrate",
 			data: $('#form_add_payrate').serialize(),
-			success: function(html) {
-				if (!html)
-				{
-					location.reload();
-				}
+			success: function(data) {
+				data = $.parseJSON(data);
 				$('#wrapper_loading').remove();
-				$('#add-payrate-modal').modal('hide');
-				load_nav_payrates(html);
-				$('#form_add_payrate')[0].reset();
-				
+				if (!data.ok) {
+					$('#f_' + data.error_id).addClass('has-error');
+					$('#' + data.error_id).focus();
+				} else {
+					if (data.reload) {
+						location.reload();
+					} else {						
+						$('#add-payrate-modal').modal('hide');
+						load_nav_payrates(data.payrate_id);
+					}
+					$('#form_add_payrate')[0].reset();
+				}				
 			}
 		}) 
 	});

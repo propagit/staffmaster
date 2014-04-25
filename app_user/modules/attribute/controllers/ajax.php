@@ -20,10 +20,24 @@ class Ajax extends MX_Controller {
 	}
 		
 	function add_payrate() {
-		$payrate_id = $this->payrate_model->insert_payrate(array('name' => $this->input->post('name')));
+		$input = $this->input->post();
+		if (!$input['name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'name'));
+			return;
+		}
+		if (!$input['staff_rate'] || !is_numeric($input['staff_rate'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'staff_rate'));
+			return;
+		}
+		if (!$input['client_rate'] || !is_numeric($input['client_rate'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'client_rate'));
+			return;
+		}
+		
+		$payrate_id = $this->payrate_model->insert_payrate(array('name' => $input['name']));
 		$rate = array();
-		$rate[0] = $this->input->post('staff_rate');
-		$rate[1] = $this->input->post('client_rate');
+		$rate[0] = $input['staff_rate'];
+		$rate[1] = $input['client_rate'];
 		for($type=0; $type <=1; $type++) {
 			for($day=1; $day <=7; $day++) {
 				for($hour=0; $hour <=23; $hour++) {
@@ -41,9 +55,10 @@ class Ajax extends MX_Controller {
 		$count = count($this->payrate_model->get_payrates());
 		if ($count == 1)
 		{
+			echo json_encode(array('ok' => true, 'reload' => true));
 			return;
 		}
-		echo $payrate_id;
+		echo json_encode(array('ok' => true, 'reload' => false, 'payrate_id' => $payrate_id));
 	}
 	
 	function load_nav_payrates() {
@@ -219,28 +234,47 @@ class Ajax extends MX_Controller {
 	*	
 	*/
 	function add_venue()
-	{
-		$data = $this->input->post();
-		if(isset($data['location_id'])){
-			if($data['location_id'] != ''){
-				$location_id = $data['location_id'];	
+	{		
+		$input = $this->input->post();
+		if (!$input['name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'name'));
+			return;
+		}
+		if (!$input['address']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'address'));
+			return;
+		}
+		if (!$input['suburb']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'suburb'));
+			return;
+		}
+		
+		if (!$input['parent_location_id']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'parent_location_id'));
+			return;
+		}
+		
+		
+		if(isset($input['location_id'])){
+			if($input['location_id'] != ''){
+				$location_id = $input['location_id'];	
 			}else{
-				$location_id = $data['parent_location_id'];	
+				$location_id = $input['parent_location_id'];	
 			}
 		}else{
-			$location_id = $data['parent_location_id'];	
+			$location_id = $input['parent_location_id'];	
 		}
-		//get location info to know state
-		$location = modules::run('attribute/location/get_location',$location_id);
+		# get location info to know state
+		$location = modules::run('attribute/location/get_location', $location_id);
 		$this->venue_model->insert_venue(array(
 				'location_id' => $location_id,
-				'name' => $data['name'], 
-				'address' => $data['address'],
-				'suburb' => $data['suburb'],
-				'postcode' => $data['postcode'],
+				'name' => $input['name'], 
+				'address' => $input['address'],
+				'suburb' => $input['suburb'],
+				'postcode' => $input['postcode'],
 				'state' => $location['state']
 			));
-		echo 'success';
+		echo json_encode(array('ok' => true));
 	}
 	/**
 	*	@desc Edit Venue

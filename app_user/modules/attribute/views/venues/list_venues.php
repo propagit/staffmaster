@@ -31,35 +31,35 @@
                     <p>
                     Venues are the location your jobs are held at. When creating jobs you will need to add a venue the job is taking place in.
                     </p>
-                    <div class="form-group">
+                    <div class="form-group" id="f_name">
                         <label for="name" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="name" id="name" placeholder="Enter venue name">
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group" id="f_address">
                         <label for="address" class="col-sm-2 control-label">Address</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="address" id="address" placeholder="Enter venue address">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="f_suburb">
                         <label for="suburb" class="col-sm-2 control-label">Suburb</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="suburb" id="suburb" placeholder="Enter venue suburb">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="f_postcode">
                         <label for="postcode" class="col-sm-2 control-label">Postcode</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control auto-width" name="postcode" id="postcode" placeholder="Enter venue postcode">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="f_parent_location_id">
                         <label for="location" class="col-sm-2 control-label">Location</label>
-                        <div id="load-current-location-add" class="col-sm-10 select-btm-margin">
-                            <? //modules::run('attribute/location/field_select','parent_location_id');?>
+                        <div class="col-sm-10 select-btm-margin">
+                            <?=modules::run('attribute/location/field_select','parent_location_id');?>
                         </div>
                     </div>
                      <div class="form-group">
@@ -111,7 +111,7 @@
                         	<input type="text" class="form-control auto-width" name="postcode" id="postcode_edit" placeholder="Enter venue postcode">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="f_location_parent_id">
                         <label for="location" class="col-sm-2 control-label">Location</label>
                         <div id="load-current-location-edit" class="col-sm-10 select-btm-margin">
                             
@@ -155,9 +155,10 @@ $(function(){
 	//open add venue modal
 	$('#open-add-venue-modal').on('click',function(){
 		//remove location from edit modal as this will create conflict
-		$('#load-current-location-edit').html('');
+		//$('#load-current-location-edit').html('');
 		$('#addVenue').modal('show');
-		$.ajax({
+		/*
+$.ajax({
 		type: 'POST',
 		url: '<?=base_url();?>attribute/ajax/load_current_locations',
 		data:'',
@@ -165,7 +166,8 @@ $(function(){
 			$('#load-current-location-add').html(html);
 			load_areas();
 			}
-		});	
+		});
+*/
 	});
 	
 	$('#add-venue').on('click',function(){
@@ -178,14 +180,21 @@ $(function(){
 });
 
 function add_venue(){
+	$('.form-group').removeClass('has-error');
 	$.ajax({
 		type: 'POST',
 		url: '<?=base_url();?>attribute/ajax/add_venue',
 		data:$('#add-new-venue-form').serialize(),
-		success: function(html) {
-			help.load_content(params);
-			$('#addVenue').modal('hide');
-			reload_wizard('venue');
+		success: function(data) {
+			data = $.parseJSON(data);
+			if (!data.ok) {
+				$('#f_' + data.error_id).addClass('has-error');
+				$('#' + data.error_id).focus();
+			} else {
+				help.load_content(params);
+				$('#addVenue').modal('hide');
+				reload_wizard('venue');
+			}			
 		}
 	});	 
 }

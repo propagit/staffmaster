@@ -1,1 +1,0 @@
-ALTER TABLE `job_shifts` ADD `is_alert` TINYINT NOT NULL COMMENT '0: no, 1: yes' AFTER `status`;
