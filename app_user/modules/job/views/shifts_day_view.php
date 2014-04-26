@@ -34,13 +34,13 @@
 		<ul class="nav nav-tabs tab-respond">
 			<li class="pull-right"><a class="load_month_view"><i class="fa fa-calendar"></i></a></li>
 			<li class="pull-right"><a class="load_week_view"><i class="fa fa-list"></i></a></li>
-			<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id,null);?> shifts</a></li>
+			<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id, null, $filter);?> shifts</a></li>
 			<? foreach($job_dates as $date) { ?>
 			<li<?=($this->session->userdata('job_date') == $date['job_date']) ? ' class="active"' : '';?>>
 				<a onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')">
 					<?=date('d', strtotime($date['job_date']));?>
 					<span class="month"><?=date('M', strtotime($date['job_date']));?></span>
-					(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']));?>)
+					(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']), $filter);?>)
 				</a>
 			</li>
 			<? } ?>
@@ -76,7 +76,7 @@
 		<? } ?>
 	</tr>
 </thead>
-<tbody>
+<tbody id="list-shifts">
 <? if (count($job_shifts) == 0) { ?>
 	<tr>
 		<td colspan="14">
@@ -84,8 +84,7 @@
 		</td>
 	</tr>
 <? } else foreach($job_shifts as $shift) {
-	echo modules::run('job/shift/row_view', $shift['shift_id']);
-	
+	echo modules::run('job/shift/row_view', $shift['shift_id']);	
 } ?>
 </tbody>
 </table>
@@ -111,6 +110,37 @@
 <script>
 $(function(){
 	init_inline_edit();
+	
+	var track_load = 1; // total loaded record group(s)
+	var loading = false; // to prevents multipal ajax loads
+	var total_groups = <?=ceil($total_shifts/SHIFTS_PER_LOAD);?>; // total record group(s)
+	//$('#list-shifts').load("<?=base_url();?>job/ajax/load_day_shifts_partly", {'group_no':track_load}, function() {track_load++;}); //load first group
+	$(window).scroll(function() { //detect page scroll
+	
+		if($(window).scrollTop() + $(window).height() == $(document).height())  //user scrolled to bottom of the page?
+		{
+	
+			if(track_load <= total_groups && loading==false) //there's more data to load
+			{
+				loading = true; //prevent further ajax loading
+				$('.animation_image').show(); //show loading image
+				//load data from the server using a HTTP POST request
+				$.post('<?=base_url();?>job/ajax/load_more_day_shifts',{'group_no': track_load, 'job_id': <?=$job_id;?>, 'date': '<?=$this->session->userdata('job_date');?>'}, function(data){	
+					$("#list-shifts").append(data); //append received data into the element
+					//hide loading image
+					$('.animation_image').hide(); //hide loading image once data is received
+					track_load++; //loaded group increment
+					loading = false;	
+				}).fail(function(xhr, ajaxOptions, thrownError) { //any errors?
+					alert(thrownError); //alert with HTTP error
+					$('.animation_image').hide(); //hide loading image
+					loading = false;
+				});
+			}
+		}
+	});
+	
+	
 	$('#menu-status ul li a').click(function(){
 		var value = $(this).attr('data-value');
 		$.ajax({
@@ -487,3 +517,6 @@ function load_shift_breaks(obj) {
 	})
 }
 </script>
+<div class="animation_image" style="display:none" align="center">
+	<img src="<?=base_url();?>assets/img/loading.gif">
+</div>

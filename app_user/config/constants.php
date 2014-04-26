@@ -108,6 +108,7 @@ define('DEV_CK_TOOLS',"['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList
 define('LIVE_CK_TOOLS',"['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedList', 'BulletedList','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],['Link', 'Unlink'],['Font'],['FontSize' ],[ 'TextColor', 'BGColor']");
 
 //records per page
+define('SHIFTS_PER_LOAD', 10);
 define('CLIENTS_PER_PAGE',30);
 define('STAFF_PER_PAGE',30);
 define('DEFAULT_PER_PAGE',50);

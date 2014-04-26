@@ -193,6 +193,30 @@ class Ajax extends MX_Controller {
 		$this->session->set_userdata('shifts_sort_value', $shifts_sort_value);
 	}
 	
+	function load_more_day_shifts()
+	{
+		$group_number = filter_var($_POST["group_no"], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_STRIP_HIGH);
+
+		# throw HTTP error if group number is not valid
+		if(!is_numeric($group_number)){
+		    header('HTTP/1.1 500 Invalid number!');
+		    exit();
+		}
+		
+		# get current starting point of records
+		$position = ($group_number * SHIFTS_PER_LOAD);
+		$job_id = $this->input->post('job_id');
+		$date = $this->input->post('date');
+		$job_shifts = $this->job_shift_model->get_job_shifts($job_id, $date,
+						$this->session->userdata('shift_status_filter'),
+						$this->session->userdata('shifts_sort_key'),
+						$this->session->userdata('shifts_sort_value'), $position);
+		foreach($job_shifts as $shift)
+		{
+			echo modules::run('job/shift/row_view', $shift['shift_id']);
+		}			
+	}
+	
 	/**
 	*	@name: load_day_shifts
 	*	@desc: ajax function to load list view of shifts by day
@@ -264,8 +288,12 @@ class Ajax extends MX_Controller {
 		$data['job_id'] = $job_id;
 		$data['job_dates'] = $op_job_dates;
 		$data['job_shifts'] = $this->job_shift_model->get_job_shifts($job_id, $date,
+						$this->session->userdata('shift_status_filter'),
 						$this->session->userdata('shifts_sort_key'),
 						$this->session->userdata('shifts_sort_value'));
+		$data['total_shifts'] = $this->job_shift_model->count_job_shifts($job_id, $date,
+						$this->session->userdata('shift_status_filter'));
+						
 		$data['is_client'] = $this->is_client;
 		$this->load->view('shifts_day_view', isset($data) ? $data : NULL);
 	}
