@@ -172,7 +172,7 @@ class Job_shift_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-	
+		
 	/**
 	*	@name: get_job_shifts
 	*	@desc: get shifts in a job
@@ -180,7 +180,7 @@ class Job_shift_model extends CI_Model {
 	*	@param: $job_id, $job_date (YYYY-MM-DD), $sort_key = 'date', $sort_value = 'asc'
 	*	@return: array of shifts
 	*/
-	function get_job_shifts($job_id, $job_date=null, $sort_key='date', $sort_value='asc')
+	function get_job_shifts($job_id, $job_date=null, $status = null, $sort_key='date', $sort_value='asc', $position = 0)
 	{
 		$sql = "SELECT 
 					js.*, 
@@ -191,8 +191,7 @@ class Job_shift_model extends CI_Model {
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id 
 				WHERE js.job_id = '" . $job_id . "'
 				AND js.status > " . SHIFT_DELETED;
-		$status = $this->session->userdata('shift_status_filter');
-		if ($status != '') {
+		if ($status != null) {
 			$sql .= " AND js.status = " . $status;
 		}
 		if ($job_date && $job_date != 'all')
@@ -215,6 +214,7 @@ class Job_shift_model extends CI_Model {
 		{
 			$sql .= " ORDER BY js.status " . $sort_value;
 		}
+		$sql .= " LIMIT $position, " . SHIFTS_PER_LOAD;
 			
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -225,7 +225,7 @@ class Job_shift_model extends CI_Model {
 		$sql = "SELECT count(*) as `count`
 				FROM `job_shifts`
 				WHERE `job_id` = '$job_id' AND `status` > " . SHIFT_DELETED;
-		if ($job_date)
+		if ($job_date && $job_date != 'all')
 		{
 			$sql .= " AND `job_date` = '$job_date'";
 		}
