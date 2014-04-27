@@ -47,7 +47,11 @@
 		</ul>
 	</div>
 </div>
-                 
+<? if (count($job_shifts) == 0) { ?>
+<div class="alert alert-warning">
+	There is no shifts.
+</div>
+<? } else { ?>       
 <div class="table-responsive" id="shifts_search_list">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
@@ -77,19 +81,13 @@
 	</tr>
 </thead>
 <tbody id="list-shifts">
-<? if (count($job_shifts) == 0) { ?>
-	<tr>
-		<td colspan="14">
-			No shifts found
-		</td>
-	</tr>
-<? } else foreach($job_shifts as $shift) {
+<? foreach($job_shifts as $shift) {
 	echo modules::run('job/shift/row_view', $shift['shift_id']);	
 } ?>
 </tbody>
 </table>
 </div>
-
+<? } ?>
 
 <div id="wrapper_shift_break"></div>
 <div id="wrapper_shift_staff" class="hide"></div>
@@ -149,6 +147,8 @@ $(function(){
 			data: {value:value},
 			success: function(html) {
 				load_job_shifts(<?=$job_id;?>);
+				//alert(value);
+				//window.location = '<?=base_url();?>job/details/<?=$job_id;?>';
 			}
 		})		
 	});

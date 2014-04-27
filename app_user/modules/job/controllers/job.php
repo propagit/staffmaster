@@ -84,13 +84,20 @@ class Job extends MX_Controller {
 		$job = $this->job_model->get_job($job_id);
 		$data['job'] = $job;
 		$data['client'] = $this->client_model->get_client($job['client_id']);
-		if ($status != '') {
+		
+		/*
+if ($status != '') {
 			$this->session->set_userdata('shift_status_filter', $status);
 		}
 		else
 		{
 			$this->session->unset_userdata('shift_status_filter');
 		}
+*/
+		if (!$status == '') {
+			$status = $this->session->userdata('shift_status_filter');
+		}
+		
 		$data['is_client'] = $this->is_client;
 		$this->load->view('job_details', isset($data) ? $data : NULL);		
 	}

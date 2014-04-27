@@ -710,13 +710,17 @@ class Ajax extends MX_Controller {
 					
 					$breaks = json_decode($shift['break_time']);
 					$new_breaks = array();
-					foreach($breaks as $break)
+					if (count($breaks) > 0)
 					{
-						$new_breaks[] = array(
-							'length' => $break->length,
-							'start_at' => $start_time + $break->start_at - $shift['start_time']
-						);
+						foreach($breaks as $break)
+						{
+							$new_breaks[] = array(
+								'length' => $break->length,
+								'start_at' => $start_time + $break->start_at - $shift['start_time']
+							);
+						}
 					}
+					
 					$new_shift['break_time'] = json_encode($new_breaks);
 					$new_shift_id = $this->job_shift_model->insert_job_shift($new_shift);
 					
