@@ -7,7 +7,7 @@
 		<label class="col-lg-3 control-label">Start Date/Time</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="start_date">
-				<input type="text" class="form-control" name="job_date" readonly />
+				<input type="text" class="form-control" name="job_date" id="start_date" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
@@ -18,7 +18,7 @@
 		<label class="col-lg-3 control-label">Finish Date/Time</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="finish_time">
-				<input type="text" class="form-control" name="finish_time" readonly />
+				<input type="text" class="form-control" name="finish_time" id="finish_time" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
@@ -113,7 +113,7 @@
 	
 	<div class="form-group">
 		<div class="col-lg-offset-3 col-lg-8">
-			<a class="btn btn-core" id="btn_create_js"><i class="fa fa-plus-circle"></i> Create Shifts</a>
+			<button type="button" class="btn btn-core" id="btn_create_js" data-loading-text="Creating shifts..." ><i class="fa fa-plus-circle"></i> Create Shifts</button>
 			&nbsp; 
 			<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset Form</button>
 		</div>
@@ -170,6 +170,8 @@ $(function(){
     
     
     $('#btn_create_js').click(function(){
+    	var btn = $(this);
+		btn.button('loading');
     	$('.form-group').removeClass('has-error');
 	    $.ajax({
 	    	type: "POST",
@@ -177,10 +179,12 @@ $(function(){
 	    	data: $('#form_create_js').serialize(),
 			success: function(data)
 			{
+				btn.button('reset');
 				data = $.parseJSON(data);
 				if (!data.ok)
 				{
 					$('#f_' + data.error_id).addClass('has-error');
+					$('#' + data.error_id).focus();
 				}
 				else
 				{
