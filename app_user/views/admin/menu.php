@@ -35,7 +35,7 @@ $menu = array(
 	array('path' => '#', 'icon' => 'fa-lightbulb-o', 'title' => 'Training Centre', 'sub' => array(
 		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
 		array('path' => 'brief', 'icon' => 'fa-book', 'title' => 'Brief Builder'),
-		array('path' => '#', 'icon' => 'fa-question', 'title' => 'User Guide'),
+		array('path' => 'user_guide', 'icon' => 'fa-question', 'title' => 'User Guide'),
 		#array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
 		#array('path' => '#', 'icon' => 'fa-folder-open-o', 'title' => 'Training Centre'),
 		#array('path' => '#', 'icon' => 'fa-refresh', 'title' => 'Create Work Process'),

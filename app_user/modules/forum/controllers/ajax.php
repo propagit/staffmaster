@@ -154,6 +154,8 @@ class Ajax extends MX_Controller {
 		$reply = $this->input->post('reply',true);
 		$topic_id = $this->input->post('topic_id',true);
 		$user_info = $this->session->userdata('user_data');
+		$ajax_echo['replies'] = '';
+		$ajax_echo['total_replies'] = 0;
 		
 		if($reply && $topic_id && $user_info){
 			$data = array(
@@ -162,7 +164,9 @@ class Ajax extends MX_Controller {
 							'posted_by' => $user_info['user_id']
 						);	
 			if($this->forum_model->add_reply($data)){
-				echo modules::run('forum/load_replies',$topic_id);
+				$ajax_echo['total_replies'] = $this->forum_model->get_replies($topic_id,true);
+				$ajax_echo['replies'] = modules::run('forum/load_replies',$topic_id);
+				return json_encode($ajax_echo);
 			}
 		}
 	}

@@ -55,7 +55,7 @@
 			  ?>
               <?=($c->document_name ? ($c->document_type == 'image' ? '<img class="message-img" src="'.base_url().UPLOADS_URL.'/conversation/img/'.md5('forum'.$c->topic_id).'/thumb/'.$c->document_name.'" />' : '') : '');?>
               <div class="comments-wrap" id="comments-wrap-<?=$c->topic_id;?>">
-                  <span class="msg-comments reply text-blue" data-reply="<?=$c->topic_id;?>">Post Reply <?=($c->total_replies ? '('.$c->total_replies.' replies)' : '');?> <i class="fa fa-angle-down reply-arrow-down"></i></span> 
+                  <span class="msg-comments reply text-blue" data-reply="<?=$c->topic_id;?>">Post Reply <span id="reply-count-<?=$c->topic_id;?>"><?=($c->total_replies ? '('.$c->total_replies.' replies)' : '');?></span> <i class="fa fa-angle-down reply-arrow-down"></i></span> 
                   <?=($c->document_name ? ($c->document_type == 'file' ? '<span class="badge danger msg-badge">1</span>' : '') : '');?>
                   <span class="msg-comments download-docs text-blue">
 				  <?=($c->document_name ? ($c->document_type == 'file' ? '<a class="document-anchor" target="_blank" href="'.base_url().UPLOADS_URL.'/conversation/doc/'.md5('forum'.$c->topic_id).'/'.$c->document_name.'" download>Download Documents</a>' : '') : '');?>
@@ -65,8 +65,11 @@
               <div id="replies-wrap-<?=$c->topic_id;?>" class="custom-hidden">
               		<div class="message-reply-box">
                     <textarea id="reply-<?=$c->topic_id;?>" class="form-control"></textarea>
-                    <button onclick="post_reply('<?=$c->topic_id;?>');" type="button" class="btn btn-info reply-btn" data-reply-btn="<?=$c->topic_id;?>"><i class="fa fa-comment"></i> Reply</button></div>
+                    <button onclick="post_reply('<?=$c->topic_id;?>');" type="button" class="btn btn-info reply-btn" data-reply-btn="<?=$c->topic_id;?>"><i class="fa fa-comment"></i> Reply</button>
+                    </div>
+                    <div id="replies-<?=$c->topic_id;?>">
              		<?=modules::run('forum/load_replies',$c->topic_id);?>
+                    </div>
               </div>
               <!--reply-->
           </div>
@@ -86,22 +89,19 @@ $(function(){
 
 });//ready
 
-function remove_reply_box()
-{
-	$('.message-reply-box').remove();	
-}
-
 function post_reply(topic_id){
 	preloading($('#comments-wrap-'+topic_id));
 	var reply = $('#reply-'+topic_id).val();
 	$.ajax({
 	type: "POST",
+	dataType: "JSON",
 	url: "<?=base_url();?>forum/ajax/post_reply",
 	data: {topic_id:topic_id,reply:reply},
-		success: function(html) {
-			remove_reply_box();
+		success: function(data) {
+			$('#reply-'+topic_id).val('');
 			$('#wrapper_loading').remove();
-			$('#replies-wrap-'+topic_id).html(html).removeClass('custom-hidden');
+			$('#replies-'+topic_id).html(data['replies']).removeClass('custom-hidden');
+			$('#reply-count-'+topic_id).html('('+data['total_replies']+' replies)');
 		}
 	});
 }
