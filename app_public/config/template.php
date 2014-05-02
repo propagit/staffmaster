@@ -67,6 +67,13 @@ $template['default']['parser'] = 'parser';
 $template['default']['parser_method'] = 'parse';
 $template['default']['parse_template'] = FALSE;
 
+$template['website'] = array(
+	'template' => 'website',
+	'regions' => array(
+		'content',
+		'title'
+	)
+);
 $template['signup'] = array(
 	'template' => 'signup',
 	'regions' => array(

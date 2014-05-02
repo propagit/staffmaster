@@ -1,49 +1,63 @@
-<div class="alert alert-info">
-	http://<b id="subdomain">subdomain</b>.sm.com
-</div>
-<form class="form-inline" role="form" id="signup-form">
-	<div class="form-group">
+<form class="row form-inline" role="form" id="signup-form">
+	<div class="col-md-3 form-group" id="f_company_name">
 		<label class="sr-only" for="company_name">Company Name</label>
-		<input type="email" class="form-control" id="company_name" name="company_name" placeholder="Enter company name">
+		<input type="email" class="form-control input-lg" id="company_name" name="company_name" placeholder="Enter company name">
 	</div>
-	<div class="form-group">
+	<div class="col-md-3 form-group" id="f_email_address">
 		<label class="sr-only" for="email_address">Email Address</label>
-		<input type="email" class="form-control" id="email_address" name="email_address" placeholder="Enter email">
+		<input type="email" class="form-control input-lg" id="email_address" name="email_address" placeholder="Enter email">
 	</div>
-	<div class="form-group">
+	<div class="col-md-3 form-group" id="f_password">
 		<label class="sr-only" for="password">Password</label>
-		<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+		<input type="password" class="form-control input-lg" id="password" name="password" placeholder="Password">
 	</div>
-	<button type="button" id="btn-signup" class="btn btn-success" data-loading-text="Please wait..." >Try it now for free</button>
+	<div class="col-md-3">
+		<button type="button" id="btn-signup" class="btn btn-core btn-lg btn-block">Try it now for free</button>
+	</div>
 </form>
-<br />
-<div class="alert alert-danger hide" id="signup-msg">
+<!-- Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="signup-message">
+			<h2 class="text-success"><i class="fa fa-smile-o"></i> Great Decision!</h2>
+			<p>You are nearly ready to start using StaffBooks<br />
+			Check your email to finish the authentication process and login to your account.</p>
+		</div>
+	</div>
 </div>
 <script>
 $(function(){
-	$('#company_name').keyup(function(){
-		var subdomain = $(this).val().toLowerCase();
-		subdomain = subdomain.replace(/\s+/g, '');
-		$('#subdomain').html(subdomain);
-	});
 	$('#btn-signup').click(function(){
-		var btn = $(this);
-		btn.button('loading');
+		
+		$('#signup-form').find('.form-group').removeClass('has-error');
+		$('#signup-form').find('input').tooltip('destroy')
+
 		$.ajax({
 			type: "POST",
-			url: "<?=base_url();?>account/ajax/signup",
+			url: "<?=base_url();?>account/ajax/validate",
+			cache: false,
+			async: false,
 			data: $('#signup-form').serialize(),
 			success: function(html) {
-				btn.button('reset');
 				var data = $.parseJSON(html);
-				if (data.valid) {
-					$('#signup-msg').removeClass('hide alert-danger');
-					$('#signup-msg').addClass('alert-success');
-					$('#signup-msg').html(data.msg);
-				} else {
-					$('#signup-msg').removeClass('hide alert-success');
-					$('#signup-msg').addClass('alert-danger');
-					$('#signup-msg').html(data.msg);
+				if (!data.valid) {
+					$('#f_' + data.error_id).addClass('has-error');
+					$('#' + data.error_id).tooltip({
+						title: data.msg,
+						placement: 'bottom'
+					});
+					$('#' + data.error_id).focus();
+				} else {					
+					$('#signupModal').modal('show');
+					$.ajax({
+						type: "POST",
+						url: "<?=base_url();?>account/ajax/signup",
+						cache: false,
+						data: $('#signup-form').serialize(),
+						success: function(html) {
+							$('#signupModal').modal('hide');
+						}
+					})								
 				}
 			}
 		})

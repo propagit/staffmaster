@@ -15,7 +15,20 @@ class Dispatcher extends MX_Controller {
 	
 	function index()
 	{
-		$this->account_dispatcher('signup');
+		$this->website_dispatcher();
+	}
+	
+	function website_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
+	{
+		if ( strpos($method, 'ajax') !== false)
+		{
+			echo modules::run('website/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+		}
+		
+		$content = modules::run('website', $method, $param1, $param2, $param3, $param4);
+		$this->template->set_template('website');
+		$this->template->write('content', $content);
+		$this->template->render();
 	}
 	
 	function account_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
