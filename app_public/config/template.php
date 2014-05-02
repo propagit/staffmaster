@@ -76,6 +76,15 @@ $template['signup'] = array(
 	)
 );
 
+$template['blog_admin'] = array(
+	'template' => 'blog_admin/default',
+	'regions' => array(
+		'title',
+		'menu',
+		'content',
+	)
+);
+
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */

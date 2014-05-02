@@ -15,7 +15,24 @@ class Dispatcher extends MX_Controller {
 	
 	function index()
 	{
-		$this->account_dispatcher('signup');
+		//$this->account_dispatcher('signup');
+		$this->blog_dispacher();
+	}
+	
+	
+	
+	
+	function blog_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
+	{	
+		if ( strpos($method, 'ajax') !== false)
+		{
+			echo modules::run('blog/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+		}
+		$content = modules::run('blog', $method, $param1, $param2, $param3, $param4);
+		$this->template->set_template('blog_admin');
+		$this->template->write_view('menu', 'blog_admin/menu');
+		$this->template->write('content', $content);
+		$this->template->render();	
 	}
 	
 	function account_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
@@ -39,8 +56,7 @@ class Dispatcher extends MX_Controller {
 		$this->template->write('title', 'Account - ' . $title);
 		$this->template->write('content', $content);
 		$this->template->render();
-	}
-	
+	}	
 }
 
 /* End of file dispatcher.php */
