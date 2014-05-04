@@ -21,7 +21,7 @@
     <script src="<?=base_url();?>assets/js/jquery.min.js"></script>
 	<script src="<?=base_url();?>assets/js/jquery.scrollTo.min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
-    <link href="<?=base_url();?>assets/css/public.css" rel="stylesheet">
+    <link href="<?=base_url();?>assets/website/css/public.css" rel="stylesheet">
   </head>
 
   <body>

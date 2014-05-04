@@ -684,9 +684,11 @@ a:focus {
 .box {
 	background: #fff;
 	border-radius: 5px;
+	padding: 20px;
+	margin-bottom: 20px;
 }
 .box.loading {
-	background: url(../img/bg_disabled.png);
+	background: url('../img/bg_disabled.png');
 }
 h2 {
 	margin-top: 0;
