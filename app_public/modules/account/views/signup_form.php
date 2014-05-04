@@ -55,7 +55,9 @@ $(function(){
 						cache: false,
 						data: $('#signup-form').serialize(),
 						success: function(html) {
-							$('#signupModal').modal('hide');
+							setTimeout(function(){
+								$('#signupModal').modal('hide');
+							}, 2000);							
 						}
 					})								
 				}

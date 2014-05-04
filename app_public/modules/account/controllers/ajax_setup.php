@@ -54,7 +54,9 @@ class Ajax_setup extends MX_Controller {
 		$account = $this->account_model->get_account(array('subdomain' => $subdomain));
 		$this->load->model('account/setup_model');
 		$user_id = $this->setup_model->create_account($account);
-		$data['url'] = str_replace('//', '//' . $subdomain . '.' , base_url());
+		$url = str_replace('//', '//' . $subdomain . '.' , base_url());
+		$url = str_replace('www.', '', $url);
+		$data['url'] = $url;
 		$data['account'] = $account;
 		$this->load->view('setup/create_account', isset($data) ? $data : NULL);
 	}
