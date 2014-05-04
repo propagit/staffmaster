@@ -66,6 +66,7 @@ class Ajax_setup extends MX_Controller {
 		$account = unserialize($this->input->post('account'));
 		$url = str_replace('//', '//' . $account['subdomain'] . '.' , base_url());
 		$url = str_replace('www.', '', $url);
+		$data['url'] = $url;
 		$data['email'] = $account['email_address'];
 		$message = $this->load->view('email/welcome', $data, true);
 		modules::run('email/send_email', array(
