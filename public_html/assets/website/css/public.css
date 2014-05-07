@@ -50,6 +50,11 @@ a:focus {
 	height:109px;
 	float:right;
 }
+
+.splash {
+	height: 245px;
+	background: url('../img/bg-header-title.png');
+}
 .nav > li {
 	border:none;
 }
