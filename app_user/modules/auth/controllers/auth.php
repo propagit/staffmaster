@@ -82,54 +82,5 @@ class Auth extends MX_Controller {
 		#$this->session->unset_userdata('force_staff');
 		redirect('');
 	}	
-	
-	function forgot_password()
-	{
-		$this->load->model('setting/setting_model');
-		$this->load->model('email/email_template_model');
-		
-		
-		$this->template->set_template('forgot_password');
-		$this->template->add_css('custom_styles');
-		$this->template->write('title', 'Staff Master');
-		if ($this->input->post())
-		{
-			$username_post = $this->input->post('username',true);
-			$username = trim($username_post);
-			$user = $this->auth_model->get_user_by_username($username);
-			if($user)
-			{
-				$email = $username;
-				//get company profile
-				$company = $this->setting_model->get_profile();	
-				$template_info = $this->email_template_model->get_template(FORGOT_PASSWORD_EMAIL_TEMPLATE_ID);
-				$email_subject = $template_info->email_subject;
-				
-				//get receiver obj
-				$email_obj_params = array(
-								'template_id' => $template_info->email_template_id,
-								'user_id' => $user->user_id,
-								'company' => $company
-							);
-				$obj = modules::run('email/get_email_obj',$email_obj_params);
-				
-				$email_data = array(
-							'to' => $email,
-							'from' => $company['email_c_email'],
-							'from_text' => $company['email_c_name'],
-							'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
-							'message' => modules::run('email/format_template_body',$template_info->template_content,$obj)
-						);
-				modules::run('email/send_email',$email_data);
-				$this->template->write('msg', '<div class="alert alert-success">Your new password has been sent to this "'.$email.'" email.</div>');
-				
-			}else{
-				$this->template->write('msg', '<div class="alert alert-danger">This email does not exist in our System.</div>');
-			}
-		}
-		
-		
-		$this->template->render();
-	}
-	
+
 }

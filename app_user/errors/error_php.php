@@ -22,7 +22,7 @@
     	<div id="nav-wrap">
 			<div class="row desktop-visible">
 		    	<div class="col-md-12">
-		            <?=$heading;?>
+		            <?= $heading;?>
 		        </div>
 		    </div>
 		</div>  
