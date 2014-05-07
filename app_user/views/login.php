@@ -23,7 +23,8 @@
                 <input type="password" name="password" class="form-control" placeholder="Password">
                 <?=$msg_error;?>
                 <div class="row">
-                    <div class="col-md-6">
+                    <!--
+					<div class="col-md-6">
                     	<a class="btn btn-block btn-social btn-facebook">
                             <i class="fa fa-facebook"></i> Sign in with Facebook
                         </a>
@@ -31,6 +32,7 @@
                             <i class="fa fa-linkedin"></i> Sign in with Linkedin
                         </a>
                     </div>
+					-->
                     <div class="col-md-6">
                          <button class="btn btn-large btn-info pull login-btn" type="submit"><i class="fa fa-unlock-alt"></i> Sign In</button>
                          <a href="<?=base_url();?>forgot-password" class="forgot-password"><i class="fa fa-question-circle"></i> Forgot Your Details</a>
