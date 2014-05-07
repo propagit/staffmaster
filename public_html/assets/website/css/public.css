@@ -448,7 +448,8 @@ a:focus {
 
 /* footer */
 #footer-wrapper{
-	background-image:url(../staff/footer-bg.png);
+	
+	background: url('../img/bg-footer.png');
 	background-repeat:repeat-x;
 	padding-top:30px;
 	
