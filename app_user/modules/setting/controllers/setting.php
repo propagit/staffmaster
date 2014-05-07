@@ -132,7 +132,7 @@ class Setting extends MX_Controller {
 		$data['color'] = $color;
 		$data['font_color'] = $font_color;
 		$data['company'] = $company;
-		$this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);	
+		$this->load->view('email_footer_template', isset($data) ? $data : NULL);	
 	}
 	
 	/**

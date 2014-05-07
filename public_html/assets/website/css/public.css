@@ -54,6 +54,7 @@ a:focus {
 .splash {
 	height: 245px;
 	background: url('../img/bg-header-title.png');
+	color:#fff;
 }
 .nav > li {
 	border:none;
@@ -702,4 +703,47 @@ h2 {
 }
 #redirectModal .modal-content {
 	padding: 30px 50px;
+}
+
+
+
+/* this is a list [ul] */
+.splash-list{
+	list-style:none;
+	float:left;
+	margin:0;
+	padding:0;	
+}
+.splash-list li{
+	float:left;
+}
+.splash-list li > div{
+	background-image:url(../img/icons/Circle.png);
+	background-repeat:no-repeat;
+	width:110px;
+	height:110px;
+	line-height: 110px;
+	text-align: center;
+}
+.splash-list li > div:hover{
+	background-image:url(../img/icons/CircleRollover.png);
+	cursor:pointer;
+}
+.splash-list li > img{
+}
+.splash-list li > span{
+	float:left;
+	margin-top:-10px;
+}
+
+
+
+h1{
+	font-size:40px;
+	font-weight:800;
+	margin-bottom:0;	
+}
+h3{
+	font-size:38px;	
+	margin-top:0;
 }
