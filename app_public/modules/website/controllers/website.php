@@ -11,6 +11,9 @@ class Website extends MX_Controller {
 	{
 		switch($method)
 		{
+			case 'tour':
+				$this->tour_view();
+				break;
 			default:	
 				$this->homepage_view();
 				break;
@@ -22,5 +25,8 @@ class Website extends MX_Controller {
 		$this->load->view('homepage_view', isset($data) ? $data : NULL);
 	}
 	
-	
+	function tour_view()
+	{
+		$this->load->view('tour_view', isset($data) ? $data : NULL);
+	}
 }

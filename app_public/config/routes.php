@@ -55,6 +55,8 @@ if ($handle)
 }
 
 $route['default_controller'] = "dispatcher";
+$route['tour'] = 'dispatcher/website_dispatcher/tour';
+
 
 $route['account'] = 'dispatcher/account_dispatcher/$1';
 $route['account/(:any)'] = 'dispatcher/account_dispatcher/$1/$2';
