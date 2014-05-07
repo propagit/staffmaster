@@ -56,12 +56,19 @@ if ($handle)
 
 $route['default_controller'] = "dispatcher";
 
+$route['blog'] = 'dispatcher/blog_dispatcher';
+$route['blog/(:any)'] = 'dispatcher/blog_dispatcher/$1/$2';
+$route['blog/(:any)/(:any)'] = 'dispatcher/blog_dispatcher/$1/$2/$3';
+
+
 $route['account'] = 'dispatcher/account_dispatcher/$1';
 $route['account/(:any)'] = 'dispatcher/account_dispatcher/$1/$2';
 $route['account/(:any)/(:any)'] = 'dispatcher/account_dispatcher/$1/$2/$3';
 $route['account/(:any)/(:any)/(:any)'] = 'dispatcher/account_dispatcher/$1/$2/$3/$4';
 $route['account/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/account_dispatcher/$1/$2/$3/$4/$5';
 $route['account/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/account_dispatcher/$1/$2/$3/$4/$5/$6';
+
+
 
 $route['404_override'] = '';
 

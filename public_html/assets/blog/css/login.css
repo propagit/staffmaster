@@ -1,0 +1,84 @@
+/* CSS Document */
+body{ background-image:url(../img/login/page-bg.jpg); background-repeat:repeat; font-family:'Raleway', sans-serif;}
+/* h1{font-weight:700;font-size:20px!important;color: #2084ce;} */
+h2{font-weight:700; font-size:18px!important;color: #333;}
+.line-between{height:0px;clear: both;border-top:1px solid #ccc;}
+th{font-weight : 700 !important;font-size:15px!important;}
+
+
+.login-btn{background: #00bbf8;height: 40px;border: none;color: #fff; font-family:'Raleway', sans-serif; letter-spacing:2px; font-weight:600; width:155px !important; text-shadow:none;margin-right: 45px;float: right !important;}
+.login-btn:hover{ 
+  background: #00bbf8; /* for non-css3 browsers */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00bbf8', endColorstr='#4ad2ff'); /* for IE */
+  background: -webkit-gradient(linear, left top, left bottom, from(#00bbf8), to(#4ad2ff)); /* for webkit browsers */
+  background: -moz-linear-gradient(top,  #00bbf8,  #4ad2ff); /* for firefox 3.6+ */
+  color:#fff;
+  
+}
+.break{height:15px;}
+.login-btn i{ color:#fff;font-size: 16px; margin-right:40px;}
+.logo-box{ padding:18px 0 0 40px;}
+.logo-box img{}
+.logo-box h1{ font-size:32px;font-family: 'Changa One', cursive; font-weight:400; color:#fff; margin:-15px 0 0 0;}
+.login-label{line-height: 30px;margin-left: 40px !important;margin-right: 10px;width: 20% !important;color: #eaeaea; margin-top:4px; letter-spacing:1px;}
+.login-txt-box{margin-left: 10%;margin-right: 5%;background-color: #eaeaea !important;border-radius: 0 !important;height: 37px !important;}
+.visible-phone-btn-box{margin-left: 5%; margin-right:45px; width: 90%;}
+.hidden-phone-btn-box{float:right; margin-left: 5%; margin-right:65px; width: 90%;}
+.login-box{background-image:url(../img/login/login-box-bg.jpg); background-repeat:repeat; border-radius:4px;}
+.login-error{margin-left: 5%; margin-right: 5%;}
+.copy-txt{margin: 0;color: #575656;padding-left: 40px; font-size:12px;}
+.copy-txt strong{ font-weight:900;}
+@media (max-width: 1200px){
+	.row-fluid .span5{ width:50%;}	
+}
+@media (min-width: 768px) and (max-width: 979px){
+	.row-fluid .span5{ width: 68%;}	
+	.row-fluid .span3{ width: 12%;}
+	.login-btn{margin-right: 49px;}
+	
+	
+	
+	
+}
+@media (max-width: 767px) {
+	.row-fluid .span5{ width: 100%;}	
+	.row-fluid .span3{ width: 0;}
+	.span7 {width: 100% !important;padding: 0 40px;}
+	.login-label{ width: 100% !important;}
+	.login-btn{margin-right: 40px;}	
+	.container{ width:85%;}
+		body{font-size:12px;}
+	.logo-box{ padding:13px 0 0 40px;}
+	.logo-box img{width:55%;}
+	.logo-box h1{font-size:26px;}
+	.pull-right{float:left!important;}
+	.copy-txt{font-size:10px;}
+	.break{height:5px;}
+	.pull-right[class*="span"], .row-fluid .pull-right[class*="span"] {
+    	float: left!important;
+	}
+	.login-btn{float: left !important;margin-left: 40px !important;}
+	.login-label {line-height:15px;}
+	.row-fluid [class*="span"] {min-height:22px;}
+	h1, h2, h3 {
+    line-height: 38px;
+	}
+
+}
+@media (max-width: 480px){
+	
+	.container{ width:90%;}
+	body{font-size:12px;}
+	.logo-box{ padding:13px 0 0 40px;}
+	.logo-box img{width:65%;}
+	.logo-box h1{font-size:26px;}
+	.pull-right[class*="span"], .row-fluid .pull-right[class*="span"] {
+    	float: left!important;
+	}
+	
+	.copy-txt{font-size:10px;}
+	.break{height:5px;}
+	.login-btn{float: left !important;margin-left: 40px !important;}
+	.login-label {line-height:15px;}
+	.row-fluid [class*="span"] {min-height:22px;}
+}
