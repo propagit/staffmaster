@@ -20,6 +20,9 @@ class Email extends MX_Controller {
 	{
 		switch($method)
 		{
+			case 'test':
+					$this->test();
+				break;
 			default:
 					$this->main_view();
 				break;
@@ -257,6 +260,18 @@ class Email extends MX_Controller {
 		$data['merge_fields'] = $this->email_template_model->get_email_merge_fields_by_template_id($template_id);
 		$this->load->view('description_merge_fields', isset($data) ? $data : NULL);
 	}
+	
+	function test()
+	{
+		$data = array(
+			'to' => 'namnd86@gmail.com',
+			'from' => 'team@propagate.com.au',
+			'subject' => 'test',
+			'mesasge' => 'test'
+		);
+		$this->send_email($data);
+	}
+	
 	/**
 	*	@name: send_email
 	*	@desc: A central function to send email
