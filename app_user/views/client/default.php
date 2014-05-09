@@ -132,7 +132,7 @@
 
 <footer>
     <div id="sm-footer-wrap">
-        <div class="footer-copy">&copy; StaffMaster - www.staffmster.com.au</div>
+        <div class="footer-copy">&copy; StaffBooks - www.staffbooks.com</div>
         <button class="btn footer-go-to-top-btn custom-hidden go-to-top"><i class="fa fa-long-arrow-up footer-go-to-top-arrow"></i></button>
     </div>
 </footer>
