@@ -29,6 +29,7 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('ok' => false, 'error_id' => 'client_id'));
 			return;
 		}
+		$input['user_id'] = $this->user['user_id'];
 		$job_id = $this->job_model->insert_job($input);
 		echo json_encode(array('ok' => true, 'job_id' => $job_id));		
 	}
