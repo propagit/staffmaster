@@ -36,8 +36,6 @@ class Account extends MX_Controller {
 			redirect('');
 		}
 		$this->load->model('account_model');
-		var_dump($subdomain); var_dump($code);
-		
 		$account = $this->account_model->get_account(array('subdomain' => $subdomain, 'activation_code' => $code));
 		var_dump($account); die();
 		if (!$account)
