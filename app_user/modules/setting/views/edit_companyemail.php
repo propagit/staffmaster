@@ -20,7 +20,10 @@
 		</div>
         <label for="facebook" class="col-md-2 control-label">Facebook</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_facebook" name="email_s_facebook" value="<?=(isset($company['email_s_facebook'])) ? $company['email_s_facebook'] : ''  ?>" />
+			<div class="input-group">
+				<span class="input-group-addon">http://</span>
+				<input type="text" class="form-control" id="email_c_facebook" name="email_s_facebook" value="<?=(isset($company['email_s_facebook'])) ? $company['email_s_facebook'] : ''  ?>" />
+			</div>
 		</div>
     </div>
 </div>
@@ -32,7 +35,10 @@
 		</div>
         <label for="twitter" class="col-md-2 control-label">Twitter</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_c_twitter" name="email_s_twitter" value="<?=(isset($company['email_s_twitter'])) ? $company['email_s_twitter'] : ''  ?>" />
+			<div class="input-group">
+				<span class="input-group-addon">http://</span>
+				<input type="text" class="form-control" id="email_c_twitter" name="email_s_twitter" value="<?=(isset($company['email_s_twitter'])) ? $company['email_s_twitter'] : ''  ?>" />
+			</div>			
 		</div>
     </div>
 </div>
@@ -44,7 +50,10 @@
 		</div>
         <label for="linkedin" class="col-md-2 control-label">LinkedIn</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_s_linkedin" name="email_s_linkedin" value="<?=(isset($company['email_s_linkedin'])) ? $company['email_s_linkedin'] :''  ?>" />
+			<div class="input-group">
+				<span class="input-group-addon">http://</span>
+				<input type="text" class="form-control" id="email_s_linkedin" name="email_s_linkedin" value="<?=(isset($company['email_s_linkedin'])) ? $company['email_s_linkedin'] :''  ?>" />
+			</div>			
 		</div>
     </div>
 </div>
@@ -57,7 +66,10 @@
 		</div>
         <label for="google" class="col-md-2 control-label">Google+</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_s_google" name="email_s_google" value="<?=(isset($company['email_s_google'])) ? $company['email_s_google'] : ''  ?>" />
+			<div class="input-group">
+				<span class="input-group-addon">http://</span>
+				<input type="text" class="form-control" id="email_s_google" name="email_s_google" value="<?=(isset($company['email_s_google'])) ? $company['email_s_google'] : ''  ?>" />
+			</div>			
 		</div>
     </div>
 </div>
@@ -70,7 +82,10 @@
 		</div>
         <label for="youtube" class="col-md-2 control-label">Youtube</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_s_youtube" name="email_s_youtube" value="<?=(isset($company['email_s_youtube'])) ? $company['email_s_youtube'] : ''  ?>" />
+			<div class="input-group">
+				<span class="input-group-addon">http://</span>
+				<input type="text" class="form-control" id="email_s_youtube" name="email_s_youtube" value="<?=(isset($company['email_s_youtube'])) ? $company['email_s_youtube'] : ''  ?>" />
+			</div>			
 		</div>
     </div>
 </div>
@@ -84,7 +99,11 @@
     	
         <label for="instagram" class="col-md-2 control-label">Instagram</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_s_instagram" name="email_s_instagram" value="<?=(isset($company['email_s_instagram'])) ? $company['email_s_instagram'] : ''  ?>" />
+			<div class="input-group">
+				<span class="input-group-addon">http://</span>
+				<input type="text" class="form-control" id="email_s_instagram" name="email_s_instagram" value="<?=(isset($company['email_s_instagram'])) ? $company['email_s_instagram'] : ''  ?>" />
+			</div>
+			
 		</div>
     </div>
 </div>

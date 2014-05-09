@@ -18,6 +18,21 @@ class Ajax extends MX_Controller {
 		$this->is_client = modules::run('auth/is_client');
 	}
 	
+	function create_job()
+	{
+		$input = $this->input->post();
+		if (!$input['name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'name'));
+			return;
+		}
+		if (!$input['client_id']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'client_id'));
+			return;
+		}
+		$job_id = $this->job_model->insert_job($input);
+		echo json_encode(array('ok' => true, 'job_id' => $job_id));		
+	}
+	
 	/** 
 	*	@name: search_jobs
 	*	@desc: ajax function to search job(s)

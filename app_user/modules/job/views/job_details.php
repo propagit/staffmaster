@@ -38,6 +38,8 @@
 					Shifts Completed
 				</div>
 			</div>
+			
+			<? if ($shifts_count != $completed) { ?>
 			<div class="span2 pie-chart pull-right">
 				<div id="chart-incompleted-shifts">
 				</div>
@@ -45,6 +47,7 @@
 					<b><?=($shifts_count - $completed);?></b> Active Shifts
 				</div>
 			</div>
+			<? } ?>
 		</div>
 				
     </div>       
@@ -91,6 +94,7 @@
 </div><!-- /.modal -->
 <script>
 $(function(){
+	<? if ($shifts_count != $completed) { ?>
 	$('#chart-incompleted-shifts').highcharts({
         chart: {
         	backgroundColor: '#f6f6f6',
@@ -132,7 +136,7 @@ $(function(){
             ]
         }]
     });
-    
+    <? } ?>
 	// Easy Pie Charts
 	var easyPieChartDefaults = {
 		animate: 2000,
