@@ -9,6 +9,7 @@ class Website extends MX_Controller {
 	
 	function index($method='', $param1='', $param2='')
 	{
+		header("Location: http://staffbooks.com", TRUE, 301);
 		switch($method)
 		{
 			case 'tour':
