@@ -15,6 +15,12 @@ class Common extends MX_Controller {
 		$this->load->model('staff/staff_model');
 	}
 	
+	function parse_redirect($string)
+	{
+		$a = explode(':', $string);
+		return $a[1];
+	}
+	
 	/**
 	*	@name: field_select
 	*	@desc: custom select input field

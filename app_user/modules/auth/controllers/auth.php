@@ -31,6 +31,12 @@ class Auth extends MX_Controller {
 		return ($this->session->userdata('force_staff') || ($user['is_staff'] && !$user['is_admin']));
 	}
 	
+	function staff_protected_view($module)
+	{
+		$data['module'] = $module;
+		$this->load->view('staff_protected_view', isset($data) ? $data : NULL);
+	}
+	
 	function is_client()
 	{
 		$user = $this->session->userdata('user_data');
@@ -64,9 +70,9 @@ class Auth extends MX_Controller {
 		$this->template->render();
 	}
 	
-	function staff() {
+	function staff($redirect_url='') {
 		$this->session->set_userdata('force_staff', true);
-		redirect('');
+		redirect($redirect_url);
 	}
 	
 	function admin() {

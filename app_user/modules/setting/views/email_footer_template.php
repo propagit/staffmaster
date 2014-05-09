@@ -8,12 +8,24 @@
             <?=(isset($company['email_c_postcode']) && $company['email_c_postcode']!='') ? $company['email_c_postcode'] : '';?>
         </td>
         <td style="padding:15px;" width="65%" align="right">
-        	<?=(isset($company['email_s_facebook']) && $company['email_s_facebook']!='') ? '<a href="'.$company['email_s_facebook'].'"><img src="http://smcloud.co/demo/images/facebook.png"></a>' : ''; ?> 
-			<?=(isset($company['email_s_twitter']) && $company['email_s_twitter']!='') ? '&nbsp;&nbsp;&nbsp;<a href="'.$company['email_s_twitter'].'"><img src="http://smcloud.co/demo/images/twitter.png"></a>' : ''; ?> 
-            <?=(isset($company['email_s_linkedin']) && $company['email_s_linkedin']!='') ? '&nbsp;&nbsp;&nbsp;<a href="'.$company['email_s_linkedin'].'"><img src="http://smcloud.co/demo/images/linkedin.png"></a>' : ''; ?> 
-            <?=(isset($company['email_s_google']) && $company['email_s_google']!='') ?  '&nbsp;&nbsp;&nbsp;<a href="'.$company['email_s_google'].'"><img src="http://smcloud.co/demo/images/google.png"></a>' : ''; ?> 
-            <?=(isset($company['email_s_youtube']) && $company['email_s_youtube']!='') ? '&nbsp;&nbsp;&nbsp;<a href="'.$company['email_s_youtube'].'"><img src="http://smcloud.co/demo/images/youtube.png"></a>' : ''; ?> 
-            <?=(isset($company['email_s_instagram']) && $company['email_s_instagram']!='') ? '&nbsp;&nbsp;&nbsp;<a href="'.$company['email_s_instagram'].'"><img src="http://smcloud.co/demo/images/instagram.png"></a>' : ''; ?> 
+        	<? if (isset($company['email_s_facebook']) && $company['email_s_facebook']!='') { ?>
+        	<a href="<?=$company['email_s_facebook'];?>"><img src="<?=base_url();?>assets/img/email/facebook.png"></a>
+        	<? } ?>
+        	<? if (isset($company['email_s_twitter']) && $company['email_s_twitter']!='') { ?>
+        	&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_twitter'];?>"><img src="<?=base_url();?>assets/img/email/twitter.png"></a>
+        	<? } ?>
+			<? if (isset($company['email_s_linkedin']) && $company['email_s_linkedin']!='') { ?>
+			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_linkedin'];?>"><img src="<?=base_url();?>assets/img/email/linkedin.png"></a>
+			<? } ?>
+			<? if (isset($company['email_s_google']) && $company['email_s_google']!='') { ?>
+			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_google'];?>"><img src="<?=base_url();?>assets/img/email/google.png"></a>
+			<? } ?>
+			<? if (isset($company['email_s_youtube']) && $company['email_s_youtube']!='') { ?>
+			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_youtube'];?>"><img src="<?=base_url();?>assets/img/email/youtube.png"></a>
+			<? } ?>
+			<? if (isset($company['email_s_instagram']) && $company['email_s_instagram']!='') { ?>
+			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_instagram'];?>"><img src="<?=base_url();?>assets/img/email/instagram.png"></a>
+			<? } ?>
         </td>
     </tr>
     <tr valign="bottom">

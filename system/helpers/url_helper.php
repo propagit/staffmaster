@@ -530,6 +530,12 @@ if ( ! function_exists('redirect'))
 {
 	function redirect($uri = '', $method = 'location', $http_response_code = 302)
 	{
+		if ( strpos($uri, 'redirect:') !== false)
+		{
+			$a = explode(':', $uri);
+			$uri = $a[1];
+		}
+		
 		if ( ! preg_match('#^https?://#i', $uri))
 		{
 			$uri = site_url($uri);

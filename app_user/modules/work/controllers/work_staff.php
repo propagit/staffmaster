@@ -13,6 +13,11 @@ class Work_staff extends MX_Controller {
 	}
 	
 	function index($method='', $param='') {
+		if (!modules::run('auth/is_staff'))
+		{
+			echo modules::run('auth/staff_protected_view', 'roster');
+			return;
+		}
 		switch($method)
 		{
 			default:

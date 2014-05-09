@@ -69,7 +69,7 @@ body {
         <tr>
         	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Password:</span></td>
         	<td width="15"></td>
-        	<td>******* (<a style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#00aeec" href="<?=base_url();?>forgot-password">forgot it?</a>) </td>
+        	<td>******* (<a style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#00aeec" href="<?=$url;?>forgot-password">forgot it?</a>) </td>
         </tr>
         </table>
         </span>
