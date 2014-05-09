@@ -51,14 +51,14 @@ class Dispatcher extends MX_Controller {
 	}
 	
 	function account_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
-	{
-		if ($method != 'setup')
-		{
-			header("Location: http://staffbooks.com", TRUE, 301);
-		}
+	{		
 		if ( strpos($method, 'ajax') !== false)
 		{
 			echo modules::run('account/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+		}
+		if ($method != 'setup')
+		{
+			header("Location: http://staffbooks.com", TRUE, 301);
 		}
 		$content = modules::run('account', $method, $param1, $param2, $param3, $param4);
 		
