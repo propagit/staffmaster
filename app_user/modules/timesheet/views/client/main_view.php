@@ -2,9 +2,9 @@
 <div class="col-md-12">
 	<div class="box top-box">
 		<h2>Time Sheets</h2>
-		<p>To process your pay we require you to submit your time sheets. As you complete your shifts time sheets will become availble below for you to submit. Hit the generate time sheet button to generate all your time sheets</p>
+		<p>To process your pay we require you to submit your time sheets. As you complete your shifts time sheets will become available below for you to submit. Hit the generate time sheet button to generate all your time sheets</p>
 		<br />
-		<a class="btn btn-core mobile-tab" href="<?=base_url();?>timesheet/generate">Generate Timesheets</a>
+		<a class="btn btn-core mobile-tab" id="btn-generate">Generate Time sheets</a>
 	</div>
 </div>
 <!--end top box-->
@@ -30,9 +30,39 @@
 </div>
 <!--end bottom box -->
 <div id="wrapper_ts_break" class="hide"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="order-message">
+			<img src="<?=base_url();?>assets/img/loading3.gif" />
+			<h2>Please wait!</h2>
+			Please wait a moment while we are generating time sheets ...
+		</div>
+	</div>
+</div>
+
 <script>
 $(function(){
 	load_supervised_timesheets();
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
+	})
+	$('#btn-generate').click(function(){
+		$('#waitingModal').modal('show');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>timesheet/ajax_client/generate_timesheets",
+			success: function(html) {
+				load_supervised_timesheets();
+				setTimeout(function() {
+					$('#waitingModal').modal('hide');
+				}, 2000);				
+			}
+		})
+	})
 })
 
 function load_supervised_timesheets() {

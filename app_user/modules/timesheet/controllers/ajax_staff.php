@@ -15,6 +15,30 @@ class Ajax_staff extends MX_Controller {
 		$this->load->model('expense/expense_model');
 	}
 	
+	function generate_timesheets()
+	{
+		$this->load->model('staff/staff_model');
+		$this->load->model('job/job_shift_model');
+		$shifts = $this->timesheet_staff_model->get_finished_shifts();
+		foreach($shifts as $shift)
+		{
+			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));
+			# Update user_staffs table field - last_worked_date
+			$data_user_staff = array('last_worked_date' => $shift['job_date'].' 00:00:00');
+			$this->staff_model->update_staff($shift['staff_id'],$data_user_staff);
+			
+			unset($shift['status']);
+			unset($shift['created_on']);
+			unset($shift['modified_on']);
+			unset($shift['payrate_type']);			
+			unset($shift['is_alert']);
+			unset($shift['information_sheet']);
+			$job = modules::run('job/get_job', $shift['job_id']);
+			$shift['client_id'] = $job['client_id'];
+			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
+			#$this->update_timesheet_hour_rate($timesheet_id);
+		}
+	}
 	
 	function list_timesheets() {
 		$data['timesheets'] = $this->timesheet_staff_model->get_timesheets();

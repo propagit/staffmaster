@@ -17,6 +17,7 @@ class Timesheet_staff_model extends CI_Model {
 	function get_finished_shifts() {
 		$sql = "SELECT * FROM `job_shifts`
 				WHERE `status` = " . SHIFT_CONFIRMED . "
+				AND `finish_time` < " . time() . " 
 				AND (`supervisor_id` = " . $this->user_id . "
 					OR `staff_id` = " . $this->user_id . ") 
 				AND `shift_id` NOT IN

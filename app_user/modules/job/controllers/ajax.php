@@ -360,10 +360,10 @@ class Ajax extends MX_Controller {
 		{
 			$data['custom_date'] = strtotime($this->input->post('date'));
 		}
-		if ($data['custom_date'] < now())
-		{
-			$data['custom_date'] = now();
-		}
+		#if ($data['custom_date'] < now())
+		#{
+		#	$data['custom_date'] = now();
+		#}
 		$data['job_id'] = $job_id;
 		$data['is_client'] = $this->is_client;
 		if (!$this->session->userdata('calendar_view') || $this->session->userdata('calendar_view') == 'week') 

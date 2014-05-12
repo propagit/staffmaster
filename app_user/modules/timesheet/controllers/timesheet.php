@@ -253,7 +253,7 @@ class Timesheet extends MX_Controller {
 			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
 			#$this->update_timesheet_hour_rate($timesheet_id);
 		}
-		redirect('timesheet');
+		#redirect('timesheet');
 	}
 	
 	/**
