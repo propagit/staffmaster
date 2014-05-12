@@ -2,14 +2,14 @@
 	<option value="">Please Select Template</option>
 	<!-- <optgroup label="Single"> -->
 		<? foreach($single as $template) { ?>
-		<option value="<?=$template['export_id'];?>"><?=$template['name'];?></option>
+		<option value="<?=$template['export_id'];?>">Single - <?=$template['name'];?></option>
 		<? } ?>
 	<!--
 	</optgroup>
 	<optgroup label="Batched">	
 	-->	
 		<? foreach($batched as $template) { ?>
-		<option value="<?=$template['export_id'];?>"><?=$template['name'];?></option>
+		<option value="<?=$template['export_id'];?>">Batched - <?=$template['name'];?></option>
 		<? } ?>
 	<!-- </optgroup> -->
 </select>
