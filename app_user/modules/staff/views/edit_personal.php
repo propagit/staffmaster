@@ -18,14 +18,18 @@
 </div>
 <div class="row">
 	<div class="form-group">
-		<label for="first_name" class="col-md-2 control-label">First Name <span class="text-danger">**</span></label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="first_name" name="first_name" value="<?=$staff['first_name'];?>" data="required"/>
+		<div id="f_first_name">
+			<label for="first_name" class="col-md-2 control-label">First Name <span class="text-danger">**</span></label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="first_name" name="first_name" value="<?=$staff['first_name'];?>" />
+			</div>
 		</div>
-		<label for="last_name" class="col-md-2 control-label">Family Name <span class="text-danger">**</span></label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="last_name" name="last_name" value="<?=$staff['last_name'];?>" data="required"/>
-		</div>                
+		<div id="f_last_name">
+			<label for="last_name" class="col-md-2 control-label">Family Name <span class="text-danger">**</span></label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="last_name" name="last_name" value="<?=$staff['last_name'];?>" />
+			</div>
+		</div>
 	</div>
 </div>
 <div class="row">
@@ -89,18 +93,19 @@
 		<div class="col-md-4">
 			<input type="text" class="form-control" id="phone" name="phone" value="<?=$staff['phone'];?>"  />
 		</div>
-        <label for="email_address" class="col-md-2 control-label">Email <span class="text-danger">**</span></label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>"  data="email" />
+		<div id="f_email_address">
+	        <label for="email_address" class="col-md-2 control-label">Email <span class="text-danger">**</span></label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>" />
+			</div>
 		</div>
-        	
 	</div>
 </div>
 
 
 <div class="row">
 	<div class="form-group">
-		<label for="password" class="col-md-2 control-label">Password </label>
+		<label for="password" class="col-md-2 control-label">Password</label>
 		<div class="col-md-4">
 			<input type="password" class="form-control" id="password" name="password" value=""  />
 		</div>	
@@ -147,26 +152,30 @@
 <script>
 $(function(){
 	$('#btn_update_personal').click(function(){
-		var valid = help.validate_form('form_update_staff_personal');
-		
-		if(valid){
-			$.ajax({
-				type: "POST",
-				url: "<?=base_url();?>staff/ajax/update_personal",
-				data: $('#form_update_staff_personal').serialize(),
-				success: function(html) {
-					var title = $('#title').val();
-					if (title) { $('#staff-title').html(title + ". "); }
-					else { $('#staff-title').html(''); }
-					$('#staff-name').html($('#first_name').val() + " " + $('#last_name').val());
-					$('#wp-rating').html(html);
+		$('.form-group').find('div[id^=f_]').removeClass('has-error');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>staff/ajax/update_personal",
+			data: $('#form_update_staff_personal').serialize(),
+			success: function(data) {
+				var title = $('#title').val();
+				if (title) { $('#staff-title').html(title + ". "); }
+				else { $('#staff-title').html(''); }
+				$('#staff-name').html($('#first_name').val() + " " + $('#last_name').val());
+				
+				data = $.parseJSON(data);
+				if (!data.ok) {
+					$('#f_' + data.error_id).addClass('has-error');
+					$('#' + data.error_id).focus();
+				} else {
+					//$('#wp-rating').html(html);
 					$('#msg-update-personal').removeClass('hide');
 					setTimeout(function(){
 						$('#msg-update-personal').addClass('hide');
 					}, 2000);
-				}	
-			})
-		}
+				}
+			}	
+		})
 	})
 })
 </script>

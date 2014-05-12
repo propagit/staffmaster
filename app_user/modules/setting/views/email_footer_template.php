@@ -9,22 +9,22 @@
         </td>
         <td style="padding:15px;" width="65%" align="right">
         	<? if (isset($company['email_s_facebook']) && $company['email_s_facebook']!='') { ?>
-        	<a href="<?=$company['email_s_facebook'];?>"><img src="<?=base_url();?>assets/img/email/facebook.png"></a>
+        	<a href="http://<?=$company['email_s_facebook'];?>"><img src="<?=base_url();?>assets/img/email/facebook.png"></a>
         	<? } ?>
         	<? if (isset($company['email_s_twitter']) && $company['email_s_twitter']!='') { ?>
-        	&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_twitter'];?>"><img src="<?=base_url();?>assets/img/email/twitter.png"></a>
+        	&nbsp;&nbsp;&nbsp;<a href="http://<?=$company['email_s_twitter'];?>"><img src="<?=base_url();?>assets/img/email/twitter.png"></a>
         	<? } ?>
 			<? if (isset($company['email_s_linkedin']) && $company['email_s_linkedin']!='') { ?>
-			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_linkedin'];?>"><img src="<?=base_url();?>assets/img/email/linkedin.png"></a>
+			&nbsp;&nbsp;&nbsp;<a href="http://<?=$company['email_s_linkedin'];?>"><img src="<?=base_url();?>assets/img/email/linkedin.png"></a>
 			<? } ?>
 			<? if (isset($company['email_s_google']) && $company['email_s_google']!='') { ?>
-			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_google'];?>"><img src="<?=base_url();?>assets/img/email/google.png"></a>
+			&nbsp;&nbsp;&nbsp;<a href="http://<?=$company['email_s_google'];?>"><img src="<?=base_url();?>assets/img/email/google.png"></a>
 			<? } ?>
 			<? if (isset($company['email_s_youtube']) && $company['email_s_youtube']!='') { ?>
-			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_youtube'];?>"><img src="<?=base_url();?>assets/img/email/youtube.png"></a>
+			&nbsp;&nbsp;&nbsp;<a href="http://<?=$company['email_s_youtube'];?>"><img src="<?=base_url();?>assets/img/email/youtube.png"></a>
 			<? } ?>
 			<? if (isset($company['email_s_instagram']) && $company['email_s_instagram']!='') { ?>
-			&nbsp;&nbsp;&nbsp;<a href="<?=$company['email_s_instagram'];?>"><img src="<?=base_url();?>assets/img/email/instagram.png"></a>
+			&nbsp;&nbsp;&nbsp;<a href="http://<?=$company['email_s_instagram'];?>"><img src="<?=base_url();?>assets/img/email/instagram.png"></a>
 			<? } ?>
         </td>
     </tr>

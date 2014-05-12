@@ -116,6 +116,20 @@ class Ajax extends MX_Controller {
 	
 	function update_personal()
 	{
+		$input = $this->input->post();
+		if (!$input['first_name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'first_name'));
+			return;
+		}
+		if (!$input['last_name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'last_name'));
+			return;
+		}
+		if (!$input['email_address'] || !valid_email($input['email_address'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address'));
+			return;
+		}
+		
 		$data = $this->input->post();
 		$user_data = array(
 			'password' => $data['password'],
@@ -142,7 +156,8 @@ class Ajax extends MX_Controller {
 			'emergency_phone' => $data['emergency_phone'],
 			'update_description' => 'personal details'
 		);
-		$this->staff_model->update_staff($data['user_id'], $staff_data);		
+		$this->staff_model->update_staff($data['user_id'], $staff_data);
+		echo json_encode(array('ok' => true));	
 		#echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
 	}
 	
