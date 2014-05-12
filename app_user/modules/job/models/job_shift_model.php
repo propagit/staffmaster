@@ -112,6 +112,10 @@ class Job_shift_model extends CI_Model {
 		{
 			$sql .= " WHERE js.status > " . SHIFT_DELETED;
 		}
+		if (isset($data['keywords']) && $data['keywords'] != '')
+		{
+			$sql .= " AND j.name LIKE '%" . $data['keywords'] . "%'";
+		}
 		if (isset($data['staff_name']) && $data['staff_name'] != '')
 		{
 			$sql .= " AND (u.first_name LIKE '%" . $data['staff_name'] . "%' 

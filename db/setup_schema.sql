@@ -1105,7 +1105,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
 CREATE TABLE IF NOT EXISTS `invoice_items` (
   `item_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `invoice_id` bigint(20) NOT NULL,
-  `job_id` bigint(20) NOT NULL,
+  `job_id` bigint(20) DEFAULT NULL,
   `expense_id` bigint(20) NOT NULL,
   `include_timesheets` tinyint(4) NOT NULL,
   `title` varchar(1000) NOT NULL,

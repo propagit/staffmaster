@@ -96,8 +96,8 @@ class Ajax extends MX_Controller {
 		if (strtotime($data['job_date']) <= now())
 		{
 			# Job start date can not be in the past
-			echo json_encode(array('ok' => false, 'error_id' => 'start_date'));
-			return;
+			#echo json_encode(array('ok' => false, 'error_id' => 'start_date'));
+			#return;
 		}	
 		
 		$filter_data['start_time'] = strtotime($data['job_date']);		

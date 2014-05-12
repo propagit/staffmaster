@@ -3,7 +3,7 @@
 	<div class="wp-page-invoice">
         <table width="100%" cellpadding="10" cellspacing="0">
         	<tr>
-        		<td colspan="3"><img src="<?=base_url()?>assets/img/core/staffmaster-logo.jpg"><br /><br /></td>
+        		<td colspan="3"><?=modules::run('setting/company_logo');?><br /><br /></td>
         	</tr>
             <tr valign="top">
             	<td width="50%">            		
