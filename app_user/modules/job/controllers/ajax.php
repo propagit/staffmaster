@@ -91,23 +91,23 @@ class Ajax extends MX_Controller {
 		$filter_data = array();
 		$filter_data['job_id'] = $data['job_id'];
 		
-		$filter_data['job_date'] = date('Y-m-d', strtotime($data['job_date']));
+		$filter_data['job_date'] = date('Y-m-d', strtotime($data['start_date']));
 		
-		if (strtotime($data['job_date']) <= now())
+		if (!$data['start_date']) #strtotime($data['job_date']) <= now())
 		{
 			# Job start date can not be in the past
-			#echo json_encode(array('ok' => false, 'error_id' => 'start_date'));
-			#return;
+			echo json_encode(array('ok' => false, 'error_id' => 'start_date', 'msg' => 'Please enter start date/time'));
+			return;
 		}	
 		
-		$filter_data['start_time'] = strtotime($data['job_date']);		
+		$filter_data['start_time'] = strtotime($data['start_date']);		
 		$filter_data['finish_time'] = strtotime($data['finish_time']);
 				
 		
 		if ($filter_data['finish_time'] <= $filter_data['start_time'])
 		{
 			# Finish time can not be less than start time
-			echo json_encode(array('ok' => false, 'error_id' => 'finish_time'));
+			echo json_encode(array('ok' => false, 'error_id' => 'finish_time', 'msg' => 'Finish time must be greater than start time'));
 			return;
 		}
 		
@@ -134,25 +134,10 @@ class Ajax extends MX_Controller {
 		$filter_data['venue_id'] = $data['venue_id'];
 		$filter_data['uniform_id'] = $data['uniform_id'];
 		
-		if ($this->is_client)
-		{
-			$filter_data['is_alert'] = 1;
-		}
-		else
-		{
-			if ($data['payrate_id'] == '')
-			{
-				echo json_encode(array('ok' => false, 'error_id' => 'payrate_id'));
-				return;
-			}
-			$filter_data['payrate_id'] = $data['payrate_id'];
-			$filter_data['supervisor_id'] = $data['supervisor_id'];
-		}
-		
 		$count = (int) $data['count'];
 		if ($count < 1 || $count > 1000)
 		{
-			echo json_encode(array('ok' => false, 'error_id' => 'count'));
+			echo json_encode(array('ok' => false, 'error_id' => 'count', 'msg' => 'Insufficient credit balance, to create more shifts please update your credit balance via the dashboard'));
 			return;
 		}
 		else if (!$this->is_client)
@@ -163,6 +148,22 @@ class Ajax extends MX_Controller {
 				return;
 			}
 		}
+		if ($this->is_client)
+		{
+			$filter_data['is_alert'] = 1;
+		}
+		else
+		{
+			if ($data['payrate_id'] == '')
+			{
+				echo json_encode(array('ok' => false, 'error_id' => 'payrate_id', 'msg' => 'You must select a pay rate for the shift'));
+				return;
+			}
+			$filter_data['payrate_id'] = $data['payrate_id'];
+			$filter_data['supervisor_id'] = $data['supervisor_id'];
+		}
+		
+		
 		
 		for($i=0; $i < $count; $i++)
 		{

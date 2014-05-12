@@ -7,7 +7,7 @@
 		<label class="col-lg-3 control-label">Start Date/Time</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="start_date">
-				<input type="text" class="form-control" name="job_date" id="start_date" readonly />
+				<input type="text" class="form-control" name="start_date" id="start_date" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
@@ -173,6 +173,7 @@ $(function(){
     	var btn = $(this);
 		btn.button('loading');
     	$('.form-group').removeClass('has-error');
+    	$('#form_create_js').find('input').tooltip('destroy');
 	    $.ajax({
 	    	type: "POST",
 	    	url: "<?=base_url();?>job/ajax/create_shifts",
@@ -184,7 +185,11 @@ $(function(){
 				if (!data.ok)
 				{
 					$('#f_' + data.error_id).addClass('has-error');
-					$('#' + data.error_id).focus();
+					$('input[name="' + data.error_id + '"]').tooltip({
+						title: data.msg,
+						placement: 'bottom'
+					});
+					$('input[name="' + data.error_id + '"]').focus();
 				}
 				else
 				{
