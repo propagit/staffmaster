@@ -37,6 +37,9 @@ class Invoice_model extends CI_Model {
 		if ($data['job_id'] == NULL) {
 			$data['job_id'] = 0;
 		}
+		if ($data['title'] == NULL) {
+			$data['title'] = '';
+		}
 		$this->db->insert('invoice_items', $data);
 		return $this->db->insert_id();
 	}
