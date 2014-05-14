@@ -102,7 +102,7 @@
 
 
 <div id="sys-fixed-btns">
-	<button class="btn btn-info sys-rt-btn"><i class="fa fa-cogs"></i></button>
+	<button class="btn btn-info sys-rt-btn"><i class="fa fa-youtube-play"></i></button>
     <a href="<?=base_url();?>logout"><div class="btn btn-info sys-rt-btn"><i class="fa fa-power-off"></i></div></a>
     <button class="btn btn-info sys-rt-btn custom-hidden go-to-top"><i class="fa fa-arrow-up"></i></button>
 </div>
