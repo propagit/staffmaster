@@ -175,3 +175,11 @@ span.mob-menu-head{
 	color:<?=$rollover_colour?> !important;
 }
 
+/* pagination  */
+.custom-pagination > .active > a,
+.custom-pagination > .active > a:focus,
+.custom-pagination > .active > a:hover{
+	background-color:<?=$primary_colour?>;
+    border-color:<?=$primary_colour?>;
+}
+
