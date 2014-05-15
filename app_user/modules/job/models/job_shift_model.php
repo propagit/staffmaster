@@ -198,7 +198,7 @@ class Job_shift_model extends CI_Model {
 		if ($status != null) {
 			$sql .= " AND js.status = " . $status;
 		}
-		if ($job_date && $job_date != 'all')
+		if ($job_date != null && $job_date != 'all')
 		{
 			$sql .= " AND js.job_date = '" . $job_date . "'";
 		}

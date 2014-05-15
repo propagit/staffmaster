@@ -20,6 +20,15 @@ a {
 a:focus {	
 	outline: none;
 }
+div.tooltip-inner {
+    text-align: center;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    margin-bottom: 6px;
+    background-color: #505050;
+    font-size: 14px;
+}
 /* system right hand side fixed buttons */
 #sys-fixed-btns{
 	position: fixed;

@@ -96,7 +96,7 @@ class Ajax extends MX_Controller {
 		if (!$data['start_date']) #strtotime($data['job_date']) <= now())
 		{
 			# Job start date can not be in the past
-			echo json_encode(array('ok' => false, 'error_id' => 'start_date', 'msg' => 'Please enter start date/time'));
+			echo json_encode(array('ok' => false, 'error_id' => 'start_date', 'msg' => 'Please enter a start date/time'));
 			return;
 		}	
 		
@@ -107,7 +107,7 @@ class Ajax extends MX_Controller {
 		if ($filter_data['finish_time'] <= $filter_data['start_time'])
 		{
 			# Finish time can not be less than start time
-			echo json_encode(array('ok' => false, 'error_id' => 'finish_time', 'msg' => 'Finish time must be greater than start time'));
+			echo json_encode(array('ok' => false, 'error_id' => 'finish_time', 'msg' => 'The finish time must be greater than the start time'));
 			return;
 		}
 		
@@ -137,14 +137,14 @@ class Ajax extends MX_Controller {
 		$count = (int) $data['count'];
 		if ($count < 1 || $count > 1000)
 		{
-			echo json_encode(array('ok' => false, 'error_id' => 'count', 'msg' => 'Insufficient credit balance, to create more shifts please update your credit balance via the dashboard'));
+			echo json_encode(array('ok' => false, 'error_id' => 'count', 'msg' => 'Please enter a number between 1 and 1000'));
 			return;
 		}
 		else if (!$this->is_client)
 		{
 			if ($count > modules::run('account/get_credits'))
 			{
-				echo json_encode(array('ok' => false, 'error_id' => 'count'));
+				echo json_encode(array('ok' => false, 'error_id' => 'count', 'msg' => 'Insufficient credit balance'));
 				return;
 			}
 		}
@@ -312,6 +312,7 @@ class Ajax extends MX_Controller {
 						$this->session->userdata('shift_status_filter'));
 						
 		$data['is_client'] = $this->is_client;
+		$data['date'] = $date;
 		$this->load->view('shifts_day_view', isset($data) ? $data : NULL);
 	}
 	
@@ -655,11 +656,19 @@ class Ajax extends MX_Controller {
 		$shifts = $this->input->post('shifts');
 		$shift = null;
 		$result = array();
+		$credits = 0;
 		foreach($shifts as $shift_id)
 		{
 			$shift = $this->job_shift_model->get_job_shift($shift_id);
+			if (($shift['staff_id'] == NULL || $shift['staff_id'] == 0) && $shift['finish_time'] >= time())
+			{
+				# Refund credit
+				$credits++;
+			}
 			$this->job_shift_model->delete_job_shift($shift_id);
 		}
+		$this->load->model('account_model');
+		$this->account_model->add_credits($credits);
 		if ($shift)
 		{
 			$result['job_id'] = $shift['job_id'];

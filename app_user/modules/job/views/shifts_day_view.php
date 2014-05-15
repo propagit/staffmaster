@@ -108,7 +108,6 @@
 <script>
 $(function(){
 	init_inline_edit();
-	
 	var track_load = 1; // total loaded record group(s)
 	var loading = false; // to prevents multipal ajax loads
 	var total_groups = <?=ceil($total_shifts/SHIFTS_PER_LOAD);?>; // total record group(s)

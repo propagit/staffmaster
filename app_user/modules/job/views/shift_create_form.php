@@ -72,7 +72,7 @@
 	</div>
 	<div class="form-group" id="f_count">
 		<label for="unisex" class="col-lg-3 control-label">Staff Required</label>
-		<div class="col-lg-3">
+		<div class="col-lg-6">
 			<div class="input-group">
 				<input type="text" class="form-control input_number_only" name="count" value="1" />
 				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
