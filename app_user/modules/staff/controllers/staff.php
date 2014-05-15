@@ -357,6 +357,8 @@ class Staff extends MX_Controller {
 		$user_staff_id = $this->input->post('user_staff_id',true);
 		$salt = 'custom_files'.$user_staff_id;
 		$file_path = UPLOADS_PATH.'/staff/custom_attributes';
+		//create main folder
+		modules::run('upload/create_upload_folders',UPLOADS_PATH.'/staff/custom_attributes/');
 		//create folder
 		$folder_name = $this->_create_folders(UPLOADS_PATH.'/staff/custom_attributes',$salt);
 		$this->load->library('upload');

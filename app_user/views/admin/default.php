@@ -102,7 +102,7 @@
 
 
 <div id="sys-fixed-btns">
-	<button class="btn btn-info sys-rt-btn"><i class="fa fa-cogs"></i></button>
+	<button class="btn btn-info sys-rt-btn"><i class="fa fa-youtube-play"></i></button>
     <a href="<?=base_url();?>logout"><div class="btn btn-info sys-rt-btn"><i class="fa fa-power-off"></i></div></a>
     <button class="btn btn-info sys-rt-btn custom-hidden go-to-top"><i class="fa fa-arrow-up"></i></button>
 </div>
@@ -118,7 +118,7 @@
 
 <footer>
     <div id="sm-footer-wrap">
-        <div class="footer-copy">&copy; StaffBooks - www.staffbooks.com</div>
+        <a target="_blank" href="http://www.staffbooks.com"><div class="footer-copy">&copy; StaffBooks - www.staffbooks.com</div></a>
         <button class="btn footer-go-to-top-btn custom-hidden go-to-top"><i class="fa fa-long-arrow-up footer-go-to-top-arrow"></i></button>
     </div>
 </footer>

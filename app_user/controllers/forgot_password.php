@@ -51,7 +51,7 @@ class Forgot_password extends MX_Controller {
 							'message' => $this->_format_template_body($template_info->template_content,$obj)
 						);
 				$this->_send_email($email_data);
-				$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to this "'.$email.'" email.</div>');
+				$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to "'.$email.'".</div>');
 				redirect('forgot_password');
 				
 			}else{

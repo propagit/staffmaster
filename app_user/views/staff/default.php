@@ -136,7 +136,7 @@
 
 <footer>
     <div id="sm-footer-wrap">
-        <div class="footer-copy">&copy; StaffBooks - www.staffbooks.com</div>
+        <a target="_blank" href="http://www.staffbooks.com"><div class="footer-copy">&copy; StaffBooks - www.staffbooks.com</div></a>
         <button class="btn footer-go-to-top-btn custom-hidden go-to-top"><i class="fa fa-long-arrow-up footer-go-to-top-arrow"></i></button>
     </div>
 </footer>
