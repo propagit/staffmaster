@@ -500,6 +500,12 @@ ol.example li.placeholder:before {
 	min-height:49px; 
 	margin-top:50px;
 }
+#sm-footer-wrap a{
+	color:#3d3d3d !important;
+}
+#sm-footer-wrap a:hover{
+	text-decoration:none !important;
+}
 .footer-copy{
 	line-height:49px;
 	text-align:center;
@@ -509,6 +515,7 @@ ol.example li.placeholder:before {
     -khtml-opacity: 0.8;
     opacity: 0.8;	
 }
+
 .footer-go-to-top-btn{
 	background-image:url(../img/core/nav-texture-bg.png); 
 	background-repeat:repeat; 
