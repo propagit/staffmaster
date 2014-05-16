@@ -18,10 +18,15 @@ switch($log['action']) {
 &nbsp; 
 <?=$log['action'];?>d
 <b><?=$log['total'];?></b> 
+<? if ($shift) { ?>
 <a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/<?=$shift['job_date'];?>" target="_blank">
 	shift<? if($log['total'] > 1) { echo 's'; } ?>
-	
-</a><? if ($log['action'] == 'update') {
+</a>
+<? } else { ?>
+	shift<? if($log['total'] > 1) { echo 's'; } ?>
+<? } ?>
+
+<? if ($log['action'] == 'update') {
 	echo '\'s ';
 	$desc = unserialize($log['description']);
 	$k = 0;

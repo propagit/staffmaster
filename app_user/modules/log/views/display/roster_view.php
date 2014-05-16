@@ -18,6 +18,10 @@ switch($data['status'])
 &nbsp; 
 <?=$action;?> 
 <b><?=$log['total'];?></b> 
+<? if ($shift) { ?>
 <a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/<?=$shift['job_date'];?>" target="_blank">
 	shift<? if($log['total'] > 1) { echo 's'; } ?>
 </a>
+<? } else { ?>
+	shift<? if($log['total'] > 1) { echo 's'; } ?>
+<? } ?>
