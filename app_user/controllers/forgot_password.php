@@ -51,12 +51,9 @@ class Forgot_password extends MX_Controller {
 							'subject' => $this->_format_template_body($template_info->email_subject,$obj),
 							'message' => $this->_format_template_body($template_info->template_content,$obj)
 						);
-				if($this->_send_email($email_data)){
-					$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to "'.$email.'".</div>');
-					redirect('forgot_password');
-				}else{
-					$this->template->write('msg', '<div class="alert alert-danger">Something went wrong. Please try again!</div>');
-				}
+				$this->_send_email($email_data);
+				$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to "'.$email.'".</div>');
+				redirect('forgot_password');
 				
 			}else{
 				$this->template->write('msg', '<div class="alert alert-danger">This email does not exist in our System.</div>');
@@ -253,13 +250,8 @@ class Forgot_password extends MX_Controller {
 			if($attachment){
 				$this->email->attach($attachment);
 			}
-			if($this->email->send()){
-				$this->email->clear(true);	
-				return true;
-			}else{
-				//show_error($this->email->print_debugger());
-				return false;
-			}
+			$this->email->send();
+			$this->email->clear(true);	
 					
 		}else{
 			return false;	
