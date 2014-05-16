@@ -113,6 +113,16 @@ $(function(){
 			});
 		}		
 	});
+	$('#menu-invoice-action ul li a[data-value="mark_unpaid"]').click(function(){
+		$('.selected_invoice:checked').each(function(){
+			mark_as_unpaid($(this).val());
+		});	
+	});
+	$('#menu-invoice-action ul li a[data-value="mark_paid"]').click(function(){
+		$('.selected_invoice:checked').each(function(){
+			mark_as_paid($(this).val());
+		});	
+	});
 	
 	//get email modal
 	$('.email-invoice').on('click',function(){

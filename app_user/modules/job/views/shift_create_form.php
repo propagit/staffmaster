@@ -7,7 +7,7 @@
 		<label class="col-lg-3 control-label">Start Date/Time</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="start_date">
-				<input type="text" class="form-control" name="start_date" id="start_date" readonly />
+				<input type="text" class="form-control" name="start_date" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
@@ -18,7 +18,7 @@
 		<label class="col-lg-3 control-label">Finish Date/Time</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="finish_time">
-				<input type="text" class="form-control" name="finish_time" id="finish_time" readonly />
+				<input type="text" class="form-control" name="finish_time" readonly />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
