@@ -56,7 +56,7 @@ class Dispatcher extends MX_Controller {
 		{
 			echo modules::run('account/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
 		}
-		if ($method != 'setup')
+		if ($method != 'setup' && $method != 'update')
 		{
 			header("Location: http://staffbooks.com", TRUE, 301);
 		}
