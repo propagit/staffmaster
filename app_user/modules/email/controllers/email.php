@@ -297,7 +297,7 @@ class Email extends MX_Controller {
 	function send_email_live($data)
 	{
 		//get company profile
-		$from = 'noreply@staffbooks.com';
+		$from = 'noreply@staffbooks.systems';
 		$company = $this->setting_model->get_profile();
 		if($company){
 			if($company['email_c_email']){

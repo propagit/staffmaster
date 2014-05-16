@@ -176,7 +176,7 @@ class Forgot_password extends MX_Controller {
 	function _send_email_live($data)
 	{
 		//get company profile
-		$from = 'noreply@staffbooks.com';
+		$from = 'noreply@staffbooks.systems';
 		$company = $this->setting_model->get_profile();
 		if($company){
 			if($company['email_c_email']){
@@ -255,8 +255,9 @@ class Forgot_password extends MX_Controller {
 				$this->email->clear(true);	
 				return 'Email Sent';
 			}else{
-				//show_error($this->email->print_debugger());
-				return false;
+				show_error($this->email->print_debugger());
+				//return false;
+				exit();
 			}
 					
 		}else{
