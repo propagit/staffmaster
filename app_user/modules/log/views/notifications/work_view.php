@@ -20,9 +20,13 @@ switch($log['action'])
 <b><?=$user['first_name'] . ' ' . $user['last_name'];?></b> 
 <?=$text;?>
  a  
+<? if ($shift) { ?> 
 <a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/<?=$shift['job_date'];?>" target="_blank">
 shift
-</a> 
+</a>
+<? } else { ?>
+shift
+<? } ?> 
  on  
 
 <?=date('jS F', $shift['start_time']);?>

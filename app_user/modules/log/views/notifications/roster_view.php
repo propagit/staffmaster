@@ -16,9 +16,13 @@ rejected
 confirmed
 <? } ?>
  a 
+<? if ($shift) { ?>
 <a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/<?=$shift['job_date'];?>" target="_blank">
 shift
 </a>
+<? } else { ?>
+shift
+<? } ?>
  on 
 
 <?=date('jS F', $shift['start_time']);?>
