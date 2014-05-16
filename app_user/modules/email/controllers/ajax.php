@@ -170,7 +170,7 @@ class Ajax extends MX_Controller {
 		if($email_to){
 			$email_data = array(
 						'to' => $email_to,
-						'from' => $company['email_c_email'],
+						'from' => $template_info->email_from,
 						'from_text' => $company['email_c_name'],
 						'subject' => $template_info->email_subject,
 						'message' => modules::run('email/format_template_body',$email_body)

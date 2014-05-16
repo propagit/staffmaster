@@ -45,7 +45,7 @@
         <div class="login-row modern-browsers">
           	<img src="<?=base_url();?>assets/img/core/browsers-logos.png" alt="browsers-logos.png" title="Modern Browsers Logos"/>
             <p>
-                StaffMaster works in the most up to date browsers.
+                StaffBooks works in the most up to date browsers.
                 Please make sure you update your browser <i class="fa fa-smile-o"></i>
             </p>
         </div>
