@@ -284,12 +284,12 @@ class Forgot_password extends MX_Controller {
 		$this->email->to($to);
 		$this->email->cc($cc);
 		$this->email->bcc($bcc);
-		/* if (!isset($data['overwrite']))
+		 if (!isset($data['overwrite']))
 		{
 			$company_logo = $this->_company_logo();
 			$email_signature = $this->_get_email_footer();
 			$message = $company_logo . '<br /><br /><br />'.$message . $email_signature;
-		} */
+		} 
 		
 		$this->email->subject($subject);
 		$this->email->message($message);
