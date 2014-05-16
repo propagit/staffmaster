@@ -306,7 +306,6 @@ class Email extends MX_Controller {
 		}
 			
 		$to = '';
-		$from = '';
 		$cc = '';
 		$bcc = '';
 		$from_text = '';

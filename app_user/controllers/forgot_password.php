@@ -185,7 +185,6 @@ class Forgot_password extends MX_Controller {
 		}
 		
 		$to = '';
-		$from = '';
 		$cc = '';
 		$bcc = '';
 		$from_text = '';
