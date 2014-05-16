@@ -20,7 +20,7 @@ class Dispatcher extends MX_Controller {
 	
 	function website_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
 	{
-		#header("Location: http://staffbooks.com", TRUE, 301);
+		header("Location: http://staffbooks.com", TRUE, 301);
 		
 		if ( strpos($method, 'ajax') !== false)
 		{

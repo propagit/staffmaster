@@ -109,14 +109,17 @@ class Ajax_import extends MX_Controller {
 		}
 		$data['errors'] = $errors;
 		$data['error_report_file'] = $this->generate_error_report($errors);
-		$data['records'] = json_encode($records);
+		modules::run('upload/update_upload', $upload_id, serialize($records));
 		$data['upload_id'] = $upload_id;
 		$this->load->view('import/verify_view', isset($data) ? $data : NULL);
 	}
 	
 	function commit_upload()
 	{
-		$records = $this->input->post('records');
+		$upload_id = $this->input->post('upload_id');
+		$upload = modules::run('upload/get_upload', $upload_id);
+		$records = unserialize($upload['data']);
+		$ok = 0;
 		foreach($records as $data)
 		{
 			$user_data = array(
@@ -127,16 +130,16 @@ class Ajax_import extends MX_Controller {
 				'email_address' => $data['email'],
 				'username' => $data['email'],
 				'password' => random_string('alnum', 8),
-				'title' => $data['title'],
+				'title' => isset($data['title']) ? $data['title'] : '',
 				'first_name' => $data['first_name'],
 				'last_name' => $data['last_name'],
-				'address' => $data['address'],
-				'suburb' => $data['suburb'],
-				'city' => $data['city'],
-				'state' => $data['state'],
-				'postcode' => $data['postcode'],
-				'country' => $data['country'],
-				'phone' => $data['phone']
+				'address' => isset($data['address']) ? $data['address'] : '',
+				'suburb' => isset($data['suburb']) ? $data['suburb'] : '',
+				'city' => isset($data['city']) ? $data['city'] : '',
+				'state' => isset($data['state']) ? $data['state'] : '',
+				'postcode' => isset($data['postcode']) ? $data['postcode'] : '',
+				'country' => isset($data['country']) ? $data['country'] : '',
+				'phone' => isset($data['phone']) ? $data['phone'] : ''
 			);
 			$user_id = $this->user_model->insert_user($user_data);
 			$employed_as = STAFF_TFN;
@@ -147,21 +150,21 @@ class Ajax_import extends MX_Controller {
 			$dob = $this->convert_dob($data['dob']);
 			$staff_data = array(
 				'user_id' => $user_id,
-				'rating' => $data['rating'],
-				'external_staff_id' => $data['external_id'],
+				'rating' => isset($data['rating']) ? $data['rating'] : '',
+				'external_staff_id' => isset($data['external_id']) ? $data['external_id'] : '',
 				'gender' => substr(strtolower($data['gender']),0,1),
 				'dob' => date('Y-m-d',strtotime($dob['year'].'-'.$dob['month']. '-'.$dob['day'])),
-				'emergency_contact' => $data['emergency_contact'],
-				'emergency_phone' => $data['emergency_phone'],
-				'f_bsb' => $data['bsb'],
-				'f_acc_name' => $data['account_name'],
-				'f_acc_number' => $data['account_number'],
+				'emergency_contact' => isset($data['emergency_contact']) ? $data['emergency_contact'] : '',
+				'emergency_phone' => isset($data['emergency_phone']) ? $data['emergency_phone'] : '',
+				'f_bsb' => isset($data['bsb']) ? $data['bsb'] : '',
+				'f_acc_name' => isset($data['account_name']) ? $data['account_name'] :'',
+				'f_acc_number' => isset($data['account_number']) ? $data['account_number'] : '',
 				'f_employed' => $employed_as,
-				'f_abn' => $data['abn_number'],
-				'f_tfn' => $data['tfn_number'],
-				's_fund_name' => $data['super_fund_name'],
-				's_employee_id' => $data['super_employee_id'],
-				's_membership' => $data['super_membership_number']
+				'f_abn' => isset($data['abn_number']) ? $data['abn_number'] : '',
+				'f_tfn' => isset($data['tfn_number']) ? $data['tfn_number'] : '',
+				's_fund_name' => isset($data['super_fund_name']) ? $data['super_fund_name'] : '',
+				's_employee_id' => isset($data['super_employee_id']) ? $data['super_employee_id'] : '',
+				's_membership' => isset($data['super_membership_number']) ? $data['super_membership_number'] : ''
 			);
 			
 			if (strtolower($data['super_choice']) == "yes") 
@@ -175,7 +178,9 @@ class Ajax_import extends MX_Controller {
 				$staff_data['s_choice'] = 'owner';
 			}
 			$staff_id = $this->staff_model->insert_staff($staff_data);
+			$ok++;
 		}
+		echo $ok . '/' . count($records) . ' staff have been imported successfully!';
 	}
 	
 	function generate_error_report($errors)
