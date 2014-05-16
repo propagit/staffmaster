@@ -78,6 +78,10 @@ class Group extends MX_Controller {
 	{
 		$groups = $this->group_model->get_groups();
 		$array = array();
+		$array[] = array(
+					'value' => 'all',
+					'label' => 'All Staff'
+					);
 		foreach($groups as $group)
 		{
 			$array[] = array(
