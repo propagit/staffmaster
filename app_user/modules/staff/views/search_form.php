@@ -144,6 +144,7 @@
 			<input type="hidden" name="sort_by" id="sort-by" value="first_name" />
             <input type="hidden" name="sort_order" id="sort-order" value="asc" />
             <input type="hidden" name="current_page"  id="current_page" value="1"  />
+            <input type="hidden" name="records_per_page"  id="records_per_page" value="<?=STAFF_PER_PAGE;?>"  />
 			</form>
 			
 			<div id="staffs_search_results"></div>
@@ -258,7 +259,7 @@ $(function(){
 	
 	
 	$('#btn_search_staffs').click(function(){
-		reset_page();
+		//reset_page();
 		search_staffs();
 		scroll_to_form = true;
 	})
@@ -268,7 +269,7 @@ $(function(){
 		  var code = e.keyCode || e.which; 
 		  if (code  == 13) {               
 			e.preventDefault();
-			reset_page();
+			//reset_page();
 			search_staffs();
 		  }
 	});

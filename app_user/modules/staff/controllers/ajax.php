@@ -26,6 +26,7 @@ class Ajax extends MX_Controller {
 		$data['staffs'] = $this->staff_model->search_staffs($params);
 		$data['total_staff'] = $this->staff_model->search_staffs($params,true);
 		$data['current_page'] = $this->input->post('current_page',true);
+		$data['records_per_page'] = ($this->input->post('records_per_page',true) ? $this->input->post('records_per_page',true) : STAFF_PER_PAGE);
 		if ($this->is_client) 
 		{
 			$this->load->view('client/search_results', isset($data) ? $data : NULL);
@@ -131,6 +132,7 @@ class Ajax extends MX_Controller {
 		}
 		
 		$data = $this->input->post();
+
 		$user_data = array(
 			'password' => $data['password'],
 			'title' => $data['title'],
@@ -146,6 +148,11 @@ class Ajax extends MX_Controller {
 			#'status' => $data['status'],
 			'modified_on' => date('Y-m-d H:i:s')
 		);
+		
+		if(isset($data['status']) && $data['status']){
+			$user_data['status'] = $data['status'];
+		}
+		
 		$this->user_model->update_user($data['user_id'], $user_data);
 		$staff_data = array(
 			'external_staff_id' => $data['external_staff_id'],
@@ -1062,4 +1069,7 @@ class Ajax extends MX_Controller {
 		$objWriter->save(EXPORTS_PATH . "/staff/" . $file_name);
 		return $file_name;
 	}
+	
+	
+	
 }

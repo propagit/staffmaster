@@ -2157,3 +2157,14 @@ tr.purple {
 	max-height:300px;
 	overflow:auto;	
 }
+
+/* records per page */
+.records-per-page{
+	margin:-6px 10px 0 0;
+}
+.records-per-page span{
+	margin-right:10px;	
+}
+.records-per-page-btn{
+		
+}

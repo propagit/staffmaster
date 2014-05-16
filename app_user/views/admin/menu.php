@@ -7,8 +7,9 @@ $menu = array(
 		array('path' => 'staff/import', 'icon' => 'fa-upload', 'title' => 'Import Staff')
 	)),
 	array('path' => '#', 'icon' => 'fa-book', 'title' => 'Manage Clients', 'sub' => array(
-		array('path' => 'client/search', 'icon' => 'fa-search', 'title' => 'Search Client'),
+		array('path' => 'client/search', 'icon' => 'fa-search', 'title' => 'Search Clients'),
 		array('path' => 'client/add', 'icon' => 'fa-plus', 'title' => 'Add Client'),
+		array('path' => 'client/update_client_jobs_count', 'icon' => 'fa-bar-chart-o', 'title' => 'Update Job Count')
 	)),
 	array('path' => '#', 'icon' => 'fa-folder-open', 'title' => 'Manage Jobs', 'sub' => array(
 		array('path' => 'job/search', 'icon' => 'fa-search', 'title' => 'Search Jobs'),

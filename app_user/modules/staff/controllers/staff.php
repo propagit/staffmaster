@@ -688,4 +688,9 @@ class Staff extends MX_Controller {
 	{
 		return $this->staff_model->get_staff_user_ids_by_group_id($group_id);	
 	}
+	
+	function get_active_staff_user_ids()
+	{
+		return $this->staff_model->get_active_staff_user_ids();	
+	}
 }

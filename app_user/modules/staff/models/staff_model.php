@@ -169,6 +169,10 @@ class Staff_model extends CI_Model {
 	function search_staffs($params = array(),$total=false)
 	{
 		$records_per_page = STAFF_PER_PAGE;
+		if(isset($params['records_per_page']) && $params['records_per_page']){
+			$records_per_page = $params['records_per_page'];	
+		}
+		
 		$sql = "SELECT s.*, u.*
 				FROM user_staffs s 
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status > " . USER_DELETED;
@@ -703,6 +707,25 @@ class Staff_model extends CI_Model {
 		$user_ids = $this->db->select('user_id')
 							 ->where('attribute_group_id',$group_id)
 							 ->get('staff_groups')
+							 ->result();
+		return $user_ids;
+	}
+	/**
+	*	@desc Get active staff user ids
+	*
+	*   @name get_active_staff_user_ids
+	*	@access public
+	*	@param null
+	*	@return Returns staff user id 
+	*	
+	*/
+	function get_active_staff_user_ids()
+	{
+		$user_ids = $this->db->select('user_id')
+							 ->where('is_staff',1)
+							 ->where('is_admin',0)
+							 ->where('status',1)
+							 ->get('users')
 							 ->result();
 		return $user_ids;
 	}

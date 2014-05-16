@@ -10,7 +10,7 @@
                    <div class="action_icon delete-logo"><i class="fa fa-times" title="Remove this picture as your profile picture"></i></div>
                 </div>
 			<? }else{?>
-                <img src="<?=base_url()?>assets/img/core/staffmaster-logo.jpg">    
+                <img src="<?=base_url()?>assets/img/core/staffbooks-logo.png">    
             <? } ?>
             </div>
         </div>

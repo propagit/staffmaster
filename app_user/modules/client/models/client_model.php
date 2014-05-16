@@ -82,10 +82,10 @@ class Client_model extends CI_Model {
 	function search_clients($params = array(),$total=false)
 	{
 		$records_per_page = CLIENTS_PER_PAGE;
-		$sql = "SELECT c.*, u.*
-				FROM user_clients c
+		$sql = "SELECT c.*, u.* 
+				FROM user_clients c 
 				LEFT JOIN users u ON c.user_id = u.user_id WHERE u.status > " . CLIENT_DELETED;
-		if(isset($params['keyword']) && $params['keyword'] != ''){$sql .= " WHERE c.company_name LIKE '%" . $params['keyword'] . "%'";} 
+		if(isset($params['keyword']) && $params['keyword'] != ''){$sql .= " AND c.company_name LIKE '%" . $params['keyword'] . "%'";} 
 		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}
 		if(!$total){
 			if(isset($params['current_page']) && $params['current_page'] != ''){
@@ -173,5 +173,19 @@ class Client_model extends CI_Model {
 	{
 		$this->db->where('department_id', $department_id);
 		return $this->db->update('user_client_departments', $data);
+	}
+	
+	function get_client_total_jobs_by_client_id_and_year($client_id,$year = NULL)
+	{
+		$sql = "select count(job_id) as total_jobs from jobs where client_id = ".$client_id;
+		if($year){
+			$sql .= " and year(createdon) = '".$year."'";	
+		}
+		$jobs = $this->db->query($sql)->row();
+		if($jobs){
+			return $jobs->total_jobs;	
+		}else{
+			return 0;	
+		}
 	}
 }

@@ -10,7 +10,7 @@
     	<div class="inner-box">
 		<div class="table_action">		
 			<!-- <span class="btn btn-core pull-right visible-md visible-lg add-left-margin"><i class="fa fa-print"></i> Print Rosters</span> -->
-			<span class="btn btn-core pull-right hidden-xs add-left-margin"><i class="fa fa-envelope-o"></i> Email Rosters</span>
+			<span class="btn btn-core pull-right hidden-xs add-left-margin" id="email-roster-to-self"><i class="fa fa-envelope-o"></i> <span id="email-roster-btn-label">Email Rosters</span></span>
 			<!-- <span class="btn btn-core pull-right visible-md visible-lg"><i class="fa fa-download"></i> Download Rosters</span> -->
 		</div>
 		
@@ -39,6 +39,10 @@
 <script>
 $(function(){
 	load_rosters();
+	
+	$('#email-roster-to-self').on('click',function(){
+		email_roster_to_self();
+	});
 })
 
 function load_rosters() {
@@ -60,6 +64,20 @@ function load_month_rosters(obj,ts) {
 		success: function(data) {
 			$(obj).parent().addClass('active');
 			load_rosters();
+		}
+	})
+}
+
+function email_roster_to_self(){
+	$('#email-roster-btn-label').html('Sending...');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>roster/ajax/email_roster",
+		success: function(html) {
+			$('#email-roster-btn-label').html('Email Sent');
+			setTimeout(function(){
+				$('#email-roster-btn-label').html('Email Rosters');
+			}, 3000);
 		}
 	})
 }

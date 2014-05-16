@@ -171,16 +171,7 @@ class Client extends MX_Controller {
 	
 	function get_client_total_jobs($client_id,$year = NULL)
 	{
-		$sql = "select count(job_id) as total_jobs from jobs where client_id = ".$client_id;
-		if($year){
-			$sql .= " and year(createdon) = '".$year."'";	
-		}
-		$jobs = $this->db->query($sql)->row();
-		if($jobs){
-			return $jobs->total_jobs;	
-		}else{
-			return 0;	
-		}
+		return $this->client_model->get_client_total_jobs_by_client_id_and_year($client_id,$year);
 	}
 	
 	function update_client_jobs_count()
