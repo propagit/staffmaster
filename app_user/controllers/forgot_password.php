@@ -266,7 +266,7 @@ class Forgot_password extends MX_Controller {
 	function test_email()
 	{
 		$to = 'kaushtuvgurung@gmail.com';
-		$from = 'noreply@staffbooks.com';
+		$from = '';
 		$cc = '';
 		$bcc = '';
 		$from_text = 'StaffBooks Maintenance';
