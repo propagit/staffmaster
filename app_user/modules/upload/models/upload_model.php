@@ -8,6 +8,12 @@ class Upload_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function update_upload($upload_id, $data)
+	{
+		$this->db->where('upload_id', $upload_id);
+		return $this->db->update('uploads', $data);
+	}
+	
 	function get_upload($upload_id)
 	{
 		$this->db->where('upload_id', $upload_id);

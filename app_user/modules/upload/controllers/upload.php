@@ -43,6 +43,11 @@ class Upload extends MX_Controller {
 		}
 	}
 	
+	function update_upload($upload_id, $data)
+	{
+		return $this->upload_model->update_upload($upload_id, array('data' => $data));
+	}
+	
 	/**
 	*	@name: get_upload
 	*	@desc: function to get file information from database

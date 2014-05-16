@@ -74,13 +74,18 @@ class Ajax_venue extends MX_Controller {
 			$k = 0;
 			foreach($sheetData[$i] as $field)
 			{
-				$record[$fields[$k]] = $field;
-				$k++;
+				if ($k <= 5)
+				{
+					$record[$fields[$k]] = $field;
+					$k++;
+				}
+				
 			}
 			$records[] = $record;
 		}
 		$errors = array();
 		$row = 1;
+		
 		foreach($records as $record)
 		{
 			$row++;
@@ -101,28 +106,36 @@ class Ajax_venue extends MX_Controller {
 		}
 		$data['errors'] = $errors;
 		$data['error_report_file'] = $this->generate_error_report($errors);
-		$data['records'] = json_encode($records);
+		modules::run('upload/update_upload', $upload_id, serialize($records));
 		$data['upload_id'] = $upload_id;
 		$this->load->view('attribute/venues/import/verify_view', isset($data) ? $data : NULL);
 	}
 	
 	function commit_upload()
 	{
-		$records = $this->input->post('records');
+		$upload_id = $this->input->post('upload_id');
+		$upload = modules::run('upload/get_upload', $upload_id);
+		$records = unserialize($upload['data']);
+		$ok = 0;
 		foreach($records as $data)
 		{
 			$location_id = 0;
-			if (isset($data['location']))
+			$state = '';
+			$postcode = '';
+			if (isset($data['location']) && $data['location'] != '')
 			{
 				$location = modules::run('attribute/location/get_location_by_name', $data['location']);
 				if ($location)
 				{
 					$location_id = $location['location_id'];
-					$area = modules::run('attribute/location/get_child_location_by_name', $location_id, $data['area']);
-					if ($area)
+					if (isset($data['area']) && $data['area'] != '')
 					{
-						$location_id = $area['location_id'];
-					}
+						$area = modules::run('attribute/location/get_child_location_by_name', $location_id, $data['area']);
+						if ($area)
+						{
+							$location_id = $area['location_id'];
+						}
+					}					
 				}
 			}
 			
@@ -130,13 +143,15 @@ class Ajax_venue extends MX_Controller {
 			$data_venue = array(
 				'location_id' => $location_id,
 				'name' => $data['name'],
-				'address' => $data['address'],
-				'suburb' => $data['suburb'],
-				'postcode' => $data['postcode'],
-				'state' => $location['state']
+				'address' => isset($data['address']) ? $data['address'] : '',
+				'suburb' => isset($data['suburb']) ? $data['suburb'] : '',
+				'postcode' => isset($data['postcode']) ? $data['postcode'] : '',
+				'state' => $state
 			);
 			$this->venue_model->insert_venue($data_venue);
+			$ok++;
 		}
+		echo $ok . '/' . count($records) . ' venues have been imported successfully!';
 	}
 	
 	function validate_field($key, $value)

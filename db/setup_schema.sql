@@ -1490,6 +1490,7 @@ CREATE TABLE IF NOT EXISTS `uploads` (
   `image_height` int(11) NOT NULL,
   `image_type` varchar(10) NOT NULL,
   `image_size_str` varchar(255) NOT NULL,
+  `data` TEXT NOT NULL,
   PRIMARY KEY (`upload_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

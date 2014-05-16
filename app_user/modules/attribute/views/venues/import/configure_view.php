@@ -45,6 +45,7 @@ $(function(){
 			url: "<?=base_url();?>attribute/ajax_venue/verify_import",
 			data: $('#verify-import-form').serialize(),
 			success: function(html) {
+				
 				loaded($('#wp-verify-import'), html);
 			}
 		})

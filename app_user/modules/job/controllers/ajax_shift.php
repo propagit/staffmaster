@@ -61,7 +61,7 @@ class Ajax_shift extends MX_Controller {
 		
 		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
 		
-		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
+		//$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
 		//send work confirmation email if confirmed and auto send email is checked
 		if($update_shift_data['status'] == SHIFT_CONFIRMED){
 			//check if work confirmation is set as auto send	
@@ -545,7 +545,7 @@ class Ajax_shift extends MX_Controller {
 	{
 		$shift_id = $this->input->post('shift_id');
 		$data['staffs'] = $this->job_shift_model->get_request_staffs($shift_id);
-		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
+		$data['shift_id'] = $this->job_shift_model->get_job_shift($shift_id);
 		$this->load->view('client/shift/request_staff/list_requests', isset($data) ? $data : NULL);
 	}
 	
