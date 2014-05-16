@@ -10,26 +10,26 @@
             		<table>
                        <tr>
                         <td class="padding-top-15">
-                            <a href="#" class="inv_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Company Name">
+                            <a href="#" class="inv_company_name prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Company Name">
                             	<?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?>
                             </a><br>
-                            ABN: <a href="#" class="inv_company_abn" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="ABN">								
+                            ABN: <a href="#" class="inv_company_abn prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="ABN">								
                                 <?=($invoice['profile_abn'] != '') ? $invoice['profile_abn'] : $company_profile['abn_acn'];?>
                             </a><br>
                             <br>
                             
                             <b>
-                            <a href="#" class="inv_client_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
+                            <a href="#" class="inv_client_company_name prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
 								<?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?>
                             </a><br>
                             
-                            <a href="#" class="inv_client_address" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Address">
+                            <a href="#" class="inv_client_address prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Address">
 								<?=($invoice['client_address'] != '') ? $invoice['client_address'] : $client['address'];?>
                             </a><br>
                             
-                            <a href="#" class="inv_client_suburb" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Suburb"><?=($invoice['client_suburb'] != '') ? $invoice['client_suburb'] : $client['suburb'];?></a> 
-                            <a href="#" class="inv_client_state" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client State"><?=($invoice['client_state'] != '') ? $invoice['client_state'] : $client['state'];?></a> 
-                            <a href="#" class="inv_client_postcode" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Postcode"><?=($invoice['client_postcode'] != '') ? $invoice['client_postcode'] : $client['postcode'];?></a>
+                            <a href="#" class="inv_client_suburb prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Suburb"><?=($invoice['client_suburb'] != '') ? $invoice['client_suburb'] : $client['suburb'];?></a> 
+                            <a href="#" class="inv_client_state prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client State"><?=($invoice['client_state'] != '') ? $invoice['client_state'] : $client['state'];?></a> 
+                            <a href="#" class="inv_client_postcode prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Postcode"><?=($invoice['client_postcode'] != '') ? $invoice['client_postcode'] : $client['postcode'];?></a>
                             </b>
                             <br>
                             <br>
@@ -41,29 +41,29 @@
                 <td width="5%"></td>
                 <td width="45%">
                 	<b>Bill Enquiries</b><br />
-                	<a href="#" class="inv_company_name" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
+                	<a href="#" class="inv_company_name prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Company Name">
 						<?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?>
                     </a>
 					<br />
                 	<table>
                         <tr>
                             <td>Tel:</td><td width="20"></td> <td> 
-                            	<a href="#" class="inv_profile_phone" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Phone"><?=($invoice['profile_company_phone'] != '') ? $invoice['profile_company_phone'] : $company_profile['telephone'];?></a> 							
+                            	<a href="#" class="inv_profile_phone prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Phone"><?=($invoice['profile_company_phone'] != '') ? $invoice['profile_company_phone'] : $company_profile['telephone'];?></a> 							
 							</td>
                         </tr>
                         <tr>
                             <td>Email:</td><td width="20"></td> <td>
-								<a href="#" class="inv_profile_email" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Email Address">
+								<a href="#" class="inv_profile_email prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Client Email Address">
 								<?=($invoice['profile_company_email'] != '') ? $invoice['profile_company_email'] : $company_profile['email'];?></a> 															
                             </td>
                         </tr>
                         <tr>
                             <td>Invoice Number:</td><td width="20"></td> 
-                            <td><a href="#" class="inv_number" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Number"><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></a></td>
+                            <td><a href="#" class="inv_number prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Number"><?=($invoice['invoice_number'] != '') ? $invoice['invoice_number'] : $invoice['invoice_id'];?></a></td>
                         </tr>
                         <tr>
                             <td>PO Number:</td><td width="20"></td> 
-                            <td><a href="#" class="po_number invoice-grey" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="PO Number"><?=($invoice['po_number'] != '') ? $invoice['po_number'] : 'Unspecified';?></a></td>
+                            <td><a href="#" class="po_number invoice-grey prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="PO Number"><?=($invoice['po_number'] != '') ? $invoice['po_number'] : 'Unspecified';?></a></td>
                         </tr>
                     </table>
                 </td>
@@ -71,8 +71,8 @@
             <tr>
             	<td valign="middle">
                 	<h2>Tax Invoice</h2>                    
-                    Issue Date: <a href="#" class="inv_company_issue_date" data-type="date"  data-pk="<?=$invoice['invoice_id']?>" data-title="Issue Date"><?=date('dS M Y', strtotime($invoice['issued_date']));?></a><br>
-                    <h1><a href="#" class="inv_title" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Title"><?=$invoice['title']?></a></h1>
+                    Issue Date: <a href="#" class="inv_company_issue_date prim-color-to-txt-color" data-type="date"  data-pk="<?=$invoice['invoice_id']?>" data-title="Issue Date"><?=date('dS M Y', strtotime($invoice['issued_date']));?></a><br>
+                    <h1><a href="#" class="inv_title prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Title"><?=$invoice['title']?></a></h1>
                 </td>
                 <td></td>
                 <td>
