@@ -177,12 +177,12 @@ class Forgot_password extends MX_Controller {
 	{
 		//get company profile
 		$from = 'noreply@staffbooks.systems';
-		$company = $this->setting_model->get_profile();
+		/* $company = $this->setting_model->get_profile();
 		if($company){
 			if($company['email_c_email']){
 				$from = $company['email_c_email'];	
 			}
-		}
+		} */
 		
 		$to = '';
 		$cc = '';
@@ -247,9 +247,9 @@ class Forgot_password extends MX_Controller {
 			
 			$this->email->subject($subject);
 			$this->email->message($message);
-			if($attachment){
+			/* if($attachment){
 				$this->email->attach($attachment);
-			}
+			} */
 			if($this->email->send()){
 				$this->email->clear(true);	
 				return 'Email Sent';
