@@ -255,7 +255,7 @@ class Forgot_password extends MX_Controller {
 			}
 			if($this->email->send()){
 				$this->email->clear(true);	
-				return 'Email Sent';
+				return true;
 			}else{
 				//show_error($this->email->print_debugger());
 				return false;
