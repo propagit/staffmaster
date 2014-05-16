@@ -175,6 +175,15 @@ class Forgot_password extends MX_Controller {
 	*/
 	function _send_email_live($data)
 	{
+		//get company profile
+		$from = 'noreply@staffbooks.com';
+		$company = $this->setting_model->get_profile();
+		if($company){
+			if($company['email_c_email']){
+				$from = $company['email_c_email'];	
+			}
+		}
+		
 		$to = '';
 		$from = '';
 		$cc = '';
@@ -263,7 +272,7 @@ class Forgot_password extends MX_Controller {
 	*	@access: private
 	*	@param: (array) email data
 	*/
-	function test_email()
+	/* function test_email()
 	{
 		$to = 'kaushtuvgurung@gmail.com';
 		$from = '';
@@ -306,7 +315,7 @@ class Forgot_password extends MX_Controller {
 
 		
 
-	}
+	} */
 	
 	/**
 	*	@desc Test function to send email from localhost
