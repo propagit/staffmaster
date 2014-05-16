@@ -258,6 +258,57 @@ class Forgot_password extends MX_Controller {
 	}
 	
 	/**
+	*	@name: test_email
+	*	@desc: Send test email
+	*	@access: private
+	*	@param: (array) email data
+	*/
+	function test_email()
+	{
+		$to = 'kaushtuvgurung@gmail.com';
+		$from = 'noreply@staffbooks.com';
+		$cc = '';
+		$bcc = '';
+		$from_text = 'StaffBooks Maintenance';
+		$subject = 'Test Email'; 
+		$message = 'This is a test message'; 
+		$attachment = ''; 
+		$bcc = '';
+
+			
+		
+		$this->load->library('email');
+		$config['mailtype'] = 'html';
+		$this->email->initialize($config);
+		$this->email->from($from,$from_text);		
+		$this->email->to($to);
+		$this->email->cc($cc);
+		$this->email->bcc($bcc);
+		/* if (!isset($data['overwrite']))
+		{
+			$company_logo = $this->_company_logo();
+			$email_signature = $this->_get_email_footer();
+			$message = $company_logo . '<br /><br /><br />'.$message . $email_signature;
+		} */
+		
+		$this->email->subject($subject);
+		$this->email->message($message);
+		/* if($attachment){
+			$this->email->attach($attachment);
+		} */
+		if($this->email->send()){
+			$this->email->clear(true);	
+			return 'Email Sent';
+		}else{
+			show_error($this->email->print_debugger());
+			exit();
+		}
+
+		
+
+	}
+	
+	/**
 	*	@desc Test function to send email from localhost
 	*
 	*   @name send_email
