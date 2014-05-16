@@ -101,14 +101,17 @@ class Ajax_import extends MX_Controller {
 		}
 		$data['errors'] = $errors;
 		$data['error_report_file'] = $this->generate_error_report($errors);
-		$data['records'] = json_encode($records);
+		modules::run('upload/update_upload', $upload_id, serialize($records));
 		$data['upload_id'] = $upload_id;
 		$this->load->view('client/import/verify_view', isset($data) ? $data : NULL);
 	}
 	
 	function commit_upload()
 	{
-		$records = $this->input->post('records');
+		$upload_id = $this->input->post('upload_id');
+		$upload = modules::run('upload/get_upload', $upload_id);
+		$records = unserialize($upload['data']);
+		$ok = 0;
 		foreach($records as $data)
 		{
 			$status = 0;
@@ -123,25 +126,27 @@ class Ajax_import extends MX_Controller {
 				'is_client' => 1,
 				'email_address' => $data['email_address'],
 				'username' => $data['email_address'],
-				'full_name' => $data['full_name'],
-				'address' => $data['address'],
-				'suburb' => $data['suburb'],
-				'city' => $data['city'],
-				'state' => $data['state'],
-				'postcode' => $data['postcode'],
-				'country' => $data['country'],
-				'phone' => $data['phone']
+				'full_name' => isset($data['full_name']) ? $data['full_name'] : '',
+				'address' => isset($data['address']) ? $data['address'] : '',
+				'suburb' => isset($data['suburb']) ? $data['suburb'] : '',
+				'city' => isset($data['city']) ? $data['city'] : '',
+				'state' => isset($data['state']) ? $data['state'] : '',
+				'postcode' => isset($data['postcode']) ? $data['postcode'] : '',
+				'country' => isset($data['country']) ? $data['country'] : '',
+				'phone' => isset($data['phone']) ? $data['phone'] : ''
 			);
 			$user_id = $this->user_model->insert_user($user_data);
 		
 			$client_data = array(
 				'user_id' => $user_id,
-				'external_client_id' => $data['external_client_id'],
-				'company_name' => $data['company_name'],
-				'abn' => $data['abn']
+				'external_client_id' => isset($data['external_client_id']) ? $data['external_client_id'] : '',
+				'company_name' => isset($data['company_name']) ? $data['company_name'] : '',
+				'abn' => isset($data['abn']) ? $data['abn'] : ''
 			);
 			$client_id = $this->client_model->insert_client($client_data);
+			$ok++;
 		}
+		echo $ok . '/' . count($records) . ' clients have been imported successfully!';
 	}
 	
 	function validate_field($key, $value)
