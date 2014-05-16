@@ -8,7 +8,7 @@
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr>
 	<td><h2>Due Date</h2></td>	
-	<td align="right"><a href="#" class="inv_company_due_date" data-type="date"  data-pk="<?=$invoice['invoice_id']?>" data-title="Due Date"><h4><?=date('dS M Y', strtotime($invoice['due_date']));?></h4></a></td>
+	<td align="right"><a href="#" class="inv_company_due_date prim-color-to-txt-color" data-type="date"  data-pk="<?=$invoice['invoice_id']?>" data-title="Due Date"><h4><?=date('dS M Y', strtotime($invoice['due_date']));?></h4></a></td>
 </tr>
 <tr>
 	<td class="padding-gst">GST</td>			
