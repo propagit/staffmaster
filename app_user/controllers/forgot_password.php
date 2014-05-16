@@ -293,9 +293,9 @@ class Forgot_password extends MX_Controller {
 		
 		$this->email->subject($subject);
 		$this->email->message($message);
-		/* if($attachment){
+		if($attachment){
 			$this->email->attach($attachment);
-		} */
+		} 
 		if($this->email->send()){
 			$this->email->clear(true);	
 			return 'Email Sent';
