@@ -15,7 +15,7 @@
 			}
 	?>
     	<tr id="receiver-list-tr-<?=$user->user_id;?>">
-       		<td class="left"><?=$full_name;?></td>
+       		<td class="left"><?=($full_name != '' ? $full_name : $user->email_address);?></td>
         	<td class="center col-md-1"><i class="fa fa-times delete-receiver" data-receiver-id="<?=$user->user_id;?>"></i></td>
    		</tr>
     <?php
