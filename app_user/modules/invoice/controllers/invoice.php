@@ -386,7 +386,7 @@ class Invoice extends MX_Controller {
 				}
 				$email_data = array(
 									'to' => $user['email_address'],
-									'from' => $company['email_c_email'],
+									'from' => $template_info->email_from,
 									'from_text' => $company['email_c_name'],
 									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
 									'message' => modules::run('email/format_template_body',$email_body,$obj),

@@ -46,17 +46,14 @@ class Forgot_password extends MX_Controller {
 	
 				$email_data = array(
 							'to' => $email,
-							'from' => $company['email_c_email'],
+							'from' => $template_info->email_from,
 							'from_text' => $company['email_c_name'],
 							'subject' => $this->_format_template_body($template_info->email_subject,$obj),
 							'message' => $this->_format_template_body($template_info->template_content,$obj)
 						);
-				if($this->_send_email($email_data)){
-					$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to "'.$email.'".</div>');
-					redirect('forgot_password');
-				}else{
-					$this->template->write('msg', '<div class="alert alert-danger">Something went wrong. Please try again!</div>');
-				}
+				$this->_send_email($email_data);
+				$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to "'.$email.'".</div>');
+				redirect('forgot_password');
 				
 			}else{
 				$this->template->write('msg', '<div class="alert alert-danger">This email does not exist in our System.</div>');
@@ -222,6 +219,16 @@ class Forgot_password extends MX_Controller {
 				
 				
 			}
+			
+			if($from == ''){
+				$from = 'noreply@staffbooks.systems';
+				$company = $this->setting_model->get_profile();
+				if($company){
+					if($company['email_c_email']){
+						$from = $company['email_c_email'];	
+					}
+				}
+			}
 		
 			$this->load->library('email');
 			$config['mailtype'] = 'html';
@@ -242,12 +249,8 @@ class Forgot_password extends MX_Controller {
 			if($attachment){
 				$this->email->attach($attachment);
 			}
-			if($this->email->send()){
-				$this->email->clear(true);	
-				return 'Email Sent';
-			}else{
-				return false;	
-			}
+			$this->email->send();
+			$this->email->clear(true);	
 					
 		}else{
 			return false;	
@@ -255,6 +258,57 @@ class Forgot_password extends MX_Controller {
 		
 
 	}
+	
+	/**
+	*	@name: test_email
+	*	@desc: Send test email
+	*	@access: private
+	*	@param: (array) email data
+	*/
+	/* function test_email()
+	{
+		$to = 'kaushtuvgurung@gmail.com';
+		$from = '';
+		$cc = '';
+		$bcc = '';
+		$from_text = 'StaffBooks Maintenance';
+		$subject = 'Test Email'; 
+		$message = 'This is a test message'; 
+		$attachment = ''; 
+		$bcc = '';
+
+			
+		
+		$this->load->library('email');
+		$config['mailtype'] = 'html';
+		$this->email->initialize($config);
+		$this->email->from($from,$from_text);		
+		$this->email->to($to);
+		$this->email->cc($cc);
+		$this->email->bcc($bcc);
+		 if (!isset($data['overwrite']))
+		{
+			$company_logo = $this->_company_logo();
+			$email_signature = $this->_get_email_footer();
+			$message = $company_logo . '<br /><br /><br />'.$message . $email_signature;
+		} 
+		
+		$this->email->subject($subject);
+		$this->email->message($message);
+		if($attachment){
+			$this->email->attach($attachment);
+		} 
+		if($this->email->send()){
+			$this->email->clear(true);	
+			return 'Email Sent';
+		}else{
+			show_error($this->email->print_debugger());
+			exit();
+		}
+
+		
+
+	} */
 	
 	/**
 	*	@desc Test function to send email from localhost

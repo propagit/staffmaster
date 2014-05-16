@@ -14,6 +14,7 @@ class Email extends MX_Controller {
 		$this->load->model('client/client_model');
 		$this->load->model('invoice/invoice_model');
 		$this->load->model('brief/brief_model');
+		$this->load->model('setting/setting_model');
 	}
 	
 	public function index($method = '', $param1 = '',$param2 = '')
@@ -296,7 +297,7 @@ class Email extends MX_Controller {
 	function send_email_live($data)
 	{
 		$to = '';
-		$from = '';
+		$from = '';	
 		$cc = '';
 		$bcc = '';
 		$from_text = '';
@@ -341,6 +342,16 @@ class Email extends MX_Controller {
 				}
 				
 				
+			}
+			
+			if($from == ''){
+				$from = 'noreply@staffbooks.systems';
+				$company = $this->setting_model->get_profile();
+				if($company){
+					if($company['email_c_email']){
+						$from = $company['email_c_email'];	
+					}
+				}
 			}
 		
 			$this->load->library('email');

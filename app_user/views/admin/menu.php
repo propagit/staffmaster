@@ -8,8 +8,7 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-book', 'title' => 'Manage Clients', 'sub' => array(
 		array('path' => 'client/search', 'icon' => 'fa-search', 'title' => 'Search Clients'),
-		array('path' => 'client/add', 'icon' => 'fa-plus', 'title' => 'Add Client'),
-		array('path' => 'client/update_client_jobs_count', 'icon' => 'fa-bar-chart-o', 'title' => 'Update Job Count')
+		array('path' => 'client/add', 'icon' => 'fa-plus', 'title' => 'Add Client')
 	)),
 	array('path' => '#', 'icon' => 'fa-folder-open', 'title' => 'Manage Jobs', 'sub' => array(
 		array('path' => 'job/search', 'icon' => 'fa-search', 'title' => 'Search Jobs'),

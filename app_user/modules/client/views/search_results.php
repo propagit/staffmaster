@@ -7,6 +7,10 @@
 <ul class="pagination custom-pagination pull">
 <?=modules::run('common/create_pagination',count($total_clients),CLIENTS_PER_PAGE,$current_page)?>
 </ul>
+<div class="records-per-page pull">
+    <a href="<?=base_url();?>client/update_client_jobs_count"><div class="btn btn-core"><i class="fa fa-refresh"></i> Update Job Count</div></a>
+</div>
+
 <?php
 	$array = array(
 				array('value' => 'contact-multi-clients','label' =>'<i class="fa fa-envelope-o"></i> Contact Clients'),
