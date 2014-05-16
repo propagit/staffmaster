@@ -296,15 +296,8 @@ class Email extends MX_Controller {
 	*/
 	function send_email_live($data)
 	{
-		//get company profile
-		$from = 'noreply@staffbooks.systems';
-		$company = $this->setting_model->get_profile();
-		if($company){
-			if($company['email_c_email']){
-				$from = $company['email_c_email'];	
-			}
-		}
-			
+
+		$from = 'noreply@staffbooks.systems';	
 		$to = '';
 		$cc = '';
 		$bcc = '';
@@ -350,6 +343,16 @@ class Email extends MX_Controller {
 				}
 				
 				
+			}
+			
+			if(!$from){
+				$from = 'noreply@staffbooks.systems';
+				$company = $this->setting_model->get_profile();
+				if($company){
+					if($company['email_c_email']){
+						$from = $company['email_c_email'];	
+					}
+				}
 			}
 		
 			$this->load->library('email');
