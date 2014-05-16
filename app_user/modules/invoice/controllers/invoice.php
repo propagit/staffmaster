@@ -218,7 +218,7 @@ class Invoice extends MX_Controller {
 			  fclose($fp);
 			}
 			 
-			ini_set('memory_limit','32M'); # boost the memory limit if it's low 
+			ini_set('memory_limit','128M'); # boost the memory limit if it's low 
 			
 			$invoice = $this->invoice_model->get_invoice($invoice_id);
 			$data['invoice'] = $invoice;
