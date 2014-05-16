@@ -30,19 +30,20 @@ class Forgot_password extends MX_Controller {
 			$user = $this->auth_model->get_user_by_username($username);
 			if($user)
 			{
+												
 				$email = $username;
 				//get company profile
 				$company = $this->setting_model->get_profile();	
 				$template_info = $this->email_template_model->get_template(FORGOT_PASSWORD_EMAIL_TEMPLATE_ID);
 				$email_subject = $template_info->email_subject;
-				
 				//get receiver obj
 				$email_obj_params = array(
 								'template_id' => $template_info->email_template_id,
 								'user_id' => $user->user_id,
 								'company' => $company
 							);
-				$obj = $this->_get_email_obj($email_obj_params);			
+				$obj = $this->_get_email_obj($email_obj_params);
+	
 				$email_data = array(
 							'to' => $email,
 							'from' => $company['email_c_email'],
@@ -50,9 +51,12 @@ class Forgot_password extends MX_Controller {
 							'subject' => $this->_format_template_body($template_info->email_subject,$obj),
 							'message' => $this->_format_template_body($template_info->template_content,$obj)
 						);
-				$this->_send_email($email_data);
-				$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to "'.$email.'".</div>');
-				redirect('forgot_password');
+				if($this->_send_email($email_data)){
+					$this->session->set_flashdata('password_reset','<div class="alert alert-success">Your new password has been sent to "'.$email.'".</div>');
+					redirect('forgot_password');
+				}else{
+					$this->template->write('msg', '<div class="alert alert-danger">Something went wrong. Please try again!</div>');
+				}
 				
 			}else{
 				$this->template->write('msg', '<div class="alert alert-danger">This email does not exist in our System.</div>');
@@ -238,9 +242,12 @@ class Forgot_password extends MX_Controller {
 			if($attachment){
 				$this->email->attach($attachment);
 			}
-			$this->email->send();
-			$this->email->clear(true);	
-			return 'Email Sent';
+			if($this->email->send()){
+				$this->email->clear(true);	
+				return 'Email Sent';
+			}else{
+				return false;	
+			}
 					
 		}else{
 			return false;	

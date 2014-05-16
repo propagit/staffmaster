@@ -178,6 +178,20 @@ class Setting extends MX_Controller {
 					'modified' => date('Y-m-d H:i:s')
 				);
 		$this->setting_model->update_system_styles($data);
+		//update email signature colors
+		$company = $this->company_profile();
+		$data = $this->input->post();
+		$company_data = array(			
+			'email_background_colour' => trim($this->input->post('primary_colour'),'#'),			
+			'email_font_colour' => trim($this->input->post('secondary_colour'),'#')		
+		);
+	
+		if(!$company){			
+			$this->setting_model->create_company_profile($company_data);		
+		}else		{
+			$this->setting_model->update_profile($company['id'], $company_data);		
+		}
+		
 		redirect('setting/system_settings');
 	}
 	/**

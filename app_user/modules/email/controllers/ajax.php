@@ -265,7 +265,11 @@ class Ajax extends MX_Controller {
 	function add_group_users_to_email_list()
 	{
 		$group_id = $this->input->post('group_id');
-		$users_ids_in_group = modules::run('staff/get_staff_user_ids_by_group_id',$group_id);
+		if($group_id == 'all'){
+			$users_ids_in_group = modules::run('staff/get_active_staff_user_ids');
+		}else{
+			$users_ids_in_group = modules::run('staff/get_staff_user_ids_by_group_id',$group_id);
+		}
 		$selected_user_ids = array();
 		if($users_ids_in_group){
 			foreach($users_ids_in_group as $user_id)

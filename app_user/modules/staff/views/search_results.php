@@ -1,9 +1,17 @@
 <hr />
 <h2>Search Results</h2>
 <p>Your search returned <b><?=count($total_staff);?></b> results</p>
+
 <ul class="pagination custom-pagination pull">
-<?=modules::run('common/create_pagination',count($total_staff),STAFF_PER_PAGE,$current_page)?>
+<?=modules::run('common/create_pagination',count($total_staff),$records_per_page,$current_page)?>
 </ul>
+<div class="records-per-page pull">
+	<span>Show Records Per Page</span>
+    <button class="btn btn-default records-per-page-btn <?=$records_per_page == 50 ? 'btn-core' : ''?>" data-records-per-page="50">50</button>
+    <button class="btn btn-default records-per-page-btn <?=$records_per_page == 100 ? 'btn-core' : ''?>" data-records-per-page="100">100</button>
+    <button class="btn btn-default records-per-page-btn <?=$records_per_page == 250 ? 'btn-core' : ''?>" data-records-per-page="250">250</button>
+    <button class="btn btn-default records-per-page-btn <?=$records_per_page == 500 ? 'btn-core' : ''?>" data-records-per-page="500">500</button>
+</div>
 <?php
 	$array = array(
 				array('value' => 'contact-multi-staff','label' =>'<i class="fa fa-envelope-o"></i> Contact Staff'),
@@ -133,6 +141,14 @@
 			scroll_to_form = false;
 			var clicked_page = $(this).attr('data-page-no');
 			$('#current_page').val(clicked_page);
+			search_staffs();
+		});
+		
+		//load records per page
+		$('.records-per-page-btn').on('click',function(){
+			var records_per_page = $(this).attr('data-records-per-page');
+			$('#current_page').val(1);
+			$('#records_per_page').val(records_per_page);
 			search_staffs();
 		});
 	
