@@ -46,7 +46,7 @@ class Forgot_password extends MX_Controller {
 	
 				$email_data = array(
 							'to' => $email,
-							'from' => $company['email_c_email'],
+							'from' => $template_info->email_from,
 							'from_text' => $company['email_c_name'],
 							'subject' => $this->_format_template_body($template_info->email_subject,$obj),
 							'message' => $this->_format_template_body($template_info->template_content,$obj)
@@ -172,9 +172,8 @@ class Forgot_password extends MX_Controller {
 	*/
 	function _send_email_live($data)
 	{
-
-		$from = 'noreply@staffbooks.systems';
 		$to = '';
+		$from = '';
 		$cc = '';
 		$bcc = '';
 		$from_text = '';
@@ -221,7 +220,7 @@ class Forgot_password extends MX_Controller {
 				
 			}
 			
-			if(!$from){
+			if($from == ''){
 				$from = 'noreply@staffbooks.systems';
 				$company = $this->setting_model->get_profile();
 				if($company){

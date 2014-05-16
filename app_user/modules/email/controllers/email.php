@@ -296,9 +296,8 @@ class Email extends MX_Controller {
 	*/
 	function send_email_live($data)
 	{
-
-		$from = 'noreply@staffbooks.systems';	
 		$to = '';
+		$from = '';	
 		$cc = '';
 		$bcc = '';
 		$from_text = '';
@@ -345,7 +344,7 @@ class Email extends MX_Controller {
 				
 			}
 			
-			if(!$from){
+			if($from == ''){
 				$from = 'noreply@staffbooks.systems';
 				$company = $this->setting_model->get_profile();
 				if($company){
