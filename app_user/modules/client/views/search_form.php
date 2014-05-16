@@ -1,6 +1,10 @@
 <script src="<?=base_url()?>assets/ckeditor/ckeditor.js"></script>
 <script src="<?=base_url()?>assets/ckeditor/config.js"></script>
 <script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
+
+<?=modules::run('wizard/main_view', 'client');?>
+
+
 <div class="col-md-12">
 	<div class="box top-box">
 		<h2>Search Clients</h2>

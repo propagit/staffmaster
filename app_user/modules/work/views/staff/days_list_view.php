@@ -1,3 +1,6 @@
+<? if (count($work_days) == 0) { ?>
+<div class="alert alert-warning">Sorry! There is no opening job/shift for you at the moment.</div>
+<? } else { ?>
 <? foreach($work_days as $day) { ?>
 <div id="wp-<?=$day['job_date'];?>">
 	<div class="row pointer" onclick="load_day_shifts('<?=$day['job_date'];?>')">
@@ -59,3 +62,4 @@ function hide_day_shifts(date)
 	})	
 }
 </script>
+<? } ?>

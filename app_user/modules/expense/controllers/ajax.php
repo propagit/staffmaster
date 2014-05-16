@@ -30,6 +30,7 @@ class Ajax extends MX_Controller {
 			$data['paid_on'] = NULL;
 		}
 		$this->expense_model->update_expense($expense_id, $data);
+		echo modules::run('expense/row_view', $expense_id);
 	}
 	
 	function load_export_modal($ids) {

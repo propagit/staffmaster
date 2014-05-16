@@ -47,6 +47,11 @@ class Expense extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	
+	function row_view($expense_id) {
+		$data['expense'] = $this->expense_model->get_detailed_expense($expense_id);
+		$this->load->view('row_view', isset($data) ? $data : NULL);
+	}
+	
 	function field_select_status($field_name, $field_value=null, $size=null) {
 		$array = array(
 			array('value' => EXPENSE_UNPAID, 'label' => 'Unpaid'),

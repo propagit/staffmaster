@@ -39,6 +39,21 @@ class Expense_model extends CI_Model {
 		return $this->db->delete('expenses');
 	}
 	
+	function get_detailed_expense($expense_id) {
+		$sql = "SELECT e.*, 
+					j.name as job_name,
+					js.job_date,
+					CONCAT(s.first_name, ' ', s.last_name) as `staff_name`,
+					c.company_name FROM expenses e
+				LEFT JOIN jobs j ON j.job_id = e.job_id
+				LEFT JOIN job_shift_timesheets js ON js.timesheet_id = e.timesheet_id
+				LEFT JOIN users s ON s.user_id = e.staff_id
+				LEFT JOIN user_clients c ON c.user_id = e.client_id
+					WHERE e.expense_id = $expense_id";
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
 	function search_expenses($params = array()) {
 		$sql = "SELECT e.*, 
 					j.name as job_name,
@@ -50,6 +65,9 @@ class Expense_model extends CI_Model {
 				LEFT JOIN users s ON s.user_id = e.staff_id
 				LEFT JOIN user_clients c ON c.user_id = e.client_id
 					WHERE 1=1";
+		if (isset($params['expense_id']) && $params['expense_id'] != '') {
+			$sql .= " AND e.expense_id = " . $params['expense_id'];
+		}
 		if (isset($params['staff_name']) && $params['staff_name'] != '') {
 			$sql .= " AND CONCAT(s.first_name, ' ', s.last_name) LIKE '%" . $params['staff_name'] . "%'";
 		}
@@ -87,6 +105,7 @@ class Expense_model extends CI_Model {
 		if (isset($params['timesheet_id']) && $params['timesheet_id'] != '') {
 			$sql .= " AND e.timesheet_id = " . $params['timesheet_id'];
 		}
+		$sql .= " ORDER BY e.expense_id DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

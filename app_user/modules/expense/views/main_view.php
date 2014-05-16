@@ -51,7 +51,7 @@ function update_expense_status(expense_id, status) {
 		url: "<?=base_url();?>expense/ajax/update_expense_status",
 		data: {expense_id: expense_id, status: status},
 		success: function(html) {
-			search_expenses();
+			$('#expense-' + expense_id).replaceWith(html);
 		}
 	})
 }

@@ -157,7 +157,7 @@ $(function(){
 		disabled($(this));
 		<? if (!modules::run('auth/is_client')) { ?>
 		var pk = $(this).find('.shift_uniform').attr('data-pk');
-		$(this).find('.content-disabled').html('<a class="btn btn-default" onclick="unlock_shift(' + pk + ')"><i class="fa fa-lock"></i></a>');
+		$(this).find('.content-disabled').html('<a class="btn btn-default btn-unlock-shift" data-value="' + pk + '"><i class="fa fa-lock"></i></a>');
 		<? } ?>
 	});
 	
@@ -169,6 +169,13 @@ $(function(){
 
 	$('#selected_all_shifts').click(function(){
 		$('input.selected_shifts').prop('checked', this.checked);		
+	});
+	$('.btn-unlock-shift').confirmModal({
+		confirmTitle: 'Unlock shift',
+		confirmMessage: 'This will remove the time sheet from invoice, pay run and delete the time sheet itself. Are you sure you want to unlock this shift?',
+		confirmCallback: function(e) {
+			unlock_shift(e.attr('data-value'));
+		}
 	});
 	$('#menu-day-action ul li a[data-value="delete"]').confirmModal({
 		confirmTitle: 'Delete selected shifts',

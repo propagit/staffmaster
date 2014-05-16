@@ -15,6 +15,52 @@ function reload_wizard(step) {
 	}	
 }
 
+function init_date() {
+	$('#start_date').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 1,
+        minuteStep: 15,
+        format: 'dd-mm-yyyy hh:ii',
+        //startDate: "<?=date('Y-m-d');?>"
+    }).on('changeDate', function(e) {
+    	var start_date = moment(e.date.valueOf() - 11*60*60*1000);
+    	var finish_date = $('input[name="finish_time"]').val();
+    	if (start_date > moment(finish_date, "DD-MM-YYYY HH:mm"))
+    	{
+	    	$('input[name="finish_time"]').val(start_date.format("DD-MM-YYYY HH:mm"));
+    	}
+    	$('#finish_time').datetimepicker('setStartDate', start_date.format("DD-MM-YYYY HH:mm"));
+    	$('#break_start_time').datetimepicker('setStartDate', start_date.format("DD-MM-YYYY HH:mm"));
+    });
+    $('#finish_time').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 1,
+        minuteStep: 15,
+        format: 'dd-mm-yyyy hh:ii',
+        //startDate: "<?=date('Y-m-d');?>"
+    }).on('changeDate', function(e) {
+    	var finish_date = moment(e.date.valueOf() - 11*60*60*1000);
+    	$('#break_start_time').datetimepicker('setEndDate', finish_date.format("DD-MM-YYYY HH:mm"));
+    });
+    $('#break_start_time').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 1,
+        minuteStep: 15,
+        format: 'dd-mm-yyyy hh:ii',
+    });
+}
 
 /**
  * job_id: (int), date: (string) YYYY-MM-DD format
@@ -23,12 +69,15 @@ function load_job_shifts(job_id, date, scroll)
 {
 	if (date && date != 'all')
 	{
-		var job_date = moment(date).format("DD-MM-YYYY");                
-		$('input[name="start_date"]').val(job_date + " 12:00");
+		var job_date = moment(date).format("DD-MM-YYYY");
+		//$('input[name="start_date"]').val(job_date + " 12:00");
+		$('#start_date').datetimepicker('update', date + " 12:00");
 		//$('#start_date').datetimepicker('setStartDate', job_date + " 12:00");
-		$('input[name="finish_time"]').val(job_date + " 12:00");
+		//$('input[name="finish_time"]').val(job_date + " 12:00");
+		$('#finish_time').datetimepicker('update', date + " 12:00");
     	$('#finish_time').datetimepicker('setStartDate', job_date + " 12:00");
-    	$('input[name="break_start_at"]').val(job_date + " 12:00");
+    	//$('input[name="break_start_at"]').val(job_date + " 12:00");
+    	$('#break_start_time').datetimepicker('update', date + " 12:00");
     	$('#break_start_time').datetimepicker('setStartDate', job_date + " 12:00");
 	}
 	preloading($('#wrapper_js'));

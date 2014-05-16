@@ -10,10 +10,12 @@
     	<div class="inner-box">
     		<div id="nav_works">
     			<?
-    				$data = array(
-    					array('value' => 'apply', 'label' => '<i class="fa fa-thumbs-o-up"></i> Apply Selected')
-    				);
-    				echo modules::run('common/menu_dropdown', $data, 'work-action', 'Actions');
+    				if (count($months) > 0) {
+    					$data = array(
+    						array('value' => 'apply', 'label' => '<i class="fa fa-thumbs-o-up"></i> Apply Selected')
+						);
+    					echo modules::run('common/menu_dropdown', $data, 'work-action', 'Actions');
+    				}
     			?>
     			<div class="btn-group btn-nav tab-respond">
     				<ul class="nav nav-tabs tab-respond">

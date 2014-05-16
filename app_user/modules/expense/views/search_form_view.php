@@ -24,9 +24,6 @@
 	</div>
 </div>
 <div class="row">
-	
-</div>
-<div class="row">
 	<div class="form-group">
 		<label for="date_from" class="col-md-2 control-label">Date From</label>
 		<div class="col-md-4">
@@ -46,26 +43,15 @@
 		</div>
 	</div>
 </div>
-<? if (isset($timesheet_id)) { ?>
-<input type="hidden" name="timesheet_id" value="<?=$timesheet_id;?>" />
+
 <div class="row">
 	<div class="form-group">
 		<label class="col-md-2 control-label">Status</label>
 		<div class="col-md-4">
-			<?=modules::run('expense/field_select_status', 'status', EXPENSE_PAID);?>
+			<?=modules::run('expense/field_select_status', 'status');?>
 		</div>
 	</div>
 </div>
-<? } else { ?>
-<div class="row">
-	<div class="form-group">
-		<label class="col-md-2 control-label">Status</label>
-		<div class="col-md-4">
-			<?=modules::run('expense/field_select_status', 'status', EXPENSE_UNPAID);?>
-		</div>
-	</div>
-</div>
-<? } ?>
 
 <div class="row hide" id="paid_date_range">
 	<div class="form-group">

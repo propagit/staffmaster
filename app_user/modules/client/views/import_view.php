@@ -1,3 +1,6 @@
+<?=modules::run('wizard/main_view', 'client');?>
+
+
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">

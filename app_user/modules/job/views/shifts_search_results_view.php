@@ -57,7 +57,7 @@
 			No Staff Assigned
 			<? } ?>
 		</td>
-		<td class="center" width="40"><a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/<?=$shift['job_date'];?>"><i class="fa fa-eye"></i></a></td>
+		<td class="center" width="40"><a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/all/<?=$shift['status'];?>"><i class="fa fa-eye"></i></a></td>
 	</tr>
 	<? } ?>
 	</tbody>
