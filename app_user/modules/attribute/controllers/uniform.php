@@ -34,7 +34,9 @@ class Uniform extends MX_Controller {
 			$data_source = array();
 			foreach($uniforms as $uniform)
 			{
-				$data_source[] = '{value:' . $uniform['uniform_id'] . ', text: \'' . $uniform['name'] . '\'}';
+				$name = $uniform['name'];
+				$name = str_replace("'","\'", $name);
+				$data_source[] = '{value:' . $uniform['uniform_id'] . ', text: \'' . $name . '\'}';
 			}
 			$data_source = implode(",", $data_source);
 			return $data_source;

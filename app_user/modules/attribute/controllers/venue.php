@@ -102,7 +102,9 @@ class Venue extends MX_Controller {
 			$data_source = array();
 			foreach($venues as $venue)
 			{
-				$data_source[] = '{value:' . $venue['venue_id'] . ', text: \'' . $venue['name'] . '\'}';
+				$name = $venue['name'];
+				$name = str_replace("'","\'", $name);
+				$data_source[] = '{value:' . $venue['venue_id'] . ', text: \'' . $name . '\'}';
 			}
 			$data_source = implode(",", $data_source);
 			return $data_source;

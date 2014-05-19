@@ -61,7 +61,9 @@ class Payrate extends MX_Controller {
 			$data_source = array();
 			foreach($payrates as $payrate)
 			{
-				$data_source[] = '{value:' . $payrate['payrate_id'] . ', text: \'' . $payrate['name'] . '\'}';
+				$name = $payrate['name'];
+				$name = str_replace("'","\'", $name);
+				$data_source[] = '{value:' . $payrate['payrate_id'] . ', text: \'' . $name . '\'}';
 			}
 			$data_source = implode(",", $data_source);
 			return $data_source;

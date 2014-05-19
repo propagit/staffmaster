@@ -40,7 +40,9 @@ class Role extends MX_Controller {
 			$data_source = array();
 			foreach($roles as $role)
 			{
-				$data_source[] = '{value:' . $role['role_id'] . ', text: \'' . $role['name'] . '\'}';
+				$name = $role['name'];
+				$name = str_replace("'","\'", $name);
+				$data_source[] = '{value:' . $role['role_id'] . ', text: \'' . $name . '\'}';
 			}
 			$data_source = implode(",", $data_source);
 			return $data_source;

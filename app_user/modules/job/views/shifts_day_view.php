@@ -51,7 +51,8 @@
 <div class="alert alert-warning">
 	There is no shifts.
 </div>
-<? } else { ?>       
+<? } else { ?> 
+      
 <div class="table-responsive" id="shifts_search_list">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>

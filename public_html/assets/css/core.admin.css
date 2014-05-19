@@ -57,6 +57,10 @@ a.default {
 	height: 45px;
 }
 
+.label-search-job {
+	width: 220px;
+}
+
 /* Styles for form builder */
 .form-builder .col-md-6{
 	padding-left:0;	

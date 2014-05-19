@@ -64,6 +64,10 @@ class Job_model extends CI_Model {
 		{
 			$sql .= " AND client_id = " . $data['client_id'];
 		}
+		if (isset($data['keywords']) && $data['keywords'] != '')
+		{
+			$sql .= " AND name LIKE '%" . $data['keywords'] . "%'";
+		}
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

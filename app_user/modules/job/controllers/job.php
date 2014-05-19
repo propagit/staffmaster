@@ -78,6 +78,11 @@ class Job extends MX_Controller {
 		{
 			redirect('job');
 		}
+		if ($status != '') {
+			$this->session->set_userdata('shift_status_filter', $status);
+			redirect('job/details/' . $job_id . '/' . $job_date);
+		}
+		
 		if ($job_date) {
 			$this->session->set_userdata('job_date', $job_date);
 		}
@@ -85,23 +90,12 @@ class Job extends MX_Controller {
 		$data['job'] = $job;
 		$data['client'] = $this->client_model->get_client($job['client_id']);
 		
-		/*
-if ($status != '') {
-			$this->session->set_userdata('shift_status_filter', $status);
-		}
-		else
-		{
-			$this->session->unset_userdata('shift_status_filter');
-		}
-*/
-		if (!$status == '') {
-			$status = $this->session->userdata('shift_status_filter');
-		}
+		
 		
 		$data['is_client'] = $this->is_client;
 		$this->load->view('job_details', isset($data) ? $data : NULL);		
 	}
-		
+			
 	function search_jobs($shift_status='', $params='')
 	{
 		$data['search_shift_filters'] = array(
