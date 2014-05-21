@@ -546,6 +546,7 @@ class Ajax_shift extends MX_Controller {
 		$shift_id = $this->input->post('shift_id');
 		$data['staffs'] = $this->job_shift_model->get_request_staffs($shift_id);
 		$data['shift_id'] = $this->job_shift_model->get_job_shift($shift_id);
+		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
 		$this->load->view('client/shift/request_staff/list_requests', isset($data) ? $data : NULL);
 	}
 	

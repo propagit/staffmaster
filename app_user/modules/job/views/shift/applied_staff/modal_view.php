@@ -120,11 +120,14 @@ function assign_new_staff(user_id) {
 		type: "POST",
 		url: "<?=base_url();?>job/ajax_shift/update_shift_staff",
 		data: {shift_id: <?=$shift_id;?>, shift_staff_id: user_id, shift_staff: true, status: <?=SHIFT_UNCONFIRMED;?>},
-		success: function(html) {
-			$('#shift_<?=$shift_id;?>').replaceWith(html);
-			init_inline_edit();
-			//load_job_shifts(<?=$shift['job_id'];?>);
-			$('.bs-modal-lg').modal('hide');
+		success: function(data) {
+			data = $.parseJSON(data);
+			if (data.ok) {
+				$('#shift_<?=$shift_id;?>').replaceWith(data.html);
+				init_inline_edit();
+				//load_job_shifts(<?=$shift['job_id'];?>);
+				$('.bs-modal-lg').modal('hide');
+			}			
 		}
 	})
 }

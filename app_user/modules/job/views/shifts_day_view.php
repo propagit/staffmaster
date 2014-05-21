@@ -108,35 +108,38 @@
 
 <script>
 $(function(){
+	$(window).unbind('scroll');
 	init_inline_edit();
 	var track_load = 1; // total loaded record group(s)
 	var loading = false; // to prevents multipal ajax loads
 	var total_groups = <?=ceil($total_shifts/SHIFTS_PER_LOAD);?>; // total record group(s)
 	//$('#list-shifts').load("<?=base_url();?>job/ajax/load_day_shifts_partly", {'group_no':track_load}, function() {track_load++;}); //load first group
-	$(window).scroll(function() { //detect page scroll
-	
-		if($(window).scrollTop() + $(window).height() == $(document).height())  //user scrolled to bottom of the page?
-		{
-	
-			if(track_load <= total_groups && loading==false) //there's more data to load
+	if (total_groups > 1) {
+		
+		$(window).scroll(function() { //detect page scroll	
+			if($(window).scrollTop() + $(window).height() == $(document).height())  //user scrolled to bottom of the page?
 			{
-				loading = true; //prevent further ajax loading
-				$('.animation_image').show(); //show loading image
-				//load data from the server using a HTTP POST request
-				$.post('<?=base_url();?>job/ajax/load_more_day_shifts',{'group_no': track_load, 'job_id': <?=$job_id;?>, 'date': '<?=$this->session->userdata('job_date');?>'}, function(data){	
-					$("#list-shifts").append(data); //append received data into the element
-					//hide loading image
-					$('.animation_image').hide(); //hide loading image once data is received
-					track_load++; //loaded group increment
-					loading = false;	
-				}).fail(function(xhr, ajaxOptions, thrownError) { //any errors?
-					alert(thrownError); //alert with HTTP error
-					$('.animation_image').hide(); //hide loading image
-					loading = false;
-				});
+		
+				if(track_load <= total_groups && loading==false) //there's more data to load
+				{
+					loading = true; //prevent further ajax loading
+					$('.animation_image').show(); //show loading image
+					//load data from the server using a HTTP POST request
+					$.post('<?=base_url();?>job/ajax/load_more_day_shifts',{'group_no': track_load, 'job_id': <?=$job_id;?>, 'date': '<?=$this->session->userdata('job_date');?>'}, function(data){	
+						$("#list-shifts").append(data); //append received data into the element
+						//hide loading image
+						$('.animation_image').hide(); //hide loading image once data is received
+						track_load++; //loaded group increment
+						loading = false;	
+					}).fail(function(xhr, ajaxOptions, thrownError) { //any errors?
+						alert(thrownError); //alert with HTTP error
+						$('.animation_image').hide(); //hide loading image
+						loading = false;
+					});
+				}
 			}
-		}
-	});
+		});
+	}	
 	
 	
 	$('#menu-status ul li a').click(function(){

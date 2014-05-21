@@ -19,7 +19,11 @@
 		</td>
 		<? } else { ?>
 		<td width="50">
+			<? if ($this->staff_model->check_staff_time_collision($user['user_id'], $shift)) { ?>							
+			<span class="btn btn-default" disabled="disabled">Allocated</span>
+			<? } else { ?>
 			<a onclick="assign_new_staff(<?=$user['user_id'];?>)" class="btn btn-core"><i class="fa fa-plus"></i> Assign</a>
+			<? } ?>
 		</td>
 		<? } ?>
 	</tr>

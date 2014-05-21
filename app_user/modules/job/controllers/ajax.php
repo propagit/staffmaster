@@ -256,7 +256,7 @@ class Ajax extends MX_Controller {
 			$date = $this->session->userdata('job_date');
 		}
 		
-		# Otherwise, get the very next day
+		# If still no date selected, get the very next day
 		if (!$date) {
 			foreach($job_dates as $job_date)
 			{
@@ -271,7 +271,6 @@ class Ajax extends MX_Controller {
 		$this->session->set_userdata('job_date', $date);
 		
 		$data['total_date'] = count($job_dates);
-		
 		# Get previous and next days
 		$key = 0;
 		foreach($job_dates as $index => $value)
@@ -358,7 +357,7 @@ class Ajax extends MX_Controller {
 		{
 			$data['custom_date'] = strtotime($job_dates[0]['job_date']);
 		}
-		if ($this->input->post('date'))
+		if ($this->input->post('date') && $this->input->post('date') != 'all')
 		{
 			$data['custom_date'] = strtotime($this->input->post('date'));
 		}
