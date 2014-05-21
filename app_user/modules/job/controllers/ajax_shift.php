@@ -125,6 +125,22 @@ class Ajax_shift extends MX_Controller {
 		$this->load->view('shift/staff_hours_view', isset($data) ? $data : NULL);
 	}
 	
+	function load_paid_shift($shift_id)
+	{
+		$timesheet = $this->job_shift_model->get_shift_timesheet($shift_id);
+		$staff_paid = 0;
+		if ($timesheet['status_payrun_staff'] == PAYRUN_PAID) {
+			$staff_paid = $timesheet['total_amount_staff'];
+		}
+		$client_billed = 0;
+		if ($timesheet['status_invoice_client'] == INVOICE_PAID) {
+			$client_billed = $timesheet['total_amount_client'];
+		}
+		$data['staff_paid'] = $staff_paid;
+		$data['client_billed'] = $client_billed;
+		$this->load->view('shift/modal_paid_view', isset($data) ? $data : NULL);
+	}
+	
 	function search_staffs() 
 	{
 		$params = $this->input->post();

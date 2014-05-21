@@ -11,6 +11,7 @@ class Job_model extends CI_Model {
 	function get_job($job_id)
 	{
 		$this->db->where('job_id', $job_id);
+		$this->db->where('status >', JOB_DELETED);
 		$query = $this->db->get('jobs');
 		return $query->first_row('array');
 	}
@@ -97,6 +98,7 @@ class Job_model extends CI_Model {
 	function delete_job($job_id)
 	{
 		$this->db->where('job_id', $job_id);
-		return $this->db->delete('jobs');
+		$this->db->update('jobs', array('status' => JOB_DELETED));
+		#return $this->db->delete('jobs');
 	}
 }

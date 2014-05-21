@@ -17,6 +17,34 @@ class Ajax extends MX_Controller {
 		$this->is_client = modules::run('auth/is_client');
 	}
 	
+	function create_manual_invoice() {
+		$client_id = $this->input->post('client_id');
+		# Create invoice
+		$invoice_data = array(
+			'client_id' => $client_id,
+			'title' => 'Manual Invoice',
+			'issued_date' => date('Y-m-d H:i:s'),
+			'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60)
+		);
+		$invoice_id = $this->invoice_model->add_client_invoice($invoice_data);
+		
+		
+		$data_jobs = array();
+		# Insert invoice items
+		$jobs = $this->invoice_model->get_client_invoice($client_id);
+		foreach($jobs as $job) {
+			$data_jobs[] = array(
+				'value' => $job['job_id'],
+				'label' => $job['name']
+			);
+		}
+		$this->invoice_model->update_invoice($invoice_id, array(
+			'jobs' => serialize($data_jobs)
+		));
+		
+		echo $invoice_id;
+	}
+	
 	/**
 	*	@name: list_temp_invoices
 	*	@desc: ajax function to get the list of temporary client invoices

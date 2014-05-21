@@ -55,8 +55,23 @@ class Ajax extends MX_Controller {
 	function delete_job()
 	{
 		$job_id = $this->input->post('job_id');
-		# Delete all shift in that job
-		$this->job_shift_model->delete_job_shifts($job_id);
+		
+		# Only delete all shift in the future
+		$shifts = $this->job_shift_model->get_job_all_shifts($job_id);
+		$credits = 0;
+		foreach($shifts as $shift)
+		{
+			if ($shift['start_time'] >= time())
+			{
+				# Refund credit
+				$credits++;
+			}
+			$this->job_shift_model->delete_job_shift($shift['shift_id']);
+		}
+		$this->load->model('account_model');
+		$this->account_model->add_credits($credits);
+				
+		
 		# Delete all timesheet in that job
 		
 		# Delete job
@@ -659,7 +674,7 @@ class Ajax extends MX_Controller {
 		foreach($shifts as $shift_id)
 		{
 			$shift = $this->job_shift_model->get_job_shift($shift_id);
-			if (($shift['staff_id'] == NULL || $shift['staff_id'] == 0) && $shift['finish_time'] >= time())
+			if (($shift['staff_id'] == NULL || $shift['staff_id'] == 0) && $shift['start_time'] >= time())
 			{
 				# Refund credit
 				$credits++;

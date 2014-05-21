@@ -81,10 +81,8 @@ class Job_shift_model extends CI_Model {
 		);
 		$this->log_model->insert_log($log_data);
 		$this->db->where('shift_id', $shift_id);
+		$this->db->update('job_shifts', array('status' => SHIFT_DELETED));
 		#return $this->db->delete('job_shifts');
-		$this->db->update('job_shifts', array(
-			'status' => SHIFT_DELETED
-		));
 	}
 	
 	/**
@@ -176,6 +174,13 @@ class Job_shift_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	
+	function get_job_all_shifts($job_id)
+	{
+		$this->db->where('job_id', $job_id);
+		$query = $this->db->get('job_shifts');
+		return $query->result_array();
+	}
 		
 	/**
 	*	@name: get_job_shifts
@@ -262,6 +267,13 @@ class Job_shift_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function get_shift_timesheet($shift_id)
+	{
+		$this->db->where('shift_id', $shift_id);
+		$query = $this->db->get('job_shift_timesheets');
+		return $query->first_row('array');
+	}
+	
 	
 	function get_applied_staffs($shift_id)
 	{
@@ -281,14 +293,16 @@ class Job_shift_model extends CI_Model {
 	function delete_job_shifts($job_id)
 	{
 		$this->db->where('job_id', $job_id);
-		return $this->db->delete('job_shifts');	
+		$this->db->update('job_shifts', array('status' => SHIFT_DELETED));
+		#return $this->db->delete('job_shifts');	
 	}
 	
 	function delete_job_day_shift($job_id, $job_date)
 	{
 		$this->db->where('job_id', $job_id);
 		$this->db->where('job_date', $job_date);
-		return $this->db->delete('job_shifts');
+		$this->db->update('job_shifts', array('status' => SHIFT_DELETED));
+		#return $this->db->delete('job_shifts');
 	}
 	
 	/**

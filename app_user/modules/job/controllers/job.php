@@ -76,7 +76,7 @@ class Job extends MX_Controller {
 		$this->session->unset_userdata('job_date');
 		if (!$job_id)
 		{
-			redirect('job');
+			redirect('job/search');
 		}
 		if ($status != '') {
 			$this->session->set_userdata('shift_status_filter', $status);
@@ -87,6 +87,9 @@ class Job extends MX_Controller {
 			$this->session->set_userdata('job_date', $job_date);
 		}
 		$job = $this->job_model->get_job($job_id);
+		if (!$job) {
+			redirect('job/search');
+		}
 		$data['job'] = $job;
 		$data['client'] = $this->client_model->get_client($job['client_id']);
 		
@@ -220,6 +223,18 @@ class Job extends MX_Controller {
 			case SHIFT_UNASSIGNED:
 			default: $class = '';
 				break;
+		}
+		return $class;
+	}
+	
+	function shift_status($shift)
+	{
+		$class = $this->status_to_class($shift['status']);
+		$timesheet = $this->job_shift_model->get_shift_timesheet($shift['shift_id']);
+		if ($timesheet) {
+			if ($timesheet['status_payrun_staff'] == PAYRUN_PAID || $timesheet['status_invoice_client'] == INVOICE_PAID) {
+				$class = 'paid';
+			}
 		}
 		return $class;
 	}
