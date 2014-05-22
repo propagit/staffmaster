@@ -100,7 +100,7 @@
 <div id="selected-shift-email-info"></div>
 <input type="hidden" name="email_modal_header" value="Apply For Shift" />
 <input type="hidden" name="email_template_id" value="<?=APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID;?>" />
-<?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID);?>
+<?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID,ROSTER_UPDATE_EMAIL_TEMPLATE_ID);?>
 <input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
 </form>
 <!--end email-->
@@ -259,6 +259,7 @@ $(function(){
 		$('.selected_shifts:checked').each(function(){
 			shift_selected = true;
 			$('#selected-shift-email-info').append('<input type="hidden" name="selected_module_ids[]" value="'+$(this).val()+'" />');
+			$('#selected-shift-email-info').append('<input type="hidden" name="user_staff_selected_user_id[]" value="'+$(this).attr('data-staff-user-id')+'" />');
 		});
 		if (shift_selected) {
 			$.ajax({

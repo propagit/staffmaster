@@ -1,6 +1,6 @@
 <tr class="<?=modules::run('job/shift_status', $shift);?>
 				<?=($shift['is_alert'] && !$is_client) ? ' purple': '';?>" id="shift_<?=$shift['shift_id'];?>">
-	<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" /></td>
+	<td class="center"><input type="checkbox" class="selected_shifts" value="<?=$shift['shift_id'];?>" data-staff-user-id="<?=$shift['staff_id'];?>" /></td>
 	<td class="wp-date" width="80">
 		<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
 		<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
