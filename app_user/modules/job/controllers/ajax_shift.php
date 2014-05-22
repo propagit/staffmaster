@@ -680,13 +680,14 @@ class Ajax_shift extends MX_Controller {
 	*	@desc: function to email staff to apply for  work
 	*	@access: public
 	*	@param: ([via post]) email parameters such as body of email, user id, shift ids
-	*	
+	*	@update: now includes roster update email
 	*/
 	function email_apply_for_shift()
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
+		$this->load->model('roster/roster_model');
 		
 		//get post data 
 		$shift_ids = $this->input->post('selected_module_ids');
