@@ -88,7 +88,7 @@ class User_model extends CI_Model {
 	*/
 	function delete_multi_users($user_ids)
 	{
-		$sql = "UPDATE users SET status = 2 WHERE user_id IN (".$user_ids.")";
+		$sql = "UPDATE users SET status = " . CLIENT_DELETED . " WHERE user_id IN (".$user_ids.")";
 		return $this->db->query($sql);
 	}
 	
