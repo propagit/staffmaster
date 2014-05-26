@@ -15,7 +15,8 @@ class User_model extends CI_Model {
 		if ($user_id)
 		{
 			$this->db->where('user_id !=', $user_id);
-		}		
+		}
+		$this->db->where('status != ', USER_DELETED);
 		$this->db->where('email_address', $email);
 		$query = $this->db->get('users');
 		return $query->num_rows();
