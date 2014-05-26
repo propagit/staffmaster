@@ -3,11 +3,19 @@
 <p>Your search returned <b><?=count($payslips);?></b> results</p>
 
 <? if (count($payslips) > 0) { ?>
+<div id="nav_payslip">
+<?
+	# Action menu
+	$data = array(
+		array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
+	);
+	echo modules::run('common/menu_dropdown', $data, 'payslip-action', 'Actions');
+?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
-		<th class="center" width="20"><input type="checkbox" /></th>
+		<th class="center" width="20"><input type="checkbox" id="selected_all_payslips" /></th>
 		<th class="center">From</th>
 		<th class="center">To</th>
 		<th class="center">Processed</th>
@@ -25,7 +33,7 @@
 <tbody>
 <? foreach($payslips as $payslip) { ?>
 	<tr>
-		<td><input type="checkbox" /></td>
+		<td><input type="checkbox" class="selected_payslip" value="<?=$payslip['timesheet_id'];?>" /></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', $payslip['start_time']);?></span>
 			<span class="wk_date"><?=date('d', $payslip['start_time']);?></span>
@@ -57,3 +65,29 @@
 </tbody>
 </table>
 <? } ?>
+<script>
+$(function(){
+	var selected_payslips = new Array();
+	$('#selected_all_payslips').click(function(){
+		$('input.selected_payslip').prop('checked', this.checked);		
+	});
+	$('#menu-payslip-action ul li a[data-value="mark_deleted"]').confirmModal({
+		confirmTitle: 'Delete selected payslips',
+		confirmMessage: 'Are you sure you want to delete selected payslips?',
+		confirmCallback: function(e) {
+			selected_payslips.length = 0;
+			$('.selected_payslip:checked').each(function(){
+				selected_payslips.push($(this).val());
+			});
+			$.ajax({
+				type: "POST",
+				url: base_url + 'payrun/ajax/delete_payslips',
+				data: {timesheets: selected_payslips},
+				success: function(html) {
+					search_payslips();
+				}
+			})
+		}
+	});
+});
+</script>

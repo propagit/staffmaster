@@ -202,7 +202,7 @@ class Client extends MX_Controller {
 			array('value' => 'postcode', 'label' => 'Postcode'),
 			array('value' => 'state', 'label' => 'State'),
 			array('value' => 'country', 'label' => 'Country'),
-			array('value' => 'email', 'label' => 'Email Address'),
+			array('value' => 'email_address', 'label' => 'Email Address'),
 			array('value' => 'passowrd', 'label' => 'Password'),
 			array('value' => 'status', 'label' => 'Account Status'),
 			array('value' => 'external_client_id', 'label' => 'External Client ID')

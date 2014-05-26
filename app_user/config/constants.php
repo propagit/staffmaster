@@ -71,6 +71,7 @@ define('SHIFT_UNCONFIRMED', 1);
 define('SHIFT_CONFIRMED', 2);
 define('SHIFT_FINISHED', 3);
 
+define('TIMESHEET_DELETED', -1);
 define('TIMESHEET_PENDING', 0);
 define('TIMESHEET_SUBMITTED', 1);
 define('TIMESHEET_APPROVED', 2);
@@ -78,10 +79,12 @@ define('TIMESHEET_BATCHED', 3);
 define('TIMESHEET_PROCESSING', 4);
 define('TIMESHEET_PAID', 5);
 
+define('PAYRUN_DELETED', -1);
 define('PAYRUN_PENDING', 0);
 define('PAYRUN_READY', 1);
 define('PAYRUN_GENERATED', 2);
 define('PAYRUN_PAID', 3);
+
 define('INVOICE_DELETED', -1);
 define('INVOICE_PENDING', 0);
 define('INVOICE_READY', 1);
