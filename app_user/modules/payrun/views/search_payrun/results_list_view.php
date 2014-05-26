@@ -5,10 +5,20 @@
 <?=modules::run('common/create_pagination',count($total_payruns),PAYRUN_PER_PAGE,$current_page)?>
 </ul>
 <? if (count($payruns) > 0) { ?>
+<div id="nav_payrun2">
+<?
+	# Action menu
+	$data = array(
+		array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
+	);
+	echo modules::run('common/menu_dropdown', $data, 'payrun2-action', 'Actions');
+?>
+</div>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
+		<th class="center" width="20"><input type="checkbox" id="selected_all_payruns" /></th>
 		<th class="center" width="120">Processed <i class="fa fa-sort sort-result" sort-by="created_on"></i></th>
 		<th>Type</th>
 		<th class="center" width="100">Staff</th>
@@ -21,6 +31,7 @@
 <tbody>
 <? foreach($payruns as $payrun) { ?>
 	<tr>
+		<td><input type="checkbox" class="selected_payrun" value="<?=$payrun['payrun_id'];?>" /></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', strtotime($payrun['created_on']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($payrun['created_on']));?></span>
@@ -42,6 +53,30 @@
 
 <script>
 $(function(){
+	var selected_payruns = new Array();
+	$('#selected_all_payruns').click(function(){
+		$('input.selected_payrun').prop('checked', this.checked);		
+	});
+	$('#menu-payrun2-action ul li a[data-value="mark_deleted"]').confirmModal({
+		confirmTitle: 'Delete selected pay runs',
+		confirmMessage: 'Are you sure you want to delete selected pay runs?',
+		confirmCallback: function(e) {
+			selected_payruns.length = 0;
+			$('.selected_payrun:checked').each(function(){
+				selected_payruns.push($(this).val());
+			});
+			$.ajax({
+				type: "POST",
+				url: base_url + 'payrun/ajax/delete_payruns',
+				data: {payruns: selected_payruns},
+				success: function(html) {
+					reset_current_page();
+					search_payruns();
+				}
+			})
+		}
+	});
+	
 	$('.sort-result').on('click',function(){
 		var sort_order = $('#sort-order').val();
 		$('#sort-order').val(sort_order == 'asc' ? 'desc' : 'asc');

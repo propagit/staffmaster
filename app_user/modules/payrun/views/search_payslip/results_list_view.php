@@ -11,6 +11,7 @@
 	);
 	echo modules::run('common/menu_dropdown', $data, 'payslip-action', 'Actions');
 ?>
+</div>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>

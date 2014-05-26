@@ -43,6 +43,8 @@ class Payrun_model extends CI_Model {
 			$date_to = date('Y-m-d', strtotime($params['date_to']));
 			$this->db->where('created_on <=', $date_to);
 		}
+		
+		$this->db->where('status > ', PAYRUN_DELETED);
 		//sort
 		if(isset($params['sort_by']) && $params['sort_by'] != ''){
 			$this->db->order_by($params['sort_by'],$params['sort_order']);	
@@ -57,6 +59,11 @@ class Payrun_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function delete_payrun($payrun_id) {
+		$this->db->where('payrun_id', $payrun_id);
+		return $this->db->update('payruns', array('status' => PAYRUN_DELETED));
+	}
+	
 	function search_timesheets($params) {
 		$sql = "SELECT t.*, u.first_name, u.last_name, v.name FROM job_shift_timesheets t
 					LEFT JOIN users u ON t.staff_id = u.user_id
@@ -64,7 +71,8 @@ class Payrun_model extends CI_Model {
 		if (isset($params['type']) && $params['type'] != 0) {
 			$sql .= " LEFT JOIN user_staffs s ON t.staff_id = s.user_id";
 		}
-		$sql .= " WHERE t.status_payrun_staff = " . PAYRUN_PAID;
+		$sql .= " WHERE t.status > " . TIMESHEET_DELETED . "
+					AND t.status_payrun_staff = " . PAYRUN_PAID;
 		if (isset($params['venue']) && $params['venue'] != '') {
 			$sql .= " AND v.name LIKE '%" . $params['venue'] . "%'";
 		}
@@ -208,6 +216,11 @@ class Payrun_model extends CI_Model {
 		
 		$query = $this->db->get('job_shift_timesheets');
 		return $query->result_array();
+	}
+	
+	function delete_timesheet($timesheet_id) {
+		$this->db->where('timesheet_id', $timesheet_id);
+		return $this->db->update('job_shift_timesheets', array('status' => TIMESHEET_DELETED));
 	}
 	
 	/**

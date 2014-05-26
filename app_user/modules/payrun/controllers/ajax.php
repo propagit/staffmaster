@@ -287,6 +287,13 @@ class Ajax extends MX_Controller {
 		$this->load->view('search_payrun/results_list_view', isset($data) ? $data : NULL);
 	}
 	
+	function delete_payruns() {
+		$payrun_ids = $this->input->post('payruns');
+		foreach($payrun_ids as $payrun_id) {
+			$this->payrun_model->delete_payrun($payrun_id);
+		}
+	}
+	
 	function search_payslips() {
 		$params = $this->input->post();
 		$data['payslips'] = $this->payrun_model->search_timesheets($params);

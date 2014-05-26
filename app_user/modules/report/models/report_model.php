@@ -108,7 +108,8 @@ class Report_model extends CI_Model {
 	function get_staff_cost($month)
 	{
 		$sql = "SELECT sum(amount) as total_amount FROM payruns
-					WHERE created_on LIKE '$month%'";
+					WHERE status > " . PAYRUN_DELETED . "
+					AND created_on LIKE '$month%'";
 		$query = $this->db->query($sql);
 		$result = $query->first_row('array');
 		$amount = 0;
