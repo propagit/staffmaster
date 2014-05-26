@@ -31,7 +31,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button type="button" class="btn btn-core btn-block" id="btn-upload-venue-csv" data-loading-text="Uploading..." ><i class="fa fa-upload"></i> Upload</button>
+				<button type="button" class="btn btn-core btn-block" id="btn-upload-venue-csv" data-loading-text="Uploading..."><i class="fa fa-upload"></i> Upload</button>
 			</div>
 			<div class="clearfix"></div>
 			<div class="alert alert-danger hide" id="upload-result"></div>

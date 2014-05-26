@@ -319,6 +319,14 @@ class Ajax extends MX_Controller {
 		$this->invoice_model->delete_invoice($invoice_id);
 	}
 	
+	function delete_invoices() {
+		$invoice_ids = $this->input->post('invoices');
+		foreach($invoice_ids as $invoice_id)
+		{
+			$this->invoice_model->delete_invoice($invoice_id);
+		}
+	}
+	
 	/**
 	*	@name: search_invoices
 	*	@desc: ajax function to search invoices

@@ -93,7 +93,8 @@ class Invoice_model extends CI_Model {
 	*/
 	function delete_invoice($invoice_id) {
 		$this->db->where('invoice_id', $invoice_id);
-		return $this->db->delete('invoices');
+		return $this->db->update('invoices', array('status' => INVOICE_DELETED));
+		#return $this->db->delete('invoices');
 	}
 	
 	/**

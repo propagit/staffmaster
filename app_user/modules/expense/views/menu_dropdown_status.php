@@ -22,7 +22,7 @@
 		<li><a onclick="update_expense_status(<?=$expense['expense_id'];?>, <?=EXPENSE_DELETED;?>)">Mark as Deleted</a></li>
 	</ul>
 </div>
-<? } else if ($expense['status'] == EXPENSE_DELETED) { ?>
+<? } /* else if ($expense['status'] == EXPENSE_DELETED) { ?>
 <div class="btn-group" >
 	<button type="button" class="btn btn-danger menu-label">Deleted</button>
 	<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
@@ -34,4 +34,4 @@
 		<li><a onclick="update_expense_status(<?=$expense['expense_id'];?>, <?=EXPENSE_PAID;?>)">Mark as Paid</a></li>
 	</ul>
 </div>
-<? } ?>
+<? } */ ?>

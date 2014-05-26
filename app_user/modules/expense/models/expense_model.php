@@ -64,7 +64,7 @@ class Expense_model extends CI_Model {
 				LEFT JOIN job_shift_timesheets js ON js.timesheet_id = e.timesheet_id
 				LEFT JOIN users s ON s.user_id = e.staff_id
 				LEFT JOIN user_clients c ON c.user_id = e.client_id
-					WHERE 1=1";
+					WHERE e.status > " . EXPENSE_DELETED;
 		if (isset($params['expense_id']) && $params['expense_id'] != '') {
 			$sql .= " AND e.expense_id = " . $params['expense_id'];
 		}

@@ -131,9 +131,16 @@
 ?>
 <?php
 	}else{
-		if(modules::run('auth/is_admin')){
-			echo 'You have not created any custom attributes yet. To create custom attributes go to "Edit Attributes" and then "Custom Attributes"';
-		}
+		if(modules::run('auth/is_admin')){ ?>
+			<div class="row">
+                <div class="form-group">
+                    <label class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        You have not created any custom attributes yet. To create custom attributes <a href="<?=base_url();?>formbuilder" target="_blank">Click here</a>
+                    </div>
+                </div>
+            </div>
+<?		}
 	}
 
 ?>

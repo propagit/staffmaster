@@ -123,6 +123,25 @@ $(function(){
 			mark_as_paid($(this).val());
 		});	
 	});
+	$('#menu-invoice-action ul li a[data-value="mark_deleted"]').confirmModal({
+		confirmTitle: 'Delete selected invoices',
+		confirmMessage: 'Are you sure you want to delete selected invoices?',
+		confirmCallback: function(e) {
+			selected_invoices.length = 0;
+			$('.selected_invoice:checked').each(function(){
+				selected_invoices.push($(this).val());
+			});
+			$.ajax({
+				type: "POST",
+				url: base_url + 'invoice/ajax/delete_invoices',
+				data: {invoices: selected_invoices},
+				success: function(data) {
+					reset_current_page();
+					search_invoices();
+				}
+			})
+		}
+	});
 	
 	//get email modal
 	$('.email-invoice').on('click',function(){

@@ -56,7 +56,7 @@ class Expense extends MX_Controller {
 		$array = array(
 			array('value' => EXPENSE_UNPAID, 'label' => 'Unpaid'),
 			array('value' => EXPENSE_PAID, 'label' => 'Paid'),
-			array('value' => EXPENSE_DELETED, 'label' => 'Deleted')
+			#array('value' => EXPENSE_DELETED, 'label' => 'Deleted')
 		);
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}

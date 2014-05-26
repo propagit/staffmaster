@@ -82,6 +82,7 @@ define('PAYRUN_PENDING', 0);
 define('PAYRUN_READY', 1);
 define('PAYRUN_GENERATED', 2);
 define('PAYRUN_PAID', 3);
+define('INVOICE_DELETED', -1);
 define('INVOICE_PENDING', 0);
 define('INVOICE_READY', 1);
 define('INVOICE_GENERATED', 2);
