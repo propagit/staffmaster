@@ -32,7 +32,7 @@ $(function(){
 			success: function(html) {
 				$('#commit-result').html(html);
 				setTimeout(function(){
-					window.location = '<?=base_url();?>client/search';
+					//window.location = '<?=base_url();?>client/search';
 				}, 2000);				
 			}
 		})

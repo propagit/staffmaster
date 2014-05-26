@@ -180,7 +180,7 @@ class Ajax_import extends MX_Controller {
 			}
 			return ($value == '' || in_array(strtolower($value), $array));
 		}
-		if ($key == 'email')
+		if ($key == 'email_address')
 		{
 			$this->load->helper('email');
 			$valid = valid_email($value);
@@ -245,7 +245,7 @@ class Ajax_import extends MX_Controller {
 		{
 			return '';
 		}
-		if ($key == 'email')
+		if ($key == 'email_address')
 		{
 			return 'Email address is invalid or already been used';
 		}
