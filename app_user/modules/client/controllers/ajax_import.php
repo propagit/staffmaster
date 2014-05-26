@@ -249,6 +249,10 @@ class Ajax_import extends MX_Controller {
 		{
 			return 'Email address is invalid or already been used';
 		}
+		if ($key == 'status')
+		{
+			return 'Active or Inactive';
+		}
 		return true;
 	}
 }

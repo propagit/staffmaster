@@ -81,7 +81,7 @@ class Timesheet_model extends CI_Model {
 				FROM `job_shift_timesheets` t
 					LEFT JOIN `attribute_venues` v ON v.venue_id = t.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = t.role_id
-					LEFT JOIN `jobs` j ON j.job_id = t.job_id
+					JOIN `jobs` j ON j.job_id = t.job_id AND j.status > " . JOB_DELETED . "
 				WHERE t.status < " . TIMESHEET_BATCHED;
 		if (isset($params['client_id']) && $params['client_id'] != '') {
 			$sql .= " AND j.client_id = " . $params['client_id'];

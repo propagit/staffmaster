@@ -84,7 +84,9 @@ class Timesheet extends MX_Controller {
 				$total_expenses += $staff_cost;
 			}
 		}
+		
 		$paid_expenses = $this->expense_model->get_timesheet_expenses($timesheet_id);
+		
 		foreach($paid_expenses as $e) {
 			$staff_cost = $e['staff_cost'];
 			if ($e['tax'] == GST_ADD) {
@@ -92,7 +94,9 @@ class Timesheet extends MX_Controller {
 			}
 			$total_expenses += $staff_cost;
 		}
+		
 		$data['total_expenses'] = $total_expenses;
+		
 		$this->load->view('row_view', isset($data) ? $data : NULL);
 	}
 	

@@ -1,3 +1,6 @@
+<? if (count($staffs) == 0) { ?>
+<div class="alert alert-warning">No time sheet is ready for pay run.</div>
+<? } else { ?>
 <div class="table-responsive">
 <table class="table table-bordered table-hover table-middle">
 	<thead>
@@ -235,3 +238,4 @@ function revert_payrun(user_id,timesheet_id) {
 	});
 }
 </script>
+<? } ?>
