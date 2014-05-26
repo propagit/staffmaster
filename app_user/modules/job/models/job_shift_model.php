@@ -608,7 +608,7 @@ class Job_shift_model extends CI_Model {
 	*/
 	function get_other_working_staff($shift)
 	{
-		$sql = "SELECT staff_id 
+		$sql = "SELECT shift_id, staff_id 
 				FROM job_shifts 
 				WHERE job_id = ".$shift->job_id." 
 				AND job_date = '".$shift->job_date."' 

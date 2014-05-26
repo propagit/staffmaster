@@ -11,3 +11,13 @@
 .view-brief{
 	cursor:pointer;	
 }
+.wp-other-staff {
+	margin-right: 20px;
+	float: left;
+	text-align: center;
+	min-width: 120px;
+}
+.wp-other-staff .profile_photo {
+	margin: auto;
+	margin-bottom: 10px;
+}

@@ -47,7 +47,10 @@
 			<div class="row">
 		    	<div class="col-md-12">
 		            <ul class="nav nav-pills top-nav">
-                    	<li class="dropdown"><a href="#" id="brief-shift-info"></a></li>
+                    	<li class="dropdown"><a id="brief-shift-info"></a></li>
+                    	<? if (!modules::run('auth/is_client')) { ?>
+		            	<li><a id="btn-download-timesheet"><i class="fa fa-download"></i> Download Time sheet</a></li>
+		            	<? } ?>
 		            </ul>
 		        </div>
 		    </div>

@@ -120,7 +120,7 @@
     	<td class="info-sheet-label">Pay Rate:</td>
         <td class="info-sheet-bolder-txt">
         <?php if($payrate){?>
-		<?=$payrate['name'] . ' ($' .modules::run('attribute/payrate/get_minimum_payrate',$shift_info->payrate_id).') penalty rates may apply';?>
+		<?=$payrate['name'];?>
         <?php }else{
 			echo 'Not Assigned';	
 		}?>
@@ -172,13 +172,23 @@
     <h2 class="info-sheet-h2">Other Staff Working</h2>
     <?php 
 		foreach($other_working_staffs as $staff){ 
+		$user = modules::run('user/get_user', $staff->staff_id);
 	?>
-        <div class="avatar push">
+        <div class="wp-other-staff"><a href="<?=base_url();?>brief/view_brief/<?=$staff->shift_id;?>">
             <?=modules::run('staff/profile_image',$staff->staff_id);?>
-        </div>
+            <?=$user['first_name'] . ' ' . $user['last_name'];?>
+        </a></div>
     <?php 
 		}
 	}
 	?>
 <?php } ?>
 <br /><br />
+<script>
+$(function(){
+	$('#btn-download-timesheet').click(function(){
+		$(this).prop('target', '_blank');
+		window.open('<?=base_url();?>brief/download/<?=$shift_info->shift_id;?>');
+	})
+})
+</script>

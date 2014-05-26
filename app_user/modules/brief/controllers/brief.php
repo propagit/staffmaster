@@ -13,6 +13,7 @@ class Brief extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('brief_model');
+		$this->load->model('job/job_model');
 		$this->load->model('job/job_shift_model');
 	}
 	
@@ -37,6 +38,9 @@ class Brief extends MX_Controller {
 			case 'view_information_sheet':
 				$this->view_information_sheet($param);
 			break;
+			case 'download':
+					$this->download($param);
+				break;
 			default:
 				$this->list_view($param);
 			break;
@@ -179,6 +183,57 @@ class Brief extends MX_Controller {
 		$this->load->view('brief_viewer/view_information_sheet', isset($data) ? $data : NULL);	
 	}	
 
-
+	function download($shift_id,$redirect = true) {
+		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
+		$filename = "timesheet_" . $shift_id;
+		if(!file_exists(UPLOADS_PATH.'/pdf/'.$filename.'.pdf')){
+			$pdfFilePath = UPLOADS_PATH."/pdf/$filename.pdf";
+			
+			$dir = UPLOADS_PATH.'/pdf/';
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			 
+			ini_set('memory_limit','128M'); # boost the memory limit if it's low 
+			
+			/*
+			$invoice = $this->invoice_model->get_invoice($invoice_id);
+			$data['invoice'] = $invoice;
+			$data['client'] = modules::run('client/get_client', $invoice['client_id']);
+			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
+			$data['company_profile'] = modules::run('setting/company_profile');
+			$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true); 
+			*/
+			$shift = $this->job_shift_model->get_job_shift($shift_id);
+			$job = $this->job_model->get_job($shift['job_id']);
+			$venue = modules::run('attribute/venue/get_venue', $shift['venue_id']);
+			$supervisor = modules::run('user/get_user', $shift['supervisor_id']);
+			$data['job'] = $job;
+			$data['shift'] = $shift;
+			$data['venue'] = $venue;
+			$data['supervisor'] = $supervisor;
+			$html = $this->load->view('download_view', isset($data) ? $data : NULL, true);
+			
+					
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load(); 			
+			$stylesheet = file_get_contents('./assets/css/pdf.css');
+			$custom_styles = '<style>'.modules::run('custom_styles').'</style>';
+			//echo $custom_styles;exit();
+			$pdf->WriteHTML($stylesheet,1);
+			$pdf->WriteHTML($custom_styles,1);
+			$pdf->WriteHTML($html,2);
+			$pdf->Output($pdfFilePath, 'F'); // save to file 
+		}
+		
+		if($redirect){ 
+			redirect(UPLOADS_PATH."/pdf/$filename.pdf"); 
+		}
+	}
 
 }

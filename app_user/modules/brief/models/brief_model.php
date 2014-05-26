@@ -164,7 +164,7 @@ class Brief_model extends CI_Model {
 		}
 		if(!$total){
 			if(isset($params['current_page']) && $params['current_page'] != ''){
-				$offset = ($params['current_page']-1)*$records_per_page;
+				$offset = ($params['current_page']-1) * $records_per_page;
 				$this->db->limit($records_per_page,$offset);
 			}
 		}
