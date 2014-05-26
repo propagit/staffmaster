@@ -73,7 +73,8 @@ class Report_model extends CI_Model {
 	function get_expenses_cost($month)
 	{
 		$sql = "SELECT * FROM expenses
-						WHERE paid_on LIKE '$month%'";
+						WHERE status > " . EXPENSE_DELETED . " 
+						AND paid_on LIKE '$month%'";
 		$query = $this->db->query($sql);
 		$results = $query->result_array();
 		$amount = 0;
@@ -92,7 +93,8 @@ class Report_model extends CI_Model {
 	function get_invoice_amount($month)
 	{
 		$sql = "SELECT sum(total_amount) as total_amount FROM invoices
-					WHERE paid_on LIKE '$month%'";
+					WHERE status = " . INVOICE_PAID . "
+					AND paid_on LIKE '$month%'";
 		$query = $this->db->query($sql);
 		$result = $query->first_row('array');
 		$amount = 0;
@@ -128,6 +130,7 @@ class Report_model extends CI_Model {
 					FROM invoices i
 					LEFT JOIN user_clients c ON c.user_id = i.client_id
 					WHERE i.paid_on LIKE '$paid_on%'
+					AND i.status > " . INVOICE_DELETED . "
 					GROUP BY i.client_id
 					ORDER BY total_amount DESC
 					LIMIT 10";
@@ -164,7 +167,8 @@ class Report_model extends CI_Model {
 		}
 		$sql = "SELECT u.first_name, u.last_name, sum(t.total_minutes) as 'total_minutes'
 					FROM job_shift_timesheets t
-					LEFT JOIN users u ON u.user_id = t.staff_id
+						LEFT JOIN users u ON u.user_id = t.staff_id
+						JOIN jobs j ON j.job_id = t.job_id AND j.status > " . JOB_DELETED . "
 					WHERE job_date LIKE '$date%'
 					AND total_minutes > 0
 					GROUP BY t.staff_id

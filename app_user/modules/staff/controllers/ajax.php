@@ -41,19 +41,23 @@ class Ajax extends MX_Controller {
 	{
 		$input = $this->input->post();
 		if (!$input['first_name']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'first_name'));
+			echo json_encode(array('ok' => false, 'error_id' => 'first_name', 'msg' => 'First name is required'));
 			return;
 		}
 		if (!$input['last_name']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'last_name'));
+			echo json_encode(array('ok' => false, 'error_id' => 'last_name', 'msg' => 'Last name is required'));
 			return;
 		}
 		if (!$input['email_address'] || !valid_email($input['email_address'])) {
-			echo json_encode(array('ok' => false, 'error_id' => 'email_address'));
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Invalid email address'));
+			return;
+		}
+		if ($this->user_model->check_user_email($input['email_address'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Email address is already used!'));
 			return;
 		}
 		if (!$input['password']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'password'));
+			echo json_encode(array('ok' => false, 'error_id' => 'password', 'msg' => 'Password is required'));
 			return;
 		}
 		$user_data = array(
@@ -119,15 +123,19 @@ class Ajax extends MX_Controller {
 	{
 		$input = $this->input->post();
 		if (!$input['first_name']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'first_name'));
+			echo json_encode(array('ok' => false, 'error_id' => 'first_name', 'msg' => 'First name is required'));
 			return;
 		}
 		if (!$input['last_name']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'last_name'));
+			echo json_encode(array('ok' => false, 'error_id' => 'last_name', 'msg' => 'Last name is required'));
 			return;
 		}
 		if (!$input['email_address'] || !valid_email($input['email_address'])) {
-			echo json_encode(array('ok' => false, 'error_id' => 'email_address'));
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Invalid email address'));
+			return;
+		}
+		if ($this->user_model->check_user_email($input['email_address'], $input['user_id'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Email address is already used!'));
 			return;
 		}
 		
@@ -164,7 +172,8 @@ class Ajax extends MX_Controller {
 			'update_description' => 'personal details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
-		echo json_encode(array('ok' => true));	
+		echo json_encode(array('ok' => true));
+		
 		#echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
 	}
 	

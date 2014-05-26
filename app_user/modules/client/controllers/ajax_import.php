@@ -11,6 +11,7 @@ class Ajax_import extends MX_Controller {
 	{
 		parent::__construct();
 		$this->load->model('client_model');
+		$this->load->model('user/user_model');
 		$this->load->library('excel');
 	}
 	
@@ -182,7 +183,9 @@ class Ajax_import extends MX_Controller {
 		if ($key == 'email')
 		{
 			$this->load->helper('email');
-			return valid_email($value);
+			$valid = valid_email($value);
+			$used = $this->user_model->check_user_email($value);
+			return $valid && !$used;
 		}
 		if ($key == 'status')
 		{
@@ -244,7 +247,7 @@ class Ajax_import extends MX_Controller {
 		}
 		if ($key == 'email')
 		{
-			return 'name@example.com';
+			return 'Email address is invalid or already been used';
 		}
 		return true;
 	}

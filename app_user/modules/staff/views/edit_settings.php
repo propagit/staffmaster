@@ -20,6 +20,11 @@
 			?>
 		</div>
 	</div>
+	<div class="form-group hide" id="msg-update-setting">
+		<div class="col-md-4 col-md-offset-2">
+			<div class="alert alert-success">Staff Level Access has been updated!</div>
+		</div>
+	</div>
 	<? /*
 	<div class="form-group">
 		<label for="title" class="col-md-2 control-label">Conversations</label>
@@ -69,6 +74,10 @@ $(function(){
 			data: {user_id: <?=$staff['user_id']?>, level: level},
 			success: function(html) {
 				loaded($('#form-level-access'));
+				$('#msg-update-setting').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-update-setting').addClass('hide');
+				}, 2000);
 			}
 		})
 	})

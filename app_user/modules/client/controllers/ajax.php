@@ -17,15 +17,19 @@ class Ajax extends MX_Controller {
 	function add_client() {
 		$input = $this->input->post();
 		if (!$input['company_name']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'company_name'));
+			echo json_encode(array('ok' => false, 'error_id' => 'company_name', 'msg' => 'Company name is required'));
 			return;
 		}
 		if (!$input['email_address'] || !valid_email($input['email_address'])) {
-			echo json_encode(array('ok' => false, 'error_id' => 'email_address'));
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Invalid email address'));
+			return;
+		}
+		if ($this->user_model->check_user_email($input['email_address'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Email address is already used!'));
 			return;
 		}
 		if (!$input['password']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'password'));
+			echo json_encode(array('ok' => false, 'error_id' => 'password', 'msg' => 'Password is required'));
 			return;
 		}
 		$user_data = array(
@@ -80,6 +84,20 @@ class Ajax extends MX_Controller {
 	
 	function update_details()
 	{
+		$input = $this->input->post();
+		if (!$input['company_name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'company_name', 'msg' => 'Company name is required'));
+			return;
+		}
+		if (!$input['email_address'] || !valid_email($input['email_address'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Invalid email address'));
+			return;
+		}
+		if ($this->user_model->check_user_email($input['email_address'], $input['user_id'])) {
+			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Email address is already used!'));
+			return;
+		}
+		
 		$data = $this->input->post();
 		$user_data = array(
 			'status' => $data['status'],
@@ -103,7 +121,7 @@ class Ajax extends MX_Controller {
 			'abn' => $data['abn']
 		);
 		$this->client_model->update_client($data['user_id'], $client_data);
-		
+		echo json_encode(array('ok' => true));
 	}
 	
 	function add_department()

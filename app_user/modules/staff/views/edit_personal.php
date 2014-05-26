@@ -94,7 +94,7 @@
 			<input type="text" class="form-control" id="phone" name="phone" value="<?=$staff['phone'];?>"  />
 		</div>
 		<div id="f_email_address">
-	        <label for="email_address" class="col-md-2 control-label">Email <span class="text-danger">**</span></label>
+	        <label for="email_address" class="col-md-2 control-label">Email (Username) <span class="text-danger">**</span></label>
 			<div class="col-md-4">
 				<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>" />
 			</div>
@@ -153,6 +153,7 @@
 $(function(){
 	$('#btn_update_personal').click(function(){
 		$('.form-group').find('div[id^=f_]').removeClass('has-error');
+		$('#form_update_staff_personal').find('input').tooltip('destroy');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>staff/ajax/update_personal",
@@ -166,7 +167,11 @@ $(function(){
 				data = $.parseJSON(data);
 				if (!data.ok) {
 					$('#f_' + data.error_id).addClass('has-error');
-					$('#' + data.error_id).focus();
+					$('input[name="' + data.error_id + '"]').tooltip({
+						title: data.msg,
+						placement: 'bottom'
+					});
+					$('input[name="' + data.error_id + '"]').focus();
 				} else {
 					//$('#wp-rating').html(html);
 					$('#msg-update-personal').removeClass('hide');

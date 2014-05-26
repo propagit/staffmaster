@@ -182,6 +182,7 @@ $(function(){
 		var btn = $(this);
 		btn.button('loading');
 		$('.form-group').find('div[id^=f_]').removeClass('has-error');
+		$('#form_add_staff').find('input').tooltip('destroy');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>staff/ajax/add_staff",
@@ -191,7 +192,11 @@ $(function(){
 				if (!data.ok) {
 					btn.button('reset');
 					$('#f_' + data.error_id).addClass('has-error');
-					$('#' + data.error_id).focus();
+					$('input[name="' + data.error_id + '"]').tooltip({
+						title: data.msg,
+						placement: 'bottom'
+					});
+					$('input[name="' + data.error_id + '"]').focus();
 				} else {
 					window.location = '<?=base_url();?>staff/edit/' + data.user_id;
 				}

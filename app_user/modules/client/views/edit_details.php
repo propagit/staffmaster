@@ -3,15 +3,19 @@
 <input type="hidden" name="user_id" value="<?=$client['user_id'];?>" />
 <div class="row">
 	<div class="form-group">
-		<label for="company_name" class="col-md-2 control-label">Company Name <span class="text-danger">**</span></label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="company_name" name="company_name" data="required" value="<?=$client['company_name'];?>" />
+		<div id="f_company_name">
+			<label for="company_name" class="col-md-2 control-label">Company Name <span class="text-danger">**</span></label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="company_name" name="company_name" data="required" value="<?=$client['company_name'];?>" />
+			</div>
 		</div>
-		<label for="abn" class="col-md-2 control-label">ABN</label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="abn" name="abn" value="<?=$client['abn'];?>" />
+		<div id="f_abn">
+			<label for="abn" class="col-md-2 control-label">ABN</label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="abn" name="abn" value="<?=$client['abn'];?>" />
+			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 <div class="row">
 	<div class="form-group">
@@ -63,19 +67,23 @@
 </div>
 <div class="row">
 	<div class="form-group">
-		<label for="email_address" class="col-md-2 control-label">Email Address <span class="text-danger">**</span></label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="email_address" name="email_address" data="email" value="<?=$client['email_address'];?>" />
+		<div id="f_email_address">
+			<label for="email_address" class="col-md-2 control-label">Email (Username) <span class="text-danger">**</span></label>
+			<div class="col-md-4">
+				<input type="text" class="form-control" id="email_address" name="email_address" data="email" value="<?=$client['email_address'];?>" />
+			</div>
 		</div>
-		<label for="password" class="col-md-2 control-label">Password</label>
-		<div class="col-md-4">
-			<input type="password" class="form-control" id="password" name="password" />
+		<div id="f_password">
+			<label for="password" class="col-md-2 control-label">Password</label>
+			<div class="col-md-4">
+				<input type="password" class="form-control" id="password" name="password" />
+			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
 	<div class="form-group">
-		<label for="email_address" class="col-md-2 control-label">Account Status</label>
+		<label class="col-md-2 control-label">Account Status</label>
 		<div class="col-md-4">
 			<?=modules::run('client/field_select_status', 'status', (int)$client['status']);?>
 		</div>
@@ -97,21 +105,30 @@
 <script>
 $(function(){
 	$('#btn_update_client').click(function(){
-		var valid = help.validate_form('form_update_client');
-		
-		if(valid){
-			$.ajax({
-				type: "POST",
-				url: "<?=base_url();?>client/ajax/update_details",
-				data: $('#form_update_client').serialize(),
-				success: function(html) {
+		$('.form-group').find('div[id^=f_]').removeClass('has-error');
+		$('#form_update_client').find('input').tooltip('destroy');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>client/ajax/update_details",
+			data: $('#form_update_client').serialize(),
+			success: function(data) {
+				data = $.parseJSON(data);
+				if (!data.ok) {
+					$('#f_' + data.error_id).addClass('has-error');
+					$('input[name="' + data.error_id + '"]').tooltip({
+						title: data.msg,
+						placement: 'bottom'
+					});
+					$('input[name="' + data.error_id + '"]').focus();
+				} else {
 					$('#msg-update').removeClass('hide');
 					setTimeout(function(){
 						$('#msg-update').addClass('hide');
 					}, 2000);
-				}	
-			})
-		}
+				}
+				
+			}	
+		})
 	})	
 })
 </script>

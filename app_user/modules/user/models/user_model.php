@@ -10,6 +10,17 @@ class User_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function check_user_email($email, $user_id = null)
+	{
+		if ($user_id)
+		{
+			$this->db->where('user_id !=', $user_id);
+		}		
+		$this->db->where('email_address', $email);
+		$query = $this->db->get('users');
+		return $query->num_rows();
+	}
+	
 	function get_user_client($user_id)
 	{
 		$sql = "SELECT u.*, uc.*

@@ -87,7 +87,7 @@
 			<div class="row">
 				<div class="form-group">
 					<div id="f_email_address">
-						<label for="email_address" class="col-md-2 control-label">Email Address <span class="text-danger">**</span></label>
+						<label for="email_address" class="col-md-2 control-label">Email (Username) <span class="text-danger">**</span></label>
 						<div class="col-md-4">
 							<input type="text" class="form-control" id="email_address" name="email_address" />
 						</div>
@@ -128,6 +128,8 @@ $(function(){
 	$('#btn_add_client').click(function(){
 		var btn = $(this);
 		btn.button('loading');
+		$('.form-group').find('div[id^=f_]').removeClass('has-error');
+		$('#form_add_client').find('input').tooltip('destroy');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>client/ajax/add_client",
@@ -137,7 +139,11 @@ $(function(){
 				if (!data.ok) {
 					btn.button('reset');
 					$('#f_' + data.error_id).addClass('has-error');
-					$('#' + data.error_id).focus();
+					$('input[name="' + data.error_id + '"]').tooltip({
+						title: data.msg,
+						placement: 'bottom'
+					});
+					$('input[name="' + data.error_id + '"]').focus();
 				} else {
 					window.location = '<?=base_url();?>client/edit/' + data.user_id;
 				}
