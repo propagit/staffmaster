@@ -31,7 +31,7 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<button type="button" class="btn btn-core btn-block" id="btn-upload-venue-csv"><i class="fa fa-upload"></i> Upload</button>
+				<button type="button" class="btn btn-core btn-block" id="btn-upload-venue-csv" data-loading-text="Uploading..." ><i class="fa fa-upload"></i> Upload</button>
 			</div>
 			<div class="clearfix"></div>
 			<div class="alert alert-danger hide" id="upload-result"></div>
@@ -45,6 +45,8 @@
 <script>
 $(function(){
 	$('#btn-upload-venue-csv').click(function(){
+		var btn = $(this)
+		btn.button('loading')
 		$('#upload-venue-csv-form').ajaxSubmit(function(json){
 			json = $.parseJSON(json);
 			if (!json.ok) {
@@ -55,6 +57,7 @@ $(function(){
 				$('#upload-result').addClass('hide');
 				configure_import(json.upload_id);
 			}
+			btn.button('reset')
 		});
 		return false;
 	});
