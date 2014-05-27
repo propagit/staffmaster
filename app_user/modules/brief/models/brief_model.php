@@ -2,6 +2,24 @@
 
 class Brief_model extends CI_Model {
 	
+	function get_brief_shifts($job_id, $venue_id, $job_date)
+	{
+		$sql = "SELECT u.first_name, u.last_name,
+						r.name as role_name,
+						j.start_time, j.break_time, j.finish_time
+					FROM job_shifts j
+						LEFT JOIN users u ON u.user_id = j.staff_id
+						LEFT JOIN attribute_roles r ON r.role_id = j.role_id
+					WHERE j.job_id = $job_id
+					AND j.venue_id = $venue_id 
+					AND j.job_date = '$job_date'
+					AND j.status > " . SHIFT_DELETED . "
+					AND j.status < " . SHIFT_FINISHED . "
+					ORDER BY j.start_time ASC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	/**
 	*	@name: add_brief
 	*	@desc: Performs Database operation - insert data to the table brief

@@ -213,10 +213,13 @@ class Brief extends MX_Controller {
 			$job = $this->job_model->get_job($shift['job_id']);
 			$venue = modules::run('attribute/venue/get_venue', $shift['venue_id']);
 			$supervisor = modules::run('user/get_user', $shift['supervisor_id']);
+			$shifts = $this->brief_model->get_brief_shifts($shift['job_id'], $shift['venue_id'], $shift['job_date']);
+			$data['company_profile'] = modules::run('setting/company_profile');
 			$data['job'] = $job;
 			$data['shift'] = $shift;
 			$data['venue'] = $venue;
 			$data['supervisor'] = $supervisor;
+			$data['shifts'] = $shifts;
 			$html = $this->load->view('download_view', isset($data) ? $data : NULL, true);
 			
 					
