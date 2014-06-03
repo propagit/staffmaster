@@ -55,6 +55,13 @@
                  </div>
              </div>
              <input type="hidden" value="support" name="conversation_type" />
+             
+             <div class="form-group add-top-margin-20 hide"  id="msg-conversation-started-successfully">
+               <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-4 modal-add-left-padding">
+                     <div class="alert alert-success"><i class="fa fa-check"></i> &nbsp; Support Ticked Successfully Lodged</div>
+                </div>
+            </div>
         </form>
 		
         <div id="load-spports">

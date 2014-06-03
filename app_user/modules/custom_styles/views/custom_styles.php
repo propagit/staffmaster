@@ -183,3 +183,7 @@ span.mob-menu-head{
     border-color:<?=$primary_colour?>;
 }
 
+/* login */
+.login-btn:hover{
+	border-color:<?=$primary_colour?> !important;
+}

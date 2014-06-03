@@ -84,7 +84,16 @@
 $(function(){
 	$('#btn_search_clients').click(function(){
 		search_clients();
-	})
+	});
+	
+	//search clients on key press
+	$('#keyword').on('keyup',function(){
+		var keyword = $(this).val();
+		if(keyword.length > 1){
+			search_clients();	
+		}
+	});
+	
 	
 	//prevent form sumbit on enter and instead do ajax search
 	$('#form_search_clients').bind("keyup keypress", function(e) {

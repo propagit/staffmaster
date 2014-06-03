@@ -6,6 +6,7 @@ class Auth_model extends CI_Model {
 	{
 		$this->db->where('email_address', $username);
 		$this->db->where('password', md5($password));
+		$this->db->where('status',1);
 		$query = $this->db->get('users');
 		return $query->first_row('array');
 	}

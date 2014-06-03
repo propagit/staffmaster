@@ -49,7 +49,7 @@ body {
 	font-family:'Lato', sans-serif;
 }
 button.btn-info {
-	background: #00bbf8;
+	/* background: #00bbf8; */
 }
 i {
 	margin-right: 5px;
@@ -60,8 +60,11 @@ i {
 .login-btn{
 	background-repeat:repeat;
 	background-color:#00b1eb;
-	background-image:url(../img/core/nav-texture-bg.png); 
+	background-image: url(../img/core/nav-texture-bg.png);
 	border-color:rgba(255,255,255,0.25);
+}
+.login-btn:hover{
+	background-image:none;	
 }
 .btn-social{
 	margin-bottom:15px;	
