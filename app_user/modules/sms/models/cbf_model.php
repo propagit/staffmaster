@@ -1,7 +1,6 @@
-<?php
-/* This model interact with SMS gateway CBF to send SMS */
-class Cbf_model extends CI_Model {
-	
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Cbf_model extends CI_Model {	
 	function test() {
 		$destination = '61402133066';
 		$source = '447624812938';

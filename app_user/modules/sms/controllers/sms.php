@@ -5,7 +5,7 @@ class Sms extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Cbf_model');
+		$this->load->model('cbf_model');
 	}
 	
 	function test()
