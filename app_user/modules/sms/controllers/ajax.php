@@ -44,8 +44,7 @@ class Ajax extends MX_Controller {
 					$msg = str_replace('{Date}', $date, $msg);
 					$msg = str_replace('{Time}', $time, $msg);
 					$msg = str_replace('{Venue}', $venue, $msg);
-					$msg = str_replace('{Y}', 'Y' . $code, $msg);
-					$msg = str_replace('{N}', 'N' . $code, $msg);
+					$msg = str_replace('{code}', $code, $msg);
 					$company = modules::run('setting/company_profile');
 					$msg = str_replace('{CompanyName}', $company['company_name'], $msg);
 					$twoway = true;
