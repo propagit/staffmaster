@@ -26,12 +26,14 @@ $(function(){
 	});
 	updateTextboxCounter();
 	$('#view-sms-receiver-list').click(function(){
+		setTimeout(function(){
+			$('#sms-receiver-list').html(html);
+		}, 500);
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>sms/ajax/list_receivers",
 			data: {shift_ids: '<?=implode(',', $selected_module_ids);?>'},
 			success: function(html) {
-				$('#sms-receiver-list').html(html);
 			}
 		})
 	})
