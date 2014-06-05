@@ -77,7 +77,7 @@ class Ajax extends MX_Controller {
 			'state' => $input['state'],
 			'postcode' => $input['postcode'],
 			'country' => $input['country'],
-			'phone' => $input['phone'],
+			#'phone' => $input['phone'],
 			'mobile' => $input['mobile']			
 		);
 		$user_id = $this->user_model->insert_user($user_data);

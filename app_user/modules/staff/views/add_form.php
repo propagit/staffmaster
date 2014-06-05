@@ -120,7 +120,7 @@
 					</div>
 					<label for="phone" class="col-md-2 control-label">Mobile Phone</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" id="phone" name="phone" />
+						<input type="text" class="form-control" id="phone" name="mobile" />
 					</div>
 				</div>
 			</div>

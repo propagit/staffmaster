@@ -9,6 +9,7 @@ Dear {FirstName}. Can you work as a {Role} at {Time}, on {Date} at {Venue}. Repl
 (Selected Recipients: <b id="total-selected-receiver"><?=count($selected_module_ids);?></b>)
 &nbsp;&nbsp;
 <a href="#" id="view-sms-receiver-list"><i class="fa fa-eye"> </i> View Send List</a>
+<div class="alert alert-success add-top-margin-20 hide" id="msg-sms-sent-successfully"><i class="fa fa-check"></i> &nbsp; SMS Successfully Sent</div>
 </form>
 <div id="sms-receiver-list" class="email-modal-receiver-list"></div>
 <script>
@@ -19,7 +20,7 @@ $(function(){
 			url: "<?=base_url();?>sms/ajax/sendsms",
 			data: $('#send-sms-form').serialize(),
 			success: function(html) {
-				alert(html);
+				$('#msg-sms-sent-successfully').removeClass('hide');
 			}
 		})
 	});
