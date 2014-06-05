@@ -15,25 +15,25 @@ Dear {FirstName}. Can you work as a {Role} at {Time}, on {Date} at {Venue}. Repl
 <script>
 $(function(){
 	$('#btn-send-sms').click(function(){
+		setTimeout(function(){
+			$('#msg-sms-sent-successfully').removeClass('hide');
+		}, 200);
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>sms/ajax/sendsms",
 			data: $('#send-sms-form').serialize(),
 			success: function(html) {
-				$('#msg-sms-sent-successfully').removeClass('hide');
 			}
 		})
 	});
 	updateTextboxCounter();
 	$('#view-sms-receiver-list').click(function(){
-		setTimeout(function(){
-			$('#sms-receiver-list').html(html);
-		}, 500);
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>sms/ajax/list_receivers",
 			data: {shift_ids: '<?=implode(',', $selected_module_ids);?>'},
 			success: function(html) {
+				$('#sms-receiver-list').html(html);
 			}
 		})
 	})
