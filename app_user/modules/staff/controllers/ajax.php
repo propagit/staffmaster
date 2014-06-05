@@ -77,7 +77,8 @@ class Ajax extends MX_Controller {
 			'state' => $input['state'],
 			'postcode' => $input['postcode'],
 			'country' => $input['country'],
-			'phone' => $input['phone']					
+			'phone' => $input['phone'],
+			'mobile' => $input['mobile']			
 		);
 		$user_id = $this->user_model->insert_user($user_data);
 		
@@ -153,6 +154,7 @@ class Ajax extends MX_Controller {
 			'postcode' => $data['postcode'],
 			'country' => $data['country'],
 			'phone' => $data['phone'],
+			'mobile' => $input['mobile'],
 			#'status' => $data['status'],
 			'modified_on' => date('Y-m-d H:i:s')
 		);

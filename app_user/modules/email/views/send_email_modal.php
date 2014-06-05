@@ -72,10 +72,8 @@
                         
                         		
                         <div class="tab-pane" id="send-sms-modal-window">
-                        	<h4 class="modal-title">Send SMS feature comming soon. </h4>
-                            <p>Don't forget to check the latest Staff Master Updates.</p>
+                        	<?=modules::run('sms/msg_form_view', $selected_module_ids);?>
                         </div>
-
                     </div>
                     
                 	

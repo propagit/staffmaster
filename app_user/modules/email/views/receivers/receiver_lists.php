@@ -3,6 +3,7 @@
     <thead>
     <tr class="heading">
         <th class="left">Receiver</th>
+        <th class="left col-md-4">Email</th>
         <th class="center col-md-1">Remove</th>
     </tr>
     </thead>
@@ -16,6 +17,7 @@
 	?>
     	<tr id="receiver-list-tr-<?=$user->user_id;?>">
        		<td class="left"><?=($full_name != '' ? $full_name : $user->email_address);?></td>
+        	<td><?=$user->email_address;?></td>
         	<td class="center col-md-1"><i class="fa fa-times delete-receiver" data-receiver-id="<?=$user->user_id;?>"></i></td>
    		</tr>
     <?php

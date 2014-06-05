@@ -24,6 +24,25 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/helpers/number_helper.html
  */
+if ( ! function_exists('mobile_phone'))
+{
+	function mobile_phone($mobile)
+	{
+		$mobile = str_replace("+","",$mobile);
+		$mobile = str_replace(".","",$mobile);
+		$mobile = str_replace("(","",$mobile);
+		$mobile = str_replace(")","",$mobile);
+		$mobile = str_replace("-","",$mobile);
+		$mobile = str_replace(" ","",$mobile);
+		if (substr($mobile,0,2) == "04" && strlen($mobile) == 10) {
+			$mobile = substr($mobile,1);
+			$mobile = "61".$mobile;		
+		} else if (substr($mobile,0,1) == "4" && strlen($mobile) == 9) {
+			$mobile = "61".$mobile;
+		}
+		return $mobile;		
+	}
+}
 
 if ( ! function_exists('money_format'))
 {
