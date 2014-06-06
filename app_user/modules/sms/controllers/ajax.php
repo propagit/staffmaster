@@ -9,15 +9,11 @@ class Ajax extends MX_Controller {
 	}
 	
 	function list_receivers() {
-		$shift_ids = explode(',', $this->input->post('shift_ids'));
+		$user_ids = explode(',', $this->input->post('user_ids'));
 		$users = array();
-		if(count($shift_ids) > 0){
-			foreach($shift_ids as $shift_id) {
-				$shift = modules::run('job/shift/get_shift', $shift_id);
-				if ($shift['staff_id']) {
-					$users[] = modules::run('user/get_user', $shift['staff_id']);
-				}
-				
+		if(count($user_ids) > 0){
+			foreach($user_ids as $user_id) {
+				$users[] = modules::run('user/get_user', $user_id);
 			}
 		}
 		$data['users'] = $users;

@@ -14,7 +14,8 @@ class Sms extends MX_Controller {
 		var_dump($a);
 	}
 	
-	function msg_form_view($selected_module_ids) {
+	function msg_form_view($selected_user_ids, $selected_module_ids) {
+		$data['selected_user_ids'] = json_decode($selected_user_ids);
 		$data['selected_module_ids'] = json_decode($selected_module_ids);
 		$this->load->view('msg_form_view', isset($data) ? $data : NULL);
 	}	

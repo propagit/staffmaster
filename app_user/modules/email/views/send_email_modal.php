@@ -72,7 +72,7 @@
                         
                         		
                         <div class="tab-pane" id="send-sms-modal-window">
-                        	<?=modules::run('sms/msg_form_view', $selected_module_ids);?>
+                        	<?=modules::run('sms/msg_form_view', $selected_user_ids, $selected_module_ids);?>
                         </div>
                     </div>
                     

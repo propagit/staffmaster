@@ -1,12 +1,13 @@
 <form id="send-sms-form">
-<input type="hidden" name="selected_shift_ids" value="<?=implode(',', $selected_module_ids);?>" />
+<input type="hidden" name="selected_user_ids" value="<?=implode(',', $selected_user_ids);?>" />
+<input type="hidden" name="selected_shift_ids" value="<?=($selected_module_ids) ? implode(',', $selected_module_ids) : '';?>" />
 <textarea class="form-control" rows="4" name="msg" onkeyup="updateTextboxCounter();" onkeydown="updateTextboxCounter();" onkeypress="updateTextboxCounter();">
 Dear {FirstName}. Can you work as a {Role} at {Time}, on {Date} at {Venue}. Reply Y {code} for yes or N {code} for no. {CompanyName}
 </textarea><br />
 <p class="step-desc" id="message-desc">Note: 1 SMS message = 160 characters (Current number of characters: <span id="currentChars"><b>0</b> character, <b>0</b> SMS message</span>)</p>
 <button type="button" class="btn btn-core" id="btn-send-sms"><i class="fa fa-mobile-phone"></i> Send SMS</button>
 &nbsp;&nbsp;
-(Selected Recipients: <b id="total-selected-receiver"><?=count($selected_module_ids);?></b>)
+(Selected Recipients: <b id="total-selected-receiver"><?=count($selected_user_ids);?></b>)
 &nbsp;&nbsp;
 <a href="#" id="view-sms-receiver-list"><i class="fa fa-eye"> </i> View Send List</a>
 <div class="alert alert-success add-top-margin-20 hide" id="msg-sms-sent-successfully"><i class="fa fa-check"></i> &nbsp; SMS Successfully Sent</div>
@@ -31,7 +32,7 @@ $(function(){
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>sms/ajax/list_receivers",
-			data: {shift_ids: '<?=implode(',', $selected_module_ids);?>'},
+			data: {user_ids: '<?=implode(',', $selected_user_ids);?>'},
 			success: function(html) {
 				$('#sms-receiver-list').html(html);
 			}
