@@ -5,8 +5,8 @@ class Cbf_model extends CI_Model {
 		$destination = '61402133066';
 		$source = '447624812938';
 		$message = 'test sms';
-		$twoway = true;
-		$this->send_sms($destination, $source, $message,$twoway);
+		$twoway = false;
+		return $this->send_sms($destination, $source, $message,$twoway);
 	}
 	
 	function send_sms ($destination, $source, $message,$twoway) {
