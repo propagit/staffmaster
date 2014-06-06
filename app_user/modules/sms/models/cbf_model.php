@@ -92,7 +92,7 @@ class Cbf_model extends CI_Model {
 		} else {
 			$msg = urlencode($sms->message);
 		}
-	
+		
 		$request = "http://sms1.cardboardfish.com:9001/HTTPSMS?S={$systemtype}&UN=${username}&P=${password}&DA={$sms->dest_addr}&SA={$sms->source_addr}&M=${msg}";
 		if (!$sms->source_addr_ton) {
 			preg_match("/\w/", $sms->source_addr, $matches);
@@ -100,6 +100,7 @@ class Cbf_model extends CI_Model {
 				$sms->setST("5");
 			}
 		}
+		return $request;
 		# echo "$request\n";
 		$request .= $this->includeif ($sms->source_addr_ton, "&ST=");
 		$request .= $this->includeif ($dcs, "&DC=");
