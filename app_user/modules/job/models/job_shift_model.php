@@ -613,7 +613,7 @@ class Job_shift_model extends CI_Model {
 				WHERE job_id = ".$shift->job_id." 
 				AND job_date = '".$shift->job_date."' 
 				AND venue_id = ".$shift->venue_id."
-				AND staff_id != ".$shift->staff_id."
+				AND staff_id != ".$shift->staff_id." AND staff_id > 0 
 				AND (start_time >= '".$shift->start_time."' AND finish_time <= '".$shift->finish_time."')";
 		return $this->db->query($sql)->result();
 	}
