@@ -100,7 +100,6 @@ class Cbf_model extends CI_Model {
 				$sms->setST("5");
 			}
 		}
-		return $request;
 		# echo "$request\n";
 		$request .= $this->includeif ($sms->source_addr_ton, "&ST=");
 		$request .= $this->includeif ($dcs, "&DC=");
@@ -112,7 +111,7 @@ class Cbf_model extends CI_Model {
 		$request .= $this->includeif ($sms->local_time, "&LT=");
 		# echo "$request\n";
 		$ch = curl_init($request);
-	
+		return $request;
 		if (!$ch) {
 			$errstr = "Could not connect to server.";
 			return false;
