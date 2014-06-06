@@ -130,7 +130,8 @@ $(function(){
 						//hide loading image
 						$('.animation_image').hide(); //hide loading image once data is received
 						track_load++; //loaded group increment
-						loading = false;	
+						loading = false;
+						init_inline_edit();
 					}).fail(function(xhr, ajaxOptions, thrownError) { //any errors?
 						alert(thrownError); //alert with HTTP error
 						$('.animation_image').hide(); //hide loading image
