@@ -8,22 +8,6 @@ class Sms extends MX_Controller {
 		$this->load->model('cbf_model');
 	}
 	
-	public function index($method='', $param='')
-	{
-		switch($method)
-		{
-			case 'test':
-					$this->test();
-				break;
-			case 'info':
-					phpinfo();
-				break;
-			default:					
-				break;
-		}
-		
-	}
-	
 	function test()
 	{
 		$a = $this->cbf_model->test();
