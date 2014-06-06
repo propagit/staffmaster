@@ -111,14 +111,14 @@ class Cbf_model extends CI_Model {
 		$request .= $this->includeif ($sms->local_time, "&LT=");
 		# echo "$request\n";
 		$ch = curl_init($request);
-		return $request;
+		#return $request;
 		if (!$ch) {
 			$errstr = "Could not connect to server.";
 			return false;
 		}
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		$serverresponse = curl_exec($ch);
-	
+		return $serverresponse;
 		if (!$serverresponse) {
 			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			$errstr = "HTTP error: $code\n";
