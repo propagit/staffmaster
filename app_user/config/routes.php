@@ -62,7 +62,7 @@ $route['forgot-password'] = 'forgot_password';
 
 
 
-$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard');
+$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard'|'sms');
 $path = implode('|', $modules);
 $route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
 $route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
