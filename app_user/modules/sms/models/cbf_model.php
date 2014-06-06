@@ -35,8 +35,9 @@ class Cbf_model extends CI_Model {
 			$batchda = implode(",", $batch);
 			# Need to somehow initialize this sms object
 			$sms = new CBFSMS($batchda, $source, $message, $source_addr_ton, $dcs, $dr, $udh, $user_reference, $validity_period, $delay_until, $local_time);
-			return $sms;
-			$batchreplies = $this->send_sms_object($sms);			
+			$batchreplies = $this->send_sms_object($sms);
+			return $batchreplies; # Debug
+				
 			if (!$batchreplies) {
 				if ($errcode == -15) {
 					$errcode = 0;
