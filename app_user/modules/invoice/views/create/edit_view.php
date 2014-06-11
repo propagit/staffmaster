@@ -111,7 +111,7 @@
             	<td>
             		<input type="text" class="form-control" name="title" placeholder="Enter item title" />
             	</td>
-            	<td align="right">
+            	<td>
 	            	<?=modules::run('common/field_select_gst', 'tax');?>
             	</td>
             	<td>
