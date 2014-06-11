@@ -63,7 +63,7 @@
 		
 	</div>
 </div>
-<div class="row">
+<div class="row" id="tfn_extra">
 	<div class="form-group">
 		<label class="col-lg-4 control-label">Are you an Australian Resident?</label>
 		<div class="col-lg-1">
@@ -148,6 +148,8 @@
 			?>
 		</div>
 	</div>
+</div>
+<div class="row">
 	<div class="form-group">
 		<div class="col-lg-4 col-lg-offset-4">
 			<div class="alert alert-success hide" id="msg-update-financial"><i class="fa fa-check"></i> &nbsp; Staff financial details has been updated successfully!</div>
@@ -212,13 +214,15 @@ function load_f_employed()
 	
 	if (is_f_empoyed == 1) {
 		$('#f_tfn_number').show();
-		$('#f_abn_number').show();
-		$('#f_gst').show();
+		$('#tfn_extra').show();
+		$('#f_abn_number').hide();
+		$('#f_gst').hide();
 	} else
 	{
 		$('#f_tfn_number').hide();
+		$('#tfn_extra').hide();
 		$('#f_abn_number').show();
-		//$('#f_gst').hide();
+		$('#f_gst').show();
 	}
 }
 </script>
