@@ -17,6 +17,7 @@ $(function() {
 	list_temp_invoices();
 	list_clients();
 	$('#btn-manual-invoice').click(function(){
+		var invoiceWindow = window.open('', 'Manual Invoice');
 		$('#f_client_id').removeClass('has-error');
 		var client_id = $('#invoice_client_id').val();
 		if (!client_id) {
@@ -27,7 +28,7 @@ $(function() {
 				url: "<?=base_url();?>invoice/ajax/create_manual_invoice",
 				data: {client_id: client_id},
 				success: function(html) {
-					window.open('<?=base_url();?>invoice/edit/' + html);
+					invoiceWindow.location.href = '<?=base_url();?>invoice/edit/' + html;
 				}
 			})
 		}

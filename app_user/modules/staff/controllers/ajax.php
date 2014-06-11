@@ -195,6 +195,7 @@ class Ajax extends MX_Controller {
 			'f_tfn' => $data['f_tfn'],
 			'f_employed' => $data['f_employed'],
 			'f_abn' => $data['f_abn'],
+			'f_require_gst' => $data['f_require_gst'],
 			'update_description' => 'financial details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);

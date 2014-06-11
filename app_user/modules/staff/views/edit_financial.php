@@ -218,7 +218,7 @@ function load_f_employed()
 	{
 		$('#f_tfn_number').hide();
 		$('#f_abn_number').show();
-		$('#f_gst').hide();
+		//$('#f_gst').hide();
 	}
 }
 </script>
