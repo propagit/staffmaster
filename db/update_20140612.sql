@@ -1,2 +1,2 @@
-INSERT INTO `user_db_user`.`export_fields` (`order`, `object`, `format`, `value`, `label`) VALUES (NULL, 'staff', 'single', 'mobile', 'Mobile');
-INSERT INTO `user_db_user`.`export_fields` (`order`, `object`, `format`, `value`, `label`) VALUES (NULL, 'staff', 'single', 'password', 'Password');
+INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALUES (NULL, 'staff', 'single', 'mobile', 'Mobile');
+INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALUES (NULL, 'staff', 'single', 'password', 'Password');
