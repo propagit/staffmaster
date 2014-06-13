@@ -1,0 +1,1 @@
+INSERT INTO `user_db_user`.`export_fields` (`order`, `object`, `format`, `value`, `label`) VALUES (NULL, 'staff', 'single', 'mobile', 'Mobile');

@@ -71,6 +71,7 @@ a.default {
 	border-radius:4px;
 	float: left;
 	width:100%;
+	padding-bottom: 10px;
 }
 .build-bottom-padding{
 	padding-bottom:20px;	
@@ -81,7 +82,6 @@ a.default {
 }
 .right{
 	right: -235px;
-	top: -80px;
 }
 .popover{ 
 	left:auto;
@@ -120,6 +120,12 @@ a.default {
 .custom-attributes .popover-content .btn{
 	margin-right: 10px;
 	float:left;
+}
+.btn-delete-field {
+	float: right;
+	height: 30px;
+	position: relative;
+	margin-bottom: -30px;
 }
 .custom-attributes .popover-content .control-label{
 	padding:6px 0 3px 0;

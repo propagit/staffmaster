@@ -827,7 +827,9 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 (72, 'staff', 'single', 'super_employee_id', 'Super Employee ID Number'),
 (73, 'staff', 'single', 'super_fund_name', 'Super Fund Name'),
 (74, 'staff', 'single', 'super_membership_number', 'Super Membership Number'),
-(75, 'staff', 'single', 'last_name', 'Last Name');
+(75, 'staff', 'single', 'last_name', 'Last Name'),
+(76, 'staff', 'single', 'mobile', 'Mobile'),
+(77, 'staff', 'single', 'password', 'Password');
 
 -- --------------------------------------------------------
 
