@@ -141,6 +141,9 @@ class Ajax_import extends MX_Controller {
 				'country' => isset($data['country']) ? $data['country'] : '',
 				'phone' => isset($data['phone']) ? $data['phone'] : ''
 			);
+			if (isset($data['password'])){
+				$user_data['password'] = $data['password'];	
+			}
 			$user_id = $this->user_model->insert_user($user_data);
 			$employed_as = STAFF_TFN;
 			if (strtolower($data['employed_as']) == 'abn')
