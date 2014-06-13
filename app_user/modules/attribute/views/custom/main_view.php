@@ -193,7 +193,6 @@ $(function(){
 			$(ui.helper).addClass('ui-draggable-helper');	
 		},		
 		stop: function (event, ui) {
-			form_builder.bind_with_popover();
 			$('.drag-icon-box').remove();	
 			$('#build').addClass('build-bottom-padding');
 			var type = ui.helper.attr('data-type');
@@ -253,7 +252,7 @@ function delete_field(field_id) {
 				 data: {field_id: field_id},
 				 success: function(html) {
 				 	if (html == 'true') {
-					 	load_custom_fields();
+					 	$('#field_' + field_id).remove();
 				 	} else {
 					 	alert(html);
 				 	}					 

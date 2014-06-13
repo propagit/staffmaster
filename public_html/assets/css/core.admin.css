@@ -71,7 +71,6 @@ a.default {
 	border-radius:4px;
 	float: left;
 	width:100%;
-	padding-bottom: 10px;
 }
 .build-bottom-padding{
 	padding-bottom:20px;	
@@ -79,6 +78,7 @@ a.default {
 #build .dropped{
 	float:left;
 	width:100%;	
+	margin-bottom: 10px;
 }
 .right{
 	right: -235px;
@@ -126,6 +126,7 @@ a.default {
 	height: 30px;
 	position: relative;
 	margin-bottom: -30px;
+	z-index: 1000;
 }
 .custom-attributes .popover-content .control-label{
 	padding:6px 0 3px 0;

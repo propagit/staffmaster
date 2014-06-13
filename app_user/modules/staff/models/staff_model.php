@@ -43,6 +43,13 @@ class Staff_model extends CI_Model {
 		return $staff_id;
 	}
 	
+	function get_custom_attributes()
+	{
+		$this->db->where('type !=', 'file');
+		$query = $this->db->get('custom_fields');
+		return $query->result_array();
+	}
+	
 	/**
 	*	@name: update_staff
 	*	@desc: update staff information

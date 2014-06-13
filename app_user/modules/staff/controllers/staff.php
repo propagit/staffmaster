@@ -526,6 +526,14 @@ class Staff extends MX_Controller {
 		$this->load->view('custom_attributes_for_staff_profile',isset($data) ? $data : NULL);	
 	}
 	
+	function custom_attributes_form($user_id)
+	{
+		$attributes = $this->staff_model->get_custom_attributes();
+		foreach($attributes as $attribute) {
+			
+		}
+	}
+	
 	/**
 	*	@desc Shows the existing form for custom attributes in staff profile.
 	*
@@ -551,8 +559,8 @@ class Staff extends MX_Controller {
 	*/
 	function custom_attributes()
 	{
-		$data['existing_elements'] = $this->formbuilder_model->get_form_elements();
-		$this->load->view('custom_attributes_search_form',isset($data) ? $data : NULL);	
+		#$data['existing_elements'] = $this->formbuilder_model->get_form_elements();
+		#$this->load->view('custom_attributes_search_form',isset($data) ? $data : NULL);	
 	}
 	/**
 	*	@desc This function gets all the posted value from the search staff page then filters and returns only the custom attributes search parameters to the calling method.
