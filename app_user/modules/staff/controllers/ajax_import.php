@@ -293,8 +293,8 @@ class Ajax_import extends MX_Controller {
 		if ($key == 'email')
 		{
 			$this->load->helper('email');
-			$valid = valid_email($value);
-			$used = $this->user_model->check_user_email($value);
+			$valid = valid_email(trim($value));
+			$used = $this->user_model->check_user_email(trim($value));
 			return $valid && !$used;
 		}
 		if ($key == 'bsb' || $key == 'account_number' || $key == 'tfn_number' || $key == 'abn_number')
@@ -308,7 +308,7 @@ class Ajax_import extends MX_Controller {
 		if ($key == 'super_choice')
 		{
 			$choices = array('y','n','yes','no');
-			return in_array(strtolower($value), $choices);
+			return ($value == '' || in_array(strtolower($value), $choices));
 		}
 		return true;
 	}
