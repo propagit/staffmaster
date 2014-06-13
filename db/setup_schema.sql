@@ -588,23 +588,23 @@ INSERT INTO `countries` (`country_id`, `code`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `custom_forms`
+-- Table structure for table `custom_fields`
 --
 
-CREATE TABLE IF NOT EXISTS `custom_forms` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `custom_fields` (
+  `field_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
-  `label` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `placeholder` varchar(255) NOT NULL,
-  `inline_element` enum('yes','no','not applicable') NOT NULL DEFAULT 'not applicable',
-  `multi_select` enum('yes','no','not applicable') NOT NULL DEFAULT 'not applicable',
+  `label` varchar(255) DEFAULT NULL,
+  `placeholder` varchar(255) DEFAULT '',
+  `inline` enum('true','false') NOT NULL DEFAULT 'false',
+  `multiple` enum('true','false') NOT NULL DEFAULT 'false',
   `attributes` text NOT NULL,
-  `order` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'order of the form',
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `field_order` tinyint(4) NOT NULL COMMENT 'order of the form',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`field_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 
@@ -1390,17 +1390,17 @@ CREATE TABLE IF NOT EXISTS `shift_brief` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `staff_custom_attributes`
+-- Table structure for table `staff_custom_fields`
 --
 
-CREATE TABLE IF NOT EXISTS `staff_custom_attributes` (
-  `staff_custom_attribute_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `attribute_name` varchar(255) NOT NULL,
-  `attributes` text NOT NULL,
-  `file_upload` enum('yes','no') NOT NULL DEFAULT 'no',
-  PRIMARY KEY (`staff_custom_attribute_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+CREATE TABLE `staff_custom_fields` (
+  `staff_custom_field_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `field_id` bigint(20) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`staff_custom_field_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 

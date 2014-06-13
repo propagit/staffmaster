@@ -737,4 +737,74 @@ class Staff_model extends CI_Model {
 		return $user_ids;
 	}
 	
+	function get_custom_field($user_id, $field_id)
+	{
+		$sql = "SELECT c.*, s.value as `staff_value`
+				FROM custom_fields c
+				LEFT JOIN staff_custom_fields s ON s.field_id = c.field_id
+				WHERE s.user_id = $user_id
+				AND c.field_id = $field_id";
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
+	function get_custom_fields($user_id) {
+		$sql = "SELECT c.*, s.value as `staff_value`
+				FROM custom_fields c
+				LEFT JOIN staff_custom_fields s ON s.field_id = c.field_id
+				ORDER BY c.field_order ASC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function update_custom_field($user_id, $field_id, $value, $accel = false) {
+		$this->db->where('user_id', $user_id);
+		$this->db->where('field_id', $field_id);
+		$query = $this->db->get('staff_custom_fields');
+		$field = $query->first_row('array');
+		if ($field) { # Update 
+			if ($accel) { # Combine new value to old values
+				$old_value = json_decode($field['value']);
+				$old_value[] = $value;
+				$value = json_encode($old_value);
+			}
+			$this->db->where('user_id', $user_id);
+			$this->db->where('field_id', $field_id);
+			return $this->db->update('staff_custom_fields', array('value' => $value));
+		} else { # Add
+			if ($accel) {
+				$value = json_encode(array($value));
+			}
+			$this->db->insert('staff_custom_fields', array(
+				'user_id' => $user_id,
+				'field_id' => $field_id,
+				'value' => $value
+			));
+			return $this->db->insert_id();
+		}
+	}
+	
+	function delete_file_field($user_id, $field_id, $file) {
+		$this->db->where('user_id', $user_id);
+		$this->db->where('field_id', $field_id);
+		$query = $this->db->get('staff_custom_fields');
+		$field = $query->first_row('array');
+		if ($field) {
+			$old_value = json_decode($field['value']);
+			$new_value = array();
+			foreach($old_value as $old_file) {
+				if ($old_file != $file) {
+					$new_value[] = $old_file;
+				}
+			}
+			$value = '';
+			if (count($new_value) > 0) {
+				$value = json_encode($new_value);
+			}
+			$this->db->where('user_id', $user_id);
+			$this->db->where('field_id', $field_id);
+			return $this->db->update('staff_custom_fields', array('value' => $value));
+		}
+	}
+	
 }

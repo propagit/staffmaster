@@ -528,11 +528,16 @@ class Staff extends MX_Controller {
 	
 	function custom_attributes_form($user_id)
 	{
-		$attributes = $this->staff_model->get_custom_attributes();
-		foreach($attributes as $attribute) {
-			
-		}
+		$fields = $this->staff_model->get_custom_fields($user_id);
+		if (count($fields) > 0) {
+			foreach($fields as $field) {
+				$data['field'] = $field;
+				$data['user_id'] = $user_id;
+				$this->load->view('custom_field/' . $field['type'], isset($data) ? $data : NULL);
+			}
+		}		
 	}
+	
 	
 	/**
 	*	@desc Shows the existing form for custom attributes in staff profile.

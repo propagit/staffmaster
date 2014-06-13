@@ -21,7 +21,7 @@ $menu = array(
 		array('path' => 'attribute/role', 'icon' => 'fa-star', 'title' => 'Roles'),
 		array('path' => 'attribute/venue', 'icon' => 'fa-map-marker', 'title' => 'Venues'),
 		array('path' => 'attribute/uniform', 'icon' => 'fa-puzzle-piece', 'title' => 'Uniforms'),
-		array('path' => 'formbuilder', 'icon' => 'fa-pencil', 'title' => 'Custom Attributes'),
+		array('path' => 'attribute/custom', 'icon' => 'fa-pencil', 'title' => 'Custom Attributes'),
 		array('path' => 'attribute/group', 'icon' => 'fa-sitemap', 'title' => 'Groups')
 	)),
 	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
