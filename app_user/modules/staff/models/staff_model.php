@@ -747,8 +747,7 @@ class Staff_model extends CI_Model {
 	function get_custom_fields($user_id) {
 		$sql = "SELECT c.*, s.value as `staff_value`
 				FROM custom_fields c
-				LEFT JOIN staff_custom_fields s ON s.field_id = c.field_id
-				WHERE s.user_id = $user_id
+				LEFT JOIN staff_custom_fields s ON (s.field_id = c.field_id AND s.user_id = $user_id)
 				ORDER BY c.field_order ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
