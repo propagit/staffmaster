@@ -6,7 +6,7 @@
 		if($attrs){
 			foreach($attrs as $attr){ ?>
 			<label class="radio <?=($field['inline'] == 'true' ? 'custom-inline' : '' );?>">
-				<input type="radio" name="fields[<?=$field['field_id'];?>]" value="<?=$attr;?>" <?=($attr == $field['staff_value']) ? ' checked' : '';?> />	<?=$attr;?>
+				<input type="radio" name="fields[<?=$field['field_id'];?>]" value="<?=$attr;?>" <?=($attr == $field['staff_value']) ? 'checked="checked"' : '';?> />	<?=$attr;?>
 			</label>
 	<?php 	}
 		} ?>

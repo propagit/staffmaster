@@ -16,6 +16,7 @@ class Staff extends MX_Controller {
 		$this->load->model('user/user_model');
 		$this->load->model('staff_model');
 		$this->load->model('formbuilder/formbuilder_model');
+		$this->load->model('attribute/custom_field_model');
 		$this->load->model('export/export_model');
 		$this->user = $this->session->userdata('user_data');
 		$this->is_client = modules::run('auth/is_client');
@@ -567,6 +568,59 @@ class Staff extends MX_Controller {
 		#$data['existing_elements'] = $this->formbuilder_model->get_form_elements();
 		#$this->load->view('custom_attributes_search_form',isset($data) ? $data : NULL);	
 	}
+	
+	/**
+	*	@desc Shows the existing form for custom attributes.
+	*
+	*   @name custom_fields
+	*	@access public
+	*	@param null
+	*	@return Loads existing form elements for custom fields.
+	*/
+	function custom_fields()
+	{
+		$fields = $this->custom_field_model->get_fields();
+		if (count($fields) == 0) {
+			//$this->load->view('search_custom_fields/no_field');
+		} else {
+			foreach($fields as $field) { 
+				$data['field'] = $field;
+				$this->load->view('search_custom_fields/' . $field['type'], isset($data) ? $data : NULL);
+			}
+		}	
+	}
+	/**
+	*	@desc This function gets all the posted value from the search staff page then filters and returns only the custom attributes search parameters to the calling method.
+	*
+	*   @name get_search_custom_attrs
+	*	@access public
+	*	@param (via POST) gets posted data from the search staff page
+	*	@return Returns the custom attributes only values from all the posted data 
+	*/
+	function get_search_custom_attrs($search_params)
+	{
+		$custom_attrs = array();
+		$normal_prefix = 'custom_search_';
+		$file_prefix = 'search_file_';
+		if($search_params){
+			foreach($search_params as $key => $val){
+				if($val){
+					if(substr($key,0,strlen($normal_prefix)) == $normal_prefix){
+						$new_key = trim($key, $normal_prefix);
+						$custom_attrs['normal_elements'][$new_key] = $val;	
+					}
+					if(substr($key,0,strlen($file_prefix)) == $file_prefix){
+						$new_key = trim($key, $file_prefix);
+						$custom_attrs['file_uploads'][$new_key] = $val;	
+					}
+				}
+			}	
+		}
+		return $custom_attrs;
+	}
+	
+	
+	
 	/**
 	*	@desc This function gets all the posted value from the search staff page then filters and returns only the custom attributes search parameters to the calling method.
 	*
@@ -575,7 +629,7 @@ class Staff extends MX_Controller {
 	*	@param (via POST) gets posted data from the search staff page
 	*	@return Returns the custom attributes only values from all the posted data 
 	*/
-	function get_custom_attrs($search_params)
+	function _old_func_get_custom_attrs($search_params)
 	{
 		$custom_attrs = array();
 		$normal_prefix = 'custom_attrs_';
