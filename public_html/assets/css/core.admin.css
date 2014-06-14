@@ -180,7 +180,7 @@ a.default {
 	width:auto;
 	float:left;
 	line-height:30px;
-	width:100%;
+	/* width:100%; */
 }
 .form-builder-save-btn{
 	margin-top:10px;

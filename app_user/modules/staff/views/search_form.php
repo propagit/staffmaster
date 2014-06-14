@@ -125,7 +125,7 @@
 			</div>
             
             <div id="custom-attr-search" class="custom-hidden">
-            	<?=modules::run('staff/custom_attributes');?>
+            	<?=modules::run('staff/custom_fields');?>
             </div>
             
 			<div class="row">

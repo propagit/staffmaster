@@ -297,18 +297,13 @@ class Staff_model extends CI_Model {
 		
 		//Custom Attributes
 		//normal elements
-		$custom_attrs = modules::run('staff/get_custom_attrs',$params);
+		$custom_attrs = modules::run('staff/get_search_custom_attrs',$params);
+		//print_r($custom_attrs);exit();
 		if(isset($custom_attrs) && $custom_attrs != ''){
 			
 			if(isset($custom_attrs['normal_elements']) && $custom_attrs['normal_elements'] != ''){
 				foreach($custom_attrs['normal_elements'] as $key => $val){
-					if(is_array($val)){
-						foreach($val as $v){
-							$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_attributes WHERE (attribute_name = '".$key."' AND attributes like '%".$v."%'))";	
-						}
-					}else{
-						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_attributes WHERE (attribute_name = '".$key."' AND attributes = '".$val."'))";
-					}
+					$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value LIKE '%".$val."%'))";
 				}
 			}
 			//file uploads
@@ -316,12 +311,13 @@ class Staff_model extends CI_Model {
 				foreach($custom_attrs['file_uploads'] as $key => $val){
 					$match = ($val == 'yes' ? '!=' : '=');
 					if($val == 'yes'){
-						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_attributes WHERE (attribute_name = '".$key."' AND attributes ".$match." ''))";
+						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
 					}
 				}
 			}
 		}
 		
+
 		if(isset($params['sort_by'])){ $sql .= " ORDER BY ".$params['sort_by']." ".$params['sort_order'];}				
 		if(isset($params['limit'])){ 
 			//if limit is not set it will default start the pagination
