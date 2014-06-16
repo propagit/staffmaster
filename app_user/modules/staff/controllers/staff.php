@@ -43,7 +43,10 @@ class Staff extends MX_Controller {
 				break;	
 			case 'delete_custom_document':
 					$this->delete_custom_document($param);
-				break;		
+				break;	
+			case 'import_rsa':
+				$this->import_rsa();
+			break;	
 			default:
 					echo 'do nothing';
 				break;
@@ -760,4 +763,56 @@ class Staff extends MX_Controller {
 	{
 		return $this->staff_model->get_active_staff_user_ids();	
 	}
+	
+	//import function for rsa
+	function import_rsa()
+	{
+		$custom_attr_id = 4;
+		$arrs = array_map('str_getcsv', file(UPLOADS_PATH.'/temp_docs/attachment_document_staff.csv'));
+		//echo '<pre>'.print_r($arrs,true).'</pre>';exit();
+
+		foreach($arrs as $a){
+			$staff_id = $a[0];
+			$file_name = $a[1];
+			$staff = $this->staff_model->get_staff_by_external_id(trim($staff_id));
+			//echo $staff['user_id'].'<br />';
+			//echo $staff_id.'<br />';
+			//print_r($staff);
+			if($staff){
+				#if($staff_id == 3030){
+					$path_source = UPLOADS_PATH.'/temp_docs/docs_staff/docs_staff/'.$staff_id;
+					$path_dest = UPLOADS_PATH.'/staff/'.$staff['user_id'];
+					#echo $path_source.'<br />'. $path_dest .'<br />';
+					#echo $staff_id.'<br />'. $staff['user_id'] .'<br />';
+					if(is_dir($path_source)){
+						modules::run('upload/create_upload_folders', $path_dest);
+						$this->recurse_copy($path_source,$path_dest);
+						//update db
+						$data = array(
+								'user_id' => $staff['user_id'],
+								'field_id' => $custom_attr_id,
+								'value' => '["'.$file_name.'"]'
+								);
+						$this->db->insert('staff_custom_fields',$data);
+					}
+				#}
+			} 
+		}
+	}
+	
+	function recurse_copy($src,$dst) { 
+		$dir = opendir($src); 
+		@mkdir($dst); 
+		while(false !== ( $file = readdir($dir)) ) { 
+			if (( $file != '.' ) && ( $file != '..' )) { 
+				if ( is_dir($src . '/' . $file) ) { 
+					recurse_copy($src . '/' . $file,$dst . '/' . $file); 
+				} 
+				else { 
+					copy($src . '/' . $file,$dst . '/' . $file); 
+				} 
+			} 
+		} 
+		closedir($dir); 
+	} 
 }

@@ -803,4 +803,14 @@ class Staff_model extends CI_Model {
 		}
 	}
 	
+	function get_staff_by_external_id($external_id)
+	{
+		$staff = $this->db->select('staff_id,user_id')
+						  ->where('external_staff_id',$external_id)
+						  ->from('user_staffs')
+						  ->get()
+						  ->row_array();
+		return $staff;	
+	}
+	
 }
