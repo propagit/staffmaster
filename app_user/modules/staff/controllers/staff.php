@@ -767,7 +767,7 @@ class Staff extends MX_Controller {
 	//import function for rsa
 	function import_rsa()
 	{
-		$custom_attr_id = 4;
+		$custom_attr_id = 16;
 		$arrs = array_map('str_getcsv', file(UPLOADS_PATH.'/temp_docs/attachment_document_staff.csv'));
 		//echo '<pre>'.print_r($arrs,true).'</pre>';exit();
 
