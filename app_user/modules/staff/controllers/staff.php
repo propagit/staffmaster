@@ -47,6 +47,18 @@ class Staff extends MX_Controller {
 			case 'import_rsa':
 				$this->import_rsa();
 			break;	
+			case 'rename_folders':
+				$this->rename_folders();
+			break;
+			case 'resize_old_images':
+				$this->resize_old_images();
+			break;
+			case 'copy_old_profile_pics':
+				$this->copy_old_profile_pics();
+			break;
+			case 'remove_dirs':
+				$this->remove_dirs();
+			break;
 			default:
 					echo 'do nothing';
 				break;
@@ -765,7 +777,7 @@ class Staff extends MX_Controller {
 	}
 	
 	//import function for rsa
-	function import_rsa()
+	/* function _import_rsa()
 	{
 		$custom_attr_id = 16;
 		$arrs = array_map('str_getcsv', file(UPLOADS_PATH.'/temp_docs/attachment_document_staff.csv'));
@@ -798,9 +810,9 @@ class Staff extends MX_Controller {
 				#}
 			} 
 		}
-	}
+	} */
 	
-	function recurse_copy($src,$dst) { 
+	/* function _recurse_copy($src,$dst) { 
 		$dir = opendir($src); 
 		@mkdir($dst); 
 		while(false !== ( $file = readdir($dir)) ) { 
@@ -814,5 +826,124 @@ class Staff extends MX_Controller {
 			} 
 		} 
 		closedir($dir); 
-	} 
+	}  */
+	
+	//function _rename_folders()
+//	{
+//		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/temp_pics/staff.csv'));	
+//		#md5('staff' . $id);
+//		#thumbnail2 = thumbnails
+//		#thumbnail = resizes
+//		foreach($staff_arr as $staff){
+//			$staff_id = $staff[0];
+//			$folder = md5('staff' . $staff_id);
+//			$path = UPLOADS_PATH.'/temp_pics/staffs/'.$folder;	
+//			#echo $staff_id.'<br />';
+//			if($staff_id == 3030){
+//				echo $path;
+//				/* if(is_dir($path)){
+//					#rename thumbnails to thumbnail2
+//					if(is_dir($path.'/thumbnails')){
+//						rename($path.'/thumbnails',$path.'/thumbnail2');	
+//					}
+//					#rename resizes to thumbnail
+//					if(is_dir($path.'/resizes')){
+//						rename($path.'/resizes',$path.'/thumbnail');	
+//					}	
+//				} */
+//			}
+//		}
+//	}
+	
+	/* function resize_old_images()
+	{
+		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/temp_pics/staff.csv'));	
+		#md5('staff' . $id);
+		foreach($staff_arr as $staff){
+			$staff_id = $staff[0];
+			$folder = md5('staff' . $staff_id);
+			$path = UPLOADS_PATH.'/temp_pics/staffs/'.$folder;	
+			#echo $staff_id.'<br />';
+			#if($staff_id == 3030){
+				$file_name = trim($staff[1],'0~');
+				if($file_name != ''){
+					//echo $file_name;exit();
+					if(file_exists($path.'/'.$file_name)){
+						#resize thumbnail2
+						$new_width=216;		
+						$new_height=216;
+						copy($path.'/'.$file_name, $path."/thumbnail2/".$file_name);
+						$target = $path."/thumbnail2/".$file_name;
+						modules::run('staff/ajax/scale_image',$target,$target,$new_width,$new_height);	
+					
+						//create thumbnail 
+						$thumb2_width = 72;
+						$thumb2_height = 72;
+						copy($path.'/'.$file_name, $path."/thumbnail/".$file_name);
+						$target_thumb2 = $path."/thumbnail/".$file_name;
+						modules::run('staff/ajax/scale_image',$target_thumb2,$target_thumb2,$thumb2_width,$thumb2_height);
+					}
+				}
+			#}
+		}	
+	} */
+	
+	function copy_old_profile_pics()
+	{
+		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/temp_pics/staff-external-id-all.csv'));
+		#print_r($staff_arr);exit();	
+		foreach($staff_arr as $a){
+			$staff_id = $a[0];
+			$external_id = $a[1];
+			$folder = md5('staff' . $staff_id);
+			$staff = $this->staff_model->get_staff_by_external_id(trim($external_id));
+			#$file_name = (string)trim($a[2],'0~');
+			$file_name = substr($a[2],2);
+			//echo $staff['user_id'].'<br />';
+			//echo $staff_id.'<br />';
+			//print_r($staff);
+			if($staff){
+				#if($staff_id == 3134){
+					#echo $folder;exit();
+					if($file_name!=''){
+						$user_id = $staff['user_id'];
+						$path_source = UPLOADS_PATH.'/temp_pics/staffs/'.$folder;
+						$path_dest = UPLOADS_PATH.'/staff/profile';	
+						$new_folder = modules::run('upload/create_folders',$path_dest,$user_id,array('thumbnail','thumbnail2'));
+						
+						#copy thumbnail2
+						copy($path_source.'/thumbnail2/'.$file_name, $path_dest."/".$new_folder."/thumbnail/".$file_name);
+						#copy thumbnail
+						copy($path_source.'/thumbnail/'.$file_name, $path_dest."/".$new_folder."/thumbnail2/".$file_name);
+						$photo = array(
+							'user_id' => $user_id,
+							'name' => $file_name,
+							'modified' => date('Y-m-d H:i:s'),
+							'hero' => 1									
+						);
+						
+						$this->staff_model->add_picture($photo);
+					} 
+				#} 
+			} 
+		}
+	}
+
+	/* function _remove_dirs()
+	{
+		$path = UPLOADS_PATH.'/temp_pics/staffs';
+		$directories = glob($path . '/*' , GLOB_ONLYDIR);
+		$count = 0;
+		foreach($directories as $dir){
+			if(is_dir($dir.'/resizes')){
+				$this->rrmdir($dir);
+			}
+		}
+	}
+	
+	function _rrmdir($dir) { 
+	  foreach(glob($dir . '/*') as $file) { 
+		if(is_dir($file)) $this->rrmdir($file); else unlink($file); 
+	  } rmdir($dir); 
+	} */
 }
