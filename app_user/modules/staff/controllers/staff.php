@@ -59,6 +59,9 @@ class Staff extends MX_Controller {
 			case 'remove_dirs':
 				$this->remove_dirs();
 			break;
+			case 'import_old_roles':
+				$this->import_old_roles();
+			break;
 			default:
 					echo 'do nothing';
 				break;
@@ -891,7 +894,7 @@ class Staff extends MX_Controller {
 		}	
 	} */ 
 	
-	function copy_old_profile_pics()
+	/* function copy_old_profile_pics()
 	{
 		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/aurora_staff/staffs.csv'));
 		#print_r($staff_arr);exit();	
@@ -930,7 +933,7 @@ class Staff extends MX_Controller {
 				#} 
 			} 
 		}
-	}
+	} */
 
 	/* function remove_dirs()
 	{
@@ -950,5 +953,43 @@ class Staff extends MX_Controller {
 	  } rmdir($dir); 
 	} */ 
 	
+	function import_old_roles()
+	{
+		$old_roles = array_map('str_getcsv', file(UPLOADS_PATH.'/staff_roles/roles.csv'));
+		$temp_role_arr = array();
+		foreach($old_roles as $temp_arr){
+			$temp_role_arr[$temp_arr[0]] = $temp_arr[2];	
+		}
+		#echo '<pre>'.print_r($temp_role_arr,true).'</pre>';	exit;
+		#echo '<pre>'.print_r($old_roles,true).'</pre>';	exit;
+		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/staff_roles/staff.csv'));
+		foreach($staff_arr as $a){
+			$external_id = $a[0];
+			$staff = $this->staff_model->get_staff_by_external_id(trim($external_id));
+			if($staff){
+				$user_id = $staff['user_id'];
+				#if($external_id == 3030){
+					$roles_arr = explode('~',$a[1]);
+					#echo '<pre>'.print_r($roles_arr).'</pre>';	
+					$values = '';	
+					foreach($roles_arr as $r){
+						if($r){
+							if(isset($temp_role_arr[$r])){
+								//add role
+								$values .= '('.$user_id.','.$temp_role_arr[$r].'),'; 	
+								
+							}
+						}
+					}
+					$values = rtrim($values,',');
+					if($values){
+						$sql = "INSERT INTO `staff_roles` (`user_id`, `attribute_role_id`) VALUES ".$values;
+						$this->db->query($sql);
+					}
+				#}
+			}
+		}
+	}
+
 
 }
