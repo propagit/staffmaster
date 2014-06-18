@@ -894,7 +894,7 @@ class Staff extends MX_Controller {
 		}	
 	} */ 
 	
-	function resize_old_images()
+	function _resize_old_images()
 	{
 		$staff_arr = $this->db->where('status',1)->get('users')->result_array();	
 		#md5('staff' . $id);
@@ -912,7 +912,6 @@ class Staff extends MX_Controller {
 				echo '<br />'.$user_id;
 				if($file_name != ''){
 					if(file_exists($path.'/'.$file_name)){
-						echo '<br />running resize'; 
 						#resize thumbnail2
 						$new_width=216;		
 						$new_height=216;
