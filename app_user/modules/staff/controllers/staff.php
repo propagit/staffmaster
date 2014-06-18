@@ -902,7 +902,7 @@ class Staff extends MX_Controller {
 			$user_id = $staff['user_id'];
 			$folder = md5($user_id);
 			$path = UPLOADS_PATH.'/staff/profile/'.$folder;	
-			if($staff_id == 824){
+			if($user_id == 824){
 				$hero = $this->staff_model->get_hero($user_id);
 				$file_name = '';
 				if($hero){
