@@ -908,6 +908,8 @@ class Staff extends MX_Controller {
 				if($hero){
 					$file_name = $hero['name'];
 				}
+				echo $file_name;
+				echo '<br />'.$user_id;
 				if($file_name != ''){
 					if(file_exists($path.'/'.$file_name)){
 						#resize thumbnail2
