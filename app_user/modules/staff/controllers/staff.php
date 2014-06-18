@@ -950,8 +950,5 @@ class Staff extends MX_Controller {
 	  } rmdir($dir); 
 	} */ 
 	
-	function import_old_roles()
-	{
-			
-	}
+
 }
