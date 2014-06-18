@@ -858,7 +858,7 @@ class Staff extends MX_Controller {
 		}
 	} */
 	
-	/* function resize_old_images()
+	/* function _csv_resize_old_images()
 	{
 		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/aurora_staff/staffs.csv'));	
 		#md5('staff' . $id);
@@ -893,6 +893,41 @@ class Staff extends MX_Controller {
 			}
 		}	
 	} */ 
+	
+	function resize_old_images()
+	{
+		$staff_arr = $this->db->where('status',1)->get('users')->result_array();	
+		#md5('staff' . $id);
+		foreach($staff_arr as $staff){
+			$user_id = $staff['user_id'];
+			$folder = md5($user_id);
+			$path = UPLOADS_PATH.'/staff/profile/'.$folder;	
+			if($staff_id == 824){
+				$hero = $this->staff_model->get_hero($user_id);
+				$file_name = '';
+				if($hero){
+					$file_name = $hero['name'];
+				}
+				if($file_name != ''){
+					if(file_exists($path.'/'.$file_name)){
+						#resize thumbnail2
+						$new_width=216;		
+						$new_height=216;
+						copy($path.'/'.$file_name, $path."/thumbnail2/".$file_name);
+						$target = $path."/thumbnail2/".$file_name;
+						modules::run('staff/ajax/scale_image',$target,$target,$new_width,$new_height);	
+					
+						//create thumbnail 
+						$thumb2_width = 72;
+						$thumb2_height = 72;
+						copy($path.'/'.$file_name, $path."/thumbnail/".$file_name);
+						$target_thumb2 = $path."/thumbnail/".$file_name;
+						modules::run('staff/ajax/scale_image',$target_thumb2,$target_thumb2,$thumb2_width,$thumb2_height);
+					}
+				}
+			}
+		}	
+	}
 	
 	/* function copy_old_profile_pics()
 	{
@@ -934,6 +969,7 @@ class Staff extends MX_Controller {
 			} 
 		}
 	} */
+	
 
 	/* function remove_dirs()
 	{
@@ -953,7 +989,7 @@ class Staff extends MX_Controller {
 	  } rmdir($dir); 
 	} */ 
 	
-	function import_old_roles()
+	/* function import_old_roles()
 	{
 		$old_roles = array_map('str_getcsv', file(UPLOADS_PATH.'/staff_roles/roles.csv'));
 		$temp_role_arr = array();
@@ -989,7 +1025,7 @@ class Staff extends MX_Controller {
 				#}
 			}
 		}
-	}
+	} */
 
 
 }
