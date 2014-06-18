@@ -895,7 +895,7 @@ class Staff extends MX_Controller {
 	} */ 
 	
 	function resize_old_images()
-	{-
+	{
 		$staff_arr = $this->db->where('status',1)->get('users')->result_array();	
 		#md5('staff' . $id);
 		foreach($staff_arr as $staff){
