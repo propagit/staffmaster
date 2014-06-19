@@ -1,5 +1,6 @@
 # Ignore files / Folder
 app_public/config/constants.php
 public_html/index.php
+public_html/user_assets
 .DS_Store?
 #project
