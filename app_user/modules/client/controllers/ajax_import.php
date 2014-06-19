@@ -185,7 +185,7 @@ class Ajax_import extends MX_Controller {
 			$this->load->helper('email');
 			$valid = valid_email($value);
 			$used = $this->user_model->check_user_email($value);
-			return $valid && !$used;
+			return ($value == '' || !$value || ($valid && !$used));
 		}
 		if ($key == 'status')
 		{
