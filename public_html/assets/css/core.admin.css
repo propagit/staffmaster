@@ -698,7 +698,15 @@ span.dash-invoice-value{
 	padding: 10px 0;
 	font-weight: 600;
 }
-
+#form-fields .label {
+	cursor: pointer;
+}
+.table-fields {
+	margin: 10px 0 0 0;
+}
+.label-required {
+	margin:0 5px 0 7px;
+}
 #setup_wizard {
 	margin-bottom: -20px;
 }

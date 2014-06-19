@@ -72,7 +72,7 @@ class User extends MX_Controller {
 				else
 				{
 					$name = $user['first_name'] . ' ' . $user['last_name'];
-					$name = str_replace("'","\'", $name);
+					$name = str_replace("'"," ", $name);
 				}
 				$data_source[] = '{value:' . $user['user_id'] . ', text: \'' . $name . '\'}';
 			}

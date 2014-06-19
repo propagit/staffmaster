@@ -9,7 +9,30 @@
 <!--end top box-->
 <!--begin bottom box -->
 <div class="col-md-12">
-	<?=var_dump($forms);?>
+	<div class="box bottom-box">
+		<div class="inner-box table-responsive">
+			<table class="table table-bordered table-hover table-middle">
+			<thead>
+		        <tr class="heading">
+		            <th class="left">Name</th>
+		            <th class="center col-md-1">Configure</th>
+		            <th class="center col-md-1">View</th>
+		        	<th class="center col-md-1">Delete</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+			<? foreach($forms as $form) { ?>
+				<tr>
+					<td class="left"><?=$form['name'];?></td>
+					<td class="center"><a href="<?=base_url();?>form/edit/<?=$form['form_id'];?>"><i class="fa fa-gear"></i></a></td>
+					<td class="center"><a href="#"><i class="fa fa-eye"></i></a></td>
+					<td class="center"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+				</tr>
+			<? } ?>
+		    </tbody>
+			</table>
+		</div>
+	</div>
 </div>
 <!--end bottom box -->
 
