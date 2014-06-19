@@ -127,8 +127,8 @@ class Ajax_import extends MX_Controller {
 				'is_admin' => 0,
 				'is_staff' => 1,
 				'is_client' => 0,
-				'email_address' => $data['email'],
-				'username' => $data['email'],
+				'email_address' => isset($data['email']) ? $data['email'] : '',
+				'username' => isset($data['email']) ? $data['email'] : '',
 				'password' => random_string('alnum', 8),
 				'title' => isset($data['title']) ? $data['title'] : '',
 				'first_name' => $data['first_name'],
@@ -298,7 +298,7 @@ class Ajax_import extends MX_Controller {
 			$this->load->helper('email');
 			$valid = valid_email(trim($value));
 			$used = $this->user_model->check_user_email(trim($value));
-			return $valid && !$used;
+			return ($value == '' || !$value || ($valid && !$used));
 		}
 		if ($key == 'bsb' || $key == 'account_number' || $key == 'tfn_number' || $key == 'abn_number')
 		{
