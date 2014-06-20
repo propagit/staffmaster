@@ -72,6 +72,7 @@ $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatc
 $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 
 $route['public/form/(:any)'] = 'public_dispatcher/form/$1';
+$route['public/form/(:any)/(:any)'] = 'public_dispatcher/form/$1/$2';
 
 $route['attribute/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1';
 $route['attribute/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2';

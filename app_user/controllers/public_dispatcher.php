@@ -18,19 +18,22 @@ class Public_dispatcher extends MX_Controller {
 		
 	}
 	
-	function form($form_id)
+	function form($form_id, $action='')
 	{
 		if ($this->input->post()) {
 			#var_dump($this->input->post());
 		}
-		#$this->output->enable_profiler();
-		#error_reporting(4);
+		
 		$this->load->model('form/form_model');
 		$form = $this->form_model->get_form($form_id);
 		if (!$form) {
 			show_error('Sorry, form not found');
 			exit();
 		}
+		if ($action == 'upload_pictures') {
+			$this->upload_pictures();
+		}
+		
 		$data['form'] = $form;
 		$fields = $this->form_model->get_fields($form_id);
 		$data['personal_fields'] = modules::run('form/personal_fields', $fields);
@@ -40,6 +43,10 @@ class Public_dispatcher extends MX_Controller {
 		$data['roles'] = modules::run('attribute/role/get_roles');
 		$data['groups'] = modules::run('attribute/group/get_groups');
 		$this->load->view('public/form_view', isset($data) ? $data : NULL);
+	}
+	
+	function upload_pictures() {
+		die();
 	}
 	
 }
