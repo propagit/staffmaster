@@ -15,22 +15,25 @@
             <div class="inner-box">
             	<h2>Form Settings</h2>
             	<br />
-            	<form role="form">
+            	<form role="form" id="form-settings-form">
+            	<input type="hidden" name="form_id" value="<?=$form['form_id'];?>" />
 					<div class="form-group">
 						<label class="control-label">Email Forwarding</label>
-						<input type="text" class="form-control" name="email" />
+						<input type="text" class="form-control" name="receive_email" placeholder="example@domain.com" value="<?=$form['receive_email'];?>" />
 					</div>
 					<div class="form-group">
 						<label class="control-label">Embed Code</label>
-						<textarea class="form-control" readonly><iframe src="<?=base_url();?>form" frameborder="0" allowfullscreen></iframe>
-						</textarea>
+						<textarea class="form-control" readonly><iframe frameborder="0" scrolling="auto" width="100%" align="top,center" height="900px" src="<?=$url;?>" ></iframe></textarea>
 					</div>
+					<div class="alert alert-success hide" id="msg-update">Updated successfully!</div>
+					<button type="button" class="btn btn-core" id="btn-update-settings">Update</button>
             	</form>
             </div>
         </div>
         
         <div class="col-md-6 white-box">
             <div class="inner-box">
+            	<a href="<?=$url;?>" class="btn btn-core pull-right" target="_blank"><i class="fa fa-eye"></i> Preview</a>
             	<h2>Available Fields</h2>
             	<br />
             	
@@ -51,14 +54,8 @@
 							<? } ?>
 						</table>
 					</div>
-					<div href="#" class="list-group-item">
-						<b>Pictures</b>
-						<div class="pull-right">
-							<span class="label label-default">Active</span>
-							<span class="label label-default label-required">Required</span>
-						</div>
-					</div>
-					<!--
+					
+					<? /*
 					<div href="#" class="list-group-item">
 						<a onclick="load_fields(this,'financial')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Financial Details</b>
@@ -79,35 +76,18 @@
 							<span class="label label-default label-required">Required</span>
 						</div>
 					</div>
-					-->
-					<div href="#" class="list-group-item">
-						<b>Roles</b>
+					*/ ?>
+					
+					<? foreach($extra_fields as $name => $field) { ?>
+					<div class="list-group-item">
+						<b><?=$field['label'];?></b>
 						<div class="pull-right">
-							<span class="label label-default">Active</span>
-							<span class="label label-default label-required">Required</span>
+							<span class="label label-<?=(isset($field['active'])) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$name;?>')">Active</span>
+							<span class="label label-required label-<?=(isset($field['required'])) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$name;?>')">Required</span>
 						</div>
 					</div>
-					<div href="#" class="list-group-item">
-						<b>Availability</b>
-						<div class="pull-right">
-							<span class="label label-default">Active</span>
-							<span class="label label-default label-required">Required</span>
-						</div>
-					</div>
-					<div href="#" class="list-group-item">
-						<b>Locations</b>
-						<div class="pull-right">
-							<span class="label label-default">Active</span>
-							<span class="label label-default label-required">Required</span>
-						</div>
-					</div>
-					<div href="#" class="list-group-item">
-						<b>Groups</b>
-						<div class="pull-right">
-							<span class="label label-default">Active</span>
-							<span class="label label-default label-required">Required</span>
-						</div>
-					</div>
+					<? } ?>
+					
 					<div href="#" class="list-group-item">
 						<a onclick="load_fields(this,'custom')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Custom Attributes</b>
@@ -115,8 +95,8 @@
 							<? foreach($custom_fields as $field) { ?>
 							<tr>
 								<td class="left"><?=$field['label'];?></td>
-								<td class="right" width="20"><span class="label label-default" onclick="active_field(this,'<?=$field['label'];?>','<?=$field['field_id'];?>')">Active</span></td>
-								<td class="right" width="20"><span class="label label-default">Required</span></td>
+								<td class="right" width="20"><span class="label label-<?=($field['required'] != NULL) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$field['field_id'];?>')">Active</span></td>
+								<td class="right" width="20"><span class="label label-<?=($field['required']) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$field['field_id'];?>')">Required</span></td>
 							</tr>
 							<? } ?>
 						</table>
@@ -131,6 +111,21 @@
 	</div>
 </div>
 <script>
+$(function(){
+	$('#btn-update-settings').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>form/ajax/update_settings",
+			data: $('#form-settings-form').serialize(),
+			success: function(html) {
+				$('#msg-update').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-update').addClass('hide');
+				}, 2000);
+			}
+		})
+	})
+})
 function load_fields(e,section) {
 	var f = $('#fields-' + section);
 	if (f.hasClass('hide')) {
@@ -147,6 +142,10 @@ function active_field(e, label, name) {
 		url: "<?=base_url();?>form/ajax/active_field",
 		data: {form_id: <?=$form['form_id'];?>, label: label, name: name},
 		success: function(html) {
+			if (html == 'default') {
+				$(e).parent().parent().find('.label').removeClass('label-success');
+				$(e).parent().parent().find('.label').addClass('label-default');
+			}
 			$(e).removeClass('label-success');
 			$(e).removeClass('label-default');
 			$(e).addClass('label-' + html);

@@ -1,0 +1,18 @@
+html, body {
+	background: #fff;
+}
+h2 {
+	margin: 10px 0 0 0;
+	font-size: 40px;
+	font-weight: 900;
+	font-family: 'Lato',sans-serif;
+	letter-spacing: -1px;
+	color: #3D3D3D;
+}
+.checkbox_day {
+	display: inline-block;
+	margin-right: 10px;
+}
+p.text-muted {
+	margin: 0 0 20px 0;
+}

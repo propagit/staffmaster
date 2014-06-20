@@ -37,9 +37,11 @@ class Form extends MX_Controller {
 		$data['form'] = $this->form_model->get_form($form_id);
 		$fields = $this->form_model->get_fields($form_id);
 		$data['personal_fields'] = $this->personal_fields($fields);
-		$data['financial_fields'] = $this->financial_fields();
-		$data['super_fields'] = $this->super_fields();
+		$data['extra_fields'] = $this->extra_fields($fields);
+		#$data['financial_fields'] = $this->financial_fields();
+		#$data['super_fields'] = $this->super_fields();
 		$data['custom_fields'] = $this->form_model->get_custom_fields();
+		$data['url'] = str_replace('http:','',base_url()) . 'public/form/' . $form_id;
 		$this->load->view('edit_view', isset($data) ? $data : NULL);
 	}
 	
@@ -74,6 +76,28 @@ class Form extends MX_Controller {
 			}
 		}
 		return $personal;
+	}
+	
+	function extra_fields($fields = array())
+	{
+		$extra = array(
+			'picture' => array('label' => 'Pictures'),
+			'role' => array('label' => 'Roles'),
+			'availability' => array('label' => 'Availability'),
+			'location' => array('label' => 'Locations'),
+			'group' => array('label' => 'Groups') 
+		);
+		if (count($fields) > 0) {
+			foreach($fields as $field) {
+				if (isset($extra[$field['name']])) {
+					$extra[$field['name']]['active'] = 1;
+					if ($field['required']) {
+						$extra[$field['name']]['required'] = 1;
+					}	
+				}							
+			}
+		}
+		return $extra;
 	}
 	
 	function financial_fields()

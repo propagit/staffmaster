@@ -14,6 +14,11 @@ class Ajax extends MX_Controller {
 		echo $form_id;
 	}
 	
+	function update_settings() {
+		$input = $this->input->post();
+		$this->form_model->update_form($input['form_id'], array('receive_email' => $input['receive_email']));
+	}
+	
 	function active_field() {
 		$input = $this->input->post();
 		if ($this->form_model->active_field($input['form_id'], $input['label'], $input['name'])) {

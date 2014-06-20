@@ -12,13 +12,25 @@ class Common extends MX_Controller {
 		parent::__construct();
 		$this->load->model('common_model');
 		$this->load->model('setting/setting_model');
-		$this->load->model('staff/staff_model');
+		#$this->load->model('staff/staff_model'); Who wrote this line and never use it?
 	}
 	
 	function parse_redirect($string)
 	{
 		$a = explode(':', $string);
 		return $a[1];
+	}
+	
+	function array_day() {
+		return array(
+			'1' => 'Monday',
+			'2' => 'Tuesday',
+			'3' => 'Wednesday',
+			'4' => 'Thursday',
+			'5' => 'Friday',
+			'6' => 'Saturday',
+			'7' => 'Sunday'
+		);
 	}
 	
 	/**

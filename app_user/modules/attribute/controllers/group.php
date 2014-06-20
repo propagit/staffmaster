@@ -111,4 +111,9 @@ class Group extends MX_Controller {
 		$this->load->view('groups/conversation_field_select', isset($data) ? $data : NULL);
 	}
 	
+	function get_groups()
+	{
+		return $this->group_model->get_groups();
+	}
+	
 }

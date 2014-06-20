@@ -18,6 +18,11 @@ class Form_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function update_form($form_id, $data) {
+		$this->db->where('form_id', $form_id);
+		return $this->db->update('forms', $data);
+	}
+	
 	function get_custom_fields() {
 		$sql = "SELECT c.*, f.required
 				FROM custom_fields c
