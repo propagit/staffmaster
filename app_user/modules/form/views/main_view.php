@@ -7,6 +7,7 @@
     </div>
 </div>
 <!--end top box-->
+<? if (count($forms) > 0) { ?>
 <!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
@@ -83,3 +84,4 @@ function list_forms() {
 	
 }
 </script>
+<? } ?>
