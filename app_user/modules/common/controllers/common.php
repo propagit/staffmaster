@@ -305,6 +305,16 @@ class Common extends MX_Controller {
 		$this->load->view('dropdown_dob', isset($data) ? $data : NULL);
 	}
 	
+	# Improvement for dob field
+	function field_dob($field_name, $day=null, $month=null, $year=null)
+	{
+		$data['day'] = $day;
+		$data['month'] = $month;
+		$data['year'] = $year;
+		$data['field_name'] = $field_name;
+		$this->load->view('field_dob', isset($data) ? $data : NULL);
+	}
+	
 	function break_time($string)
 	{
 		$a = json_decode($string);

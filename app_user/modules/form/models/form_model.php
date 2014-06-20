@@ -24,7 +24,7 @@ class Form_model extends CI_Model {
 	}
 	
 	function get_custom_fields() {
-		$sql = "SELECT c.*, f.required
+		$sql = "SELECT c.*, f.form_field_id, f.required
 				FROM custom_fields c
 					LEFT JOIN form_fields f ON f.name = c.field_id";
 		$query = $this->db->query($sql);
@@ -83,6 +83,16 @@ class Form_model extends CI_Model {
 	function update_field($form_field_id, $data) {
 		$this->db->where('form_field_id', $form_field_id);
 		$this->db->update('form_fields', $data);
+	}
+	
+	function add_applicant($data) {
+		$this->db->insert('form_applicants', $data);
+		return $this->db->insert_id();
+	}
+	
+	function add_applicant_data($data) {
+		$this->db->insert('form_applicant_data', $data);
+		return $this->db->insert_id();
 	}
 
 }

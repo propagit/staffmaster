@@ -69,6 +69,7 @@ class Form extends MX_Controller {
 			foreach($fields as $field) {
 				if (isset($personal[$field['name']])) {
 					$personal[$field['name']]['active'] = 1;
+					$personal[$field['name']]['form_field_id'] = $field['form_field_id'];
 					if ($field['required']) {
 						$personal[$field['name']]['required'] = 1;
 					}	
@@ -91,6 +92,7 @@ class Form extends MX_Controller {
 			foreach($fields as $field) {
 				if (isset($extra[$field['name']])) {
 					$extra[$field['name']]['active'] = 1;
+					$extra[$field['name']]['form_field_id'] = $field['form_field_id'];
 					if ($field['required']) {
 						$extra[$field['name']]['required'] = 1;
 					}	

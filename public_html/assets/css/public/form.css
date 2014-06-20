@@ -9,6 +9,28 @@ h2 {
 	letter-spacing: -1px;
 	color: #3D3D3D;
 }
+h2 .text-red {
+	font-size: 16px;
+	font-weight: normal;
+}
+.modal-body {
+	text-align: center;
+}
+#uploaded_photos .img-thumbnail {
+	height: 100px;
+	margin: 10px 10px 10px 0;
+	display: inline-block;
+}
+#uploaded_photos i {
+	cursor: pointer;
+	margin: 0 10px 0 -5px;
+}
+.up_file {
+	margin: 10px 0;
+}
+.up_file i {
+	cursor: pointer;
+}
 .custom-inline,
 .custom-attributes .inline{
 	width: auto !important;
