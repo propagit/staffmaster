@@ -45,7 +45,7 @@
     	<p class="text-muted">Please fill in your personal details</p>
     	<form enctype="multipart/form-data" id="form<?=$form['form_id'];?>" class="form-horizontal" role="form">
     	<? foreach($personal_fields as $name => $field) { if(isset($field['active'])) { ?>
-			<div class="form-group">
+			<div class="form-group" id="f_<?=$field['form_field_id'];?>">
 				<label for="field_<?=$name;?>" class="col-sm-2 control-label">
 					<?=$field['label'];?>
 					<? if(isset($field['required'])) { ?>
@@ -77,7 +77,7 @@
 	    <h2><?=$field['label'];?>
 	    </h2>
 	    	<? if($name == 'role' && count($roles) > 0) { ?>
-    			<p class="text-muted">
+    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">
     				Please let us know what roles you could perform for us	    			
 			    	<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
@@ -91,7 +91,7 @@
 				</div>
     			<? }
     		} else if ($name == 'availability') { ?>
-    			<p class="text-muted">Let us know what days you can work on
+    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Let us know what days you can work on
 	    			<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
 					<? } ?>
@@ -105,7 +105,7 @@
 				</div>	
     			<? }
     		} else if ($name == 'location') { ?>
-    			<p class="text-muted">Let us know where you can work
+    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Let us know where you can work
 	    			<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
 					<? } ?>
@@ -113,7 +113,7 @@
     			<?=modules::run('attribute/location/field_select', 'location_parent_id');?>
     			<div class="clear"></div>
     		<? } else if ($name == 'group' && count($groups) > 0) { ?>
-    			<p class="text-muted">Please let us know what group you want to join
+    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Please let us know what group you want to join
 	    			<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
 					<? } ?>
@@ -146,7 +146,7 @@
     	<h2>Additional Information</h2>
     	<p class="text-muted">Please provide us with the below information</p>
     	<? foreach($custom_fields as $field) { ?>
-    		<div class="form-group">
+    		<div class="form-group" id="f_<?=$field['form_field_id'];?>">
 				<label for="<?=$name;?>" class="col-sm-2 control-label">
 					<?=$field['label'];?>
 					<? if($field['required']) { ?>
@@ -287,7 +287,7 @@ uploader_<?=$field['form_field_id'];?>.bind('FilesAdded', function(up, files) {
 				</div>
     		</div>
     	<? } } ?>
-    		
+    	<hr />
     	<p><button type="button" id="btn-submit" class="btn btn-core">Apply Now</button></p>
     		
     	</form>
@@ -321,15 +321,16 @@ $(function(){
 				var data = $.parseJSON(html);
 				if (!data.ok) {
 					for(var i=0; i < data.errors.length; i++) {
-						$('input[name="' + data.errors[i] + '"]').parent().parent().addClass('has-error');
+						$('#f_' + data.errors[i]).addClass('has-error');
 						$('input[name="' + data.errors[i] + '"]').tooltip({
 							title: 'Required field',
 							placement: 'bottom'
 						});
 					}
-					$('input[name="' + data.errors[0] + '"]').focus();
+					$('body').scrollTo('#f_' + data.errors[0], 500 );
 				} else {
 					$('#successModal').modal('show');
+					$('#form<?=$form['form_id'];?>')[0].reset();
 					setTimeout(function(){
 						location.reload();
 					}, 2000);

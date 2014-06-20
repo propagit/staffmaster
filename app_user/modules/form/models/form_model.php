@@ -28,7 +28,7 @@ class Form_model extends CI_Model {
 				FROM custom_fields c
 					LEFT JOIN form_fields f ON f.name = c.field_id";
 		if ($show_actived) {
-			$sql .= " WHERE f.form_field_id != NULL";
+			$sql .= " WHERE f.form_field_id > 0";
 		}
 		$query = $this->db->query($sql);
 		return $query->result_array();
