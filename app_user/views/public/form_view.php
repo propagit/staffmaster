@@ -142,6 +142,7 @@
     		<? } ?>
     	<? } } ?>    		
     	<hr />
+    	<? if (count($custom_fields) > 0) { ?>
     	<h2>Additional Information</h2>
     	<p class="text-muted">Please provide us with the below information</p>
     	<? foreach($custom_fields as $field) { ?>
@@ -285,11 +286,10 @@ uploader_<?=$field['form_field_id'];?>.bind('FilesAdded', function(up, files) {
 					<? } ?>
 				</div>
     		</div>
-    	<? } ?>
-    		<div class="form-group">
-    			<label class="col-sm-2 control-label">&nbsp;</label>
-    			<div class="col-sm-10"><button type="button" id="btn-submit" class="btn btn-core">Apply Now</button></div>
-    		</div>
+    	<? } } ?>
+    		
+    	<p><button type="button" id="btn-submit" class="btn btn-core">Apply Now</button></p>
+    		
     	</form>
     </div>
 </div>

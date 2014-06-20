@@ -23,10 +23,13 @@ class Form_model extends CI_Model {
 		return $this->db->update('forms', $data);
 	}
 	
-	function get_custom_fields() {
+	function get_custom_fields($show_actived=false) {
 		$sql = "SELECT c.*, f.form_field_id, f.required
 				FROM custom_fields c
 					LEFT JOIN form_fields f ON f.name = c.field_id";
+		if ($show_actived) {
+			$sql .= " WHERE f.form_field_id != NULL";
+		}
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
