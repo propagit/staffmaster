@@ -37,6 +37,7 @@
 </div>
 <!--end bottom box -->
 
+<? } ?>
 <!-- Add Role Modal -->
 <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="addRoleLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -101,4 +102,3 @@ function delete_form(form_id) {
 	});
 }
 </script>
-<? } ?>
