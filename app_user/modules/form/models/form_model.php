@@ -8,11 +8,13 @@ class Form_model extends CI_Model {
 	}
 	
 	function get_forms() {
+		$this->db->where('status > ', DELETED);
 		$query = $this->db->get('forms');
 		return $query->result_array();
 	}
 	
 	function get_form($form_id) {
+		$this->db->where('status > ', DELETED);
 		$this->db->where('form_id', $form_id);
 		$query = $this->db->get('forms');
 		return $query->first_row('array');
@@ -21,6 +23,11 @@ class Form_model extends CI_Model {
 	function update_form($form_id, $data) {
 		$this->db->where('form_id', $form_id);
 		return $this->db->update('forms', $data);
+	}
+	
+	function delete_form($form_id) {
+		$this->db->where('form_id', $form_id);
+		return $this->db->update('forms', array('status' => DELETED));
 	}
 	
 	function get_custom_fields($show_actived=false) {
@@ -96,6 +103,27 @@ class Form_model extends CI_Model {
 	function add_applicant_data($data) {
 		$this->db->insert('form_applicant_data', $data);
 		return $this->db->insert_id();
+	}
+	
+	function get_applicants() {
+		$sql = "SELECT a.*, f.*, count(a.applicant_id) as total_fields 
+				FROM form_applicants a, form_applicant_data d, forms f
+				WHERE d.applicant_id = a.applicant_id
+				AND f.form_id = a.form_id
+				AND (d.value != '' OR d.value != NULL)
+				GROUP BY a.applicant_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function get_applicant($applicant_id) {
+		$sql = "SELECT f.label, f.name, d.value
+				FROM form_applicant_data d
+					LEFT JOIN form_fields f ON f.form_field_id = d.form_field_id
+				WHERE d.applicant_id = $applicant_id
+				AND (d.value != '' OR d.value != NULL)";
+		$query = $this->db->query($sql);
+		return $query->result_array();
 	}
 
 }

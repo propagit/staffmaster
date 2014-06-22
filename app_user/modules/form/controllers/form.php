@@ -20,6 +20,9 @@ class Form extends MX_Controller {
 			case 'edit':
 					$this->edit_view($param);
 				break;
+			case 'applicant':
+					$this->applicant_list_view();
+				break;
 			default:
 					$this->main_view();
 				break;
@@ -118,5 +121,11 @@ class Form extends MX_Controller {
 			's_choice' => 'Superannuation Choice',
 			's_name' => 'Name'
 		);
+	}
+	
+	function applicant_list_view()
+	{
+		$data['applicants'] = $this->form_model->get_applicants();
+		$this->load->view('applicant/list_view', isset($data) ? $data : NULL);
 	}
 }

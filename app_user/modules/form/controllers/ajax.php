@@ -10,8 +10,17 @@ class Ajax extends MX_Controller {
 	
 	function add_form() {
 		$input = $this->input->post();
+		if (!$input['name']) {
+			echo json_encode(array('ok' => false));
+			return;
+		}
 		$form_id = $this->form_model->add_form($input);
-		echo $form_id;
+		echo json_encode(array('ok' => true, 'form_id' => $form_id));
+	}
+	
+	function delete_form() {
+		$form_id = $this->input->post('form_id');
+		$this->form_model->delete_form($form_id);
 	}
 	
 	function update_settings() {
@@ -35,6 +44,11 @@ class Ajax extends MX_Controller {
 		} else {
 			echo 'default';
 		}
+	}
+	
+	function view_applicant($applicant_id) {
+		$data['applicant'] = $this->form_model->get_applicant($applicant_id);
+		$this->load->view('applicant/modal_view', isset($data) ? $data : NULL);
 	}
 }
 	

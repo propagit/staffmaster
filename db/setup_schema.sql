@@ -972,6 +972,7 @@ CREATE TABLE `forms` (
   `form_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `receive_email` varchar(255) NOT NULL,
+  `status` TINYINT NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`form_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -985,7 +986,10 @@ CREATE TABLE `forms` (
 CREATE TABLE `form_applicants` (
   `applicant_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `form_id` bigint(20) NOT NULL,
+  `status` TINYINT NOT NULL,
   `applied_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `accepted_on` DATETIME NOT NULL, 
+  `rejected_on` DATETIME NOT NULL,
   PRIMARY KEY (`applicant_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

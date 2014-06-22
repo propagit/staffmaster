@@ -16,6 +16,13 @@ class Group_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_group($group_id)
+	{
+		$this->db->where('group_id', $group_id);
+		$query = $this->db->get('attribute_groups');
+		return $query->first_row('array');
+	}
+	
 	function insert_group($data)
 	{
 		$this->db->insert('attribute_groups', $data);

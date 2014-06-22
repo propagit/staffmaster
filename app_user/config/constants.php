@@ -50,6 +50,7 @@ define('CLIENT_INACTIVE', -1);
 define('CLIENT_DELETED', -2);
 
 define('ACTIVE', 1);
+define('DELETED', -1);
 
 define('USER_DELETED', -2);
 
@@ -100,6 +101,8 @@ define('PAYRATE_DELETED', -1);
 define('STAFF_TFN', 1);
 define('STAFF_ABN', 2);
 
+define('APPLICANT_ACCEPTED', 1);
+define('APPLICANT_REJECTED', -1);
 
 define('GST_NO', 0);
 define('GST_YES', 1);

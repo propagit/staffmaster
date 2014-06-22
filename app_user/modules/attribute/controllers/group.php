@@ -116,4 +116,14 @@ class Group extends MX_Controller {
 		return $this->group_model->get_groups();
 	}
 	
+	function display_group($group_id)
+	{
+		$group = $this->get_group($group_id);
+		echo ($group) ? $group['name'] : 'Not Specified';
+	}
+	function get_group($group_id)
+	{
+		return $this->group_model->get_group($group_id);
+	}
+	
 }

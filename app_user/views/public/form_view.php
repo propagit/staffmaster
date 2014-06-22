@@ -126,7 +126,7 @@
 				</div>
     			<? }
     		} else if ($name == 'picture') { ?>
-    		<p class="text-muted">Upload photos of yourself so we have a visual refereance of you</p>
+    		<p class="text-muted">Upload photos of yourself so we have a visual reference of you</p>
 			<div id="filelist"><!-- Your browser doesn't have Flash, Silverlight or HTML5 support. --></div>
 			<div class="progress progress-striped active" style="visibility: hidden;">
 				<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="upload-progress">0%</div>
