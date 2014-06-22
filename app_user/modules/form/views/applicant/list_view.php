@@ -5,7 +5,7 @@
    		 <p>List of applicants who apply through the forms</p> 
     </div>
 </div>
-
+<? if (count($applicants) > 0) { ?>
 <!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
@@ -45,3 +45,4 @@ function view_applicant(applicant_id) {
 	});
 }
 </script>
+<? } ?>
