@@ -56,8 +56,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-core">Add to Staff</button>
-			<button class="btn btn-danger">Reject</button>
+			<button class="btn btn-core" onclick="accept_applicant(<?=$applicant_id;?>)">Add to Staff</button>
+			<button class="btn btn-danger" onclick="reject_applicant(<?=$applicant_id;?>)">Reject</button>
 		</div>
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->

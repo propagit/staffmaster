@@ -47,8 +47,14 @@ class Ajax extends MX_Controller {
 	}
 	
 	function view_applicant($applicant_id) {
+		$data['applicant_id'] = $applicant_id;
 		$data['applicant'] = $this->form_model->get_applicant($applicant_id);
 		$this->load->view('applicant/modal_view', isset($data) ? $data : NULL);
+	}
+	
+	function reject_applicant() {
+		$applicant_id = $this->input->post('applicant_id');
+		$this->form_model->reject_applicant($applicant_id);
 	}
 }
 	

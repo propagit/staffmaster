@@ -22,9 +22,9 @@
 		    </thead>
 		    <tbody>
 			<? foreach($applicants as $applicant) { ?>
-				<tr>
+				<tr id="applicant_<?=$applicant['applicant_id'];?>">
 					<td class="center"><?=$applicant['applicant_id'];?></td>
-					<td class="left"><?=date('H:i jS M Y', strtotime($applicant['applied_on']));?></td>
+					<td class="left"><?=date('j M Y \a\t H:i', strtotime($applicant['applied_on']));?></td>
 					<td class="center"><?=$applicant['total_fields'];?></td>
 					<td class="left"><?=$applicant['name'];?></td>
 					<td class="center"><a onclick="view_applicant(<?=$applicant['applicant_id'];?>)"><i class="fa fa-eye"></i></a></td>
@@ -43,6 +43,24 @@ function view_applicant(applicant_id) {
 		remote: "<?=base_url();?>form/ajax/view_applicant/" + applicant_id,
 		show: true
 	});
+}
+function reject_applicant(applicant_id) {
+	help.confirm_delete('Reject Applicant','Are you sure you want to reject this applicant?',function(confirmed){
+		if(confirmed){
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>form/ajax/reject_applicant",
+				data: {applicant_id: applicant_id},
+				success: function(html) {
+					$('#applicant_' + applicant_id).remove();
+					$('.bs-modal-lg').modal('hide');
+				}
+			})
+		}
+	});
+}
+function accept_applicant(applicant_id) {
+	
 }
 </script>
 <? } ?>

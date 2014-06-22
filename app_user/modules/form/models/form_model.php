@@ -111,6 +111,7 @@ class Form_model extends CI_Model {
 				WHERE d.applicant_id = a.applicant_id
 				AND f.form_id = a.form_id
 				AND (d.value != '' OR d.value != NULL)
+				AND a.status > " . APPLICANT_REJECTED . "
 				GROUP BY a.applicant_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -125,5 +126,12 @@ class Form_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-
+	
+	function reject_applicant($applicant_id) {
+		$this->db->where('applicant_id', $applicant_id);
+		return $this->db->update('form_applicants', array(
+			'status' => APPLICANT_REJECTED,
+			'rejected_on' => date('Y-m-d H:i:s')
+		));
+	}
 }
