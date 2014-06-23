@@ -566,6 +566,7 @@ span.dash-invoice-value{
 }
 .modal-applicant .img-thumbnail {
 	height: 100px;
+	margin: 10px 10px 10px 0;
 }
 /* system styles */
 .system-styles-label{

@@ -17,12 +17,18 @@
 						$value = '******';
 					} else if ($name == 'gender') {
 						$value = ($value == 'm') ? 'Male' : 'Female';
+					} else if ($name == 'location') {
+						$value = modules::run('attribute/location/display_location', $value);
 					} else if ($name == 'picture') {
 						$pictures = json_decode($value);
-						$value = '';
-						foreach($pictures as $picture) {
-							$value .= '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" />';
+						if (isset($pictures[0])) {
+							$pictures = json_decode($pictures[0]);
+							$value = '';
+							foreach($pictures as $picture) {
+								$value .= '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" />';
+							}
 						}
+						
 					} else if (is_array(json_decode($value))) {
 						$values = json_decode($value);
 						if ($name == 'availability') {

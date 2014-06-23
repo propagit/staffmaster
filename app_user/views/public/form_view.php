@@ -111,7 +111,7 @@
 						<span class="text-red">**</span>
 					<? } ?>
     			</p>
-    			<? #=modules::run('attribute/location/field_select', 'location_parent_id');?>
+    			<?=modules::run('attribute/location/field_input', $field['form_field_id']);?>
     			<div class="clear"></div>
     		<? } else if ($name == 'group' && count($groups) > 0) { ?>
     			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Please let us know what group you want to join
@@ -391,7 +391,7 @@ var uploader = new plupload.Uploader({
 				$('#uploaded_photos').append('<span><img class="img-thumbnail" src="<?=base_url() . UPLOADS_URL;?>/tmp/' + file.name + '" /><i class="fa fa-times" onClick="remove_file(this,\'' + file.id + '\',\'' + file.name + '\')"></i></span>');
 				file_names.push(file.name);
 			});
-			$('#field_pictures').val(file_names);
+			$('#field_pictures').val(JSON.stringify(file_names));
 			$('#upload-progress').parent().css("visibility", "hidden");
 			$('#upload-progress').css("width", "0%");
 			$('#upload-progress').html('0%');
@@ -414,7 +414,7 @@ function remove_file(e,id,name) {
 	if (index > -1) {
 	    file_names.splice(index, 1);
 	}
-	$('#field_pictures').val(file_names);
+	$('#field_pictures').val(JSON.stringify(file_names));
 }
 function remove_custom_file(id) {
 	$('input[name="' + id + '"]').val('');

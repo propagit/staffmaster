@@ -54,7 +54,7 @@ class Public_dispatcher extends MX_Controller {
 		$fields = $this->form_model->get_fields($form_id);
 		$errors = array();
 		foreach($fields as $field) {
-			if ($field['name'] != 'location' && $field['required'] && (!isset($input[$field['form_field_id']]) || !$input[$field['form_field_id']])) {
+			if ($field['required'] && (!isset($input[$field['form_field_id']]) || !$input[$field['form_field_id']])) {
 				$errors[] = $field['form_field_id'];
 			}
 		}
