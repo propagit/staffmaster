@@ -1,0 +1,71 @@
+html, body {
+	background: #fff;
+}
+h2 {
+	margin: 10px 0 0 0;
+	font-size: 40px;
+	font-weight: 900;
+	font-family: 'Lato',sans-serif;
+	letter-spacing: -1px;
+	color: #3D3D3D;
+}
+h2 .text-red {
+	font-size: 16px;
+	font-weight: normal;
+}
+.modal-body {
+	text-align: center;
+}
+#uploaded_photos .img-thumbnail {
+	height: 100px;
+	margin: 10px 10px 10px 0;
+	display: inline-block;
+}
+#uploaded_photos i {
+	cursor: pointer;
+	margin: 0 10px 0 -5px;
+}
+.up_file {
+	margin: 10px 0;
+}
+.up_file i {
+	cursor: pointer;
+}
+.custom-inline,
+.custom-attributes .inline{
+	width: auto !important;
+	padding-top: 0 !important;
+	line-height: 20px !important;
+	float: left;
+	padding-right: 10px;
+}
+.checkbox_day {
+	display: inline-block;
+	margin-right: 10px;
+}
+.checkbox_role {
+	display: inline-block;
+	width: 30%;
+}
+p.text-muted {
+	margin: 0 0 15px 0;
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title><?=$heading;?> &middot; Staff Master</title>
+	<title>Error &middot; Staff Master</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -22,7 +22,6 @@
     	<div id="nav-wrap">
 			<div class="row desktop-visible">
 		    	<div class="col-md-12">
-		            <?= $heading;?>
 		        </div>
 		    </div>
 		</div>  

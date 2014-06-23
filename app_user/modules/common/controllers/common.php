@@ -12,13 +12,25 @@ class Common extends MX_Controller {
 		parent::__construct();
 		$this->load->model('common_model');
 		$this->load->model('setting/setting_model');
-		$this->load->model('staff/staff_model');
+		#$this->load->model('staff/staff_model'); Who wrote this line and never use it?
 	}
 	
 	function parse_redirect($string)
 	{
 		$a = explode(':', $string);
 		return $a[1];
+	}
+	
+	function array_day() {
+		return array(
+			'1' => 'Monday',
+			'2' => 'Tuesday',
+			'3' => 'Wednesday',
+			'4' => 'Thursday',
+			'5' => 'Friday',
+			'6' => 'Saturday',
+			'7' => 'Sunday'
+		);
 	}
 	
 	/**
@@ -291,6 +303,16 @@ class Common extends MX_Controller {
 		$data['month'] = $month;
 		$data['year'] = $year;
 		$this->load->view('dropdown_dob', isset($data) ? $data : NULL);
+	}
+	
+	# Improvement for dob field
+	function field_dob($field_name, $day=null, $month=null, $year=null)
+	{
+		$data['day'] = $day;
+		$data['month'] = $month;
+		$data['year'] = $year;
+		$data['field_name'] = $field_name;
+		$this->load->view('field_dob', isset($data) ? $data : NULL);
 	}
 	
 	function break_time($string)

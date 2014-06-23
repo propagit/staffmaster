@@ -3,8 +3,8 @@
 	<div class="modal-dialog">
 		<div class="modal-content" id="credit-alert">
 			<div class="modal-body">
-				<h2>Welcome To Staff Master</h2>
-				<p>We can see you are new to Staff Master, to help you get familiar with the system and guide you through the process of creating your first job we have created a set up wizard.</p>
+				<h2>Welcome To StaffBooks</h2>
+				<p>We can see you are new to StaffBooks, to help you get familiar with the system and guide you through the process of creating your first job we have created a set up wizard.</p>
 			</div>
 			<div class="modal-footer">
 				<a type="button" class="btn btn-core btn-lg" href="<?=base_url();?>setting/company#setup_wizard"><i class="fa fa-smile-o"></i> Yes! Help Me Set Up</a>

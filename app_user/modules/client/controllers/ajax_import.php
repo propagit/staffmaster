@@ -125,8 +125,8 @@ class Ajax_import extends MX_Controller {
 				'is_admin' => 0,
 				'is_staff' => 0,
 				'is_client' => 1,
-				'email_address' => $data['email_address'],
-				'username' => $data['email_address'],
+				'email_address' => isset($data['email_address']) ? $data['email_address'] : '',
+				'username' => isset($data['email_address']) ? $data['email_address'] : '',
 				'full_name' => isset($data['full_name']) ? $data['full_name'] : '',
 				'address' => isset($data['address']) ? $data['address'] : '',
 				'suburb' => isset($data['suburb']) ? $data['suburb'] : '',
@@ -185,7 +185,7 @@ class Ajax_import extends MX_Controller {
 			$this->load->helper('email');
 			$valid = valid_email($value);
 			$used = $this->user_model->check_user_email($value);
-			return $valid && !$used;
+			return ($value == '' || !$value || ($valid && !$used));
 		}
 		if ($key == 'status')
 		{

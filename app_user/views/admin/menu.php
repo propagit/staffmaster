@@ -4,7 +4,8 @@ $menu = array(
 	array('path' => '#', 'icon' => 'fa-users', 'title' => 'Manage Staff', 'sub' => array(
 		array('path' => 'staff/search', 'icon' => 'fa-search', 'title' => 'Search Staff'),
 		array('path' => 'staff/add', 'icon' => 'fa-plus', 'title' => 'Add Staff'),
-		array('path' => 'staff/import', 'icon' => 'fa-upload', 'title' => 'Import Staff')
+		array('path' => 'staff/import', 'icon' => 'fa-upload', 'title' => 'Import Staff'),
+		array('path' => 'form/applicant', 'icon' => 'fa-file-text-o', 'title' => 'Applicants')
 	)),
 	array('path' => '#', 'icon' => 'fa-book', 'title' => 'Manage Clients', 'sub' => array(
 		array('path' => 'client/search', 'icon' => 'fa-search', 'title' => 'Search Clients'),
@@ -48,6 +49,7 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
 		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
+		array('path' => 'form', 'icon' => 'fa-file-text-o', 'title' => 'Form Builder'),
 		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
 		#array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),		

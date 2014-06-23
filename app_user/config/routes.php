@@ -62,7 +62,7 @@ $route['forgot-password'] = 'forgot_password';
 
 
 
-$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard');
+$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard', 'form', 'attribute');
 $path = implode('|', $modules);
 $route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
 $route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
@@ -71,19 +71,9 @@ $route['(' . $path . ')/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/
 $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
 $route['(' . $path . ')/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
 
+$route['public/form/(:any)'] = 'public_dispatcher/form/$1';
+$route['public/form/(:any)/(:any)'] = 'public_dispatcher/form/$1/$2';
 
-#$route['client/(:any)'] = 'dispatcher/user_dispatcher/client/$1';
-#$route['(job|staff|roster|work)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5/$6';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)'] = 'dispatcher/user_dispatcher/$1';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4';
-#$route['(job|staff|roster|work|timesheet|invoice|payrun|setting|export|email)/(:any)/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/$1/$2/$3/$4/$5';
-
-
-$route['attribute/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1';
-$route['attribute/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2';
-$route['attribute/(:any)/(:any)/(:any)'] = 'dispatcher/user_dispatcher/attribute/$1/$2/$3';
 
 
 $route['admin'] = 'dispatcher/admin_dispatcher';
