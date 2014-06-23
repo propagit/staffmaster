@@ -2,8 +2,6 @@
 <h2>Your Email Signature</h2>
 <p>Your email signature will be attached to the base of every email sent from the sytem</p>
 </div>
-<button type="button" class="btn btn-info" id="button_trial_email"><i class="fa fa-envelope-o"></i> Send Email</button>
-<br /><br />
 <form class="form-horizontal" role="form" id="form_update_company_signature">
 <input type="hidden" name="company_id" value="<?=(isset($company['id'])) ? $company['id'] : 0 ?>" />
 <div class="row">	
