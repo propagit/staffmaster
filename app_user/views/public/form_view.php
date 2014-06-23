@@ -32,6 +32,7 @@
     <link href="<?=base_url();?>assets/css/core.css" rel="stylesheet" media="screen">
 	<link href="<?=base_url();?>assets/css/public/form.css" rel="stylesheet" media="screen">
 	<link href="<?=base_url();?>assets/jasny-bootstrap/css/public/jasny-bootstrap.min.css" rel="stylesheet" media="screen">
+	<link type="text/css" rel="stylesheet" href="<?=base_url();?>custom_styles" />
 </head>
 <body>
 
@@ -110,7 +111,7 @@
 						<span class="text-red">**</span>
 					<? } ?>
     			</p>
-    			<?=modules::run('attribute/location/field_select', 'location_parent_id');?>
+    			<? #=modules::run('attribute/location/field_select', 'location_parent_id');?>
     			<div class="clear"></div>
     		<? } else if ($name == 'group' && count($groups) > 0) { ?>
     			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Please let us know what group you want to join
@@ -286,8 +287,9 @@ uploader_<?=$field['form_field_id'];?>.bind('FilesAdded', function(up, files) {
 					<? } ?>
 				</div>
     		</div>
-    	<? } } ?>
+    	<? } ?>
     	<hr />
+    	<? } ?>
     	<p><button type="button" id="btn-submit" class="btn btn-core">Apply Now</button></p>
     		
     	</form>
