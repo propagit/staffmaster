@@ -35,6 +35,10 @@ class User extends MX_Controller {
 		return $this->user_model->get_user($user_id);
 	}
 	
+	function get_user_by_email($email) {
+		return $this->user_model->get_user_by_email($email);
+	}
+	
 	function get_user_client($user_id)
 	{
 		return $this->user_model->get_user_client($user_id);

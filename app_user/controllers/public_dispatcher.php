@@ -20,9 +20,6 @@ class Public_dispatcher extends MX_Controller {
 	
 	function form($form_id, $action='')
 	{
-		if ($this->input->post()) {
-			#var_dump($this->input->post());
-		}
 		
 		$this->load->model('form/form_model');
 		$form = $this->form_model->get_form($form_id);
@@ -57,6 +54,13 @@ class Public_dispatcher extends MX_Controller {
 			if ($field['required'] && (!isset($input[$field['form_field_id']]) || !$input[$field['form_field_id']])) {
 				$errors[] = $field['form_field_id'];
 			}
+			if ($field['name'] == 'email') {
+				if (isset($input[$field['form_field_id']])) {
+					if (!valid_email($input[$field['form_field_id']])) {
+						$errors[] = $field['form_field_id'];
+					}
+				}
+			}
 		}
 		if (count($errors) > 0) {
 			echo json_encode(array(
@@ -74,7 +78,7 @@ class Public_dispatcher extends MX_Controller {
 				'applicant_id' => $applicant_id,
 				'form_field_id' => $form_field_id,
 				'value' => $value
-			));
+			));	
 		}
 		echo json_encode(array(
 			'ok' => true,

@@ -118,9 +118,10 @@ class Form_model extends CI_Model {
 	}
 	
 	function get_applicant($applicant_id) {
-		$sql = "SELECT f.label, f.name, d.value
+		$sql = "SELECT f.label, f.name, d.value, c.type
 				FROM form_applicant_data d
 					LEFT JOIN form_fields f ON f.form_field_id = d.form_field_id
+					LEFT JOIN custom_fields c ON c.field_id = f.name
 				WHERE d.applicant_id = $applicant_id
 				AND (d.value != '' OR d.value != NULL)";
 		$query = $this->db->query($sql);
@@ -132,6 +133,14 @@ class Form_model extends CI_Model {
 		return $this->db->update('form_applicants', array(
 			'status' => APPLICANT_REJECTED,
 			'rejected_on' => date('Y-m-d H:i:s')
+		));
+	}
+	
+	function accept_applicant($applicant_id) {
+		$this->db->where('applicant_id', $applicant_id);
+		return $this->db->update('form_applicants', array(
+			'status' => APPLICANT_ACCEPTED,
+			'accepted_on' => date('Y-m-d H:i:s')
 		));
 	}
 }

@@ -137,7 +137,7 @@
 			    <button type="button" id="uploadfiles" href="javascript:;" class="btn btn-core">Upload files</button>
 	            <span id="console"></span>
 			</div>
-			<input type="hidden" id="field_pictures" name="<?=$field['form_field_id'];?>[]" />
+			<input type="hidden" id="field_pictures" name="<?=$field['form_field_id'];?>" />
 			<div id="uploaded_photos">
 			</div>
     		<? } ?>
@@ -215,7 +215,8 @@ var uploader_<?=$field['form_field_id'];?> = new plupload.Uploader({
 	container: document.getElementById('upload_container_<?=$field['form_field_id'];?>'), // ... or DOM Element itself
 	url : '<?=base_url();?>public/form/<?=$form['form_id'];?>/upload_files',
 	chunk_size: '400kb',
-    max_retries: 5,
+    max_retries: 5,    
+    unique_names: true,
 	flash_swf_url : '<?=base_url();?>assets/js/plupload/Moxie.swf',
 	silverlight_xap_url : '<?=base_url();?>assets/js/plupload/Moxie.xap',
 
@@ -266,7 +267,7 @@ var uploader_<?=$field['form_field_id'];?> = new plupload.Uploader({
 			$('#console_<?=$field['form_field_id'];?>').html('');
 			$('#filelist_<?=$field['form_field_id'];?>').html('');
 			$('#uploaded_file_<?=$field['form_field_id'];?>').html('<span>' + files[0].name + ' <i class="fa fa-times" onClick="remove_custom_file(<?=$field['form_field_id'];?>)"></i></span>');
-			$('input[name="<?=$field['form_field_id'];?>"]').val(files[0].name);
+			$('input[name="<?=$field['form_field_id'];?>"]').val(files[0].target_name);
 		},
 
 		Error: function(up, err) {
@@ -349,6 +350,7 @@ var uploader = new plupload.Uploader({
 	url : '<?=base_url();?>public/form/<?=$form['form_id'];?>/upload_files',
 	chunk_size: '400kb',
     max_retries: 5,
+    unique_names: true,
 	flash_swf_url : '<?=base_url();?>assets/js/plupload/Moxie.swf',
 	silverlight_xap_url : '<?=base_url();?>assets/js/plupload/Moxie.xap',
 
@@ -388,10 +390,14 @@ var uploader = new plupload.Uploader({
 			file_names.length = 0;
 			$('#uploaded_photos').html('');
 			plupload.each(files, function(file) {
-				$('#uploaded_photos').append('<span><img class="img-thumbnail" src="<?=base_url() . UPLOADS_URL;?>/tmp/' + file.name + '" /><i class="fa fa-times" onClick="remove_file(this,\'' + file.id + '\',\'' + file.name + '\')"></i></span>');
-				file_names.push(file.name);
+				$('#uploaded_photos').append('<span><img class="img-thumbnail" src="<?=base_url() . UPLOADS_URL;?>/tmp/' + file.target_name + '" /><i class="fa fa-times" onClick="remove_file(this,\'' + file.id + '\',\'' + file.target_name + '\')"></i></span>');
+				file_names.push(file.target_name);
 			});
-			$('#field_pictures').val(JSON.stringify(file_names));
+			if (file_names.length > 0) {
+				$('#field_pictures').val(JSON.stringify(file_names));
+			} else {
+				$('#field_pictures').val('');
+			}
 			$('#upload-progress').parent().css("visibility", "hidden");
 			$('#upload-progress').css("width", "0%");
 			$('#upload-progress').html('0%');
@@ -414,7 +420,11 @@ function remove_file(e,id,name) {
 	if (index > -1) {
 	    file_names.splice(index, 1);
 	}
-	$('#field_pictures').val(JSON.stringify(file_names));
+	if (file_names.length > 0) {
+		$('#field_pictures').val(JSON.stringify(file_names));
+	} else {
+		$('#field_pictures').val('');
+	}
 }
 function remove_custom_file(id) {
 	$('input[name="' + id + '"]').val('');

@@ -59,8 +59,16 @@ function reject_applicant(applicant_id) {
 		}
 	});
 }
-function accept_applicant(applicant_id) {
-	
+function accept_applicant(applicant_id, status) {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>form/ajax/accept_applicant",
+		data: {applicant_id: applicant_id, status: status},
+		success: function(html) {
+			$('#applicant_' + applicant_id).remove();
+			$('.bs-modal-lg').modal('hide');
+		}
+	})
 }
 </script>
 <? } ?>
