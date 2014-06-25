@@ -188,4 +188,41 @@ class Client_model extends CI_Model {
 			return 0;	
 		}
 	}
+	
+	function get_venues($user_id) {
+		$sql = "SELECT c.venue_id as is_restricted, v.* FROM attribute_venues v
+					LEFT JOIN user_client_venue_restrict c ON (c.venue_id = v.venue_id AND c.user_id = $user_id)";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function restrict_venue($data) {
+		$this->db->where('user_id', $data['user_id']);
+		$this->db->where('venue_id', $data['venue_id']);
+		$query = $this->db->get('user_client_venue_restrict');
+		if ($query->num_rows()) { # Found, delete
+			$this->db->where('user_id', $data['user_id']);
+			$this->db->where('venue_id', $data['venue_id']);
+			return $this->db->delete('user_client_venue_restrict');
+		} else { # Not found, insert
+			$this->db->insert('user_client_venue_restrict', $data);
+			return $this->db->insert_id();
+		}
+		
+	}
+	
+	function add_venue($data) {
+		$this->db->where('user_id', $data['user_id']);
+		$this->db->where('venue_id', $data['venue_id']);
+		$query = $this->db->get('user_client_venue_restrict');
+		if (!$query->num_rows()) { # Not found, insert
+			$this->db->insert('user_client_venue_restrict', $data);
+			return $this->db->insert_id();
+		}
+	}
+	
+	function delete_venues($user_id) {
+		$this->db->where('user_id', $user_id);
+		return $this->db->delete('user_client_venue_restrict');
+	}
 }

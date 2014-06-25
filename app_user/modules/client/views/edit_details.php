@@ -121,6 +121,7 @@ $(function(){
 					});
 					$('input[name="' + data.error_id + '"]').focus();
 				} else {
+					$('#client_name').html($('input[name="company_name"]').val());
 					$('#msg-update').removeClass('hide');
 					setTimeout(function(){
 						$('#msg-update').addClass('hide');

@@ -1293,7 +1293,7 @@ ol.example li.placeholder:before {
 .table-expanded>tfoot>tr>td{
 	padding-top:16px;
 	padding-bottom:16px;
-	font-size:13px;	
+	
 }
 .table-bordered{
 	border:1px solid #cccccc;

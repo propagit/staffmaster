@@ -5,7 +5,7 @@
 		<h2>Your Profile</h2>
 		<p>Edit your client profile information below.</p>
 		<? } else { ?>
-		<h2>Edit Client</h2>
+		<h2>Edit Client: <span id="client_name"><?=$client['company_name'];?></span></h2>
 		<p>Edit client using below form.</p>
 		<? } ?>
     </div>
@@ -19,13 +19,18 @@
 			
 			<ul class="nav nav-tabs tab-respond" id="nav-client-profile">
                 <li class="active"><a href="#details" data-toggle="tab">Client Details</a></li>
-                <li><a href="#departments" data-toggle="tab">Departments</a></li>                              
+                <li><a href="#departments" data-toggle="tab">Departments</a></li>
+                <? if (!modules::run('auth/is_client')) { ?>
+                <li><a href="#venues" data-toggle="tab">Venues</a></li>
+                <? } ?>                   
 			</ul>
 			
 			<div class="tab-content">
 				<div class="tab-pane active" id="details"></div>	
                 <div class="tab-pane" id="departments"></div>
-				
+                <? if (!modules::run('auth/is_client')) { ?>
+				<div class="tab-pane" id="venues"></div>
+				<? } ?>
 			</div>
 		 </div>
     </div>

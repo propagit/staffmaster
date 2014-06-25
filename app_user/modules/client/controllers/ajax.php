@@ -145,6 +145,34 @@ class Ajax extends MX_Controller {
 		$data = $this->input->post();
 		$this->client_model->update_department($data['department_id'], $data);
 	}
+	
+	function get_venues() {
+		$user_id = $this->input->post('user_id');
+		$data['venues'] = $this->client_model->get_venues($user_id);
+		$data['user_id'] = $user_id;
+		$this->load->view('venues_list', isset($data) ? $data : NULL);
+	}
+	
+	function restrict_venue() {
+		$input = $this->input->post();
+		$this->client_model->restrict_venue($input);
+	}
+	
+	function unrestrict_all() {
+		$user_id = $this->input->post('user_id');
+		$unrestrict_all = $this->input->post('unrestrict_all');
+		if ($unrestrict_all == 'false') { # Restrict all venues
+			$venues = modules::run('attribute/venue/get_venues');
+			foreach($venues as $venue) {
+				$this->client_model->add_venue(array(
+					'user_id' => $user_id, 
+					'venue_id' => $venue['venue_id']));
+			}
+		} else { # Unrestrict all venues / Delete all venues from restrict list
+			$this->client_model->delete_venues($user_id);
+		}
+	}
+	
 	/**
 	*	@name: delete_client
 	*	@desc: Delete single client

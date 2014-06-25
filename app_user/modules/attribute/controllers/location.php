@@ -80,6 +80,9 @@ class Location extends MX_Controller {
 	{
 		(string) $output = null;
 		$location = $this->location_model->get_location($location_id);
+		if (!$location) {
+			return 'Not available';
+		}
 		$output = $location['name'];
 		
 		if ($location['parent_id'] != 0)

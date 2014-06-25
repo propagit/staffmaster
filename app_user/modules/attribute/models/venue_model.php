@@ -29,12 +29,24 @@ class Venue_model extends CI_Model {
 	function get_venues($params = '',$total = false)
 	{
 		$records_per_page = VENUES_PER_PAGE;
+		
 		$sql = "select attribute_venues.*,
 				attribute_locations.location_id as location_id,
 				attribute_locations.parent_id as location_parent_id, 
 				attribute_locations.name as location_name 
 				from
 				attribute_venues, attribute_locations where attribute_venues.location_id = attribute_locations.location_id";
+		# Use left join since some venues might not have location
+		$sql = "SELECT v.*, l.location_id as location_id, l.parent_id as location_parent_id
+					FROM attribute_venues v
+						LEFT JOIN attribute_locations l ON l.location_id = v.location_id";
+		# If user logged in as client
+		if (modules::run('auth/is_client')) {
+			$user_data = $this->session->userdata('user_data');
+			$sql .= " WHERE v.venue_id NOT IN (
+						SELECT venue_id FROM user_client_venue_restrict
+						WHERE user_id = " . $user_data['user_id'] . ")";
+		}
 		if($params){
 			$sort_param = json_decode($params);	
 			$sql .= " order by $sort_param->sort_by $sort_param->sort_order";
