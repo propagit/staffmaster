@@ -1,20 +1,11 @@
 <br />
 <div class="clearfix">
 <div class="col-md-7">
-	<h2>Configure <?=ucwords(str_replace('_',' ',$object));?> Export</h2>	
+	<h2>Configure <? $a = explode('_', $object); echo ucwords($a[0]); 
+		if (isset($a[1])) echo ' ' . strtoupper($a[1]); ?> Export</h2>	
 </div>
 <div class="col-md-5">
 	<? if($object != 'staff' && $object != 'expense' ) { ?>
-	<? /*
-	<div class="alert alert-success clearfix">
-		<div class="col-md-6">
-			<label><input type="radio" name="format" checked value="single" /> &nbsp; Single Time Sheet</label>
-		</div>
-		<div class="col-md-6">
-			<label><input type="radio" name="format" value="batched" /> &nbsp; Batched Time Sheets</label>
-		</div>
-	</div> */ 
-	?>
 	<input type="radio" name="format" value="single" checked class="hide" />
 	<? } else { ?>
 	<input type="radio" name="<?=$object;?>_format" checked value="single" class="hide" />

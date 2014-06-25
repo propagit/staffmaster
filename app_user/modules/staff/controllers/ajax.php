@@ -1028,7 +1028,7 @@ class Ajax extends MX_Controller {
 			}
 			else
 			{
-				$letter = chr(97 + ($i-26)) . chr(97 + ($i-26)) . $row;
+				$letter = 'A' . chr(97 + ($i-26)) . $row;
 			}
 			$objPHPExcel->getActiveSheet()->SetCellValue($letter, $field['title']);
 			$i++;
@@ -1060,7 +1060,7 @@ class Ajax extends MX_Controller {
 				{
 					$s_choice = "yes";	
 				}
-				
+				$value = str_replace('{internal_id}', $staff['user_id'], $value);
 				$value = str_replace('{title}', $staff['title'], $value);
 				$value = str_replace('{rating}', $staff['rating'], $value);
 				$value = str_replace('{first_name}', $staff['first_name'], $value);
@@ -1075,6 +1075,7 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{country}', $staff['country'], $value);
 				$value = str_replace('{email}', $staff['email_address'], $value);
 				$value = str_replace('{phone}', $staff['phone'], $value);
+				$value = str_replace('{mobile}', $staff['mobile'], $value);
 				$value = str_replace('{external_id}', $staff['external_staff_id'], $value);
 				$value = str_replace('{emergency_contact}', $staff['emergency_contact'], $value);
 				$value = str_replace('{emergency_phone}', $staff['emergency_phone'], $value);
@@ -1088,6 +1089,7 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{super_employee_id}', $staff['s_employee_id'], $value);
 				$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
 				$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);
+				$value = str_replace('{joined_date}', date('d/m/Y', strtotime($staff['created_on'])), $value);
 				
 				if ($i < 26)
 				{
@@ -1095,7 +1097,7 @@ class Ajax extends MX_Controller {
 				}
 				else
 				{
-					$letter = chr(97 + ($i-26)) . chr(97 + ($i-26)) . $row;
+					$letter = 'A' . chr(97 + ($i-26)) . $row;
 				}
 				if ($is_string) 
 				{
