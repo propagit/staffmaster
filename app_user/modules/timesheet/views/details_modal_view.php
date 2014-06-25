@@ -102,10 +102,29 @@
 					</tr>
 					<? } ?>
 				</table>				
-				<button type="button" class="btn btn-core"><i class="fa fa-print"></i> Print</button>
+				<button type="button" class="btn btn-core" id="btn-print-timesheet"><i class="fa fa-print"></i> Print</button>
 				&nbsp;
 				<button type="button" class="btn btn-core"><i class="fa fa-envelope-o"></i> Email</button>
 			</div>	
 		</div>
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
+<script>
+function print_timesheet(timesheet_id) {
+	alert(timesheet_id);
+}
+$(function(){
+	$('#btn-print-timesheet').click(function(){
+		var prtContent = $('.modal-body').find('.table');
+		//alert(prtContent[0].outerHTML);
+		var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+WinPrint.document.write(prtContent[0].outerHTML);
+WinPrint.document.close();
+WinPrint.focus();
+WinPrint.print();
+WinPrint.close();
+		//$(this).prop('target', '_blank');
+		//window.open('<?=base_url();?>timesheet/download/');
+	})
+})
+</script>
