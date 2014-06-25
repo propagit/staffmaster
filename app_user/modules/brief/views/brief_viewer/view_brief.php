@@ -53,7 +53,7 @@
 </div>
 <?php
 	if(isset($shift_info)){ 
-		$header = str_replace(array("\r", "\r\n", "\n", ",","'"), '-', $shift_info->campaign_name).' - '.str_replace(array("\r", "\r\n", "\n", ","."'"), '-', $shift_info->venue_name).' - '.date('l dS F Y',strtotime($shift_info->job_date));
+		$header = str_replace(array("\r", "\r\n", "\n", ",", "'"), '-', $shift_info->campaign_name).' - '.str_replace(array("\r", "\r\n", "\n", ",", "'"), '-', $shift_info->venue_name).' - '.date('l dS F Y',strtotime($shift_info->job_date));
 	}else{
 		$header = $brief_name;	
 	}
