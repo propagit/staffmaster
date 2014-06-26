@@ -22,7 +22,7 @@ class Forgot_password extends MX_Controller {
 	{
 		$this->template->set_template('forgot_password');
 		$this->template->add_css('custom_styles');
-		$this->template->write('title', 'Staff Master');
+		$this->template->write('title', 'StaffBooks');
 		if ($this->input->post())
 		{
 			$username_post = $this->input->post('username',true);

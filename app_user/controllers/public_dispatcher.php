@@ -31,7 +31,7 @@ class Public_dispatcher extends MX_Controller {
 			$this->upload_files();
 		}
 		if ($action == 'submit') {
-			$this->submit($form_id);
+			$this->submit($form);
 			die();
 		}
 		
@@ -46,10 +46,11 @@ class Public_dispatcher extends MX_Controller {
 		$this->load->view('public/form_view', isset($data) ? $data : NULL);
 	}
 	
-	function submit($form_id) {
+	function submit($form) {
 		$input = $this->input->post();
-		$fields = $this->form_model->get_fields($form_id);
+		$fields = $this->form_model->get_fields($form['form_id']);
 		$errors = array();
+		$id_for_email = '';
 		foreach($fields as $field) {
 			if ($field['required'] && (!isset($input[$field['form_field_id']]) || !$input[$field['form_field_id']])) {
 				$errors[] = $field['form_field_id'];
@@ -61,6 +62,16 @@ class Public_dispatcher extends MX_Controller {
 					}
 				}
 			}
+			if ($field['name'] == 'first_name') {
+				if (isset($input[$field['form_field_id']])) {
+					$id_for_email = $input[$field['form_field_id']];
+				}
+			}
+			if ($field['name'] == 'last_name') {
+				if (isset($input[$field['form_field_id']])) {
+					$id_for_email .= ' ' . $input[$field['form_field_id']];
+				}
+			}
 		}
 		if (count($errors) > 0) {
 			echo json_encode(array(
@@ -69,7 +80,10 @@ class Public_dispatcher extends MX_Controller {
 			));
 			return;
 		}
-		$applicant_id = $this->form_model->add_applicant(array('form_id' => $form_id));
+		$applicant_id = $this->form_model->add_applicant(array('form_id' => $form['form_id']));
+		
+		if ($id_for_email == '') { $id_for_email = $applicant_id; }
+		
 		foreach($input as $form_field_id => $value) {
 			if (is_array($value)) {
 				$value = json_encode($value);
@@ -79,6 +93,24 @@ class Public_dispatcher extends MX_Controller {
 				'form_field_id' => $form_field_id,
 				'value' => $value
 			));	
+		}
+		if (valid_email($form['receive_email'])) {
+			# Send notification email
+			$this->load->library('email');
+			$this->load->model('setting/setting_model');
+			$company = $this->setting_model->get_profile();	
+			
+			$this->email->from($company['email_c_email'], $company['email_c_name'] . ' - ' . $form['name']);
+			$this->email->to($form['receive_email']);
+			
+			$this->email->subject('New Applicant: ' . $id_for_email);
+			$message = sprintf('
+You have had a new applicant applied via %s
+To review this application log into %s and browse to "Manage Staff" - "Applicants"
+', $form['name'], base_url());
+			$this->email->message($message);
+			
+			$this->email->send();
 		}
 		echo json_encode(array(
 			'ok' => true,
