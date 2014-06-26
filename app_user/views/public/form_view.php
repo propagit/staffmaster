@@ -291,7 +291,7 @@ uploader_<?=$field['form_field_id'];?>.bind('FilesAdded', function(up, files) {
     	<? } ?>
     	<hr />
     	<? } ?>
-    	<p><button type="button" id="btn-submit" class="btn btn-core">Apply Now</button></p>
+    	<p><button type="button" id="btn-submit" class="btn btn-core" data-loading-text="Please wait..." >Apply Now</button></p>
     		
     	</form>
     </div>
@@ -315,12 +315,15 @@ uploader_<?=$field['form_field_id'];?>.bind('FilesAdded', function(up, files) {
 $(function(){
 	init_select();
 	$('#btn-submit').click(function(){
+		var btn = $(this);
+		btn.button('loading');
 		$('#form<?=$form['form_id'];?>').find('.has-error').removeClass('has-error');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>public/form/<?=$form['form_id'];?>/submit",
 			data: $('#form<?=$form['form_id'];?>').serialize(),
 			success: function(html) {
+				btn.button('reset');
 				var data = $.parseJSON(html);
 				if (!data.ok) {
 					for(var i=0; i < data.errors.length; i++) {
