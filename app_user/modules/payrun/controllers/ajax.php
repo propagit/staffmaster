@@ -266,6 +266,7 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{venue}', $timesheet['venue'], $value);
 				$value = str_replace('{job_name}', $timesheet['job_name'], $value);
 				$value = str_replace('{pay_rate}', $timesheet['payrate'], $value);
+				$value = str_replace('{job_id}', $timesheet['job_id'], $value);
 				$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
 				$i++;
 			}

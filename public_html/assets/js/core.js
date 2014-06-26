@@ -22,7 +22,7 @@ function loaded(obj,html)
 {
 	if (html != null) {
 		setTimeout(function(){
-			console.log(html);
+			//console.log(html);
 			$(obj).html(html);
 		}, 200);
 	} else {
