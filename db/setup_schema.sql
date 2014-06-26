@@ -739,6 +739,7 @@ CREATE TABLE IF NOT EXISTS `expenses` (
 -- Table structure for table `export_fields`
 --
 
+DROP TABLE IF EXISTS `export_fields`;
 CREATE TABLE IF NOT EXISTS `export_fields` (
   `order` int(11) NOT NULL AUTO_INCREMENT,
   `object` varchar(20) NOT NULL,
@@ -746,7 +747,7 @@ CREATE TABLE IF NOT EXISTS `export_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`order`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
 
 --
 -- Dumping data for table `export_fields`
@@ -780,7 +781,7 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 (25, 'payrun_abn', 'single', 'venue', 'Venue'),
 (26, 'payrun_abn', 'single', 'internal_staff_id', 'Internal Staff Id'),
 (27, 'payrun_abn', 'single', 'external_staff_id', 'External Staff Id'),
-(28, 'payrun_abn', 'single', 'job_name', 'Job Nam'),
+(28, 'payrun_abn', 'single', 'job_name', 'Job Name'),
 (29, 'payrun_tfn', 'batched', 'staff_name', 'Staff Name'),
 (30, 'payrun_tfn', 'batched', 'hours', 'Hours'),
 (31, 'payrun_tfn', 'batched', 'internal_staff_id', 'Internal Staff Id'),
@@ -829,7 +830,11 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 (74, 'staff', 'single', 'super_membership_number', 'Super Membership Number'),
 (75, 'staff', 'single', 'last_name', 'Last Name'),
 (76, 'staff', 'single', 'mobile', 'Mobile'),
-(77, 'staff', 'single', 'password', 'Password');
+(77, 'staff', 'single', 'internal_id', 'Internal Staff ID'),
+(78, 'staff', 'single', 'joined_date', 'Joined Date'),
+(79, 'payrun_tfn', 'single', 'job_jd', 'Job ID'),
+(80, 'payrun_abn', 'single', 'job_id', 'Job ID'),
+(81, 'staff', 'single', 'status', 'Status');
 
 -- --------------------------------------------------------
 
@@ -837,6 +842,7 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 -- Table structure for table `export_templates`
 --
 
+DROP TABLE IF EXISTS `export_templates`;
 CREATE TABLE IF NOT EXISTS `export_templates` (
   `export_id` int(11) NOT NULL AUTO_INCREMENT,
   `object` varchar(20) NOT NULL,
@@ -844,7 +850,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `export_templates`
@@ -853,13 +859,17 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
 INSERT INTO `export_templates` (`export_id`, `object`, `format`, `name`, `status`) VALUES
 (1, 'invoice', 'single', 'Invoice Export', 0),
 (2, 'invoice', 'batched', 'Invoice Export', 0),
-(3, 'payrun_tfn', 'single', 'TFN Export', 0),
+(3, 'payrun_tfn', 'single', 'Default - TFN Export', 0),
 (4, 'payrun_tfn', 'batched', 'TFN Export', 0),
 (5, 'payrun_abn', 'single', 'ABN Supplier Export', 0),
 (6, 'payrun_abn', 'batched', 'ABN Supplier Export', 0),
-(7, 'staff', 'single', 'Staff Export', 0),
+(7, 'staff', 'single', 'Default - Staff Export', 0),
 (8, 'invoice', 'batched', 'Custom batched invoice', 0),
-(9, 'expense', 'single', 'Staff Expense Export ', 0);
+(9, 'expense', 'single', 'Staff Expense Export ', 0),
+(10, 'staff', 'single', 'Shoebooks - Staff Export', 0),
+(11, 'payrun_tfn', 'single', 'Shoebooks - TFN Export', 0),
+(12, 'payrun_abn', 'single', 'Shoebooks - ABN Export', 0),
+(13, 'invoice', 'single', 'Shoebooks - Client Invoice Export', 0);
 
 -- --------------------------------------------------------
 
@@ -867,6 +877,7 @@ INSERT INTO `export_templates` (`export_id`, `object`, `format`, `name`, `status
 -- Table structure for table `export_template_data`
 --
 
+DROP TABLE IF EXISTS `export_template_data`;
 CREATE TABLE IF NOT EXISTS `export_template_data` (
   `field_id` int(11) NOT NULL AUTO_INCREMENT,
   `export_id` int(11) NOT NULL,
@@ -874,7 +885,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=113 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=170 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -941,7 +952,57 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (109, 7, 25, 'Super Fund Name', '{super_fund_name}'),
 (110, 7, 23, 'Choice of superannuation', '{super_choice}'),
 (111, 7, 24, 'Super Employee ID Number', '{super_employee_id}'),
-(112, 7, 26, 'Super Membership Number', '{super_membership_number}');
+(112, 7, 26, 'Super Membership Number', '{super_membership_number}'),
+(117, 10, 0, 'EmployeeID', '{internal_id}'),
+(118, 10, 1, 'FirstName', '{first_name}'),
+(119, 10, 2, 'Surname', '{last_name}'),
+(120, 10, 3, 'dtmBirthDate', '{dob}'),
+(121, 10, 4, 'TFN', '{tfn_number}'),
+(122, 10, 5, 'Address1', '{address}'),
+(123, 10, 6, 'Address2', ''),
+(124, 10, 7, 'City', '{city}'),
+(125, 10, 8, 'State', '{state}'),
+(126, 10, 9, 'PostCode', '{postcode}'),
+(127, 10, 10, 'Country', '{country}'),
+(128, 10, 11, 'Notes', ''),
+(129, 10, 12, 'Phone1', '{phone}'),
+(130, 10, 13, 'Phone2', ''),
+(131, 10, 14, 'PhoneW', ''),
+(132, 10, 15, 'PhoneH', ''),
+(133, 10, 16, 'Fax', ''),
+(134, 10, 17, 'Mobile', '{mobile}'),
+(135, 10, 18, 'Email', '{email}'),
+(136, 10, 19, 'Web', ''),
+(140, 10, 25, 'strBankNumber', '{bsb}'),
+(141, 10, 26, 'strBankAccount', '{account_number}'),
+(142, 10, 27, 'strExtraVendorID', '{super_employee_id}'),
+(143, 10, 28, 'strExtraFundName', '{super_fund_name}'),
+(144, 10, 29, 'strExtraFundNumber', '{super_membership_number}'),
+(145, 10, 23, 'strEmploymentType', ''),
+(146, 10, 24, 'strBankName', ''),
+(147, 10, 20, 'Title', ''),
+(148, 10, 21, 'strDepartment', ''),
+(149, 10, 22, 'dtmDateHired', '{joined_date}'),
+(150, 11, 0, 'Group', '{external_staff_id}'),
+(151, 11, 1, 'EmployeeID', '{internal_staff_id}'),
+(152, 11, 2, 'DateFrom', ''),
+(153, 11, 3, 'DateTo', ''),
+(154, 11, 4, 'Date', '{job_date}'),
+(155, 11, 7, 'Units', '{hours}'),
+(156, 11, 8, 'strEarningID', '{pay_rate}'),
+(157, 11, 9, 'Notes', '{job_name}:  {start_time} -  {finish_time}'),
+(158, 11, 5, 'DivID', '{job_jd}'),
+(159, 11, 6, 'JobID', 'DIV{job_jd}'),
+(160, 12, 160, 'Group', '{external_staff_id}'),
+(161, 12, 161, 'EmployeeID', '{internal_staff_id}'),
+(162, 12, 162, 'DateFrom', ''),
+(163, 12, 163, 'DateTo', ''),
+(164, 12, 164, 'Date', '{job_date}'),
+(165, 12, 165, 'DivID', '{job_id}'),
+(166, 12, 166, 'JobID', 'Div{job_id}'),
+(167, 12, 167, 'Units', '{hours}'),
+(168, 12, 168, 'strEarningID', '{pay_rate}'),
+(169, 12, 169, 'Notes', '{job_name}:  {start_time} -  {finish_time}');
 
 -- --------------------------------------------------------
 

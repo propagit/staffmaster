@@ -3,6 +3,14 @@
 	<i class="fa fa-smile-o fa-2x pull-left"></i> 
 	<h4>Yea! - We found no issues with your data.</h4>
 </div>
+<? } else { ?>
+<div class="alert alert-danger">
+	<i class="fa fa-frown-o fa-2x pull-left"></i> 
+	<h4>Oh No! - We found <b><?=count($errors);?></b> issues with your imported data</h4>
+</div>
+<a class="btn btn-core" href="<?=base_url().EXPORTS_URL;?>/error/<?=$error_report_file;?>" target="_blank">Download Error Report</a>
+<? } ?>
+
 <button class="btn btn-core" id="btn-commit-upload">Commit Upload</button>
 
 <!-- Modal -->
@@ -40,11 +48,3 @@ $(function(){
 	})
 })
 </script>
-
-<? } else { ?>
-<div class="alert alert-danger">
-	<i class="fa fa-frown-o fa-2x pull-left"></i> 
-	<h4>Oh No! - We found <b><?=count($errors);?></b> issues with your imported data</h4>
-</div>
-<a class="btn btn-core" href="<?=base_url().EXPORTS_URL;?>/error/<?=$error_report_file;?>" target="_blank">Download Error Report</a>
-<? } ?>

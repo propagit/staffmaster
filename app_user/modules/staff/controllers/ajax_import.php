@@ -82,6 +82,9 @@ class Ajax_import extends MX_Controller {
 			$k = 0;
 			foreach($sheetData[$i] as $field)
 			{
+				$field = trim($field);
+				$field = str_replace('?', ' ', $field);
+				$field = str_replace(',', ' ', $field);
 				$record[$fields[$k]] = $field;
 				$k++;
 			}
@@ -109,7 +112,7 @@ class Ajax_import extends MX_Controller {
 		}
 		$data['errors'] = $errors;
 		$data['error_report_file'] = $this->generate_error_report($errors);
-		modules::run('upload/update_upload', $upload_id, serialize($records));
+		modules::run('upload/update_upload', $upload_id, base64_encode(serialize($records)));
 		$data['upload_id'] = $upload_id;
 		$this->load->view('import/verify_view', isset($data) ? $data : NULL);
 	}
@@ -118,12 +121,12 @@ class Ajax_import extends MX_Controller {
 	{
 		$upload_id = $this->input->post('upload_id');
 		$upload = modules::run('upload/get_upload', $upload_id);
-		$records = unserialize($upload['data']);
+		$records = unserialize(base64_decode($upload['data']));
 		$ok = 0;
 		foreach($records as $data)
 		{
 			$user_data = array(
-				'status' => 1,
+				'status' => isset($data['status']) ? $data['status'] : 1,
 				'is_admin' => 0,
 				'is_staff' => 1,
 				'is_client' => 0,
@@ -131,8 +134,8 @@ class Ajax_import extends MX_Controller {
 				'username' => isset($data['email']) ? $data['email'] : '',
 				'password' => random_string('alnum', 8),
 				'title' => isset($data['title']) ? $data['title'] : '',
-				'first_name' => $data['first_name'],
-				'last_name' => $data['last_name'],
+				'first_name' => isset($data['first_name']) ? $data['first_name'] : '',
+				'last_name' => isset($data['last_name']) ? $data['last_name'] : '',
 				'address' => isset($data['address']) ? $data['address'] : '',
 				'suburb' => isset($data['suburb']) ? $data['suburb'] : '',
 				'city' => isset($data['city']) ? $data['city'] : '',
@@ -221,9 +224,9 @@ class Ajax_import extends MX_Controller {
 	function convert_dob($input)
 	{
 		$array = explode('/', $input);
-		$day = '';
-		$month = '';
-		$year = '';
+		$day = '00';
+		$month = '00';
+		$year = '0000';
 		if (isset($array[2]))
 		{
 			$year = $array[2];
@@ -232,7 +235,11 @@ class Ajax_import extends MX_Controller {
 		{
 			$month = $array[1];
 		}
-		$day = $array[0];
+		if (isset($array[0]))
+		{
+			$day = $array[0];
+		}
+		
 		return array(
 			'year' => $year,
 			'month' => $month,
@@ -253,7 +260,7 @@ class Ajax_import extends MX_Controller {
 		}
 		if ($key == 'first_name' || $key == 'last_name')
 		{
-			return ($value != '');
+			return true; #($value != ''); First name and last name can be empty
 		}
 		if ($key == 'gender')
 		{
@@ -262,7 +269,7 @@ class Ajax_import extends MX_Controller {
 		}
 		if ($key == 'dob')
 		{
-			if ($value == '')
+			if ($value == '' || $value == NULL || $value == 'NULL')
 			{
 				return true;
 			}
