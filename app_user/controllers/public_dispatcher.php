@@ -96,21 +96,21 @@ class Public_dispatcher extends MX_Controller {
 		}
 		if (valid_email($form['receive_email'])) {
 			# Send notification email
-			$this->load->library('email');
 			$this->load->model('setting/setting_model');
-			$company = $this->setting_model->get_profile();	
-			
-			$this->email->from($company['email_c_email'], $company['email_c_name'] . ' - ' . $form['name']);
-			$this->email->to($form['receive_email']);
-			
-			$this->email->subject('New Applicant: ' . $id_for_email);
+			$company = $this->setting_model->get_profile();
+			$subject = 'New Applicant: ' . $id_for_email;		
 			$message = sprintf('
 You have had a new applicant applied via %s
 To review this application log into %s and browse to "Manage Staff" - "Applicants"
 ', $form['name'], base_url());
-			$this->email->message($message);
 			
 			$this->email->send();
+			modules::run('sendemail/send_email', array(
+				'to' => $form['receive_email'],
+				'from_text' => $company['email_c_name'] . ' - ' . $form['name'],
+				'subject' => $subject,
+				'message' => $message
+			));
 		}
 		echo json_encode(array(
 			'ok' => true,
