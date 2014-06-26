@@ -33,7 +33,7 @@ class Log_model extends CI_Model {
 	{
 		$sql = "SELECT DATE(`created_on`) AS `date`
 				FROM `logs`
-				GROUP BY DATE(`created_on`) ORDER BY `date` DESC";
+				GROUP BY DATE(`created_on`) ORDER BY `date` DESC LIMIT 200";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -43,7 +43,7 @@ class Log_model extends CI_Model {
 				FROM `logs`
 				WHERE DATE(`created_on`) = '$date'
 				GROUP BY `created_on`
-				ORDER BY `log_id` DESC";
+				ORDER BY `log_id` DESC LIMIT 200";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -67,7 +67,7 @@ class Log_model extends CI_Model {
 		{
 			$sql .= " AND user_id = " . $this->user_id;
 		}
-		$sql .= " ORDER BY `log_id` DESC";
+		$sql .= " ORDER BY `log_id` DESC LIMIT 200";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 		

@@ -15,20 +15,26 @@ class Work_model extends CI_Model {
 	
 	function insert_shift_staff_apply($shift_id)
 	{
-		$data = array(
-			'shift_id' => $shift_id,
-			'staff_id' => $this->user_id
-		);
-		$this->db->insert('job_shift_staff_apply', $data);
-		$work_id = $this->db->insert_id();
-		$log_data = array(
-			'module' => $this->module,
-			'object' => $this->object,
-			'object_id' => $shift_id,
-			'action' => 'applied'
-		);
-		$this->log_model->insert_log($log_data);
-		return $work_id;
+		$this->db->where('shift_id', $shift_id);
+		$this->db->where('staff_id', $this->user_id);
+		$query = $this->db->get('job_shift_staff_apply');
+		if ($query->num_rows() == 0) {
+			$data = array(
+				'shift_id' => $shift_id,
+				'staff_id' => $this->user_id
+			);
+			$this->db->insert('job_shift_staff_apply', $data);
+			$work_id = $this->db->insert_id();
+			$log_data = array(
+				'module' => $this->module,
+				'object' => $this->object,
+				'object_id' => $shift_id,
+				'action' => 'applied'
+			);
+			$this->log_model->insert_log($log_data);
+			return $work_id;
+		}
+		
 	}
 	
 	function delete_shift_staff($shift_id)
