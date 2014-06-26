@@ -321,6 +321,7 @@ $(function(){
 			url: "<?=base_url();?>public/form/<?=$form['form_id'];?>/submit",
 			data: $('#form<?=$form['form_id'];?>').serialize(),
 			success: function(html) {
+				alert(html);
 				var data = $.parseJSON(html);
 				if (!data.ok) {
 					for(var i=0; i < data.errors.length; i++) {
