@@ -202,7 +202,8 @@ class Staff_model extends CI_Model {
 		
 		if (isset($params['keyword']) && $params['keyword'] != '') 
 		{ 
-			$sql .= " AND (u.first_name LIKE '%" . $params['keyword'] . "%' 
+			$sql .= " AND (u.email_address LIKE '%" . $params['keyword'] . "%' 
+							OR u.first_name LIKE '%" . $params['keyword'] . "%' 
 							OR u.last_name LIKE '%" . $params['keyword'] . "%' 
 							OR CONCAT(u.first_name,' ', u.last_name) LIKE '%" . $params['keyword'] . "%')"; 
 		}
