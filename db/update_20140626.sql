@@ -1,20 +1,3 @@
-<<<<<<< HEAD
--- phpMyAdmin SQL Dump
--- version 4.1.9
--- http://www.phpmyadmin.net
---
--- Host: localhost:8889
--- Generation Time: Jun 26, 2014 at 05:45 AM
--- Server version: 5.5.34
--- PHP Version: 5.5.10
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
---
--- Database: `user_db_user`
---
-
 -- --------------------------------------------------------
 
 --
@@ -116,7 +99,13 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 (78, 'staff', 'single', 'joined_date', 'Joined Date'),
 (79, 'payrun_tfn', 'single', 'job_jd', 'Job ID'),
 (80, 'payrun_abn', 'single', 'job_id', 'Job ID'),
-(81, 'staff', 'single', 'status', 'Status');
+(81, 'staff', 'single', 'status', 'Status'),
+(82, 'invoice', 'single', 'client_id', 'Client ID'),
+(83, 'invoice', 'single', 'invoice_id', 'Invoice ID'),
+(84, 'invoice', 'single', 'created_on', 'Invoice Date'),
+(85, 'invoice', 'single', 'po_number', 'PO Number'),
+(86, 'payrun_tfn', 'single', 'date_from', 'Date From'),
+(87, 'payrun_tfn', 'single', 'date_to', 'Date To');
 
 -- --------------------------------------------------------
 
@@ -284,16 +273,19 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (166, 12, 166, 'JobID', 'Div{job_id}'),
 (167, 12, 167, 'Units', '{hours}'),
 (168, 12, 168, 'strEarningID', '{pay_rate}'),
-(169, 12, 169, 'Notes', '{job_name}:  {start_time} -  {finish_time}');
-=======
-INSERT INTO `email_templates` (`email_template_id`, `template_name`, `template_content`, `email_from`, `email_subject`, `default_template`, `auto_send`, `created`, `modified`) VALUES
-(1, 'Welcome Staff', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp {FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Welcome to the&nbsp{CompanyName}&nbspteam</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">We are thrilled to have you joint our team. Before completing your first shift with us we need you to logon to your staff account and complete your online induction.&nbsp</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Completing your induction ensures that your details in the system are accurate, you get paid on time and can apply for shifts as they become available.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">To log on to your staff account click this link {SystemURL}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">and login with the following details</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">User Name &nbsp &nbsp {UserName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Password &nbsp &nbsp &nbsp {Password}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">We look forward to working with you.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind regards</span></span></p>\r\n', 'team@staffbooks.com', 'Welcome To Our Team', '', 'no', '2014-03-19 06:42:01', '2014-03-19 06:42:01'),
-(2, 'Roster Update', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear {FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your roster has recently been updated, please login to your staff account to confirm all shifts we have you working on.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your current roster is as follow:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{Roster}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind regards</span></span></p>\r\n', 'team@staffbooks.com', 'Roster Update', '', 'no', '2014-03-14 06:08:44', '2014-03-14 06:08:44'),
-(3, 'Apply For Shifts', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear {FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">We have just updated our system with a series of jobs. Please login to your staff account {SystemURL}&nbspand apply for jobs you would like to work on.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Some of the new shifts that have become available include:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{SelectedShifts}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind Regards</span></span></p>\r\n', 'team@staffbooks.com', 'Apply For Shifts', '', 'no', '2014-03-14 06:09:06', '2014-03-14 06:09:06'),
-(4, 'Shift Reminder', '<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">Dear&nbsp{FirstName}</span></span></p>\r\n\r\n<p><span style="font-family:arial,sans-serif&#59 font-size:9.0pt">This is a work reminder that you are working for the following shifts:</span></p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">{ShiftInfo}</span></span></p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">Please contact us immeadiatly if you have any questions regarding your shift.&nbsp</span></span></p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif"><span style="font-size:12px">Kind regards</span></span></p>', 'team@staffbooks.com', 'Shift Reminder', '', 'no', '2014-03-20 06:32:37', '2014-03-20 06:32:37'),
-(5, 'Work Confirmation', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp{FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">You have been confirmed to work on the below job. If for any reason you can&#39t work this shift please contact us immediately.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{ShiftInfo}</span></span></p>', 'team@staffbooks.com', 'Work Confirmation', '', 'no', '2014-03-14 06:09:20', '2014-03-14 06:09:20'),
-(6, 'Forgot Password', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp{FirstName}</span></span></p>\r\n\r\n<p>We received a forgotten password request from you.</p>\r\n\r\n<p>Your new login details are as follows:</p>\r\n\r\n<p>Username:&nbsp{UserName}</p>\r\n\r\n<p>Password:&nbsp{Password}</p>\r\n\r\n<p>&nbsp</p>\r\n\r\n<p><span style="font-family:arial,helvetica,sans-serif&#59 font-size:12px">Please contact us immeadiatly if you did not request this password request.&nbsp</span></p>\r\n\r\n<p>&nbsp</p>\r\n', 'team@staffbooks.com', 'Password Reset', '', 'no', '2014-03-20 04:47:51', '2014-03-20 04:47:51'),
-(7, 'Client Invoice', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp{ClientContactName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please find attached an invoice from&nbsp{CompanyName} for recent services for {ClientCompanyName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">The invoice details are as follows:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Invoice Number: &nbsp {InvoiceNumber}<br />\r\nAmount Due: &nbsp &nbsp &nbsp &nbsp ${AmountDue}<br />\r\nDue Date: &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp{DueDate} &nbsp&nbsp</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">A downloadable invoice is attached or you can login to your member account to retrieve a copy of this invoice at any time.</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Kind regards</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{CompanyName}</span></span></p>\r\n', 'team@staffbooks.com', '{CompanyName} Invoice Issued - {IssueDate}', '', 'no', '2014-03-21 06:12:06', '2014-03-21 06:12:06'),
-(8, 'Client Quote', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Dear&nbsp{FirstName}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Your roster has been updated and requires your attention.&nbsp</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please login to your account to confirm your shifts. Your Current Roster is as follows:</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">{Roster}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Please contact us immeadiatly if you have any questions regarding your roster.&nbsp</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">To Login to your account click here</span></span></p>\r\n', 'team@staffbooks.com', 'Client Quote', '', 'no', '2014-03-14 06:09:40', '2014-03-14 06:09:40'),
-(9, 'Brief', '<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">You can view the brief from this url.&nbsp{BriefURL}</span></span></p>\r\n\r\n<p><span style="font-size:12px"><span style="font-family:arial,helvetica,sans-serif">Regards</span></span></p>\r\n\r\n<p>&nbsp</p>', 'team@staffbooks.com', 'Job Brief', '', 'no', '2014-04-07 06:27:00', '2014-04-07 06:27:00');
->>>>>>> 3883fb7e5db21dac18749b033ffc6135ad854696
+(169, 12, 169, 'Notes', '{job_name}:  {start_time} -  {finish_time}'),
+(170, 13, 170, 'Group', '{invoice_id}'),
+(171, 13, 171, 'CustomerID', '{client_id}'),
+(172, 13, 172, 'Date', '{created_on}'),
+(173, 13, 173, 'Description', '{description}'),
+(174, 13, 174, 'AccountID', ''),
+(175, 13, 175, 'QtyShipeed', '{hours}'),
+(176, 13, 176, 'Taxable', '{tax_amount}'),
+(177, 13, 177, 'Amount', '{ex_tax_amount}'),
+(178, 13, 178, 'JobID', '{job_id}'),
+(179, 13, 179, 'DivID', ''),
+(180, 13, 180, 'CustomerPO', '{po_number}'),
+(181, 11, 2, 'DateFrom', '{date_from}'),
+(182, 11, 3, 'DateTo', '{date_to}'),
+(183, 11, 5, 'DivID', ''),
+(184, 11, 6, 'JobID', '');

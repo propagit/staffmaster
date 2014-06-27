@@ -15,6 +15,7 @@ class Payrun_model extends CI_Model {
 	
 	function get_export_timesheets($payrun_id) {
 		$sql = "SELECT t.*, j.name as job_name,
+						pr.date_from, pr.date_to,
 						u.first_name, u.last_name, 
 						s.user_id, s.external_staff_id, 
 						v.name as venue,
@@ -25,6 +26,7 @@ class Payrun_model extends CI_Model {
 					LEFT JOIN attribute_payrates p ON t.payrate_id = p.payrate_id
 					LEFT JOIN user_staffs s ON t.staff_id = s.user_id
 					LEFT JOIN users u ON t.staff_id = u.user_id
+					LEFT JOIN payruns pr ON pr.payrun_id = t.payrun_id
 					WHERE t.payrun_id = '" . $payrun_id . "'";
 		$query = $this->db->query($sql);
 		return $query->result_array();

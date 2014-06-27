@@ -833,8 +833,13 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 (78, 'staff', 'single', 'joined_date', 'Joined Date'),
 (79, 'payrun_tfn', 'single', 'job_jd', 'Job ID'),
 (80, 'payrun_abn', 'single', 'job_id', 'Job ID'),
-(81, 'staff', 'single', 'status', 'Status');
-
+(81, 'staff', 'single', 'status', 'Status'),
+(82, 'invoice', 'single', 'client_id', 'Client ID'),
+(83, 'invoice', 'single', 'invoice_id', 'Invoice ID'),
+(84, 'invoice', 'single', 'created_on', 'Invoice Date'),
+(85, 'invoice', 'single', 'po_number', 'PO Number'),
+(86, 'payrun_tfn', 'single', 'date_from', 'Date From'),
+(87, 'payrun_tfn', 'single', 'date_to', 'Date To');
 -- --------------------------------------------------------
 
 --
@@ -999,7 +1004,22 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (166, 12, 166, 'JobID', 'Div{job_id}'),
 (167, 12, 167, 'Units', '{hours}'),
 (168, 12, 168, 'strEarningID', '{pay_rate}'),
-(169, 12, 169, 'Notes', '{job_name}:  {start_time} -  {finish_time}');
+(169, 12, 169, 'Notes', '{job_name}:  {start_time} -  {finish_time}'),
+(170, 13, 170, 'Group', '{invoice_id}'),
+(171, 13, 171, 'CustomerID', '{client_id}'),
+(172, 13, 172, 'Date', '{created_on}'),
+(173, 13, 173, 'Description', '{description}'),
+(174, 13, 174, 'AccountID', ''),
+(175, 13, 175, 'QtyShipeed', '{hours}'),
+(176, 13, 176, 'Taxable', '{tax_amount}'),
+(177, 13, 177, 'Amount', '{ex_tax_amount}'),
+(178, 13, 178, 'JobID', '{job_id}'),
+(179, 13, 179, 'DivID', ''),
+(180, 13, 180, 'CustomerPO', '{po_number}'),
+(181, 11, 2, 'DateFrom', '{date_from}'),
+(182, 11, 3, 'DateTo', '{date_to}'),
+(183, 11, 5, 'DivID', ''),
+(184, 11, 6, 'JobID', '');
 
 -- --------------------------------------------------------
 
@@ -1449,6 +1469,8 @@ CREATE TABLE `orders` (
 
 CREATE TABLE IF NOT EXISTS `payruns` (
   `payrun_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `date_from` DATE NOT NULL,
+  `date_to` DATE NOT NULL,
   `type` tinyint(4) NOT NULL COMMENT '1: tfn, 2: abn',
   `amount` decimal(10,2) NOT NULL,
   `total_staffs` int(11) NOT NULL,
