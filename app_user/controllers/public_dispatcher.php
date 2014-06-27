@@ -101,7 +101,7 @@ class Public_dispatcher extends MX_Controller {
 			$subject = 'New Applicant: ' . $id_for_email;		
 			$message = sprintf('
 <p>You have had a new applicant applied via %s</p>
-<p>To review this application log into %s and browse to "Manage Staff" - "Applicants"</p>
+<p>To review this application log into %s and browse to "Manage Staff" - "Applicants"</p><br />
 ', $form['name'], base_url());
 			
 			modules::run('sendemail/send_email', array(

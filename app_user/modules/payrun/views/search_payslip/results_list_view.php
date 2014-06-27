@@ -59,7 +59,9 @@
 		<td class="center"><?=modules::run('attribute/payrate/display_payrate', $payslip['payrate_id']);?></td>
 		<td class="center"><?=$payslip['total_minutes']/60;?></td>
 		<td class="center">$<?=$payslip['total_amount_staff'];?></td>
-		<td class="center"><a><i class="fa fa-eye"></i></a></td>
+		<td class="center">
+			<a class="prim-color-to-txt-color prim-color-to-txt-color" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/details/<?=$payslip['timesheet_id'];?>"><i class="fa fa-eye"></i></a>
+		</td>
 		<td class="center"><a><i class="fa fa-envelope-o"></i></a></td>
 	</tr>
 <? } ?>

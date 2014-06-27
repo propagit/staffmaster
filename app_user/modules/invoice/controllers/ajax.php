@@ -670,11 +670,11 @@ class Ajax extends MX_Controller {
 		
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
-		$objPHPExcel->getProperties()->setCreator("Staff Master");
-		$objPHPExcel->getProperties()->setLastModifiedBy("Staff Master");
+		$objPHPExcel->getProperties()->setCreator("StaffBooks");
+		$objPHPExcel->getProperties()->setLastModifiedBy("StaffBooks");
 		$objPHPExcel->getProperties()->setTitle("Client Invoice");
 		$objPHPExcel->getProperties()->setSubject("Client Invoice");
-		$objPHPExcel->getProperties()->setDescription("Client Invoice Excel file, generated from Staff Master.");
+		$objPHPExcel->getProperties()->setDescription("Client Invoice Excel file, generated from StaffBooks.");
 		
 		$objPHPExcel->setActiveSheetIndex(0);
 		$i = 0;
@@ -716,8 +716,13 @@ class Ajax extends MX_Controller {
 							$value = str_replace('{break}', $breaks/60, $value);
 							$value = str_replace('{type}', 'Staff Services', $value);
 							$value = str_replace('{description}', $item['title'], $value);
+							$value = str_replace('{client_id}', $invoice['client_id'], $value);
+							$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
+							$value = str_replace('{created_on}', date('d/m/Y', strtotime($invoice['created_on'])), $value);
+							$value = str_replace('{po_number}', $invoice['po_number'], $value);
 							#$value = str_replace('{paid_on}', date('d/m/Y', strtotime($timesheet['paid_on'])), $value);
 							#$value = str_replace('{job_name}', $expense['job_name'], $value);
+							
 							$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
 							$i++;
 						}
@@ -762,7 +767,12 @@ class Ajax extends MX_Controller {
 							$value = str_replace('{hours}', $expense['total_minutes']/60, $value);
 							$value = str_replace('{break}', $breaks/60, $value);
 							$value = str_replace('{type}', 'Staff Expenses', $value);
-							$value = str_replace('{description}', $item['title'], $value);
+							$value = str_replace('{description}', $item['title'], $value);							
+							$value = str_replace('{client_id}', $invoice['client_id'], $value);
+							$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
+							$value = str_replace('{created_on}', date('d/m/Y', strtotime($invoice['created_on'])), $value);
+							$value = str_replace('{po_number}', $invoice['po_number'], $value);
+							
 							#$value = str_replace('{paid_on}', date('d/m/Y', strtotime($timesheet['paid_on'])), $value);
 							#$value = str_replace('{job_name}', $expense['job_name'], $value);
 							$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);

@@ -215,6 +215,10 @@ class Staff_model extends CI_Model {
 		{ 
 			$sql .= " AND u.status = " . $params['status'];
 		}
+		else 
+		{
+			$sql .= " AND u.status = " . STAFF_ACTIVE;
+		}
 		if (isset($params['gender']) && $params['gender'] != '')
 		{ 
 			$sql .= " AND s.gender = '" . $params['gender'] . "'";

@@ -188,18 +188,48 @@ class Ajax extends MX_Controller {
 	}
 	
 	function create_payrun() {
-		if ($this->input->post('export_id') == '') {
-			echo json_encode(array(
-				'export' => true,
-				'success' => false
-			));
-			return;
+		$input = $this->input->post();
+		
+		if (isset($input['export_csv'])) {
+			if (!isset($input['export_id']) || $input['export_id'] == '') {
+				echo json_encode(array(
+					'ok' => false,
+					'error_id' => 'export_id'
+				));
+				return;
+			}
 		}
-		$type = $this->input->post('type');
+		
+		$type = $input['type'];
+		$date_from = '';
+		$date_to = '';
+		if ($type == STAFF_TFN) {
+			if (!isset($input['date_from']) || $input['date_from'] == '') {
+				echo json_encode(array(
+					'ok' => false,
+					'error_id' => 'date_from'
+				));
+				return;
+			}
+			if (!isset($input['date_to']) || $input['date_to'] == '') {
+				echo json_encode(array(
+					'ok' => false,
+					'error_id' => 'date_to'
+				));
+				return;
+			}
+			$date_from = date('Y-m-d', strtotime($input['date_from']));
+			$date_to = date('Y-m-d', strtotime($input['date_to']));
+		}
+		
+		
+		
 		$amount = $this->payrun_model->get_total_amount($type);
 		$total_staffs = $this->payrun_model->count_staff($type);
 		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
 		$data = array(
+			'date_from' => $date_from,
+			'date_to' => $date_to,
 			'type' => $type,
 			'amount' => $amount,
 			'total_staffs' => $total_staffs,
@@ -209,15 +239,18 @@ class Ajax extends MX_Controller {
 		foreach($timesheets as $timesheet) {
 			$this->payrun_model->add_timesheet_to_payrun($timesheet['timesheet_id'], $payrun_id);
 		}
-		if ($this->input->post('export_id')) {
+		if ($input['export_id']) {
 			$file_name = $this->_export_payrun($payrun_id, $this->input->post('export_id'));
 			echo json_encode(array(
+				'ok' => true,
 				'export' => true,
-				'success' => true,
 				'file_name' => $file_name
 			));
 		} else {
-			echo json_encode(array('export' => false));
+			echo json_encode(array(
+				'ok' => true,
+				'export' => false
+			));
 		}
 	}
 	

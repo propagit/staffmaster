@@ -1,0 +1,1 @@
+ALTER TABLE `payruns` ADD `date_from` DATE NOT NULL AFTER `payrun_id`, ADD `date_to` DATE NOT NULL AFTER `date_from`;

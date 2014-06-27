@@ -21,6 +21,8 @@
 		<th class="center" width="20"><input type="checkbox" id="selected_all_payruns" /></th>
 		<th class="center" width="120">Processed <i class="fa fa-sort sort-result" sort-by="created_on"></i></th>
 		<th>Type</th>
+		<th class="center" width="80">From</th>
+		<th class="center" width="80">To</th>
 		<th class="center" width="100">Staff</th>
 		<th class="center" width="100">Time Sheets</th>
 		<th class="center" width="120">Amount <i class="fa fa-sort sort-result" sort-by="amount"></i></th>
@@ -39,6 +41,20 @@
 		</td>
 		<td>
 			<?=($payrun['type'] == STAFF_TFN) ? 'TFN' : 'ABN';?> Pay Run
+		</td>
+		<td class="wp-date" width="80">
+			<? if ($payrun['type'] == STAFF_TFN) { ?>
+			<span class="wk_day"><?=date('D', strtotime($payrun['date_from']));?></span>
+			<span class="wk_date"><?=date('d', strtotime($payrun['date_from']));?></span>
+			<span class="wk_month"><?=date('M', strtotime($payrun['date_from']));?></span>
+			<? } ?>
+		</td>
+		<td class="wp-date" width="80">
+			<? if ($payrun['type'] == STAFF_TFN) { ?>
+			<span class="wk_day"><?=date('D', strtotime($payrun['date_to']));?></span>
+			<span class="wk_date"><?=date('d', strtotime($payrun['date_to']));?></span>
+			<span class="wk_month"><?=date('M', strtotime($payrun['date_to']));?></span>
+			<? } ?>
 		</td>
 		<td class="center"><?=$payrun['total_staffs'];?></td>
 		<td class="center"><?=$payrun['total_timesheets'];?></td>

@@ -21,7 +21,7 @@
 	</tr>
 	</thead>
 	<tbody>
-	<? foreach($staffs as $staff) { echo modules::run('payrun/row_batched_staff', $staff['user_id']); } ?>
+	<? foreach($staffs as $staff) { if (isset($staff['user_id'])) echo modules::run('payrun/row_batched_staff', $staff['user_id']); } ?>
 	</tbody>
 </table>
 </div>
@@ -32,7 +32,7 @@ $(function(){
 		$('input[type="checkbox"]').prop('checked', this.checked);
 		$('input.payrun_staff').each(function(i, e) {
 			select_payrun_staff($(this).val(), this.checked);
-		});		
+		});	
 	});
 	
 	$('.payrun_staff').click(function(){
