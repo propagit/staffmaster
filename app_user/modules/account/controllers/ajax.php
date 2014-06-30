@@ -89,7 +89,7 @@ class Ajax extends MX_Controller {
 			# Add credits
 			$this->account_model->add_credits($credits);
 			# Send the receipt
-			$order['purchase_id'] = 'SMC-' . $this->user['user_id'] . '-' . $order_id;
+			$order['purchase_id'] = 'SBC-' . $this->user['user_id'] . '-' . $order_id;
 			$this->send_receipt_email($order);
 			echo 'true';
 		}
@@ -153,7 +153,7 @@ class Ajax extends MX_Controller {
 		modules::run('email/send_email', array(
 			'to' => $this->user['email_address'],
 			'from' => SMTEAM_EMAIL,
-			'from_text' => 'Staff Master',
+			'from_text' => 'StaffBooks',
 			'subject' => 'Your Order Receipt',
 			'message' => $message,
 			'overwrite' => true

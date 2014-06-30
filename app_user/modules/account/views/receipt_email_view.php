@@ -18,17 +18,21 @@ body {
 <table width="750" height="58" border="0" align="center" cellpadding="0" cellspacing="0" id="Table_01">
 	<tr>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_01.jpg" width="206" height="58" alt=""></td>
+			<a href="http://staffbooks.com"><img src="<?=base_url();?>assets/email_templates/images/email-menu_01.jpg" width="206" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_02.jpg" width="71" height="58" alt=""></td>
+			<a href="http://staffbooks.com/tour/staff-on-boarding"><img src="<?=base_url();?>assets/email_templates/images/email-menu_02.jpg" width="71" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_03.jpg" width="98" height="58" alt=""></td>
+			<a href="http://staffbooks.com/pricing"><img src="<?=base_url();?>assets/email_templates/images/email-menu_03.jpg" width="98" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_04.jpg" width="115" height="58" alt=""></td>
+			<a href="http://resources.staffbooks.com/"><img src="<?=base_url();?>assets/email_templates/images/email-menu_04.jpg" width="115" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_05.jpg" width="259" height="58" alt=""></td>
-		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_06.jpg" width="1" height="58" alt=""></td>
+			<a href="http://staffbooks.com/contact"><img src="<?=base_url();?>assets/email_templates/images/email-menu_05.jpg" width="259" height="58" alt=""></a>
+		</td>
+		<td><img src="<?=base_url();?>assets/email_templates/images/email-menu_06.jpg" width="1" height="58" alt=""></td>
 	</tr>
 </table>
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -42,7 +46,7 @@ body {
       <br>
       Hello <?=$firstname;?>,
       <br>
-      Below is a Tax Receipt for the purchase of Staff Master credits.
+      Below is a Tax Receipt for the purchase of StaffBooks credits.
       <br><br>
       <hr>
       <h1 style="font-family:Tahoma, Geneva, sans-serif; font-size:30px; line-height:20px; color:#3d3d3d">Tax Invoice</h1>
@@ -61,11 +65,11 @@ body {
       </tr>
       <tr>
       	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Sub Total</span></td>
-      	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">$<?=money_format('%i', ($total_amount/100)*10/11);?></span></td>
+      	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">$<?=money_format('%i', $total_amount*10/11);?></span></td>
       </tr>
       <tr>
       	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">GST</span></td>
-      	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">$<?=money_format('%i', ($total_amount/100)/11);?></span></td>
+      	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">$<?=money_format('%i', $total_amount/11);?></span></td>
       </tr>
       </table>
       <br>
@@ -75,14 +79,14 @@ body {
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
       	<td width="50%" align="left"><h2 style="font-family:Tahoma, Geneva, sans-serif; font-size:24px; line-height:20px; color:#3d3d3d">Total</h2></td>
-      	<td width="50%" align="left"><h2 style="font-family:Tahoma, Geneva, sans-serif; font-size:24px; line-height:20px; color:#3d3d3d">$<?=money_format('%i', $total_amount/100);?></h2></td>
+      	<td width="50%" align="left"><h2 style="font-family:Tahoma, Geneva, sans-serif; font-size:24px; line-height:20px; color:#3d3d3d">$<?=money_format('%i', $total_amount);?></h2></td>
       </tr>
       </table>
       <hr />
       <br>
       Invoice Paid <?=date('jS M Y');?>
       <br />
-      <b>Thank you for using Staff Master</b>
+      <b>Thank you for using StaffBooks</b>
   <br>
       <br>
     </p>
@@ -94,7 +98,7 @@ body {
   <tr>
     <td height="100" align="center" valign="middle">
     <span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#FFF">
-    &copy; StaffMaster | <a href="http://www.staffmaster.com.au"><span style="color:#FFF;">www.staffmaster.com.au</span></a></span></td>
+    &copy; StaffBooks | <a href="http://www.staffbooks.com"><span style="color:#FFF;">www.staffbooks.com</span></a></span></td>
   </tr>
 </table>
 <p>&nbsp;</p>
