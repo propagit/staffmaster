@@ -746,7 +746,7 @@ CREATE TABLE IF NOT EXISTS `export_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`order`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=88 ;
 
 --
 -- Dumping data for table `export_fields`
@@ -838,8 +838,8 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 (83, 'invoice', 'single', 'invoice_id', 'Invoice ID'),
 (84, 'invoice', 'single', 'created_on', 'Invoice Date'),
 (85, 'invoice', 'single', 'po_number', 'PO Number'),
-(86, 'payrun_tfn', 'single', 'date_from', 'Date From'),
-(87, 'payrun_tfn', 'single', 'date_to', 'Date To');
+(86, 'payrun_tfn', 'single', 'date_from', 'Pay Run Date From'),
+(87, 'payrun_tfn', 'single', 'date_to', 'Pay Run Date To');
 -- --------------------------------------------------------
 
 --
@@ -887,7 +887,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=170 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=187 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -987,14 +987,10 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (149, 10, 22, 'dtmDateHired', '{joined_date}'),
 (150, 11, 0, 'Group', '{external_staff_id}'),
 (151, 11, 1, 'EmployeeID', '{internal_staff_id}'),
-(152, 11, 2, 'DateFrom', ''),
-(153, 11, 3, 'DateTo', ''),
 (154, 11, 4, 'Date', '{job_date}'),
 (155, 11, 7, 'Units', '{hours}'),
 (156, 11, 8, 'strEarningID', '{pay_rate}'),
 (157, 11, 9, 'Notes', '{job_name}:  {start_time} -  {finish_time}'),
-(158, 11, 5, 'DivID', '{job_jd}'),
-(159, 11, 6, 'JobID', 'DIV{job_jd}'),
 (160, 12, 160, 'Group', '{external_staff_id}'),
 (161, 12, 161, 'EmployeeID', '{internal_staff_id}'),
 (162, 12, 162, 'DateFrom', ''),
@@ -1016,10 +1012,11 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (178, 13, 178, 'JobID', '{job_id}'),
 (179, 13, 179, 'DivID', ''),
 (180, 13, 180, 'CustomerPO', '{po_number}'),
-(181, 11, 2, 'DateFrom', '{date_from}'),
-(182, 11, 3, 'DateTo', '{date_to}'),
 (183, 11, 5, 'DivID', ''),
-(184, 11, 6, 'JobID', '');
+(184, 11, 6, 'JobID', ''),
+(185, 11, 2, 'Pay Run Date From', '{date_from}'),
+(186, 11, 3, 'Pay Run Date To', '{date_to}');
+
 
 -- --------------------------------------------------------
 

@@ -36,7 +36,7 @@ class Public_dispatcher extends MX_Controller {
 		}
 		
 		$data['form'] = $form;
-		$fields = $this->form_model->get_fields($form_id);
+		$fields = $this->form_model->get_fields($form_id, ACTIVE);
 		$data['personal_fields'] = modules::run('form/personal_fields', $fields);
 		$data['extra_fields'] = modules::run('form/extra_fields', $fields);
 		$data['custom_fields'] = $this->form_model->get_custom_fields(true);

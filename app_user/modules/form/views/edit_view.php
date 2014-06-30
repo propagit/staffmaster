@@ -46,7 +46,7 @@
 							<tr>
 								<td class="left"><?=$field['label'];?></td>
 								<td class="right" width="20">
-									<span class="label label-<?=(isset($field['active'])) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$name;?>')">Active</span>
+									<span class="label label-<?=(isset($field['active']) && $field['active']) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$name;?>')">Active</span>
 
 								</td>
 								<td class="right" width="20"><span class="label label-<?=(isset($field['required'])) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$name;?>')">Required</span></td>

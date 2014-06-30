@@ -79,6 +79,8 @@ class Ajax extends MX_Controller {
 		
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
+		
+		# Copy user details
 		foreach($fields as $field) {
 			if (isset($user_data[$field['name']])) {
 				$user_data[$field['name']] = $field['value'];
@@ -99,6 +101,8 @@ class Ajax extends MX_Controller {
 			'emergency_contact' => '',
 			'emergency_phone' => ''			
 		);
+		
+		# Copy staff personal details
 		foreach($fields as $field) {
 			if (isset($staff_data[$field['name']])) {
 				if ($field['name'] == 'dob') {
@@ -112,19 +116,41 @@ class Ajax extends MX_Controller {
 		}
 		$staff_id = $this->staff_model->insert_staff($staff_data);		
 		
+		# Copy group, role
 		foreach($fields as $field) {
 			if ($field['name'] == 'group') {
 				$groups = json_decode($field['value']);
-				foreach($groups as $group_id) {
-					$this->staff_model->add_staff_group($user_id, $group_id);
+				if (count($groups) > 0) {
+					foreach($groups as $group_id) {
+						$this->staff_model->add_staff_group($user_id, $group_id);
+					}
 				}
-				
 			}
 			if ($field['name'] == 'role') {
 				$roles = json_decode($field['value']);
-				foreach($roles as $role_id) {
-					$this->staff_model->add_staff_role($user_id, $role_id);
-				}				
+				if (count($roles) > 0) {					
+					foreach($roles as $role_id) {
+						$this->staff_model->add_staff_role($user_id, $role_id);
+					}
+				}
+			}
+			if ($field['name'] == 'picture') {
+				$pictures = json_decode($field['value']);
+				if (count($pictures) > 0) {
+					$hero = 0;
+					foreach($pictures as $picture) {
+						$hero = (!$hero) ? 1 : 0;
+						# Move file across
+						$source = UPLOADS_PATH . '/tmp/' . $picture;
+						$destination = UPLOADS_PATH . '/staff/' . $user_id . '/' . $picture;
+						rename($source, $destination);
+						$this->staff_model->add_picture(array(
+							'user_id' => $user_id,
+							'name' => $picture,
+							'hero' => $hero
+						));
+					}					
+				}
 			}
 		}
 		$this->form_model->accept_applicant($applicant_id);
@@ -133,6 +159,13 @@ class Ajax extends MX_Controller {
 	function reject_applicant() {
 		$applicant_id = $this->input->post('applicant_id');
 		$this->form_model->reject_applicant($applicant_id);
+	}
+	
+	function reject_applicants() {
+		$applicant_ids = $this->input->post('applicant_ids');
+		foreach($applicant_ids as $applicant_id) {
+			$this->form_model->reject_applicant($applicant_id);
+		}
 	}
 }
 	

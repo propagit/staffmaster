@@ -127,7 +127,7 @@
 				</div>
     			<? }
     		} else if ($name == 'picture') { ?>
-    		<p class="text-muted">Upload photos of yourself so we have a visual reference of you
+    		<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Upload photos of yourself so we have a visual reference of you
 	    		<? if(isset($field['required'])) { ?>
 					<span class="text-red">**</span>
 				<? } ?>

@@ -9,10 +9,19 @@
 <!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
-		<div class="inner-box table-responsive">
+		<div class="inner-box">
+			<?
+				# Action menu
+				$data = array(
+					array('value' => 'reject', 'label' => 'Reject Selected')
+				);
+				echo modules::run('common/menu_dropdown', $data, 'applicant-action', 'Actions');
+			?>
+			<div class="table-responsive">
 			<table class="table table-bordered table-hover table-middle">
 			<thead>
 		        <tr class="heading">
+		        	<th class="center" width="40"><input type="checkbox" id="select_all_applicants" /></th>
 		            <th class="center col-md-2">Applicant ID</th>
 		            <th class="left">Applied On</th>
 		            <th class="center">Provided Data</th>
@@ -20,9 +29,11 @@
 		            <th class="center">View</th>
 		        </tr>
 		    </thead>
+		    <form id="multi-applicants-form">
 		    <tbody>
 			<? foreach($applicants as $applicant) { ?>
 				<tr id="applicant_<?=$applicant['applicant_id'];?>">
+					<td class="center"><input type="checkbox" name="applicant_ids[]" value="<?=$applicant['applicant_id'];?>" /></td>
 					<td class="center"><?=$applicant['applicant_id'];?></td>
 					<td class="left"><?=date('j M Y \a\t H:i', strtotime($applicant['applied_on']));?></td>
 					<td class="center"><?=$applicant['total_fields'];?></td>
@@ -31,13 +42,34 @@
 				</tr>
 			<? } ?>
 		    </tbody>
+		    </form>
 			</table>
+			</div>
 		</div>
 	</div>
 </div>
 <!--end bottom box -->
 
 <script>
+$(function(){
+	$('#select_all_applicants').click(function(){
+		$('input[name="applicant_ids[]"]').prop('checked', this.checked);		
+	});
+	$('#menu-applicant-action ul li a[data-value="reject"]').confirmModal({
+		confirmTitle: 'Reject selected applicants',
+		confirmMessage: 'Are you sure you want to reject selected applicants?',
+		confirmCallback: function(e) {
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>form/ajax/reject_applicants",
+				data: $('#multi-applicants-form').serialize(),
+				success: function(html) {
+					location.reload();
+				}
+			})
+		}
+	});
+})
 function view_applicant(applicant_id) {
 	$('.bs-modal-lg').modal({
 		remote: "<?=base_url();?>form/ajax/view_applicant/" + applicant_id,

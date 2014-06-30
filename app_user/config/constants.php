@@ -50,6 +50,7 @@ define('CLIENT_INACTIVE', -1);
 define('CLIENT_DELETED', -2);
 
 define('ACTIVE', 1);
+define('INACTIVE', 0);
 define('DELETED', -1);
 
 define('USER_DELETED', -2);

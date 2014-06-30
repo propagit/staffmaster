@@ -43,9 +43,15 @@ class Form_model extends CI_Model {
 	
 	function active_field($form_id, $label, $name) {
 		$field = $this->get_field($form_id, $name);
-		if ($field) { # Delete
-			$this->delete_field($form_id, $name);
-			return 0;
+		if ($field) { # Found the field
+			if ($field['active'] == 1) { # Is actived, turn it off
+				$this->update_field($field['form_field_id'], array('active' => INACTIVE));
+				return 0;
+			}
+			else { # Inactive, turn it on
+				$this->update_field($field['form_field_id'], array('active' => ACTIVE));
+				return 1;
+			}
 		} else { # Insert
 			$this->db->insert('form_fields', array(
 				'form_id' => $form_id,
@@ -71,7 +77,10 @@ class Form_model extends CI_Model {
 		}
 	}
 	
-	function get_fields($form_id) {
+	function get_fields($form_id, $active = INACTIVE) {
+		if ($active) {
+			$this->db->where('active', ACTIVE);
+		}
 		$this->db->where('form_id', $form_id);
 		$query = $this->db->get('form_fields');
 		return $query->result_array();
@@ -87,7 +96,10 @@ class Form_model extends CI_Model {
 	function delete_field($form_id, $name) {
 		$this->db->where('form_id', $form_id);
 		$this->db->where('name', $name);
-		$this->db->delete('form_fields');
+		$this->db->update('form_fields', array(
+			'status' => INACTIVE
+		));
+		#$this->db->delete('form_fields');
 	}
 	
 	function update_field($form_field_id, $data) {
