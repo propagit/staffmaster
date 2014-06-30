@@ -966,11 +966,15 @@ class Staff extends MX_Controller {
 				$map = directory_map($dir_profile, 1);
 				foreach($map as $file) {
 					# Copy file
-					copy($dir_profile . '/' . $file, $dir . '/' . $file);
+					if (!is_dir($dir_profile . '/' . $file)) {
+						copy($dir_profile . '/' . $file, $dir . '/' . $file);
+					}					
 				}
 				$thumb_map = directory_map($dir_profile . '/thumbnail', 1);
 				foreach($thumb_map as $thumb) {
-					copy($dir_profile . '/thumbnail/' . $thumb, $dir_thumb . '/' . $thumb);
+					if (!is_dir($dir_profile . '/thumbnail/' . $thumb)) {
+						copy($dir_profile . '/thumbnail/' . $thumb, $dir_thumb . '/' . $thumb);
+					}					
 				}
 			}
 		}
