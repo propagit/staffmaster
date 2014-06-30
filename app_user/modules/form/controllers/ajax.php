@@ -106,7 +106,7 @@ class Ajax extends MX_Controller {
 		foreach($fields as $field) {
 			if (isset($staff_data[$field['name']])) {
 				if ($field['name'] == 'dob') {
-					$date = json_decode($value);
+					$date = json_decode($field['value']);
 					$staff_data['dob'] = $date->year . '-' . $date->month . '-' . $date->day;
 				}
 				else {
@@ -114,7 +114,8 @@ class Ajax extends MX_Controller {
 				}				
 			}
 		}
-		$staff_id = $this->staff_model->insert_staff($staff_data);		
+		$staff_id = $this->staff_model->insert_staff($staff_data);
+		
 		
 		# Copy group, role
 		foreach($fields as $field) {
@@ -125,6 +126,19 @@ class Ajax extends MX_Controller {
 						$this->staff_model->add_staff_group($user_id, $group_id);
 					}
 				}
+			}
+			if ($field['name'] == 'availability') {
+				$days = json_decode($field['value']);
+				$values = '';			
+				for($day=1; $day <=7; $day++) {
+					for($hour=0; $hour <=23; $hour++) {
+						$ok = in_array($day, $days) ? '1' : '0';
+						$values .= '('.$user_id.','.$day.','.$hour.','.$ok.'),'; 		
+					}
+				}  
+				$values = rtrim($values,',');
+				$sql = "INSERT INTO `user_staff_availability` (`user_id`, `day`, `hour`, `value`) VALUES ".$values;
+				$this->db->query($sql);
 			}
 			if ($field['name'] == 'role') {
 				$roles = json_decode($field['value']);
@@ -147,30 +161,52 @@ class Ajax extends MX_Controller {
 						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 						fclose($fp);
 						
-						$thumbnail = $dir . '/thumbnail';
-						mkdir($thumbnail);
-						chmod($thumbnail,0777);
-						$fp = fopen($thumbnail.'/index.html', 'w');
+						$dir_thumb = $dir . '/thumb';
+						mkdir($dir_thumb);
+						chmod($dir_thumb,0777);
+						$fp = fopen($dir_thumb.'/index.html', 'w');
 						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 						fclose($fp);
 						
-						$thumbnail2 = $dir.'/thumbnail2';
-						mkdir($thumbnail2);
-						chmod($thumbnail2);
-						$fp = fopen($thumbnail2.'/index.html', 'w');
-						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-						fclose($fp);
 					}
 					
 					foreach($pictures as $picture) {
 						$hero = (!$hero) ? 1 : 0;
 						# Move file across
 						$source = UPLOADS_PATH . '/tmp/' . $picture;
-						$destination = UPLOADS_PATH . '/staff/' . $user_id . '/' . $picture;
-						rename($source, $destination);
+						$destination = $dir . '/' . $picture;
+						copy($source, $destination);
 						
+						# Create thumb						
+						copy($destination, $dir_thumb . '/' . $picture); # Copy to thumb directory
+						$thumb_size = 216; # Thumbnail size
 						
+						$config['image_library'] = 'gd2';
+						$config['source_image'] = $dir_thumb . '/' . $picture;
+						$config['create_thumb'] = FALSE;
+						$config['maintain_ratio'] = FALSE;
+						$config['width'] = $thumb_size;
+						$config['height'] = $thumb_size;
 						
+						list($width_orig, $height_orig) = getimagesize($dir_thumb . '/' . $picture);
+						if ($height_orig != $width_orig) {
+							if ($height_orig > $width_orig) { # If height is larger than width
+								$new_width = $thumb_size;
+								$new_height = $thumb_size * $height_orig / $width_orig;
+								$config['x_axis'] = 0;
+								$config['y_axis'] = round(($new_height - $new_width) / 2);
+							} else { # Height is smaller than width
+								$new_height = $thumb_size;
+								$new_width = $thumb_size * $width_orig / $height_orig;
+								$config['x_axis'] = round(($new_width - $new_height) / 2);
+								$config['y_axis'] = 0;
+							}
+						}
+						
+						$this->load->library('image_lib', $config); 
+						$this->image_lib->crop();
+												
+						# Add to database 
 						$this->staff_model->add_picture(array(
 							'user_id' => $user_id,
 							'name' => $picture,
@@ -179,8 +215,27 @@ class Ajax extends MX_Controller {
 					}					
 				}
 			}
+			
 		}
-		$this->form_model->accept_applicant($applicant_id);
+		
+		
+		
+		# Copy custom attributes
+		$custom_fields = $this->form_model->get_custom_fields($fields);
+		foreach($custom_fields as $custom_field) {
+			foreach($fields as $field) {
+				if ($field['name'] == $custom_field['field_id']) {
+					$array = false;
+					if ($custom_field['type'] == 'file') {
+						$array = true;
+						copy(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);
+					}
+					$this->staff_model->update_custom_field($user_id, $field['name'], $field['value'], $array);
+				}
+			}
+		}
+		
+		#$this->form_model->accept_applicant($applicant_id);
 	}
 	
 	function reject_applicant() {

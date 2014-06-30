@@ -124,6 +124,7 @@ class Form_model extends CI_Model {
 				AND f.form_id = a.form_id
 				AND (d.value != '' OR d.value != NULL)
 				AND a.status > " . APPLICANT_REJECTED . "
+				AND a.status < " . APPLICANT_ACCEPTED . "
 				GROUP BY a.applicant_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();

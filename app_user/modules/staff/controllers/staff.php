@@ -62,6 +62,9 @@ class Staff extends MX_Controller {
 			case 'import_old_roles':
 				$this->import_old_roles();
 			break;
+			case 'copy_files':
+					$this->copy_files();
+				break;
 			default:
 					echo 'do nothing';
 				break;
@@ -929,6 +932,22 @@ class Staff extends MX_Controller {
 				}
 			}
 		}	
+	}
+	
+	function copy_files() {
+		$staffs = $this->staff_model->search_staffs();
+		$this->load->helper('directory');
+		foreach($staffs as $staff) {
+			$user_id = $staff['user_id'];
+			$dir = UPLOADS_PATH . '/staff/' . $user_id;
+			
+			# Copy profile images
+			$dir_profile = UPLOADS_PATH . '/profile/' . md5($user_id);
+			if (is_dir($dir_profile)) {
+				directory_copy($dir_profile, $dir);
+				rename($dir . '/thumbnail', $dir . '/thumb');
+			}
+		}
 	}
 	
 	/* function copy_old_profile_pics()

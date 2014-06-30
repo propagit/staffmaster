@@ -97,6 +97,7 @@ function accept_applicant(applicant_id, status) {
 		url: "<?=base_url();?>form/ajax/accept_applicant",
 		data: {applicant_id: applicant_id, status: status},
 		success: function(html) {
+			alert(html); return;
 			$('#applicant_' + applicant_id).remove();
 			$('.bs-modal-lg').modal('hide');
 		}
