@@ -19,4 +19,7 @@
 	<div class="col-md-4 remove-left-padding">Total</div>
 	<div class="col-md-6"><h2>$<?=money_format('%i', $price['unit_price'] * $credits * 1.1);?></h2></div>
 </div>
-<p>A tax receipt of purchase will be sent to <a href="mailto:">email</a>
+<?
+$user_data = $this->session->userdata('user_data');
+?>
+<p>A tax receipt of purchase will be sent to <?=$user_data['email_address'];?>

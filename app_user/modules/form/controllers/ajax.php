@@ -138,12 +138,39 @@ class Ajax extends MX_Controller {
 				$pictures = json_decode($field['value']);
 				if (count($pictures) > 0) {
 					$hero = 0;
+					$dir = UPLOADS_PATH . '/staff/' . $user_id;
+					if(!is_dir($dir))
+					{
+						mkdir($dir);
+						chmod($dir,0777);
+						$fp = fopen($dir.'/index.html', 'w');
+						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+						fclose($fp);
+						
+						$thumbnail = $dir . '/thumbnail';
+						mkdir($thumbnail);
+						chmod($thumbnail,0777);
+						$fp = fopen($thumbnail.'/index.html', 'w');
+						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+						fclose($fp);
+						
+						$thumbnail2 = $dir.'/thumbnail2';
+						mkdir($thumbnail2);
+						chmod($thumbnail2);
+						$fp = fopen($thumbnail2.'/index.html', 'w');
+						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+						fclose($fp);
+					}
+					
 					foreach($pictures as $picture) {
 						$hero = (!$hero) ? 1 : 0;
 						# Move file across
 						$source = UPLOADS_PATH . '/tmp/' . $picture;
 						$destination = UPLOADS_PATH . '/staff/' . $user_id . '/' . $picture;
 						rename($source, $destination);
+						
+						
+						
 						$this->staff_model->add_picture(array(
 							'user_id' => $user_id,
 							'name' => $picture,
