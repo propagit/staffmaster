@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Applicants</h2>
-   		 <p>Below you will find a list of responses to the forms you have created and syndicated to the web. You can review the responses and delete or approve them to become active or pending staff in the system.</p> 
+   		 <p>Below you will find a list of responses to the forms you have created and syndicated to the web. You can review the responses and delete or approve them to become active or pending staff in the system.</p>
     </div>
 </div>
 <? if (count($applicants) > 0) { ?>

@@ -5,7 +5,7 @@
             <div class="profile-picture">
             <? 
             if(isset($hero_photo) && $hero_photo != NULL){?> 
-            	<img src="<?=base_url().UPLOADS_URL;?>/staff/profile/<?=md5($user_id)?>/thumbnail/<?=$hero_photo['name']?>">
+            	<img src="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_id?>/thumb/<?=$hero_photo['name']?>">
                 <div align="center" class="action_image" > 
                    <div class="action_icon uset-hero"><i class="fa fa-times" title="Remove this picture as your profile picture"></i></div>
                 </div>
@@ -23,8 +23,8 @@
           <ul class="slides popup-gallery staff-photos">
            <?
                 foreach($photos as $photo){
-                    $photo_src_full = base_url().UPLOADS_URL.'/staff/profile/'.md5($user_id).'/'.$photo['name'];                                
-                    $thumb_src = base_url().UPLOADS_URL.'/staff/profile/'.md5($user_id).'/thumbnail/'.$photo['name'];
+                    $photo_src_full = base_url().UPLOADS_URL.'/staff/'.$user_id.'/'.$photo['name'];                                
+                    $thumb_src = base_url().UPLOADS_URL.'/staff/'.$user_id.'/thumb/'.$photo['name'];
                 ?>
                     <li class="flex-li" style="width:232px !important;">
                         <img style="width:auto!important; height:216px;" src="<?=$thumb_src;?>" />

@@ -535,8 +535,7 @@ class Ajax extends MX_Controller {
 		  fclose($fp);
 		}
 		
-		$path = UPLOADS_PATH."/staff/profile";
-		$dir = $path;
+		$dir = $path."/".$user_id;
 		if(!is_dir($dir))
 		{
 		  mkdir($dir);
@@ -545,34 +544,12 @@ class Ajax extends MX_Controller {
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
-		
-		
-		$path = UPLOADS_PATH."/staff/profile";
-		$newfolder = md5($user_id);
-		$dir = $path."/".$newfolder;
-		if(!is_dir($dir))
-		{
-		  mkdir($dir);
-		  chmod($dir,0777);
-		  $fp = fopen($dir.'/index.html', 'w');
-		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-		  fclose($fp);
-		}
-		$dirs=$dir.'/thumbnail';
+		$dirs=$dir.'/thumb';
 		if(!is_dir($dirs))
 		{
 		  mkdir($dirs);
 		  chmod($dirs,0777);
 		  $fp = fopen($dirs.'/index.html', 'w');
-		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-		  fclose($fp);
-		}
-		$dirs_thumb2 = $dir.'/thumbnail2';
-		if(!is_dir($dirs_thumb2))
-		{
-		  mkdir($dirs_thumb2);
-		  chmod($dirs_thumb2,0777);
-		  $fp = fopen($dirs_thumb2.'/index.html', 'w');
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
@@ -611,12 +588,6 @@ class Ajax extends MX_Controller {
 			$target = $dirs."/".$file_name;
 			$this->scale_image($target,$target,$new_width,$new_height);	
 			
-			//create thumbnail 2 
-			$thumb2_width = 72;
-			$thumb2_height = 72;
-			copy($dir.'/'.$file_name, $dirs_thumb2."/".$file_name);
-			$target_thumb2 = $dirs_thumb2."/".$file_name;
-			$this->scale_image($target_thumb2,$target_thumb2,$thumb2_width,$thumb2_height);
 
 		}
 	}
