@@ -105,7 +105,7 @@ class Ajax extends MX_Controller {
 		
 		$this->load->model('Eway_model');			
 		$this->Eway_model->init($eWAY_CustomerID, $eWAY_PaymentMethod, $eWAY_UseLive);
-		$total = $total * 100;
+		
 		# Set the payment details
 		$this->Eway_model->setTransactionData("TotalAmount", $total); //mandatory field
 		$this->Eway_model->setTransactionData("CustomerFirstName", $firstname);
