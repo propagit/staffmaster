@@ -53,9 +53,7 @@ class Ajax extends MX_Controller {
 			return;
 		}
 		$total = $price['unit_price'] * $credits;
-		$total *= 1.1; # GST				
-		$total = money_format('%i',$total); # Money format the total
-		$total = str_replace('.','',$total); # Money in cent
+		$total *= 1.1; # GST
 		
 		
 		# Record order		
@@ -78,6 +76,10 @@ class Ajax extends MX_Controller {
 		$this->load->model('account_model');
 		$order_id = $this->account_model->create_order($order);
 		
+		
+		$total = money_format('%i',$total); # Money format the total
+		$total = str_replace('.','',$total); # Money in cent
+		
 		$result = $this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['postcode'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
 		$this->account_model->update_order($order_id, array('result' => $result));
 		
@@ -98,10 +100,12 @@ class Ajax extends MX_Controller {
 	
 	function process_eWay($order_id,$firstname,$lastname,$email,$address,$postcode,$cardname,$cardnumber,$expmonth,$expyear,$cvv,$total) {
 		# Payment config
-		# $eWAY_CustomerID = "87654321"; // eWAY Customer ID
-		$eWAY_CustomerID = "12229578"; // eWAY Propagate
+		$total = 1000;
+		
+		$eWAY_CustomerID = "87654321"; // eWAY Customer ID
+		#$eWAY_CustomerID = "12229578"; // eWAY Propagate
 		$eWAY_PaymentMethod = 'REAL_TIME_CVN'; // payment gatway to use (REAL_TIME, REAL_TIME_CVN or GEO_IP_ANTI_FRAUD)
-		$eWAY_UseLive = true; // true to use the live gateway
+		$eWAY_UseLive = false; #true; // true to use the live gateway
 		
 		$this->load->model('Eway_model');			
 		$this->Eway_model->init($eWAY_CustomerID, $eWAY_PaymentMethod, $eWAY_UseLive);
@@ -113,7 +117,7 @@ class Ajax extends MX_Controller {
 		$this->Eway_model->setTransactionData("CustomerEmail", $email);
 		$this->Eway_model->setTransactionData("CustomerAddress", $address);
 		$this->Eway_model->setTransactionData("CustomerPostcode", $postcode);
-		$this->Eway_model->setTransactionData("CustomerInvoiceDescription", "Staff Master");
+		$this->Eway_model->setTransactionData("CustomerInvoiceDescription", "StaffBooks");
 		$this->Eway_model->setTransactionData("CustomerInvoiceRef", "INV" . $order_id); # Order reference
 		$this->Eway_model->setTransactionData("CardHoldersName", $cardname); # mandatory field
 		$this->Eway_model->setTransactionData("CardNumber", $cardnumber); # mandatory field
@@ -130,6 +134,7 @@ class Ajax extends MX_Controller {
 		
 			
 		if (strtolower($ewayResponseFields["EWAYTRXNSTATUS"])=="false") {
+			$this->session->set_userdata('eway_msg', $ewayResponseFields["EWAYTRXNERROR"]);
 			return false;
 		}
 		
