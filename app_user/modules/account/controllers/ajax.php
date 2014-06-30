@@ -78,7 +78,7 @@ class Ajax extends MX_Controller {
 		$this->load->model('account_model');
 		$order_id = $this->account_model->create_order($order);
 		
-		$result = $this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
+		$result = $this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['postcode'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
 		$this->account_model->update_order($order_id, array('result' => $result));
 		
 		if ($result) # Successful transaction
@@ -105,7 +105,7 @@ class Ajax extends MX_Controller {
 		
 		$this->load->model('Eway_model');			
 		$this->Eway_model->init($eWAY_CustomerID, $eWAY_PaymentMethod, $eWAY_UseLive);
-		
+		$total = $total * 100;
 		# Set the payment details
 		$this->Eway_model->setTransactionData("TotalAmount", $total); //mandatory field
 		$this->Eway_model->setTransactionData("CustomerFirstName", $firstname);
