@@ -80,7 +80,8 @@ class Ajax extends MX_Controller {
 		$total = money_format('%i',$total); # Money format the total
 		$total = str_replace('.','',$total); # Money in cent
 		
-		$result = $this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['postcode'], $order['ccname'], $order['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
+		$result = $this->process_eWay($order_id, $order['firstname'], $order['lastname'], $this->user['email_address'], $order['address'] . ', ' . $order['city'] . ' ' . $order['state'], $order['postcode'], $order['ccname'], $input['ccnumber'], $order['expmonth'], $order['expyear'], $order['ccv'], $total);
+		
 		$this->account_model->update_order($order_id, array('result' => $result));
 		
 		if ($result) # Successful transaction
@@ -100,12 +101,12 @@ class Ajax extends MX_Controller {
 	
 	function process_eWay($order_id,$firstname,$lastname,$email,$address,$postcode,$cardname,$cardnumber,$expmonth,$expyear,$cvv,$total) {
 		# Payment config
-		$total = 1000;
+		#$total = 1000; # Just for testing
 		
-		$eWAY_CustomerID = "87654321"; // eWAY Customer ID
-		#$eWAY_CustomerID = "12229578"; // eWAY Propagate
+		#$eWAY_CustomerID = "87654321"; // eWAY Customer ID
+		$eWAY_CustomerID = "12229578"; // eWAY Propagate
 		$eWAY_PaymentMethod = 'REAL_TIME_CVN'; // payment gatway to use (REAL_TIME, REAL_TIME_CVN or GEO_IP_ANTI_FRAUD)
-		$eWAY_UseLive = false; #true; // true to use the live gateway
+		$eWAY_UseLive = true; // true to use the live gateway
 		
 		$this->load->model('Eway_model');			
 		$this->Eway_model->init($eWAY_CustomerID, $eWAY_PaymentMethod, $eWAY_UseLive);
@@ -131,7 +132,6 @@ class Ajax extends MX_Controller {
 		$this->Eway_model->setCurlPreferences(CURLOPT_SSL_VERIFYPEER, 0); // Require for Windows hosting
 						
 		$ewayResponseFields = $this->Eway_model->doPayment();
-		
 			
 		if (strtolower($ewayResponseFields["EWAYTRXNSTATUS"])=="false") {
 			$this->session->set_userdata('eway_msg', $ewayResponseFields["EWAYTRXNERROR"]);

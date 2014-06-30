@@ -1,14 +1,14 @@
 <?php
 
 //$eWAY_CustomerID = "87654321"; // eWAY Customer ID
-$eWAY_CustomerID = "12229578";
-$eWAY_PaymentMethod = 'REAL_TIME'; // payment gateway to use (REAL_TIME, REAL_TIME_CVN, GEO_IP_ANTI_FRAUD)
-$eWAY_UseLive = true; // true to use the live gateway (<false> sets to testing mode, <true> to live mode)
+//$eWAY_CustomerID = "12229578";
+//$eWAY_PaymentMethod = 'REAL_TIME'; // payment gateway to use (REAL_TIME, REAL_TIME_CVN, GEO_IP_ANTI_FRAUD)
+//$eWAY_UseLive = false; // true to use the live gateway (<false> sets to testing mode, <true> to live mode)
 
 //define default values for eway
-define('EWAY_DEFAULT_CUSTOMER_ID',$eWAY_CustomerID);
-define('EWAY_DEFAULT_PAYMENT_METHOD', $eWAY_PaymentMethod);
-define('EWAY_DEFAULT_LIVE_GATEWAY', $eWAY_UseLive);
+//define('EWAY_DEFAULT_CUSTOMER_ID',$eWAY_CustomerID);
+//define('EWAY_DEFAULT_PAYMENT_METHOD', $eWAY_PaymentMethod);
+//define('EWAY_DEFAULT_LIVE_GATEWAY', $eWAY_UseLive);
 
 // define script constants
 define('REAL_TIME', 'REAL-TIME');
@@ -27,17 +27,12 @@ define('EWAY_PAYMENT_HOSTED_REAL_TIME_TESTING_MODE', 'https://www.eway.com.au/ga
 define('EWAY_PAYMENT_HOSTED_REAL_TIME_CVN', 'https://www.eway.com.au/gateway_cvn/payment.asp');
 define('EWAY_PAYMENT_HOSTED_REAL_TIME_CVN_TESTING_MODE', 'https://www.eway.com.au/gateway_cvn/payment.asp');
 
-class Eway_model extends Model {
+class Eway_model extends CI_Model {
 	var $myGatewayURL;
 	var $myCustomerID;
 	var $myTransactionData = array();
 	var $myCurlPreferences = array();
 
-	// Class Constructor
-	function __construct()
-	{
-		parent::Model();
-	}
 	
 	function init($customerID = EWAY_DEFAULT_CUSTOMER_ID, $method = EWAY_DEFAULT_PAYMENT_METHOD ,$liveGateway  = EWAY_DEFAULT_LIVE_GATEWAY) 
 	{
