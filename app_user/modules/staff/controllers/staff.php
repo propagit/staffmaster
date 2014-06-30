@@ -948,15 +948,19 @@ class Staff extends MX_Controller {
 				fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 				fclose($fp);
 				
-				$dir_thumb = $dir . '/thumb';
+				
+				
+			}
+			
+			$dir_thumb = $dir . '/thumb';
+			if(!is_dir($dir_thumb)) 
+			{
 				mkdir($dir_thumb);
 				chmod($dir_thumb,0777);
 				$fp = fopen($dir_thumb.'/index.html', 'w');
 				fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 				fclose($fp);
-				
 			}
-					
 					
 			# Copy profile images
 			$dir_profile = UPLOADS_PATH . '/staff/profile/' . md5($user_id);
@@ -965,7 +969,7 @@ class Staff extends MX_Controller {
 				$map = directory_map($dir_profile, 1);
 				foreach($map as $file) {
 					# Copy file
-					copy($dir_profile . '/' . $file, $dir . '/' . $file);
+					# copy($dir_profile . '/' . $file, $dir . '/' . $file);
 				}
 				$thumb_map = directory_map($dir_profile . '/thumbnail', 1);
 				foreach($thumb_map as $thumb) {
