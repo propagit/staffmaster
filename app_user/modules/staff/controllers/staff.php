@@ -937,6 +937,7 @@ class Staff extends MX_Controller {
 	function copy_files() {
 		$staffs = $this->staff_model->search_staffs();
 		$this->load->helper('directory');
+		$count = 0;
 		foreach($staffs as $staff) {
 			$user_id = $staff['user_id'];
 			$dir = UPLOADS_PATH . '/staff/' . $user_id;
@@ -946,8 +947,10 @@ class Staff extends MX_Controller {
 			if (is_dir($dir_profile)) {
 				directory_copy($dir_profile, $dir);
 				rename($dir . '/thumbnail', $dir . '/thumb');
+				$count++;
 			}
 		}
+		echo $count;
 	}
 	
 	/* function copy_old_profile_pics()
