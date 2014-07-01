@@ -41,6 +41,11 @@
 }
 
 
+.profile_photo{		
+	margin-right:10px;	
+	width:72px;
+	height:72px;
+}
 
 
 @media (min-width:768px){

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-2 staff-profile-hero-wrap remove-left-gutter">
-        <i class="fa fa-heart"></i> Profile Image <br /><br />
+        <i class="fa fa-heart"></i> &nbsp; Profile Image <br /><br />
         <div class="picture-box">
             <div class="profile-picture">
             <? 
@@ -17,7 +17,7 @@
         
     </div>
     <div class="col-md-10 staff-profile-gallery-wrap remove-left-gutter">
-        <i class="fa fa-picture-o"></i> Your Gallery <br /><br />
+        <i class="fa fa-picture-o"></i> &nbsp; Your Gallery <br /><br />
          <?  if(isset($photos) && $photos != NULL){?>
         <div id="carousel" class="flexslider gallery_staff">
           <ul class="slides popup-gallery staff-photos">
