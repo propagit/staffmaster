@@ -18,17 +18,21 @@ body {
 <table width="750" height="58" border="0" align="center" cellpadding="0" cellspacing="0" id="Table_01">
 	<tr>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_01.jpg" width="206" height="58" alt=""></td>
+			<a href="http://staffbooks.com"><img src="<?=base_url();?>assets/email_templates/images/email-menu_01.jpg" width="206" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_02.jpg" width="71" height="58" alt=""></td>
+			<a href="http://staffbooks.com/tour/staff-on-boarding"><img src="<?=base_url();?>assets/email_templates/images/email-menu_02.jpg" width="71" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_03.jpg" width="98" height="58" alt=""></td>
+			<a href="http://staffbooks.com/pricing"><img src="<?=base_url();?>assets/email_templates/images/email-menu_03.jpg" width="98" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_04.jpg" width="115" height="58" alt=""></td>
+			<a href="http://resources.staffbooks.com/"><img src="<?=base_url();?>assets/email_templates/images/email-menu_04.jpg" width="115" height="58" alt=""></a>
+		</td>
 		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_05.jpg" width="259" height="58" alt=""></td>
-		<td>
-			<img src="<?=base_url();?>assets/email_templates/images/email-menu_06.jpg" width="1" height="58" alt=""></td>
+			<a href="http://staffbooks.com/contact"><img src="<?=base_url();?>assets/email_templates/images/email-menu_05.jpg" width="259" height="58" alt=""></a>
+		</td>
+		<td><img src="<?=base_url();?>assets/email_templates/images/email-menu_06.jpg" width="1" height="58" alt=""></td>
 	</tr>
 </table>
 <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -42,7 +46,7 @@ body {
       <br>
       Welcome <?=$company_name;?>,
       </p>
-      <p>Thank you for considering StaffMaster as your workforce management system. We're here to help you set up your system and grow your business.</p>
+      <p>Thank you for considering StaffBooks as your workforce management system. We're here to help you set up your system and grow your business.</p>
       <p>To activate your system and start creating jobs please click the link below</p>
       <p><a style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#00aeec" href="<?=$activation_url;?>"><?=$activation_url;?></a></p>
       <p>Once activated you will be sent your username, password and unique web address for activating the system</p>
@@ -60,9 +64,9 @@ body {
    </ul>
    <span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">
       <p>When you login you will be guided through some of the features to get you up and running.</p>
-      <p>We are here to help so contact us at team@staffmaster.com.au to help you get up and running on the system.</p>
+      <p>We are here to help so contact us at team@staffbooks.com to help you get up and running on the system.</p>
       <p>Thanks</p>
-    <p>The Staff Master Team<br>
+    <p>The StaffBooks Team<br>
       <br>
   <br>
       <br>
@@ -75,7 +79,7 @@ body {
   <tr>
     <td height="100" align="center" valign="middle">
     <span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#FFF">
-    &copy; StaffMaster | <a href="http://www.staffmaster.com.au"><span style="color:#FFF;">www.staffmaster.com.au</span></a></span></td>
+    &copy; StaffBooks | <a href="http://www.staffbooks.com"><span style="color:#FFF;">www.staffbooks.com</span></a></span></td>
   </tr>
 </table>
 <p>&nbsp;</p>
