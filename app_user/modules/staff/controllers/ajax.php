@@ -582,11 +582,13 @@ class Ajax extends MX_Controller {
 			);
 			
 			$this->staff_model->add_picture($photo);
+			$this->load->helper('image');
 			$new_width=216;		
 			$new_height=216;		
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;
-			$this->scale_image($target,$target,$new_width,$new_height);	
+			scale_image($target,$target,$new_width,$new_height);
+			#$this->scale_image($target,$target,$new_width,$new_height);	
 			
 
 		}

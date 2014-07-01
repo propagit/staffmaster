@@ -117,7 +117,9 @@ class Ajax extends MX_Controller {
 		$staff_id = $this->staff_model->insert_staff($staff_data);
 		
 		
-		# Copy group, role
+		# Copy group, role, photos, and others
+		$this->load->helper('image');
+		
 		foreach($fields as $field) {
 			if ($field['name'] == 'group') {
 				$groups = json_decode($field['value']);
@@ -177,35 +179,11 @@ class Ajax extends MX_Controller {
 						$destination = $dir . '/' . $picture;
 						copy($source, $destination);
 						
-						# Create thumb						
-						copy($destination, $dir_thumb . '/' . $picture); # Copy to thumb directory
-						$thumb_size = 216; # Thumbnail size
+						# Create thumb
+						$thumb_size = 216; # Thumbnail size			
+						#copy($destination, $dir_thumb . '/' . $picture); # Copy to thumb directory
+						scale_image($destination, $dir_thumb . '/' . $picture, $thumb_size, $thumb_size);
 						
-						$config['image_library'] = 'gd2';
-						$config['source_image'] = $dir_thumb . '/' . $picture;
-						$config['create_thumb'] = FALSE;
-						$config['maintain_ratio'] = FALSE;
-						$config['width'] = $thumb_size;
-						$config['height'] = $thumb_size;
-						
-						list($width_orig, $height_orig) = getimagesize($dir_thumb . '/' . $picture);
-						if ($height_orig != $width_orig) {
-							if ($height_orig > $width_orig) { # If height is larger than width
-								$new_width = $thumb_size;
-								$new_height = $thumb_size * $height_orig / $width_orig;
-								$config['x_axis'] = 0;
-								$config['y_axis'] = round(($new_height - $new_width) / 2);
-							} else { # Height is smaller than width
-								$new_height = $thumb_size;
-								$new_width = $thumb_size * $width_orig / $height_orig;
-								$config['x_axis'] = round(($new_width - $new_height) / 2);
-								$config['y_axis'] = 0;
-							}
-						}
-						
-						$this->load->library('image_lib', $config); 
-						$this->image_lib->crop();
-												
 						# Add to database 
 						$this->staff_model->add_picture(array(
 							'user_id' => $user_id,
