@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Conversations</h2>
-		 <p>Conversations can be created and posted to your staff groups. Your staff can be asigned to groups via their staff profile. An overview of your conversations can be found below.</p>
+		 <p>Conversations can be created and posted to your staff groups. Your staff can be assigned to groups via their staff profile. An overview of your conversations can be found below.</p>
     </div>
 </div>
 <!--end top box-->
