@@ -746,7 +746,7 @@ CREATE TABLE IF NOT EXISTS `export_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`order`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=88 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=90 ;
 
 --
 -- Dumping data for table `export_fields`
@@ -839,7 +839,9 @@ INSERT INTO `export_fields` (`order`, `object`, `format`, `value`, `label`) VALU
 (84, 'invoice', 'single', 'created_on', 'Invoice Date'),
 (85, 'invoice', 'single', 'po_number', 'PO Number'),
 (86, 'payrun_tfn', 'single', 'date_from', 'Pay Run Date From'),
-(87, 'payrun_tfn', 'single', 'date_to', 'Pay Run Date To');
+(87, 'payrun_tfn', 'single', 'date_to', 'Pay Run Date To'),
+(88, 'invoice', 'single', 'external_client_id', 'External Client ID'),
+(89, 'payrun_tfn', 'single', 'payable_date', 'Payable Date');
 -- --------------------------------------------------------
 
 --

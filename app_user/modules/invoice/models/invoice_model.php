@@ -132,8 +132,13 @@ class Invoice_model extends CI_Model {
 	*	@return: (object) invoice
 	*/
 	function get_invoice($invoice_id) {
-		$this->db->where('invoice_id', $invoice_id);
-		$query = $this->db->get('invoices');
+		$sql = "SELECT i.*, c.external_client_id
+				FROM invoices i, user_clients c 
+				WHERE i.invoice_id = $invoice_id
+				AND i.client_id = c.user_id";
+		#$this->db->where('invoice_id', $invoice_id);
+		#$query = $this->db->get('invoices');
+		$query = $this->db->query($sql);
 		return $query->first_row('array');
 	}
 	

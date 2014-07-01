@@ -203,6 +203,7 @@ class Ajax extends MX_Controller {
 		$type = $input['type'];
 		$date_from = '';
 		$date_to = '';
+		$payable_date = '';
 		if ($type == STAFF_TFN) {
 			if (!isset($input['date_from']) || $input['date_from'] == '') {
 				echo json_encode(array(
@@ -220,6 +221,7 @@ class Ajax extends MX_Controller {
 			}
 			$date_from = date('Y-m-d', strtotime($input['date_from']));
 			$date_to = date('Y-m-d', strtotime($input['date_to']));
+			$payable_date = date('Y-m-d', strtotime($input['payable_date']));
 		}
 		
 		
@@ -230,6 +232,7 @@ class Ajax extends MX_Controller {
 		$data = array(
 			'date_from' => $date_from,
 			'date_to' => $date_to,
+			'payable_date' => $payable_date,
 			'type' => $type,
 			'amount' => $amount,
 			'total_staffs' => $total_staffs,
@@ -302,6 +305,7 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{job_id}', $timesheet['job_id'], $value);
 				$value = str_replace('{date_from}', date('d/m/Y', strtotime($timesheet['date_from'])), $value);
 				$value = str_replace('{date_to}', date('d/m/Y', strtotime($timesheet['date_to'])), $value);
+				$value = str_replace('{payable_date}', date('d/m/Y', strtotime($timesheet['payable_date'])), $value);
 				$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
 				$i++;
 			}

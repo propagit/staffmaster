@@ -20,21 +20,29 @@
 					<div class="panel-heading">Pay Run Period</div>
 					<div class="panel-body">
 						<div class="form-group" id="f_date_from">
-							<div class="input-group date" id="start_date">
-								<span class="input-group-addon">From Date</span>
+							<label class="label-control col-md-3 remove-left-gutter">From Date</label>
+							<div class="input-group date col-md-9" id="start_date">
 								<input type="text" class="form-control" name="date_from" readonly />
 								<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 							</div>
 						</div>
 						<div class="form-group" id="f_date_to">
-							<div class="input-group date" id="finish_time">
-								<span class="input-group-addon">To Date</span>
+							<label class="label-control col-md-3 remove-left-gutter">To Date</label>
+							<div class="input-group date col-md-9" id="finish_time">
 								<input type="text" class="form-control" name="date_to" readonly />
 								<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 							</div>
-						</div>		
+						</div>
+						<div class="form-group" id="f_payable_date">
+							<label class="label-control col-md-3 remove-left-gutter">Payable Date</label>
+							<div class="input-group date col-md-9" id="payable_date">
+								<input type="text" class="form-control" name="payable_date" readonly />
+								<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<? } ?>
@@ -66,15 +74,15 @@ $(function(){
 		forceParse: 1,
         minuteStep: 15,
         pickerPosition: 'bottom-left',
-        format: 'dd-mm-yyyy',
-        //startDate: "<?=date('Y-m-d');?>"
+        format: 'dd-mm-yyyy'
     }).on('changeDate', function(e) {
-    	var start_date = moment(e.date.valueOf() - 11*60*60*1000);
-    	var finish_date = $('input[name="date_to"]').val();
-    	if (start_date > moment(finish_date, "DD-MM-YYYY"))
-    	{
-	    	$('input[name="date_to"]').val(start_date.format("DD-MM-YYYY"));
-    	}
+    	var start_date = moment(e.date.valueOf() - 10*60*60*1000);
+    	//var finish_date = $('input[name="date_to"]').val();
+    	//if (start_date > moment(finish_date, "DD-MM-YYYY"))
+    	//{
+	    	//alert(moment(start_date).add('d', 7));
+	    	$('input[name="date_to"]').val(moment(start_date).add('d', 7).format("DD-MM-YYYY"));
+    	//}
     	$('#finish_time').datetimepicker('setStartDate', start_date.format("DD-MM-YYYY"));
     });
     $('#finish_time').datetimepicker({
@@ -87,8 +95,19 @@ $(function(){
 		forceParse: 1,
         minuteStep: 15,
         pickerPosition: 'bottom-left',
-        format: 'dd-mm-yyyy',
-        //startDate: "<?=date('Y-m-d');?>"
+        format: 'dd-mm-yyyy'
+    });
+    $('#payable_date').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 1,
+        minuteStep: 15,
+        pickerPosition: 'bottom-left',
+        format: 'dd-mm-yyyy'
     });
 })
 

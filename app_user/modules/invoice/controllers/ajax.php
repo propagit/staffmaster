@@ -685,7 +685,7 @@ class Ajax extends MX_Controller {
 		}
 		$i = 0;
 		foreach($ids as $invoice_id) {
-			$invoice = $this->invoice_model->get_invoice($invoice_id);	
+			$invoice = $this->invoice_model->get_invoice($invoice_id);
 			# Get all invoice item
 			$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
 			foreach($invoice_items as $item) {
@@ -717,6 +717,7 @@ class Ajax extends MX_Controller {
 							$value = str_replace('{type}', 'Staff Services', $value);
 							$value = str_replace('{description}', $item['title'], $value);
 							$value = str_replace('{client_id}', $invoice['client_id'], $value);
+							$value = str_replace('{external_client_id}', $invoice['external_client_id'], $value);
 							$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
 							$value = str_replace('{created_on}', date('d/m/Y', strtotime($invoice['created_on'])), $value);
 							$value = str_replace('{po_number}', $invoice['po_number'], $value);
@@ -768,7 +769,8 @@ class Ajax extends MX_Controller {
 							$value = str_replace('{break}', $breaks/60, $value);
 							$value = str_replace('{type}', 'Staff Expenses', $value);
 							$value = str_replace('{description}', $item['title'], $value);							
-							$value = str_replace('{client_id}', $invoice['client_id'], $value);
+							$value = str_replace('{client_id}', $invoice['client_id'], $value);							
+							$value = str_replace('{external_client_id}', $invoice['external_client_id'], $value);
 							$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
 							$value = str_replace('{created_on}', date('d/m/Y', strtotime($invoice['created_on'])), $value);
 							$value = str_replace('{po_number}', $invoice['po_number'], $value);
