@@ -1470,6 +1470,7 @@ CREATE TABLE IF NOT EXISTS `payruns` (
   `payrun_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `date_from` DATE NOT NULL,
   `date_to` DATE NOT NULL,
+  `payable_date` DATE NOT NULL,
   `type` tinyint(4) NOT NULL COMMENT '1: tfn, 2: abn',
   `amount` decimal(10,2) NOT NULL,
   `total_staffs` int(11) NOT NULL,
