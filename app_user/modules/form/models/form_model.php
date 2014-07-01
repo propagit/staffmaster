@@ -156,4 +156,10 @@ class Form_model extends CI_Model {
 			'accepted_on' => date('Y-m-d H:i:s')
 		));
 	}
+	function delete_applicant($applicant_id) {
+		$this->db->where('applicant_id', $applicant_id);
+		$this->db->delete('form_applicants');
+		$this->db->where('applicant_id', $applicant_id);
+		$this->db->delete('form_applicant_data');
+	}
 }

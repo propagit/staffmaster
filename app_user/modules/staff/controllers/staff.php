@@ -260,7 +260,7 @@ class Staff extends MX_Controller {
 			array('value' => STAFF_INACTIVE, 'label' => 'Inactive')
 		);
 		
-		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
+		return modules::run('common/field_select', $array, $field_name, $field_value, $size, false);
 	}
 	
 	function menu_dropdown_tfn($id, $label) {

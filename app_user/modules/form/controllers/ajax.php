@@ -177,7 +177,7 @@ class Ajax extends MX_Controller {
 						# Move file across
 						$source = UPLOADS_PATH . '/tmp/' . $picture;
 						$destination = $dir . '/' . $picture;
-						copy($source, $destination);
+						rename($source, $destination);
 						
 						# Create thumb
 						$thumb_size = 216; # Thumbnail size			
@@ -206,7 +206,7 @@ class Ajax extends MX_Controller {
 					$array = false;
 					if ($custom_field['type'] == 'file') {
 						$array = true;
-						copy(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);
+						rename(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);
 					}
 					$this->staff_model->update_custom_field($user_id, $field['name'], $field['value'], $array);
 				}
@@ -214,17 +214,20 @@ class Ajax extends MX_Controller {
 		}
 		
 		#$this->form_model->accept_applicant($applicant_id);
+		$this->form_model->delete_applicant($applicant_id);
 	}
 	
 	function reject_applicant() {
 		$applicant_id = $this->input->post('applicant_id');
-		$this->form_model->reject_applicant($applicant_id);
+		#$this->form_model->reject_applicant($applicant_id);
+		$this->form_model->delete_applicant($applicant_id);
 	}
 	
 	function reject_applicants() {
 		$applicant_ids = $this->input->post('applicant_ids');
 		foreach($applicant_ids as $applicant_id) {
-			$this->form_model->reject_applicant($applicant_id);
+			#$this->form_model->reject_applicant($applicant_id);
+			$this->form_model->delete_applicant($applicant_id);
 		}
 	}
 }
