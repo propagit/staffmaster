@@ -587,74 +587,140 @@ class Ajax extends MX_Controller {
 			$new_height=216;		
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;
-			scale_image($target,$target,$new_width,$new_height);
-			#$this->scale_image($target,$target,$new_width,$new_height);	
-			
+			scale_image($target,$target,$new_width,$new_height);			
 
 		}
 	}
-	function scale_image($image,$target,$thumbnail_width,$thumbnail_height)
+	
+	
+	function upload_picture($user_id)
 	{
-	  if(!empty($image)) //the image to be uploaded is a JPG I already checked this
-	  {
-		$image_ext = pathinfo($image);	
-		print_r($image_ext);
-		list($width_orig, $height_orig) = getimagesize($image);
-		switch(strtolower($image_ext['extension'])){
-			case 'jpg':
-			case 'jpeg':
-				$myImage = imagecreatefromjpeg($image);
-			break;
-			case 'png':
-				$myImage = imagecreatefrompng($image);
-			break;
-			case 'gif':
-				$myImage = imagecreatefromgif($image);
-			break;	
-		}   
-		
-		$ratio_orig = $width_orig/$height_orig;
-		echo $ratio_orig;
-		if ($thumbnail_width/$thumbnail_height > $ratio_orig) {
-		   $new_height = $thumbnail_width/$ratio_orig;
-		   $new_width = $thumbnail_width;
-		} else {
-		   $new_width = $thumbnail_height*$ratio_orig;
-		   $new_height = $thumbnail_height;
-		}
-		
-		$x_mid = $new_width/2;  //horizontal middle
-		$y_mid = $new_height/2; //vertical middle
-		
-		$process = imagecreatetruecolor(round($new_width), round($new_height)); 
-		//this is needed for png with transparent background
-		imagealphablending($process, false);
-		imagesavealpha($process,true);
-		//png with transparent bg
-		imagecopyresampled($process, $myImage, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
-		
-		
-		$thumb = imagecreatetruecolor($thumbnail_width, $thumbnail_height); \
-		imagealphablending($thumb, false);
-		imagesavealpha($thumb,true);
-		imagecopyresampled($thumb, $process, 0, 0, ($x_mid-($thumbnail_width/2)), ($y_mid-($thumbnail_height/2)), $thumbnail_width, $thumbnail_height, $thumbnail_width, $thumbnail_height);
-		
+		// Make sure file is not cached (as it happens for example on iOS devices)
+		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
 
-		switch(strtolower($image_ext['extension'])){
-			case 'jpg':
-			case 'jpeg':
-				imagejpeg($thumb,$target, 100);
-			break;
-			case 'png':
-				imagepng($thumb,$target, 0);
-			break;
-			case 'gif':
-				imagegif($thumb,$target, 100);
-			break;	
+		/*
+		// Support CORS
+		header("Access-Control-Allow-Origin: *");
+		// other CORS headers if any...
+		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+			exit; // finish preflight CORS requests here
 		}
-		imagedestroy($process);
-		imagedestroy($myImage);	
-	  }
+		*/
+
+		// 5 minutes execution time
+		@set_time_limit(5 * 60);
+
+		// Uncomment this one to fake upload time
+		// usleep(5000);
+
+		// Settings
+		//$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
+		//$targetDir = 'uploads';
+		# Create dir for storing file related to the product
+		$targetDir = UPLOADS_PATH.'/staff/' . $user_id; # './user_assets/'.$sub_domain.'/uploads');
+		modules::run('upload/create_upload_folders', $targetDir);
+
+		$cleanupTargetDir = true; // Remove old files
+		$maxFileAge = 5 * 3600; // Temp file age in seconds
+
+
+		// Create target dir
+		if (!file_exists($targetDir)) {
+			@mkdir($targetDir);
+		}
+
+		// Get a file name
+		if (isset($_REQUEST["name"])) {
+			$fileName = $_REQUEST["name"];
+		} elseif (!empty($_FILES)) {
+			$fileName = $_FILES["file"]["name"];
+		} else {
+			$fileName = uniqid("file_");
+		}
+
+		$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+
+		// Chunking might be enabled
+		$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+		$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+
+
+		// Remove old temp files
+		if ($cleanupTargetDir) {
+			if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
+				die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+			}
+
+			while (($file = readdir($dir)) !== false) {
+				$tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
+
+				// If temp file is current file proceed to the next
+				if ($tmpfilePath == "{$filePath}.part") {
+					continue;
+				}
+
+				// Remove temp file if it is older than the max age and is not the current file
+				if (preg_match('/\.part$/', $file) && (filemtime($tmpfilePath) < time() - $maxFileAge)) {
+					@unlink($tmpfilePath);
+				}
+			}
+			closedir($dir);
+		}
+
+
+		// Open temp file
+		if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
+			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+		}
+
+		if (!empty($_FILES)) {
+			if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
+				die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+			}
+
+			// Read binary input stream and append it to temp file
+			if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
+				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+			}
+		} else {
+			if (!$in = @fopen("php://input", "rb")) {
+				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+			}
+		}
+
+		while ($buff = fread($in, 4096)) {
+			fwrite($out, $buff);
+		}
+
+		@fclose($out);
+		@fclose($in);
+
+		// Check if file has been uploaded
+		if (!$chunks || $chunk == $chunks - 1) {
+			// Strip the temp .part suffix off
+			rename("{$filePath}.part", $filePath);
+			# Add to database
+			#$this->staff_model->update_custom_field($user_id, $field_id, $fileName, true);
+			$photo = array(
+				'user_id' => $user_id,
+				'name' => $fileName,
+				'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)									
+			);
+			
+			$this->staff_model->add_picture($photo);
+			$target = UPLOADS_PATH.'/staff/' . $user_id . '/thumb/' . $fileName;
+			copy($filePath, $target);
+			$this->load->helper('image');
+			scale_image($target, $target, IMG_THUMB_SIZE, IMG_THUMB_SIZE);
+			
+		}
+
+		// Return Success JSON-RPC response
+		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
 	
 	/**

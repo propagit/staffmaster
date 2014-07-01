@@ -60,6 +60,8 @@ define('STAFF_INACTIVE', -1);
 define('STAFF_PENDING', 0);
 define('STAFF_ACTIVE', 1);
 
+define('IMG_THUMB_SIZE', 216);
+
 define('GENDER_MALE', 'm');
 define('GENDER_FEMALE', 'f');
 

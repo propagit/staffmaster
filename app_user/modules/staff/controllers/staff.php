@@ -359,12 +359,6 @@ class Staff extends MX_Controller {
 		return $data;
 	}
 	
-	function form_upload_photo($user_id)
-	{
-		$data['user_id'] = $user_id;
-		$this->load->view('upload_photo_form', isset($data) ? $data : NULL);	
-	}
-	
 	
 	
 	/**

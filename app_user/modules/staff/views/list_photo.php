@@ -55,7 +55,6 @@ $(function(){
 		help.confirm_delete(title,message,function(confirmed){
 			 if(confirmed){
 				 delete_photo(photo_id);
-
 			 }
 		});
 	});

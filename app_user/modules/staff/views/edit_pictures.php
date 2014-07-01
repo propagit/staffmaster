@@ -1,48 +1,36 @@
 <div class="staff-profile-detail-box">
-	<h2> Your Images </h2>
-	<p> Upload photos of yourself so we have a visual refferance of you. 
-	<br />Set your <b>primary profile image</b> by rolling over the images in your gallery and clicking the <i class="fa fa-heart"></i>
-	<br />To <b>delete images</b>  roll over one of the images in your gallery and click the <i class="fa fa-times"></i>                        	
-	</p>
+	<h2> Your Pictures</h2>
+	<p>Upload photos of yourself so we have a visual reference of you.
+	<br />Set your <b>primary profile photo</b> by rolling over the images in your gallery and clicking the <i class="fa fa-heart"></i>
+	<br />To <b>delete images</b>  roll over one of the images in your gallery and click the <i class="fa fa-times"></i></p>
 </div>
 
+<div id="filelist"><!-- Your browser doesn't have Flash, Silverlight or HTML5 support. --></div>
+<div class="progress progress-striped active" style="visibility: hidden;">
+	<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="upload-progress">0%</div>
+</div>
+<div id="upload_container">
+    <button type="button" id="pickfiles" href="javascript:;" class="btn btn-core">Select files</button>
+    <button type="button" id="uploadfiles" href="javascript:;" class="btn btn-core"><i class="fa fa-upload"></i> Upload files</button>
+    <span id="console"></span>
+</div>
 
-<button type="button" class="btn btn-info" onclick="$('#addImage').modal('show');"><i class="fa fa-upload"></i> Upload Image</button>
 <br /><br />
 
 <div id="picture_photo"></div>
 
 
-<!-- Add Staff Picture Modal -->
-<div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="addImageLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-				<h4 class="modal-title">Add Photo</h4>
-			</div>
-            <div class="col-md-12">
-                <div class="modal-body">
-                	<?=modules::run('staff/form_upload_photo', $staff['user_id']);?>
-                </div>
-            </div>
-			</form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
 <script>
 $(function(){
-	load_picture(<?=$staff['user_id']?>);
+	load_picture();
 });
-function load_picture(user_id)
+function load_picture()
 {
 	preloading($('#picture_photo'));
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>staff/ajax/load_picture",
-		data: {user_id: user_id},
+		data: {user_id: <?=$staff['user_id']?>},
 		success: function(html) {		
 			loaded($('#picture_photo'), html);
 		}
@@ -106,7 +94,7 @@ function delete_photo(photo_id){
 
 function update_avatars()
 {
-	load_picture(<?=$staff['user_id'];?>);
+	load_picture();
 	update_avatar(<?=$staff['user_id'];?>);
 	update_staff_edit_page_avatar(<?=$staff['user_id'];?>);	
 }
@@ -131,4 +119,63 @@ function respond_staff_profile_pictures()
 	$('.staff-profile-hero-wrap').css({'width':profile_pic_fallback_width});
 	$('.staff-profile-gallery-wrap').css({'width':gallery_width});	
 }
+
+var uploader = new plupload.Uploader({
+	runtimes : 'html5,flash,silverlight,html4',
+	browse_button : 'pickfiles', // you can pass in id...
+	container: document.getElementById('upload_container'), // ... or DOM Element itself
+	url : '<?=base_url();?>staff/ajax/upload_picture/<?=$staff['user_id'];?>',
+	chunk_size: '400kb',
+    max_retries: 5,
+	flash_swf_url : '<?=base_url();?>assets/js/plupload/Moxie.swf',
+	silverlight_xap_url : '<?=base_url();?>assets/js/plupload/Moxie.xap',
+
+	filters : {
+		max_file_size : '20mb',
+		mime_types: [
+			{title : "Image files", extensions : "jpg,gif,png"}
+		]
+	},
+
+	init: {
+		PostInit: function() {
+			$('#console').html('');
+			$('#filelist').html('');
+			$('#uploadfiles').click(function() {
+				uploader.start();
+				return false;
+			});
+		},
+
+		FilesAdded: function(up, files) {
+			$('#upload-progress').parent().css("visibility", "visible");
+
+			plupload.each(files, function(file) {
+				document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+			});
+		},
+
+		UploadProgress: function(up, file) {
+			document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+			$('#upload-progress').attr('aria-valuenow', 60);
+			$('#upload-progress').css("width", file.percent + "%");
+			$('#upload-progress').html(file.percent + '% completed');
+		},
+		UploadComplete: function() {
+			// reload photos
+			$('#upload-progress').parent().css("visibility", "hidden");
+			$('#upload-progress').css("width", "0%");
+			$('#upload-progress').html('0%');
+			$('#console').html('');
+			$('#filelist').html('');
+			load_picture();
+		},
+
+		Error: function(up, err) {
+			$('#console').html('\n&nbsp;<span class="text-danger">Error: ' + err.message + '</span>');
+		}
+	}
+});
+
+uploader.init();
 </script>
