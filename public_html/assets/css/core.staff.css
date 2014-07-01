@@ -41,7 +41,8 @@
 }
 
 
-.profile_photo{		
+.profile_photo,
+.profile_photo img {		
 	margin-right:10px;	
 	width:72px;
 	height:72px;
