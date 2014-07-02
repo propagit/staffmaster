@@ -9,9 +9,25 @@ h2 {
 	letter-spacing: -1px;
 	color: #3D3D3D;
 }
+.has-error .control-label {
+	color: #ff0000;
+}
+.has-error .form-control {
+	border-color: #ff0000;
+}
 h2 .text-red {
 	font-size: 16px;
 	font-weight: normal;
+}
+h2.has-error {
+	color: #ff0000;
+}
+.text-muted.has-error  {
+	color: #ff0000;
+}
+.error-msg {
+	font-weight: bold;
+	color: #ff0000;
 }
 .modal-body {
 	text-align: center;

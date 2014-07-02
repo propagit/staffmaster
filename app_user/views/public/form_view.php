@@ -41,7 +41,7 @@
 <!-- Begin page content -->
 <div class="container-fluid">
     <div class="row">
-    	<span class="text-red">**</span> Required Field
+    	<span class="text-red">**</span> denotes Required Field
     	<h2>Personal Details</h2>
     	<p class="text-muted">Please fill in your personal details</p>
     	<form enctype="multipart/form-data" id="form<?=$form['form_id'];?>" class="form-horizontal" role="form">
@@ -75,10 +75,10 @@
     	
     	<? foreach($extra_fields as $name => $field) { if (isset($field['active'])) { ?>
     	<hr />
-	    <h2><?=$field['label'];?>
-	    </h2>
+    	<div id="f_<?=$field['form_field_id'];?>">
+	    <h2><?=$field['label'];?></h2>
 	    	<? if($name == 'role' && count($roles) > 0) { ?>
-    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">
+    			<p class="text-muted">
     				Please let us know what roles you could perform for us	    			
 			    	<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
@@ -92,7 +92,7 @@
 				</div>
     			<? }
     		} else if ($name == 'availability') { ?>
-    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Let us know what days you can work on
+    			<p class="text-muted">Let us know what days you can work on
 	    			<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
 					<? } ?>
@@ -106,7 +106,7 @@
 				</div>	
     			<? }
     		} else if ($name == 'location') { ?>
-    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Let us know where you can work
+    			<p class="text-muted">Let us know where you can work
 	    			<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
 					<? } ?>
@@ -114,7 +114,7 @@
     			<?=modules::run('attribute/location/field_input', $field['form_field_id']);?>
     			<div class="clear"></div>
     		<? } else if ($name == 'group' && count($groups) > 0) { ?>
-    			<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Please let us know what group you want to join
+    			<p class="text-muted">Please let us know what group you want to join
 	    			<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
 					<? } ?>
@@ -127,7 +127,7 @@
 				</div>
     			<? }
     		} else if ($name == 'picture') { ?>
-    		<p class="text-muted" id="f_<?=$field['form_field_id'];?>">Upload photos of yourself so we have a visual reference of you
+    		<p class="text-muted">Upload photos of yourself so we have a visual reference of you
 	    		<? if(isset($field['required'])) { ?>
 					<span class="text-red">**</span>
 				<? } ?>
@@ -146,7 +146,9 @@
 			<div id="uploaded_photos">
 			</div>
     		<? } ?>
-    	<? } } ?>    		
+    	<? } ?>
+    	<? } ?>  
+    	</div>  		
     	<hr />
     	<? if (count($custom_fields) > 0) { ?>
     	<h2>Additional Information</h2>
@@ -323,6 +325,7 @@ $(function(){
 		var btn = $(this);
 		btn.button('loading');
 		$('#form<?=$form['form_id'];?>').find('.has-error').removeClass('has-error');
+		$('#form<?=$form['form_id'];?>').find('.error-msg').remove();
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>public/form/<?=$form['form_id'];?>/submit",
@@ -333,6 +336,9 @@ $(function(){
 				if (!data.ok) {
 					for(var i=0; i < data.errors.length; i++) {
 						$('#f_' + data.errors[i]).addClass('has-error');
+						$('#f_' + data.errors[i]).find('h2').addClass('has-error');
+						$('#f_' + data.errors[i]).find('.text-muted').addClass('has-error');
+						$('#f_' + data.errors[i]).find('.text-muted').append('<p class="error-msg">Please Fill in all required fields (Required fields are denoted by **)</p>');
 						$('input[name="' + data.errors[i] + '"]').tooltip({
 							title: 'Required field',
 							placement: 'bottom'

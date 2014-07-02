@@ -99,7 +99,8 @@ class Ajax extends MX_Controller {
 			'gender' => '',
 			'dob' => '',
 			'emergency_contact' => '',
-			'emergency_phone' => ''			
+			'emergency_phone' => '',
+			'locations' => ''		
 		);
 		
 		# Copy staff personal details
@@ -108,10 +109,20 @@ class Ajax extends MX_Controller {
 				if ($field['name'] == 'dob') {
 					$date = json_decode($field['value']);
 					$staff_data['dob'] = $date->year . '-' . $date->month . '-' . $date->day;
-				}
-				else {
+				} else {
 					$staff_data[$field['name']] = $field['value'];
-				}				
+				}
+			}
+			if ($field['name'] == 'location') {
+				$parent_id = $field['value'];
+				$data = array();
+				$location = array();
+				$all = modules::run('attribute/location/get_locations', $parent_id);
+				foreach($all as $a) {
+					$location[] = $a['location_id'];
+				}
+				$data[$parent_id] = $location;
+				$staff_data['locations'] = json_encode($data);
 			}
 		}
 		$staff_id = $this->staff_model->insert_staff($staff_data);
