@@ -146,9 +146,9 @@
 			<div id="uploaded_photos">
 			</div>
     		<? } ?>
-    	<? } ?>
-    	<? } ?>  
-    	</div>  		
+    	<? } ?> 
+    	</div> 
+    	<? } ?>  		
     	<hr />
     	<? if (count($custom_fields) > 0) { ?>
     	<h2>Additional Information</h2>
