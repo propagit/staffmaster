@@ -4,7 +4,7 @@
 		<? $files = json_decode($field['staff_value']);
 		if (count($files) > 0) {
 			foreach($files as $file) { ?>
-				<a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_id;?>/<?=$file;?>"><?=$file;?></a>
+				<?=modules::run('common/mime_to_icon', UPLOADS_PATH . '/staff/ ' . $user_id . '/' . $file);?>  &nbsp; <a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_id;?>/<?=$file;?>">Download</a>
 				<i title="Delete File" class="fa fa-times custom-file-delete" onclick="delete_file_field(<?=$user_id;?>,<?=$field['field_id'];?>,'<?=$file;?>')"></i><br />
 			<? }	
 		} ?>
@@ -38,9 +38,7 @@ var uploader_<?=$field['field_id'];?> = new plupload.Uploader({
 		max_file_size : '20mb',
 		mime_types: [
 			{title : "Image files", extensions : "jpg,gif,png"},
-			{title : "Zip files", extensions : "zip"},
-			{title : "Movie files", extensions : "mov,mp4,avi"},
-			{title : "Document files", extensions : "pdf,doc,docx,ppt"}
+			{title : "Document files", extensions : "pdf,doc,docx,ppt,xls"}
 		]
 	},
 

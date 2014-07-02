@@ -21,6 +21,33 @@ class Common extends MX_Controller {
 		return $a[1];
 	}
 	
+	function mime_to_icon($file_path)
+	{
+		$this->load->helper('file');
+		$ext = get_mime_by_extension($file_path);
+		$icon = '';
+		switch($ext) {
+			case 'image/jpeg':
+			case 'image/png':
+			case 'image/gif':
+					$icon = '<i class="fa fa-file-picture-o"></i>';
+				break;
+			case 'application/excel':
+					$icon = '<i class="fa fa-file-excel-o"></i>';
+				break;
+			case 'application/powerpoint':
+					$icon = '<i class="fa fa-file-powerpoint-o"></i>';
+				break;
+			case 'application/pdf':
+					$icon = '<i class="fa fa-file-pdf-o"></i>';
+				break;
+			default:
+					$icon = '';
+				break;
+		}
+		return $icon;
+	}
+	
 	function array_day() {
 		return array(
 			'1' => 'Monday',

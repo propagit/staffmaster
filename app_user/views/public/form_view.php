@@ -99,13 +99,13 @@
     			</p>
     			<? $days = modules::run('common/array_day'); 
     				foreach($days as $day_no => $day_label) { ?>
-    			<div class="checkbox checkbox_day">
-					<label>
-						<input type="checkbox" name="<?=$field['form_field_id'];?>[]" value="<?=$day_no;?>" /> <?=$day_label;?>
-					</label>
-				</div>	
-    			<? }
-    		} else if ($name == 'location') { ?>
+	    			<div class="checkbox checkbox_day">
+						<label>
+							<input type="checkbox" name="<?=$field['form_field_id'];?>[]" value="<?=$day_no;?>" /> <?=$day_label;?>
+						</label>
+					</div>	
+					<? }
+				} else if ($name == 'location') { ?>
     			<p class="text-muted">Let us know where you can work
 	    			<? if(isset($field['required'])) { ?>
 						<span class="text-red">**</span>
@@ -127,7 +127,7 @@
 				</div>
     			<? }
     		} else if ($name == 'picture') { ?>
-    		<p class="text-muted">Upload photos of yourself so we have a visual reference of you
+    		<p class="text-muted">Upload photos of yourself so we have a visual reference of you.<br />Allowed formats: jpg, gif, png. Maximum size: 2MB
 	    		<? if(isset($field['required'])) { ?>
 					<span class="text-red">**</span>
 				<? } ?>
@@ -159,6 +159,9 @@
 					<?=$field['label'];?>
 					<? if($field['required']) { ?>
 						<span class="text-red">**</span>
+					<? } ?>
+					<? if ($field['type'] == 'file') { ?>
+					<p class="text-muted" style="font-weight:100">Allowed formats:<br />jpg, gif, png, pdf,doc, ppt, xls.<br />Maximum size: 2MB</p>
 					<? } ?>
 				</label>
 				<div class="col-sm-10">
@@ -231,9 +234,7 @@ var uploader_<?=$field['form_field_id'];?> = new plupload.Uploader({
 		max_file_size : '20mb',
 		mime_types: [
 			{title : "Image files", extensions : "jpg,gif,png"},
-			{title : "Zip files", extensions : "zip"},
-			{title : "Movie files", extensions : "mov,mp4,avi"},
-			{title : "Document files", extensions : "pdf,doc,docx,ppt"}
+			{title : "Document files", extensions : "pdf,doc,docx,ppt,xls"}
 		]
 	},
 
@@ -344,7 +345,7 @@ $(function(){
 							placement: 'bottom'
 						});
 					}
-					$('body').scrollTo('#f_' + data.errors[0], 500 );
+					$('body').scrollTo('body', 500 );
 				} else {
 					$('#successModal').modal('show');
 					$('#form<?=$form['form_id'];?>')[0].reset();
@@ -369,7 +370,7 @@ var uploader = new plupload.Uploader({
 	silverlight_xap_url : '<?=base_url();?>assets/js/plupload/Moxie.xap',
 
 	filters : {
-		max_file_size : '20mb',
+		max_file_size : '2mb',
 		mime_types: [
 			{title : "Image files", extensions : "jpg,gif,png"}
 		]

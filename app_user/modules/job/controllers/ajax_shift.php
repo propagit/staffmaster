@@ -787,4 +787,56 @@ class Ajax_shift extends MX_Controller {
 		}
 		echo 'sent';
 	}
+	
+	function print_day_shifts() {
+		$content = $this->input->post('content');
+		$date_from = $this->input->post('date_from');
+		$date_to = $this->input->post('date_to');
+		$content = json_decode($content);
+		$content = preg_replace("/<th class=\"noprint center\"(.*?)<\/th>/", "", $content);
+		$content = preg_replace("/<td class=\"noprint center\"(.*?)<\/td>/", "", $content);
+		$content = str_replace('class="center" ', '', $content);
+		
+		$content = str_replace('<th ', '<th style="border:1px solid #ccc;"', $content);
+		$content = str_replace('<th>', '<th style="border:1px solid #ccc;">', $content);
+		$content = str_replace('<td ', '<td style="border:1px solid #ccc;"', $content);
+		$content = str_replace('<td>', '<td style="border:1px solid #ccc;">', $content);
+		
+		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
+		$filename = "shifts_" . date('Y-m-d');
+		#if(!file_exists(UPLOADS_PATH.'/pdf/'.$filename.'.pdf')){
+			$pdfFilePath = UPLOADS_PATH."/pdf/$filename.pdf";
+			
+			$dir = UPLOADS_PATH.'/pdf/';
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			 
+			ini_set('memory_limit','128M'); # boost the memory limit if it's low 
+			
+			$data['content'] = $content;
+			$data['date_from'] = $date_from;
+			$data['date_to'] = $date_to;
+			$html = $this->load->view('shift/day_list_download_view', isset($data) ? $data : NULL, true);
+			
+					
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load(); 			
+			$stylesheet = file_get_contents('./assets/css/pdf.css');
+			$custom_styles = '<style>'.modules::run('custom_styles').'</style>';
+			//echo $custom_styles;exit();
+			$pdf->WriteHTML($stylesheet,1);
+			$pdf->WriteHTML($custom_styles,1);
+			$pdf->WriteHTML($html,2);
+			$pdf->Output($pdfFilePath, 'F'); // save to file 
+		#}
+		
+		echo base_url() . UPLOADS_URL."/pdf/$filename.pdf";
+		
+	}
 }

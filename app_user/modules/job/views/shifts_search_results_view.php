@@ -11,43 +11,48 @@
 	echo modules::run('common/menu_dropdown', $data, 'search-shift-action', 'Actions');
 
 ?>
-	
+	<div class="btn-group btn-nav pull-right">
+		<ul class="nav nav-tabs tab-respond">
+			<li class="pull-right"><a id="btn-print-day-shifts"><i class="fa fa-print"></i> &nbsp; Print List</a></li>
+		</ul>
+	</div>
 </div>
+
 <div class="table-responsive">
-<table class="table table-bordered table-hover table-middle">
+<table class="table table-bordered table-hover table-middle" id="list-shifts">
 	<thead>
 	<tr>
-    	<th class="center"><input type="checkbox" id="search_shift_select_all_shifts" /></th>
+    	<th class="noprint center"><input type="checkbox" id="search_shift_select_all_shifts" /></th>
 		<th class="center" width="80">Date &nbsp; <i onclick="sort_search_shifts('date')" class="fa fa-sort"></i></th>
 		<? if (!modules::run('auth/is_client')) { ?>
-		<th>Client &nbsp; <i onclick="sort_search_shifts('client')" class="fa fa-sort"></i></th>
+		<th >Client &nbsp; <i onclick="sort_search_shifts('client')" class="fa fa-sort"></i></th>
 		<? } ?>
-		<th>Campaign Name &nbsp; <i onclick="sort_search_shifts('campaign')" class="fa fa-sort"></i></th>
-		<th>Venue &nbsp; <i onclick="sort_search_shifts('venue')" class="fa fa-sort"></i></th>
-		<th>Role &nbsp; <i onclick="sort_search_shifts('role')" class="fa fa-sort"></i></th>
-		<th class="center">Break</th>
+		<th >Campaign Name &nbsp; <i onclick="sort_search_shifts('campaign')" class="fa fa-sort"></i></th>
+		<th >Venue &nbsp; <i onclick="sort_search_shifts('venue')" class="fa fa-sort"></i></th>
+		<th >Role &nbsp; <i onclick="sort_search_shifts('role')" class="fa fa-sort"></i></th>
+		<th class="noprint center">Break</th>
 		<th class="center" width="120">Start - Finish</th>
-		<th>Staff Assigned &nbsp;<i onclick="sort_search_shifts('status')" class="fa fa-sort"></i></th>
-		<th class="center" width="40">View</th>
+		<th >Staff Assigned &nbsp;<i onclick="sort_search_shifts('status')" class="fa fa-sort"></i></th>
+		<th class="noprint center" width="40">View</th>
 	</tr>
 	</thead>
 	<tbody>
 	<? foreach($shifts as $shift) { $client = modules::run('client/get_client', $shift['client_id']); ?>
 	<tr class="<?=modules::run('job/status_to_class', $shift['status']);?>
 				<?=($shift['is_alert']) ? ' purple' : '';?>">
-        <td class="center"><? if($shift['status'] == SHIFT_CONFIRMED) {?><input type="checkbox" class="search_shift_selected_shifts" value="<?=$shift['shift_id'];?>" data-staff-user-id="<?=$shift['staff_id'];?>" /><?php }else { echo '&nbsp;';} ?></td>
+        <td class="noprint center"><? if($shift['status'] == SHIFT_CONFIRMED) {?><input type="checkbox" class="search_shift_selected_shifts" value="<?=$shift['shift_id'];?>" data-staff-user-id="<?=$shift['staff_id'];?>" /><?php }else { echo '&nbsp;';} ?></td>
 		<td class="wp-date" width="70">
 			<span class="wk_day"><?=date('D', strtotime($shift['job_date']));?></span>
 			<span class="wk_date"><?=date('d', strtotime($shift['job_date']));?></span>
 			<span class="wk_month"><?=date('M', strtotime($shift['job_date']));?></span>
 		</td>
 		<? if (!modules::run('auth/is_client')) { ?>
-		<td><?=$client['company_name'];?></td>
+		<td ><?=$client['company_name'];?></td>
 		<? } ?>
-		<td><?=$shift['job_name'];?></td>
-		<td><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></td>
-		<td><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>
-		<td class="center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
+		<td ><?=$shift['job_name'];?></td>
+		<td ><?=modules::run('attribute/venue/display_venue', $shift['venue_id']);?></td>
+		<td ><?=modules::run('attribute/role/display_role', $shift['role_id']);?></td>
+		<td class="noprint center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
 		<td class="center"><?=date('H:i', $shift['start_time']);?> - <?=date('H:i', $shift['finish_time']);?><?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-red">*</span>': '';?></td>
 		<td>
 			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
@@ -57,11 +62,13 @@
 			No Staff Assigned
 			<? } ?>
 		</td>
-		<td class="center" width="40"><a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/all/<?=$shift['status'];?>"><i class="fa fa-eye"></i></a></td>
+		<td class="noprint center" width="40"><a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/all/<?=$shift['status'];?>"><i class="fa fa-eye"></i></a></td>
 	</tr>
 	<? } ?>
 	</tbody>
 </table>
+</div>
+
 <? } ?>
 
 <!--email-->
@@ -102,9 +109,23 @@ $(function(){
 		  });
 		}
 		
-	}); 
+	});
+	$('#btn-print-day-shifts').click(function(){
+		var content = JSON.stringify($('#list-shifts').html());
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>job/ajax_shift/print_day_shifts",
+			//contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            data: {content: content, date_from: $('input[name="date_from"]').val(), date_to: $('input[name="date_to"]').val()},
+			success: function(html) {
+				//alert(html);
+				$(this).prop('target', '_blank');
+				window.open(html);
+			}
+		})
+	})
 });
-
 //this function is called from job/views/jobs_search_form.php
 //this is because if included in this page an event listner will be added for each time a search request is made and multiple email request will be triggered
 function email_shift_reminder(){
