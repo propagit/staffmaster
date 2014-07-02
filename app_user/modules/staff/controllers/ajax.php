@@ -632,7 +632,16 @@ class Ajax extends MX_Controller {
 		if (!file_exists($targetDir)) {
 			@mkdir($targetDir);
 		}
-
+		$dir_thumb = $targetDir . '/thumb';
+		if(!is_dir($dir_thumb))
+		{
+		  mkdir($dir_thumb);
+		  chmod($dir_thumb,0777);
+		  $fp = fopen($dir_thumb.'/index.html', 'w');
+		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+		  fclose($fp);
+		}
+		
 		// Get a file name
 		if (isset($_REQUEST["name"])) {
 			$fileName = $_REQUEST["name"];
@@ -712,7 +721,7 @@ class Ajax extends MX_Controller {
 			);
 			
 			$this->staff_model->add_picture($photo);
-			$target = UPLOADS_PATH.'/staff/' . $user_id . '/thumb/' . $fileName;
+			$target = $dir_thumb . '/' . $fileName;
 			copy($filePath, $target);
 			$this->load->helper('image');
 			scale_image($target, $target, IMG_THUMB_SIZE, IMG_THUMB_SIZE);
