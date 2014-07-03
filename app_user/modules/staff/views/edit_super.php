@@ -55,18 +55,18 @@
 	<div class="form-group">
 		<label for="s_product_id" class="col-md-2 control-label">Super Product ID</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_product_id" name="s_product_id" value="<?=modules::run('setting/superinformasi', 'super_product_id','');?>" readonly="readonly"/>
+			<input type="text" class="form-control" id="s_product_id" name="s_product_id" value="<?=modules::run('setting/superinformasi', 'super_product_id','');?>" readonly/>
 		</div>
 		<label for="s_fund_website" class="col-md-2 control-label">Super Fund Website</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_fund_website" name="s_fund_website" value="<?=modules::run('setting/superinformasi', 'super_fund_website','');?>" readonly="readonly" />
+			<input type="text" class="form-control" id="s_fund_website" name="s_fund_website" value="<?=modules::run('setting/superinformasi', 'super_fund_website','');?>" readonly />
 		</div>
 	</div>
 		
 	<div class="form-group">
 		<label for="s_fund_phone" class="col-md-2 control-label">Super Phone</label>
 		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_fund_phone" name="s_fund_phone" value="<?=modules::run('setting/superinformasi', 'super_fund_phone','');?>" readonly="readonly" />
+			<input type="text" class="form-control" id="s_fund_phone" name="s_fund_phone" value="<?=modules::run('setting/superinformasi', 'super_fund_phone','');?>" readonly />
 		</div>
 	</div>						
 </div>
@@ -164,7 +164,7 @@ function load_s_choice()
 		$('input[name="s_fund_name"]').prop('readonly',false);
 		$('#own').prop('checked',true);
 		$('#employer_choice').hide();
-		$('input[name="s_fund_name"]').val('')
+		//$('input[name="s_fund_name"]').val('')
 	}
 	else
 	{		
