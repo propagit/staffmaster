@@ -1708,16 +1708,6 @@ CREATE TABLE IF NOT EXISTS `user_client_departments` (
   PRIMARY KEY (`department_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `user_client_venue_restrict`
---
-
-CREATE TABLE `user_client_venue_restrict` (
-  `user_id` bigint(20) NOT NULL,
-  `venue_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1783,6 +1773,12 @@ CREATE TABLE IF NOT EXISTS `user_staff_availability` (
   `day` int(11) NOT NULL,
   `hour` int(11) NOT NULL,
   `value` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `user_staff_payrate_restrict` (
+  `user_id` bigint(20) NOT NULL,
+  `payrate_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
