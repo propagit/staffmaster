@@ -71,7 +71,7 @@
             <tr>
             	<td valign="middle">
                 	<h2>Tax Invoice</h2>                    
-                    Issue Date: <a href="#" class="inv_company_issue_date prim-color-to-txt-color" data-type="date"  data-pk="<?=$invoice['invoice_id']?>" data-title="Issue Date"><?=date('dS M Y', strtotime($invoice['issued_date']));?></a><br>
+                    Issue Date: <a href="#" class="inv_company_issue_date prim-color-to-txt-color" data-type="date"  data-pk="<?=$invoice['invoice_id']?>" data-title="Issue Date"><?=date('jS M Y', strtotime($invoice['issued_date']));?></a><br>
                     <h1><a href="#" class="inv_title prim-color-to-txt-color" data-type="text"  data-pk="<?=$invoice['invoice_id']?>" data-title="Invoice Title"><?=$invoice['title']?></a></h1>
                 </td>
                 <td></td>
