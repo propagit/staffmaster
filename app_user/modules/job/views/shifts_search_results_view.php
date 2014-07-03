@@ -112,6 +112,7 @@ $(function(){
 	});
 	$('#btn-print-day-shifts').click(function(){
 		var content = JSON.stringify($('#list-shifts').html());
+				var printWindow = window.open('', 'Shifts List');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>job/ajax_shift/print_day_shifts",
@@ -119,9 +120,7 @@ $(function(){
             //dataType: "json",
             data: {content: content, date_from: $('input[name="date_from"]').val(), date_to: $('input[name="date_to"]').val()},
 			success: function(html) {
-				//alert(html);
-				$(this).prop('target', '_blank');
-				window.open(html);
+				printWindow.location.href = '<?=base_url() . UPLOADS_URL;?>/pdf/' + html;
 			}
 		})
 	})

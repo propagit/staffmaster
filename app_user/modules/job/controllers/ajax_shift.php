@@ -797,10 +797,10 @@ class Ajax_shift extends MX_Controller {
 		$content = preg_replace("/<td class=\"noprint center\"(.*?)<\/td>/", "", $content);
 		$content = str_replace('class="center" ', '', $content);
 		
-		$content = str_replace('<th ', '<th style="border:1px solid #ccc;"', $content);
-		$content = str_replace('<th>', '<th style="border:1px solid #ccc;">', $content);
-		$content = str_replace('<td ', '<td style="border:1px solid #ccc;"', $content);
-		$content = str_replace('<td>', '<td style="border:1px solid #ccc;">', $content);
+		$content = str_replace('<th ', '<th style="border:1px solid #ccc;text-align:left;"', $content);
+		$content = str_replace('<th>', '<th style="border:1px solid #ccc;text-align:left;">', $content);
+		$content = str_replace('<td ', '<td style="border:1px solid #ccc;text-align:left;"', $content);
+		$content = str_replace('<td>', '<td style="border:1px solid #ccc;text-align:left;">', $content);
 		
 		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
 		$filename = "shifts_" . date('Y-m-d');
@@ -836,7 +836,7 @@ class Ajax_shift extends MX_Controller {
 			$pdf->Output($pdfFilePath, 'F'); // save to file 
 		#}
 		
-		echo base_url() . UPLOADS_URL."/pdf/$filename.pdf";
+		echo $filename . ".pdf";
 		
 	}
 }

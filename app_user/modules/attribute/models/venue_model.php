@@ -87,4 +87,17 @@ class Venue_model extends CI_Model {
 		$this->db->where('venue_id', $venue_id);
 		return $this->db->delete('attribute_venues');
 	}
+	
+	
+	
+	function get_clients() {
+		$sql = "SELECT user_id FROM users WHERE user_id IN (SELECT DISTINCT user_id FROM user_client_venue_restrict)";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function restrict_client($data) {
+		$this->db->insert('user_client_venue_restrict', $data);
+		return $this->db->insert_id();
+	}
 }

@@ -266,7 +266,7 @@ class Ajax extends MX_Controller {
 		}
 		# get location info to know state
 		$location = modules::run('attribute/location/get_location', $location_id);
-		$this->venue_model->insert_venue(array(
+		$venue_id = $this->venue_model->insert_venue(array(
 				'location_id' => $location_id,
 				'name' => $input['name'], 
 				'address' => $input['address'],
@@ -274,6 +274,13 @@ class Ajax extends MX_Controller {
 				'postcode' => $input['postcode'],
 				'state' => $location['state']
 			));
+		$clients = $this->venue_model->get_clients();
+		foreach($clients as $client) {
+			$this->venue_model->restrict_client(array(
+				'user_id' => $client['user_id'],
+				'venue_id' => $venue_id
+			));
+		}
 		echo json_encode(array('ok' => true));
 	}
 	/**
