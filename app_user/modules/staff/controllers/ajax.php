@@ -1287,4 +1287,30 @@ class Ajax extends MX_Controller {
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
 	
+	function get_payrates() {
+		$user_id = $this->input->post('user_id');
+		$data['payrates'] = $this->staff_model->get_payrates($user_id);
+		$data['user_id'] = $user_id;
+		$this->load->view('payrates_list', isset($data) ? $data : NULL);
+	}
+	
+	function restrict_payrate() {
+		$input = $this->input->post();
+		$this->staff_model->restrict_payrate($input);
+	}
+	
+	function unrestrict_all() {
+		$user_id = $this->input->post('user_id');
+		$unrestrict_all = $this->input->post('unrestrict_all');
+		if ($unrestrict_all == 'false') { # Restrict all payrates
+			$payrates = modules::run('attribute/payrate/get_payrates');
+			foreach($payrates as $payrate) {
+				$this->staff_model->add_payrate(array(
+					'user_id' => $user_id, 
+					'payrate_id' => $payrate['payrate_id']));
+			}
+		} else { # Unrestrict all venues / Delete all venues from restrict list
+			$this->staff_model->delete_payrates($user_id);
+		}
+	}
 }

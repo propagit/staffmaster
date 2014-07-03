@@ -43,6 +43,7 @@
                 <? } ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>
                 <? if(!modules::run('auth/is_staff')){ ?>
+                <li class="mobile-tab"><a href="#payrate" data-toggle="tab">Pay Rate</a></li>
                 <li class="mobile-tab"><a href="#settings" data-toggle="tab">Settings</a></li>
                 <? } ?>
 			</ul>
@@ -52,12 +53,19 @@
                 <div class="tab-pane" id="pictures"></div>			
 				<div class="tab-pane" id="financial"></div>
 				<div class="tab-pane" id="super"></div>
+				<? if(!modules::run('auth/is_staff')){ ?>
                 <div class="tab-pane" id="roles"></div>
+                <? } ?>
 				<div class="tab-pane" id="availability"></div>				
 				<div class="tab-pane" id="location"></div>
+				<? if(!modules::run('auth/is_staff')){ ?>
                 <div class="tab-pane" id="group"></div>
+                <? } ?>
         		<div class="tab-pane" id="attribute"></div>
+				<? if(!modules::run('auth/is_staff')){ ?>
+				<div class="tab-pane" id="payrate"></div>
                 <div class="tab-pane" id="settings"></div>
+                <? } ?>
 				
 			</div>
 		 </div>

@@ -839,4 +839,26 @@ class Ajax_shift extends MX_Controller {
 		echo $filename . ".pdf";
 		
 	}
+	
+	function load_shift_payrates() {
+		$shift_id = $this->input->post('pk');
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		$data['shift'] = $shift;
+		#$data['payrates'] = $this->staff_model->get_active_payrates($shift['staff_id']);
+		$this->load->view('shift/payrate_list', isset($data) ? $data : NULL);
+	}
+	
+	function filter_payrate() {
+		$user_id = $this->input->post('user_id');
+		$payrate_id = $this->input->post('payrate_id');
+		$payrates = $this->staff_model->get_active_payrates($user_id);
+		$array = array();
+		foreach($payrates as $payrate) {
+			$array[] = array(
+				'value' => $payrate['payrate_id'],
+				'label' => $payrate['name']
+			);
+		}
+		echo modules::run('common/field_select', $array, 'payrate_id', $payrate_id);
+	}
 }

@@ -91,6 +91,7 @@
 <? } ?>
 
 <div id="wrapper_shift_break"></div>
+<div id="wrapper_shift_payrate" class="hide"></div>
 <div id="wrapper_shift_staff" class="hide"></div>
 <div id="wrapper_staff_hours" class="hide"></div>
 
@@ -320,12 +321,8 @@ function init_inline_edit() {
 		source: [<?=modules::run('attribute/uniform/get_uniforms', 'data_source');?>]
 	});
 	<? } ?>
-	$('.shift_payrate').editable({
-		url: '<?=base_url();?>job/ajax/update_shift_payrate',
-		name: 'payrate_id',
-		title: 'Select Pay Rate',
-		source: [<?=modules::run('attribute/payrate/get_payrates', 'data_source');?>]
-	});
+	
+	
 	$('.shift_start_time').editable({
 		combodate: {
             firstItem: '',            
@@ -369,6 +366,29 @@ function init_inline_edit() {
 	    this.options.callback();
 	  }
 	}
+	
+	/*
+$('.shift_payrate').editable({
+		url: '<?=base_url();?>job/ajax/update_shift_payrate',
+		name: 'payrate_id',
+		title: 'Select Pay Rate',
+		source: "<?=base_url();?>attribute/ajax_payrate/get_payrates/" + selected_shift,
+		sourceCache: false
+	});
+*/
+	
+	$('.shift_payrate').popover({
+		html: true,
+		placement: 'bottom',
+		trigger: 'manual',
+		selector: false,
+		title: 'Select Pay Rate',
+		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+		content: function(){
+			return $('#wrapper_shift_payrate').html();
+		}
+	})
+	
 	$('.shift_breaks').popover({
 		html: true,
 		placement: 'bottom',
@@ -481,6 +501,22 @@ function load_shift_staff(obj) {
 		$(obj).popover('show');
 	})
 	
+}
+function load_shift_payrate(obj) {
+	$('#wrapper_shift_payrate').html('');
+	$('#wrapper_js').find('.popover-break').hide();
+	var pk = $(obj).attr('data-pk');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax_shift/load_shift_payrates",
+		data: {pk: pk},
+		success: function(html)
+		{
+			$('#wrapper_shift_payrate').html(html);
+		}
+	}).done(function(){
+		$(obj).popover('show');
+	})
 }
 function load_shift_breaks(obj) {
 	$('#wrapper_shift_break').html('');

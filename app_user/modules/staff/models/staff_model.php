@@ -818,4 +818,46 @@ class Staff_model extends CI_Model {
 		return $staff;	
 	}
 	
+	function get_active_payrates($user_id) {
+		$sql = "SELECT * FROM attribute_payrates WHERE payrate_id NOT IN
+					(SELECT payrate_id FROM user_staff_payrate_restrict WHERE user_id = $user_id)";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function get_payrates($user_id) {
+		$sql = "SELECT r.payrate_id as is_restricted, p.* FROM attribute_payrates p
+					LEFT JOIN user_staff_payrate_restrict r ON (r.payrate_id = p.payrate_id AND r.user_id = $user_id)";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function restrict_payrate($data) {
+		$this->db->where('user_id', $data['user_id']);
+		$this->db->where('payrate_id', $data['payrate_id']);
+		$query = $this->db->get('user_staff_payrate_restrict');
+		if ($query->num_rows()) { # Found, delete
+			$this->db->where('user_id', $data['user_id']);
+			$this->db->where('payrate_id', $data['payrate_id']);
+			return $this->db->delete('user_staff_payrate_restrict');
+		} else { # Not found, insert
+			$this->db->insert('user_staff_payrate_restrict', $data);
+			return $this->db->insert_id();
+		}		
+	}
+	
+	function add_payrate($data) {
+		$this->db->where('user_id', $data['user_id']);
+		$this->db->where('payrate_id', $data['payrate_id']);
+		$query = $this->db->get('user_staff_payrate_restrict');
+		if (!$query->num_rows()) { # Not found, insert
+			$this->db->insert('user_staff_payrate_restrict', $data);
+			return $this->db->insert_id();
+		}
+	}
+	
+	function delete_payrates($user_id) {
+		$this->db->where('user_id', $user_id);
+		return $this->db->delete('user_staff_payrate_restrict');
+	}
 }

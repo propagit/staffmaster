@@ -457,6 +457,7 @@ class Ajax extends MX_Controller {
 	{
 		$shift_id = $this->input->post('pk');
 		$this->job_shift_model->update_job_shift($shift_id, array('payrate_id' => $this->input->post('value')));
+		echo modules::run('job/shift/row_view', $shift_id);
 	}
 	
 	function update_shift_start_time()
