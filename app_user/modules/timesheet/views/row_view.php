@@ -5,7 +5,7 @@
 		<span class="wk_date"><?=date('d', strtotime($timesheet['job_date']));?></span>
 		<span class="wk_month"><?=date('M', strtotime($timesheet['job_date']));?></span>
 	</td>
-	<td><?$client['company_name'];?></td>
+	<td><?=$client['company_name'];?></td>
 	<td><?=$job['name'];?></td>
 	<td class="center">
 		<a href="#" class="ts_start_time prim-color-to-txt-color" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('Y-m-d H:i', $timesheet['start_time']);?>" data-title="Time sheet start date/time">
