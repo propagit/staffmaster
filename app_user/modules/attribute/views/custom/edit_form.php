@@ -20,7 +20,12 @@
 			}
 		?></textarea>
 		<? } ?>
-		 
+		<div class="clearfix"></div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="admin_only" <?=($field['admin_only']) ? 'checked' : '';?> /> Admin only
+			</label>
+		</div>
 		<hr>
 		<button class="btn btn-info" type="button" id="btn-update-field">Save</button>
 		<button class="btn btn-danger" type="button" id="btn-close-popover">Cancel</button>

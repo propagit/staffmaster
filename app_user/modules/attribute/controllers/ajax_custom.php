@@ -46,6 +46,11 @@ class Ajax_custom extends MX_Controller {
 			$options = explode("\n", trim($input['attributes']));
 			$input['attributes'] = json_encode($options);
 		}
+		if (isset($input['admin_only'])) {
+			$input['admin_only'] = 1;
+		} else {
+			$input['admin_only'] = 0;
+		}
 		$this->custom_field_model->update_field($input['field_id'], $input);
 	}
 	

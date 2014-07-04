@@ -1,0 +1,1 @@
+ALTER TABLE `custom_fields` ADD `admin_only` TINYINT NOT NULL DEFAULT '0' AFTER `type`;

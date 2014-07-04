@@ -594,6 +594,7 @@ INSERT INTO `countries` (`country_id`, `code`, `name`) VALUES
 CREATE TABLE `custom_fields` (
   `field_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
+  `admin_only` TINYINT NOT NULL DEFAULT '0',
   `label` varchar(255) DEFAULT NULL,
   `placeholder` varchar(255) DEFAULT '',
   `inline` enum('true','false') NOT NULL DEFAULT 'false',
