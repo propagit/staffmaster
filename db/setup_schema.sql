@@ -1735,7 +1735,7 @@ CREATE TABLE IF NOT EXISTS `user_staffs` (
   `f_help_variation` varchar(100) NOT NULL,
   `f_acc_name` varchar(100) NOT NULL,
   `f_acc_number` varchar(100) NOT NULL,
-  `f_bsb` varchar(5) NOT NULL,
+  `f_bsb` varchar(10) NOT NULL,
   `f_employed` int(11) NOT NULL DEFAULT '1',
   `f_abn` varchar(20) NOT NULL,
   `f_require_gst` tinyint(4) NOT NULL,
