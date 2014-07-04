@@ -46,7 +46,7 @@ $(function(){
 			url: "<?=base_url();?>client/ajax/unrestrict_all",
 			data: {user_id: <?=$user_id;?>, unrestrict_all: check_all},
 			success: function(html) {
-				$('input[type="checkbox"][name="venue_id"]').attr('checked', check_all);
+				$('input[type="checkbox"][name="venue_id"]').prop('checked', check_all);
 				loaded($('#list-client-venues'));
 			}
 		})

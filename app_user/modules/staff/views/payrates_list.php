@@ -36,7 +36,7 @@ $(function(){
 			url: "<?=base_url();?>staff/ajax/unrestrict_all",
 			data: {user_id: <?=$user_id;?>, unrestrict_all: check_all},
 			success: function(html) {
-				$('input[type="checkbox"][name="payrate_id"]').attr('checked', check_all);
+				$('input[type="checkbox"][name="payrate_id"]').prop('checked', check_all);
 				loaded($('#list-staff-payrates'));
 			}
 		})

@@ -2,9 +2,9 @@
 	<span id="staff_payrates"><?=modules::run('attribute/payrate/field_select', 'payrate_id', $shift['payrate_id']);?></span>
 	
 	<div class="clearfix" style="margin-bottom:10px;"></div>
-	<button id="btn-update-payrate" class="btn btn-sm btn-success"><i class="fa fa-check"></i> Update</button>
+	<button id="btn-update-payrate" class="btn btn-sm btn-core"><i class="fa fa-check"></i></button>
 	<? if ($shift['staff_id']) { ?>
-	<button id="btn-filter-staff" class="btn btn-sm btn-core"><i class="fa fa-user"></i> Filter By Staff</button>
+	<button id="btn-filter-staff" class="btn btn-sm btn-success"><i class="fa fa-user"></i> Filter By Staff</button>
 	
 	<script>
 	$(function(){
