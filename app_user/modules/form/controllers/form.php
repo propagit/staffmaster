@@ -41,14 +41,14 @@ class Form extends MX_Controller {
 		$fields = $this->form_model->get_fields($form_id);
 		$data['personal_fields'] = $this->personal_fields($fields);
 		$data['extra_fields'] = $this->extra_fields($fields);
-		#$data['financial_fields'] = $this->financial_fields();
-		#$data['super_fields'] = $this->super_fields();
+		$data['financial_fields'] = $this->financial_fields($fields);
+		$data['super_fields'] = $this->super_fields($fields);
 		$data['custom_fields'] = $this->form_model->get_custom_fields();
 		$data['url'] = str_replace('http:','',base_url()) . 'public/form/' . $form_id;
 		$this->load->view('edit_view', isset($data) ? $data : NULL);
 	}
 	
-	function personal_fields($fields = array())
+	function personal_fields($fields = array(), $list_actived = false)
 	{
 		$personal = array(
 			'title' => array('label' => 'Title'),
@@ -68,9 +68,11 @@ class Form extends MX_Controller {
 			'emergency_contact' => array('label' => 'Emergency Contact'),
 			'emergency_phone' => array('label' => 'Emergency Phone')
 		);
+		$actived = 0;
 		if (count($fields) > 0) {
 			foreach($fields as $field) {
 				if (isset($personal[$field['name']])) {
+					$actived++;
 					$personal[$field['name']]['active'] = 1;
 					$personal[$field['name']]['form_field_id'] = $field['form_field_id'];
 					if ($field['required']) {
@@ -79,6 +81,9 @@ class Form extends MX_Controller {
 				}							
 			}
 		}
+		if ($list_actived) {
+			$personal['actived'] = $actived;
+		}		
 		return $personal;
 	}
 	
@@ -105,22 +110,56 @@ class Form extends MX_Controller {
 		return $extra;
 	}
 	
-	function financial_fields()
+	function financial_fields($fields = array(), $list_actived = false)
 	{
-		return array(
-			'f_acc_name' => 'Account Name',
-			'f_acc_number' => 'Account Number',
-			'f_bsb' => 'BSB',
-			'f_employed' => 'Employed As'			
+		$financial = array(
+			'f_acc_name' => array('label' => 'Account Name'),
+			'f_acc_number' => array('label' => 'Account Number'),
+			'f_bsb' => array('label' => 'BSB')		
 		);
+		$actived = 0;
+		if (count($fields) > 0) {
+			foreach($fields as $field) {
+				if (isset($financial[$field['name']])) {
+					$actived++;
+					$financial[$field['name']]['active'] = 1;
+					$financial[$field['name']]['form_field_id'] = $field['form_field_id'];
+					if ($field['required']) {
+						$financial[$field['name']]['required'] = 1;
+					}	
+				}							
+			}
+		}
+		if ($list_actived) {
+			$financial['actived'] = $actived;
+		}
+		return $financial;
 	}
 	
-	function super_fields()
+	function super_fields($fields = array(), $list_actived = false)
 	{
-		return array(
-			's_choice' => 'Superannuation Choice',
-			's_name' => 'Name'
+		$super = array(
+			's_fund_name' => array('label' => 'Super Fund Name'),
+			's_membership' => array('label' => 'Membership Number')
 		);
+		$actived = 0;
+		if (count($fields) > 0) {
+			foreach($fields as $field) {
+				if (isset($super[$field['name']])) {
+					$actived++;
+					$super[$field['name']]['active'] = 1;
+					$super[$field['name']]['form_field_id'] = $field['form_field_id'];
+					if ($field['required']) {
+						$super[$field['name']]['required'] = 1;
+					}	
+				}							
+			}
+		}
+		
+		if ($list_actived) {
+			$super['actived'] = $actived;
+		}
+		return $super;
 	}
 	
 	function applicant_list_view()

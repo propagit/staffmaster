@@ -100,6 +100,12 @@ class Ajax extends MX_Controller {
 			'dob' => '',
 			'emergency_contact' => '',
 			'emergency_phone' => '',
+			'f_acc_name' => '',
+			'f_acc_number' => '',
+			'f_bsb' => '',
+			's_choice' => 'own',
+			's_fund_name' => '',
+			's_membership' => '',
 			'locations' => ''		
 		);
 		

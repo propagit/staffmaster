@@ -1093,6 +1093,7 @@ CREATE TABLE `form_fields` (
   `form_id` bigint(20) NOT NULL,
   `label` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
   `required` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`form_field_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

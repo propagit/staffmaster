@@ -45,7 +45,10 @@ class Form_model extends CI_Model {
 		$field = $this->get_field($form_id, $name);
 		if ($field) { # Found the field
 			if ($field['active'] == 1) { # Is actived, turn it off
-				$this->update_field($field['form_field_id'], array('active' => INACTIVE));
+				$this->update_field($field['form_field_id'], array(
+					'active' => INACTIVE,
+					'required' => INACTIVE
+				));
 				return 0;
 			}
 			else { # Inactive, turn it on

@@ -47,7 +47,6 @@
 								<td class="left"><?=$field['label'];?></td>
 								<td class="right" width="20">
 									<span class="label label-<?=(isset($field['active']) && $field['active']) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$name;?>')">Active</span>
-
 								</td>
 								<td class="right" width="20"><span class="label label-<?=(isset($field['required'])) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$name;?>')">Required</span></td>
 							</tr>
@@ -55,28 +54,38 @@
 						</table>
 					</div>
 					
-					<? /*
-					<div href="#" class="list-group-item">
+					
+					<div class="list-group-item">
 						<a onclick="load_fields(this,'financial')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Financial Details</b>
 						<table class="table table-hover table-condensed table-fields hide" id="fields-financial">
-							<? foreach($financial_fields as $key => $label) { ?>
+							<? foreach($financial_fields as $name => $field) { ?>
 							<tr>
-								<td class="left"><?=$label;?></td>
-								<td class="right" width="20"><span class="label label-default">Active</span></td>
-								<td class="right" width="20"><span class="label label-default">Required</span></td>
+								<td class="left"><?=$field['label'];?></td>
+								<td class="right" width="20">
+									<span class="label label-<?=(isset($field['active']) && $field['active']) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$name;?>')">Active</span>
+								</td>
+								<td class="right" width="20"><span class="label label-<?=(isset($field['required'])) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$name;?>')">Required</span></td>
 							</tr>
 							<? } ?>
 						</table>
 					</div>
-					<div href="#" class="list-group-item">
+					
+					<div class="list-group-item">
+						<a onclick="load_fields(this,'super')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Super Details</b>
-						<div class="pull-right">
-							<span class="label label-success">Active</span>
-							<span class="label label-default label-required">Required</span>
-						</div>
+						<table class="table table-hover table-condensed table-fields hide" id="fields-super">
+							<? foreach($super_fields as $name => $field) { ?>
+							<tr>
+								<td class="left"><?=$field['label'];?></td>
+								<td class="right" width="20">
+									<span class="label label-<?=(isset($field['active']) && $field['active']) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$name;?>')">Active</span>
+								</td>
+								<td class="right" width="20"><span class="label label-<?=(isset($field['required'])) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$name;?>')">Required</span></td>
+							</tr>
+							<? } ?>
+						</table>
 					</div>
-					*/ ?>
 					
 					<? foreach($extra_fields as $name => $field) { ?>
 					<div class="list-group-item">

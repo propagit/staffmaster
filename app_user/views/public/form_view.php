@@ -41,10 +41,13 @@
 <!-- Begin page content -->
 <div class="container-fluid">
     <div class="row">
+    	<form enctype="multipart/form-data" id="form<?=$form['form_id'];?>" class="form-horizontal" role="form">
+    	
     	<span class="text-red">**</span> denotes Required Field
+    	
+    	<? if($personal_fields['actived'] > 0) { ?>
     	<h2>Personal Details</h2>
     	<p class="text-muted">Please fill in your personal details</p>
-    	<form enctype="multipart/form-data" id="form<?=$form['form_id'];?>" class="form-horizontal" role="form">
     	<? foreach($personal_fields as $name => $field) { if(isset($field['active'])) { ?>
 			<div class="form-group" id="f_<?=$field['form_field_id'];?>">
 				<label for="field_<?=$name;?>" class="col-sm-2 control-label">
@@ -72,6 +75,47 @@
 				</div>
 			</div>
     	<? } } ?>
+    	
+    	<? } ?>
+    	
+    	<? if($financial_fields['actived'] > 0) { ?>
+    	<h2>Financial Details</h2>
+    	<p class="text-muted">Please fill in your financial details</p>
+    	<? foreach($financial_fields as $name => $field) { if(isset($field['active'])) { ?>
+			<div class="form-group" id="f_<?=$field['form_field_id'];?>">
+				<label for="field_<?=$name;?>" class="col-sm-2 control-label">
+					<?=$field['label'];?>
+					<? if(isset($field['required'])) { ?>
+						<span class="text-red">**</span>
+					<? } ?>
+				</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="field_<?=$name;?>" name="<?=$field['form_field_id'];?>" />
+				</div>
+			</div>
+    	<? } } ?>
+    	
+    	<? } ?>
+    	
+    	<? if($super_fields['actived'] > 0) { ?>
+    	<h2>Super Details</h2>
+    	<p class="text-muted">Please fill in your super details</p>
+    	<? foreach($super_fields as $name => $field) { if(isset($field['active'])) { ?>
+			<div class="form-group" id="f_<?=$field['form_field_id'];?>">
+				<label for="field_<?=$name;?>" class="col-sm-2 control-label">
+					<?=$field['label'];?>
+					<? if(isset($field['required'])) { ?>
+						<span class="text-red">**</span>
+					<? } ?>
+				</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" id="field_<?=$name;?>" name="<?=$field['form_field_id'];?>" />
+				</div>
+			</div>
+    	<? } } ?>
+    	
+    	<? } ?>
+    	
     	
     	<? foreach($extra_fields as $name => $field) { if (isset($field['active'])) { ?>
     	<hr />
@@ -143,11 +187,10 @@
 	            <span id="console"></span>
 			</div>
 			<input type="hidden" id="field_pictures" name="<?=$field['form_field_id'];?>" />
-			<div id="uploaded_photos">
-			</div>
+			<div id="uploaded_photos"></div>
     		<? } ?>
-    	<? } ?> 
     	</div> 
+    	<? } ?> 
     	<? } ?>  		
     	<hr />
     	<? if (count($custom_fields) > 0) { ?>
