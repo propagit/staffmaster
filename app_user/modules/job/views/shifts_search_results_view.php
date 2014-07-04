@@ -121,17 +121,18 @@ $(function(){
 		}
 		
 	});
-	$('#btn-print-day-shifts').click(function(){
+	$('#btn-print-day-shifts').click(function(e){
+		e.preventDefault();
 		$('#waitingModal').modal('show');
 		var content = JSON.stringify($('#list-shifts').html());
-		var printWindow = window.open('', 'Shifts List');
 		$.ajax({
 			type: "POST",
+			async: false,
 			url: "<?=base_url();?>job/ajax_shift/print_day_shifts",
 			data: {content: content, date_from: $('input[name="date_from"]').val(), date_to: $('input[name="date_to"]').val()},
 			success: function(html) {
 				$('#waitingModal').modal('hide');
-				printWindow.location.href = '<?=base_url() . UPLOADS_URL;?>/pdf/' + html;
+				window.open('<?=base_url() . UPLOADS_URL;?>/pdf/' + html, 'Shifts List');
 			}
 		})
 	})
