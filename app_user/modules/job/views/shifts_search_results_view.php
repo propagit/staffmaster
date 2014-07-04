@@ -82,6 +82,17 @@
 </form>
 <!--end email-->
 
+<!-- Modal -->
+<div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="order-message">
+			<img src="<?=base_url();?>assets/img/loading3.gif" />
+			<h2>Please wait!</h2>
+			<p>Please wait a moment while we are processing your request ...</p>
+		</div>
+	</div>
+</div>
+
 <script>
 $(function(){
 	$('#search_shift_select_all_shifts').click(function(){
@@ -111,18 +122,23 @@ $(function(){
 		
 	});
 	$('#btn-print-day-shifts').click(function(){
+		$('#waitingModal').modal('show');
 		var content = JSON.stringify($('#list-shifts').html());
-				var printWindow = window.open('', 'Shifts List');
+		var printWindow = window.open('', 'Shifts List');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>job/ajax_shift/print_day_shifts",
-			//contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-            data: {content: content, date_from: $('input[name="date_from"]').val(), date_to: $('input[name="date_to"]').val()},
+			data: {content: content, date_from: $('input[name="date_from"]').val(), date_to: $('input[name="date_to"]').val()},
 			success: function(html) {
+				$('#waitingModal').modal('hide');
 				printWindow.location.href = '<?=base_url() . UPLOADS_URL;?>/pdf/' + html;
 			}
 		})
+	})
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
 	})
 });
 //this function is called from job/views/jobs_search_form.php

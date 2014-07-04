@@ -43,7 +43,7 @@
                 <? } ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>
                 <? if(!modules::run('auth/is_staff')){ ?>
-                <li class="mobile-tab"><a href="#payrate" data-toggle="tab">Pay Rate</a></li>
+                <li class="mobile-tab"><a href="#payrate" data-toggle="tab">Pay Rates</a></li>
                 <li class="mobile-tab"><a href="#settings" data-toggle="tab">Settings</a></li>
                 <? } ?>
 			</ul>
