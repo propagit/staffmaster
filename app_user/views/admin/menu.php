@@ -70,7 +70,7 @@ $menu = array(
                     </a>
                     <ul class="dropdown-menu">
                       <? foreach($item['sub'] as $sub_item) { ?>
-                        <li><a href="<?=($sub_item['title'] == 'User Guide') ? $sub_item['path'] : base_url() . $sub_item['path'];?>"><i class="fa <?=$sub_item['icon'];?>"></i><span class="nav-label"><?=$sub_item['title'];?></span></a></li>
+                        <li><a <?=($sub_item['title'] == 'User Guide') ? 'target="_blank"' : '';?> href="<?=($sub_item['title'] == 'User Guide') ? $sub_item['path'] : base_url() . $sub_item['path'];?>"><i class="fa <?=$sub_item['icon'];?>"></i><span class="nav-label"><?=$sub_item['title'];?></span></a></li>
                       <? } ?>
                     </ul>
                   </li>
