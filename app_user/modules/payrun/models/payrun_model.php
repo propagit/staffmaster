@@ -32,6 +32,29 @@ class Payrun_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_export_timesheets_by_staff($payrun_id)
+	{
+		$sql = "SELECT sum(total_minutes) as `total_minutes`,
+						sum(total_amount_staff) as `total_amount`,
+						j.name as job_name,
+						pr.date_from, pr.date_to, pr.payable_date,
+						u.first_name, u.last_name, 
+						s.user_id, s.external_staff_id, 
+						v.name as venue,
+						p.name as payrate
+					FROM job_shift_timesheets t
+					LEFT JOIN jobs j ON t.job_id = j.job_id
+					LEFT JOIN attribute_venues v ON t.venue_id = v.venue_id
+					LEFT JOIN attribute_payrates p ON t.payrate_id = p.payrate_id
+					LEFT JOIN user_staffs s ON t.staff_id = s.user_id
+					LEFT JOIN users u ON t.staff_id = u.user_id
+					LEFT JOIN payruns pr ON pr.payrun_id = t.payrun_id
+					WHERE t.payrun_id = '" . $payrun_id . "'
+				GROUP BY t.staff_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	function search_payruns($params,$total = false) {
 		$records_per_page = PAYRUN_PER_PAGE;
 		if (isset($params['type']) && $params['type'] != 0) {

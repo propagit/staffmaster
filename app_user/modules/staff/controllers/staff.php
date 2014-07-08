@@ -754,7 +754,7 @@ class Staff extends MX_Controller {
 	
 	function field_select_export_templates($field_name, $field_value = null) 
 	{
-		$data['single'] = $this->export_model->get_templates('staff', 'single');
+		$data['templates'] = $this->export_model->get_templates('staff');
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);
@@ -762,8 +762,40 @@ class Staff extends MX_Controller {
 	
 	function field_select_fields($field_name, $field_value = null)
 	{		
-		$fields = $this->export_model->get_template_fields('staff','single');
-		return modules::run('common/field_select', $fields, $field_name, $field_value);
+		$export_fields = array(
+			array('value' => 'title','label' => 'Title'),
+			array('value' => 'rating','label' => 'Rating'),
+			array('value' => 'first_name','label' => 'First Name'),
+			array('value' => 'gender','label' => 'Gender'),
+			array('value' => 'dob','label' => 'Date of birth'),
+			array('value' => 'address','label' => 'Address'),
+			array('value' => 'suburb','label' => 'Suburb'),
+			array('value' => 'city','label' => 'City'),
+			array('value' => 'postcode','label' => 'Postcode'),
+			array('value' => 'state','label' => 'State'),
+			array('value' => 'country','label' => 'Country'),
+			array('value' => 'email','label' => 'Email'),
+			array('value' => 'phone','label' => 'Phone'),
+			array('value' => 'external_id','label' => 'External Staff ID'),
+			array('value' => 'emergency_contact','label' => 'Emergency Contact Person'),
+			array('value' => 'emergency_phone','label' => 'Emergency Phone'),
+			array('value' => 'account_name','label' => 'Bank Account Name'),
+			array('value' => 'bsb','label' => 'BSB'),
+			array('value' => 'account_number','label' => 'Bank Account Number'),
+			array('value' => 'employed_as','label' => 'Employed As'),
+			array('value' => 'tfn_number','label' => 'TFN Number'),
+			array('value' => 'abn_number','label' => 'ABN Number'),
+			array('value' => 'super_choice','label' => 'Choice of superannuation'),
+			array('value' => 'super_employee_id','label' => 'Super Employee ID Number'),
+			array('value' => 'super_fund_name','label' => 'Super Fund Name'),
+			array('value' => 'super_membership_number','label' => 'Super Membership Number'),
+			array('value' => 'last_name','label' => 'Last Name'),
+			array('value' => 'mobile','label' => 'Mobile'),
+			array('value' => 'internal_id','label' => 'Internal Staff ID'),
+			array('value' => 'joined_date','label' => 'Joined Date'),
+			array('value' => 'status','label' => 'Status')
+		);
+		return modules::run('common/field_select', $export_fields, $field_name, $field_value);
 	}
 	
 	function get_staff_user_ids_by_group_id($group_id)

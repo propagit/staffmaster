@@ -96,13 +96,25 @@ class Invoice extends MX_Controller {
 			$this->invoice_model->delete_invoice_items($invoice_id);
 			$this->invoice_model->delete_invoice($invoice_id);
 		}
-		
+		$client = modules::run('client/get_client', $user_id);
+		$profile = modules::run('setting/company_profile');
 		# Create invoice
 		$invoice_data = array(
 			'client_id' => $user_id,
 			'title' => 'Services Rended',
 			'issued_date' => date('Y-m-d H:i:s'),
-			'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60)
+			'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60),
+			'client_company_name' => $client['company_name'],
+			'client_address' => $client['address'],
+			'client_suburb' => $client['suburb'],
+			'client_state' => $client['state'],
+			'client_postcode' => $client['postcode'],
+			'client_phone' => $client['phone'],
+			'client_email_address' => $client['email_address'],
+			'profile_company_name' => $profile['company_name'],
+			'profile_abn' => $profile['abn_acn'],
+			'profile_company_email' => $profile['email'],
+			'profile_company_phone' => $profile['telephone']
 		);
 		$invoice_id = $this->invoice_model->add_client_invoice($invoice_data);
 		$data_jobs = array();
@@ -337,8 +349,9 @@ class Invoice extends MX_Controller {
 	function field_select_export_templates($field_name, $field_value = null) {
 		$object = 'invoice';
 		$this->load->model('export/export_model');
-		$data['single'] = $this->export_model->get_templates($object, 'single');		
-		$data['batched'] = $this->export_model->get_templates($object, 'batched');
+		#$data['single'] = $this->export_model->get_templates($object, 'single');		
+		#$data['batched'] = $this->export_model->get_templates($object, 'batched');
+		$data['templates'] = $this->export_model->get_templates($object);
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('search/field_select_export_templates', isset($data) ? $data : NULL);

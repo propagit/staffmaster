@@ -473,7 +473,10 @@ ol.example li.placeholder:before {
 .form-horizontal .control-label {
 	text-align: left;
 }
-
+.alert-default {
+	background: #eee;
+	border-color: #ccc;
+}
 #waitingModal .modal-content,
 #alertModal .modal-content,
 #welcomeModal .modal-content {

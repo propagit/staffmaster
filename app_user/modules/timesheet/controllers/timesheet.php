@@ -100,6 +100,81 @@ class Timesheet extends MX_Controller {
 		$this->load->view('row_view', isset($data) ? $data : NULL);
 	}
 	
+	
+	function extract_timesheet_payrate($timesheet_id) {
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$payrate_id = $timesheet['payrate_id'];
+		$start_time = $timesheet['start_time'];
+		$finish_time = $timesheet['finish_time'];
+		$pay_rates = array();
+		
+		$current_rate = null;
+		$current_start = null;
+		$current_hours = 0;
+		for($i = $start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes
+			$day = date('N', $i); # Get day of the week (1: monday - 7: sunday)
+			$hour = date('G', $i); # Get hour of the day (0 - 23)
+			# Get the pay rate amount
+			$rate = $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour);
+			if ($current_rate == null) { # First rate
+				$current_rate = $rate;
+				$current_start = $start_time;
+			}
+			if ($rate == $current_rate) { # The same rate
+				$current_hours += 0.25;
+			}			
+			if ($rate != $current_rate) { # There is new rate
+				# First store current rate
+				$pay_rates[] = array(
+					'start' => $current_start,
+					'finish' => $current_start + $current_hours * 3600,
+					'hours' => $current_hours,
+					'rate' => $current_rate,
+					'break' => 0
+				);
+				
+				# Then clear to set up new rate
+				$current_rate = $rate;
+				$current_start = $i;
+				$current_hours = 0.25;				
+			}			
+		}
+		# Last pay rate
+		$pay_rates[] = array(
+			'start' => $current_start,
+			'finish' => $current_start + $current_hours * 3600,
+			'hours' => $current_hours,
+			'rate' => $current_rate,
+			'break' => 0
+		);
+		
+		
+		$breaks = json_decode($timesheet['break_time']);
+		if (count($breaks) > 0) {
+			$final = array();
+			foreach($pay_rates as $pay_rate) {
+				foreach($breaks as $break) {
+					$length = $break->length;
+					$start_at = $break->start_at;
+					$finish_at = $start_at + $length;
+					if ($pay_rate['start'] <= $start_at && $pay_rate['finish'] >= $finish_at) {
+						$pay_rate['break'] = $length;
+					}
+					if ($pay_rate['start'] <= $start_at && $pay_rate['finish'] > $start_at && $pay_rate['finish'] < $finish_at) {
+						$pay_rate['break'] = $pay_rate['finish'] - $start_at;
+					}
+					if ($pay_rate['start'] > $start_at && $pay_rate['start'] < $finish_at && $pay_rate['finish'] > $finish_at) {
+						$pay_rate['break'] = $finish_at - $pay_rate['start'];	
+					}
+				}
+				$pay_rate['hours'] = $pay_rate['hours'] - $pay_rate['break'] / 3600;
+				$final[] = $pay_rate;
+			}
+			$pay_rates = $final;
+		}
+		return $pay_rates;
+	}
+	
 	/**
 	*	@name: update_timesheet_hour_rate
 	*	@desc: calculate and update client/staff cost of a timesheet based on hours & pay rate

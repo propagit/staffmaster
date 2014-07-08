@@ -18,12 +18,16 @@ class Payrun extends MX_Controller {
 	function index($method='', $param='') {
 		switch($method)
 		{
+			case 'test':	echo '<pre>';
+					var_dump(modules::run('timesheet/extract_timesheet_payrate', 8));
+					echo '</pre>';
+				break;
 			default:
 					$this->main_view();
 				break;
 		}
 		
-	}
+	}	
 	
 	/**
 	*	@name: main_view
@@ -115,8 +119,7 @@ class Payrun extends MX_Controller {
 	function field_select_export_templates($type, $field_name, $field_value=null) {
 		$object = 'payrun_' . (($type == STAFF_TFN) ? 'tfn' : 'abn');
 		$this->load->model('export/export_model');
-		$data['single'] = $this->export_model->get_templates($object, 'single');		
-		$data['batched'] = $this->export_model->get_templates($object, 'batched');
+		$data['templates'] = $this->export_model->get_templates($object);
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);

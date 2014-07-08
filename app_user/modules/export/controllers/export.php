@@ -44,4 +44,8 @@ class Export extends MX_Controller {
 	function get_fields($export_id) {
 		return $this->export_model->get_fields($export_id);
 	}
+	
+	function get_template($export_id) {
+		return $this->export_model->get_template($export_id);
+	}
 }

@@ -20,15 +20,17 @@ class Ajax extends MX_Controller {
 	*	@param: (string) $object
 	*	@return: (html) (abstract) view of export template configuration
 	*/
-	function load_object($object='invoice') {
+	function load_object($object='payrun_tfn') {
 		$data['object'] = $object;
+		$data['levels'] = $this->export_model->get_levels($object);
+		
 		$this->load->view('object_view', isset($data) ? $data : NULL);
 	}
 	
 	function load_templates() {		
 		$object = $this->input->post('object');
-		$format = $this->input->post('format');
-		$templates = $this->export_model->get_templates($object, $format);
+		$level = $this->input->post('level');
+		$templates = $this->export_model->get_templates($object, $level);
 		$array = array();
 		foreach($templates as $template) {
 			$array[] = array(
@@ -37,7 +39,7 @@ class Ajax extends MX_Controller {
 			);
 		}
 		$data['templates'] = $array;
-		$data['fields'] = $this->export_model->get_template_fields($object, $format);
+		$data['fields'] = $this->export_model->get_template_fields($object, $level);
 		$data['object'] = $object;
 		$this->load->view('templates_view', isset($data) ? $data : NULL);
 	}

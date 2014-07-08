@@ -14,7 +14,7 @@
 						<?=modules::run('payrun/field_select_export_templates', $type, 'export_id');?>
 					</h2>
 				</div>
-				<? if ($type == STAFF_TFN) { ?>
+				
 				<div class="panel panel-default">
 					<!-- Default panel contents -->
 					<div class="panel-heading">Pay Run Period</div>
@@ -45,7 +45,6 @@
 						</div>
 					</div>
 				</div>
-				<? } ?>
 
 				<div class="form-group">
 					<button id="add-save-payrun" type="button" class="btn btn-core">Generate Pay Run</button>

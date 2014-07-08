@@ -205,7 +205,7 @@ class Ajax extends MX_Controller {
 		$date_to = '';
 		$payable_date = '';
 		if ($type == STAFF_TFN) {
-			if (!isset($input['date_from']) || $input['date_from'] == '') {
+			/* if (!isset($input['date_from']) || $input['date_from'] == '') {
 				echo json_encode(array(
 					'ok' => false,
 					'error_id' => 'date_from'
@@ -219,6 +219,7 @@ class Ajax extends MX_Controller {
 				));
 				return;
 			}
+			*/
 			$date_from = date('Y-m-d', strtotime($input['date_from']));
 			$date_to = date('Y-m-d', strtotime($input['date_to']));
 			$payable_date = date('Y-m-d', strtotime($input['payable_date']));
@@ -267,49 +268,177 @@ class Ajax extends MX_Controller {
 	private function _export_payrun($payrun_id, $export_id) {
 		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		
+		$template = modules::run('export/get_template', $export_id);
 		$fields = modules::run('export/get_fields', $export_id);
+		if ($template['level'] == 'staff') {
+			$timesheets = $this->payrun_model->get_export_timesheets_by_staff($payrun_id);
+		}
 		
 		ini_set('memory_limit', '128M');
 		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
 		
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
-		$objPHPExcel->getProperties()->setCreator("Staff Master");
-		$objPHPExcel->getProperties()->setLastModifiedBy("Staff Master");
+		$objPHPExcel->getProperties()->setCreator("StaffBooks");
+		$objPHPExcel->getProperties()->setLastModifiedBy("StaffBooks");
 		$objPHPExcel->getProperties()->setTitle("Pay Run");
 		$objPHPExcel->getProperties()->setSubject("Pay Run");
-		$objPHPExcel->getProperties()->setDescription("Pay Run Excel file, generated from Staff Master.");
+		$objPHPExcel->getProperties()->setDescription("Pay Run Excel file, generated from StaffBooks.");
 		
 		$objPHPExcel->setActiveSheetIndex(0);
 		$i = 0;
 		$row = 1;
 		foreach($fields as $field) {
-			$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $field['title']);
+			#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $field['title']);
+			
+			
+			if ($i < 26)
+			{
+				$letter = chr(97 + $i) . $row;
+			}
+			else
+			{
+				$letter = 'A' . chr(97 + ($i-26)) . $row;
+			}
+			$objPHPExcel->getActiveSheet()->SetCellValue($letter, $field['title']);
 			$i++;
 		}
 		$i = 0;
+		
+		$date_format = 'd/m/Y';
+		if ($template['target'] == 'shoebooks') {
+			$date_format = 'M-d-Y';
+		}
+		
 		foreach($timesheets as $timesheet) {
-			$row++;
-			foreach($fields as $field) {
-				$value = $field['value']; # Convert $field, $timesheet
-				$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
-				$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
-				$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
-				$value = str_replace('{job_date}', date('d/m/Y', $timesheet['start_time']), $value);
-				$value = str_replace('{start_time}', date('H:i', $timesheet['start_time']), $value);
-				$value = str_replace('{finish_time}', date('H:i', $timesheet['finish_time']), $value);
-				$value = str_replace('{hours}', $timesheet['total_minutes']/60, $value);
-				$value = str_replace('{venue}', $timesheet['venue'], $value);
-				$value = str_replace('{job_name}', $timesheet['job_name'], $value);
-				$value = str_replace('{pay_rate}', $timesheet['payrate'], $value);
-				$value = str_replace('{job_id}', $timesheet['job_id'], $value);
-				$value = str_replace('{date_from}', date('d/m/Y', strtotime($timesheet['date_from'])), $value);
-				$value = str_replace('{date_to}', date('d/m/Y', strtotime($timesheet['date_to'])), $value);
-				$value = str_replace('{payable_date}', date('d/m/Y', strtotime($timesheet['payable_date'])), $value);
-				$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
-				$i++;
+			if ($template['level'] == 'pay_rate') {
+				$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+				foreach($pay_rates as $pay_rate) {
+					$row++;
+					foreach($fields as $field) {
+						$value = $field['value']; # Convert $field, $timesheet
+						$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
+						$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
+						$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
+						#$value = str_replace('{venue}', $timesheet['venue'], $value);
+						$value = str_replace('{job_name}', $timesheet['job_name'], $value);
+						$value = str_replace('{pay_rate}', $timesheet['payrate'], $value);
+						$value = str_replace('{job_id}', $timesheet['job_id'], $value);
+						$value = str_replace('{pay_run_date_from}', date($date_format, strtotime($timesheet['date_from'])), $value);
+						$value = str_replace('{pay_run_date_to}', date($date_format, strtotime($timesheet['date_to'])), $value);
+						$value = str_replace('{payable_date}', date($date_format, strtotime($timesheet['payable_date'])), $value);				
+						$value = str_replace('{start_time}', date('H:ia', $pay_rate['start']), $value);
+						$value = str_replace('{finish_time}', date('H:ia', $pay_rate['finish']), $value);
+						
+						$value = str_replace('{hours}', $pay_rate['hours'], $value);
+						$value = str_replace('{job_date}', date($date_format, $pay_rate['start']), $value);
+						$value = str_replace('{pay_rate_amount}', $pay_rate['rate'], $value);
+						if ($pay_rate['break']) {
+							$value = str_replace('{break}', ' w/ ' . $pay_rate['break'] / 3600 . ' hour break', $value);
+						} else {
+							$value = str_replace('{break}', '', $value);
+						}
+						
+						#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+						
+						if ($i < 26)
+						{
+							$letter = chr(97 + $i) . $row;
+						}
+						else
+						{
+							$letter = 'A' . chr(97 + ($i-26)) . $row;
+						}
+						$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+						
+						$i++;			
+					}
+					$i=0;
+				}
+			} 
+			else if ($template['level'] == 'shift') {
+				$row++;
+				foreach($fields as $field) {
+					$value = $field['value']; # Convert $field, $timesheet
+					$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
+					$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
+					$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
+					#$value = str_replace('{venue}', $timesheet['venue'], $value);
+					$value = str_replace('{job_name}', $timesheet['job_name'], $value);
+					$value = str_replace('{pay_rate}', $timesheet['payrate'], $value);
+					$value = str_replace('{job_id}', $timesheet['job_id'], $value);
+					$value = str_replace('{pay_run_date_from}', date($date_format, strtotime($timesheet['date_from'])), $value);
+					$value = str_replace('{pay_run_date_to}', date($date_format, strtotime($timesheet['date_to'])), $value);
+					$value = str_replace('{payable_date}', date($date_format, strtotime($timesheet['payable_date'])), $value);				
+					$value = str_replace('{start_time}', date('H:ia', $timesheet['start_time']), $value);
+					$value = str_replace('{finish_time}', date('H:ia', $timesheet['finish_time']), $value);
+					
+					$value = str_replace('{hours}', $timesheet['total_minutes'] / 60, $value);
+					$value = str_replace('{job_date}', date($date_format, $timesheet['start_time']), $value);
+					
+					$breaks = json_decode($timesheet['break_time']);
+					$total = 0;
+					if (count($breaks) > 0) 
+					{
+						foreach($breaks as $break)
+						{
+							$total += $break->length;
+						}						
+					}		
+					
+					if ($total > 0) {
+						$value = str_replace('{break}', ' w/ ' . $total / 3600 . ' hour break', $value);
+					} else {
+						$value = str_replace('{break}', '', $value);
+					}
+					
+					#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+					
+					if ($i < 26)
+					{
+						$letter = chr(97 + $i) . $row;
+					}
+					else
+					{
+						$letter = 'A' . chr(97 + ($i-26)) . $row;
+					}
+					$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+					
+					$i++;			
+				}
+				$i=0;
 			}
-			$i=0;
+			else if ($template['level'] == 'staff') {
+				$row++;
+				foreach($fields as $field) {
+					$value = $field['value']; # Convert $field, $timesheet
+					$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
+					$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
+					$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
+					$value = str_replace('{pay_rate}', $timesheet['payrate'], $value);
+					$value = str_replace('{pay_run_date_from}', date($date_format, strtotime($timesheet['date_from'])), $value);
+					$value = str_replace('{pay_run_date_to}', date($date_format, strtotime($timesheet['date_to'])), $value);
+					$value = str_replace('{payable_date}', date($date_format, strtotime($timesheet['payable_date'])), $value);				
+					$value = str_replace('{hours}', $timesheet['total_minutes'] / 60, $value);
+					$value = str_replace('{total_amount}', $timesheet['total_amount'], $value);
+					
+					#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+					
+					if ($i < 26)
+					{
+						$letter = chr(97 + $i) . $row;
+					}
+					else
+					{
+						$letter = 'A' . chr(97 + ($i-26)) . $row;
+					}
+					$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+					
+					$i++;			
+				}
+				$i=0;
+			}
+			
 		}
 		
 		$objPHPExcel->getActiveSheet()->setTitle('payrun');

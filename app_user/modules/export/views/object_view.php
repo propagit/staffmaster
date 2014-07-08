@@ -10,6 +10,16 @@
 	<? } else { ?>
 	<input type="radio" name="<?=$object;?>_format" checked value="single" class="hide" />
 	<? } ?>
+	
+	<? if(count($levels) > 0) { ?>
+	<select class="form-control" id="<?=$object;?>_export_level">
+		<? foreach($levels as $level) { ?>
+		<option value="<?=$level['level'];?>">Line by: <?=ucwords(str_replace('_', ' ', $level['level']));?></option>
+		<? } ?>
+	</select>
+	<? } else { ?>
+	<input type="hidden" id="<?=$object;?>_export_level" />
+	<? } ?>
 </div>
 </div>
 <div id="wp-export-template_<?=$object;?>">
@@ -18,16 +28,17 @@
 <script>
 $(function() {
 	load_templates();
-	$('#<?=$object;?>').find('input[name="format"]').click(function(){
+	$('#<?=$object;?>_export_level').change(function(){
 		load_templates();
 	})
 })
 function load_templates() {
-	var format = $('#<?=$object;?>').find('input[name="format"]:checked').val();
+	//var format = $('#<?=$object;?>').find('input[name="format"]:checked').val();
+	var level = $('#<?=$object;?>_export_level').val();
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>export/ajax/load_templates",
-		data: {format: format, object: '<?=$object;?>'},
+		data: {object: '<?=$object;?>', level: level},
 		success: function(html) {
 			$('#wp-export-template_<?=$object;?>').html(html);
 		}

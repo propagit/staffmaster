@@ -39,15 +39,15 @@ class Ajax extends MX_Controller {
 	}
 	
 	function exporting() {
-		$ids = $this->input->post('ids');
+		$input = $this->input->post();
+		$ids = $input['ids'];
 		$ids = explode(',', $ids);
 		$export_id = $this->input->post('export_id');
 		if ($export_id == '') {
 			return;
 		}
 		# Mark all expenses as paid
-		$mark_as_paid = $this->input->post('mark_as_paid');
-		if ($mark_as_paid) {
+		if (isset($input['mark_as_paid'])) {
 			foreach($ids as $expense_id) {
 				$expense = $this->expense_model->get_expense($expense_id);
 				if ($expense['status'] != EXPENSE_PAID) {
@@ -72,11 +72,11 @@ class Ajax extends MX_Controller {
 		
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
-		$objPHPExcel->getProperties()->setCreator("Staff Master");
-		$objPHPExcel->getProperties()->setLastModifiedBy("Staff Master");
-		$objPHPExcel->getProperties()->setTitle("Expense");
-		$objPHPExcel->getProperties()->setSubject("Expense");
-		$objPHPExcel->getProperties()->setDescription("Expense Excel file, generated from Staff Master.");
+		$objPHPExcel->getProperties()->setCreator("StaffBooks");
+		$objPHPExcel->getProperties()->setLastModifiedBy("StaffBooks");
+		$objPHPExcel->getProperties()->setTitle("Staff Expense");
+		$objPHPExcel->getProperties()->setSubject("Staff Expense");
+		$objPHPExcel->getProperties()->setDescription("Expense Excel file, generated from StaffBooks.");
 		
 		$objPHPExcel->setActiveSheetIndex(0);
 		$i = 0;
@@ -112,7 +112,12 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{staff_first_name}', $expense['first_name'], $value);
 				$value = str_replace('{staff_last_name}', $expense['last_name'], $value);
 				$value = str_replace('{job_date}', date('d/m/Y', strtotime($expense['job_date'])), $value);
-				$value = str_replace('{paid_on}', date('d/m/Y', strtotime($expense['paid_on'])), $value);
+				if ($expense['paid_on'] != NULL) {
+					$value = str_replace('{paid_on}', date('d/m/Y', strtotime($expense['paid_on'])), $value);
+				} else {
+					$value = str_replace('{paid_on}', '', $value);
+				}
+				
 				$value = str_replace('{job_name}', $expense['job_name'], $value);
 				$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
 				$i++;

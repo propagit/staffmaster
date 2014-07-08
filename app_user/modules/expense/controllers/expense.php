@@ -68,7 +68,7 @@ class Expense extends MX_Controller {
 	
 	function field_select_export_templates($field_name, $field_value = null) {
 		$this->load->model('export/export_model');
-		$data['single'] = $this->export_model->get_templates('expense', 'single');
+		$data['templates'] = $this->export_model->get_templates('expense');
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);

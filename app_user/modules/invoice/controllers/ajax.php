@@ -641,29 +641,33 @@ class Ajax extends MX_Controller {
 	}
 	
 	function exporting() {
-		$ids = $this->input->post('ids');
+		$input = $this->input->post();
+		$ids = $input['ids'];
 		$ids = explode(',', $ids);
 		$export_id = $this->input->post('export_id');
 		if ($export_id == '') {
 			return;
 		}
 		# Mark all invoices as paid
-		$mark_as_paid = $this->input->post('mark_as_paid');
-		foreach($ids as $invoice_id) {
-			$invoice = $this->invoice_model->get_invoice($invoice_id);
-			if ($invoice['status'] != INVOICE_PAID) {
-				$this->invoice_model->update_invoice($invoice_id, array(
-					'status' => INVOICE_PAID,
-					'paid_on' => date('Y-m-d H:i:s')
-				));
-			}			
+		if (isset($input['mark_as_paid'])) {
+			foreach($ids as $invoice_id) {
+				$invoice = $this->invoice_model->get_invoice($invoice_id);
+				if ($invoice['status'] != INVOICE_PAID) {
+					$this->invoice_model->update_invoice($invoice_id, array(
+						'status' => INVOICE_PAID,
+						'paid_on' => date('Y-m-d H:i:s')
+					));
+				}			
+			}
 		}
+		
 		$file_name = $this->_export_invoices($ids, $export_id);
 		echo $file_name;
 	}
 	
 	private function _export_invoices($ids, $export_id) {
 		$fields = modules::run('export/get_fields', $export_id);
+		$template = modules::run('export/get_template', $export_id);
 		
 		ini_set('memory_limit', '128M');
 		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
@@ -680,113 +684,155 @@ class Ajax extends MX_Controller {
 		$i = 0;
 		$row = 1;
 		foreach($fields as $field) {
-			$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $field['title']);
+			#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $field['title']);
+			
+			if ($i < 26)
+			{
+				$letter = chr(97 + $i) . $row;
+			}
+			else
+			{
+				$letter = 'A' . chr(97 + ($i-26)) . $row;
+			}
+			$objPHPExcel->getActiveSheet()->SetCellValue($letter, $field['title']);
 			$i++;
 		}
 		$i = 0;
+		
+		$date_format = 'd/m/Y';
+		if ($template['target'] == 'shoebooks') {
+			$date_format = 'M-d-Y';
+		}
 		foreach($ids as $invoice_id) {
 			$invoice = $this->invoice_model->get_invoice($invoice_id);
-			# Get all invoice item
-			$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
-			foreach($invoice_items as $item) {
-				if ($item['include_timesheets']) {
-					$timesheets = $this->invoice_model->get_export_timesheets($invoice_id, $item['job_id']);
-					foreach($timesheets as $timesheet) {
-						$row++;
-						foreach($fields as $field) {
-							$value = $field['value']; # Convert $field, $timesheet
-							
-							$amount = $timesheet['total_amount_client'];
+			if ($template['level'] == 'invoice') {
+				$row++;
+				foreach($fields as $field) {
+					$value = $field['value']; # Convert $field
+					
+					$client = modules::run('client/get_client', $invoice['client_id']);
+					
+					$value = str_replace('{tax_amount}', money_format('%i', $invoice['gst']), $value);
+					$value = str_replace('{inc_tax_amount}', money_format('%i', $invoice['total_amount']), $value);
+					$value = str_replace('{ex_tax_amount}', money_format('%i', $invoice['total_amount'] - $invoice['gst']), $value);
+					$value = str_replace('{external_client_id}', $client['external_client_id'], $value);					
+					$value = str_replace('{internal_client_id}', $client['user_id'], $value);
+					$value = str_replace('{client_contact_name}', $client['full_name'], $value);
+					$value = str_replace('{client_city}', $client['city'], $value);
+					$value = str_replace('{client_country}', $client['country'], $value);
+					$value = str_replace('{invoice_description}', $invoice['title'], $value);
+					$value = str_replace('{client_company_name}', $invoice['client_company_name'], $value);
+					$value = str_replace('{client_address}', $invoice['client_address'], $value);
+					$value = str_replace('{client_suburb}', $invoice['client_suburb'], $value);
+					$value = str_replace('{client_state}', $invoice['client_state'], $value);
+					$value = str_replace('{client_postcode}', $invoice['client_postcode'], $value);
+					$value = str_replace('{client_phone}', $invoice['client_phone'], $value);
+					$value = str_replace('{client_email}', $invoice['client_email_address'], $value);
+					
+					
+					
+					$value = str_replace('{due_date}', date($date_format, strtotime($invoice['due_date'])), $value);
+					$value = str_replace('{issued_date}', date($date_format, strtotime($invoice['issued_date'])), $value);
+					$value = str_replace('{po_number}', $invoice['po_number'], $value);
+					$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
+					
+					
+					if ($i < 26)
+					{
+						$letter = chr(97 + $i) . $row;
+					}
+					else
+					{
+						$letter = 'A' . chr(97 + ($i-26)) . $row;
+					}
+					$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+					
+					#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+					$i++;
+				}
+				$i = 0;
+			}
+			else if ($template['level'] == 'item') {
+				# Get all invoice item
+				$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
+				foreach($invoice_items as $item) {
+					$row++;
+					foreach($fields as $field) {
+						$value = $field['value']; # Convert $field
+						
+						$title = $item['title'];
+						if ($item['include_timesheets']) {
+							$title .= ' - Staff Services';
+						}
+						
+						
+						$tax = $item['tax'];
+						$amount = $item['amount'];
+						$tax_amount = 0;
+						$ex_tax_amount = $amount;
+						$inc_tax_amount = $amount;
+						if ($tax == GST_YES) {
 							$tax_amount = $amount/11;
 							$ex_tax_amount = $amount * 10/11;
 							$inc_tax_amount = $amount;
-							
-							$breaks = modules::run('common/break_time', $timesheet['break_time']);
-							$value = str_replace('{tax_amount}', '$' . money_format('%i', $tax_amount), $value);
-							$value = str_replace('{inc_tax_amount}', '$' . money_format('%i', $inc_tax_amount), $value);
-							$value = str_replace('{ex_tax_amount}', '$' . money_format('%i', $ex_tax_amount), $value);
-							
-							$value = str_replace('{company_name}', $timesheet['company_name'], $value);
-							$value = str_replace('{invoice_number}', $invoice['invoice_number'], $value);
-							$value = str_replace('{staff_name}', $timesheet['staff_name'], $value);
-							$value = str_replace('{job_date}', date('d/m/Y', strtotime($timesheet['job_date'])), $value);
-							$value = str_replace('{start_time}', date('H:i', $timesheet['start_time']), $value);
-							$value = str_replace('{finish_time}', date('H:i', $timesheet['finish_time']), $value);
-							$value = str_replace('{hours}', $timesheet['total_minutes']/60, $value);
-							$value = str_replace('{break}', $breaks/60, $value);
-							$value = str_replace('{type}', 'Staff Services', $value);
-							$value = str_replace('{description}', $item['title'], $value);
-							$value = str_replace('{client_id}', $invoice['client_id'], $value);
-							$value = str_replace('{external_client_id}', $invoice['external_client_id'], $value);
-							$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
-							$value = str_replace('{created_on}', date('d/m/Y', strtotime($invoice['created_on'])), $value);
-							$value = str_replace('{po_number}', $invoice['po_number'], $value);
-							#$value = str_replace('{paid_on}', date('d/m/Y', strtotime($timesheet['paid_on'])), $value);
-							#$value = str_replace('{job_name}', $expense['job_name'], $value);
-							
-							$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
-							$i++;
-						}
-						$i=0;
-					}
-				} 
-				if ($item['expense_id'] != 0) {
-					$i = 0;
-					$expenses = $this->invoice_model->get_export_expenses($item['expense_id']);
-					foreach($expenses as $expense) {
-						$row++;
-						foreach($fields as $field) {
-							$value = $field['value']; # Convert $field, $timesheet
-							
-							$tax = $expense['tax'];
-							$amount = $expense['client_cost'];
-							$tax_amount = 0;
+						} else if ($tax == GST_ADD) {
+							$tax_amount = $amount / 10;
 							$ex_tax_amount = $amount;
-							$inc_tax_amount = $amount;
-							if ($tax == GST_YES) {
-								$tax_amount = $amount/11;
-								$ex_tax_amount = $amount * 10/11;
-								$inc_tax_amount = $amount;
-							} else if ($tax == GST_ADD) {
-								$tax_amount = $amount / 10;
-								$ex_tax_amount = $amount;
-								$inc_tax_amount = $amount * 1.1;
+							$inc_tax_amount = $amount * 1.1;
+						}					
+						$tax_type = modules::run('common/reverse_field_gst', $tax);
+						if ($template['target'] == 'shoebooks') {
+							if ($tax_amount > 0) {
+								$tax_type = 2;
+							} else {
+								$tax_type = 3;
 							}
-							
-							$breaks = modules::run('common/break_time', $expense['break_time']);
-							
-							$value = str_replace('{tax_amount}', '$' . money_format('%i', $tax_amount), $value);
-							$value = str_replace('{inc_tax_amount}', '$' . money_format('%i', $inc_tax_amount), $value);
-							$value = str_replace('{ex_tax_amount}', '$' . money_format('%i', $ex_tax_amount), $value);
-							
-							$value = str_replace('{company_name}', $expense['company_name'], $value);
-							$value = str_replace('{invoice_number}', $invoice['invoice_number'], $value);
-							$value = str_replace('{staff_name}', $expense['staff_name'], $value);
-							$value = str_replace('{job_date}', date('d/m/Y', strtotime($expense['job_date'])), $value);
-							$value = str_replace('{start_time}', date('H:i', $expense['start_time']), $value);
-							$value = str_replace('{finish_time}', date('H:i', $expense['finish_time']), $value);
-							$value = str_replace('{hours}', $expense['total_minutes']/60, $value);
-							$value = str_replace('{break}', $breaks/60, $value);
-							$value = str_replace('{type}', 'Staff Expenses', $value);
-							$value = str_replace('{description}', $item['title'], $value);							
-							$value = str_replace('{client_id}', $invoice['client_id'], $value);							
-							$value = str_replace('{external_client_id}', $invoice['external_client_id'], $value);
-							$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
-							$value = str_replace('{created_on}', date('d/m/Y', strtotime($invoice['created_on'])), $value);
-							$value = str_replace('{po_number}', $invoice['po_number'], $value);
-							
-							#$value = str_replace('{paid_on}', date('d/m/Y', strtotime($timesheet['paid_on'])), $value);
-							#$value = str_replace('{job_name}', $expense['job_name'], $value);
-							$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
-							$i++;
 						}
-						$i=0;
+						
+						$client = modules::run('client/get_client', $invoice['client_id']);
+						
+						$value = str_replace('{tax_amount}', money_format('%i', $tax_amount), $value);
+						$value = str_replace('{inc_tax_amount}', money_format('%i', $inc_tax_amount), $value);
+						$value = str_replace('{ex_tax_amount}', money_format('%i', $ex_tax_amount), $value);
+						$value = str_replace('{external_client_id}', $client['external_client_id'], $value);
+						$value = str_replace('{internal_client_id}', $client['user_id'], $value);
+						$value = str_replace('{client_contact_name}', $client['full_name'], $value);
+						$value = str_replace('{client_city}', $client['city'], $value);
+						$value = str_replace('{client_country}', $client['country'], $value);
+						$value = str_replace('{tax_type}', $tax_type, $value);
+						$value = str_replace('{item_description}', $title, $value);
+						$value = str_replace('{client_company_name}', $invoice['client_company_name'], $value);
+						$value = str_replace('{client_address}', $invoice['client_address'], $value);
+						$value = str_replace('{client_suburb}', $invoice['client_suburb'], $value);
+						$value = str_replace('{client_state}', $invoice['client_state'], $value);
+						$value = str_replace('{client_postcode}', $invoice['client_postcode'], $value);
+						$value = str_replace('{client_phone}', $invoice['client_phone'], $value);
+						$value = str_replace('{client_email}', $invoice['client_email_address'], $value);
+						
+						
+						
+						$value = str_replace('{due_date}', date($date_format, strtotime($invoice['due_date'])), $value);
+						$value = str_replace('{issued_date}', date($date_format, strtotime($invoice['issued_date'])), $value);
+						$value = str_replace('{po_number}', $invoice['po_number'], $value);
+						$value = str_replace('{invoice_id}', $invoice['invoice_id'], $value);
+						
+						
+						if ($i < 26)
+						{
+							$letter = chr(97 + $i) . $row;
+						}
+						else
+						{
+							$letter = 'A' . chr(97 + ($i-26)) . $row;
+						}
+						$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+						
+						#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
+						$i++;
 					}
+					$i = 0;
 				}
 			}
-			
-			
-			
 		}
 		
 		$objPHPExcel->getActiveSheet()->setTitle('invoice');

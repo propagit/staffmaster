@@ -1,4 +1,4 @@
-<div class="alert alert-success clearfix wp-export-templates">
+<div class="alert alert-default clearfix wp-export-templates">
 	<?=modules::run('common/field_select', $templates, 'export_id', '','', false);?>
 </div>
 

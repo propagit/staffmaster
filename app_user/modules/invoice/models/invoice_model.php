@@ -347,7 +347,7 @@ class Invoice_model extends CI_Model {
 		);
 		$this->db->where('client_id', $client_id);
 		$this->db->where('status_invoice_client', INVOICE_READY);
-		$this->db->where('invoice_id', 0);		
+		#$this->db->where('invoice_id', 0);		
 		return $this->db->update('job_shift_timesheets', $data);
 	}
 	
