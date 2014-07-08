@@ -307,7 +307,7 @@ class Ajax extends MX_Controller {
 		
 		$date_format = 'd/m/Y';
 		if ($template['target'] == 'shoebooks') {
-			$date_format = 'M-d-Y';
+			$date_format = 'd/m/Y';
 		}
 		
 		foreach($timesheets as $timesheet) {

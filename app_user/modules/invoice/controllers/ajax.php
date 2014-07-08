@@ -701,7 +701,7 @@ class Ajax extends MX_Controller {
 		
 		$date_format = 'd/m/Y';
 		if ($template['target'] == 'shoebooks') {
-			$date_format = 'M-d-Y';
+			$date_format = 'd/m/Y';
 		}
 		foreach($ids as $invoice_id) {
 			$invoice = $this->invoice_model->get_invoice($invoice_id);
