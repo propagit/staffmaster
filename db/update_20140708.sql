@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS `export_fields`;
---
 -- Table structure for table `export_templates`
 --
 
@@ -12,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `export_templates`
@@ -28,7 +26,9 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (9, '', 'expense', '', 'Staff Expense Export ', 0),
 (10, '', 'staff', '', 'Shoebooks - Staff Export', 0),
 (11, 'shoebooks', 'payrun_tfn', 'pay_rate', 'Shoebooks - TFN Export', 1),
-(13, 'shoebooks', 'invoice', 'item', 'Shoebooks - Client Invoice Export', 1);
+(13, 'shoebooks', 'invoice', 'item', 'Shoebooks - Client Invoice Export', 1),
+(14, 'shoebooks', 'payrun_abn', 'shift', 'Shoebooks - ABN Export', 1),
+(15, 'shoebooks', 'expense', '', 'Shoebooks - Staff Expense Export ', 1);
 
 -- --------------------------------------------------------
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=297 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=326 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -200,12 +200,38 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (288, 5, 0, 'Internal Staff Id', '{internal_staff_id}'),
 (289, 5, 1, 'External Staff Id', '{external_staff_id}'),
 (290, 5, 2, 'Staff Name', '{staff_name}'),
-(291, 5, 3, 'Job Date', '{job_date}'),
 (292, 5, 7, 'Hours', '{hours}'),
 (293, 5, 8, 'Pay Rate', '{pay_rate}'),
-(294, 5, 4, 'Job Name', '{job_name}'),
 (295, 5, 5, 'Start Time', '{start_time}'),
-(296, 5, 6, 'Finish Time', '{finish_time}');
+(296, 5, 6, 'Finish Time', '{finish_time}'),
+(297, 14, 0, 'Group', '{internal_staff_id}'),
+(298, 14, 1, 'VendorID', '{external_staff_id}'),
+(299, 14, 2, 'Date', '{pay_run_date}'),
+(300, 14, 4, 'Description', '{job_name}    {start_time} -  {finish_time}   {break}'),
+(301, 14, 6, 'QtyReceived', '1'),
+(303, 14, 8, 'Amount', '{ex_tax_amount}'),
+(304, 14, 5, 'AccountID', ''),
+(305, 14, 7, 'Taxable', ''),
+(306, 14, 3, 'strVendorOrderNumber', ''),
+(307, 14, 307, 'JobID', ''),
+(308, 14, 308, 'PONumber', ''),
+(309, 14, 309, 'ProductID', ''),
+(310, 14, 310, 'DivID', ''),
+(311, 14, 311, 'CustomerPO', ''),
+(312, 15, 312, 'Group', '{internal_staff_id}'),
+(313, 15, 313, 'VendorID', '{external_staff_id}'),
+(314, 15, 314, 'Date', '{job_date}'),
+(315, 15, 315, 'strVendorOrderNumber', ''),
+(316, 15, 316, 'Description', '{description}'),
+(317, 15, 317, 'AccountID', ''),
+(318, 15, 318, 'QtyReceived', '1'),
+(319, 15, 319, 'Taxable', '{taxable}'),
+(320, 15, 320, 'Amount', '{ex_tax_amount}'),
+(321, 15, 321, 'JobID', ''),
+(322, 15, 322, 'PONumber', ''),
+(323, 15, 323, 'ProductID', ''),
+(324, 15, 324, 'DivID', ''),
+(325, 15, 325, 'CustomerPO', '');
 
 -- --------------------------------------------------------
 
@@ -222,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `export_template_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=134 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=141 ;
 
 --
 -- Dumping data for table `export_template_fields`
@@ -345,7 +371,7 @@ INSERT INTO `export_template_fields` (`field_id`, `field_order`, `object`, `leve
 (119, 0, 'expense', '', 'inc_tax_amount', 'Inc Tax Amount'),
 (120, 0, 'expense', '', 'paid_on', 'Paid Date/Time'),
 (121, 0, 'expense', '', 'ex_tax_amount', 'Ex Tax Amount'),
-(122, 0, 'payrun_abn', 'shift', 'job_date', 'Job Date'),
+(122, 0, 'payrun_abn', 'shift', 'pay_run_date', 'Pay Run Date'),
 (123, 0, 'payrun_abn', 'shift', 'start_time', 'Start Time'),
 (124, 0, 'payrun_abn', 'shift', 'finish_time', 'Finish Time'),
 (125, 0, 'payrun_abn', 'shift', 'staff_name', 'Staff Name'),
@@ -356,4 +382,11 @@ INSERT INTO `export_template_fields` (`field_id`, `field_order`, `object`, `leve
 (130, 0, 'payrun_abn', 'shift', 'internal_staff_id', 'Internal Staff Id'),
 (131, 0, 'payrun_abn', 'shift', 'external_staff_id', 'External Staff Id'),
 (132, 0, 'payrun_abn', 'shift', 'job_name', 'Job Name'),
-(133, 0, 'payrun_abn', 'shift', 'job_id', 'Job ID');
+(133, 0, 'payrun_abn', 'shift', 'job_id', 'Job ID'),
+(134, 0, 'payrun_abn', 'shift', 'taxable', 'Taxable'),
+(135, 0, 'payrun_abn', 'shift', 'ex_tax_amount', 'Ex Tax Amount'),
+(136, 0, 'payrun_abn', 'shift', 'inc_tax_amount', 'Inc Tax Amount'),
+(137, 0, 'expense', '', 'internal_staff_id', 'Internal Staff ID'),
+(138, 0, 'expense', '', 'external_staff_id', 'External Staff ID'),
+(139, 0, 'expense', '', 'description', 'Description'),
+(140, 0, 'expense', '', 'taxable', 'Taxable');

@@ -66,6 +66,7 @@ class Ajax extends MX_Controller {
 	private function _export_expense($ids, $export_id) {
 		
 		$fields = modules::run('export/get_fields', $export_id);
+		$template = modules::run('export/get_template', $export_id);
 		
 		ini_set('memory_limit', '128M');
 		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
@@ -106,11 +107,25 @@ class Ajax extends MX_Controller {
 					$inc_tax_amount = $amount * 1.1;
 				}
 				
-				$value = str_replace('{tax_amount}', '$' . money_format('%i', $tax_amount), $value);
-				$value = str_replace('{inc_tax_amount}', '$' . money_format('%i', $inc_tax_amount), $value);
-				$value = str_replace('{ex_tax_amount}', '$' . money_format('%i', $ex_tax_amount), $value);
+				$taxable = modules::run('common/reverse_field_gst', $tax);
+				if ($template['target'] == 'shoebooks') {
+					if ($tax_amount > 0) {
+						$taxable = 2;
+					} else {
+						$taxable = 3;
+					}
+				}
+				
+				
+				$value = str_replace('{taxable}', $taxable, $value);
+				$value = str_replace('{tax_amount}', money_format('%i', $tax_amount), $value);
+				$value = str_replace('{inc_tax_amount}', money_format('%i', $inc_tax_amount), $value);
+				$value = str_replace('{ex_tax_amount}', money_format('%i', $ex_tax_amount), $value);
+				$value = str_replace('{external_staff_id}', $expense['external_staff_id'], $value);
+				$value = str_replace('{internal_staff_id}', $expense['user_id'], $value);
 				$value = str_replace('{staff_first_name}', $expense['first_name'], $value);
 				$value = str_replace('{staff_last_name}', $expense['last_name'], $value);
+				$value = str_replace('{description}', $expense['description'], $value);
 				$value = str_replace('{job_date}', date('d/m/Y', strtotime($expense['job_date'])), $value);
 				if ($expense['paid_on'] != NULL) {
 					$value = str_replace('{paid_on}', date('d/m/Y', strtotime($expense['paid_on'])), $value);

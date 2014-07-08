@@ -17,11 +17,12 @@ class Expense_model extends CI_Model {
 		$sql = "SELECT e.*, 
 					j.name as job_name,
 					js.job_date,
-					s.first_name, s.last_name,
+					s.first_name, s.last_name, us.external_staff_id, s.user_id,
 					c.company_name FROM expenses e
 				LEFT JOIN jobs j ON j.job_id = e.job_id
 				LEFT JOIN job_shift_timesheets js ON js.timesheet_id = e.timesheet_id
 				LEFT JOIN users s ON s.user_id = e.staff_id
+				LEFT JOIN user_staffs us ON us.user_id = e.staff_id
 				LEFT JOIN user_clients c ON c.user_id = e.client_id
 					WHERE e.expense_id = " . $expense_id;
 		$query = $this->db->query($sql);

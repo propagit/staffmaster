@@ -363,13 +363,14 @@ class Ajax extends MX_Controller {
 					$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
 					$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
 					$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
-					#$value = str_replace('{venue}', $timesheet['venue'], $value);
+					$value = str_replace('{ex_tax_amount}', money_format('%i', $timesheet['total_amount_staff']), $value);
 					$value = str_replace('{job_name}', $timesheet['job_name'], $value);
 					$value = str_replace('{pay_rate}', $timesheet['payrate'], $value);
 					$value = str_replace('{job_id}', $timesheet['job_id'], $value);
 					$value = str_replace('{pay_run_date_from}', date($date_format, strtotime($timesheet['date_from'])), $value);
 					$value = str_replace('{pay_run_date_to}', date($date_format, strtotime($timesheet['date_to'])), $value);
-					$value = str_replace('{payable_date}', date($date_format, strtotime($timesheet['payable_date'])), $value);				
+					$value = str_replace('{payable_date}', date($date_format, strtotime($timesheet['payable_date'])), $value);	
+					$value = str_replace('{pay_run_date}', date($date_format, strtotime($timesheet['created_on'])), $value);			
 					$value = str_replace('{start_time}', date('H:ia', $timesheet['start_time']), $value);
 					$value = str_replace('{finish_time}', date('H:ia', $timesheet['finish_time']), $value);
 					
