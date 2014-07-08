@@ -241,9 +241,14 @@
 			$job = modules::run('job/get_job', $item['job_id']);
 			$timesheets = modules::run('invoice/get_job_timesheets', $item['job_id'], INVOICE_GENERATED);
 			 ?>
+			 
+			<? if ($job) { ?>
 			<tr>
 				<td colspan="8"><h2><?=$job['name'];?></h2></td>
 			</tr>
+			<? } ?>
+			
+			<? if (count($timesheets) > 0) { ?>
 			<tr>
 				<td>Job Date</td>
 				<td>Venue</td>
@@ -266,7 +271,7 @@
                 <td width="10%"><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
                 <td width="10%"><?=modules::run('common/format_money',$timesheet['total_amount_client']);?></td>
             </tr>
-			<? } ?>
+			<? } } ?>
 			<? } } ?>                       
         </table>
 	</div>
