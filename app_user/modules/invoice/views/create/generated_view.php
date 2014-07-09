@@ -293,9 +293,9 @@
 <script>
 $(function(){
 	$('#btn-generate-invoice').remove();
-	$('#btn-reset-invoice').html('<i class="fa fa-times"></i> Close');
+	$('#btn-reset-invoice').html('<i class="fa fa-pencil"></i> Edit');
 	$('#btn-reset-invoice').click(function(){
-		window.close();
+		edit_invoice();
 	});
 	$('#btn-download-invoice').click(function(){
 		$(this).prop('target', '_blank');
@@ -346,5 +346,15 @@ function email_invoice(){
 			}, 4000);
 		}
 	}); 
-}	
+}
+function edit_invoice() {
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/edit_invoice",
+		data: {invoice_id: <?=$invoice['invoice_id'];?>},
+		success: function(html) {
+			window.location = '<?=base_url();?>invoice/edit/<?=$invoice['invoice_id'];?>';
+		}
+	})
+}
 </script>

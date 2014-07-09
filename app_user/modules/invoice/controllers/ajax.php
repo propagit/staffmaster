@@ -854,4 +854,15 @@ class Ajax extends MX_Controller {
 		$params = $this->input->post();
 		echo modules::run('invoice/email_invoice',$params);	
 	}
+	
+	function edit_invoice() {
+		$invoice_id = $this->input->post('invoice_id');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		
+		# Update status back to 0
+		$this->invoice_model->update_invoice($invoice_id, array(
+			'status' => INVOICE_PENDING
+		));
+		$this->invoice_model->edit_invoice_timesheets($invoice['client_id'], $invoice_id);
+	}
 }

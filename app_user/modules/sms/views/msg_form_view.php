@@ -1,3 +1,6 @@
+This feature is coming soon
+<?
+/*
 <form id="send-sms-form">
 <input type="hidden" name="selected_user_ids" value="<?=implode(',', $selected_user_ids);?>" />
 <input type="hidden" name="selected_shift_ids" value="<?=($selected_module_ids) ? implode(',', $selected_module_ids) : '';?>" />
@@ -140,22 +143,7 @@ function updateTextboxCounter() {
    }
 
  
-   /*
-   if (unicodeFlag) 
-   {
-      msgCount = m;
-      if (msgCount <= 70) {
-         msgCount = 1;
-      }
-      else {
-         msgCount += (67-1);
-         msgCount -= (msgCount % 67);
-         msgCount /= 67;
-      }
-
-      document.getElementById("currentChars").innerHTML = "<b>" + (m) + "</b> unicode character(s), <b>" + msgCount + "</b> SMS message(s)";
-   }
-   */
+   
    //else {
       msgCount = m + extraChars;
       if (msgCount <= 160) {
@@ -171,3 +159,4 @@ function updateTextboxCounter() {
    //}   
 }
 </script>
+*/ ?>

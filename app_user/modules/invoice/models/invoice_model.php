@@ -351,6 +351,17 @@ class Invoice_model extends CI_Model {
 		return $this->db->update('job_shift_timesheets', $data);
 	}
 	
+	function edit_invoice_timesheets($client_id, $invoice_id) {
+		$data = array(
+			'invoice_id' => $invoice_id,
+			'status_invoice_client' => INVOICE_READY
+		);
+		$this->db->where('client_id', $client_id);
+		$this->db->where('status_invoice_client', INVOICE_GENERATED);
+		#$this->db->where('invoice_id', 0);		
+		return $this->db->update('job_shift_timesheets', $data);
+	}
+	
 	/**
 	*	@name: mark_paid_timesheets
 	*	@desc: update timesheets of an invoice to paid status
