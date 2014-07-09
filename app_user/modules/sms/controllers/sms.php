@@ -10,8 +10,12 @@ class Sms extends MX_Controller {
 	
 	function test()
 	{
-		$a = $this->cbf_model->test();
-		var_dump($a);
+		#$a = $this->cbf_model->test();
+		#var_dump($a);
+		$user_id = '10002000';
+		$job_id = '231121';
+		$user_code = modules::run('common/alphaID', 'CRFL', true);
+		echo $user_code;
 	}
 	
 	function msg_form_view($selected_user_ids, $selected_module_ids) {
