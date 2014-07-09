@@ -293,10 +293,18 @@
 <script>
 $(function(){
 	$('#btn-generate-invoice').remove();
+	<? if ($invoice['status'] == INVOICE_PAID) { ?>
+	$('#btn-reset-invoice').html('<i class="fa fa-times"></i> Close');
+	$('#btn-reset-invoice').click(function(){
+		window.close();
+	});
+	<? } else { ?>
 	$('#btn-reset-invoice').html('<i class="fa fa-pencil"></i> Edit');
 	$('#btn-reset-invoice').click(function(){
 		edit_invoice();
 	});
+	<? } ?>
+	
 	$('#btn-download-invoice').click(function(){
 		$(this).prop('target', '_blank');
 		window.open('<?=base_url();?>invoice/download/<?=$invoice['invoice_id'];?>');
@@ -347,6 +355,7 @@ function email_invoice(){
 		}
 	}); 
 }
+<? if ($invoice['status'] != INVOICE_PAID) { ?>
 function edit_invoice() {
 	$.ajax({
 		type: "POST",
@@ -357,4 +366,5 @@ function edit_invoice() {
 		}
 	})
 }
+<? } ?>
 </script>
