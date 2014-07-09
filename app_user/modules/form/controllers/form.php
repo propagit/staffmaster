@@ -43,7 +43,7 @@ class Form extends MX_Controller {
 		$data['extra_fields'] = $this->extra_fields($fields);
 		$data['financial_fields'] = $this->financial_fields($fields);
 		$data['super_fields'] = $this->super_fields($fields);
-		$data['custom_fields'] = $this->form_model->get_custom_fields();
+		$data['custom_fields'] = $this->form_model->get_custom_fields($form_id);
 		$data['url'] = str_replace('http:','',base_url()) . 'public/form/' . $form_id;
 		$this->load->view('edit_view', isset($data) ? $data : NULL);
 	}

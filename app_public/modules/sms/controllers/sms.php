@@ -11,25 +11,16 @@ class Sms extends MX_Controller {
 	{
 		$input = $_POST['INCOMING'];
 		$data = $this->processIncoming($input);
-		$message = json_encode($data);
-		//echo pack("H*", $messages[0][7]);
-
-		$number = $data[0][1];
-		$text = pack("H*", $data[0][7]);
+		
+		$from = $data[0][1]; # Sender number
+		$to = $data[0][2]; # Virtual number
+		$text = pack("H*", $data[0][7]); # Text
+		$received_on = $data[0][5]; # Timestamp
+		$udh = $data[0][6];
 		
 		$cc = $this->Contact_model->get_user_optout($text);
 		
-		if($cc > 0)
-		{
-			$dd['msg'] = $ab;
-			$dd['number'] = $number;
-			$dd['text'] = $text;
-			
-			$this->Contact_model->add_mobile_optout($dd);
-			
-			//$data['actived_sms'] = 0;
-			$this->Contact_model->set_mobile_optout($number);
-		}
+		
 	}
 	
 	function processIncoming ($input) 
