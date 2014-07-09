@@ -1,6 +1,3 @@
-This feature is coming soon
-<?
-/*
 <form id="send-sms-form">
 <input type="hidden" name="selected_user_ids" value="<?=implode(',', $selected_user_ids);?>" />
 <input type="hidden" name="selected_shift_ids" value="<?=($selected_module_ids) ? implode(',', $selected_module_ids) : '';?>" />
@@ -159,4 +156,3 @@ function updateTextboxCounter() {
    //}   
 }
 </script>
-*/ ?>

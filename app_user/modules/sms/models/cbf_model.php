@@ -1,11 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Cbf_model extends CI_Model {	
+class Cbf_model extends CI_Model {
+
 	function test() {
 		$destination = '61402133066';
 		$source = '447624812938';
 		$message = 'test sms';
-		$twoway = false;
+		$twoway = true;
 		return $this->send_sms($destination, $source, $message,$twoway);
 	}
 	

@@ -50,7 +50,7 @@ class Report extends MX_Controller {
 	
 	function field_select_financial_year($field_name, $field_value=null, $size=null) {
 		$max_year = date('Y');
-		if (date('n') > 7) {
+		if (date('n') >= 7) {
 			$max_year++;
 		}
 		$years = array();
