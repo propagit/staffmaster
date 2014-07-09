@@ -1,4 +1,4 @@
-<h2>Find Processed Pay Slips</h2>
+<h2>Find Processed Time Sheets</h2>
 
 <form class="form-horizontal" role="form" id="form_search_payslips">
 <div class="row">

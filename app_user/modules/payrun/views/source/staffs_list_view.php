@@ -41,6 +41,9 @@ $(function(){
 		$('.timesheets_staff_' + user_id).find('.payrun_timesheet').prop('checked', this.checked);
 		select_payrun_staff(user_id, checked);
 	})
+	$('#menu-action ul li a[data-value="revert"]').click(function(){
+		
+	});
 })
 
 function select_payrun_staff(user_id, checked) {

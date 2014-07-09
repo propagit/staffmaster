@@ -53,10 +53,10 @@
                     Issue Date: <?=date('dS M Y', strtotime($invoice['issued_date']));?><br><br>
                     <h1 class="top-20 invoice-title"> <?=$invoice['title'];?></h1>
                     <? if ($invoice['status'] == INVOICE_PAID) { ?>
-                    <div id="badge-paid">
+                    <div id="badge-paid" style="position:absolute;width:181px;height:79px;top:320px;">
                     	<img src="<?=base_url();?>assets/img/paid.png" />
-	                    <span><?=date('dS M Y', strtotime($invoice['paid_on']));?></span>
                     </div>
+                    <div style="position:absolute;top:400px;left:100px;color:#97040c;font-weight: bold;"><?=date('dS M Y', strtotime($invoice['paid_on']));?></div>
                     <? } ?>
                 </td>
                 <td>&nbsp;</td>

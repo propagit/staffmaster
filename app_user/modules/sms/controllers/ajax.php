@@ -27,7 +27,7 @@ class Ajax extends MX_Controller {
 				$shift = modules::run('job/shift/get_shift', $shift_id);
 				if ($shift['staff_id']) {
 					$user = modules::run('user/get_user', $shift['staff_id']);
-					$to = mobile_phone($user['mobile']);
+					$to = '61402133066'; #mobile_phone($user['mobile']);
 					$source = '447624812938';
 					$msg = $this->input->post('msg');
 					$msg = str_replace('{FirstName}', $user['first_name'], $msg);

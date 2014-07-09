@@ -14,7 +14,7 @@
 			<ul class="nav nav-tabs tab-respond" id="tab-payrun">
 				<li class="active"><a href="#create-payrun" data-toggle="tab">Create Pay Run</a></li>
 				<li><a href="#search-payrun" data-toggle="tab">Search Pay Run</a></li>
-				<li><a href="#search-payslip" data-toggle="tab">Find Processed Timesheets</a></li>
+				<li><a href="#search-payslip" data-toggle="tab">Find Processed Time Sheets</a></li>
 				<li class="pull-right">
 					<a href="<?=base_url();?>invoice">Client Invoices</a>
 				</li>

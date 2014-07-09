@@ -6,7 +6,17 @@ body {
 	font-size: 12px;
 	padding:0px!important;
 }
-
+#badge-paid {
+	position: absolute;
+	width: 181px;
+	height: 79px;
+}
+#badge-paid span {
+	display: block;
+	margin-left: 50px;
+	color: #97040c;
+	font-weight: bold;
+}
 h1{font-size:22px;font-weight:bold;font-family: 'Lato', sans-serif;}
 h2{font-size:18px;font-weight:bold;font-family: 'Lato', sans-serif;}
 .invoice-title{font-size:32px!important;}
