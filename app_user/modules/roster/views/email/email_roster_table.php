@@ -10,6 +10,7 @@
 		</tr>
 	</thead>
 	<tbody>
+    <? if(count($rosters)){ ?>
 	<? foreach($rosters as $roster) { ?>
 		<tr>
 			<td align="left" style="border:1px solid #ccc;"><?=date('d M', strtotime($roster['job_date']));?></td>
@@ -33,6 +34,10 @@
 				<? } ?>
 			</td>
 		</tr>
-	<? } ?>
+	<? } }else { ?>
+    	<tr>
+        	<td align="center" colspan="6" style="border:1px solid #ccc;">Your roster is empty</td>
+        </tr>
+    <?php } ?>
 	</tbody>
 </table>

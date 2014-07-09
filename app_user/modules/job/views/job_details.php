@@ -159,6 +159,11 @@ $(function(){
 	$(document).on('click','.send-email-from-modal',function(){
 		email_apply_for_shift();
 	});
+	
+	//email apply for shift
+	$(document).on('click','#send-sample-email',function(){
+		email_sample_apply_for_shift();
+	});
 })
 
 function sort_shifts(key) {

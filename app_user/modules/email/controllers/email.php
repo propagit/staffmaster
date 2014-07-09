@@ -143,7 +143,7 @@ class Email extends MX_Controller {
 							'company_name' => $company['company_name'],
 							'system_url' => base_url(),
 							'username' => $user['username'],
-							'password' => modules::run('user/reset_password',$user_id)
+							'password' => $params['skip_pwd_reset'] ? 'password' : modules::run('user/reset_password',$user_id)
 							);
 				break;
 				

@@ -740,6 +740,57 @@ class Ajax_shift extends MX_Controller {
 		echo 'sent';
 	}
 	
+	function email_sample_apply_for_shift()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		$this->load->model('roster/roster_model');
+		
+		//get post data 
+		$shift_ids = $this->input->post('selected_module_ids');
+		$email_body = $this->input->post('email_body');
+		$selected_user_ids = $this->input->post('selected_user_ids');
+		$email_template_id = $this->input->post('email_template_select');
+		$sample_email_address = $this->input->post('sample_email_to',true);
+		
+		if($selected_user_ids){
+			$user_ids = json_decode($selected_user_ids);
+			$shift_ids = json_decode($shift_ids);
+			foreach($user_ids as $user_id){
+				//get user
+				$user = $this->user_model->get_user($user_id);
+				//get template info
+				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$company = $this->setting_model->get_profile();
+
+				  //get receiver object
+				  $email_obj_params = array(
+										  'template_id' => $template_info->email_template_id,
+										  'user_id' => $user_id,
+										  'company' => $company
+									  );	
+				  if($template_info->email_template_id == APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID){
+					  $email_obj_params['shift_ids'] = $shift_ids;	
+				  }
+				  
+				  $obj = modules::run('email/get_email_obj',$email_obj_params);
+				  $email_data = array(
+									  'to' => $sample_email_address,
+									  'from' => $template_info->email_from,
+									  'from_text' => $company['email_c_name'],
+									  'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									  'message' => modules::run('email/format_template_body',$email_body,$obj)
+								  );
+				  modules::run('email/send_email',$email_data);
+
+				//break
+				break;
+			}
+		}
+		echo 'sent';
+	}
+	
 	/**
 	*	@name: email_shift_reminder
 	*	@desc: function to email shift reminder to staffs
@@ -788,6 +839,52 @@ class Ajax_shift extends MX_Controller {
 		echo 'sent';
 	}
 	
+	function email_sample_shift_reminder()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		
+		//get post data 
+		$shift_ids = $this->input->post('selected_module_ids');
+		$email_body = $this->input->post('email_body');
+		$selected_user_ids = $this->input->post('selected_user_ids');
+		$email_template_id = $this->input->post('email_template_select');
+		$sample_email_address = $this->input->post('sample_email_to',true);
+		
+		
+		if($selected_user_ids){
+			$user_ids = json_decode($selected_user_ids);
+			$shift_ids = json_decode($shift_ids);
+			foreach($user_ids as $user_id){
+				//get user
+				$user = $this->user_model->get_user($user_id);
+				//get template info
+				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$company = $this->setting_model->get_profile();
+				//get receiver object
+				$email_obj_params = array(
+										'template_id' => $template_info->email_template_id,
+										'user_id' => $user_id,
+										'company' => $company,
+										'shift_ids' => $shift_ids
+									);	
+				$obj = modules::run('email/get_email_obj',$email_obj_params);
+				$email_data = array(
+									'to' => $sample_email_address,
+									'from' => $template_info->email_from,
+									'from_text' => $company['email_c_name'],
+									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									'message' => modules::run('email/format_template_body',$email_body,$obj)
+								);
+				modules::run('email/send_email',$email_data);
+				//break iteration
+				break;
+			}
+		}
+		echo 'sent';
+	}
+		
 	function print_day_shifts() {
 		$content = $this->input->post('content');
 		$date_from = $this->input->post('date_from');

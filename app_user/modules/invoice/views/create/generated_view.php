@@ -316,6 +316,11 @@ $(function(){
 		email_invoice();
 	});
 	
+	//sample email
+	$(document).on('click','#send-sample-email',function(){
+		email_sample_invoice();
+	});
+	
 	$('#btn-email-invoice').on('click',function(){
 		 get_email_model();
 	});
@@ -355,6 +360,26 @@ function email_invoice(){
 		}
 	}); 
 }
+
+
+function email_sample_invoice(){
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/email_sample_invoice",
+		data: $('#send-email-modal-form').serialize(),
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+		}
+	}); 	
+}
+
 <? if ($invoice['status'] != INVOICE_PAID) { ?>
 function edit_invoice() {
 	$.ajax({

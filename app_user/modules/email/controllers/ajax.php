@@ -156,7 +156,7 @@ class Ajax extends MX_Controller {
 	*	@desc: Send sample email to a particular email vai send email modal window UI
 	*	@access: public
 	*	@param: (via POST) user id 
-	*	
+	*	@update: Not in use - sample email send from individual modules instead such as staff, invoice i.e the module that is sending the actual email
 	*/
 	function send_sample_email()
 	{

@@ -288,6 +288,12 @@ $(function(){
 	$(document).on('click','.send-email-from-modal',function(){
 		send_email();
 	});
+	
+	//send sample email
+	//sample email
+	$(document).on('click','#send-sample-email',function(){
+		send_sample_email();
+	});
 
 })
 
@@ -438,6 +444,25 @@ function send_email()
 			setTimeout(function(){
 				$('#email-modal').modal('hide');
 			}, 4000);	
+		  }
+	  });	
+}
+
+function send_sample_email()
+{
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>staff/ajax/send_sample_email",
+		  data: $('#send-email-modal-form').serialize(),
+		  success: function(html) {
+		    $('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);	
 		  }
 	  });	
 }
