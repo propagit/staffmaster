@@ -299,6 +299,8 @@ CREATE TABLE IF NOT EXISTS `company_profile` (
   `bank_account_name` varchar(200) NOT NULL,
   `bank_account_no` varchar(200) NOT NULL,
   `bank_bsb` varchar(20) NOT NULL,
+  `accept_cc` INT NOT NULL DEFAULT '0',
+  `accept_cc_msg` VARCHAR(255) NOT NULL DEFAULT '',
   `super_fund_name` varchar(200) NOT NULL,
   `super_product_id` varchar(200) NOT NULL,
   `super_fund_phone` varchar(200) NOT NULL,

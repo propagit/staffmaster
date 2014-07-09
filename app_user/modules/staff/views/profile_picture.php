@@ -1,4 +1,4 @@
-<?
+<? if ($staff) {
 if(count($photo)>0)
 {
 	$thumb_src = base_url().UPLOADS_URL.'/staff/'.$staff['user_id'].'/thumb/'.$photo['name'];
@@ -18,5 +18,5 @@ else
     </div></a>
 </div>
 <?php
-}
+} }
 ?>

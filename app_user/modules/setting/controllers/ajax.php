@@ -45,6 +45,8 @@ class Ajax extends MX_Controller {
 			'bank_account_name' => $data['bank_account_name'],
 			'bank_account_no' => $data['bank_account_no'],
 			'bank_bsb' => $data['bank_bsb'],
+			'accept_cc' => 0,
+			'accept_cc_msg' => $data['accept_cc_msg'],
 			'super_fund_name' => $data['super_fund_name'],
 			'super_product_id' => $data['super_product_id'],
 			'super_fund_phone' => $data['super_fund_phone'],
@@ -61,6 +63,9 @@ class Ajax extends MX_Controller {
 			'email_c_fax' => $data['fax'],
 			'email_c_website' => $data['website_account'],
 		);
+		if (isset($data['accept_cc'])) {
+			$company_data['accept_cc'] = 1;
+		}
 		if($data['company_id']==0){			
 			$this->setting_model->create_company_profile($company_data);		
 		}

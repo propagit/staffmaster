@@ -186,6 +186,7 @@
                     </table>
                 </td>
             </tr>
+            <? if ($company_profile['accept_cc']) { ?>
             <tr>
             	<td colspan="3">
             	    <b>Credit Card</b>
@@ -193,11 +194,12 @@
                     <table width="100%">
                         <tr>
                             <td valign="top"><img src="<?=base_url();?>assets/img/cc.png"></td>
-                            <td>Call <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?> to pay by Credit Card. An Additional (1.5%) charge will be applied</td>
+                            <td><?=$company_profile['accept_cc_msg'];?></td>
                         </tr>
                     </table>
             	</td>
             </tr>
+            <? } ?>
         </table>
     </div>
 </div>

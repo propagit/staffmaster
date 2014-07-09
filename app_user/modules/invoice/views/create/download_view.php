@@ -210,6 +210,7 @@
                     </table>
                 </td>
             </tr>
+            <? if ($company_profile['accept_cc']) { ?>
             <tr>
             	<td colspan="3" style="padding-top:10px;">
             	    <span class="footer-invoice"><b>Credit Card</b></span>
@@ -217,11 +218,12 @@
                     <table width="100%">
                         <tr>
                             <td valign="top" class="padding-top-5 ccard"><img src="<?=base_url();?>assets/img/cc.png"></td>
-                            <td class="padding-top-5"><span class="footer-invoice">Call <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?> to pay by Credit Card. <br>An Additional (1.5%) charge will be applied</span></td>
+                            <td class="padding-top-5"><span class="footer-invoice"><?=$company_profile['accept_cc_msg'];?></span></td>
                         </tr>
                     </table>
             	</td>
             </tr>
+            <? } ?>
         </table>
         
         

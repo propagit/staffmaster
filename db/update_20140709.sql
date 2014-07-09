@@ -1,0 +1,1 @@
+ALTER TABLE `company_profile` ADD `accept_cc` INT NOT NULL DEFAULT '0' AFTER `bank_bsb`, ADD `accept_cc_msg` VARCHAR(255) NOT NULL DEFAULT '' AFTER `accept_cc`;

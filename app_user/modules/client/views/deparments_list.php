@@ -1,3 +1,4 @@
+<? if (count($departments) > 0) { ?>
 <table class="table table-bordered table-hover table-middle table-expanded">
     <thead>
     <tr class="heading">
@@ -16,3 +17,4 @@
     <? } ?>
     </tbody>
 </table>
+<? } ?>
