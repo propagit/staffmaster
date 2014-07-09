@@ -16,25 +16,26 @@ a client will be able to filter jobs associated to them by the client department
         	<br />
             <form class="form-horizontal" role="form" id="form_create_job">
                 <div class="row">
+                    <p class="col-lg-offset-2 help-block">&nbsp; Enter a unique campaign name that you will be able to search for later.</p>
                     <div class="form-group" id="f_name">
                         <label for="name" class="col-lg-2 control-label">Campaign Name</label>
-                        <div class="col-lg-4">
+                        <div class="col-lg-5">
                             <input type="text" class="form-control" name="name" id="name" placeholder="" />
                         </div>
-                        <div class="col-lg-6"><span class="help-block">Enter a unique campaign name that you will be able to search for later</span></div>
+                        <div class="col-lg-5"><span class="help-block" id="msg-error"></span></div>
                     </div>
                     <div class="form-group" id="f_client_id">
                         <label for="client_id" class="col-lg-2 control-label">Client</label>
-                        <div class="col-lg-4">
+                        <div class="col-lg-5">
                             <?=modules::run('client/field_select', 'client_id', set_value('client_id'));?>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-5">
                         	<span class="help-block"><a><i class="fa fa-plus"></i></a> &nbsp; <a target="_blank" href="<?=base_url();?>client/add">Create New Client</a></span>
                         </div>
                     </div>
                     <div class="form-group hide" id="wp_client_departments">
                     	<label class="col-lg-2 control-label">Department</label>
-                    	<div class="col-lg-4" id="client_departments">
+                    	<div class="col-lg-5" id="client_departments">
                     	</div>
                     </div>
                 </div>
@@ -70,6 +71,9 @@ $(function(){
 				if (!data.ok) {
 					$('#f_' + data.error_id).addClass('has-error');
 					$('#' + data.error_id).focus();
+					if (data.error_id = 'name') {
+						$('#msg-error').html(data.msg);
+					}
 				} else {
 					window.location = '<?=base_url();?>job/details/' + data.job_id;
 				}

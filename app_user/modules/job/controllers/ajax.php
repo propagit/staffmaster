@@ -22,7 +22,12 @@ class Ajax extends MX_Controller {
 	{
 		$input = $this->input->post();
 		if (!$input['name']) {
-			echo json_encode(array('ok' => false, 'error_id' => 'name'));
+			echo json_encode(array('ok' => false, 'error_id' => 'name', 'msg' => 'Please enter a name for the new job'));
+			return;
+		}
+		$job = $this->job_model->get_job_by_name($input['name']);
+		if ($job) {
+			echo json_encode(array('ok' => false, 'error_id' => 'name', 'msg' => 'This name already exists. <a href="' . base_url() . 'job/details/' . $job['job_id'] . '">Go to this job</a>'));
 			return;
 		}
 		if (!$input['client_id']) {
