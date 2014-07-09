@@ -174,6 +174,11 @@ $(function() {
 	$(document).on('click','.send-email-from-modal',function(){
 		email_shift_reminder();
 	});
+	
+	//email apply for shift
+	$(document).on('click','#send-sample-email',function(){
+		email_sample_shift_reminder();
+	});
 
 	//if search filters are already present initiate search
 	<?php if($search_shift_filters['search_job_or_campaign'] == 'shift'){ ?>

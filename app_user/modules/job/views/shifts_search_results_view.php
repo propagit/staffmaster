@@ -164,4 +164,22 @@ function email_shift_reminder(){
 		}
 	}); 
 }
+
+function email_sample_shift_reminder(){
+	//update_ckeditor() function in send_email_modal view file
+	preloading($('#send-email-modal-window'));
+	update_ckeditor();
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>job/ajax_shift/email_sample_shift_reminder",
+		data: $('#send-email-modal-form').serialize(),
+		success: function(html) {
+			$('#wrapper_loading').remove();
+			$('#msg-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+		}
+	}); 
+}
 </script>

@@ -286,5 +286,52 @@ class Ajax extends MX_Controller {
 		echo 'sent';
 	}
 	
+	function email_sample_brief()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		
+		//get post data 
+		$brief_ids = $this->input->post('selected_module_ids');
+		$email_body = $this->input->post('email_body');
+		$selected_user_ids = $this->input->post('selected_user_ids');
+		$email_template_id = $this->input->post('email_template_select');
+		$sample_email_address = $this->input->post('sample_email_to',true);
+		
+		if($selected_user_ids){
+			$user_ids = json_decode($selected_user_ids);
+			$brief_ids = json_decode($brief_ids);
+			$brief_id = $brief_ids[0];
+			foreach($user_ids as $user_id){
+				//get user
+				$user = $this->user_model->get_user($user_id);
+				//get template info
+				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$company = $this->setting_model->get_profile();
+				//get receiver object
+				$email_obj_params = array(
+										'template_id' => $template_info->email_template_id,
+										'user_id' => $user_id,
+										'company' => $company,
+										'brief_id' => $brief_id
+									);	
+				$obj = modules::run('email/get_email_obj',$email_obj_params);
+				$email_data = array(
+									'to' => $sample_email_address,
+									'from' => $template_info->email_from,
+									'from_text' => $company['email_c_name'],
+									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									'message' => modules::run('email/format_template_body',$email_body,$obj)
+								);
+				modules::run('email/send_email',$email_data);
+				
+				//break
+				break;
+			}
+		}
+		echo 'sent';
+	}
+	
 	
 }

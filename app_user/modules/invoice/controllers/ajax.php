@@ -855,6 +855,64 @@ class Ajax extends MX_Controller {
 		echo modules::run('invoice/email_invoice',$params);	
 	}
 	
+	/**
+	*	@name: email_invoice
+	*	@desc: function to email invoice to client
+	*	@access: public
+	*	@param: ([array]) email parameters such as body of email, user id, invoice id
+	*	
+	*/
+	function email_sample_invoice()
+	{
+		$params = $this->input->post();
+		$this->load->model('user/user_model');
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		
+		//get post data from params
+		$selected_module_ids = $params['selected_module_ids'];
+		$email_body = $params['email_body'];
+		$selected_user_ids = $params['selected_user_ids'];
+		$email_template_id = $params['email_template_select'];
+		if($selected_module_ids){
+			$invoice_ids = json_decode($selected_module_ids);
+			foreach($invoice_ids as $invoice_id){
+				//get template info
+				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$company = $this->setting_model->get_profile();
+				//get invoice details
+				$invoice = $this->invoice_model->get_invoice($invoice_id);
+				//get user
+				$user = $this->user_model->get_user($invoice['client_id']);
+				//get receiver object
+				$email_obj_params = array(
+										'template_id' => $template_info->email_template_id,
+										'user_id' => $invoice['client_id'],
+										'company' => $company,
+										'invoice_id' => $invoice_id
+									);	
+				$obj = modules::run('email/get_email_obj',$email_obj_params);
+				//check file for attachment
+				if(!file_exists(UPLOADS_PATH.'/pdf/invoice_'.$invoice_id.'.pdf')){
+					//create attachment	
+					modules::run('invoice/download',$invoice_id,false);
+				}
+				$email_data = array(
+									'to' => $params['sample_email_to'],
+									'from' => $template_info->email_from,
+									'from_text' => $company['email_c_name'],
+									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									'message' => modules::run('email/format_template_body',$email_body,$obj),
+									'attachment' => realpath(__DIR__.'/../../../../public_html/user_assets/'.SUBDOMAIN.'/uploads/pdf/invoice_'.$invoice_id.'.pdf')	
+								);
+				modules::run('email/send_email',$email_data);
+				//send sample email once and then break
+				break;
+			}
+		}
+		echo 'sent';
+	}
+	
 	function edit_invoice() {
 		$invoice_id = $this->input->post('invoice_id');
 		$invoice = $this->invoice_model->get_invoice($invoice_id);

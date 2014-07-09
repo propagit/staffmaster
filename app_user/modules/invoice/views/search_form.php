@@ -117,6 +117,11 @@ $(function(){
 	$(document).on('click','.send-email-from-modal',function(){
 		email_invoice();
 	});
+	
+	//sample email
+	$(document).on('click','#send-sample-email',function(){
+		email_sample_invoice();
+	});
 })
 function search_invoices() {
 	preloading($('#invoice-search-results'));

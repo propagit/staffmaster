@@ -26,7 +26,7 @@
                                           <div class="input-group">
                                               <input type="text" class="form-control" id="sample_email_to" name="sample_email_to">
                                               <span class="input-group-btn">
-                                                <button onclick="send_sample_email();" class="btn btn-default sample-email-btn" type="button"><i class="fa fa-envelope-o"></i></button>
+                                                <button id="send-sample-email" class="btn btn-default sample-email-btn" type="button"><i class="fa fa-envelope-o"></i></button>
                                               </span>
                                             </div><!-- /input-group -->
                                       </div>
@@ -131,7 +131,7 @@ $(function(){
 
 });//ready
 
-function send_sample_email()
+/*function send_sample_email()
 {
 	preloading($('#send-email-modal-window'));
 	update_ckeditor();
@@ -147,7 +147,7 @@ function send_sample_email()
 			}, 3000);
 		  }
 	  });
-}
+}*/
 
 var email_body = CKEDITOR.replace('email_body',{
   height:250

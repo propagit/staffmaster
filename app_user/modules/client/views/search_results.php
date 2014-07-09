@@ -13,7 +13,7 @@
 
 <?php
 	$array = array(
-				array('value' => 'contact-multi-clients','label' =>'<i class="fa fa-envelope-o"></i> Contact Clients'),
+				#array('value' => 'contact-multi-clients','label' =>'<i class="fa fa-envelope-o"></i> Contact Clients'),
 				array('value' => 'delete-multi-clients','label' =>'<i class="fa fa-times"></i> Delete Clients'),
 				array('value' => 'change-multi-status','label' =>'<i class="fa fa-thumbs-o-up"></i> Change Selected Status'),
 				array('value' => 'export-clients','label' =>'<i class="fa fa-download"></i> Export Selected'),
