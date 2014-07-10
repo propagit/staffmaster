@@ -34,7 +34,7 @@ class Ajax extends MX_Controller {
 		else
 		{
 			$this->load->view('search_results', isset($data) ? $data : NULL);
-		}				
+		}
 	}
 	
 	function add_staff()
@@ -1196,14 +1196,19 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{abn_number}', $staff['f_abn'], $value);
 				$value = str_replace('{super_choice}', $s_choice, $value);
 				$value = str_replace('{super_employee_id}', $staff['s_employee_id'], $value);
-				$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
-				if ($staff['s_choice'] == 'employer') # Use product id
+				if ($s_choice == "yes") # Use product id
 				{
-					$value = str_replace('{super_membership_number}', $staff['s_product_id'], $value);
+					$product_id = modules::run('setting/superinformasi', 'super_product_id','');
+					$value = str_replace('{super_membership_number}', $product_id, $value);
+					
+					$product_name = modules::run('setting/superinformasi', 'super_fund_name','');
+					$value = str_replace('{super_fund_name}', $product_name, $value);
+					
 				}
 				else # Use membership number
 				{
 					$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);
+					$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
 				}
 				
 				$value = str_replace('{joined_date}', date('d/m/Y', strtotime($staff['created_on'])), $value);
