@@ -1121,11 +1121,11 @@ class Ajax extends MX_Controller {
 		
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
-		$objPHPExcel->getProperties()->setCreator("Staff Master");
-		$objPHPExcel->getProperties()->setLastModifiedBy("Staff Master");
+		$objPHPExcel->getProperties()->setCreator("StaffBooks");
+		$objPHPExcel->getProperties()->setLastModifiedBy("StaffBooks");
 		$objPHPExcel->getProperties()->setTitle("Staff Data");
 		$objPHPExcel->getProperties()->setSubject("Staff Data");
-		$objPHPExcel->getProperties()->setDescription("Staff Data Excel file, generated from Staff Master.");
+		$objPHPExcel->getProperties()->setDescription("Staff Data Excel file, generated from StaffBooks.");
 		
 		$objPHPExcel->setActiveSheetIndex(0);
 		$i = 0;
@@ -1197,7 +1197,15 @@ class Ajax extends MX_Controller {
 				$value = str_replace('{super_choice}', $s_choice, $value);
 				$value = str_replace('{super_employee_id}', $staff['s_employee_id'], $value);
 				$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
-				$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);
+				if ($staff['s_choice'] == 'employer') # Use product id
+				{
+					$value = str_replace('{super_membership_number}', $staff['s_product_id'], $value);
+				}
+				else # Use membership number
+				{
+					$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);
+				}
+				
 				$value = str_replace('{joined_date}', date('d/m/Y', strtotime($staff['created_on'])), $value);
 				
 				if ($i < 26)
