@@ -268,6 +268,17 @@ class Ajax extends MX_Controller {
 	private function _export_payrun($payrun_id, $export_id) {
 		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		
+		usort($timesheets, function($a, $b) { // anonymous function
+		    // compare numbers only
+		    return $a['external_staff_id'] - $b['external_staff_id'];
+		
+		    // compare numbers or strings
+		    //return strcmp($a['weight'], $b['weight']);
+		
+		    // compare numbers or strings non-case-sensitive
+		    //return strcmp(strtoupper($a['weight']), strtoupper($b['weight']));
+		});
+		
 		$template = modules::run('export/get_template', $export_id);
 		$fields = modules::run('export/get_fields', $export_id);
 		if ($template['level'] == 'staff') {
