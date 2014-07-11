@@ -23,6 +23,7 @@
 <script>
 $(function(){
 	$('#export-payrun').click(function(){
+		$('.bs-modal-lg').modal('hide');
 		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
