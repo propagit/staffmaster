@@ -28,7 +28,7 @@ class Payrun_model extends CI_Model {
 					LEFT JOIN users u ON t.staff_id = u.user_id
 					LEFT JOIN payruns pr ON pr.payrun_id = t.payrun_id
 					WHERE t.payrun_id = '" . $payrun_id . "'
-					ORDER BY s.external_staff_id";
+					ORDER BY s.external_staff_id ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
