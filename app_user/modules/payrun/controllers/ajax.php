@@ -270,7 +270,10 @@ class Ajax extends MX_Controller {
 		
 		usort($timesheets, function($a, $b) { // anonymous function
 		    // compare numbers only
-		    return $a['external_staff_id'] - $b['external_staff_id'];
+		    if (isset($a['external_staff_id'])) {
+			    return $a['external_staff_id'] - $b['external_staff_id'];
+		    }
+		    
 		
 		    // compare numbers or strings
 		    //return strcmp($a['weight'], $b['weight']);
