@@ -19,7 +19,7 @@ class Account extends MX_Controller {
 		switch($method)
 		{
 			case 'phpinfo':
-					phpinfo();
+					var_dump(extension_loaded('curl'));
 				break;
 			#case 'buy_credits':
 			default:					
