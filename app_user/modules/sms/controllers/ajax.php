@@ -42,20 +42,39 @@ class Ajax extends MX_Controller {
 	
 	function send_general_sms() {
 		$user_ids = explode(',', $this->input->post('selected_user_ids'));
+		if (count($user_ids) > modules::run('account/get_credits', 'sms')) {
+			echo json_encode(array('ok' => false, 'msg' => 'Insufficient credits'));
+			return;
+		}
+		error_reporting(0);
+		$count = 0;
 		if (count($user_ids) > 0) {
 			foreach($user_ids as $user_id) {
 				$user = modules::run('user/get_user', $user_id);
 				$to = mobile_format($user['mobile']);
 				$msg = $this->input->post('msg');
 				$this->cbf_model->send_1way_sms($to, $msg);
+				$count++;
 			}
 		}
+		# Take the credits out
+		$this->load->model('account/account_model');
+		$this->account_model->deduct_credits('sms', $count);
+		
+		echo json_encode(array('ok' => true));
 	}
 	
 	function send_shift_request_sms() {
 		$this->load->model('sms_master_model');
 		$this->load->model('job/job_shift_model');
 		$shift_ids = explode(',', $this->input->post('selected_shift_ids'));
+		
+		if (count($shift_ids) > modules::run('account/get_credits', 'sms')) {
+			echo json_encode(array('ok' => false, 'msg' => 'Insufficient credits'));
+			return;
+		}
+		error_reporting(0);
+		$count = 0;
 		if(count($shift_ids) > 0){
 			foreach($shift_ids as $shift_id) {
 				$shift = modules::run('job/shift/get_shift', $shift_id);
@@ -77,6 +96,9 @@ class Ajax extends MX_Controller {
 					$msg = str_replace('{CompanyName}', $company['company_name'], $msg);
 					$twoway = true;
 					$msg_id = $this->cbf_model->send_2ways_sms($to, $msg);
+					
+					$count++;
+					
 					$subdomain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
 					$data = array(
 						'msg_id' => $msg_id,
@@ -96,6 +118,12 @@ class Ajax extends MX_Controller {
 				}				
 			}
 		}
+		# Take the credits out
+		$this->load->model('account/account_model');
+		$this->account_model->deduct_credits('sms', $count);
+		
+		echo json_encode(array('ok' => true));
+		
 	}
 	
 	function calculate_amount()

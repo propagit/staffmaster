@@ -14,19 +14,26 @@
 	<div class="alert alert-success add-top-margin-20 hide" id="msg-sms-sent-successfully">
 		<i class="fa fa-check"></i> &nbsp; SMS Successfully Sent	
 	</div>
+	<div class="alert alert-danger add-top-margin-20 hide" id="msg-sms-sent-failed"></div>
 </form>
 <div id="sms-receiver-list" class="email-modal-receiver-list"></div>
 <script>
 $(function(){
 	$('#btn-send-sms').click(function(){
-		setTimeout(function(){
-			$('#msg-sms-sent-successfully').removeClass('hide');
-		}, 200);
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>sms/ajax/send_shift_request_sms",
 			data: $('#send-sms-form').serialize(),
-			success: function(html) {
+			success: function(data) {
+				data = $.parseJSON(data);
+				if (!data.ok) {
+					$('#msg-sms-sent-failed').html('<i class="fa fa-times"></i> &nbsp;' + data.msg);
+					$('#msg-sms-sent-failed').removeClass('hide');
+				} else {
+					setTimeout(function(){
+						$('#msg-sms-sent-successfully').removeClass('hide');
+					}, 200);
+				}
 			}
 		})
 	});
