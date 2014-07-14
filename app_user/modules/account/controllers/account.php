@@ -47,10 +47,10 @@ class Account extends MX_Controller {
 		$this->load->view('box_credits', isset($data) ? $data : NULL);
 	}
 
-	function get_credits()
+	function get_credits($type='system')
 	{
 		$this->load->model('account_model');
-		return $this->account_model->get_credits();
+		return $this->account_model->get_credits($type);
 	}
 	
 }

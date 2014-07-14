@@ -2,38 +2,36 @@
 <div class="col-md-12">
 	<div class="box top-box">
 		<div class="pull-right">
-        	<?=modules::run('account/box_credits');?>
-        </div>
-		<h2>Buy Credits</h2>
-        <p>The StaffBooks system uses a credit based system where by you only pay for what you use.<br />You can top up your balance any time. The price matrix provides a discount based on bulk purchases.</p>
-	</div>
+			<div class="box_credits pull-right">
+				<div class="title_bc">SMS Credits</div>
+				<div class="content_bc">
+					<h2><?=modules::run('account/get_credits', 'sms');?></h2>
+					<a href="<?=base_url();?>sms/topup">Buy Credits</a>
+				</div>
+			</div>
+			<div class="box_credits pull-right">
+    			<div class="title_bc">Buy Bulk Credits</div>
+    			<div class="content_bc">
+    				<h2>Call Us</h2>&nbsp; 
+    			</div>
+    		</div>
+			<div class="box_credits pull-right">
+    			<div class="title_bc">Buy Credits</div>
+    			<div class="content_bc">
+    				<h2>$0.10</h2>
+    				per credit
+    			</div>
+    		</div>
+		</div>
+   		 <h2>Buy SMS Credits</h2>		 
+    </div>
 </div>
 <!--end top box-->
 
-
+<!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
-    	<div class="inner-box">
-    		<h2>Pricing & Charges</h2>
-    		<p>1 system credit allows you to create 1 shift for 1 staff</p>
-    		<div class="row">
-    		<? foreach($prices as $price) { ?>
-				<div class="box_credits col-md-2">
-	    			<div class="title_bc">Buy <?=$price['min'];?>-<?=$price['max'];?> Credits</div>
-	    			<div class="content_bc">
-	    				<h2>$<?=money_format('%i', $price['unit_price']);?></h2>
-	    				per credit
-	    			</div>
-	    		</div>
-    		<? } ?>
-    			<div class="box_credits col-md-2">
-	    			<div class="title_bc">Buy 25,000+ Credits</div>
-	    			<div class="content_bc">
-	    				<h2>Call Us</h2>&nbsp; 
-	    			</div>
-	    		</div>
-    		</div>
-    		<br /><br />
+    	<div class="inner-box">    		
     		<form class="form-horizontal" id="form_buy_credits" role="form">
     		<div class="row">
     			<div class="col-md-6 remove-left-padding">
@@ -182,48 +180,20 @@
 		</div>
 	</div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content" id="credit-alert">
-			<div class="modal-body">
-				<h2 class="text-danger">System Alert!</h2>
-				<p>Your credit balance is currently <b class="text-danger"><?=$credits;?></b>. To top up your credit balance and continue using the system please update your credit balance.</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-core" data-dismiss="modal">Buy Credits</button>
-			</div>
-		</div>		
-	</div>
-</div>
-
 <script>
 $(function(){
-	<? if ($credits < 0) { ?>
-	$('#alertModal').modal({
-		show: true
-	})
-	<? } ?>
 	$('#btn-add-credits').click(function(){
 		calculate_amount();
 	});
 	$('#btn-buy-credits').click(function(){
 		validate_form();
-		/*
-$('#waitingModal').modal('show');
-		setTimeout(function() {
-			buy_credits();
-		}, 2000);
-*/
 	});
 	$('#waitingModal').modal({
 		backdrop: 'static',
 		keyboard: true,
 		show: false
 	})
-});
+})
 function validate_form() {
 	$.ajax({
 		type: "POST",
@@ -268,7 +238,7 @@ function calculate_amount() {
 	var credits = $('#credits').val();
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>account/ajax/calculate_amount",
+		url: "<?=base_url();?>sms/ajax/calculate_amount",
 		data: {credits: credits},
 		success: function(html) {
 			if (!html) {

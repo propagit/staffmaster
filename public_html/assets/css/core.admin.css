@@ -233,6 +233,9 @@ a.default {
 	min-width: 200px;
 	margin-bottom:15px;
 }
+.box_credits.pull-right {	
+	margin-left: 15px;
+}
 .box_credits .title_bc {
 	background: #00B1EB;
 	color: #fff;

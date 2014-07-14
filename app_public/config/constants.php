@@ -44,6 +44,10 @@ define('DB_PASSWORD', 'root');
 define('MASTER_DB', 'smcloud');
 
 define('LIVE_SERVER', false);
+define('VIRTUAL_NUMBER', '447624803738');
+define('CBF_USER', 'staffbooks');
+define('CBF_PASS', 'staffb00ks');
+define('SMS_PRICE', 0.1); # 10 cents per sms
 
 define('ACCOUNT_ACTIVE', 1);
 define('ACCOUNT_INACTIVE', -1);

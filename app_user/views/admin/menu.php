@@ -52,10 +52,11 @@ $menu = array(
 		array('path' => 'form', 'icon' => 'fa-file-text-o', 'title' => 'Form Builder'),
 		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
+		array('path' => 'sms', 'icon' => 'fa-mobile', 'title' => 'SMS Settings'),
+		array('path' => 'setting/system_settings', 'icon' => 'fa-cog', 'title' => 'Other Settings'),
 		#array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
 		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs'),
-		array('path' => 'support/admin_support', 'icon' => 'fa-phone', 'title' => 'Support'),
-		array('path' => 'setting/system_settings', 'icon' => 'fa-cog', 'title' => 'System Settings')
+		array('path' => 'support/admin_support', 'icon' => 'fa-phone', 'title' => 'Support')
 	))
 );
 ?>

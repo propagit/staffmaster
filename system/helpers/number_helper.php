@@ -24,9 +24,9 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/helpers/number_helper.html
  */
-if ( ! function_exists('mobile_phone'))
+if ( ! function_exists('mobile_format'))
 {
-	function mobile_phone($mobile)
+	function mobile_format($mobile)
 	{
 		$mobile = str_replace("+","",$mobile);
 		$mobile = str_replace(".","",$mobile);

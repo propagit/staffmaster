@@ -60,7 +60,7 @@ body {
       	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=$purchase_id;?></span></td></td>
       </tr>
       <tr>
-      	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Credits purchased</span></td>
+      	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($credit_type);?> Credits purchased</span></td>
       	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=$credits;?></span></td>
       </tr>
       <tr>

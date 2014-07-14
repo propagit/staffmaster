@@ -74,7 +74,7 @@ class Ajax extends MX_Controller {
 			$this->job_shift_model->delete_job_shift($shift['shift_id']);
 		}
 		$this->load->model('account_model');
-		$this->account_model->add_credits($credits);
+		$this->account_model->add_credits('system', $credits);
 				
 		
 		# Delete all timesheet in that job
@@ -118,7 +118,13 @@ class Ajax extends MX_Controller {
 			# Job start date can not be in the past
 			echo json_encode(array('ok' => false, 'error_id' => 'start_date', 'msg' => 'Please enter a start date/time'));
 			return;
-		}	
+		}
+		if ($this->is_client && strtotime($data['start_date']) <= now() )
+		{
+			# Job start date can not be in the past
+			echo json_encode(array('ok' => false, 'error_id' => 'start_date', 'msg' => 'You cannot create shift in the past'));
+			return;
+		}
 		
 		$filter_data['start_time'] = strtotime($data['start_date']);		
 		$filter_data['finish_time'] = strtotime($data['finish_time']);
@@ -192,7 +198,7 @@ class Ajax extends MX_Controller {
 
 		# Take the credits out
 		$this->load->model('account/account_model');
-		$this->account_model->deduct_credits($count);
+		$this->account_model->deduct_credits('system', $count);
 	
 		echo json_encode(array('ok' => true, 'job_date' => $filter_data['job_date']));
 	}
@@ -688,7 +694,7 @@ class Ajax extends MX_Controller {
 			$this->job_shift_model->delete_job_shift($shift_id);
 		}
 		$this->load->model('account_model');
-		$this->account_model->add_credits($credits);
+		$this->account_model->add_credits('system', $credits);
 		if ($shift)
 		{
 			$result['job_id'] = $shift['job_id'];
@@ -750,6 +756,14 @@ class Ajax extends MX_Controller {
 					$ts = strtotime($date);
 					$new_shift['job_date'] = date('Y-m-d', $ts);
 					$start_time = strtotime(date('Y-m-d', $ts) . ' ' . date('H:i', $shift['start_time']));
+					
+					if ($this->is_client && $start_time <= now() )
+					{
+						# Job start date can not be in the past
+						echo json_encode(array('ok' => false, 'error_id' => 'start_date', 'msg' => 'You cannot copy shift to the past'));
+						return;
+					}
+					
 					$finish_time = $start_time + $shift['finish_time'] - $shift['start_time'];
 					$new_shift['start_time'] = $start_time;
 					$new_shift['finish_time'] = $finish_time;
@@ -816,7 +830,7 @@ class Ajax extends MX_Controller {
 			
 			# Take the credits out
 			$this->load->model('account/account_model');
-			$this->account_model->deduct_credits($count);
+			$this->account_model->deduct_credits('system', $count);
 			echo json_encode(array('ok' => true, 'date' => $date));
 		}
 		else

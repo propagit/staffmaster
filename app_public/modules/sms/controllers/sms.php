@@ -7,21 +7,99 @@ class Sms extends MX_Controller {
 		parent::__construct();
 	}
 	
-	function incoming() 
-	{
-		$input = $_POST['INCOMING'];
-		$data = $this->processIncoming($input);
-		
-		$from = $data[0][1]; # Sender number
-		$to = $data[0][2]; # Virtual number
-		$text = pack("H*", $data[0][7]); # Text
-		$received_on = $data[0][5]; # Timestamp
-		$udh = $data[0][6];
-		
-		$cc = $this->Contact_model->get_user_optout($text);
+	function init() {
+		$errstr = '';
+	
+		$username = urlencode(CBF_USER);
+		$password = urlencode(CBF_PASS);
+	
+		$request = "http://sms1.cardboardfish.com:9001/ClientDR/ClientDR?&UN=${username}&P=${password}";
+		$ch = curl_init($request);
+	
+		if (!$ch) {
+			$errstr = "Could not connect to server.";
+			return false;
+		}
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		$serverresponse = curl_exec($ch);
+	
+		if ($serverresponse == "") {
+			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$errstr = "HTTP error: $code\n";
+			return false;
+		}
+	
+		$datas = $this->processIncoming($serverresponse);
+		if (is_array($datas)) {
+			foreach($datas as $data) {
+				$result = array(
+					'sender' => $data[1], # Sender number
+					'receiver' => $data[2], # Virtual number
+					'msg' => pack("H*", $data[7]),
+					'received_on' => date('Y-m-d H:i:s', $data[5])
+				);
+				
+				$this->load->model('sms_model');
+				# Log the response
+				$response_id = $this->sms_model->insert_response($result);
+				
+				# Now checking the request
+				$code = substr($result['msg'], 1);
+				$ans = substr($result['msg'], 0, 1);
+				
+				$request = $this->sms_model->get_request($result['sender'], $code);
+				if ($request) {
+				
+					# Update: request is answered
+					$this->sms_model->update_request($request['request_id'], array('processed' => 1));
+					
+					
+					$this->load->model('account_sms_model');
+					# Get shift information
+					$shift = $this->account_sms_model->get_job_shift($request['subdomain'], $request['shift_id']);
+					
+					if ($shift['staff_id'] != $request['user_id']) # Invalid code
+					{
+						$invalid_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 3);
+						if ($invalid_sms['status']) # Active
+						{
+							$this->load->model('cbf_model');
+														
+							$msg = $invalid_sms['msg'];
+							$msg = str_replace('{Code}', $result['msg'], $msg);
+							$this->cbf_model->send_2ways_sms($data[1], $msg);
+						}
+					}
+					else # Valid code
+					{
+						if (strtolower($ans) == 'y') # Confirm
+						{
+							$status = 2; # SHIFT_CONFIRMED
+							$confirm_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 2);
+							if ($confirm_sms['status']) # Active
+							{
+								$this->load->model('cbf_model');
+								
+								$msg = $confirm_sms['msg'];
+								$msg = str_replace('{Date}', date('d/m/Y', $shift['start_time']), $msg);
+								$msg = str_replace('{StartTime}', date('H:i', $shift['start_time']), $msg);
+								$msg = str_replace('{FinishTime}', date('H:i', $shift['finish_time']), $msg);
+								$this->cbf_model->send_2ways_sms($data[1], $msg);
+							}
+						} 
+						else # Reject 
+						{
+							$status = -1; # SHIFT_REJECTED
+						}
+						$this->account_sms_model->update_job_shift($request['subdomain'], $request['shift_id'], $request['user_id'], $status);
+					}					
+				}
+			}
+		}
 		
 		
 	}
+	
 	
 	function processIncoming ($input) 
 	{

@@ -20,14 +20,15 @@ SET time_zone = "+07:00";
 --
 
 CREATE TABLE `account` (
-  `credits` bigint(20) NOT NULL
+  `system_credits` bigint(20) NOT NULL,
+  `sms_credits` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`credits`) VALUES
+INSERT INTO `account` (`system_credits`) VALUES
 (100);
 
 
@@ -1411,6 +1412,8 @@ CREATE TABLE IF NOT EXISTS `job_shifts` (
   `shift_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `status` tinyint(4) NOT NULL COMMENT '-2: deleted, -1: rejected, 0: not assigned, 1: unconfirmed, 2: confirmed, 3: finished',
   `is_alert` TINYINT NOT NULL COMMENT '0: no, 1: yes',
+  `sms_sent` TINYINT NOT NULL DEFAULT '0',
+  `sms_sent_on` datetime NOT NULL,
   `job_id` bigint(20) NOT NULL,
   `staff_id` bigint(20) NOT NULL DEFAULT '0',
   `supervisor_id` bigint(20) NOT NULL,
@@ -1575,6 +1578,7 @@ CREATE TABLE IF NOT EXISTS `modules_mvc` (
 CREATE TABLE `orders` (
   `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `order_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `credit_type` VARCHAR(100) NOT NULL,
   `credits` bigint(20) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
   `result` varchar(200) NOT NULL,

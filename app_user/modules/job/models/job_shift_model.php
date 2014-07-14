@@ -45,6 +45,12 @@ class Job_shift_model extends CI_Model {
 	{
 		if (count($data) > 0)
 		{
+			if (isset($data['staff_id'])) {
+				$shift = $this->get_job_shift($shift_id);
+				if ($data['staff_id'] != $shift['staff_id']) {
+					$data['sms_sent'] = 0;
+				}				
+			}
 			$log_data = array(
 				'module' => $this->module,
 				'object' => $this->object,

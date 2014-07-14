@@ -2,15 +2,6 @@
 
 class Cbf_model extends CI_Model {
 	
-	function send_1way_sms($destination, $message) {
-		$sender = VIRTUAL_NUMBER;
-		$company = modules::run('setting/company_profile');
-		if ($company['company_name']) {
-			$sender = $company['company_name'];
-		}
-		return $this->send_sms($destination, $sender, $message, false);
-	}
-	
 	# Send two way sms message
 	function send_2ways_sms($destination, $message) {
 		return $this->send_sms($destination, VIRTUAL_NUMBER, $message, true);

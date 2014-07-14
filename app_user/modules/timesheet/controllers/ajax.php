@@ -24,15 +24,17 @@ class Ajax extends MX_Controller {
 			$data_user_staff = array('last_worked_date' => $shift['job_date'].' 00:00:00');
 			$this->staff_model->update_staff($shift['staff_id'],$data_user_staff);
 			
-			unset($shift['status']);
-			unset($shift['created_on']);
-			unset($shift['modified_on']);
-			unset($shift['payrate_type']);			
-			unset($shift['is_alert']);			
-			unset($shift['information_sheet']);
+			$copy_fields = array('shift_id','job_id','staff_id','supervisor_id',
+					'job_date','start_time','finish_time','break_time',
+					'venue_id','role_id','uniform_id','payrate_id','expenses');
+					
+			$timesheet = array();
+			foreach($copy_fields as $field) {
+				$timesheet[$field] = $shift[$field];
+			}
 			$job = modules::run('job/get_job', $shift['job_id']);
-			$shift['client_id'] = $job['client_id'];
-			$timesheet_id = $this->timesheet_model->insert_timesheet($shift);
+			$timesheet['client_id'] = $job['client_id'];
+			$timesheet_id = $this->timesheet_model->insert_timesheet($timesheet);
 			#$this->update_timesheet_hour_rate($timesheet_id);
 		}
 	}

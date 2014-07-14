@@ -58,6 +58,7 @@ class Ajax extends MX_Controller {
 		
 		# Record order		
 		$order = array(
+			'credit_type' => 'system',
 			'credits' => $credits,
 			'total_amount' => $total,
 			'firstname' => $input['firstname'],
@@ -87,7 +88,7 @@ class Ajax extends MX_Controller {
 		if ($result) # Successful transaction
 		{
 			# Add credits
-			$this->account_model->add_credits($credits);
+			$this->account_model->add_credits('system', $credits);
 			# Send the receipt
 			$order['purchase_id'] = 'SBC-' . $this->user['user_id'] . '-' . $order_id;
 			$this->send_receipt_email($order);

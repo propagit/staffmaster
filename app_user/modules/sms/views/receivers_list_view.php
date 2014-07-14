@@ -3,14 +3,14 @@
     <thead>
     <tr class="heading">
         <th class="left">Receiver</th>
-        <th class="center col-md-3">Mobile Phone</th>
+        <th class="left">Mobile Phone</th>
     </tr>
     </thead>
     <tbody>
 	<? foreach($users as $user) { ?>
 	<tr>
-		<td><?=$user['first_name'] . ' ' . $user['last_name'];?></td>
-		<td><?=($user['mobile'] != '') ? $user['mobile'] : 'Not provided';?></td>
+		<td class="left"><?=$user['first_name'] . ' ' . $user['last_name'];?></td>
+		<td class="left"><?=($user['mobile'] != '') ? $user['mobile'] : 'Not provided';?></td>
 	</tr>
 	<? } ?>
     </tbody>

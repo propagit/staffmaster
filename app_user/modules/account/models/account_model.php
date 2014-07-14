@@ -2,23 +2,23 @@
 
 class Account_model extends CI_Model {
 	
-	function get_credits()
+	function get_credits($type)
 	{
 		$query = $this->db->get('account');
 		$result = $query->first_row('array');
-		return (int) $result['credits'];
+		return (int) $result[$type . '_credits'];
 	}
 	
-	function add_credits($credits)
+	function add_credits($type, $credits)
 	{
-		$credits += $this->get_credits();
-		return $this->db->update('account', array('credits' => $credits));
+		$credits += $this->get_credits($type);
+		return $this->db->update('account', array($type . '_credits' => $credits));
 	}
 	
-	function deduct_credits($credits)
+	function deduct_credits($type, $credits)
 	{
-		$credits = $this->get_credits() - $credits;
-		return $this->db->update('account', array('credits' => $credits));
+		$credits = $this->get_credits($type) - $credits;
+		return $this->db->update('account', array($type . '_credits' => $credits));
 	}
 	
 	function create_order($data)
