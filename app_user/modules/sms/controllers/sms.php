@@ -15,11 +15,20 @@ class Sms extends MX_Controller {
 		{
 			case 'topup':
 					$this->topup_view();
-			break;
+				break;
+			case 'test':
+					$this->test();
+				break;
 			default:
 					$this->main_view();
-			break;
+				break;
 		}
+	}
+	function test() {
+		$to = '6402133066';
+		$msg = 'test';
+		$a = $this->cbf_model->send_1way_sms($to, $msg);
+		var_dump($a);
 	}
 	
 	function main_view() 
