@@ -11,9 +11,6 @@ class Account extends MX_Controller {
 	{
 		switch($method)
 		{
-			case 'php_info':
-					phpinfo();
-				break;
 			case 'setup':
 				$this->setup($param1, $param2);
 				break;
