@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Cbf_model extends CI_Model {
+	var $url = 'https://sms1.cardboardfish.com:9444/HTTPSMS?';
+	#var $url = 'http://sms1.cardboardfish.com:9001/HTTPSMS?';
 	
 	function send_1way_sms($destination, $message) {
 		$sender = VIRTUAL_NUMBER;
@@ -98,7 +100,7 @@ class Cbf_model extends CI_Model {
 			$msg = urlencode($sms->message);
 		}
 		
-		$request = "http://sms1.cardboardfish.com:9001/HTTPSMS?S={$systemtype}&UN=${username}&P=${password}&DA={$sms->dest_addr}&SA={$sms->source_addr}&M=${msg}";
+		$request = $this->url ."S={$systemtype}&UN=${username}&P=${password}&DA={$sms->dest_addr}&SA={$sms->source_addr}&M=${msg}";
 		if (!$sms->source_addr_ton) {
 			preg_match("/\w/", $sms->source_addr, $matches);
 			if ($matches) {
