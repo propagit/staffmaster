@@ -45,7 +45,7 @@ class Cbf_model extends CI_Model {
 			# Need to somehow initialize this sms object
 			$sms = new CBFSMS($batchda, $source, $message, $source_addr_ton, $dcs, $dr, $udh, $user_reference, $validity_period, $delay_until, $local_time);
 			$batchreplies = $this->send_sms_object($sms);
-			return $batchreplies; # Debug
+			#return $batchreplies; # Debug
 				
 			if (!$batchreplies) {
 				if ($errcode == -15) {
@@ -116,6 +116,7 @@ class Cbf_model extends CI_Model {
 		$request .= $this->includeif ($sms->validity_period, "&VP=");
 		$request .= $this->includeif ($sms->delay_until, "&DU=");
 		$request .= $this->includeif ($sms->local_time, "&LT=");
+		
 		# echo "$request\n";
 		$ch = curl_init($request);
 		#return $request;
@@ -564,6 +565,4 @@ class CBFSMS {
             }
         }
     }
-
 }
-?>

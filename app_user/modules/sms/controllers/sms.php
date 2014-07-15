@@ -25,10 +25,36 @@ class Sms extends MX_Controller {
 		}
 	}
 	function test() {
-		$to = '6402133066';
-		$msg = 'test';
-		$a = $this->cbf_model->send_1way_sms($to, $msg);
+		$to = '61402133066';
+		$from = 'Propagate';
+		$msg = 'Hello how are you!';
+		$a = $this->send_1way_sms($to, $msg);
 		var_dump($a);
+		
+	}
+	
+	function send_1way_sms($to, $message) {
+		$this->load->library('cbf');
+		$sendsms = $this->cbf->load();
+		
+		$sender = VIRTUAL_NUMBER;
+		$company = modules::run('setting/company_profile');
+		if ($company['company_name']) {
+			$sender = $company['company_name'];
+		}
+		
+		$sendsms->setDA($to);
+		$sendsms->setSA($sender);
+		$sendsms->setDR("1");
+		$sendsms->setMSG($message);
+		
+		return $sendsms->send_sms_object();
+	}
+	
+	function send_2ways_sms($to, $message) {
+		$this->load->library('cbf');
+		$sendsms = $this->cbf->load();
+		$responses = $sendsms->send_sms ($to, VIRTUAL_NUMBER, $message, true);
 	}
 	
 	function main_view() 
