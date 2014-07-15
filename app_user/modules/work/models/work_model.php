@@ -72,6 +72,9 @@ class Work_model extends CI_Model {
 					MONTH(`job_date`) AS `month` 
 				FROM `job_shifts` 
 					WHERE `job_date` >= '" . $active_month . "' 
+					AND (role_id = 0 OR (role_id != 0 AND role_id IN (
+						SELECT attribute_role_id FROM staff_roles WHERE user_id = " . $this->user_id . "
+						)))
 					AND `status` IN (" . SHIFT_REJECTED . "," . SHIFT_UNASSIGNED . "," . SHIFT_UNCONFIRMED . ")
 					GROUP BY `year`, `month`";
 		$query = $this->db->query($sql);
@@ -93,6 +96,9 @@ class Work_model extends CI_Model {
 	function get_work_days($active_month) {
 		$sql = "SELECT `job_date`, count(*) as `shifts_count` FROM `job_shifts`
 				WHERE `job_date` LIKE '" . $active_month . "%'
+				AND (role_id = 0 OR (role_id != 0 AND role_id IN (
+						SELECT attribute_role_id FROM staff_roles WHERE user_id = " . $this->user_id . "
+						)))
 				AND `status` IN (" . SHIFT_REJECTED . "," . SHIFT_UNASSIGNED . "," . SHIFT_UNCONFIRMED . ")
 				AND `job_date` >= '" . date('Y-m-d') . "'
 				GROUP BY `job_date`";
@@ -104,6 +110,9 @@ class Work_model extends CI_Model {
 		$sql = "SELECT js.*, j.client_id FROM `job_shifts` js
 				LEFT JOIN `jobs` j ON j.job_id = js.job_id
 				WHERE js.`job_date` = '" . $date . "'
+				AND (js.role_id = 0 OR (js.role_id != 0 AND js.role_id IN (
+						SELECT attribute_role_id FROM staff_roles WHERE user_id = " . $this->user_id . "
+						)))
 				AND js.`status` IN (" . SHIFT_REJECTED . "," . SHIFT_UNASSIGNED . "," . SHIFT_UNCONFIRMED . ")";
 		$query = $this->db->query($sql);
 		return $query->result_array();
