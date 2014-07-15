@@ -32,12 +32,15 @@ class Sms extends MX_Controller {
 		$datas = $this->processIncoming($serverresponse);
 		if (is_array($datas)) {
 			foreach($datas as $data) {
+				#var_dump($data);
+			
 				$result = array(
 					'sender' => $data[1], # Sender number
 					'receiver' => $data[2], # Virtual number
 					'msg' => pack("H*", $data[7]),
 					'received_on' => date('Y-m-d H:i:s', $data[5])
 				);
+				#var_dump($result);
 				
 				$this->load->model('sms_model');
 				# Log the response
@@ -63,11 +66,11 @@ class Sms extends MX_Controller {
 						$invalid_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 3);
 						if ($invalid_sms['status']) # Active
 						{
-							$this->load->model('cbf_model');
+							#$this->load->model('cbf_model');
 														
 							$msg = $invalid_sms['msg'];
 							$msg = str_replace('{Code}', $result['msg'], $msg);
-							$this->cbf_model->send_2ways_sms($data[1], $msg);
+							#$this->cbf_model->send_2ways_sms($data[1], $msg);
 						}
 					}
 					else # Valid code
@@ -78,13 +81,13 @@ class Sms extends MX_Controller {
 							$confirm_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 2);
 							if ($confirm_sms['status']) # Active
 							{
-								$this->load->model('cbf_model');
+								#$this->load->model('cbf_model');
 								
 								$msg = $confirm_sms['msg'];
 								$msg = str_replace('{Date}', date('d/m/Y', $shift['start_time']), $msg);
 								$msg = str_replace('{StartTime}', date('H:i', $shift['start_time']), $msg);
 								$msg = str_replace('{FinishTime}', date('H:i', $shift['finish_time']), $msg);
-								$this->cbf_model->send_2ways_sms($data[1], $msg);
+								#$this->cbf_model->send_2ways_sms($data[1], $msg);
 							}
 						} 
 						else # Reject 
@@ -123,5 +126,18 @@ class Sms extends MX_Controller {
 			array_push($to_return, $field);
 		}
 		return $to_return;
-	}	
+	}
+	
+	function send_1way_sms($to, $message) {
+		$this->load->library('cbf');
+		$sendsms = $this->cbf->load();
+		
+		$sendsms->setDA($to);
+		$sendsms->setSA(VIRTUAL_NUMBER);
+		#$sendsms->setDR("1");
+		$sendsms->setMSG($message);
+		$sendsms->setST("5");
+		
+		return $sendsms->send_sms_object();
+	}
 }

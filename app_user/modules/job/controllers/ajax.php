@@ -753,6 +753,8 @@ class Ajax extends MX_Controller {
 					unset($new_shift['shift_id']);
 					unset($new_shift['created_on']);
 					unset($new_shift['modified_on']);
+					unset($new_shift['sms_sent']);
+					unset($new_shift['sms_sent_on']);
 					$ts = strtotime($date);
 					$new_shift['job_date'] = date('Y-m-d', $ts);
 					$start_time = strtotime(date('Y-m-d', $ts) . ' ' . date('H:i', $shift['start_time']));

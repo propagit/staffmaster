@@ -7,7 +7,6 @@ class Ajax extends MX_Controller {
 	{
 		parent::__construct();
 		$this->user = $this->session->userdata('user_data');
-		$this->load->model('cbf_model');
 		$this->load->model('sms_model');
 	}
 	
@@ -53,7 +52,7 @@ class Ajax extends MX_Controller {
 				$user = modules::run('user/get_user', $user_id);
 				$to = mobile_format($user['mobile']);
 				$msg = $this->input->post('msg');
-				$this->cbf_model->send_1way_sms($to, $msg);
+				modules::run('sms/send_1way_sms', $to, $msg);
 				$count++;
 			}
 		}
@@ -94,21 +93,22 @@ class Ajax extends MX_Controller {
 					$msg = str_replace('{Code}', $code, $msg);
 					$company = modules::run('setting/company_profile');
 					$msg = str_replace('{CompanyName}', $company['company_name'], $msg);
-					$twoway = true;
-					$msg_id = $this->cbf_model->send_2ways_sms($to, $msg);
+					
+					$result = modules::run('sms/send_2ways_sms', $to, $msg);
 					
 					$count++;
 					
-					$subdomain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
-					$data = array(
-						'msg_id' => $msg_id,
-						'code' => $code,
-						'subdomain' => $subdomain,
-						'shift_id' => $shift_id,
-						'user_id' => $user['user_id'],
-						'receiver' => $to
-					);					
-					if (strpos($msg_id, 'OK') !== false) {
+									
+					if (is_array($result)) {
+						$subdomain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
+						$data = array(
+							'msg_id' => $result[0],
+							'code' => $code,
+							'subdomain' => $subdomain,
+							'shift_id' => $shift_id,
+							'user_id' => $user['user_id'],
+							'receiver' => $to
+						);	
 						$this->sms_master_model->insert_request($data);
 						$this->job_shift_model->update_job_shift($shift_id, array(
 							'sms_sent' => 1,

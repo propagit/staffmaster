@@ -5,7 +5,6 @@ class Sms extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('cbf_model');
 		$this->load->model('sms_model');
 	}
 	
@@ -26,9 +25,8 @@ class Sms extends MX_Controller {
 	}
 	function test() {
 		$to = '61402133066';
-		$from = 'Propagate';
 		$msg = 'Hello how are you!';
-		$a = $this->send_1way_sms($to, $msg);
+		$a = $this->send_2ways_sms($to, $msg);
 		var_dump($a);
 		
 	}
@@ -45,8 +43,9 @@ class Sms extends MX_Controller {
 		
 		$sendsms->setDA($to);
 		$sendsms->setSA($sender);
-		$sendsms->setDR("1");
+		#$sendsms->setDR("1");
 		$sendsms->setMSG($message);
+		$sendsms->setST("5");
 		
 		return $sendsms->send_sms_object();
 	}
@@ -54,7 +53,14 @@ class Sms extends MX_Controller {
 	function send_2ways_sms($to, $message) {
 		$this->load->library('cbf');
 		$sendsms = $this->cbf->load();
-		$responses = $sendsms->send_sms ($to, VIRTUAL_NUMBER, $message, true);
+		
+		$sendsms->setDA($to);
+		$sendsms->setSA(VIRTUAL_NUMBER);
+		#$sendsms->setDR("1");
+		$sendsms->setMSG($message);
+		$sendsms->setST("1");
+		
+		return $sendsms->send_sms_object();
 	}
 	
 	function main_view() 
