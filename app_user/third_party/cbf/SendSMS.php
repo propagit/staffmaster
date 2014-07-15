@@ -280,7 +280,7 @@ class SendSMS {
 	    
 	    
 	    $serverresponse = curl_exec($ch);
-		
+		return curl_error($ch);
 		return $serverresponse;
 		
 	    if (!$serverresponse) {
