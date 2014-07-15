@@ -270,7 +270,6 @@ class SendSMS {
 	    $request .= $this->includeif ($this->local_time, "&LT=");
 	    # echo "$request\n";
 	    $ch = curl_init($request);
-		return $ch;
 		
 	    if (!$ch) {
 	        $this->errstr = "Could not connect to server.";
@@ -278,7 +277,9 @@ class SendSMS {
 	    }
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	    $serverresponse = curl_exec($ch);
-	
+		
+		return $serverresponse;
+		
 	    if (!$serverresponse) {
 	        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	        $this->errstr = "HTTP error: $code\n";
