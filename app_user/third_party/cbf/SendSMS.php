@@ -249,8 +249,9 @@ class SendSMS {
 	    } else {
 	        $msg = urlencode($this->message);
 	    }
-	
-	    $request = "http://sms1.cardboardfish.com:9001/HTTPSMS?S={$systemtype}&UN=${username}&P=${password}&DA={$this->dest_addr}&SA={$this->source_addr}&M=${msg}";
+	    # $url = 'http://sms1.cardboardfish.com:9001/HTTPSMS?';
+		$url = 'https://sms1.cardboardfish.com:9444/HTTPSMS?';
+	    $request = $url . "S={$systemtype}&UN=${username}&P=${password}&DA={$this->dest_addr}&SA={$this->source_addr}&M=${msg}";
 	    #return $request;
 	    if (!$this->source_addr_ton) {
 	        preg_match("/\w/", $this->source_addr, $matches);
