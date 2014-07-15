@@ -249,8 +249,8 @@ class SendSMS {
 	    } else {
 	        $msg = urlencode($this->message);
 	    }
-	    $url = 'http://sms1.cardboardfish.com:9001/HTTPSMS?';
-		#$url = 'https://sms1.cardboardfish.com:9444/HTTPSMS?';
+	    #$url = 'http://sms1.cardboardfish.com:9001/HTTPSMS?';
+		$url = 'https://sms1.cardboardfish.com:9444/HTTPSMS?';
 	    $request = $url . "S={$systemtype}&UN=${username}&P=${password}&DA={$this->dest_addr}&SA={$this->source_addr}&M=${msg}";
 	    
 	    if (!$this->source_addr_ton) {
@@ -280,7 +280,7 @@ class SendSMS {
 	    
 	    
 	    $serverresponse = curl_exec($ch);
-		return curl_error($ch);
+		return curl_getinfo($ch) . ' - ' . curl_error($ch);
 		return $serverresponse;
 		
 	    if (!$serverresponse) {
