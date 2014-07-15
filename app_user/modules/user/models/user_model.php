@@ -12,6 +12,7 @@ class User_model extends CI_Model {
 	
 	function get_user_by_email($email) {
 		$this->db->where('email_address', $email);
+		$this->db->where('status != ', USER_DELETED);
 		$query = $this->db->get('users');
 		return $query->first_row('array');
 	}
