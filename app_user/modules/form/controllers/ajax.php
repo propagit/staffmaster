@@ -56,6 +56,7 @@ class Ajax extends MX_Controller {
 		$applicant_id = $this->input->post('applicant_id');
 		$status = $this->input->post('status');
 		$fields = $this->form_model->get_applicant($applicant_id);
+		$form_id = (isset($fields[0]['form_id'])) ? $fields[0]['form_id'] : 0;
 		$user_data = array(
 			'status' => $status,
 			'is_admin' => 0,
@@ -216,7 +217,7 @@ class Ajax extends MX_Controller {
 		
 		
 		# Copy custom attributes
-		$custom_fields = $this->form_model->get_custom_fields($fields);
+		$custom_fields = $this->form_model->get_custom_fields($form_id);
 		foreach($custom_fields as $custom_field) {
 			foreach($fields as $field) {
 				if ($field['name'] == $custom_field['field_id']) {
