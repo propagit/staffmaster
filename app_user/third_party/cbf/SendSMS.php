@@ -276,8 +276,8 @@ class SendSMS {
 	        return false;
 	    }
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    
-	    return $ch;
 	    
 	    $serverresponse = curl_exec($ch);
 		
