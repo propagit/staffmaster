@@ -7,7 +7,7 @@ class Sms extends MX_Controller {
 		parent::__construct();
 	}
 	
-	function init() {
+	function incoming() {
 		$errstr = '';
 	
 		$username = urlencode(CBF_USER);
@@ -66,11 +66,9 @@ class Sms extends MX_Controller {
 						$invalid_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 3);
 						if ($invalid_sms['status']) # Active
 						{
-							#$this->load->model('cbf_model');
-														
 							$msg = $invalid_sms['msg'];
 							$msg = str_replace('{Code}', $result['msg'], $msg);
-							#$this->cbf_model->send_2ways_sms($data[1], $msg);
+							$this->send_1way_sms($data[1], $msg);
 						}
 					}
 					else # Valid code
@@ -81,13 +79,11 @@ class Sms extends MX_Controller {
 							$confirm_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 2);
 							if ($confirm_sms['status']) # Active
 							{
-								#$this->load->model('cbf_model');
-								
 								$msg = $confirm_sms['msg'];
 								$msg = str_replace('{Date}', date('d/m/Y', $shift['start_time']), $msg);
 								$msg = str_replace('{StartTime}', date('H:i', $shift['start_time']), $msg);
 								$msg = str_replace('{FinishTime}', date('H:i', $shift['finish_time']), $msg);
-								#$this->cbf_model->send_2ways_sms($data[1], $msg);
+								$this->send_1way_sms($data[1], $msg);
 							}
 						} 
 						else # Reject 
