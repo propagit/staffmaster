@@ -112,8 +112,8 @@ class Account_sms_model extends CI_Model {
 	{
 		$this->init($subdomain);
 		
-		$credits = $this->get_credits($subdomain) - 1;
-		$result = $this->db->update('account', array('sms_credits' => $credits));
+		$sql = "UPDATE account SET `sms_credits` = `sms_credits` - 1";
+		$result = $this->db->query($sql);
 		
 		$this->close();
 		return $result;
