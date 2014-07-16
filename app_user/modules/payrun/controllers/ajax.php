@@ -330,7 +330,7 @@ class Ajax extends MX_Controller {
 				foreach($pay_rates as $pay_rate) {
 					$row++;
 					foreach($fields as $field) {
-						$value = $field['value']; # Convert $field, $timesheet
+						$value = $field['value']; # Convert $field, $timesheet						
 						$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
 						$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
 						$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
@@ -374,6 +374,15 @@ class Ajax extends MX_Controller {
 				$row++;
 				foreach($fields as $field) {
 					$value = $field['value']; # Convert $field, $timesheet
+					
+					$client = modules::run('client/get_client', $timesheet['client_id']);
+					
+					$value = str_replace('{client_company_name}', $client['company_name'], $value);
+					$value = str_replace('{external_client_id}', $client['external_client_id'], $value);
+					$value = str_replace('{internal_client_id}', $client['user_id'], $value);
+					
+					$value = str_replace('{staff_last_name}', $timesheet['last_name'], $value);
+					$value = str_replace('{staff_first_name}', $timesheet['first_name'], $value);
 					$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
 					$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
 					$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);

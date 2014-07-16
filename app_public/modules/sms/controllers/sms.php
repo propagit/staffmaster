@@ -136,23 +136,32 @@ class Sms extends MX_Controller {
 	function send_1way_sms($to, $message, $subdomain) {
 		$this->load->model('account_sms_model');
 		$company = $this->account_sms_model->get_company($subdomain);
-							
-		$this->load->library('cbf');
-		$sendsms = $this->cbf->load();
+		$credits = $this->account_sms_model->get_credits($subdomain);
 		
-		$sender = 'StaffBooks';
-		if ($company) {
-			if ($company['company_name']) {
-				$sender = $company['company_name'];
+		if ($credits > 0)
+		{
+			$this->load->library('cbf');
+			$sendsms = $this->cbf->load();
+			
+			$sender = 'StaffBooks';
+			if ($company) {
+				if ($company['company_name']) {
+					$sender = $company['company_name'];
+				}
 			}
+			
+			$sendsms->setDA($to);
+			$sendsms->setSA($sender);
+			#$sendsms->setDR("1");
+			$sendsms->setMSG($message);
+			$sendsms->setST("5");
+			
+			$result = $sendsms->send_sms_object();
+			if ($result) {
+				$this->account_sms_model->deduct_credits($subdomain);
+			}
+			return $result;
 		}
-		
-		$sendsms->setDA($to);
-		$sendsms->setSA($sender);
-		#$sendsms->setDR("1");
-		$sendsms->setMSG($message);
-		$sendsms->setST("5");
-		
-		return $sendsms->send_sms_object();
+		return false;
 	}
 }
