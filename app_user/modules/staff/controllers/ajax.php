@@ -95,7 +95,7 @@ class Ajax extends MX_Controller {
 			'user_id' => $user_id,
 			'external_staff_id' => $input['external_staff_id'],
 			'gender' => $input['gender'],
-			'dob' => date('Y-m-d',strtotime($input['dob_year'].'-'.$input['dob_month']. '-'.$input['dob_day'])),
+			'dob' => date('Y-m-d',strtotime($input['dob']['year'].'-'.$input['dob']['month']. '-'.$input['dob']['day'])),
 			'emergency_contact' => $input['emergency_contact'],
 			'emergency_phone' => $input['emergency_phone'],
 			's_choice' => 'employer',

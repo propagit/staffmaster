@@ -70,7 +70,7 @@
 					
 					<label for="dob" class="col-md-2 control-label">D.O.B(dd/mm/yy)</label>
 					<div class="col-md-4">
-						<?=modules::run('common/dropdown_dob');?>
+						<?=modules::run('common/field_dob', 'dob');?>
 					</div>	
 				</div>
 			</div>
