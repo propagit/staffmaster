@@ -2,7 +2,7 @@
 <input type="hidden" name="selected_user_ids" value="<?=implode(',', $selected_user_ids);?>" />
 <textarea class="form-control" rows="4" name="msg" onkeyup="updateTextboxCounter('msg', 'currentChars');" onkeydown="updateTextboxCounter('msg', 'currentChars');" onkeypress="updateTextboxCounter('msg', 'currentChars');"></textarea><br />
 <p class="step-desc" id="message-desc">Note: 1 SMS message = 160 characters (Current number of characters: <span id="currentChars"><b>0</b> character, <b>0</b> SMS message</span>)</p>
-<button type="button" class="btn btn-core" id="btn-send-sms"><i class="fa fa-mobile-phone"></i> Send SMS</button>
+<button type="button" class="btn btn-core" id="btn-send-sms" data-loading-text="Sending..."<i class="fa fa-mobile-phone"></i> Send SMS</button>
 &nbsp;&nbsp;
 (Selected Recipients: <b id="total-selected-receiver"><?=count($selected_user_ids);?></b>)
 &nbsp;&nbsp;
@@ -14,12 +14,14 @@
 <script>
 $(function(){
 	$('#btn-send-sms').click(function(){
-		
+		var btn = $(this)
+		btn.button('loading')
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>sms/ajax/send_general_sms",
 			data: $('#send-sms-form').serialize(),
 			success: function(data) {
+				btn.button('reset')
 				data = $.parseJSON(data);
 				if (!data.ok) {
 					$('#msg-sms-sent-failed').html('<i class="fa fa-times"></i> &nbsp;' + data.msg);
