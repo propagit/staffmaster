@@ -101,13 +101,13 @@ class Sms extends MX_Controller {
 						if (count($subdomains) > 0) {
 							$this->load->model('account_sms_model');
 							foreach($subdomains as $subdomain) {							
-								$invalid_sms = $this->account_sms_model->get_sms_template($subdomain, 3);
+								$invalid_sms = $this->account_sms_model->get_sms_template($subdomain['subdomain'], 3);
 								if ($invalid_sms['status']) # Active
 								{
 									$msg = $invalid_sms['msg'];
 									$msg = str_replace('{Code}', $result['msg'], $msg);
 									
-									$this->send_1way_sms($data[1], $msg, $subdomain);
+									$this->send_1way_sms($data[1], $msg, $subdomain['subdomain']);
 								}
 							}
 						}						
