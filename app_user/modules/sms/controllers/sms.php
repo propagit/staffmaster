@@ -56,7 +56,7 @@ class Sms extends MX_Controller {
 		
 		$sendsms->setDA($to);
 		$sendsms->setSA(VIRTUAL_NUMBER);
-		#$sendsms->setDR("1");
+		$sendsms->setDR("1");
 		$sendsms->setMSG($message);
 		$sendsms->setST("1");
 		

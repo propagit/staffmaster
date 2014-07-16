@@ -30,6 +30,7 @@ class Sms extends MX_Controller {
 		}
 	
 		$datas = $this->processIncoming($serverresponse);
+		#var_dump($datas);
 		if (is_array($datas)) {
 			foreach($datas as $data) {
 				#var_dump($data);
