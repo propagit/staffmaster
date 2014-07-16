@@ -184,7 +184,7 @@ class Common extends MX_Controller {
 		$day_array = array();
 		$month_array = array();
 		$year_array = array();
-		for($i=1; $i<=30; $i++) {
+		for($i=1; $i<=31; $i++) {
 			$x = sprintf('%02d',$i);
 			$day_array[] = array('value' => $x, 'label' => $x);
 		}
