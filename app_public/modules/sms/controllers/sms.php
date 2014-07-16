@@ -53,17 +53,16 @@ class Sms extends MX_Controller {
 					$ans = substr($result['msg'], 0, 1);
 					
 					$request = $this->sms_model->get_request($result['sender'], $code);
-					if ($request) {
-					
+					if ($request) 
+					{					
 						# Update: request is answered
-						$this->sms_model->update_request($request['request_id'], array('processed' => 1));
-						
+						$this->sms_model->update_request($request['request_id'], array('processed' => 1));						
 						
 						$this->load->model('account_sms_model');
 						# Get shift information
 						$shift = $this->account_sms_model->get_job_shift($request['subdomain'], $request['shift_id']);
 						
-						if (!$shift || ($shift['staff_id'] != $request['user_id'])) # Invalid code
+						if ($shift['staff_id'] != $request['user_id']) # Invalid code
 						{
 							$invalid_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 3);
 							if ($invalid_sms['status']) # Active
@@ -95,6 +94,23 @@ class Sms extends MX_Controller {
 							}
 							$this->account_sms_model->update_job_shift($request['subdomain'], $request['shift_id'], $request['user_id'], $status);
 						}					
+					}					
+					else 
+					{
+						$subdomains = $this->sms_model->get_subdomains($result['sender']);
+						if (count($subdomains) > 0) {
+							$this->load->model('account_sms_model');
+							foreach($subdomains as $subdomain) {							
+								$invalid_sms = $this->account_sms_model->get_sms_template($subdomain, 3);
+								if ($invalid_sms['status']) # Active
+								{
+									$msg = $invalid_sms['msg'];
+									$msg = str_replace('{Code}', $result['msg'], $msg);
+									
+									$this->send_1way_sms($data[1], $msg, $subdomain);
+								}
+							}
+						}						
 					}
 				}				
 			}

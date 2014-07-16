@@ -30,6 +30,12 @@ class Sms_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function get_subdomains($receiver) {
+		$sql = "SELECT DISTINCT subdomain FROM sms_requests WHERE receiver = '$receiver'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 	function get_request($receiver, $code) {
 		$this->db->where('receiver', $receiver);
 		$this->db->where('code', $code);

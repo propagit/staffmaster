@@ -1,5 +1,3 @@
--- --------------------------------------------------------
-
 --
 -- Table structure for table `export_templates`
 --
@@ -13,26 +11,28 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `export_templates`
 --
 
 INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`, `status`) VALUES
-(1, '', 'invoice', 'item', 'Xero - Client Invoice Export', 0),
-(3, '', 'payrun_tfn', 'shift', 'TFN Export - Shift Per Line', 2),
-(4, '', 'payrun_tfn', 'staff', 'TFN Export - Staff Per Line', 3),
+(1, '', 'invoice', 'item', 'Xero (Item Per Line)', 0),
+(3, '', 'payrun_tfn', 'shift', 'Default (Shift Per Line)', 2),
+(4, '', 'payrun_tfn', 'staff', 'Default (Staff Per Line)', 3),
 (5, '', 'payrun_abn', 'shift', 'ABN Supplier Export', 0),
 (7, '', 'staff', '', 'Default - Staff Export', 0),
-(8, '', 'invoice', 'invoice', 'Invoice Export - Invoice Per Line', 0),
+(8, '', 'invoice', 'invoice', 'Default (Invoice Per Line)', 0),
 (9, '', 'expense', '', 'Staff Expense Export ', 0),
 (10, '', 'staff', '', 'Shoebooks - Staff Export', 0),
-(11, 'shoebooks', 'payrun_tfn', 'pay_rate', 'Shoebooks - TFN Export', 1),
-(13, 'shoebooks', 'invoice', 'item', 'Shoebooks - Client Invoice Export Per Item', 1),
+(11, 'shoebooks', 'payrun_tfn', 'pay_rate', 'Shoebooks (Pay Rate Per Line)', 1),
+(13, 'shoebooks', 'invoice', 'item', 'Shoebooks (Item Per Line)', 1),
 (14, 'shoebooks', 'payrun_abn', 'shift', 'Shoebooks - ABN Export', 1),
 (15, 'shoebooks', 'expense', '', 'Shoebooks - Staff Expense Export ', 1),
-(16, 'shoebooks', 'invoice', 'shift', 'Shoebooks - Client Invoice Export Per Shift', 1);
+(16, 'shoebooks', 'invoice', 'shift', 'Shoebooks (Shift Per Line)', 1),
+(17, 'myob', 'payrun_tfn', 'shift', 'MYOB (Shift Per Line)', 3),
+(18, 'myob', 'invoice', 'shift', 'MYOB (Shift Per Line)', 1);
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=339 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=379 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -246,7 +246,45 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (334, 16, 10, 'JobID', ''),
 (335, 16, 11, 'DivID', ''),
 (336, 16, 12, 'CustomerPO', '{po_number}'),
-(338, 16, 4, 'Description', '{item_description}  {staff_name}  {start_time}  {finish_time}  {break}');
+(338, 16, 4, 'Description', '{item_description}  {staff_name}  {start_time}  {finish_time}  {break}'),
+(339, 17, 0, 'Employee Co./Last Name', '{staff_last_name}'),
+(340, 17, 1, 'Employee First Name', '{staff_first_name}'),
+(341, 17, 2, 'Payroll Category', '{pay_rate}'),
+(342, 17, 3, 'Job', '{job_name}'),
+(343, 17, 4, 'Customer Co./Last Name', '{client_company_name}'),
+(344, 17, 5, 'Customer First Name', ''),
+(345, 17, 6, 'Notes', ''),
+(347, 17, 9, 'Units', '{hours}'),
+(348, 17, 10, 'Employee Card ID', '{internal_staff_id}'),
+(349, 17, 11, 'Employee Record ID', '{external_staff_id}'),
+(350, 17, 12, 'Start/Stop Time', '{start_time}  {finish_time}'),
+(351, 17, 13, 'Customer Card ID', '{internal_client_id}'),
+(352, 17, 14, 'Customer Record ID', '{external_client_id}'),
+(353, 17, 8, 'Date', '{job_date}'),
+(354, 18, 354, 'Co./Last Name', '{client_company_name}'),
+(355, 18, 355, 'First Name', ''),
+(356, 18, 356, 'Addr 1 - Line 1', '{client_address}'),
+(357, 18, 357, '           - Line 2', '{client_suburb}'),
+(358, 18, 358, '           - Line 3', '{client_city}'),
+(359, 18, 359, '           - Line 4', '{client_state}'),
+(360, 18, 360, 'Inclusive', ''),
+(361, 18, 361, 'Invoice #', '{invoice_id}'),
+(362, 18, 362, 'Date', '{issued_date}'),
+(363, 18, 363, 'Customer PO', '{po_number}'),
+(364, 18, 364, 'Ship Via', ''),
+(365, 18, 365, 'Delivery Status', 'P'),
+(366, 18, 366, 'Amount', '{ex_tax_amount}'),
+(367, 18, 367, 'Inc-Tax Amount', '{inc_tax_amount}'),
+(368, 18, 368, 'Job', ''),
+(369, 18, 369, 'Comment', ''),
+(370, 18, 370, 'Journal Memo', ''),
+(371, 18, 371, 'Salesperson Last Name', ''),
+(372, 18, 372, 'Salesperson First Name', ''),
+(373, 18, 373, 'Shipping Date', ''),
+(374, 18, 374, 'Referral Source', ''),
+(375, 18, 375, 'Tax Code', '{tax_type}'),
+(377, 18, 377, 'GST Amount', '{tax_amount}'),
+(378, 18, 378, 'Description', '{item_description}');
 
 -- --------------------------------------------------------
 
@@ -263,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `export_template_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=167 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=173 ;
 
 --
 -- Dumping data for table `export_template_fields`
@@ -430,4 +468,10 @@ INSERT INTO `export_template_fields` (`field_id`, `field_order`, `object`, `leve
 (163, 0, 'invoice', 'shift', 'staff_name', 'Staff Name'),
 (164, 0, 'invoice', 'shift', 'break', 'Break'),
 (165, 0, 'invoice', 'shift', 'start_time', 'Start Time'),
-(166, 0, 'invoice', 'shift', 'finish_time', 'Finish Time');
+(166, 0, 'invoice', 'shift', 'finish_time', 'Finish Time'),
+(167, 0, 'payrun_tfn', 'shift', 'staff_first_name', 'Staff First Name'),
+(168, 0, 'payrun_tfn', 'shift', 'staff_last_name', 'Staff Last Name'),
+(169, 0, 'payrun_tfn', 'shift', 'client_company_name', 'Client Company Name'),
+(170, 0, 'payrun_tfn', 'shift', 'shift_date', 'Shift Date'),
+(171, 0, 'payrun_tfn', 'shift', 'internal_client_id', 'Internal Client ID'),
+(172, 0, 'payrun_tfn', 'shift', 'external_client_id', 'External Client ID');
