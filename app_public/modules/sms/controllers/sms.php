@@ -42,59 +42,61 @@ class Sms extends MX_Controller {
 					'received_on' => date('Y-m-d H:i:s', $data[5])
 				);
 				#var_dump($result);
-				
-				$this->load->model('sms_model');
-				# Log the response
-				$response_id = $this->sms_model->insert_response($result);
-				
-				# Now checking the request
-				$code = substr($result['msg'], 1);
-				$ans = substr($result['msg'], 0, 1);
-				
-				$request = $this->sms_model->get_request($result['sender'], $code);
-				if ($request) {
-				
-					# Update: request is answered
-					$this->sms_model->update_request($request['request_id'], array('processed' => 1));
+				if ($result['msg'] != '')
+				{
+					$this->load->model('sms_model');
+					# Log the response
+					$response_id = $this->sms_model->insert_response($result);
 					
+					# Now checking the request
+					$code = substr($result['msg'], 1);
+					$ans = substr($result['msg'], 0, 1);
 					
-					$this->load->model('account_sms_model');
-					# Get shift information
-					$shift = $this->account_sms_model->get_job_shift($request['subdomain'], $request['shift_id']);
+					$request = $this->sms_model->get_request($result['sender'], $code);
+					if ($request) {
 					
-					if ($shift['staff_id'] != $request['user_id']) # Invalid code
-					{
-						$invalid_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 3);
-						if ($invalid_sms['status']) # Active
+						# Update: request is answered
+						$this->sms_model->update_request($request['request_id'], array('processed' => 1));
+						
+						
+						$this->load->model('account_sms_model');
+						# Get shift information
+						$shift = $this->account_sms_model->get_job_shift($request['subdomain'], $request['shift_id']);
+						
+						if ($shift['staff_id'] != $request['user_id']) # Invalid code
 						{
-							$msg = $invalid_sms['msg'];
-							$msg = str_replace('{Code}', $result['msg'], $msg);
-							
-							$this->send_1way_sms($data[1], $msg, $request['subdomain']);
-						}
-					}
-					else # Valid code
-					{
-						if (strtolower($ans) == 'y') # Confirm
-						{
-							$status = 2; # SHIFT_CONFIRMED
-							$confirm_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 2);
-							if ($confirm_sms['status']) # Active
+							$invalid_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 3);
+							if ($invalid_sms['status']) # Active
 							{
-								$msg = $confirm_sms['msg'];
-								$msg = str_replace('{Date}', date('d/m/Y', $shift['start_time']), $msg);
-								$msg = str_replace('{StartTime}', date('H:i', $shift['start_time']), $msg);
-								$msg = str_replace('{FinishTime}', date('H:i', $shift['finish_time']), $msg);
+								$msg = $invalid_sms['msg'];
+								$msg = str_replace('{Code}', $result['msg'], $msg);
+								
 								$this->send_1way_sms($data[1], $msg, $request['subdomain']);
 							}
-						} 
-						else # Reject 
-						{
-							$status = -1; # SHIFT_REJECTED
 						}
-						$this->account_sms_model->update_job_shift($request['subdomain'], $request['shift_id'], $request['user_id'], $status);
-					}					
-				}
+						else # Valid code
+						{
+							if (strtolower($ans) == 'y') # Confirm
+							{
+								$status = 2; # SHIFT_CONFIRMED
+								$confirm_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 2);
+								if ($confirm_sms['status']) # Active
+								{
+									$msg = $confirm_sms['msg'];
+									$msg = str_replace('{Date}', date('d/m/Y', $shift['start_time']), $msg);
+									$msg = str_replace('{StartTime}', date('H:i', $shift['start_time']), $msg);
+									$msg = str_replace('{FinishTime}', date('H:i', $shift['finish_time']), $msg);
+									$this->send_1way_sms($data[1], $msg, $request['subdomain']);
+								}
+							} 
+							else # Reject 
+							{
+								$status = -1; # SHIFT_REJECTED
+							}
+							$this->account_sms_model->update_job_shift($request['subdomain'], $request['shift_id'], $request['user_id'], $status);
+						}					
+					}
+				}				
 			}
 		}
 		
