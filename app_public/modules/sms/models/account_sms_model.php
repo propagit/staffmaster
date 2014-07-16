@@ -51,4 +51,12 @@ class Account_sms_model extends CI_Model {
 		$query = $this->db->get('sms_templates');
 		return $query->first_row('array');
 	}
+	
+	function get_company($subdomain)
+	{
+		$this->init($subdomain);
+		$this->db->where('id', 1);
+		$query = $this->db->get('company_profile');
+		return $query->first_row('array');
+	}
 }

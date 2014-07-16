@@ -68,7 +68,8 @@ class Sms extends MX_Controller {
 						{
 							$msg = $invalid_sms['msg'];
 							$msg = str_replace('{Code}', $result['msg'], $msg);
-							$this->send_1way_sms($data[1], $msg);
+							
+							$this->send_1way_sms($data[1], $msg, $request['subdomain']);
 						}
 					}
 					else # Valid code
@@ -83,7 +84,7 @@ class Sms extends MX_Controller {
 								$msg = str_replace('{Date}', date('d/m/Y', $shift['start_time']), $msg);
 								$msg = str_replace('{StartTime}', date('H:i', $shift['start_time']), $msg);
 								$msg = str_replace('{FinishTime}', date('H:i', $shift['finish_time']), $msg);
-								$this->send_1way_sms($data[1], $msg);
+								$this->send_1way_sms($data[1], $msg, $request['subdomain']);
 							}
 						} 
 						else # Reject 
@@ -124,12 +125,30 @@ class Sms extends MX_Controller {
 		return $to_return;
 	}
 	
-	function send_1way_sms($to, $message) {
+	function test() {
+		$to = '61402133066';
+		$msg = 'Hello how are you!';
+		$a = $this->send_1way_sms($to, $msg, 'namnd');
+		var_dump($a);
+		
+	}
+	
+	function send_1way_sms($to, $message, $subdomain) {
+		$this->load->model('account_sms_model');
+		$company = $this->account_sms_model->get_company($subdomain);
+							
 		$this->load->library('cbf');
 		$sendsms = $this->cbf->load();
 		
+		$sender = 'StaffBooks';
+		if ($company) {
+			if ($company['company_name']) {
+				$sender = $company['company_name'];
+			}
+		}
+		
 		$sendsms->setDA($to);
-		$sendsms->setSA(VIRTUAL_NUMBER);
+		$sendsms->setSA($sender);
 		#$sendsms->setDR("1");
 		$sendsms->setMSG($message);
 		$sendsms->setST("5");
