@@ -63,7 +63,7 @@ class Sms extends MX_Controller {
 						# Get shift information
 						$shift = $this->account_sms_model->get_job_shift($request['subdomain'], $request['shift_id']);
 						
-						if ($shift['staff_id'] != $request['user_id']) # Invalid code
+						if (!$shift || ($shift['staff_id'] != $request['user_id'])) # Invalid code
 						{
 							$invalid_sms = $this->account_sms_model->get_sms_template($request['subdomain'], 3);
 							if ($invalid_sms['status']) # Active
