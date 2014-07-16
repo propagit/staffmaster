@@ -154,7 +154,7 @@ class Sms extends MX_Controller {
 	
 	function send_1way_sms($to, $message, $subdomain) {
 		$this->load->model('account_sms_model');
-		$company = $this->account_sms_model->get_company($subdomain);
+		#$company = $this->account_sms_model->get_company($subdomain);
 		$credits = $this->account_sms_model->get_credits($subdomain);
 		
 		if ($credits > 0)
@@ -162,12 +162,13 @@ class Sms extends MX_Controller {
 			$this->load->library('cbf');
 			$sendsms = $this->cbf->load();
 			
-			$sender = 'StaffBooks';
-			if ($company) {
+			$sender = VIRTUAL_NUMBER;
+			
+			/* if ($company) {
 				if ($company['company_name']) {
 					$sender = $company['company_name'];
 				}
-			}
+			} */
 			
 			$sendsms->setDA($to);
 			$sendsms->setSA($sender);
