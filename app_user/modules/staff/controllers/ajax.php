@@ -172,7 +172,7 @@ class Ajax extends MX_Controller {
 			'external_staff_id' => $data['external_staff_id'],
 			#'rating' => $data['profile_rating'],
 			'gender' => $data['gender'],
-			'dob' => date('Y-m-d',strtotime($data['dob_year'].'-'.$data['dob_month']. '-'.$data['dob_day'])),
+			'dob' => date('Y-m-d',strtotime($data['dob']['year'].'-'.$data['dob']['month']. '-'.$data['dob']['day'])),
 			'emergency_contact' => $data['emergency_contact'],
 			'emergency_phone' => $data['emergency_phone'],
 			'update_description' => 'personal details'

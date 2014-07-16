@@ -1,6 +1,6 @@
 <select name="<?=$field_name;?>[day]" class="form-control custom-select col-dob dob-day">
 	<option value="">Day</option>
-	<? for($i=1;$i<=30;$i++) { ?>
+	<? for($i=1;$i<=31;$i++) { ?>
 	<option value="<?=sprintf('%02d',$i);?>"<?=($day==$i) ? ' selected' : '';?>><?=sprintf('%02d',$i);?></option>
 	<? } ?>
 </select>

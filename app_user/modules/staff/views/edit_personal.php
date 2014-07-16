@@ -36,7 +36,7 @@
 	<div class="form-group">				
 		<label for="dob" class="col-md-2 control-label">D.O.B(dd/mm/yy)</label>
 		<div class="col-md-4">
-			<?=modules::run('common/dropdown_dob', date('d',strtotime($staff['dob'])), date('m',strtotime($staff['dob'])),date('Y',strtotime($staff['dob'])));?>
+			<?=modules::run('common/field_dob', 'dob', date('d',strtotime($staff['dob'])), date('m',strtotime($staff['dob'])),date('Y',strtotime($staff['dob'])));?>
 		</div>
         <? if(!modules::run('auth/is_staff')){ ?>
         <label for="rating" class="col-md-2 control-label">Rating</label>
