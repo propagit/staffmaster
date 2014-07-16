@@ -739,23 +739,6 @@ CREATE TABLE IF NOT EXISTS `expenses` (
 -- --------------------------------------------------------
 
 
---
--- phpMyAdmin SQL Dump
--- version 4.1.9
--- http://www.phpmyadmin.net
---
--- Host: localhost:3306
--- Generation Time: Jul 08, 2014 at 08:59 AM
--- Server version: 5.5.34
--- PHP Version: 5.5.10
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
---
--- Database: `user_db_demo`
---
-
 -- --------------------------------------------------------
 
 --
@@ -771,7 +754,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `export_templates`
@@ -787,9 +770,10 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (9, '', 'expense', '', 'Staff Expense Export ', 0),
 (10, '', 'staff', '', 'Shoebooks - Staff Export', 0),
 (11, 'shoebooks', 'payrun_tfn', 'pay_rate', 'Shoebooks - TFN Export', 1),
-(13, 'shoebooks', 'invoice', 'item', 'Shoebooks - Client Invoice Export', 1),
+(13, 'shoebooks', 'invoice', 'item', 'Shoebooks - Client Invoice Export Per Item', 1),
 (14, 'shoebooks', 'payrun_abn', 'shift', 'Shoebooks - ABN Export', 1),
-(15, 'shoebooks', 'expense', '', 'Shoebooks - Staff Expense Export ', 1);
+(15, 'shoebooks', 'expense', '', 'Shoebooks - Staff Expense Export ', 1),
+(16, 'shoebooks', 'invoice', 'shift', 'Shoebooks - Client Invoice Export Per Shift', 1);
 
 -- --------------------------------------------------------
 
@@ -805,7 +789,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=326 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=339 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -861,9 +845,9 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (136, 10, 19, 'Web', ''),
 (140, 10, 25, 'strBankNumber', '{bsb}'),
 (141, 10, 26, 'strBankAccount', '{account_number}'),
-(142, 10, 27, 'strExtraVendorID', '{super_membership_number}'),
+(142, 10, 27, 'strExtraVendorID', '{super_employee_id}'),
 (143, 10, 28, 'strExtraFundName', '{super_fund_name}'),
-(144, 10, 29, 'strExtraFundNumber', '{super_employee_id}'),
+(144, 10, 29, 'strExtraFundNumber', '{super_membership_number}'),
 (145, 10, 23, 'strEmploymentType', ''),
 (146, 10, 24, 'strBankName', ''),
 (147, 10, 20, 'Title', ''),
@@ -992,7 +976,18 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (322, 15, 322, 'PONumber', ''),
 (323, 15, 323, 'ProductID', ''),
 (324, 15, 324, 'DivID', ''),
-(325, 15, 325, 'CustomerPO', '');
+(325, 15, 325, 'CustomerPO', ''),
+(326, 16, 0, 'Group', '{invoice_id}'),
+(327, 16, 1, 'CustomerID', '{external_client_id}'),
+(328, 16, 2, 'Date', '{job_date}'),
+(330, 16, 6, 'AccountID', ''),
+(331, 16, 7, 'QtyShipped', '{hours}'),
+(332, 16, 8, 'Taxable', '{tax_type}'),
+(333, 16, 9, 'Amount', '{ex_tax_amount}'),
+(334, 16, 10, 'JobID', ''),
+(335, 16, 11, 'DivID', ''),
+(336, 16, 12, 'CustomerPO', '{po_number}'),
+(338, 16, 4, 'Description', '{item_description}  {staff_name}  {start_time}  {finish_time}  {break}');
 
 -- --------------------------------------------------------
 
@@ -1009,7 +1004,7 @@ CREATE TABLE IF NOT EXISTS `export_template_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=141 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=167 ;
 
 --
 -- Dumping data for table `export_template_fields`
@@ -1150,7 +1145,33 @@ INSERT INTO `export_template_fields` (`field_id`, `field_order`, `object`, `leve
 (137, 0, 'expense', '', 'internal_staff_id', 'Internal Staff ID'),
 (138, 0, 'expense', '', 'external_staff_id', 'External Staff ID'),
 (139, 0, 'expense', '', 'description', 'Description'),
-(140, 0, 'expense', '', 'taxable', 'Taxable');
+(140, 0, 'expense', '', 'taxable', 'Taxable'),
+(141, 0, 'invoice', 'shift', 'internal_client_id', 'Internal Client ID'),
+(142, 0, 'invoice', 'shift', 'external_client_id', 'External Client ID'),
+(143, 0, 'invoice', 'shift', 'client_company_name', 'Client Company Name'),
+(144, 0, 'invoice', 'shift', 'client_address', 'Client Address'),
+(145, 0, 'invoice', 'shift', 'client_suburb', 'Client Suburb'),
+(146, 0, 'invoice', 'shift', 'client_city', 'Client City'),
+(147, 0, 'invoice', 'shift', 'client_postcode', 'Client Postcode'),
+(148, 0, 'invoice', 'shift', 'client_state', 'Client State'),
+(149, 0, 'invoice', 'shift', 'client_country', 'Client Country'),
+(150, 0, 'invoice', 'shift', 'client_contact_name', 'Client Contact Name'),
+(151, 0, 'invoice', 'shift', 'client_email', 'Client Email'),
+(152, 0, 'invoice', 'shift', 'issued_date', 'Issued Date'),
+(153, 0, 'invoice', 'shift', 'due_date', 'Due Date'),
+(154, 0, 'invoice', 'shift', 'item_description', 'Item Description'),
+(155, 0, 'invoice', 'shift', 'tax_type', 'Tax Type'),
+(156, 0, 'invoice', 'shift', 'tax_amount', 'Tax Amount'),
+(157, 0, 'invoice', 'shift', 'ex_tax_amount', 'Ex Tax Amount'),
+(158, 0, 'invoice', 'shift', 'inc_tax_amount', 'Inc Tax Amount'),
+(159, 0, 'invoice', 'shift', 'invoice_id', 'Invoice ID'),
+(160, 0, 'invoice', 'shift', 'po_number', 'PO Number'),
+(161, 0, 'invoice', 'shift', 'job_date', 'Job Date'),
+(162, 0, 'invoice', 'shift', 'hours', 'Hours'),
+(163, 0, 'invoice', 'shift', 'staff_name', 'Staff Name'),
+(164, 0, 'invoice', 'shift', 'break', 'Break'),
+(165, 0, 'invoice', 'shift', 'start_time', 'Start Time'),
+(166, 0, 'invoice', 'shift', 'finish_time', 'Finish Time');
 
 
 

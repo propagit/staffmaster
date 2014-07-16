@@ -1,4 +1,4 @@
-INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`, `status`) VALUES (NULL, 'shoebooks', 'invoice', 'shift', 'Shoebooks - Client Invoice Export', '1');
+INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`, `status`) VALUES (NULL, 'shoebooks', 'invoice', 'shift', 'Shoebooks - Client Invoice Export By Shift', '1');
 
 INSERT INTO `export_template_fields` (`object`, `level`, `value`, `label`) VALUES
 ('invoice', 'shift', 'internal_client_id', 'Internal Client ID'),
