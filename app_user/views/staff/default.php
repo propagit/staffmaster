@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-	<title><?=$title;?> &middot; Staff Portal &middot; Staff Master</title>
+	<title><?=$title;?> &middot; Staff Portal &middot; <?=SITE_NAME;?></title>
 	
 	
 	<!-- Bootstrap -->

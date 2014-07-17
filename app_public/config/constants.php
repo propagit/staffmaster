@@ -43,6 +43,7 @@ define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'root');
 define('MASTER_DB', 'smcloud');
 
+define('SITE_NAME', 'StaffBooks');
 define('LIVE_SERVER', false);
 define('VIRTUAL_NUMBER', '447624803738');
 define('CBF_USER', 'staffbooks');

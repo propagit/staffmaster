@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title><?=$title;?> &middot; Admin Portal &middot; Staff Master</title>
+	<title><?=$title;?> &middot; Admin Portal &middot; <?=SITE_NAME;?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap -->
 	<link href="<?=base_url();?>assets/css/bootstrap.css" rel="stylesheet" media="screen">
