@@ -330,7 +330,12 @@ class Ajax extends MX_Controller {
 				foreach($pay_rates as $pay_rate) {
 					$row++;
 					foreach($fields as $field) {
-						$value = $field['value']; # Convert $field, $timesheet						
+						$value = $field['value']; # Convert $field, $timesheet	
+						if ($template['target'] == 'myob') {
+							$value = str_replace(',',' ', $value); # Replace comma for myob	
+						}
+							
+									
 						$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
 						$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
 						$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
@@ -375,6 +380,9 @@ class Ajax extends MX_Controller {
 				foreach($fields as $field) {
 					$value = $field['value']; # Convert $field, $timesheet
 					
+					if ($template['target'] == 'myob') {
+						$value = str_replace(',',' ', $value); # Replace comma for myob	
+					}
 					$client = modules::run('client/get_client', $timesheet['client_id']);
 					
 					$value = str_replace('{client_company_name}', $client['company_name'], $value);
@@ -436,6 +444,10 @@ class Ajax extends MX_Controller {
 				$row++;
 				foreach($fields as $field) {
 					$value = $field['value']; # Convert $field, $timesheet
+					if ($template['target'] == 'myob') {
+						$value = str_replace(',',' ', $value); # Replace comma for myob	
+					}
+					
 					$value = str_replace('{staff_name}', $timesheet['first_name'] . ' ' . $timesheet['last_name'], $value);
 					$value = str_replace('{internal_staff_id}', $timesheet['user_id'], $value);
 					$value = str_replace('{external_staff_id}', $timesheet['external_staff_id'], $value);
