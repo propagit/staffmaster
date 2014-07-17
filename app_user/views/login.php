@@ -14,6 +14,11 @@
 
 <body>
 <div class="container">
+	<?=$check_browser;?>
+		
+	<? if ($check_browser) { ?>
+	<div id="check_browser" style="display:none">
+	<? } ?>
         <div class="form-signin login-row">
         	<div class="logo-wrap">
                 <?=modules::run('setting/company_logo');?>
@@ -41,14 +46,16 @@
                 </div>
             </form>
    		</div>
-         
-        <div class="login-row modern-browsers">
+        <div class="login-row modern-browsers">        	
           	<img src="<?=base_url();?>assets/img/core/browsers-logos.png" alt="browsers-logos.png" title="Modern Browsers Logos"/>
             <p>
                 StaffBooks works in the most up to date browsers.
                 Please make sure you update your browser <i class="fa fa-smile-o"></i>
             </p>
         </div>
+    <? if ($check_browser) { ?>
+	</div>
+	<? } ?>
 </div>
 
 </body>

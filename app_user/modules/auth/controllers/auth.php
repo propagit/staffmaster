@@ -47,7 +47,8 @@ class Auth extends MX_Controller {
 	{
 		$this->template->set_template('login');
 		$this->template->add_css('custom_styles');
-		$this->template->write('title', 'Staff Master');
+		$this->template->write('title', 'StaffBooks');
+		$this->template->write('check_browser', $this->check_browser());
 		
 		if ($this->input->post())
 		{
@@ -91,14 +92,16 @@ class Auth extends MX_Controller {
 	
 	function check_browser()
 	{
-		$user_agent = explode('/', $_SERVER ['HTTP_USER_AGENT']);
-		#print_r($user_agent);
-		
-		if (strpos($user_agent[1], 'MSIE') !== false ) # IE
+		preg_match('/MSIE (.*?);/', $_SERVER ['HTTP_USER_AGENT'], $matches);
+		if(count($matches) > 1) 
 		{
-			preg_match('/MSIE (.*?);/', $_SERVER ['HTTP_USER_AGENT'], $matches);
-			print_r($matches);
+			# Then we're using IE
+			$version = $matches[1];
+			if ($version <= 10) {
+				return $this->load->view('check_browser_view', null, true);
+			}
 		}
+		return $this->load->view('check_browser_view', null, true);
 	}
 
 }

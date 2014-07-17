@@ -70,6 +70,7 @@ $template['default']['parse_template'] = FALSE;
 $template['login'] = array(
 	'template' => 'login',
 	'regions' => array(
+		'check_browser',
 		'content',
 		'msg_error',
 		'title'
