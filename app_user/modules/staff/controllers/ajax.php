@@ -159,13 +159,11 @@ class Ajax extends MX_Controller {
 			'country' => $data['country'],
 			'phone' => $data['phone'],
 			'mobile' => $input['mobile'],
-			#'status' => $data['status'],
+			'status' => $data['status'],
 			'modified_on' => date('Y-m-d H:i:s')
 		);
 		
-		if(isset($data['status']) && $data['status']){
-			$user_data['status'] = $data['status'];
-		}
+		
 		
 		$this->user_model->update_user($data['user_id'], $user_data);
 		$staff_data = array(

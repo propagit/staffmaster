@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `export_templates`
@@ -22,17 +22,18 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (3, '', 'payrun_tfn', 'shift', 'Default (Shift Per Line)', 2),
 (4, '', 'payrun_tfn', 'staff', 'Default (Staff Per Line)', 3),
 (5, '', 'payrun_abn', 'shift', 'ABN Supplier Export', 0),
-(7, '', 'staff', '', 'Default - Staff Export', 0),
+(7, '', 'staff', '', 'Default', 0),
 (8, '', 'invoice', 'invoice', 'Default (Invoice Per Line)', 0),
 (9, '', 'expense', '', 'Staff Expense Export ', 0),
-(10, '', 'staff', '', 'Shoebooks - Staff Export', 0),
+(10, 'shoebooks', 'staff', '', 'Shoebooks', 0),
 (11, 'shoebooks', 'payrun_tfn', 'pay_rate', 'Shoebooks (Pay Rate Per Line)', 1),
 (13, 'shoebooks', 'invoice', 'item', 'Shoebooks (Item Per Line)', 1),
 (14, 'shoebooks', 'payrun_abn', 'shift', 'Shoebooks - ABN Export', 1),
 (15, 'shoebooks', 'expense', '', 'Shoebooks - Staff Expense Export ', 1),
 (16, 'shoebooks', 'invoice', 'shift', 'Shoebooks (Shift Per Line)', 1),
 (17, 'myob', 'payrun_tfn', 'shift', 'MYOB (Shift Per Line)', 3),
-(18, 'myob', 'invoice', 'shift', 'MYOB (Shift Per Line)', 1);
+(18, 'myob', 'invoice', 'shift', 'MYOB (Shift Per Line)', 1),
+(19, 'myob', 'staff', '', 'MYOB', 0);
 
 -- --------------------------------------------------------
 
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=379 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=401 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -284,7 +285,28 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (374, 18, 374, 'Referral Source', ''),
 (375, 18, 375, 'Tax Code', '{tax_type}'),
 (377, 18, 377, 'GST Amount', '{tax_amount}'),
-(378, 18, 378, 'Description', '{item_description}');
+(378, 18, 378, 'Description', '{item_description}'),
+(379, 19, 0, 'Co./Last Name', '{last_name}'),
+(380, 19, 1, 'First Name', '{first_name}'),
+(381, 19, 2, 'Card ID', '{external_id}'),
+(382, 19, 3, 'Addr 1 - Line 1', '{address}'),
+(383, 19, 4, '- Line 2', ''),
+(384, 19, 5, '- City', '{city}'),
+(385, 19, 6, '- State', '{state}'),
+(386, 19, 7, '- Postcode', '{postcode}'),
+(387, 19, 8, '- Country', '{country}'),
+(388, 19, 9, '- Phone # 1', '{phone}'),
+(389, 19, 10, '- Phone # 2', '{mobile}'),
+(390, 19, 11, '- Email', '{email}'),
+(391, 19, 12, '- Salutation', '{title}'),
+(392, 19, 13, 'BSB', '{bsb}'),
+(393, 19, 14, 'Account Number', '{account_number}'),
+(394, 19, 15, 'Account Name', '{account_name}'),
+(395, 19, 16, 'Date of Birth', '{dob}'),
+(396, 19, 18, 'Superannuation Fund', '{super_fund_name}'),
+(397, 19, 19, 'Employee Membership #', '{super_membership_number}'),
+(399, 19, 20, 'Tax File Number', '{tfn_number}'),
+(400, 19, 17, 'Gender', '{gender}');
 
 -- --------------------------------------------------------
 
@@ -301,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `export_template_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=173 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=174 ;
 
 --
 -- Dumping data for table `export_template_fields`
