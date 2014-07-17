@@ -97,7 +97,7 @@ class Auth extends MX_Controller {
 		{
 			# Then we're using IE
 			$version = $matches[1];
-			if ($version <= 10) {
+			if ($version < 9) {
 				return $this->load->view('check_browser_view', null, true);
 			}
 		}
