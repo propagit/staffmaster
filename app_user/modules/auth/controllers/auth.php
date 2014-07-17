@@ -96,7 +96,7 @@ class Auth extends MX_Controller {
 		
 		if (strpos($user_agent[1], 'MSIE') !== false ) # IE
 		{
-			preg_match('/MSIE (.*?);/', $user_agent, $matches);
+			preg_match('/MSIE (.*?);/', $_SERVER ['HTTP_USER_AGENT'], $matches);
 			print_r($matches);
 		}
 	}
