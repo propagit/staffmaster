@@ -94,8 +94,10 @@ class Auth extends MX_Controller {
 		$user_agent = explode('/', $_SERVER ['HTTP_USER_AGENT']);
 		#print_r($user_agent);
 		
-		if (strpos($USER_AGENT[1], 'MSIE') !== false ){
-		   # ie
+		if (strpos($user_agent[1], 'MSIE') !== false ) # IE
+		{
+			preg_match('/MSIE (.*?);/', $user_agent, $matches);
+			print_r($matches);
 		}
 	}
 
