@@ -88,5 +88,15 @@ class Auth extends MX_Controller {
 		#$this->session->unset_userdata('force_staff');
 		redirect('');
 	}	
+	
+	function check_browser()
+	{
+		$user_agent = explode('/', $_SERVER ['HTTP_USER_AGENT']);
+		#print_r($user_agent);
+		
+		if (strpos($USER_AGENT[1], 'MSIE') !== false ){
+		   # ie
+		}
+	}
 
 }
