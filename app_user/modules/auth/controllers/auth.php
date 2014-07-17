@@ -101,7 +101,7 @@ class Auth extends MX_Controller {
 				return $this->load->view('check_browser_view', null, true);
 			}
 		}
-		return $this->load->view('check_browser_view', null, true);
+		return '';
 	}
 
 }
