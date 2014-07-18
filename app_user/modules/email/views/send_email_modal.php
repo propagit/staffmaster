@@ -47,7 +47,7 @@
                                          (Selected Recipients: <b id="total-selected-receiver"><?=$total;?></b>) 
                                          &nbsp;&nbsp;
                                          <a href="#" id="view-send-list"><i class="fa fa-eye"> </i> View Send List</a>
-                                         <div class="alert alert-success add-top-margin-20 hide" id="msg-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; Email Successfully Sent</div>
+                                         
                                      </div>
                                      <?php
 									 	if($template_id != CLIENT_INVOICE_EMAIL_TEMPLATE_ID && $template_id != CLIENT_QUOTE_EMAIL_TEMPLATE_ID && $template_id != SHIFT_REMINDER_EMAIL_TEMPLATE_ID){
@@ -62,8 +62,9 @@
 										}
 									 ?>
                                  </div>
-                                 
-                            
+                                 <div class="form-group">
+								 	<div class="col-sm-12 alert alert-success add-top-margin-20 hide" id="msg-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; Email Successfully Sent</div>
+                                 </div>
                             
                             
                             <div id="ajax-receiver-list" class="email-modal-receiver-list"></div>
