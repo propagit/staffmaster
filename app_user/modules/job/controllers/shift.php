@@ -220,7 +220,7 @@ class Shift extends MX_Controller {
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
 		if ($shift['status'] == SHIFT_CONFIRMED)
 		{
-			$user_id = $params['user_id'];
+			$user_id = $shift['staff_id']; #$user_id = $params['user_id'];
 			$email_template_id = WORK_CONFIRMATION_EMAIL_TEMPLATE_ID;
 		
 			if($user_id && $shift_id){

@@ -694,15 +694,28 @@ class Ajax_shift extends MX_Controller {
 		$email_body = $this->input->post('email_body');
 		$selected_user_ids = $this->input->post('selected_user_ids');
 		$email_template_id = $this->input->post('email_template_select');
+		
+		
+		
+		$template_info = $this->email_template_model->get_template($email_template_id);	
+		
+		
 		if($selected_user_ids){
 			$user_ids = json_decode($selected_user_ids);
 			$shift_ids = json_decode($shift_ids);
+			if ($template_info->email_template_id == WORK_CONFIRMATION_EMAIL_TEMPLATE_ID)
+			{
+				foreach($shift_ids as $shift_id) {
+					modules::run('job/shift/email_work_confirmation', array('shift_id' => $shift_id));
+				}
+			}
+			
 			foreach($user_ids as $user_id){
 				$send_email = true;
 				//get user
 				$user = $this->user_model->get_user($user_id);
 				//get template info
-				$template_info = $this->email_template_model->get_template($email_template_id);	
+				
 				$company = $this->setting_model->get_profile();
 				
 				//check if this is a roster email
@@ -713,6 +726,7 @@ class Ajax_shift extends MX_Controller {
 						$send_email = false;
 					}
 				}
+				
 				
 				if($send_email){
 					//get receiver object
