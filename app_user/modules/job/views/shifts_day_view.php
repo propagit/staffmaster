@@ -101,7 +101,7 @@
 <div id="selected-shift-email-info"></div>
 <input type="hidden" name="email_modal_header" value="Apply For Shift" />
 <input type="hidden" name="email_template_id" value="<?=APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID;?>" />
-<?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID,ROSTER_UPDATE_EMAIL_TEMPLATE_ID);?>
+<?php $allowed_email_templates = array(APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID,ROSTER_UPDATE_EMAIL_TEMPLATE_ID, WORK_CONFIRMATION_EMAIL_TEMPLATE_ID);?>
 <input type="hidden" name="allowed_template_ids" value="<?=json_encode($allowed_email_templates);?>" />
 </form>
 <!--end email-->

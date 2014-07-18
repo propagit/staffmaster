@@ -214,38 +214,44 @@ class Shift extends MX_Controller {
 	*	
 	*/
 	function email_work_confirmation($params)
-	{
-		$this->load->model('user/user_model');
-		$this->load->model('setting/setting_model');
-		$this->load->model('email/email_template_model');
-		
+	{	
 		$shift_id = $params['shift_id'];
-		$user_id = $params['user_id'];
-		$email_template_id = WORK_CONFIRMATION_EMAIL_TEMPLATE_ID;
-		if($user_id && $shift_id){
-			  //get user
-			  $user = $this->user_model->get_user($user_id);
-			  //get template info
-			  $template_info = $this->email_template_model->get_template($email_template_id);	
-			  $company = $this->setting_model->get_profile();
-			  //get receiver object
-			  $email_obj_params = array(
-									  'template_id' => $template_info->email_template_id,
-									  'user_id' => $user_id,
-									  'company' => $company,
-									  'shift_id' => $shift_id
-								  );	
-			  $obj = modules::run('email/get_email_obj',$email_obj_params);
-			  $email_data = array(
-								  'to' => $user['email_address'],
-								  'from' => $company['email_c_email'],
-								  'from_text' => $company['email_c_name'],
-								  'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
-								  'message' => modules::run('email/format_template_body',$template_info->template_content,$obj)
-							  );
-			  modules::run('email/send_email',$email_data);
-
+		
+		$shift = $this->job_shift_model->get_job_shift($shift_id);
+		if ($shift['status'] == SHIFT_CONFIRMED)
+		{
+			$user_id = $params['user_id'];
+			$email_template_id = WORK_CONFIRMATION_EMAIL_TEMPLATE_ID;
+		
+			if($user_id && $shift_id){
+			
+				$this->load->model('user/user_model');
+				$this->load->model('setting/setting_model');
+				$this->load->model('email/email_template_model');
+				  //get user
+				  $user = $this->user_model->get_user($user_id);
+				  //get template info
+				  $template_info = $this->email_template_model->get_template($email_template_id);	
+				  $company = $this->setting_model->get_profile();
+				  //get receiver object
+				  $email_obj_params = array(
+										  'template_id' => $template_info->email_template_id,
+										  'user_id' => $user_id,
+										  'company' => $company,
+										  'shift_id' => $shift_id
+									  );	
+				  $obj = modules::run('email/get_email_obj',$email_obj_params);
+				  $email_data = array(
+									  'to' => $user['email_address'],
+									  'from' => $company['email_c_email'],
+									  'from_text' => $company['email_c_name'],
+									  'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									  'message' => modules::run('email/format_template_body',$template_info->template_content,$obj)
+								  );
+				  modules::run('email/send_email',$email_data);
+	
+			}
+			echo 'sent';
 		}
-		echo 'sent';
 	}
 }
