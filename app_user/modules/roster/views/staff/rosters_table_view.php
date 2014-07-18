@@ -41,8 +41,8 @@
 			<td class="center" width="150">
 				<? if($roster['status'] == 1) { ?>
 				<div class="btn-group btn-status">
-					<button type="button" class="btn btn-danger">Unconfirmed</button>
-					<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+					<button type="button" class="btn btn-warning">Unconfirmed</button>
+					<button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-relative" role="menu">

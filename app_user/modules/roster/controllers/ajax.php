@@ -7,10 +7,12 @@
 
 class Ajax extends MX_Controller {
 
+	var $user = null;
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('roster_model');
+		$this->user = $this->session->userdata('user_data');
 	}
 	
 	
@@ -38,6 +40,15 @@ class Ajax extends MX_Controller {
 		foreach($rosters as $roster)
 		{
 			$this->roster_model->update_roster($roster, array('status' => SHIFT_CONFIRMED));
+			
+			//check if work confirmation is set as auto send	
+			if(modules::run('email/is_email_set_as_autosend',WORK_CONFIRMATION_EMAIL_TEMPLATE_ID)){
+				//if marked as autosend, send work confirmation email
+				
+				$params['user_id'] = $this->user['user_id'];
+				$params['shift_id'] = $roster;
+			    modules::run('job/shift/email_work_confirmation',$params);
+			}			
 		}
 	}
 	function reject_rosters()
