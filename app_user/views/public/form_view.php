@@ -31,7 +31,7 @@
     <link href="<?=base_url();?>custom_styles" rel="stylesheet" type="text/css" />
     <link href="<?=base_url();?>assets/css/core.css" rel="stylesheet" media="screen">
 	<link href="<?=base_url();?>assets/css/public/form.css" rel="stylesheet" media="screen">
-	<link href="<?=base_url();?>assets/jasny-bootstrap/css/public/jasny-bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="<?=base_url();?>assets/jasny-bootstrap/css/jasny-bootstrap.min.css" rel="stylesheet" media="screen">
 	<link type="text/css" rel="stylesheet" href="<?=base_url();?>custom_styles" />
 </head>
 <body>
