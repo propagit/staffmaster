@@ -246,7 +246,7 @@ function validate_form() {
 function buy_credits() {
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>sms/ajax/buy_credits",
+		url: "<?=base_url();?>account/ajax/buy_credits",
 		data: $('#form_buy_credits').serialize(),
 		success: function(html) {
 			if (html == 'true') {

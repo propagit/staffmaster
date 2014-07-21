@@ -90,7 +90,7 @@ class Ajax extends MX_Controller {
 			# Add credits
 			$this->account_model->add_credits('system', $credits);
 			# Send the receipt
-			$order['purchase_id'] = 'SBC-' . $this->user['user_id'] . '-' . $order_id;
+			$order['purchase_id'] = 'SBSYS-' . $this->user['user_id'] . '-' . $order_id;
 			$this->send_receipt_email($order);
 			echo 'true';
 		}
@@ -125,7 +125,7 @@ class Ajax extends MX_Controller {
 		$this->Eway_model->setTransactionData("CardNumber", $cardnumber); # mandatory field
 		$this->Eway_model->setTransactionData("CardExpiryMonth", $expmonth); # mandatory field
 		$this->Eway_model->setTransactionData("CardExpiryYear", $expyear); # mandatory field
-		$this->Eway_model->setTransactionData("TrxnNumber", "TRXN".$order_id); 
+		$this->Eway_model->setTransactionData("TrxnNumber", "TRXN" . $purchase_id); 
 		$this->Eway_model->setTransactionData("Option1", "");
 		$this->Eway_model->setTransactionData("Option2", "");
 		$this->Eway_model->setTransactionData("Option3", "");
