@@ -3,7 +3,7 @@
     <div class="col-md-6">
     	<form id="work-confirmation-update-email-template-form" role="form">
         <h2 class="email-template-title">Work Confirmation </h2>
-        <p> The work confirmation email can be sent to staff to confim them of their shifts </p> 
+        <p>The work confirmation email can be sent to staff to confirm them of their shifts </p> 
         <br>               
         <div class="row">
             <div class="form-group">

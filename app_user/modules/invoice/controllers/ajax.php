@@ -879,6 +879,7 @@ class Ajax extends MX_Controller {
 									
 									$client = modules::run('client/get_client', $invoice['client_id']);
 									$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+									$venue = modules::run('attribute/venue/display_venue', $timesheet['venue_id']);
 									
 									$value = str_replace('{staff_name}', $staff['first_name'] . ' ' . $staff['last_name'], $value);
 									$value = str_replace('{tax_amount}', money_format('%i', $tax_amount), $value);
@@ -900,7 +901,8 @@ class Ajax extends MX_Controller {
 									$value = str_replace('{job_date}', date($date_format, strtotime($timesheet['job_date'])), $value);
 									$value = str_replace('{start_time}', date('H:ia', $timesheet['start_time']), $value);
 									$value = str_replace('{finish_time}', date('H:ia', $timesheet['finish_time']), $value);
-									$value = str_replace('{hours}', $timesheet['total_minutes'] / 60, $value);
+									$value = str_replace('{hours}', $timesheet['total_minutes'] / 60, $value);									
+									$value = str_replace('{venue}', $venue, $value);
 									
 									$breaks = json_decode($timesheet['break_time']);
 									$total = 0;

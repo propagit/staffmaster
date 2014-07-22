@@ -752,14 +752,14 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `export_templates`
 --
 
 INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`, `status`) VALUES
-(1, '', 'invoice', 'item', 'Xero (Item Per Line)', 0),
+(1, 'xero', 'invoice', 'item', 'Xero (Item Per Line)', 0),
 (3, '', 'payrun_tfn', 'shift', 'Default (Shift Per Line)', 2),
 (4, '', 'payrun_tfn', 'staff', 'Default (Staff Per Line)', 3),
 (5, '', 'payrun_abn', 'shift', 'ABN Supplier Export', 0),
@@ -774,7 +774,8 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (16, 'shoebooks', 'invoice', 'shift', 'Shoebooks (Shift Per Line)', 1),
 (17, 'myob', 'payrun_tfn', 'shift', 'MYOB (Shift Per Line)', 3),
 (18, 'myob', 'invoice', 'shift', 'MYOB (Shift Per Line)', 1),
-(19, 'myob', 'staff', '', 'MYOB', 0);
+(19, 'myob', 'staff', '', 'MYOB', 0),
+(20, 'xero', 'invoice', 'shift', 'Xero (Shift Per Line)', 0);
 
 -- --------------------------------------------------------
 
@@ -790,7 +791,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=401 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=435 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -892,7 +893,6 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (232, 13, 9, 'JobID', ''),
 (233, 13, 10, 'DivID', ''),
 (234, 13, 11, 'CustomerPO', '{po_number}'),
-(235, 1, 0, 'ContactName', '{client_contact_name}'),
 (236, 1, 1, 'EmailAddress', '{client_email}'),
 (237, 1, 2, 'POAddressLine1', '{client_address}'),
 (238, 1, 3, 'POAddressLine2', '{client_suburb}'),
@@ -911,15 +911,12 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (251, 1, 16, 'Description', '{item_description}'),
 (252, 1, 17, 'Quantity', '1'),
 (253, 1, 18, 'UnitAmount', '{ex_tax_amount}'),
-(254, 1, 19, 'Discount', ''),
-(255, 1, 20, 'AccountCode', ''),
-(256, 1, 21, 'TaxType', '{tax_type}'),
-(257, 1, 22, 'TaxAmount', '{tax_amount}'),
-(258, 1, 23, 'TrackingName1', ''),
-(259, 1, 25, 'TrackingName2', ''),
-(260, 1, 24, 'TrackingOption1', ''),
-(261, 1, 26, 'TrackingOption2', ''),
-(262, 1, 262, 'Currency', 'AUD'),
+(257, 1, 24, 'TaxAmount', '{tax_amount}'),
+(258, 1, 25, 'TrackingName1', ''),
+(259, 1, 27, 'TrackingName2', ''),
+(260, 1, 26, 'TrackingOption1', ''),
+(261, 1, 28, 'TrackingOption2', ''),
+(262, 1, 29, 'Currency', 'AUD'),
 (264, 11, 4, 'DateTo', '{payable_date}'),
 (265, 11, 9, 'Hours', '{hours}'),
 (266, 4, 266, 'DatePayable', '{payable_date}'),
@@ -997,10 +994,8 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (344, 17, 5, 'Customer First Name', ''),
 (345, 17, 6, 'Notes', ''),
 (347, 17, 9, 'Units', '{hours}'),
-(348, 17, 10, 'Employee Card ID', '{internal_staff_id}'),
 (349, 17, 11, 'Employee Record ID', '{external_staff_id}'),
 (350, 17, 12, 'Start/Stop Time', '{start_time}  {finish_time}'),
-(351, 17, 13, 'Customer Card ID', '{internal_client_id}'),
 (352, 17, 14, 'Customer Record ID', '{external_client_id}'),
 (353, 17, 8, 'Date', '{job_date}'),
 (354, 18, 354, 'Co./Last Name', '{client_company_name}'),
@@ -1047,7 +1042,39 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (396, 19, 18, 'Superannuation Fund', '{super_fund_name}'),
 (397, 19, 19, 'Employee Membership #', '{super_membership_number}'),
 (399, 19, 20, 'Tax File Number', '{tfn_number}'),
-(400, 19, 17, 'Gender', '{gender}');
+(400, 19, 17, 'Gender', '{gender}'),
+(401, 1, 0, 'ContactName', '{client_company_name}'),
+(402, 1, 20, 'AccountCode', '200'),
+(403, 1, 21, 'Discount', ''),
+(404, 1, 23, 'TaxType', 'GST on Income'),
+(405, 20, 1, 'EmailAddress', '{client_email}'),
+(406, 20, 2, 'POAddressLine1', '{client_address}'),
+(407, 20, 3, 'POAddressLine2', '{client_suburb}'),
+(408, 20, 4, 'POAddressLine3', ''),
+(409, 20, 5, 'POAddressLine4', ''),
+(410, 20, 6, 'POCity', '{client_city}'),
+(411, 20, 7, 'PORegion', '{client_state}'),
+(412, 20, 8, 'POPostalCode', '{client_postcode}'),
+(413, 20, 9, 'POCountry', '{client_country}'),
+(414, 20, 10, 'InvoiceNumber', '{invoice_id}'),
+(415, 20, 11, 'Reference', '{po_number}'),
+(416, 20, 12, 'InvoiceDate', '{issued_date}'),
+(417, 20, 13, 'DueDate', '{due_date}'),
+(418, 20, 14, 'Total', '{inc_tax_amount}'),
+(419, 20, 15, 'InventoryItemCode', ''),
+(421, 20, 17, 'Quantity', '1'),
+(422, 20, 18, 'UnitAmount', '{ex_tax_amount}'),
+(423, 20, 20, 'Discount', ''),
+(424, 20, 22, 'TaxAmount', '{tax_amount}'),
+(425, 20, 23, 'TrackingName1', ''),
+(426, 20, 25, 'TrackingName2', ''),
+(427, 20, 24, 'TrackingOption1', ''),
+(428, 20, 26, 'TrackingOption2', ''),
+(429, 20, 27, 'Currency', 'AUD'),
+(430, 20, 0, 'ContactName', '{client_company_name}'),
+(431, 20, 19, 'AccountCode', '200'),
+(433, 20, 21, 'TaxType', 'GST on Income'),
+(434, 20, 16, 'Description', '{venue}   {start_time}   {finish_time}');
 
 -- --------------------------------------------------------
 
@@ -1237,9 +1264,8 @@ INSERT INTO `export_template_fields` (`field_id`, `field_order`, `object`, `leve
 (169, 0, 'payrun_tfn', 'shift', 'client_company_name', 'Client Company Name'),
 (170, 0, 'payrun_tfn', 'shift', 'shift_date', 'Shift Date'),
 (171, 0, 'payrun_tfn', 'shift', 'internal_client_id', 'Internal Client ID'),
-(172, 0, 'payrun_tfn', 'shift', 'external_client_id', 'External Client ID');
-
-
+(172, 0, 'payrun_tfn', 'shift', 'external_client_id', 'External Client ID'),
+(173, 0, 'invoice', 'shift', 'venue', 'Venue');
 
 -- --------------------------------------------------------
 
