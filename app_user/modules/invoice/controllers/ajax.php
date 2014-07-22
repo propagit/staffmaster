@@ -1007,8 +1007,10 @@ class Ajax extends MX_Controller {
 							$value = str_replace('{start_time}', '', $value);
 							$value = str_replace('{finish_time}', '', $value);
 							$value = str_replace('{staff_name}', '', $value);
+							$value = str_replace('{venue}', $item['title'], $value); # For manual item, display the item title instead
 							$value = str_replace('{break}', '', $value);
 							$value = str_replace('{hours}', '1', $value);
+							
 							
 							$value = str_replace('{due_date}', date($date_format, strtotime($invoice['due_date'])), $value);
 							$value = str_replace('{issued_date}', date($date_format, strtotime($invoice['issued_date'])), $value);
