@@ -709,47 +709,51 @@ class Ajax_shift extends MX_Controller {
 					modules::run('job/shift/email_work_confirmation', array('shift_id' => $shift_id));
 				}
 			}
-			
-			foreach($user_ids as $user_id){
-				$send_email = true;
-				//get user
-				$user = $this->user_model->get_user($user_id);
-				//get template info
-				
-				$company = $this->setting_model->get_profile();
-				
-				//check if this is a roster email
-				if($template_info->email_template_id == ROSTER_UPDATE_EMAIL_TEMPLATE_ID){
-					$active_month = date('Y-m');
-					$rosters = $this->roster_model->get_user_rosters_by_month($user_id,$active_month);
-					if(!count($rosters)){
-						$send_email = false;
-					}
-				}
-				
-				
-				if($send_email){
-					//get receiver object
-					$email_obj_params = array(
-											'template_id' => $template_info->email_template_id,
-											'user_id' => $user_id,
-											'company' => $company
-										);	
-					if($template_info->email_template_id == APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID){
-						$email_obj_params['shift_ids'] = $shift_ids;	
+			else
+			{
+				foreach($user_ids as $user_id)
+				{
+					$send_email = true;
+					//get user
+					$user = $this->user_model->get_user($user_id);
+					//get template info
+					
+					$company = $this->setting_model->get_profile();
+					
+					//check if this is a roster email
+					if($template_info->email_template_id == ROSTER_UPDATE_EMAIL_TEMPLATE_ID){
+						$active_month = date('Y-m');
+						$rosters = $this->roster_model->get_user_rosters_by_month($user_id,$active_month);
+						if(!count($rosters)){
+							$send_email = false;
+						}
 					}
 					
-					$obj = modules::run('email/get_email_obj',$email_obj_params);
-					$email_data = array(
-										'to' => $user['email_address'],
-										'from' => $template_info->email_from,
-										'from_text' => $company['email_c_name'],
-										'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
-										'message' => modules::run('email/format_template_body',$email_body,$obj)
-									);
-					modules::run('email/send_email',$email_data);
+					
+					if($send_email){
+						//get receiver object
+						$email_obj_params = array(
+												'template_id' => $template_info->email_template_id,
+												'user_id' => $user_id,
+												'company' => $company
+											);	
+						if($template_info->email_template_id == APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID){
+							$email_obj_params['shift_ids'] = $shift_ids;	
+						}
+						
+						$obj = modules::run('email/get_email_obj',$email_obj_params);
+						$email_data = array(
+											'to' => $user['email_address'],
+											'from' => $template_info->email_from,
+											'from_text' => $company['email_c_name'],
+											'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+											'message' => modules::run('email/format_template_body',$email_body,$obj)
+										);
+						modules::run('email/send_email',$email_data);
+					}
 				}
 			}
+			
 		}
 		echo 'sent';
 	}
