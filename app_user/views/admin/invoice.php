@@ -77,6 +77,11 @@
 </div>
 
 <div id="push"></div>
-
+<script>
+    window.onunload = refreshParent;
+    function refreshParent() {
+        window.opener.location.reload();
+    }
+</script>
 </body>
 </html>

@@ -44,6 +44,11 @@ class Invoice_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function update_invoice_item($item_id, $data) {
+		$this->db->where('item_id', $item_id);
+		return $this->db->update('invoice_items', $data);
+	}
+	
 	/**
 	*	@name: get_job_timesheets
 	*	@desc: get invoiced time sheet of invoiced job

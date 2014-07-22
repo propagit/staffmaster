@@ -603,6 +603,13 @@ class Ajax extends MX_Controller {
 		
 	}
 	
+	function edit_invoice_item_title()
+	{
+		$item_id = $this->input->post('pk');
+		$title = $this->input->post('value');
+		$this->invoice_model->update_invoice_item($item_id, array('title' => $title));
+	}
+	
 	/**
 	*	@name: edit_client_invoice_client_phone
 	*	@desc: ajax function to edit template client invoice for client phone
@@ -761,9 +768,7 @@ class Ajax extends MX_Controller {
 						$value = $field['value']; # Convert $field
 						
 						$title = $item['title'];
-						if ($item['include_timesheets']) {
-							$title .= ' - Staff Services';
-						}
+						
 						
 						
 						$tax = $item['tax'];

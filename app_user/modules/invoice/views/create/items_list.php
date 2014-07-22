@@ -13,11 +13,15 @@
 <? foreach($items as $item) { if($item['job_id']) { ?>
 <tr>
 	<td>
+		<a href="#" class="edit_item_title prim-color-to-txt-color" data-type="text"  data-pk="<?=$item['item_id']?>" data-title="Item Title"> 
+		
 		<? if ($item['include_timesheets']) { ?>
-		<b><?=$item['title'];?> - Staff Services</b>
+		<b><?=$item['title'];?></b>
 		<? } else { ?>
 		<span class="indent"> <?=$item['title'];?></span>
 		<? } ?>
+		
+		</a>
 	</td>
 	<td align="right">
 		<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
@@ -39,7 +43,7 @@
 <? foreach($items as $item) { if(!$item['job_id']) { ?>
 <tr>
 	<td>
-		<?=$item['title'];?>
+		<a href="#" class="edit_item_title prim-color-to-txt-color" data-type="text"  data-pk="<?=$item['item_id']?>" data-title="Item Title"><?=$item['title'];?></a>
 	</td>
 	<td align="right">
 		<? if($item['tax'] == GST_YES || $item['tax'] == GST_ADD) { ?>
@@ -60,3 +64,10 @@
 </tr> 
 <? } } ?>
 </table>
+<script>
+$(function(){
+	$('.edit_item_title').editable({
+		url: '<?=base_url();?>invoice/ajax/edit_invoice_item_title',		
+	});
+})
+</script>
