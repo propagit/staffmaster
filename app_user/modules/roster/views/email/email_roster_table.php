@@ -3,6 +3,8 @@
 		<tr style="background:#ededed;">
 			<th align="left" style="border:1px solid #ccc;padding: 12px 5px;">Date</th>
 			<th align="left" style="border:1px solid #ccc;padding: 12px 5px;">Venue</th>
+			<th align="left" style="border:1px solid #ccc;padding: 12px 5px;">Role</th>
+			<th align="left" style="border:1px solid #ccc;padding: 12px 5px;">Uniform</th>
 			<th align="center" style="border:1px solid #ccc;padding: 12px 5px;">Start Time</th>
 			<th align="center" style="border:1px solid #ccc;padding: 12px 5px;">Finish Time</th>
 			<th align="center" style="border:1px solid #ccc;padding: 12px 5px;">Break</th>
@@ -15,11 +17,22 @@
 		<tr>
 			<td align="left" style="border:1px solid #ccc;"><?=date('d M', strtotime($roster['job_date']));?></td>
 			<td align="left" style="border:1px solid #ccc;">
-				<? if ($roster['venue_id']) { ?>			
-				<?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?>		
+				<? if ($roster['venue_id']) { 
+				$venue = modules::run('attribute/venue/get_venue', $roster['venue_id']);
+				$address = $venue['address'] . ', ' . $venue['suburb'] . ' ' . $venue['state'] . ' ' . $venue['postcode'];
+				?>			
+				<?=modules::run('attribute/venue/display_venue', $roster['venue_id']);?>	
+				<br />
+				Address: <a href="http://maps.google.com.au/?q=<?=$address;?>"><?=$address;?></a>
 				<? } else { ?>
 				Not Specified
 				<? } ?>
+			</td>
+			<td align="left" style="border:1px solid #ccc;">
+				<?=modules::run('attribute/role/display_role', $roster['role_id']);?>
+			</td>
+			<td align="left" style="border:1px solid #ccc;">
+				<?=modules::run('attribute/uniform/display_uniform', $roster['uniform_id']);?>
 			</td>
 			<td align="center" style="border:1px solid #ccc;"><?=date('H:i', $roster['start_time']);?></td>
 			<td align="center" style="border:1px solid #ccc;"><?=date('H:i', $roster['finish_time']);?> <?=(date('d', $roster['finish_time']) != date('d', $roster['start_time'])) ? '*': '';?></td>
