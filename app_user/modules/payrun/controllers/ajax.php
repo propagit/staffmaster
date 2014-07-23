@@ -49,29 +49,7 @@ class Ajax extends MX_Controller {
 	function set_filter() {
 		$this->session->set_userdata('prf_' . $this->input->post('name'), $this->input->post('value'));
 	}
-	
-	function select_payrun_staff($user_id, $checked) {
-		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
-		foreach($timesheets as $timesheet) {
-			$this->select_payrun_timesheet($timesheet['timesheet_id'], $checked);
-		}
-	}
-	
-	function select_payrun_timesheet($timesheet_id, $checked) {
-		$timesheets = $this->session->userdata('payrun_timesheets');
-		if ($checked == "true") {
-			if (!in_array($timesheet_id, $timesheets)) {
-				$timesheets[] = $timesheet_id;
-			}
-		}
-		else {
-			if (in_array($timesheet_id, $timesheets)) {
-				unset($timesheets[array_search($timesheet_id, $timesheets)]);
-			}
-		}
-		$this->session->set_userdata('payrun_timesheets', $timesheets);
-	}
-	
+		
 	/**
 	*	@name: row_timesheets_staff
 	*	@desc: ajax function to display the row (tr) content of batched staff
@@ -117,6 +95,30 @@ class Ajax extends MX_Controller {
 		echo json_encode($output);
 	}
 	
+	function process_selected_timesheets() {
+		$timesheet_ids = $this->input->post('timesheet_ids');
+		foreach($timesheet_ids as $timesheet_id) {
+			$this->payrun_model->process_payrun($timesheet_id);
+		}
+	}
+	
+	function process_payrun() {
+		$timesheet_id = $this->input->post('timesheet_id');
+		$this->payrun_model->process_payrun($timesheet_id);
+	}
+	
+	function unprocess_selected_timesheets() {
+		$timesheet_ids = $this->input->post('timesheet_ids');
+		foreach($timesheet_ids as $timesheet_id) {
+			$this->payrun_model->unprocess_payrun($timesheet_id);
+		}
+	}
+	
+	function unprocess_payrun() {
+		$timesheet_id = $this->input->post('timesheet_id');
+		$this->payrun_model->unprocess_payrun($timesheet_id);
+	}
+	
 	function unprocess_staff_payruns() {
 		$user_id = $this->input->post('user_id');
 		$this->payrun_model->unprocess_staff_payruns($user_id);
@@ -127,16 +129,6 @@ class Ajax extends MX_Controller {
 			$output[] = $timesheet['timesheet_id'];
 		}
 		echo json_encode($output);
-	}
-	
-	function process_payrun() {
-		$timesheet_id = $this->input->post('timesheet_id');
-		$this->payrun_model->process_payrun($timesheet_id);
-	}
-	
-	function unprocess_payrun() {
-		$timesheet_id = $this->input->post('timesheet_id');
-		$this->payrun_model->unprocess_payrun($timesheet_id);
 	}
 	
 	function expand_staff_timehsheets() {
@@ -154,6 +146,13 @@ class Ajax extends MX_Controller {
 		$timesheets = $this->payrun_model->get_staff_timesheets($user_id);
 		foreach($timesheets as $timesheet) {
 			$this->_revert_payrun($timesheet['timesheet_id']);
+		}
+	}
+	
+	function revert_selected_timesheets() {
+		$timesheet_ids = $this->input->post('timesheet_ids');
+		foreach($timesheet_ids as $timesheet_id) {
+			$this->_revert_payrun($timesheet_id);
 		}
 	}
 	

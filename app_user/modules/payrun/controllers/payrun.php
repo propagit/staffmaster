@@ -153,7 +153,6 @@ class Payrun extends MX_Controller {
 		$data = array(
 			array('value' => 'process', 'label' => 'Set Yes for Pay Run'),
 			array('value' => 'unprocess', 'label' => 'Set No for Pay Run'),
-			array('value' => 'archive', 'label' => 'Set as Paid & Archive'),
 			array('value' => 'revert', 'label' => 'Revert Selected')
 		);
 		return modules::run('common/menu_dropdown', $data, $id, $label);

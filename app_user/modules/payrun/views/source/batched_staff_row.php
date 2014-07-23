@@ -19,9 +19,12 @@ foreach($staff_timesheets as $timesheet) {
 	} else {
 		$processing = false;
 	}
-} ?>
+}
+?>
 <tr id="timesheets_staff_<?=$staff['user_id'];?>">
-	<td class="center"><input type="checkbox" class="payrun_staff" name="payrun_staffs[]" value="<?=$staff['user_id'];?>" /></td>
+	<td class="center">
+		<!-- <input type="checkbox" class="payrun_staff" name="payrun_staffs[]" value="<?=$staff['user_id'];?>" /> -->
+	</td>
 	<td class="wp-date" width="70">
 		<span class="wk_day"><?=date('D', $from_date);?></span>
 		<span class="wk_date"><?=date('d', $from_date);?></span>

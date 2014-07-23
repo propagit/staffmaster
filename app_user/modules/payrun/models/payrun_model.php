@@ -239,7 +239,7 @@ class Payrun_model extends CI_Model {
 		if ($prf_status != "") {
 			$this->db->where('status_payrun_staff', $prf_status);
 		}
-		
+		$this->db->order_by('job_date', 'asc');
 		$query = $this->db->get('job_shift_timesheets');
 		return $query->result_array();
 	}
@@ -312,7 +312,7 @@ class Payrun_model extends CI_Model {
 	function revert_payrun($timesheet_id)
 	{
 		$this->db->where('timesheet_id', $timesheet_id);
-		$this->db->where('status_payrun_staff < ', PAYRUN_GENERATED);
+		$this->db->where('status_payrun_staff < ', PAYRUN_READY); # Only revert payrun that not ready
 		return $this->db->update('job_shift_timesheets', array(
 			'status' => TIMESHEET_APPROVED,
 			'status_payrun_staff' => PAYRUN_PENDING

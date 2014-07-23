@@ -319,7 +319,6 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (415, 20, 11, 'Reference', '{po_number}'),
 (416, 20, 12, 'InvoiceDate', '{issued_date}'),
 (417, 20, 13, 'DueDate', '{due_date}'),
-(418, 20, 14, 'Total', '{inc_tax_amount}'),
 (419, 20, 15, 'InventoryItemCode', ''),
 (421, 20, 17, 'Quantity', '1'),
 (422, 20, 18, 'UnitAmount', '{ex_tax_amount}'),
