@@ -65,6 +65,12 @@ class Invoice_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_invoice_timesheets($invoice_id) {
+		$this->db->where('invoice_id', $invoice_id);
+		$query = $this->db->get('job_shift_timesheets');
+		return $query->result_array();
+	}
+	
 	/**
 	*	@name: delete_invoice_item
 	*	@desc: delete an item from the invoice
