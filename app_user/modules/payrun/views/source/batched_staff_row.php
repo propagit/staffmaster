@@ -63,9 +63,9 @@ foreach($staff_timesheets as $timesheet) {
 		</div>
 	</td>
 	<td class="center">
-		<? if($total_ready == 0) { ?>
+		<? /*if($total_ready == 0) { ?>
 		<a onclick="revert_staff_payruns(<?=$staff['user_id'];?>)"><i class="fa fa-times"></i></a>
-		<? } ?>
+		<? }*/ ?>
 	</td>
 	<td class="center">
 		<? if ($expanded) { ?>

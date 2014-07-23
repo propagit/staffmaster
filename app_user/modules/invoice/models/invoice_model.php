@@ -175,7 +175,7 @@ class Invoice_model extends CI_Model {
 	function get_invoiced_clients() {
 		$sql = "SELECT uc.*, sum(j.expenses_client_cost) as `expenses`, sum(j.total_amount_client) as `total_amount`, count(*) as `total_timesheets` FROM `job_shift_timesheets` j
 					LEFT JOIN `user_clients` uc ON j.client_id = uc.user_id
-					WHERE j.status = " . TIMESHEET_BATCHED . "
+					WHERE j.status = " . TIMESHEET_BATCHED . " 
 					AND j.status_invoice_client = " . INVOICE_READY . "
 					GROUP BY j.client_id";
 		$query = $this->db->query($sql);
@@ -213,7 +213,7 @@ class Invoice_model extends CI_Model {
 		$sql_select_job_id = "SELECT job_id 
 								FROM `job_shift_timesheets` 
 								WHERE status = " . TIMESHEET_BATCHED . "
-								AND status_invoice_client <= " . INVOICE_READY . "
+								AND status_invoice_client < " . INVOICE_READY . "
 								GROUP BY job_id";
 		$sql = "SELECT * FROM jobs WHERE client_id = " . $user_id . " AND job_id IN ($sql_select_job_id)";
 		$query = $this->db->query($sql);

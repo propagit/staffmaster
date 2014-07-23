@@ -35,9 +35,26 @@
 		</div>
 	</td>
 	<td class="center">
-		<? if($timesheet['status'] == TIMESHEET_BATCHED && ($timesheet['status_payrun_staff'] == PAYRUN_PENDING)) { ?>
+		<? if($timesheet['status_invoice_client'] < INVOICE_GENERATED) { ?>
 		<a onclick="revert_payrun(<?=$timesheet['staff_id'];?>,<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a>
+		<? } else { ?>
+		<a href="<?=base_url();?>invoice/view/<?=$timesheet['invoice_id'];?>" target="_blank" class="tooltip2" data-toggle="tooltip" title="This time sheet has been added to a generated invoice. Please revert the invoice then revert this payrun"><i class="fa text-danger fa-question"></i></a>
 		<? } ?>
 	</td>
 	<td></td>	
 </tr>
+<!-- Generated markup by the plugin -->
+<div class="tooltip top" role="tooltip">
+  <div class="tooltip-arrow"></div>
+  <div class="tooltip-inner">
+    Some tooltip text!
+  </div>
+</div>
+
+<script>
+$(function(){
+	$('.tooltip2').tooltip({
+		trigger: 'hover'
+	})
+})
+</script>

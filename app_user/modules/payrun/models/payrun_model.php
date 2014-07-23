@@ -312,7 +312,8 @@ class Payrun_model extends CI_Model {
 	function revert_payrun($timesheet_id)
 	{
 		$this->db->where('timesheet_id', $timesheet_id);
-		$this->db->where('status_payrun_staff < ', PAYRUN_READY); # Only revert payrun that not ready
+		$this->db->where('status_payrun_staff < ', PAYRUN_GENERATED); # Only revert payrun that not generated
+		$this->db->where('status_invoice_client < ', INVOICE_GENERATED); # Only revert payrun that invoice not generated
 		return $this->db->update('job_shift_timesheets', array(
 			'status' => TIMESHEET_APPROVED,
 			'status_payrun_staff' => PAYRUN_PENDING,
