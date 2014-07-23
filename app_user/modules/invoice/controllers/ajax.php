@@ -846,7 +846,7 @@ class Ajax extends MX_Controller {
 					if ($item['include_timesheets']) # Item that include timesheets
 					{
 						#$timesheets = modules::run('invoice/get_job_timesheets', $item['job_id'], INVOICE_READY);
-						$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice_);
+						$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice_id);
 						if (count($timesheets) > 0) {
 							foreach($timesheets as $timesheet) 
 							{
