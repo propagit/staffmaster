@@ -54,6 +54,7 @@
 		<td><?=$payslip['name'];?></td>
 		<td class="center">
 			<?=date('H:i', $payslip['start_time']);?> - <?=date('H:i', $payslip['finish_time']);?> <?=(date('d', $payslip['finish_time']) != date('d', $payslip['start_time'])) ? '<span class="text-danger">*</span>': '';?>
+			(<?=($payslip['finish_time'] - $payslip['start_time']) / 3600;?>h)
 		</td>
 		<td class="center"><?=modules::run('common/break_time', $payslip['break_time']);?></td>
 		<td class="center"><?=modules::run('attribute/payrate/display_payrate', $payslip['payrate_id']);?></td>
