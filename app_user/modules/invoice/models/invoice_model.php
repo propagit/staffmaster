@@ -77,7 +77,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('invoice_id', $invoice_id);
 		return $this->db->update('job_shift_timesheets', array(
 			'invoice_id' => 0,
-			'status_client_invoice' => INVOICE_PENDING
+			'status_invoice_client' => INVOICE_PENDING
 		));
 	}
 	
