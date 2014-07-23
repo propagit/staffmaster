@@ -299,7 +299,7 @@ $(function(){
 		window.close();
 	});
 	<? } else { ?>
-	$('#btn-reset-invoice').html('<i class="fa fa-pencil"></i> Edit');
+	$('#btn-reset-invoice').html('<i class="fa fa-pencil"></i> Edit / Revert');
 	$('#btn-reset-invoice').click(function(){
 		edit_invoice();
 	});
