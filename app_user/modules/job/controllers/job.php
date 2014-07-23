@@ -232,7 +232,7 @@ class Job extends MX_Controller {
 		$class = $this->status_to_class($shift['status']);
 		$timesheet = $this->job_shift_model->get_shift_timesheet($shift['shift_id']);
 		if ($timesheet) {
-			if ($timesheet['status_payrun_staff'] == PAYRUN_PAID || $timesheet['status_invoice_client'] == INVOICE_PAID) {
+			if ($timesheet['status_payrun_staff'] >= PAYRUN_GENERATED || $timesheet['status_invoice_client'] == INVOICE_GENERATED) {
 				$class = 'paid';
 			}
 		}
