@@ -315,7 +315,8 @@ class Payrun_model extends CI_Model {
 		$this->db->where('status_payrun_staff < ', PAYRUN_READY); # Only revert payrun that not ready
 		return $this->db->update('job_shift_timesheets', array(
 			'status' => TIMESHEET_APPROVED,
-			'status_payrun_staff' => PAYRUN_PENDING
+			'status_payrun_staff' => PAYRUN_PENDING,
+			'status_invoice_client' => INVOICE_PENDING
 		));
 	}
 }
