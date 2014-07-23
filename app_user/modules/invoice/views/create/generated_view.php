@@ -388,7 +388,7 @@ function edit_invoice() {
 		url: "<?=base_url();?>invoice/ajax/edit_invoice",
 		data: {invoice_id: <?=$invoice['invoice_id'];?>},
 		success: function(html) {
-			window.location = '<?=base_url();?>invoice/edit/<?=$invoice['invoice_id'];?>';
+			window.close();
 		}
 	})
 }

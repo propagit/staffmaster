@@ -73,6 +73,14 @@ class Invoice_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function unlink_invoice_timesheets($invoice_id) {
+		$this->db->where('invoice_id', $invoice_id);
+		return $this->db->update('job_shift_timesheets', array(
+			'invoice_id' => 0,
+			'status_client_invoice' => INVOICE_PENDING
+		));
+	}
+	
 	/**
 	*	@name: delete_invoice_item
 	*	@desc: delete an item from the invoice

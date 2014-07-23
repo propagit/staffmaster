@@ -1123,6 +1123,11 @@ class Ajax extends MX_Controller {
 	
 	function edit_invoice() {
 		$invoice_id = $this->input->post('invoice_id');
+		
+		# Unlink all timesheets
+		$this->invoice_model->unlink_invoice_timesheets($invoice_id);
+		
+		
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
 		
 		# Update status back to 0
