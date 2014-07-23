@@ -159,9 +159,12 @@ class Ajax extends MX_Controller {
 			'country' => $data['country'],
 			'phone' => $data['phone'],
 			'mobile' => $input['mobile'],
-			'status' => $data['status'],
 			'modified_on' => date('Y-m-d H:i:s')
 		);
+		
+		if(isset($data['status'])){
+			$user_data['status'] = $data['status'];	
+		}
 		
 		
 		
