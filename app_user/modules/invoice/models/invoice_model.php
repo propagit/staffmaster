@@ -164,6 +164,7 @@ class Invoice_model extends CI_Model {
 						WHERE js.status = " . TIMESHEET_BATCHED . "
 						AND js.status_invoice_client = " . INVOICE_READY . "
 						AND js.client_id = " . $user_id . "
+						AND js.invoice_id = 0
 						GROUP BY js.job_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -181,7 +182,7 @@ class Invoice_model extends CI_Model {
 					LEFT JOIN `user_clients` uc ON j.client_id = uc.user_id
 					WHERE j.status = " . TIMESHEET_BATCHED . " 
 					AND j.status_invoice_client = " . INVOICE_READY . "
-					AND j.invoice_id != 0
+					AND j.invoice_id = 0
 					GROUP BY j.client_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
