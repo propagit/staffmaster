@@ -23,7 +23,8 @@
 			<?=date('H:i', $timesheet['finish_time']);?>
 			<? } ?>
 		</a> 
-		<?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-red">*</span>': '';?>
+		<?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-red">*</span>': '';?> 
+		(<?=($timesheet['finish_time'] - $timesheet['start_time']) / 3600;?>h)
 	</td>
 	<td class="center">
 		<a id="ts_break_<?=$timesheet['timesheet_id'];?>" onclick="load_ts_breaks(this)" class="ts_breaks prim-color-to-txt-color prim-color-to-txt-color" data-pk="<?=$timesheet['timesheet_id'];?>">
