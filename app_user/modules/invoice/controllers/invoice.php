@@ -316,6 +316,10 @@ class Invoice extends MX_Controller {
 		return $this->invoice_model->get_job_timesheets($job_id, $status);
 	}
 	
+	function get_invoice_timesheets($invoice_id) {
+		return $this->invoice_model->get_invoice_timesheets($invoice_id);
+	}
+	
 	/**
 	*	@name: field_select_status
 	*	@desc: custom field select status of invoice

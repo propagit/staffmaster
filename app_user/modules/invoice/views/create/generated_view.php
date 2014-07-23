@@ -241,7 +241,8 @@
 			<? foreach($items as $item) { 
 			if ($item['include_timesheets']) {
 			$job = modules::run('job/get_job', $item['job_id']);
-			$timesheets = modules::run('invoice/get_job_timesheets', $item['job_id'], INVOICE_GENERATED);
+			#$timesheets = modules::run('invoice/get_job_timesheets', $item['job_id'], INVOICE_GENERATED);
+			$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice['invoice_id']);
 			 ?>
 			 
 			<? if ($job) { ?>
