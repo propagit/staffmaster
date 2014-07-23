@@ -1124,9 +1124,8 @@ class Ajax extends MX_Controller {
 	function edit_invoice() {
 		$invoice_id = $this->input->post('invoice_id');
 		
-		# Unlink all timesheets
+		# Unlink
 		$this->invoice_model->unlink_invoice_timesheets($invoice_id);
-		
 		
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
 		
@@ -1134,6 +1133,6 @@ class Ajax extends MX_Controller {
 		$this->invoice_model->update_invoice($invoice_id, array(
 			'status' => INVOICE_PENDING
 		));
-		$this->invoice_model->edit_invoice_timesheets($invoice['client_id'], $invoice_id);
+		#$this->invoice_model->edit_invoice_timesheets($invoice['client_id'], $invoice_id);
 	}
 }
