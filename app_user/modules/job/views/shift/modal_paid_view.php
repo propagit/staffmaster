@@ -16,7 +16,11 @@
 					<div class="alert alert-warning">
 						Staff Payment 
 						$<?=money_format('%i', $timesheet['total_amount_staff']);?> <b>Unpaid</b> - 
+						<? if ($timesheet['payrun_id']) { ?>
 						<a href="<?=base_url();?>payrun/search-payrun/<?=$timesheet['payrun_id'];?>" target="_blank">Pay run #<?=$timesheet['payrun_id'];?></a>
+						<? } else { ?>
+						There is no pay run for this shift yet!
+						<? } ?>
 					</div>
 				<? } ?>
 				
@@ -30,7 +34,11 @@
 					<div class="alert alert-warning">
 						Client Billed 
 						$<?=money_format('%i', $timesheet['total_amount_client']);?> <b>Unpaid</b> - 
+						<? if($timesheet['invoice_id']) { ?>
 						<a href="<?=base_url();?>invoice/search-invoices/<?=$timesheet['invoice_id'];?>" target="_blank">Invoice #<?=$timesheet['invoice_id'];?></a>
+						<? } else { ?>
+						There is no invoice for this shift yet!
+						<? } ?>
 					</div>
 				<? } ?>
 			</div>		
