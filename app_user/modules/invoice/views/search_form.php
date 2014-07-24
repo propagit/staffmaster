@@ -8,6 +8,10 @@
 		<div class="col-md-4">
 			<?=modules::run('client/field_select', 'client_id');?>
 		</div>
+		<label for="invoice_id" class="col-md-2 control-label">Invoice ID</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="invoice_id" />
+		</div>
 	</div>
 </div>
 <? } ?>
@@ -134,4 +138,8 @@ function search_invoices() {
 		}
 	})
 }
+<? if($this->uri->segment(3)) { ?>
+	$('input[name="invoice_id"]').val(<?=$this->uri->segment(3);?>);
+	search_invoices();
+<? } ?>
 </script>

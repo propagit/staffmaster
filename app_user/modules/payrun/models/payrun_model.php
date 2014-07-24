@@ -61,6 +61,9 @@ class Payrun_model extends CI_Model {
 		if (isset($params['type']) && $params['type'] != 0) {
 			$this->db->where('type', $params['type']);
 		}
+		if (isset($params['payrun_id']) && $params['payrun_id'] != 0) {
+			$this->db->where('payrun_id', $params['payrun_id']);
+		}
 		if (isset($params['date_from']) && $params['date_from'] != '') {
 			$date_from = date('Y-m-d', strtotime($params['date_from']));
 			$this->db->where('created_on >=', $date_from);

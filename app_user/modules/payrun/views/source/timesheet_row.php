@@ -38,7 +38,7 @@
 		<? if($timesheet['status_invoice_client'] < INVOICE_GENERATED) { ?>
 		<a onclick="revert_payrun(<?=$timesheet['staff_id'];?>,<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-times"></i></a>
 		<? } else { ?>
-		<a href="<?=base_url();?>invoice/view/<?=$timesheet['invoice_id'];?>" target="_blank" class="tooltip2" data-toggle="tooltip" title="This time sheet has been added to a generated invoice. Please revert the invoice then revert this payrun"><i class="fa text-danger fa-question"></i></a>
+		<a href="<?=base_url();?>invoice/view/<?=$timesheet['invoice_id'];?>" target="_blank" class="tooltip2" data-toggle="tooltip" title='The client has been invoiced for this shift. To revert this shift you need to revert the invoice. Click the "?" to view the invoice and click "Edit Invoice to revert the invoice. Invoices with a paid status cannot be reverted'><i class="fa text-danger fa-question"></i></a>
 		<? } ?>
 	</td>
 	<td></td>	

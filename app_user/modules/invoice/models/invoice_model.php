@@ -428,6 +428,9 @@ class Invoice_model extends CI_Model {
 		if (isset($params['client_id']) && $params['client_id'] != 0 ) {
 			$this->db->where('client_id', $params['client_id']);
 		}
+		if (isset($params['invoice_id']) && $params['invoice_id'] != 0) {
+			$this->db->where('invoice_id', $params['invoice_id']);
+		}
 		if (isset($params['issued_by']) && $params['issued_by'] != 0) {
 			$this->db->where('issued_by', $params['issued_by']);
 		}

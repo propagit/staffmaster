@@ -55,6 +55,6 @@
 
 <script>
 $(function() {
-	//$('#tab-invoice a[href="#search-invoices"]').tab('show');
+	$('#tab-invoice a[href="#<?=$tab;?>"]').tab('show');
 })
 </script>

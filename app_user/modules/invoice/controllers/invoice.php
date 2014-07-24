@@ -41,7 +41,7 @@ class Invoice extends MX_Controller {
 					$this->download($param);
 				break;
 			default:
-					$this->main_view();
+					$this->main_view($method);
 				break;
 		}
 		
@@ -54,7 +54,8 @@ class Invoice extends MX_Controller {
 	*	@param: (void)
 	*	@return: (html) load main layout of the invoice page
 	*/
-	function main_view() {
+	function main_view($tab = 'create-invoice') {
+		$data['tab'] = $tab;
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
 	

@@ -3,9 +3,13 @@
 <form class="form-horizontal" role="form" id="form_search_payruns">
 <div class="row">
 	<div class="form-group">
-		<label for="type" class="col-md-2 control-label">Type: </label>
+		<label for="type" class="col-md-2 control-label">Type</label>
 		<div class="col-md-4">
 			<?=modules::run('payrun/field_select_type', 'type');?>
+		</div>
+		<label for="payrun_id" class="col-md-2 control-label">Pay Run ID</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="payrun_id" />
 		</div>
 	</div>
 </div>
@@ -91,5 +95,8 @@ function search_payruns() {
 		}
 	})
 }
-
+<? if($this->uri->segment(3)) { ?>
+	$('input[name="payrun_id"]').val(<?=$this->uri->segment(3);?>);
+	search_payruns();
+<? } ?>
 </script>

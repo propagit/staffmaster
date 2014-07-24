@@ -15,31 +15,10 @@ class Payrun extends MX_Controller {
 	}
 	
 	
-	function index($method='', $param='') {
-		switch($method)
-		{
-			case 'test':	echo '<pre>';
-					var_dump(modules::run('timesheet/extract_timesheet_payrate', 8));
-					echo '</pre>';
-				break;
-			default:
-					$this->main_view();
-				break;
-		}
-		
-	}	
-	
-	/**
-	*	@name: main_view
-	*	@desc: load the main layout of the payrun page
-	*	@access: public
-	*	@param: (void)
-	*	@return: (void) load main layout of the payrun page
-	*/
-	function main_view() {
+	function index($tab='create-payrun') {
+		$data['tab'] = $tab;
 		$this->load->view('main_view', isset($data) ? $data : NULL);
-	}
-	
+	}	
 	
 	function create_view() {
 		$this->load->view('create_view', isset($data) ? $data : NULL);
