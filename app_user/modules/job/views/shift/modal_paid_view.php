@@ -15,7 +15,8 @@
 				<? } else { ?>
 					<div class="alert alert-warning">
 						Staff Payment 
-						$<?=money_format('%i', $timesheet['total_amount_staff']);?> <b>Unpaid</b>
+						$<?=money_format('%i', $timesheet['total_amount_staff']);?> <b>Unpaid</b> - 
+						<a href="<?=base_url();?>payrun/search-payrun/<?=$timesheet['payrun_id'];?>" target="_blank">Pay run #<?=$timesheet['payrun_id'];?></a>
 					</div>
 				<? } ?>
 				
@@ -28,7 +29,8 @@
 				<? } else { ?>
 					<div class="alert alert-warning">
 						Client Billed 
-						$<?=money_format('%i', $timesheet['total_amount_client']);?> <b>Unpaid</b>
+						$<?=money_format('%i', $timesheet['total_amount_client']);?> <b>Unpaid</b> - 
+						<a href="<?=base_url();?>invoice/search-invoices/<?=$timesheet['invoice_id'];?>" target="_blank">Invoice #<?=$timesheet['invoice_id'];?></a>
 					</div>
 				<? } ?>
 			</div>		
