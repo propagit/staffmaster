@@ -316,6 +316,7 @@ class Invoice_model extends CI_Model {
 	*/
 	function add_job_to_invoice($job_id) {
 		$this->db->where('job_id', $job_id);
+		$this->db->where('status_invoice_client', INVOICE_PENDING);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_READY));
 	}
 	
@@ -328,6 +329,7 @@ class Invoice_model extends CI_Model {
 	*/
 	function remove_job_from_invoice($job_id) {
 		$this->db->where('job_id', $job_id);
+		$this->db->where('status_invoice_client', INVOICE_READY);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_PENDING));
 	}
 	
@@ -340,6 +342,7 @@ class Invoice_model extends CI_Model {
 	*/
 	function add_timesheet_to_invoice($timesheet_id) {
 		$this->db->where('timesheet_id', $timesheet_id);
+		$this->db->where('status_invoice_client', INVOICE_PENDING);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_READY));		
 	}
 	
@@ -352,6 +355,7 @@ class Invoice_model extends CI_Model {
 	*/
 	function remove_timesheet_from_invoice($timesheet_id) {
 		$this->db->where('timesheet_id', $timesheet_id);
+		$this->db->where('status_invoice_client', INVOICE_READY);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_PENDING));
 	}
 	
