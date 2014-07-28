@@ -11,6 +11,7 @@
 <div class="alert alert-danger add-top-margin-20 hide" id="msg-sms-sent-failed"></div>
 </form>
 <div id="sms-receiver-list" class="email-modal-receiver-list"></div>
+
 <script>
 $(function(){
 	$('#btn-send-sms').click(function(){
@@ -35,7 +36,6 @@ $(function(){
 		})
 	});
 	updateTextboxCounter('msg', 'currentChars');
-	<? if(count($selected_user_ids) > 0) { ?>
 	$('#view-sms-receiver-list').click(function(){
 		$.ajax({
 			type: "POST",
@@ -46,7 +46,6 @@ $(function(){
 			}
 		})
 	})
-	<? } ?>
 })
 
 </script>
