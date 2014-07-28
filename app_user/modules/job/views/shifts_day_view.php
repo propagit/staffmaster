@@ -134,7 +134,6 @@ $(function(){
 						loading = false;
 						init_inline_edit();
 					}).fail(function(xhr, ajaxOptions, thrownError) { //any errors?
-						//alert(thrownError); //alert with HTTP error
 						$('.animation_image').hide(); //hide loading image
 						loading = false;
 					});
