@@ -272,7 +272,7 @@ $(function(){
 			  url: "<?=base_url();?>email/ajax/get_send_email_modal",
 			  data: $('#apply-shift-contact-email-form').serialize(),
 			  success: function(html) {
-			  	alert(html);
+			  	//alert(html);
 				  $('#ajax-email-apply-shift-modal').html(html);
 				  $('#email-modal').modal('show');	
 			  }
