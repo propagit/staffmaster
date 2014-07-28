@@ -41,7 +41,7 @@ $(function(){
 		})
 	});
 	updateTextboxCounter('msg','currentChars');
-	<? if($selected_user_ids) { ?>
+	<? if(count($selected_user_ids) > 0) { ?>
 	$('#view-sms-receiver-list').click(function(){
 		$.ajax({
 			type: "POST",
