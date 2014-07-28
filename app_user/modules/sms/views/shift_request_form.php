@@ -41,6 +41,7 @@ $(function(){
 		})
 	});
 	updateTextboxCounter('msg','currentChars');
+	<? if($selected_user_ids) { ?>
 	$('#view-sms-receiver-list').click(function(){
 		$.ajax({
 			type: "POST",
@@ -51,6 +52,7 @@ $(function(){
 			}
 		})
 	})
+	<? } ?>
 })
 
 </script>
