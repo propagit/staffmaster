@@ -225,4 +225,13 @@ class Client extends MX_Controller {
 		}
 		echo modules::run('common/field_select', $data, $field_name, $field_value);
 	}
+	
+	function field_select_export_templates($field_name, $field_value = null) 
+	{		
+		$this->load->model('export/export_model');
+		$data['templates'] = $this->export_model->get_templates('client');
+		$data['field_name'] = $field_name;
+		$data['field_value'] = $field_value;
+		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);
+	}
 }

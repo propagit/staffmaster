@@ -40,7 +40,7 @@ class Ajax_setup extends MX_Controller {
 		$subdomain = $this->input->post('subdomain');
 		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$subdomain", array('exports','uploads'));
 		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$subdomain/exports", 
-				array('error','expense','invoice','payrun','staff'));
+				array('error','expense','invoice','payrun','staff','client'));
 		$this->create_upload_folders("./" . USER_ASSETS_PATH . "/$subdomain/uploads", 
 				array('brief','company','conversation','import','pdf','staff'));
 		$data['subdomain'] = $subdomain;

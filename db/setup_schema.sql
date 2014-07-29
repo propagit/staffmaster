@@ -752,7 +752,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `export_templates`
@@ -775,7 +775,8 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (17, 'myob', 'payrun_tfn', 'shift', 'MYOB (Shift Per Line)', 3),
 (18, 'myob', 'invoice', 'shift', 'MYOB (Shift Per Line)', 1),
 (19, 'myob', 'staff', '', 'MYOB', 0),
-(20, 'xero', 'invoice', 'shift', 'Xero (Shift Per Line)', 0);
+(20, 'xero', 'invoice', 'shift', 'Xero (Shift Per Line)', 0),
+(21, '', 'client', '', 'Default', 0);
 
 -- --------------------------------------------------------
 
@@ -791,7 +792,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=435 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=448 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -1060,9 +1061,8 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (415, 20, 11, 'Reference', '{po_number}'),
 (416, 20, 12, 'InvoiceDate', '{issued_date}'),
 (417, 20, 13, 'DueDate', '{due_date}'),
-(419, 20, 15, 'InventoryItemCode', ''),
-(421, 20, 17, 'Quantity', '1'),
-(422, 20, 18, 'UnitAmount', '{ex_tax_amount}'),
+(419, 20, 14, 'InventoryItemCode', ''),
+(421, 20, 16, 'Quantity', '1'),
 (423, 20, 20, 'Discount', ''),
 (424, 20, 22, 'TaxAmount', '{tax_amount}'),
 (425, 20, 23, 'TrackingName1', ''),
@@ -1073,7 +1073,19 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (430, 20, 0, 'ContactName', '{client_company_name}'),
 (431, 20, 19, 'AccountCode', '200'),
 (433, 20, 21, 'TaxType', 'GST on Income'),
-(434, 20, 16, 'Description', '{venue}   {start_time}   {finish_time}');
+(434, 20, 15, 'Description', '{venue}   {start_time}   {finish_time}'),
+(436, 20, 17, 'UnitAmount', '{ex_tax_amount}'),
+(437, 21, 0, 'Company Name', '{company_name}'),
+(438, 21, 1, 'Contact Name', '{contact_name}'),
+(439, 21, 2, 'Address', '{address}'),
+(440, 21, 4, 'City', '{city}'),
+(441, 21, 3, 'Suburb', '{suburb}'),
+(442, 21, 442, 'Postcode', '{postcode}'),
+(443, 21, 443, 'State', '{state}'),
+(444, 21, 444, 'Country', '{country}'),
+(445, 21, 445, 'Email Address', '{email}'),
+(446, 21, 446, 'Internal ID', '{internal_id}'),
+(447, 21, 447, 'External ID', '{external_id}');
 
 -- --------------------------------------------------------
 
@@ -1090,7 +1102,7 @@ CREATE TABLE IF NOT EXISTS `export_template_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=174 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=187 ;
 
 --
 -- Dumping data for table `export_template_fields`
@@ -1264,9 +1276,21 @@ INSERT INTO `export_template_fields` (`field_id`, `field_order`, `object`, `leve
 (170, 0, 'payrun_tfn', 'shift', 'shift_date', 'Shift Date'),
 (171, 0, 'payrun_tfn', 'shift', 'internal_client_id', 'Internal Client ID'),
 (172, 0, 'payrun_tfn', 'shift', 'external_client_id', 'External Client ID'),
-(173, 0, 'invoice', 'shift', 'venue', 'Venue');
+(173, 0, 'invoice', 'shift', 'venue', 'Venue'),
+(174, 0, 'client', '', 'company_name', 'Company Name'),
+(175, 0, 'client', '', 'contact_name', 'Contact Name'),
+(176, 0, 'client', '', 'address', 'Address'),
+(177, 0, 'client', '', 'city', 'City'),
+(178, 0, 'client', '', 'state', 'State'),
+(179, 0, 'client', '', 'email', 'Email Address'),
+(180, 0, 'client', '', 'abn', 'ABN'),
+(181, 0, 'client', '', 'phone', 'Phone Number'),
+(182, 0, 'client', '', 'suburb', 'Suburb'),
+(183, 0, 'client', '', 'postcode', 'Postcode'),
+(184, 0, 'client', '', 'country', 'Country'),
+(185, 0, 'client', '', 'external_id', 'External ID'),
+(186, 0, 'client', '', 'internal_id', 'Internal ID');
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `forecast`

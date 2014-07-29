@@ -145,11 +145,21 @@ function perform_multi_update(action){
 			$('#updateMultiStatus').modal('show');
 		break;
 		case 'export-clients':
-		
+			export_clients();
 		break;	
 	}
 }
-
+function export_clients()
+{
+	var selected_clients = new Array();
+	$('.checkbox-multi-action:checked').each(function(){
+		selected_clients.push($(this).val());
+	});
+	$('.bs-modal-lg').modal({
+		remote: "<?=base_url();?>client/ajax/load_export_modal/" + selected_clients.join("~"),
+		show: true
+	})
+}
 function delete_multi_clients(){
 		var title = 'Delete Clients';
 		var message ='Are you sure you would like to delete these "Clients"';

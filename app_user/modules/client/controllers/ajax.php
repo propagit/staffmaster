@@ -211,6 +211,125 @@ class Ajax extends MX_Controller {
 		return $this->user_model->update_status_multi_users(implode(',',$user_ids),$new_status);
 	}
 	
+	function load_export_modal($user_ids='')
+	{
+		$data['user_ids'] = $user_ids;
+		$this->load->view('export_modal_view', isset($data) ? $data : NULL);
+	}
+	
+	function exporting()
+	{
+		$user_ids = $this->input->post('user_ids');
+		$user_ids = explode('~', $user_ids);
+		$export_id = $this->input->post('export_id');
+		if ($export_id == '') {
+			return;
+		}
+		
+		$file_name = $this->_export_clients($user_ids, $export_id);
+		echo $file_name;
+	}
+	
+	private function _export_clients($user_ids, $export_id) 
+	{
+		$fields = modules::run('export/get_fields', $export_id);
+		
+		ini_set('memory_limit', '128M');
+		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("StaffBooks");
+		$objPHPExcel->getProperties()->setLastModifiedBy("StaffBooks");
+		$objPHPExcel->getProperties()->setTitle("Client Data");
+		$objPHPExcel->getProperties()->setSubject("Client Data");
+		$objPHPExcel->getProperties()->setDescription("Client Data Excel file, generated from StaffBooks.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$i = 0;
+		$row = 1;
+		foreach($fields as $field) {
+			if ($i < 26)
+			{
+				$letter = chr(97 + $i) . $row;
+			}
+			else
+			{
+				$letter = 'A' . chr(97 + ($i-26)) . $row;
+			}
+			$objPHPExcel->getActiveSheet()->SetCellValue($letter, $field['title']);
+			$i++;
+		}
+		$i = 0;
+		foreach($user_ids as $user_id) {
+			$client = $this->client_model->get_client($user_id);
+			$row++;
+			foreach($fields as $field) {
+				$is_string = false;
+				$value = $field['value']; # Convert $field, $timesheet
+				
+				if (strpos($value,'phone') !== false) 
+				{
+					$is_string = true;
+				}
+				
+				$value = str_replace('{internal_id}', $client['user_id'], $value);
+				$value = str_replace('{company_name}', $client['company_name'], $value);
+				$value = str_replace('{contact_name}', $client['full_name'], $value);
+				$value = str_replace('{address}', $client['address'], $value);
+				$value = str_replace('{suburb}', $client['suburb'], $value);
+				$value = str_replace('{city}', $client['city'], $value);
+				$value = str_replace('{postcode}', $client['postcode'], $value);
+				$value = str_replace('{state}', $client['state'], $value);
+				$value = str_replace('{country}', $client['country'], $value);
+				$value = str_replace('{email}', $client['email_address'], $value);
+				$value = str_replace('{phone}', $client['phone'], $value);
+				$value = str_replace('{abn}', $client['abn'], $value);
+				$value = str_replace('{external_id}', $client['external_client_id'], $value);
+				
+				#$value = str_replace('{joined_date}', date('d/m/Y', strtotime($client['created_on'])), $value);
+				
+				if ($i < 26)
+				{
+					$letter = chr(97 + $i) . $row;
+				}
+				else
+				{
+					$letter = 'A' . chr(97 + ($i-26)) . $row;
+				}
+				if ($is_string) 
+				{
+					$objPHPExcel->getActiveSheet()->getStyle($letter)->getNumberFormat()->setFormatCode('@');
+					$objPHPExcel->getActiveSheet()->getCell($letter)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+				}
+				else
+				{
+					$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
+				}
+				
+				$i++;
+			}
+			$i=0;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('client');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
+		$file_name = 'client_' . time() . ".csv";
+		
+		$dir = EXPORTS_PATH . "/client";
+		if(!is_dir($dir))
+		{
+			mkdir($dir);
+			chmod($dir,0777);
+			$fp = fopen($dir.'/index.html', 'w');
+			fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			fclose($fp);
+		}
+		
+		$objWriter->save(EXPORTS_PATH . "/client/" . $file_name);
+		return $file_name;
+	}
+	
 	/**
 	*	@name: send_email
 	*	@desc: Send email to a particular email vai send email modal window UI. 
