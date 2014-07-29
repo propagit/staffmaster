@@ -28,6 +28,8 @@
 <script>
 $(function(){
 	$('#export-invoice').click(function(){
+		$('.bs-modal-lg').modal('hide');
+		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>invoice/ajax/exporting",
@@ -37,11 +39,16 @@ $(function(){
 					$('#export_templates').addClass('has-error');
 					return;
 				}
+				$('#waitingModal').modal('hide');
 				window.location = '<?=base_url().EXPORTS_URL;?>/invoice/' + html;
 				search_invoices();
-				$('.bs-modal-lg').modal('hide');
 			}
 		})
+	})
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
 	})
 })
 </script>

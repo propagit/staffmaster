@@ -29,7 +29,6 @@ $(function(){
 			url: "<?=base_url();?>client/ajax/exporting",
 			data: $('#export-client-form').serialize(),
 			success: function(html) {
-				alert(html);
 				if (!html) {
 					$('#export_templates').addClass('has-error');
 					return;
