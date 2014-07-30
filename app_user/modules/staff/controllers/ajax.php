@@ -1392,6 +1392,7 @@ class Ajax extends MX_Controller {
 	
 	function myob()
 	{
+		
 		$employee = array(
 			'LastName' => 'Nguyen',
 			'FirstName' => 'Nam',
@@ -1435,7 +1436,7 @@ $this->load->library('myob');
 		curl_setopt($ch, CURLOPT_POST, true);  // tell curl you want to post
 		// Setup authentication
 		curl_setopt($ch, CURLOPT_USERPWD, 'administrator' . ":");
-		curl_setopt($ch, CURLOPT_USERPWD, 'nam@propagate.com.au:minhnam24'); 
+		curl_setopt($ch, CURLOPT_USERPWD, 'nam@propagate.com.au:'); 
 		// Define what you want to post
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
 		 // Return the output in string format
@@ -1443,10 +1444,10 @@ $this->load->library('myob');
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
 		
 		// Execute
-		$output = curl_exec ($ch); 
+		#$output = curl_exec ($ch); 
 		 
-		curl_close ($ch); // Close curl handle
+		#curl_close ($ch); // Close curl handle
 		 
-		var_dump($output); // Show output
+		#var_dump($output); // Show output
 	}
 }

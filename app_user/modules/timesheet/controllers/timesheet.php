@@ -101,7 +101,8 @@ class Timesheet extends MX_Controller {
 	}
 	
 	
-	function extract_timesheet_payrate($timesheet_id) {
+	# $user_type = 0: staff, 1: client
+	function extract_timesheet_payrate($timesheet_id, $user_type = 0) {
 		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
 		$payrate_id = $timesheet['payrate_id'];
 		$start_time = $timesheet['start_time'];
@@ -115,7 +116,7 @@ class Timesheet extends MX_Controller {
 			$day = date('N', $i); # Get day of the week (1: monday - 7: sunday)
 			$hour = date('G', $i); # Get hour of the day (0 - 23)
 			# Get the pay rate amount
-			$rate = $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour);
+			$rate = $this->payrate_model->get_payrate_data($payrate_id, $user_type, $day, $hour);
 			if ($current_rate == null) { # First rate
 				$current_rate = $rate;
 				$current_start = $start_time;

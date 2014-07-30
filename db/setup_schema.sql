@@ -752,7 +752,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `export_templates`
@@ -776,7 +776,9 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (18, 'myob', 'invoice', 'shift', 'MYOB (Shift Per Line)', 1),
 (19, 'myob', 'staff', '', 'MYOB', 0),
 (20, 'xero', 'invoice', 'shift', 'Xero (Shift Per Line)', 0),
-(21, '', 'client', '', 'Default', 0);
+(21, '', 'client', '', 'Default', 0),
+(22, 'myob', 'client', '', 'MYOB', 0),
+(23, 'shoebooks', 'invoice', 'pay_rate', 'Shoebooks (Pay Rate Per Line)', 1);
 
 -- --------------------------------------------------------
 
@@ -792,7 +794,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=448 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=470 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -1085,7 +1087,28 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (444, 21, 444, 'Country', '{country}'),
 (445, 21, 445, 'Email Address', '{email}'),
 (446, 21, 446, 'Internal ID', '{internal_id}'),
-(447, 21, 447, 'External ID', '{external_id}');
+(447, 21, 447, 'External ID', '{external_id}'),
+(449, 22, 449, 'Co./Last Name', '{company_name}'),
+(450, 22, 450, 'First Name', '{contact_name}'),
+(451, 22, 451, 'Card ID', '{external_id}'),
+(452, 22, 452, 'Addr 1 - Line 1', '{address}'),
+(453, 22, 453, '           - Line 2', '{suburb}'),
+(454, 22, 454, '           - City', '{city}'),
+(455, 22, 455, '           - State', '{state}'),
+(456, 22, 456, '           - Postcode', '{postcode}'),
+(457, 22, 457, '           - Country', '{country}'),
+(458, 22, 458, 'A.B.N.', '{abn}'),
+(459, 23, 0, 'Group', '{invoice_id}'),
+(460, 23, 1, 'CustomerID', '{external_client_id}'),
+(461, 23, 2, 'Date', '{job_date}'),
+(462, 23, 3, 'Description', '{item_description}   {staff_name}   {start_time}   {finish_time}   {break}'),
+(463, 23, 4, 'AccountID', ''),
+(464, 23, 5, 'QtyShipped', '{hours}'),
+(465, 23, 6, 'Taxable', '{tax_type}'),
+(466, 23, 8, 'JobID', ''),
+(467, 23, 9, 'DivID', ''),
+(468, 23, 10, 'CustomerPO', '{po_number}'),
+(469, 23, 7, 'Amount', '{pay_rate_amount}');
 
 -- --------------------------------------------------------
 
@@ -1102,7 +1125,7 @@ CREATE TABLE IF NOT EXISTS `export_template_fields` (
   `value` varchar(100) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=187 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=215 ;
 
 --
 -- Dumping data for table `export_template_fields`
@@ -1289,7 +1312,36 @@ INSERT INTO `export_template_fields` (`field_id`, `field_order`, `object`, `leve
 (183, 0, 'client', '', 'postcode', 'Postcode'),
 (184, 0, 'client', '', 'country', 'Country'),
 (185, 0, 'client', '', 'external_id', 'External ID'),
-(186, 0, 'client', '', 'internal_id', 'Internal ID');
+(186, 0, 'client', '', 'internal_id', 'Internal ID'),
+(187, 0, 'invoice', 'pay_rate', 'internal_client_id', 'Internal Client ID'),
+(188, 0, 'invoice', 'pay_rate', 'external_client_id', 'External Client ID'),
+(189, 0, 'invoice', 'pay_rate', 'client_company_name', 'Client Company Name'),
+(190, 0, 'invoice', 'pay_rate', 'client_address', 'Client Address'),
+(191, 0, 'invoice', 'pay_rate', 'client_suburb', 'Client Suburb'),
+(192, 0, 'invoice', 'pay_rate', 'client_city', 'Client City'),
+(193, 0, 'invoice', 'pay_rate', 'client_postcode', 'Client Postcode'),
+(194, 0, 'invoice', 'pay_rate', 'client_state', 'Client State'),
+(195, 0, 'invoice', 'pay_rate', 'client_country', 'Client Country'),
+(196, 0, 'invoice', 'pay_rate', 'client_contact_name', 'Client Contact Name'),
+(197, 0, 'invoice', 'pay_rate', 'client_email', 'Client Email'),
+(198, 0, 'invoice', 'pay_rate', 'issued_date', 'Issued Date'),
+(199, 0, 'invoice', 'pay_rate', 'due_date', 'Due Date'),
+(200, 0, 'invoice', 'pay_rate', 'item_description', 'Item Description'),
+(201, 0, 'invoice', 'pay_rate', 'tax_type', 'Tax Type'),
+(202, 0, 'invoice', 'pay_rate', 'tax_amount', 'Tax Amount'),
+(203, 0, 'invoice', 'pay_rate', 'ex_tax_amount', 'Ex Tax Amount'),
+(204, 0, 'invoice', 'pay_rate', 'inc_tax_amount', 'Inc Tax Amount'),
+(205, 0, 'invoice', 'pay_rate', 'invoice_id', 'Invoice ID'),
+(206, 0, 'invoice', 'pay_rate', 'po_number', 'PO Number'),
+(207, 0, 'invoice', 'pay_rate', 'job_date', 'Job Date'),
+(208, 0, 'invoice', 'pay_rate', 'hours', 'Hours'),
+(209, 0, 'invoice', 'pay_rate', 'staff_name', 'Staff Name'),
+(210, 0, 'invoice', 'pay_rate', 'break', 'Break'),
+(211, 0, 'invoice', 'pay_rate', 'start_time', 'Start Time'),
+(212, 0, 'invoice', 'pay_rate', 'finish_time', 'Finish Time'),
+(213, 0, 'invoice', 'pay_rate', 'venue', 'Venue'),
+(214, 0, 'invoice', 'pay_rate', 'pay_rate_amount', 'Pay Rate Amount');
+
 
 
 --
