@@ -47,7 +47,7 @@ class myob_api_oauth {
 
 		return( $this->getToken($params) );
 	}
-
+		
 	// private function for token calls
 	private function getToken($params) {
 		

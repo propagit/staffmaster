@@ -1392,13 +1392,61 @@ class Ajax extends MX_Controller {
 	
 	function myob()
 	{
-		$this->load->library('myob');
+		$employee = array(
+			'LastName' => 'Nguyen',
+			'FirstName' => 'Nam',
+			'IsIndividual' => true,
+			'Addresses' => array(array(
+				'Street' => '620 St Kilda Road',
+				'City' => 'Melbourne',
+				'State' => 'VIC',
+				'PostCode' => '3004',
+				'Country' => 'Australia',
+				'Phone1' => '04 0213 3066',
+				'Email' => 'nam@propagate.com.au',
+				'Website' => 'www.staffbooks.com',
+				'ContactName' => 'Namski',
+				'Salutation' => 'Mr'
+			))
+		);
+		#$employee = json_encode($employee);
+		
+		/*
+$this->load->library('myob');
 		$myob = $this->myob->load();
 		$redirect_url = 'http://demo.sm.com/staff/ajax/myob';
 		$api_scope = 'CompanyFile';
 		$api_access_code = $_GET['code'];
-		#var_dump($api_access_code);
 		$oauth_tokens = $myob->getAccessToken(MYOB_API_KEY, MYOB_API_SECRET, $redirect_url, $api_access_code, $api_scope);
 		var_dump($oauth_tokens);
+*/
+		
+			
+		
+		// Initiate curl
+		$ch = curl_init(); 
+		// Where you want to post data                 
+		$uid = '364e3526-4f5d-4052-93ae-c5a5b6f6ad0e';
+		$url = "http://api.myob.com/accountright/" . $uid . "/Contact/Employee"; 
+		
+		$params = http_build_query($employee);
+		// Headers
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, true);  // tell curl you want to post
+		// Setup authentication
+		curl_setopt($ch, CURLOPT_USERPWD, 'administrator' . ":");
+		curl_setopt($ch, CURLOPT_USERPWD, 'nam@propagate.com.au:minhnam24'); 
+		// Define what you want to post
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		 // Return the output in string format
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		// Execute
+		$output = curl_exec ($ch); 
+		 
+		curl_close ($ch); // Close curl handle
+		 
+		var_dump($output); // Show output
 	}
 }

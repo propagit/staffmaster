@@ -24,6 +24,8 @@
 <script>
 $(function(){
 	$('#export-staff').click(function(){
+		$('.bs-modal-lg').modal('hide');
+		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>staff/ajax/exporting",
@@ -33,10 +35,15 @@ $(function(){
 					$('#export_templates').addClass('has-error');
 					return;
 				}
+				$('#waitingModal').modal('hide');
 				window.location = '<?=base_url().EXPORTS_URL;?>/staff/' + html;
-				$('.bs-modal-lg').modal('hide');
 			}
 		})
+	})
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
 	})
 })
 </script>

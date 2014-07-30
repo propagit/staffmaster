@@ -221,6 +221,18 @@
 
 <div id="ajax-contact-staff-modal"></div>
 
+<!-- Modal -->
+<div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="order-message">
+			<img src="<?=base_url();?>assets/img/loading3.gif" />
+			<h2>Please wait!</h2>
+			<p>Please wait a moment while we are processing your request ...</p>
+		</div>
+	</div>
+</div>
+
+
 <script>
 var scroll_to_form = true;
 $(function(){
