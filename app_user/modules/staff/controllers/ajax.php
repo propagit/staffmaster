@@ -1388,4 +1388,17 @@ class Ajax extends MX_Controller {
 			$this->staff_model->delete_payrates($user_id);
 		}
 	}
+	
+	
+	function myob()
+	{
+		$this->load->library('myob');
+		$myob = $this->myob->load();
+		$redirect_url = 'http://demo.sm.com/staff/ajax/myob';
+		$api_scope = 'CompanyFile';
+		$api_access_code = $_GET['code'];
+		#var_dump($api_access_code);
+		$oauth_tokens = $myob->getAccessToken(MYOB_API_KEY, MYOB_API_SECRET, $redirect_url, $api_access_code, $api_scope);
+		var_dump($oauth_tokens);
+	}
 }

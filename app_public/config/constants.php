@@ -50,6 +50,9 @@ define('CBF_USER', 'staffbooks');
 define('CBF_PASS', 'staffb00ks');
 define('SMS_PRICE', 0.1); # 10 cents per sms
 
+define('MYOB_API_KEY', '6k2r6jwjj2a7t9qmh9n338w2');
+define('MYOB_API_SECRET', 'EsJWfB3HXHGDke8RmZtpSfeS');
+
 define('ACCOUNT_ACTIVE', 1);
 define('ACCOUNT_INACTIVE', -1);
 define('ACCOUNT_BANNED', -2);

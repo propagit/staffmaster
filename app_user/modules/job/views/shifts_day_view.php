@@ -168,13 +168,7 @@ $(function(){
 	$('#selected_all_shifts').click(function(){
 		$('input.selected_shifts').prop('checked', this.checked);		
 	});
-	$('.btn-unlock-shift').confirmModal({
-		confirmTitle: 'Unlock shift',
-		confirmMessage: 'This will remove the time sheet from invoice, pay run and delete the time sheet itself. Are you sure you want to unlock this shift?',
-		confirmCallback: function(e) {
-			unlock_shift(e.attr('data-value'));
-		}
-	});
+	
 	$('#menu-day-action ul li a[data-value="delete"]').confirmModal({
 		confirmTitle: 'Delete selected shifts',
 		confirmMessage: 'Are you sure you want to delete selected shifts?',
@@ -327,7 +321,13 @@ function init_inline_edit() {
 		$(this).find('.content-disabled').html('<a class="btn btn-danger" onclick="load_paid_shift(' + pk + ')"><i class="fa fa-dollar"></i></a>');
 		
 	});
-	
+	$('.btn-unlock-shift').confirmModal({
+		confirmTitle: 'Unlock shift',
+		confirmMessage: 'This will remove the time sheet from invoice, pay run and delete the time sheet itself. Are you sure you want to unlock this shift?',
+		confirmCallback: function(e) {
+			unlock_shift(e.attr('data-value'));
+		}
+	});
 	$('.shift_start_time').editable({
 		combodate: {
             firstItem: '',            
