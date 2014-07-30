@@ -165,7 +165,10 @@
         
         
         <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    	
+    	<div class="checkbox">
+    		<input type="checkbox" id="full_breakdown" <?=($invoice['breakdown']) ? 'checked' : '';?> /> 
+    		For a full itemised breakdown of this invoice please refer to page 2
+    	</div>
         
         <b>Terms & Conditions of Payment</b><br />
         <?=(isset($company_profile['term_and_conditions'])) ? $company_profile['term_and_conditions'] : '' ?>
@@ -233,54 +236,8 @@
     </div>
 </div>
 <!--end top box-->
-<? if ($invoice['breakdown']) { ?>
 <div id="wp-breakdown">
-<div class="col-md-12">
-	<div class="wp-page-invoice">
-		<table width="100%">
-			<? foreach($items as $item) { 
-			if ($item['include_timesheets']) {
-			$job = modules::run('job/get_job', $item['job_id']);
-			#$timesheets = modules::run('invoice/get_job_timesheets', $item['job_id'], INVOICE_GENERATED);
-			$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice['invoice_id']);
-			 ?>
-			 
-			<? if ($job) { ?>
-			<tr>
-				<td colspan="8"><h2><?=$job['name'];?></h2></td>
-			</tr>
-			<? } ?>
-			
-			<? if (count($timesheets) > 0) { ?>
-			<tr>
-				<td>Job Date</td>
-				<td>Venue</td>
-				<td>Start Time - Finish Time</td>
-				<td>Break</td>
-				<td>Hours</td>
-				<td>Pay Rate</td>
-				<td>Total</td>
-			</tr>
-			<? foreach($timesheets as $timesheet) { 
-				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-			?>
-			<tr>
-                <td width="10%"><?=date('d-m-Y', $timesheet['start_time']);?></td>
-                <td width="30%"><?=modules::run('attribute/venue/display_venue', $timesheet['venue_id']);?></td>
-                <!-- <td width="15%"><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td> -->
-                <td width="20%"><?=date('H:i', $timesheet['start_time']);?> - <?=date('H:i', $timesheet['finish_time']);?> <?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-danger">*</span>': '';?></td>
-                <td width="10%"><?=modules::run('common/break_time', $timesheet['break_time']);?></td>
-                <td width="10%"><?=$timesheet['total_minutes']/60;?></td>
-                <td width="10%"><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
-                <td width="10%"><?=modules::run('common/format_money',$timesheet['total_amount_client']);?></td>
-            </tr>
-			<? } } ?>
-			<? } } ?>                       
-        </table>
-	</div>
 </div>
-</div>
-<? } ?>
 <br /><br /><br />
 <div id="ajax-email-invoice-modal"></div>
 <form id="invoice-email-form">
@@ -326,8 +283,24 @@ $(function(){
 		 get_email_model();
 	});
 	
+	load_breakdown();
+	$('#full_breakdown').click(function(){
+		load_breakdown();
+	});
+	
 });//ready
 
+function load_breakdown() {
+	var show = $('#full_breakdown').is(':checked');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>invoice/ajax/show_breakdown",
+		data: {invoice_id: <?=$invoice['invoice_id'];?>, show: show},
+		success: function(html) {
+			$('#wp-breakdown').html(html);
+		}
+	})
+}
 function get_email_model(){
 	$.ajax({
 		  type: "POST",
