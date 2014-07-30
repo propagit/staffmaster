@@ -158,21 +158,7 @@ $(function(){
 		})		
 	});
 	
-	$.each($('tr.disabled'), function() {
-		$(this).find('input').remove();
-		disabled($(this));
-		<? if (!modules::run('auth/is_client')) { ?>
-		var pk = $(this).find('.shift_uniform').attr('data-pk');
-		$(this).find('.content-disabled').html('<a class="btn btn-default btn-unlock-shift" data-value="' + pk + '"><i class="fa fa-lock"></i></a>');
-		<? } ?>
-	});
-	$.each($('tr.paid'), function() {
-		$(this).find('input').remove();
-		disabled($(this));
-		var pk = $(this).find('.shift_uniform').attr('data-pk');
-		$(this).find('.content-disabled').html('<a class="btn btn-danger" onclick="load_paid_shift(' + pk + ')"><i class="fa fa-dollar"></i></a>');
-		
-	});
+	
 	
 	  
     
@@ -326,6 +312,21 @@ function init_inline_edit() {
 	});
 	<? } ?>
 	
+	$.each($('tr.disabled'), function() {
+		$(this).find('input').remove();
+		disabled($(this));
+		<? if (!modules::run('auth/is_client')) { ?>
+		var pk = $(this).find('.shift_uniform').attr('data-pk');
+		$(this).find('.content-disabled').html('<a class="btn btn-default btn-unlock-shift" data-value="' + pk + '"><i class="fa fa-lock"></i></a>');
+		<? } ?>
+	});
+	$.each($('tr.paid'), function() {
+		$(this).find('input').remove();
+		disabled($(this));
+		var pk = $(this).find('.shift_uniform').attr('data-pk');
+		$(this).find('.content-disabled').html('<a class="btn btn-danger" onclick="load_paid_shift(' + pk + ')"><i class="fa fa-dollar"></i></a>');
+		
+	});
 	
 	$('.shift_start_time').editable({
 		combodate: {
