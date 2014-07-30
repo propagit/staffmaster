@@ -237,7 +237,7 @@
 			if ($item['include_timesheets']) {
 			$job = modules::run('job/get_job', $item['job_id']);
 			#$timesheets = modules::run('invoice/get_job_timesheets', $item['job_id'], INVOICE_GENERATED);
-			$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice['invoice_id']);
+			$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice['invoice_id'], $item['job_id']);
 			 ?>
 			<tr>
 				<td colspan="8"><h2 class="expense-break"><?=$job['name'];?></h2></td>

@@ -317,8 +317,8 @@ class Invoice extends MX_Controller {
 		return $this->invoice_model->get_job_timesheets($job_id, $status);
 	}
 	
-	function get_invoice_timesheets($invoice_id) {
-		return $this->invoice_model->get_invoice_timesheets($invoice_id);
+	function get_invoice_timesheets($invoice_id, $job_id = '') {
+		return $this->invoice_model->get_invoice_timesheets($invoice_id, $job_id);
 	}
 	
 	/**

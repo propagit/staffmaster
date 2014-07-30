@@ -67,8 +67,12 @@ class Invoice_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	function get_invoice_timesheets($invoice_id) {
+	function get_invoice_timesheets($invoice_id, $job_id = '') {
 		$this->db->where('invoice_id', $invoice_id);
+		if ($job_id) {
+			$this->db->where('job_id', $job_id);
+		}
+		
 		$query = $this->db->get('job_shift_timesheets');
 		return $query->result_array();
 	}
