@@ -4,7 +4,7 @@ class Timesheet_model extends CI_Model {
 	
 	function get_finished_shifts() {
 		$sql = "SELECT * FROM `job_shifts`
-				WHERE `status` = " . SHIFT_CONFIRMED . "
+				WHERE `status` >= " . SHIFT_CONFIRMED . "
 				AND `finish_time` < " . time() . " 
 				AND `shift_id` NOT IN
 					(SELECT `shift_id` FROM `job_shift_timesheets`)";
