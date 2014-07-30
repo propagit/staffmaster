@@ -21,6 +21,7 @@ class Export_model extends CI_Model {
 			$this->db->where('level', $level);
 		}		
 		$this->db->order_by('status', 'DESC');
+		$this->db->order_by('target', 'DESC');
 		$query = $this->db->get('export_templates');
 		return $query->result_array();
 	}
