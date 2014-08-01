@@ -1419,7 +1419,7 @@ class Ajax extends MX_Controller {
 		
 		$this->load->library('myob');
 		$myob = $this->myob->load();
-		$redirect_url = 'http://demo.sm.com/staff/ajax/myob';
+		$redirect_url = 'http://namnd.staffbooks.systems/staff/ajax/myob';
 		$api_scope = 'CompanyFile';
 		$api_access_code = '';
 		if (!isset($_GET['code']))
