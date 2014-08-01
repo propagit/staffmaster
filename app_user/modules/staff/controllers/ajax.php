@@ -1414,6 +1414,9 @@ class Ajax extends MX_Controller {
 		);
 		#$employee = json_encode($employee);
 		
+		$api_key = 'za39cuz8b2zc4scgs7tk7np9';
+		$api_secret = 'csSYrT9N24RMFRJuWfz8rRwa';
+		
 		$this->load->library('myob');
 		$myob = $this->myob->load();
 		$redirect_url = 'http://demo.sm.com/staff/ajax/myob';
@@ -1421,11 +1424,11 @@ class Ajax extends MX_Controller {
 		$api_access_code = '';
 		if (!isset($_GET['code']))
 		{
-			$url = "https://secure.myob.com/oauth2/account/authorize?client_id=". MYOB_API_KEY . "&redirect_uri=" . $redirect_url . "&response_type=code&scope=CompanyFile";
+			$url = "https://secure.myob.com/oauth2/account/authorize?client_id=$api_key&redirect_uri=$redirect_url&response_type=code&scope=CompanyFile";
 			header("Location: $url");
 		}
 		$api_access_code = $_GET['code'];
-		$oauth_tokens = $myob->getAccessToken(MYOB_API_KEY, MYOB_API_SECRET, $redirect_url, $api_access_code, $api_scope);
+		$oauth_tokens = $myob->getAccessToken($api_key, $api_secret, $redirect_url, $api_access_code, $api_scope);
 		
 		#var_dump($oauth_tokens); die();
 		
