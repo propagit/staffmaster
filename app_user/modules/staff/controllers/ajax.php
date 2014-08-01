@@ -1392,6 +1392,8 @@ class Ajax extends MX_Controller {
 	
 	function myob()
 	{
+		$cloud_api_url = 'https://api.myob.com/accountright/';
+		
 		
 		$employee = array(
 			'LastName' => 'Nguyen',
@@ -1412,42 +1414,42 @@ class Ajax extends MX_Controller {
 		);
 		#$employee = json_encode($employee);
 		
-		/*
-$this->load->library('myob');
+		$this->load->library('myob');
 		$myob = $this->myob->load();
 		$redirect_url = 'http://demo.sm.com/staff/ajax/myob';
 		$api_scope = 'CompanyFile';
+		$api_access_code = '';
+		if (!isset($_GET['code']))
+		{
+			$url = "https://secure.myob.com/oauth2/account/authorize?client_id=". MYOB_API_KEY . "&redirect_uri=" . $redirect_url . "&response_type=code&scope=CompanyFile";
+			header("Location: $url");
+		}
 		$api_access_code = $_GET['code'];
 		$oauth_tokens = $myob->getAccessToken(MYOB_API_KEY, MYOB_API_SECRET, $redirect_url, $api_access_code, $api_scope);
-		var_dump($oauth_tokens);
-*/
 		
-			
+		#var_dump($oauth_tokens); die();
 		
-		// Initiate curl
-		$ch = curl_init(); 
-		// Where you want to post data                 
-		$uid = '364e3526-4f5d-4052-93ae-c5a5b6f6ad0e';
-		$url = "http://api.myob.com/accountright/" . $uid . "/Contact/Employee"; 
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $oauth_tokens->access_token,
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $cloud_api_url,
+		);
 		
-		$params = http_build_query($employee);
-		// Headers
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_POST, true);  // tell curl you want to post
-		// Setup authentication
-		curl_setopt($ch, CURLOPT_USERPWD, 'administrator' . ":");
-		curl_setopt($ch, CURLOPT_USERPWD, 'nam@propagate.com.au:'); 
-		// Define what you want to post
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
-		 // Return the output in string format
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		$url = $cloud_api_url;
 		
-		// Execute
-		#$output = curl_exec ($ch); 
-		 
-		#curl_close ($ch); // Close curl handle
-		 
-		#var_dump($output); // Show output
+		#var_dump($headers); die();
+		#var_dump($url); die();
+		
+		$session = curl_init($url); 
+		curl_setopt($session, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($session, CURLOPT_HEADER, false); 
+		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+		
+		// get the response & close the session
+		$response = curl_exec($session); 
+		curl_close($session); 
+		// return what we got
+		return($response);
 	}
 }
