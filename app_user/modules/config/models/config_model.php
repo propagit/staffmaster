@@ -2,11 +2,35 @@
 
 class Config_model extends CI_Model {
 	
-	function get_config($config_name)
+	function add($data)
 	{
-		$this->db->where('config_name', $config_name);
-		$query = $this->db->get('config');
-		return $query->first_row('array');
+		if (!isset($data['key']) || !isset($data['value']) || $data['key'] == '')
+		{
+			return false;
+		}
+		if ($this->get($data['key']) !== false) # Found the config, update the value
+		{
+			$this->db->where('key', $data['key']);
+			return $this->db->update('config', $data);
+		}
+		else # New config, add to database
+		{
+			$this->db->insert('config', $data);
+			return $this->db->insert_id();
+		}
+		
 	}
 	
+	function get($key)
+	{
+		$this->db->where('key', $key);
+		$query = $this->db->get('config');
+		$config = $query->first_row('array');
+		if ($config)
+		{
+			return $config['value'];
+		}
+		return false;
+	}
+		
 }

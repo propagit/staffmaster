@@ -402,6 +402,17 @@ class Ajax extends MX_Controller {
 		echo $this->setting_model->update_information_sheet_configuration($information_sheet_id,$data);
 	}
 
-	
+	function accounting_platform()
+	{
+		$accounting_platform = $this->input->post('accounting_platform');
+		$this->config_model->add(array(
+			'key' => 'accounting_platform',
+			'value' => $accounting_platform
+		));
+		if ($accounting_platform != '')
+		{
+			$this->load->view('integration/' . $accounting_platform);
+		}
+	}
 	
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Error &middot; Staff Master</title>
+	<title>Error &middot; StaffBooks</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">

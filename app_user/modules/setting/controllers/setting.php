@@ -35,6 +35,9 @@ class Setting extends MX_Controller {
 			case 'system_settings':
 					$this->system_settings();
 				break;
+			case 'integration':
+					$this->integration();
+				break;
 			default:
 					$this->company();
 			break;
@@ -240,6 +243,11 @@ class Setting extends MX_Controller {
 		}else{
 			return false;
 		}
+	}
+	
+	function integration()
+	{
+		$this->load->view('integration');
 	}
 	
 	
