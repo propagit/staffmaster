@@ -446,5 +446,49 @@ class Shoebooks extends MX_Controller {
 		$result = $client->send($msg, $action);
 		return true;
 	}
-
+	
+	
+	function append_payslip($payrun_id)
+	{
+		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
+		$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
+			<Login>
+				<AccountName>' . $this->account_name . '</AccountName>
+				<LoginName>' . $this->login_name . '</LoginName>
+				<LoginPassword>' . $this->login_password . '</LoginPassword>
+				<SessionID></SessionID>
+			</Login>
+			<NewPayslip>
+				<EmployeeID>string</EmployeeID>
+				<PeriodStart>dateTime</PeriodStart>
+				<PeriodFinish>dateTime</PeriodFinish>
+				<AccountID>string</AccountID>
+				<JobID>string</JobID>
+				<PayDate>dateTime</PayDate>
+				<DivID>int</DivID>
+				<PayslipLines>
+					<PRPayslipLine>
+						<EarningID>string</EarningID>
+						<Hours>decimal</Hours>
+						<Amount>decimal</Amount>
+						<Total>decimal</Total>
+						<WorkDate>dateTime</WorkDate>
+						<DivID>int</DivID>
+						<JobID>string</JobID>
+					</PRPayslipLine>
+					<PRPayslipLine>
+						<EarningID>string</EarningID>
+						<Hours>decimal</Hours>
+						<Amount>decimal</Amount>
+						<Total>decimal</Total>
+						<AccountID>string</AccountID>
+						<WorkDate>dateTime</WorkDate>
+						<Notes>string</Notes>
+						<DivID>int</DivID>
+						<JobID>string</JobID>
+					</PRPayslipLine>
+				</PayslipLines>
+			</NewPayslip>
+		</AppendPayslip>';
+	}
 }

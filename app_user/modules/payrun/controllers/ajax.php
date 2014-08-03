@@ -188,7 +188,7 @@ class Ajax extends MX_Controller {
 	
 	function create_payrun() {
 		$input = $this->input->post();
-		
+		$export = false;
 		if (isset($input['export_csv'])) {
 			if (!isset($input['export_id']) || $input['export_id'] == '') {
 				echo json_encode(array(
@@ -197,6 +197,7 @@ class Ajax extends MX_Controller {
 				));
 				return;
 			}
+			$export = true;
 		}
 		
 		$type = $input['type'];
@@ -242,7 +243,7 @@ class Ajax extends MX_Controller {
 		foreach($timesheets as $timesheet) {
 			$this->payrun_model->add_timesheet_to_payrun($timesheet['timesheet_id'], $payrun_id);
 		}
-		if ($input['export_id']) {
+		if ($export) {
 			$file_name = $this->_export_payrun($payrun_id, $this->input->post('export_id'));
 			echo json_encode(array(
 				'ok' => true,
