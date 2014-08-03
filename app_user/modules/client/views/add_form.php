@@ -3,6 +3,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
+		<?=modules::run('client/btn_api');?>
    		 <h2>Add Client</h2>
     	 <p>Add clients using below form or import multiple clients.</p>
     </div>

@@ -2,9 +2,8 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2>Accounts Integration</h2>
-   		 <p>Please select the accounting platform</p>
    		 <select class="form-control" id="accounting_platform">
-			<option value="">Please select</option>
+			<option value="">Please select the accounting platform</option>
 			<option value="shoebooks">Shoebooks</option>
 			<option value="myob">MYOB</option>
 		</select>
@@ -15,17 +14,9 @@
 <!--begin bottom box -->
 <div class="col-md-12">
 	<div class="box bottom-box">
-		<div class="col-md-6 white-box">
-            <div class="inner-box">
-            	<div id="platform-settings"></div>
-            </div>
-        </div>   
-        
-        <div class="col-md-6 white-box">
-            <div class="inner-box">
-            	
-            </div>
-        </div>     
+        <div class="inner-box">
+        	<div id="platform-settings"></div>
+        </div>
     </div>
 </div>
 <script>

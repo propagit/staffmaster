@@ -5,6 +5,8 @@
 		<h2>Your Profile</h2>
 		<p>Edit your client profile information below.</p>
 		<? } else { ?>
+		
+		<?=modules::run('client/btn_api', $client['user_id'], $client['external_client_id']);?>
 		<h2>Edit Client: <span id="client_name"><?=$client['company_name'];?></span></h2>
 		<p>Edit client using below form.</p>
 		<? } ?>

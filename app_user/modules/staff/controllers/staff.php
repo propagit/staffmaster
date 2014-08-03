@@ -35,6 +35,9 @@ class Staff extends MX_Controller {
 			case 'import':
 					$this->import_view();
 				break;
+			case 'sync':
+					$this->sync_view();
+				break;
 			case 'edit':
 					$this->edit_staff($param);
 				break;	
@@ -73,88 +76,6 @@ class Staff extends MX_Controller {
 	
 	function add_staff()
 	{
-		$this->load->library('form_validation');
-		$this->form_validation->set_rules(array(
-			array('field' => 'title', 'label' => 'Title', 'rules' => ''),
-			array('field' => 'first_name', 'label' => 'First Name', 'rules' => 'required'),
-			array('field' => 'last_name', 'label' => 'Last Name', 'rules' => 'required'),
-			array('field' => 'gender', 'label' => 'Gender', 'rules' => 'required'),
-			array('field' => 'dob_day', 'label' => 'DOB Day', 'rules' => ''),
-			array('field' => 'dob_month', 'label' => 'DOB Month', 'rules' => ''),
-			array('field' => 'dob_year', 'label' => 'DOB Year', 'rules' => ''),
-			array('field' => 'address', 'label' => 'Address', 'rules' => ''),
-			array('field' => 'suburb', 'label' => 'Suburb', 'rules' => ''),
-			array('field' => 'city', 'label' => 'Suburb', 'rules' => ''),
-			array('field' => 'state', 'label' => 'State', 'rules' => ''),
-			array('field' => 'country', 'label' => 'Country', 'rules' => ''),
-			array('field' => 'postcode', 'label' => 'Postcode', 'rules' => ''),
-			array('field' => 'phone', 'label' => 'Phone', 'rules' => ''),
-			array('field' => 'email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email|is_unique[users.email_address]'),
-			array('field' => 'password', 'label' => 'Password', 'rules' => 'required'),
-			//array('field' => 'department_id', 'label' => 'Department', 'rules' => ''),
-			//array('field' => 'role', 'label' => 'Role', 'rules' => ''),
-			array('field' => 'external_staff_id', 'label' => 'External Staff ID', 'rules' => ''),
-			array('field' => 'emergency_contact', 'label' => 'Emergency Contact', 'rules' => ''),
-			array('field' => 'emergency_phone', 'label' => 'Emergency Phone', 'rules' => '')
-		));
-		if ($this->form_validation->run($this) == FALSE)
-		{				
-		}
-		else
-		{
-			/* if ($this->user_model->check_username($this->input->post('email_address')))
-			{
-				$data['username_exist'] = true;
-			}
-			else
-			{ */
-				$data = $this->input->post();
-				$user_data = array(
-					'status' => 1,
-					'is_admin' => 0,
-					'is_staff' => 1,
-					'is_client' => 0,
-					'email_address' => $data['email_address'],
-					'username' => $data['email_address'],
-					'password' => $data['password'],
-					'title' => $data['title'],
-					'first_name' => $data['first_name'],
-					'last_name' => $data['last_name'],
-					'address' => $data['address'],
-					'suburb' => $data['suburb'],
-					'city' => $data['city'],
-					'state' => $data['state'],
-					'postcode' => $data['postcode'],
-					'country' => $data['country'],
-					'phone' => $data['phone']					
-				);
-				$user_id = $this->user_model->insert_user($user_data);
-				
-				$company_profile = $this->profile_model->get_profile();
-				
-				
-				$staff_data = array(
-					'user_id' => $user_id,
-					'external_staff_id' => $data['external_staff_id'],
-					'gender' => $data['gender'],
-					'dob' => date('Y-m-d',strtotime($data['dob_year'].'-'.$data['dob_month']. '-'.$data['dob_day'])),
-					//'department_id' => $data['department_id'],
-					//'role' => $data['role'],
-					'emergency_contact' => $data['emergency_contact'],
-					'emergency_phone' => $data['emergency_phone'],
-					's_choice' => 'employer',
-					's_name' =>  $data['first_name'].' '.$data['last_name'],
-					's_fund_name' => $company_profile['super_fund_name']
-					
-				);
-				$staff_id = $this->staff_model->insert_staff($staff_data);
-				//send welcome email
-				$this->send_welcome_email($user_id,$data['email_address'],$data['password']);
-				redirect('staff/edit/' . $user_id);
-			//}
-		}
-		
-		
 		$this->load->view('add_form', isset($data) ? $data : NULL);
 	}
 	
@@ -229,6 +150,11 @@ class Staff extends MX_Controller {
 	function get_staff($user_id)
 	{
 		return $this->staff_model->get_staff($user_id);
+	}
+	
+	function get_staff_by_external_id($external_id)
+	{
+		return $this->staff_model->get_staff_by_external_id($external_id);
 	}
 	
 	function get_staff_working_hours($user_id)
@@ -808,120 +734,7 @@ class Staff extends MX_Controller {
 		return $this->staff_model->get_active_staff_user_ids();	
 	}
 	
-	//import function for rsa
-	/* function _import_rsa()
-	{
-		$custom_attr_id = 16;
-		$arrs = array_map('str_getcsv', file(UPLOADS_PATH.'/temp_docs/attachment_document_staff.csv'));
-		//echo '<pre>'.print_r($arrs,true).'</pre>';exit();
-
-		foreach($arrs as $a){
-			$staff_id = $a[0];
-			$file_name = $a[1];
-			$staff = $this->staff_model->get_staff_by_external_id(trim($staff_id));
-			//echo $staff['user_id'].'<br />';
-			//echo $staff_id.'<br />';
-			//print_r($staff);
-			if($staff){
-				#if($staff_id == 3030){
-					$path_source = UPLOADS_PATH.'/temp_docs/docs_staff/docs_staff/'.$staff_id;
-					$path_dest = UPLOADS_PATH.'/staff/'.$staff['user_id'];
-					#echo $path_source.'<br />'. $path_dest .'<br />';
-					#echo $staff_id.'<br />'. $staff['user_id'] .'<br />';
-					if(is_dir($path_source)){
-						modules::run('upload/create_upload_folders', $path_dest);
-						$this->recurse_copy($path_source,$path_dest);
-						//update db
-						$data = array(
-								'user_id' => $staff['user_id'],
-								'field_id' => $custom_attr_id,
-								'value' => '["'.$file_name.'"]'
-								);
-						$this->db->insert('staff_custom_fields',$data);
-					}
-				#}
-			} 
-		}
-	} */
-	
-	/* function _recurse_copy($src,$dst) { 
-		$dir = opendir($src); 
-		@mkdir($dst); 
-		while(false !== ( $file = readdir($dir)) ) { 
-			if (( $file != '.' ) && ( $file != '..' )) { 
-				if ( is_dir($src . '/' . $file) ) { 
-					recurse_copy($src . '/' . $file,$dst . '/' . $file); 
-				} 
-				else { 
-					copy($src . '/' . $file,$dst . '/' . $file); 
-				} 
-			} 
-		} 
-		closedir($dir); 
-	}  */
-	
-	/* function rename_folders()
-	{
-		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/aurora_staff/staffs.csv'));	
-		#md5('staff' . $id);
-		#thumbnail2 = thumbnails
-		#thumbnail = resizes
-		foreach($staff_arr as $staff){
-			$staff_id = $staff[0];
-			$folder = md5('staff' . $staff_id);
-			$path = UPLOADS_PATH.'/aurora_staff/staffs/'.$folder;	
-			#echo $staff_id.'<br />';
-			#if($staff_id == 1027){
-				//echo $path;
-				 if(is_dir($path)){
-					#rename thumbnails to thumbnail2
-					if(is_dir($path.'/thumbnails')){
-						rename($path.'/thumbnails',$path.'/thumbnail2');	
-					}
-					#rename resizes to thumbnail
-					if(is_dir($path.'/resizes')){
-						rename($path.'/resizes',$path.'/thumbnail');	
-					}	
-				} 
-			#}
-		}
-	} */
-	
-	/* function _csv_resize_old_images()
-	{
-		$staff_arr = array_map('str_getcsv', file(UPLOADS_PATH.'/aurora_staff/staffs.csv'));	
-		#md5('staff' . $id);
-		foreach($staff_arr as $staff){
-			$staff_id = $staff[0];
-			$folder = md5('staff' . $staff_id);
-			$path = UPLOADS_PATH.'/aurora_staff/staffs/'.$folder;	
-			#echo $staff_id.'<br />';
-			if($staff_id == 1027){
-				#$file_name = trim($staff[1],'0~');
-				$file_name = substr($staff[1],2);
-				#echo $folder.'<br />';
-				#echo $file_name;exit;
-				if($file_name != ''){
-					//echo $file_name;exit();
-					if(file_exists($path.'/'.$file_name)){
-						#resize thumbnail2
-						$new_width=216;		
-						$new_height=216;
-						copy($path.'/'.$file_name, $path."/thumbnail2/".$file_name);
-						$target = $path."/thumbnail2/".$file_name;
-						modules::run('staff/ajax/scale_image',$target,$target,$new_width,$new_height);	
-					
-						//create thumbnail 
-						$thumb2_width = 72;
-						$thumb2_height = 72;
-						copy($path.'/'.$file_name, $path."/thumbnail/".$file_name);
-						$target_thumb2 = $path."/thumbnail/".$file_name;
-						modules::run('staff/ajax/scale_image',$target_thumb2,$target_thumb2,$thumb2_width,$thumb2_height);
-					}
-				}
-			}
-		}	
-	} */ 
+	 
 	
 	function _resize_old_images()
 	{
@@ -1006,4 +819,19 @@ class Staff extends MX_Controller {
 		}
 	}
 
+	function sync_view()
+	{
+		$this->load->view('sync_view', isset($data) ? $data : NULL);
+	}
+	
+	function btn_api($user_id='', $external_id='')
+	{
+		if (!$this->config_model->get('accounting_platform'))
+		{
+			return;
+		}
+		$data['user_id'] = $user_id;
+		$data['external_id'] = $external_id;
+		$this->load->view('btn_api', isset($data) ? $data : NULL);
+	}
 }

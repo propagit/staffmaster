@@ -415,4 +415,126 @@ class Ajax extends MX_Controller {
 		}
 	}
 	
+	function sync_shoebooks_staff()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+		
+		# First get all employee from Shoebooks
+		$employee = modules::run('api/shoebooks/search_employee');
+		$e_ids = array();
+		foreach($employee as $e)
+		{
+			$e_ids[] = $e['DataID'];
+			$staff = modules::run('staff/get_staff_by_external_id', $e['DataID']);
+			if (!$staff)
+			{
+				$input = modules::run('api/shoebooks/read_employee', $e['DataID']);
+				$user_data = array(
+					'status' => 1,
+					'is_admin' => 0,
+					'is_staff' => 1,
+					'is_client' => 0,
+					'email_address' => '',
+					'username' => '',
+					'password' => '',
+					'title' => $input['Title'],
+					'first_name' => $input['FirstName'],
+					'last_name' => $input['LastName'],
+					'address' => $input['Address'],
+					'suburb' => $input['County'],
+					'city' => $input['City'],
+					'state' => $input['State'],
+					'postcode' => $input['Zip'],
+					'country' => $input['Country'],
+					#'phone' => $input['phone'],
+					#'mobile' => $input['mobile']			
+				);
+				$user_id = $this->user_model->insert_user($user_data);
+				
+				$staff_data = array(
+					'user_id' => $user_id,
+					'external_staff_id' => $e['DataID'],
+					'gender' => $input['Gender'],
+					'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
+					'emergency_contact' => $input['EmergencyContact'],
+					'emergency_phone' => $input['EmergencyPhone'],
+					'f_tfn' => $input['SocialSecurity'],
+					'f_acc_name'=> $input['BankName'],
+					'f_bsb' => $input['BankNumber'],
+					'f_acc_number' => $input['BankAccount']
+				);
+				$staff_id = $this->staff_model->insert_staff($staff_data, true);
+			}			
+		}
+		
+		# Now transfer from Staffbooks to Shoebooks
+		$staff = $this->staff_model->search_staffs();
+		foreach($staff as $s)
+		{
+			if (in_array($s['external_staff_id'], $e_ids)) {
+				modules::run('api/shoebooks/update_employee', $s['external_staff_id']);
+			}
+			else
+			{
+				modules::run('api/shoebooks/append_employee', $s['user_id']);
+			}
+		}
+	}
+	
+	function sync_shoebooks_client()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('client/client_model');
+		
+		$customers = modules::run('api/shoebooks/search_customer');
+		$c_ids = array();
+		foreach($customers as $c)
+		{
+			$c_ids[] = $c['DataID'];
+			$client = modules::run('client/get_client_by_external_id', $c['DataID']);
+			if (!$client)
+			{
+				$input = modules::run('api/shoebooks/read_customer', $c['DataID']);
+				$user_data = array(
+					'status' => CLIENT_ACTIVE,
+					'is_admin' => 0,
+					'is_staff' => 0,
+					'is_client' => 1,
+					'email_address' => '',
+					'username' => '',
+					'full_name' => trim($input['FirstName'] . ' ' . $input['LastName']),
+					'address' => $input['Address'],
+					'suburb' => $input['County'],
+					'city' => $input['City'],
+					'state' => $input['State'],
+					'postcode' => $input['Zip'],
+					'country' => $input['Country'],
+					#'phone' => $input['phone']
+				);
+				
+				$user_id = $this->user_model->insert_user($user_data);
+				
+				$client_data = array(
+					'user_id' => $user_id,
+					'external_client_id' => $c['DataID'],
+					'company_name' => $input['CompanyName'],
+					'abn' => $input['CompanyABN']
+				);
+				$client_id = $this->client_model->insert_client($client_data, true);
+			}
+		}
+		
+		# Now transfer from Staffbooks to Shoebooks
+		$clients = $this->client_model->search_clients();
+		foreach($clients as $client)
+		{
+			if (in_array($client['external_client_id'], $c_ids)) {
+				modules::run('api/shoebooks/update_customer', $client['external_client_id']);
+			}
+			else {
+				modules::run('api/shoebooks/append_customer', $client['user_id']);
+			}
+		}
+	}
 }

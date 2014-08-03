@@ -170,6 +170,9 @@ a.default {
 .prettycheckbox, .prettyradio{
 	float:left;
 }
+.checkbox.no-margin {
+	margin: 0;
+}
 .radio.inline, .checkbox.inline {
 	display: inline-block;
 	padding-top: 5px;

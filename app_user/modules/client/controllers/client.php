@@ -70,6 +70,11 @@ class Client extends MX_Controller {
 		$this->load->view('edit_form', isset($data) ? $data : NULL);
 	}
 	
+	function get_client_by_external_id($external_id)
+	{
+		return $this->client_model->get_client_by_external_id($external_id);
+	}
+	
 	
 	function get_client($client_id)
 	{
@@ -79,6 +84,11 @@ class Client extends MX_Controller {
 	function get_clients()
 	{
 		return $this->client_model->search_clients();
+	}
+	
+	function get_total_client()
+	{
+		return $this->client_model->get_total_clients_count();
 	}
 	
 	function total_jobs($user_id) {
@@ -233,5 +243,16 @@ class Client extends MX_Controller {
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);
+	}
+	
+	function btn_api($user_id='', $external_id='')
+	{
+		if (!$this->config_model->get('accounting_platform'))
+		{
+			return;
+		}
+		$data['user_id'] = $user_id;
+		$data['external_id'] = $external_id;
+		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
 }

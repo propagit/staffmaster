@@ -2,6 +2,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
+		<?=modules::run('staff/btn_api');?>
    		 <h2>Add Staff</h2>
 		 <p>Add staff using below form or import multiple staff.</p>
     </div>

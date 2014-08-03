@@ -7,6 +7,8 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
+		<?=modules::run('staff/btn_api', $staff['user_id'], $staff['external_staff_id']);?>
+		
     	 <div id="staff-edit-page-avatar">
 			<?=modules::run('staff/get_profile_picture',$staff['user_id']);?>
    		 </div>

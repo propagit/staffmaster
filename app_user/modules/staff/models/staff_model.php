@@ -25,7 +25,7 @@ class Staff_model extends CI_Model {
 	*	@param: $data = array()
 	*	@return: $staff_id
 	*/
-	function insert_staff($data)
+	function insert_staff($data, $bypass_api=false)
 	{
 		$data = $this->prepare_staff_data($data);
 		$this->db->insert('user_staffs', $data);
@@ -39,8 +39,32 @@ class Staff_model extends CI_Model {
 				'action' => 'create'
 			);
 			$this->log_model->insert_log($log_data);
-		}		
+		}
+		if (!$bypass_api)
+		{
+			$this->auto_add_staff($data['user_id']);
+		}
+		
+			
 		return $staff_id;
+	}
+	
+	function auto_add_staff($user_id)
+	{
+		if (!$this->config_model->get('auto_add_staff'))
+		{
+			return;
+		}
+		$staff = $this->get_staff($user_id);
+		if (!$staff)
+		{
+			return;
+		}
+		$platform = $this->config_model->get('accounting_platform');
+		if ($platform == 'shoebooks')
+		{
+			modules::run('api/shoebooks/append_employee', $user_id);
+		}
 	}
 	
 	function get_custom_attributes()
@@ -78,7 +102,29 @@ class Staff_model extends CI_Model {
 			$this->log_model->insert_log($log_data);
 		}
 		$this->db->where('user_id', $user_id);
-		return $this->db->update('user_staffs', $data);
+		$updated = $this->db->update('user_staffs', $data);
+		
+		$this->auto_update_staff($user_id);
+		
+		return $updated;
+	}
+	
+	function auto_update_staff($user_id)
+	{
+		if (!$this->config_model->get('auto_update_staff'))
+		{
+			return;
+		}
+		$staff = $this->get_staff($user_id);
+		if (!$staff['external_staff_id'])
+		{
+			return;
+		}
+		$platform = $this->config_model->get('accounting_platform');
+		if ($platform == 'shoebooks')
+		{
+			modules::run('api/shoebooks/update_employee', $staff['external_staff_id']);
+		}
 	}
 	
 	/**
@@ -441,9 +487,9 @@ class Staff_model extends CI_Model {
 	*/
 	function get_total_staffs_count($status='')
 	{
-		$sql = 'select count(staff_id) as total from user_staffs';
+		$sql = 'select count(user_id) as total from users where is_staff = 1';
 		if($status){
-			$sql .= '';	
+			$sql .= ' and status = ' . $status;	
 		}
 		$total = $this->db->query($sql)->row();
 		if($total){
@@ -811,7 +857,18 @@ class Staff_model extends CI_Model {
 		}
 	}
 	
+	
+	
 	function get_staff_by_external_id($external_id)
+	{
+		$sql = "SELECT s.*, u.*
+				FROM user_staffs s
+				LEFT JOIN users u ON s.user_id = u.user_id WHERE s.external_staff_id = '" . $external_id . "'";
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
+	}
+	
+	/* function get_staff_by_external_id($external_id)
 	{
 		$staff = $this->db->select('staff_id,user_id')
 						  ->where('external_staff_id',$external_id)
@@ -819,7 +876,7 @@ class Staff_model extends CI_Model {
 						  ->get()
 						  ->row_array();
 		return $staff;	
-	}
+	} */
 	
 	function get_active_payrates($user_id) {
 		$sql = "SELECT * FROM attribute_payrates WHERE payrate_id NOT IN
