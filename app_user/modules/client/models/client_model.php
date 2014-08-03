@@ -180,7 +180,8 @@ class Client_model extends CI_Model {
 	{
 		$sql = "SELECT c.*, u.*
 				FROM user_clients c
-				LEFT JOIN users u ON c.user_id = u.user_id WHERE c.external_client_id = '" . $external_id . "'";
+					LEFT JOIN users u ON (c.user_id = u.user_id AND u.status >= " . INACTIVE . ")
+				WHERE c.external_client_id = '" . $external_id . "'";
 		$query = $this->db->query($sql);
 		return $query->first_row('array');
 	}
