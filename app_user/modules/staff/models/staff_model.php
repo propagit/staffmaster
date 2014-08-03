@@ -863,8 +863,9 @@ class Staff_model extends CI_Model {
 	{
 		$sql = "SELECT s.*, u.*
 				FROM user_staffs s
-					LEFT JOIN users u ON (s.user_id = u.user_id AND u.status >= " . STAFF_PENDING . ")
-				WHERE s.external_staff_id = '" . $external_id . "'";
+					LEFT JOIN users u ON s.user_id = u.user_id
+				WHERE s.external_staff_id = '" . $external_id . "'
+					 AND u.status >= " . STAFF_INACTIVE;
 		$query = $this->db->query($sql);
 		return $query->first_row('array');
 	}
