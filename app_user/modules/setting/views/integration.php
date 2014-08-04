@@ -28,13 +28,14 @@ $(function(){
 })
 function accounting_platform(accounting_platform)
 {
+	preloading($('#platform-settings'));
 	$('#accounting_platform').val(accounting_platform);
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>setting/ajax/accounting_platform",
 		data: {accounting_platform: accounting_platform},
 		success: function(html) {
-			$('#platform-settings').html(html);
+			loaded($('#platform-settings'), html);
 		}
 	})
 }

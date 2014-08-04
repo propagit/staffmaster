@@ -247,7 +247,7 @@ class Client extends MX_Controller {
 	
 	function btn_api($user_id='', $external_id='')
 	{
-		if (!$this->config_model->get('accounting_platform'))
+		if ($this->config_model->get('accounting_platform') != 'shoebooks')
 		{
 			return;
 		}

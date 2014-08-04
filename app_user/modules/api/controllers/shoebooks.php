@@ -145,6 +145,15 @@ class Shoebooks extends MX_Controller {
 		if ($staff['dob'] && $staff['dob'] != '0000-00-00') {
 			$dob = '<BirthDate>' . $staff['dob'] . '</BirthDate>';
 		}
+		$date_entered = '';
+		if ($staff['created_on'] && $staff['created_on'] != '0000-00-00 00:00:00') {
+			$date_entered = '<DateEntered>' . date('Y-m-d', strtotime($staff['created_on'])) . '</DateEntered>';
+		}
+		$date_modified = '';
+		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
+			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
+		}		
+		$e_id = 'SB' . $staff['user_id'];
 		
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
@@ -154,7 +163,7 @@ class Shoebooks extends MX_Controller {
 				<SessionID></SessionID>
 			</Login>
 			<NewEmployee>
-				<EmployeeID>' . $staff['user_id'] . '</EmployeeID>
+				<EmployeeID>' . $e_id . '</EmployeeID>
 				<Company>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</Company>
 				<SocialSecurity>' . $staff['f_tfn'] . '</SocialSecurity>
 				<Title>' . $staff['title'] . '</Title>
@@ -170,9 +179,9 @@ class Shoebooks extends MX_Controller {
 				$dob . '
 				<Gender>' . $staff['gender'] . '</Gender>
 				<EmergencyContact>' . $staff['emergency_contact'] . '</EmergencyContact>
-				<EmergencyPhone>' . $staff['emergency_phone'] . '</EmergencyPhone>
-				<DateEntered>' . date('Y-m-d', strtotime($staff['created_on'])) . '</DateEntered>
-				<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>
+				<EmergencyPhone>' . $staff['emergency_phone'] . '</EmergencyPhone>' .
+				$date_entered .
+				$date_modified . '
 				<BankName>' . $staff['f_acc_name'] . '</BankName>
 				<BankNumber>' . $staff['f_bsb'] . '</BankNumber>
 				<BankAccount>' . $staff['f_acc_number'] . '</BankAccount>
@@ -221,6 +230,14 @@ class Shoebooks extends MX_Controller {
 		if ($staff['dob'] && $staff['dob'] != '0000-00-00') {
 			$dob = '<BirthDate>' . $staff['dob'] . '</BirthDate>';
 		}
+		$date_entered = '';
+		if ($staff['created_on'] && $staff['created_on'] != '0000-00-00 00:00:00') {
+			$date_entered = '<DateEntered>' . date('Y-m-d', strtotime($staff['created_on'])) . '</DateEntered>';
+		}
+		$date_modified = '';
+		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
+			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
+		}	
 		
 		$request = '<UpdateEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
@@ -246,9 +263,9 @@ class Shoebooks extends MX_Controller {
 				$dob . '
 				<Gender>' . $staff['gender'] . '</Gender>
 				<EmergencyContact>' . $staff['emergency_contact'] . '</EmergencyContact>
-				<EmergencyPhone>' . $staff['emergency_phone'] . '</EmergencyPhone>
-				<DateEntered>' . date('Y-m-d', strtotime($staff['created_on'])) . '</DateEntered>
-				<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>
+				<EmergencyPhone>' . $staff['emergency_phone'] . '</EmergencyPhone>' .
+				$date_entered .
+				$date_modified . '				
 				<BankName>' . $staff['f_acc_name'] . '</BankName>
 				<BankNumber>' . $staff['f_bsb'] . '</BankNumber>
 				<BankAccount>' . $staff['f_acc_number'] . '</BankAccount>
@@ -353,6 +370,7 @@ class Shoebooks extends MX_Controller {
 			return false;
 		}
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendCustomer';
+		$e_id = 'SB' . $client['user_id'];
 		$request = '<AppendCustomer xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>
@@ -361,7 +379,7 @@ class Shoebooks extends MX_Controller {
 				<SessionID></SessionID>
 			</Login>
 			<NewCustomer>
-				<CustomerID>' . $client['user_id'] . '</CustomerID>
+				<CustomerID>' . $e_id . '</CustomerID>
 				<CompanyName>' . $client['company_name'] . '</CompanyName>
 				<FirstName>' . $client['full_name'] . '</FirstName>
 				<Address>' . $client['address'] . '</Address>
