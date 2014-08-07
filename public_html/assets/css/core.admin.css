@@ -121,6 +121,11 @@ a.default {
 	margin-right: 10px;
 	float:left;
 }
+.btn-myob,
+.btn-myob:hover {
+	background: #6548b5;
+	color: #fff;
+}
 .btn-delete-field {
 	float: right;
 	height: 30px;
@@ -399,6 +404,9 @@ a.default {
 }
 
 /* modal */
+.modal-body iframe {
+	border: 0;
+}
 .contact-modal{
 	width:1000px	
 }

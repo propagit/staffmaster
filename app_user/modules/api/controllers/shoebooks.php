@@ -22,7 +22,7 @@ class Shoebooks extends MX_Controller {
 	
 	function index()
 	{
-		$a = $this->update_customer(16);
+		$a = $this->append_payslip(13);
 		var_dump($a);
 	}
 	
@@ -464,49 +464,96 @@ class Shoebooks extends MX_Controller {
 		$result = $client->send($msg, $action);
 		return true;
 	}
-	
-	
+		
 	function append_payslip($payrun_id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
-		$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
-			<Login>
-				<AccountName>' . $this->account_name . '</AccountName>
-				<LoginName>' . $this->login_name . '</LoginName>
-				<LoginPassword>' . $this->login_password . '</LoginPassword>
-				<SessionID></SessionID>
-			</Login>
-			<NewPayslip>
-				<EmployeeID>string</EmployeeID>
-				<PeriodStart>dateTime</PeriodStart>
-				<PeriodFinish>dateTime</PeriodFinish>
-				<AccountID>string</AccountID>
-				<JobID>string</JobID>
-				<PayDate>dateTime</PayDate>
-				<DivID>int</DivID>
-				<PayslipLines>
-					<PRPayslipLine>
-						<EarningID>string</EarningID>
-						<Hours>decimal</Hours>
-						<Amount>decimal</Amount>
-						<Total>decimal</Total>
-						<WorkDate>dateTime</WorkDate>
-						<DivID>int</DivID>
-						<JobID>string</JobID>
-					</PRPayslipLine>
-					<PRPayslipLine>
-						<EarningID>string</EarningID>
-						<Hours>decimal</Hours>
-						<Amount>decimal</Amount>
-						<Total>decimal</Total>
-						<AccountID>string</AccountID>
-						<WorkDate>dateTime</WorkDate>
-						<Notes>string</Notes>
-						<DivID>int</DivID>
-						<JobID>string</JobID>
-					</PRPayslipLine>
-				</PayslipLines>
-			</NewPayslip>
-		</AppendPayslip>';
+		
+		$this->load->model('payrun/payrun_model');
+		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		#return $timesheets;
+		usort($timesheets, function($a, $b) { // anonymous function
+		    // compare numbers only
+		    if (isset($a['external_staff_id'])) {
+			    return $a['external_staff_id'] - $b['external_staff_id'];
+		    }
+		});
+		$results = array();
+		foreach($timesheets as $timesheet)
+		{
+			# Check if staff is there
+			$employee = $this->read_employee($timesheet['external_staff_id']);
+			if (!$employee['EmployeeID'])
+			{
+				$this->append_employee($timesheet['staff_id']);
+				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+				$timesheet['external_staff_id'] = $staff['external_staff_id'];
+			}
+			
+			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+			
+			$start = '';
+			if ($timesheet['date_from'] && $timesheet['date_from'] != '0000-00-00')
+			{
+				$start = '<PeriodStart>' . date('Y-m-d', strtotime($timesheet['date_from'])) . '</PeriodStart>';
+			}
+			$finish = '';
+			if ($timesheet['date_to'] && $timesheet['date_to'] != '0000-00-00')
+			{
+				$finish = '<PeriodFinish>' . date('Y-m-d', strtotime($timesheet['date_to'])) . '</PeriodFinish>';
+			}
+			$pay_date = '';
+			if ($timesheet['payable_date'] && $timesheet['payable_date'] != '0000-00-00')
+			{
+				$pay_date = '<PayDate>' . date('Y-m-d', strtotime($timesheet['payable_date'])) . '</PayDate>';
+			}
+			
+			$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
+				<Login>
+					<AccountName>' . $this->account_name . '</AccountName>
+					<LoginName>' . $this->login_name . '</LoginName>
+					<LoginPassword>' . $this->login_password . '</LoginPassword>
+					<SessionID></SessionID>
+				</Login>
+				<NewPayslip>
+					<EmployeeID>' . $timesheet['external_staff_id'] . '</EmployeeID>
+					' . $start . '
+					' . $finish . '
+					<AccountID></AccountID>
+					<JobID></JobID>
+					' . $pay_date . '				
+					<DivID>0</DivID>
+					<PayslipLines>';
+			foreach($pay_rates as $pay_rate)
+			{
+				$request .= '
+						<PRPayslipLine>
+							<EarningID>' . $timesheet['payrate'] . '</EarningID>
+							<Hours>' . $pay_rate['hours'] . '</Hours>
+							<Amount>' . $pay_rate['rate'] . '</Amount>
+							<Total>' . ($pay_rate['hours'] * $pay_rate['rate']) . '</Total>
+							<WorkDate>' . date('Y-m-d', $pay_rate['start']) . '</WorkDate>
+							<DivID>0</DivID>
+							<JobID></JobID>
+						</PRPayslipLine>';
+			}
+			$request .= '
+					</PayslipLines>
+				</NewPayslip>
+			</AppendPayslip>';
+			return $request;
+			$client = new nusoap_client($this->host);
+			$error = $client->getError();
+			if ($error)
+			{
+				#die("client construction error: {$error}\n");
+				return false;
+			}
+			$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+			$result = $client->send($msg, $action);
+			return $result;
+			$results[] = $result;
+		}
+		return $results;
 	}
 }

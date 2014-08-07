@@ -19,12 +19,15 @@
 </form>
 
 <br />
-  
+
+
 <div id="platform-data" class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
 	<tr>
-		<th class="center">Data Type</th>
+		<th>Data Type</th>
+		<th class="center">Auto Add</th>
+		<th class="center">Auto Update</th>
 		<th class="center">StaffBooks</th>
 		<th class="center"><?=ucwords($accounting_platform = $this->config_model->get('accounting_platform'));?></th>
 		<th class="center">Action</th>
@@ -34,6 +37,16 @@
 	<? $employee = count(modules::run('api/shoebooks/search_employee')); ?>
 	<tr>
 		<td>Staff / Employee</td>
+		<td class="center">
+			<label>
+				<input type="checkbox" id="auto-add-staff" <?=($this->config_model->get('auto_add_staff')) ? 'checked' : '';?>>
+			</label>
+		</td>
+		<td class="center">
+			<label>
+				<input type="checkbox" id="auto-update-staff" <?=($this->config_model->get('auto_update_staff')) ? 'checked' : '';?>>
+			</label>
+		</td>
 		<td class="center">
 			<span class="badge success"><?=modules::run('staff/get_total_staff', STAFF_ACTIVE);?></span>
 		</td>
@@ -50,6 +63,16 @@
 	<? $customer = count(modules::run('api/shoebooks/search_customer')); ?>
 	<tr>
 		<td>Client / Customer</td>
+		<td class="center">
+			<label>
+				<input type="checkbox" id="auto-add-client" <?=($this->config_model->get('auto_add_client')) ? 'checked' : '';?>>
+			</label>
+		</td>
+		<td class="center">
+			<label>
+				<input type="checkbox" id="auto-update-client" <?=($this->config_model->get('auto_update_client')) ? 'checked' : '';?>>
+			</label>
+		</td>
 		<td class="center">
 			<span class="badge success"><?=modules::run('client/get_total_client');?></span>
 		</td>
@@ -115,6 +138,54 @@ $(function(){
 			success: function(html) {
 				location.reload();
 			}
+		})
+	})
+	$('#auto-add-staff').click(function(){
+		var auto = '';
+		if ($(this).is(':checked')) {
+			auto = 1;
+		}
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {auto_add_staff: auto},
+			success: function(html) {}
+		})
+	})
+	$('#auto-update-staff').click(function(){
+		var auto = '';
+		if ($(this).is(':checked')) {
+			auto = 1;
+		}
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {auto_update_staff: auto},
+			success: function(html) {}
+		})
+	})
+	$('#auto-add-client').click(function(){
+		var auto = '';
+		if ($(this).is(':checked')) {
+			auto = 1;
+		}
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {auto_add_client: auto},
+			success: function(html) {}
+		})
+	})
+	$('#auto-update-client').click(function(){
+		var auto = '';
+		if ($(this).is(':checked')) {
+			auto = 1;
+		}
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {auto_update_client: auto},
+			success: function(html) {}
 		})
 	})
 })

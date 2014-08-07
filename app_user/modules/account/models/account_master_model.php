@@ -67,15 +67,26 @@ class Account_master_model extends CI_Model {
 		return $result;
 	}
 			
-	function get_account($subdomain)
+	function get_account()
 	{
+		$this->init();
+		$subdomain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
 		$this->db->where('subdomain', $subdomain);
 		$query = $this->db->get('accounts');
-		return $query->first_row('array');
+		$result = $query->first_row('array');
+		$this->close();
+		
+		return $result;
 	}
 	
-	function update_account($account_id, $data)
+	function update_account($data)
 	{
+		$this->init();
+		$subdomain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
+		$this->db->where('subdomain', $subdomain);
+		$updated = $this->db->update('accounts', $data);
+		$this->close();
 		
+		return $updated;
 	}
 }

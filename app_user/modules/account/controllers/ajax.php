@@ -35,6 +35,12 @@ class Ajax extends MX_Controller {
 		}
 		echo json_encode(array('ok' => true));
 	}
+		
+	function update()
+	{
+		$this->load->model('account_master_model');
+		$this->account_master_model->update_account($this->input->post());
+	}
 	
 	function buy_credits()
 	{
@@ -100,7 +106,8 @@ class Ajax extends MX_Controller {
 		}		
 	}
 	
-	function process_eWay($order_id,$firstname,$lastname,$email,$address,$postcode,$cardname,$cardnumber,$expmonth,$expyear,$cvv,$total) {
+	function process_eWay($order_id,$firstname,$lastname,$email,$address,$postcode,$cardname,$cardnumber,$expmonth,$expyear,$cvv,$total) 
+	{
 		# Payment config
 		#$total = 1000; # Just for testing
 		

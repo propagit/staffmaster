@@ -65,6 +65,10 @@ class Staff_model extends CI_Model {
 		{
 			modules::run('api/shoebooks/append_employee', $user_id);
 		}
+		else if ($platform == 'myob')
+		{
+			modules::run('api/myob/append_employee', $user_id);
+		}
 	}
 	
 	function get_custom_attributes()
@@ -124,6 +128,10 @@ class Staff_model extends CI_Model {
 		if ($platform == 'shoebooks')
 		{
 			modules::run('api/shoebooks/update_employee', $staff['external_staff_id']);
+		}
+		else if ($platform == 'myob')
+		{
+			modules::run('api/myob/update_employee', $staff['external_staff_id']);
 		}
 	}
 	

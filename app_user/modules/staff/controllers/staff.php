@@ -826,12 +826,19 @@ class Staff extends MX_Controller {
 	
 	function btn_api($user_id='', $external_id='')
 	{
-		if ($this->config_model->get('accounting_platform') != 'shoebooks')
+		$platform = $this->config_model->get('accounting_platform');
+		
+		if (!$platform)
 		{
 			return;
 		}
+		if ($platform == 'myob')
+		{
+			$platform = 'MYOB';
+		}
 		$data['user_id'] = $user_id;
 		$data['external_id'] = $external_id;
+		$data['platform'] = $platform;
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
 }

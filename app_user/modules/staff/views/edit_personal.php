@@ -142,7 +142,7 @@
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">
 			<div class="alert alert-success hide" id="msg-update-personal"><i class="fa fa-check"></i> &nbsp; Staff personal details has been updated successfully!</div>
-			<button type="button" class="btn btn-core" id="btn_update_personal"><i class="fa fa-save"></i> Update Personal Details</button>
+			<button type="button" class="btn btn-core" id="btn_update_personal" data-loading-text="Updating staff..."><i class="fa fa-save"></i> Update Personal Details</button>
 		</div>
 	</div>
 </div>
@@ -152,6 +152,8 @@
 <script>
 $(function(){
 	$('#btn_update_personal').click(function(){
+		var btn = $(this);
+		btn.button('loading');
 		$('.form-group').find('div[id^=f_]').removeClass('has-error');
 		$('#form_update_staff_personal').find('input').tooltip('destroy');
 		$.ajax({
@@ -159,6 +161,7 @@ $(function(){
 			url: "<?=base_url();?>staff/ajax/update_personal",
 			data: $('#form_update_staff_personal').serialize(),
 			success: function(data) {
+				btn.button('reset');
 				var title = $('#title').val();
 				if (title) { $('#staff-title').html(title + ". "); }
 				else { $('#staff-title').html(''); }

@@ -2,7 +2,7 @@
 <div class="pull-right alert alert-default">
 	<div class="checkbox no-margin">
 	    <label>
-	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_update_staff')) ? 'checked' : '';?>> Auto update to Shoebooks
+	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_update_staff')) ? 'checked' : '';?>> Auto update to <?=ucwords($platform);?>
 	    </label>
 	</div> 
 </div>
@@ -41,7 +41,7 @@ $('#btn-shoebooks').click(function(){
 <div class="pull-right alert alert-default">
 	<div class="checkbox no-margin">
 	    <label>
-	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_add_staff')) ? 'checked' : '';?>> Auto add to Shoebooks
+	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_add_staff')) ? 'checked' : '';?>> Auto add to <?=ucwords($platform);?>
 	    </label>
 	</div> 
 </div>

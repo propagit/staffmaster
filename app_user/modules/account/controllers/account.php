@@ -26,6 +26,12 @@ class Account extends MX_Controller {
 		
 	}
 	
+	function details()
+	{
+		$this->load->model('account_master_model');
+		return $this->account_master_model->get_account();
+	}
+	
 	function buy_credits_view()
 	{
 		$this->load->model('account_master_model');

@@ -1,0 +1,128 @@
+<?
+if ($this->config_model->get('myob_company_id') && modules::run('api/myob/test') == 'true') { ?>
+
+<div class="alert alert-success">
+	Your MYOB Account is connected successfully!	
+</div>
+
+
+<div id="platform-data" class="table-responsive">
+<table class="table table-bordered table-hover table-middle" width="100%">
+<thead>
+	<tr>
+		<th>Data Type</th>
+		<th class="center">Auto Add</th>
+		<th class="center">Auto Update</th>
+		<th class="center">StaffBooks</th>
+		<th class="center"><?=ucwords($accounting_platform = $this->config_model->get('accounting_platform'));?></th>
+		<th class="center">Action</th>
+	</tr>
+</thead>
+<tbody>
+	<? $employee = modules::run('api/myob/search_employee');
+		$employee = (isset($employee->Items)) ? count($employee->Items) : 0; ?>
+	<tr>
+		<td>Staff / Employee</td>
+		<td class="center">
+			<label>
+				<input type="checkbox" id="auto-add-staff" <?=($this->config_model->get('auto_add_staff')) ? 'checked' : '';?>>
+			</label>
+		</td>
+		<td class="center">
+			<label>
+				<input type="checkbox" id="auto-update-staff" <?=($this->config_model->get('auto_update_staff')) ? 'checked' : '';?>>
+			</label>
+		</td>
+		<td class="center">
+			<span class="badge success"><?=modules::run('staff/get_total_staff', STAFF_ACTIVE);?></span>
+		</td>
+		<td class="center">							
+			<span class="badge primary"><?=$employee;?></span>
+		</td>
+		<td class="center">
+			<a class="btn btn-core" id="btn-sync-staff">
+				<i class="fa fa-exchange"></i> Quick Sync								
+			</a>
+		</td>
+	</tr>
+	
+	
+</tbody>
+</table>
+</div>
+
+<button type="button" class="btn btn-danger" id="btn-disconnect">Disconnect MYOB</button>
+<script>
+$(function(){
+	$('#btn-disconnect').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {myob_company_id : ''},
+			success: function(html) {
+				location.reload();
+			}
+		})
+	})
+	$('#auto-add-staff').click(function(){
+		var auto = '';
+		if ($(this).is(':checked')) {
+			auto = 1;
+		}
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {auto_add_staff: auto},
+			success: function(html) {}
+		})
+	})
+	$('#auto-update-staff').click(function(){
+		var auto = '';
+		if ($(this).is(':checked')) {
+			auto = 1;
+		}
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {auto_update_staff: auto},
+			success: function(html) {}
+		})
+	})
+})
+</script>
+	
+
+<? } else { ?>
+<a class="btn btn-myob" href="<?=base_url();?>api/myob/connect">Connect to MYOB</a>
+<? } ?>
+
+
+<? /*
+<form role="form" id="form-myob">
+<div class="form-group">
+    <label for="myob_company_id" class="control-label">MYOB Company ID</label>    
+	<input type="text" class="form-control" id="myob_company_id" name="myob_company_id" value="<?=$this->config_model->get('myob_company_id');?>" />
+</div>         
+        
+
+<button type="button" class="btn btn-core" id="btn-update">Update</button> &nbsp;
+</form>
+
+<script>
+$(function(){
+	$('#btn-update').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: $('#form-myob').serialize(),
+			success: function(html) {
+				$('#msg-success').html('Updated successfully!');
+				$('#msg-success').removeClass('hide');
+				setTimeout(function(){
+					location.reload();
+				}, 2000);
+			}
+		})
+	})
+})
+</script> */ ?>
