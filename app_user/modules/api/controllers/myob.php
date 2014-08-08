@@ -104,8 +104,8 @@ class Myob extends MX_Controller {
 					$result = $this->company();
 				break;
 		}
-		var_dump($result);
-		#return $result;
+		#var_dump($result);
+		return $result;
 	}
 	
 	function company()
@@ -129,7 +129,7 @@ class Myob extends MX_Controller {
 		
 		$response = curl_exec($ch); 
 		curl_close($ch);
-		return $response;
+		#return $response;
 		$company = json_decode($response);
 		if (isset($company[0]))
 		{
