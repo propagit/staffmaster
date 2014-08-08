@@ -128,7 +128,6 @@ $(function(){
 <a class="btn btn-myob" href="<?=base_url();?>api/myob/connect">Connect to MYOB</a>
 <? } ?>
 
-
 <? /*
 <form role="form" id="form-myob">
 <div class="form-group">

@@ -105,7 +105,7 @@ class Myob extends MX_Controller {
 				break;
 		}
 		var_dump($result);
-		return $result;
+		#return $result;
 	}
 	
 	function company()
@@ -118,7 +118,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		$url = $this->cloud_api_url;
-		#return $url;
+		return $headers;
 		$ch = curl_init($url); 
 		
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
