@@ -19,8 +19,7 @@ if ($this->config_model->get('myob_company_id') && modules::run('api/myob/test')
 	</tr>
 </thead>
 <tbody>
-	<? $employee = modules::run('api/myob/search_employee');
-		$employee = (isset($employee->Items)) ? count($employee->Items) : 0; ?>
+	<? $employee = modules::run('api/myob/search_employee'); ?>
 	<tr>
 		<td>Staff / Employee</td>
 		<td class="center">
@@ -37,7 +36,7 @@ if ($this->config_model->get('myob_company_id') && modules::run('api/myob/test')
 			<span class="badge success"><?=modules::run('staff/get_total_staff', STAFF_ACTIVE);?></span>
 		</td>
 		<td class="center">							
-			<span class="badge primary"><?=$employee;?></span>
+			<span class="badge primary"><?=count($employee);?></span>
 		</td>
 		<td class="center">
 			<a class="btn btn-core" id="btn-sync-staff">
@@ -52,14 +51,33 @@ if ($this->config_model->get('myob_company_id') && modules::run('api/myob/test')
 </div>
 
 <button type="button" class="btn btn-danger" id="btn-disconnect">Disconnect MYOB</button>
+
+<!-- Modal -->
+<div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="order-message">
+			<img src="<?=base_url();?>assets/img/loading3.gif" />
+			<h2>Please wait!</h2>
+			<p>Please wait a moment while we are processing your request ...</p>
+		</div>
+	</div>
+</div>
+
 <script>
 $(function(){
-	$('#btn-disconnect').click(function(){
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
+	})
+	$('#btn-sync-staff').click(function(){
+		$('.bs-modal-lg').modal('hide');
+		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
-			url: "<?=base_url();?>config/ajax/add",
-			data: {myob_company_id : ''},
+			url: "<?=base_url();?>setting/ajax/sync_myob_staff",
 			success: function(html) {
+				//alert(html);
 				location.reload();
 			}
 		})
@@ -86,6 +104,16 @@ $(function(){
 			url: "<?=base_url();?>config/ajax/add",
 			data: {auto_update_staff: auto},
 			success: function(html) {}
+		})
+	})
+	$('#btn-disconnect').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {myob_company_id : ''},
+			success: function(html) {
+				location.reload();
+			}
 		})
 	})
 })

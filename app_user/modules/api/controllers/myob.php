@@ -187,7 +187,8 @@ class Myob extends MX_Controller {
 	
 	function test()
 	{
-		$a = json_decode($this->info());
+		$a = $this->read_employee('SB3');
+		#var_dump($a);
 		if (isset($a->Errors))
 		{
 			echo 'false';
@@ -218,11 +219,11 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch);
 		$response = json_decode($response);
-		if (isset($response->Errors))
+		if (isset($response->Items))
 		{
-			#$this->connect('search_employee');
+			return $response->Items;
 		}
-		return $response;		
+		return null;		
 	}
 	
 	function read_employee($external_id)
@@ -248,7 +249,12 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch); 
 		
-		return $response;
+		$response = json_decode($response);
+		if (isset($response->Items[0]))
+		{
+			return $response->Items[0];
+		}
+		return null;
 	}
 	
 	function append_employee($user_id)
@@ -312,8 +318,8 @@ class Myob extends MX_Controller {
 	
 	function update_employee($external_id)
 	{
-		$employee = json_decode($this->read_employee($external_id));
-		if (!$employee)
+		$employee = $this->read_employee($external_id);
+		if (!isset($employee))
 		{
 			return false;
 		}
@@ -323,7 +329,7 @@ class Myob extends MX_Controller {
 			return false;
 		}
 		$updated_employee = array(
-			'UID' => $employee->Items[0]->UID,
+			'UID' => $employee->UID,
 			'LastName' => $staff['last_name'],
 			'FirstName' => $staff['first_name'],
 			'IsIndividual' => 'True',
@@ -344,7 +350,7 @@ class Myob extends MX_Controller {
 				)
 			),
 			'LastModified' => $staff['modified_on'],
-			'RowVersion' => $employee->Items[0]->RowVersion
+			'RowVersion' => $employee->RowVersion
 		);
 		$params = json_encode($updated_employee);
 		$cftoken = base64_encode('Administrator:');
@@ -357,7 +363,7 @@ class Myob extends MX_Controller {
 	        'Content-Length: ' . strlen($params)
 		);
 		
-		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/' . $employee->Items[0]->UID;
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/' . $employee->UID;
 		
 		$ch = curl_init($url); 
 		
@@ -381,7 +387,7 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
-		$employee = json_decode($this->read_employee($subdomain, $user_id));
+		$employee = $this->read_employee($subdomain, $user_id);
 		if (!$employee)
 		{
 			return false;

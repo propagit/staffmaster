@@ -537,4 +537,75 @@ class Ajax extends MX_Controller {
 			}
 		}
 	}
+	
+	function sync_myob_staff()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+		
+		# First get all employee from MYOB
+		$employee = modules::run('api/myob/search_employee');
+		if (!$employee)
+		{
+			return;
+		}
+		$e_ids = array();
+		foreach($employee as $e)
+		{
+			$e_ids[] = $e->DisplayID;
+			$staff = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
+			if (!$staff)
+			{
+				$input = modules::run('api/myob/read_employee', $e->DisplayID);
+				$user_data = array(
+					'status' => 1,
+					'is_admin' => 0,
+					'is_staff' => 1,
+					'is_client' => 0,
+					'email_address' => '',
+					'username' => '',
+					'password' => '',
+					'title' => $input->Addresses[0]->Salutation,
+					'first_name' => $input->FirstName,
+					'last_name' => $input->LastName,
+					'address' => $input->Addresses[0]->Street,
+					'suburb' => '',
+					'city' => $input->Addresses[0]->City,
+					'state' => $input->Addresses[0]->State,
+					'postcode' => $input->Addresses[0]->PostCode,
+					'country' => $input->Addresses[0]->Country,
+					'phone' => $input->Addresses[0]->Phone1,
+					'mobile' => $input->Addresses[0]->Phone2			
+				);
+				$user_id = $this->user_model->insert_user($user_data);
+				
+				$staff_data = array(
+					'user_id' => $user_id,
+					'external_staff_id' => $e->DisplayID,
+					#'gender' => $input['Gender'],
+					#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
+					#'emergency_contact' => $input['EmergencyContact'],
+					#'emergency_phone' => $input['EmergencyPhone'],
+					#'f_tfn' => $input['SocialSecurity'],
+					#'f_acc_name'=> $input['BankName'],
+					#'f_bsb' => $input['BankNumber'],
+					#'f_acc_number' => $input['BankAccount']
+				);
+				$staff_id = $this->staff_model->insert_staff($staff_data, true);
+			}			
+		}
+		
+		# Now transfer from Staffbooks to Shoebooks
+		$staff = $this->staff_model->search_staffs();
+		foreach($staff as $s)
+		{
+			if (in_array($s['external_staff_id'], $e_ids)) {
+				modules::run('api/myob/update_employee', $s['external_staff_id']);
+			}
+			else
+			{
+				modules::run('api/myob/append_employee', $s['user_id']);
+			}
+		}
+	}
 }
