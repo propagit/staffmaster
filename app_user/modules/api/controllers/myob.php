@@ -79,7 +79,7 @@ class Myob extends MX_Controller {
 		
 		$result = '';
 		$params = explode('~', $function);
-		
+		var_dump($params); die();
 		switch($params[0])
 		{
 			case 'read_employee':
