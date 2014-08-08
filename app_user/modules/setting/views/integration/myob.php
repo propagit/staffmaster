@@ -1,4 +1,4 @@
-<? if (!$this->config_model->get('myob_api_key') && !$this->config_model->get('myob_api_secret')) { ?>
+<? if (!$this->config_model->get('myob_api_key') || !$this->config_model->get('myob_api_secret')) { ?>
 <div class="alert alert-warning">
 	Please contact system administrator to set up MYOB Integration
 </div>
