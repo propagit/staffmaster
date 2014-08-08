@@ -187,8 +187,7 @@ class Myob extends MX_Controller {
 	
 	function test()
 	{
-		$a = $this->read_employee('SB3');
-		#var_dump($a);
+		$a = $this->info();
 		if (isset($a->Errors))
 		{
 			echo 'false';

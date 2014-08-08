@@ -19,7 +19,7 @@ if ($this->config_model->get('myob_company_id') && modules::run('api/myob/test')
 	</tr>
 </thead>
 <tbody>
-	<? $employee = modules::run('api/myob/search_employee'); ?>
+	<? $employee = modules::run('api/myob/connect/search_employee'); ?>
 	<tr>
 		<td>Staff / Employee</td>
 		<td class="center">

@@ -67,7 +67,7 @@ class Staff_model extends CI_Model {
 		}
 		else if ($platform == 'myob')
 		{
-			modules::run('api/myob/append_employee', $user_id);
+			modules::run('api/myob/connect', 'append_employee~' . $user_id);
 		}
 	}
 	
@@ -131,7 +131,7 @@ class Staff_model extends CI_Model {
 		}
 		else if ($platform == 'myob')
 		{
-			modules::run('api/myob/update_employee', $staff['external_staff_id']);
+			modules::run('api/myob/connect', 'update_employee~' . $staff['external_staff_id']);
 		}
 	}
 	
