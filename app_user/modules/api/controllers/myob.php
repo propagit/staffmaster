@@ -79,7 +79,6 @@ class Myob extends MX_Controller {
 		
 		$result = '';
 		$params = explode('~', $function);
-		var_dump($params); die();
 		switch($params[0])
 		{
 			case 'read_employee':
@@ -105,6 +104,7 @@ class Myob extends MX_Controller {
 					$result = $this->company();
 				break;
 		}
+		var_dump($result);
 		return $result;
 	}
 	
