@@ -118,6 +118,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		$url = $this->cloud_api_url;
+		return $url;
 		$ch = curl_init($url); 
 		
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
