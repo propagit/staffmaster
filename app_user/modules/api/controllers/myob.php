@@ -139,8 +139,8 @@ class Myob extends MX_Controller {
 			));
 			header("Location: " . base_url() . 'setting/integration');
 		}
-		
-		header("Location: " . base_url() . 'setting/integration/failed');
+		$this->session->set_flashdata('connect_myob_failed', true);
+		header("Location: " . base_url() . 'setting/integration');
 	}
 	
 	function info()

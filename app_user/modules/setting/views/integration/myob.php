@@ -125,6 +125,11 @@ $(function(){
 	
 
 <? } else { ?>
+
+<? if($this->session->flashdata('connect_myob_failed')) { ?>
+<div class="alert alert-danger">Cannot connect to MYOB. Please contact system administrator.</div>
+<? } ?>
+
 <a class="btn btn-myob" href="<?=base_url();?>api/myob/connect">Connect to MYOB</a>
 <? } ?>
 

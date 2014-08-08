@@ -247,7 +247,7 @@ class Setting extends MX_Controller {
 	
 	function integration()
 	{
-		$this->load->view('integration');
+		$this->load->view('integration', isset($data) ? $data : NULL);
 	}
 	
 	
