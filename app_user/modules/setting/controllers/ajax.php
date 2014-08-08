@@ -544,7 +544,7 @@ class Ajax extends MX_Controller {
 		$this->load->model('staff/staff_model');
 		
 		# First get all employee from MYOB
-		$employee = modules::run('api/myob/search_employee');
+		$employee = modules::run('api/myob/connect', 'search_employee');
 		if (!$employee)
 		{
 			return;
@@ -556,7 +556,7 @@ class Ajax extends MX_Controller {
 			$staff = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
 			if (!$staff)
 			{
-				$input = modules::run('api/myob/read_employee', $e->DisplayID);
+				$input = modules::run('api/myob/connect', 'read_employee~' . $e->DisplayID);
 				$user_data = array(
 					'status' => 1,
 					'is_admin' => 0,
@@ -600,11 +600,11 @@ class Ajax extends MX_Controller {
 		foreach($staff as $s)
 		{
 			if (in_array($s['external_staff_id'], $e_ids)) {
-				modules::run('api/myob/update_employee', $s['external_staff_id']);
+				modules::run('api/myob/connect', 'update_employee~' . $s['external_staff_id']);
 			}
 			else
 			{
-				modules::run('api/myob/append_employee', $s['user_id']);
+				modules::run('api/myob/connect', 'append_employee~' . $s['user_id']);
 			}
 		}
 	}

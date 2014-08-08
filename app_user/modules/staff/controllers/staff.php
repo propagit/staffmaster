@@ -834,6 +834,10 @@ class Staff extends MX_Controller {
 		}
 		if ($platform == 'myob')
 		{
+			if (!$this->config_model->get('myob_company_id'))
+			{
+				return;
+			}
 			$platform = 'MYOB';
 		}
 		$data['user_id'] = $user_id;
