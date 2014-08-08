@@ -105,33 +105,7 @@ class Myob extends MX_Controller {
 					$result = $this->company();
 				break;
 		}
-		var_dump($result);
-	}
-	
-	function init($oauth_tokens)
-	{
-		/* $cftoken = base64_encode('Administrator:');
-		$headers = array(
-			'Authorization: Bearer ' . $oauth_tokens->access_token,
-	        'x-myobapi-cftoken: '.$cftoken,
-	        'x-myobapi-key: ' . MYOB_API_KEY,
-	        'x-myobapi-version: v2'
-		);
-		$ch = curl_init($this->cloud_api_url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch);
-		#var_dump($response); die();
-		$info = json_decode($response); */
-		$this->session->set_userdata('access_token', $oauth_tokens->access_token);
-		$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
-		$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
-		#$this->session->set_userdata('company_uid', $info[0]->Id);		
+		return $result;
 	}
 	
 	function company()

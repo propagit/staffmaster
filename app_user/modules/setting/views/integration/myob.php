@@ -1,5 +1,9 @@
-<?
-if ($this->config_model->get('myob_company_id') && modules::run('api/myob/test') == 'true') { ?>
+<? if (!$this->config_model->get('myob_api_key') && !$this->config_model->get('myob_api_secret')) { ?>
+<div class="alert alert-warning">
+	Please contact system administrator to set up MYOB Integration
+</div>
+
+<? } else if ($this->config_model->get('myob_company_id') && modules::run('api/myob/test') == 'true') { ?>
 
 <div class="alert alert-success">
 	Your MYOB Account is connected successfully!	
