@@ -118,7 +118,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		$url = $this->cloud_api_url;
-		return $headers;
+		#return $headers;
 		$ch = curl_init($url); 
 		
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -129,7 +129,7 @@ class Myob extends MX_Controller {
 		
 		$response = curl_exec($ch); 
 		curl_close($ch);
-		#return $response;
+		return $response;
 		$company = json_decode($response);
 		if (isset($company[0]))
 		{
