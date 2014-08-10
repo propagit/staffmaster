@@ -13,6 +13,7 @@ Set pay rate groups or client charge out groups to control how data for this pay
 <table class="table table-condensed table-no-margin">
 
 	<tr>
+		<td width="30"></td>
 		<td><b>Colour</b></td>
 		<td><b>Name<b></td>
 		<td><b>Type<b></td>
@@ -20,8 +21,10 @@ Set pay rate groups or client charge out groups to control how data for this pay
 	<? $i=0; foreach($groups as $group) { ?>
 	<tr>
 		<td>
-			<div style="background-color:<?=$group['color'];?>; width:15px; height:15px;"></div>
+			<div style="background-color:<?=$group['color'];?>; width:20px; height:20px;"></div>
+			
 		</td>
+		<td><?=$group['color'];?></td>
 		<td><?=$group['group'];?></td>
 		<td><?=($group['type']) ? 'Client' : 'Staff';?></td>
 	</tr>
