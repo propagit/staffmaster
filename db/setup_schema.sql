@@ -198,7 +198,9 @@ CREATE TABLE IF NOT EXISTS `attribute_payrate_data` (
   `type` tinyint(4) NOT NULL COMMENT '0: staff, 1: client',
   `day` int(11) NOT NULL COMMENT '1: moday, 7: sunday',
   `hour` int(11) NOT NULL,
-  `value` decimal(10,2) NOT NULL
+  `value` decimal(10,2) NOT NULL,
+  `group` VARCHAR(100) NOT NULL ,
+  `color` VARCHAR(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

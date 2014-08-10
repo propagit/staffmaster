@@ -52,13 +52,8 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-		$count = count($this->payrate_model->get_payrates());
-		if ($count == 1)
-		{
-			echo json_encode(array('ok' => true, 'reload' => true));
-			return;
-		}
-		echo json_encode(array('ok' => true, 'reload' => false, 'payrate_id' => $payrate_id));
+		
+		echo json_encode(array('ok' => true, 'payrate_id' => $payrate_id));
 	}
 	
 	function load_nav_payrates() {
@@ -69,7 +64,15 @@ class Ajax extends MX_Controller {
 	
 	function load_payrates()
 	{
-		$data['payrate_id'] = $this->input->post('payrate_id');
+		$payrate_id = $this->input->post('payrate_id');
+		$payrate = $this->payrate_model->get_payrate($payrate_id);
+		if (!$payrate)
+		{
+			return;
+		}
+		$data['payrate_id'] = $payrate_id;
+		$data['payrate'] = $payrate;
+		$data['groups'] = $this->payrate_model->get_payrate_groups($payrate_id);
 		$this->load->view('payrate/data_table_view', isset($data) ? $data : NULL);
 	}
 	
@@ -85,7 +88,9 @@ class Ajax extends MX_Controller {
 						'type' => $type,
 						'day' => $day,
 						'hour' => $hour,
-						'value' => $this->input->post('pr-' . $type . '-' . $day . '-' . $hour)
+						'value' => $this->input->post('pr-' . $type . '-' . $day . '-' . $hour),
+						'group' => $this->input->post('group-' . $type . '-' . $day . '-' . $hour),
+						'color' => $this->input->post('color-' . $type . '-' . $day . '-' . $hour)
 					);
 					$this->payrate_model->insert_payrate_data($payrate_id, $data);
 				}

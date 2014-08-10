@@ -73,6 +73,24 @@ class Payrate_model extends CI_Model {
 		return $result['value'];
 	}
 	
+	function get_payrate_groups($payrate_id)
+	{
+		$sql = "SELECT * FROM attribute_payrate_data WHERE payrate_id = $payrate_id AND `group` != '' AND `group` != '0' AND `color` != '#ffffff'
+					GROUP BY `group`, `type`";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
+	function get_payrate_full_data($payrate_id, $type, $day, $hour)
+	{
+		$this->db->where('payrate_id', $payrate_id);
+		$this->db->where('type', $type);
+		$this->db->where('day', $day);
+		$this->db->where('hour', $hour);
+		$query = $this->db->get('attribute_payrate_data');
+		return $query->first_row('array');
+	}
+	
 	function update_payrate_data($payrate_id, $type, $day, $hour, $value)
 	{
 		$this->db->where('payrate_id', $payrate_id);

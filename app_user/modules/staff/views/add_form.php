@@ -119,34 +119,27 @@
 							<input type="text" class="form-control" id="email_address" name="email_address" />
 						</div>
 					</div>
-					<label for="phone" class="col-md-2 control-label">Mobile Phone</label>
-					<div class="col-md-4">
-						<input type="text" class="form-control" id="phone" name="mobile" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group">
 					<div id="f_password">
 						<label for="password" class="col-md-2 control-label">Password <span class="text-danger">**</span></label>
 						<div class="col-md-4">
 							<input type="password" class="form-control" id="password" name="password" />
 						</div>
 					</div>
-					<label for="external_staff_id" class="col-md-2 control-label">External ID</label>
-					<div class="col-md-4">
-						<input type="text" class="form-control" id="external_staff_id" name="external_staff_id" />
-					</div>
+					
+					
 				</div>
 			</div>
-			
 			<div class="row">
 				<div class="form-group">
-					<label for="department_id" class="col-md-2 control-label">Group</label>
+					<label for="phone" class="col-md-2 control-label">Telephone</label>
 					<div class="col-md-4">
-						<?=modules::run('attribute/group/field_select','group_id');?>
+						<input type="text" class="form-control" id="phone" name="phone" />
 					</div>
-				</div>				
+					<label for="mobile" class="col-md-2 control-label">Mobile Phone</label>
+					<div class="col-md-4">
+						<input type="text" class="form-control" id="mobile" name="mobile" />
+					</div>					
+				</div>
 			</div>
 			
 			<div class="row">
@@ -158,6 +151,21 @@
 					<label for="emergency_phone" class="col-md-2 control-label">Emergency Phone</label>
 					<div class="col-md-4">
 						<input type="text" class="form-control" id="emergency_phone" name="emergency_phone" />
+					</div>
+				</div>				
+			</div>
+			
+			
+			
+			<div class="row">
+				<div class="form-group">
+					<label for="department_id" class="col-md-2 control-label">Group</label>
+					<div class="col-md-4">
+						<?=modules::run('attribute/group/field_select','group_id');?>
+					</div>
+					<label for="external_staff_id" class="col-md-2 control-label">External ID</label>
+					<div class="col-md-4">
+						<input type="text" class="form-control" id="external_staff_id" name="external_staff_id" />
 					</div>
 				</div>				
 			</div>

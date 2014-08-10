@@ -35,6 +35,10 @@ class Myob extends MX_Controller {
 					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
 					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
 					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
+					$this->config_model->add(array(
+						'key' => 'myob_refresh_token',
+						'value' => $oauth_tokens->refresh_token
+					));
 				}
 				else
 				{
@@ -44,37 +48,67 @@ class Myob extends MX_Controller {
 		}
 		else
 		{
-			$redirect_url = base_url() . 'api/myob/connect';
-			$api_scope = 'CompanyFile';
-			
-			if (!isset($_GET['code']))
+			if ($this->config_model->get('myob_refresh_token'))
 			{
-				$url = "https://secure.myob.com/oauth2/account/authorize?client_id=" . $this->api_key . "&redirect_uri=" . urlencode($redirect_url) . "&response_type=code&scope=$api_scope";
-				if ($function)
-				{
-					$url .= "&state=" . urlencode($function);
+				$oauth = new myob_api_oauth();
+				#var_dump($this->config_model->get('myob_refresh_token')); die();
+				$oauth_tokens = $oauth->refreshAccessToken($this->api_key, $this->api_secret, $this->config_model->get('myob_refresh_token'));
+				var_dump($oauth_tokens); die();
+				if ($oauth_tokens)
+				{			
+					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
+					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
+					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
+					$this->config_model->add(array(
+						'key' => 'myob_refresh_token',
+						'value' => $oauth_tokens->refresh_token
+					));
 				}
-				header("Location: $url");
-			}
-			$api_access_code = $_GET['code'];
-			$oauth = new myob_api_oauth();
-			$oauth_tokens = $oauth->getAccessToken($this->api_key, $this->api_secret, $redirect_url, $api_access_code, $api_scope);
-			if ($oauth_tokens)
-			{
-				$function = '';
-				if (isset($_GET['state']))
+				else
 				{
-					$function = urldecode($_GET['state']);
+					die("Error #1.");
 				}
-				$this->session->set_userdata('access_token', $oauth_tokens->access_token);
-				$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
-				$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
-				header("Location: " . base_url() . 'api/myob/connect/' . $function);
 			}
 			else
 			{
-				die("Error #2");
+				$redirect_url = base_url() . 'api/myob/connect';
+				$api_scope = 'CompanyFile';
+				
+				if (!isset($_GET['code']))
+				{
+					$url = "https://secure.myob.com/oauth2/account/authorize?client_id=" . $this->api_key . "&redirect_uri=" . urlencode($redirect_url) . "&response_type=code&scope=$api_scope";
+					if ($function)
+					{
+						$url .= "&state=" . urlencode($function);
+					}
+					header("Location: $url");
+				}
+				$api_access_code = $_GET['code'];
+				$oauth = new myob_api_oauth();
+				$oauth_tokens = $oauth->getAccessToken($this->api_key, $this->api_secret, $redirect_url, $api_access_code, $api_scope);
+				if ($oauth_tokens)
+				{
+					$function = '';
+					if (isset($_GET['state']))
+					{
+						$function = urldecode($_GET['state']);
+					}
+					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
+					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
+					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
+					$this->config_model->add(array(
+						'key' => 'myob_refresh_token',
+						'value' => $oauth_tokens->refresh_token
+					));
+					
+					header("Location: " . base_url() . 'api/myob/connect/' . $function);
+				}
+				else
+				{
+					die("Error #2");
+				}
 			}
+			
 		}
 		
 		$result = '';

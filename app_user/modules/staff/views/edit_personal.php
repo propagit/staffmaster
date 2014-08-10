@@ -60,84 +60,102 @@
 	</div>
 </div>
 <div class="row">
-	<div class="form-group">		
+	<div class="form-group">
+		<label for="city" class="col-md-2 control-label">City</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control auto-width" id="city" name="city" value="<?=$staff['city'];?>"  />
+		</div>
+		
 		<label for="postcode" class="col-md-2 control-label">Postcode</label>
 		<div class="col-md-4">
 			<input type="text" class="form-control auto-width" id="postcode" name="postcode" value="<?=$staff['postcode'];?>"  />
 		</div>
         
+	</div>
+</div>
+<div class="row">
+	<div class="form-group">			
+        
         <label for="state" class="col-md-2 control-label">State</label>
 		<div class="col-md-4">
 			<?=modules::run('common/field_select_states', 'state', $staff['state']);?>
 		</div>	
-        
-	</div>
-</div>
-<div class="row">
-	<div class="form-group">				
+					
 		<label for="country" class="col-md-2 control-label">Country</label>
 		<div class="col-md-4">
 			<?=modules::run('common/field_select_countries', 'country', $staff['country']);?>
 		</div>		
         
-        <label for="mobile" class="col-md-2 control-label">Mobile Phone</label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="mobile" name="mobile" value="<?=$staff['mobile'];?>"  />
-		</div>
         
 	</div>
 </div>
 <div class="row">
-	<div class="form-group">						
-        <label for="phone" class="col-md-2 control-label">Telephone</label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="phone" name="phone" value="<?=$staff['phone'];?>"  />
-		</div>
+	<div class="form-group">	
+		
 		<div id="f_email_address">
 	        <label for="email_address" class="col-md-2 control-label">Email (Username) <span class="text-danger">**</span></label>
 			<div class="col-md-4">
 				<input type="text" class="form-control" id="email_address" name="email_address" value="<?=$staff['email_address'];?>" />
 			</div>
 		</div>
+		
+		<label for="password" class="col-md-2 control-label">Password</label>
+		<div class="col-md-4">
+			<input type="password" class="form-control" id="password" name="password" value=""  />
+		</div>				
+        
 	</div>
 </div>
 
 
 <div class="row">
 	<div class="form-group">
-		<label for="password" class="col-md-2 control-label">Password</label>
+		<label for="phone" class="col-md-2 control-label">Telephone</label>
 		<div class="col-md-4">
-			<input type="password" class="form-control" id="password" name="password" value=""  />
-		</div>	
-        <label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=$staff['emergency_contact'];?>"  />
+			<input type="text" class="form-control" id="phone" name="phone" value="<?=$staff['phone'];?>"  />
 		</div>
+		
+        <label for="mobile" class="col-md-2 control-label">Mobile Phone</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="mobile" name="mobile" value="<?=$staff['mobile'];?>"  />
+		</div>
+		
 		
 	</div>				
 </div>
 <div class="row">
 	<div class="form-group">
+		
+        <label for="emergency_contact" class="col-md-2 control-label">Emergency Contact</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="<?=$staff['emergency_contact'];?>"  />
+		</div>
+		
     	<label for="emergency_phone" class="col-md-2 control-label">Emergency Phone</label>
 		<div class="col-md-4">
 			<input type="text" class="form-control" id="emergency_phone" name="emergency_phone" value="<?=$staff['emergency_phone'];?>" />
 		</div>
-        <label for="external_id" class="col-md-2 control-label">External Staff ID</label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="external_staff_id" name="external_staff_id" value="<?=$staff['external_staff_id'];?>"  />
-		</div>
+        
     </div>
 </div>
-<? if(!modules::run('auth/is_staff')){ ?>	
+
+
 <div class="row">
 	<div class="form-group">
+		<? if(!modules::run('auth/is_staff')){ ?>	
 		<label for="status" class="col-md-2 control-label">Status</label>
 		<div class="col-md-4">
 			<?=modules::run('staff/field_select_status', 'status', (int)$staff['status']);?>
 		</div>
+		
+		<? } ?>
+
+		<label for="external_id" class="col-md-2 control-label">External Staff ID</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="external_staff_id" name="external_staff_id" value="<?=$staff['external_staff_id'];?>"  />
+		</div>
 	</div> 
 </div>
-<? } ?>
 <div class="row">
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">

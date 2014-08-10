@@ -12,9 +12,9 @@ class Attribute extends MX_Controller {
 		parent::__construct();
 	}
 	
-	public function index($method='', $param1='', $param2='')
+	public function index($method='', $param1='', $param2='', $param3='')
 	{
-		echo modules::run('attribute/' . $method . '/index', $param1, $param2);
+		echo modules::run('attribute/' . $method . '/index', $param1, $param2, $param3);
 	}	
 	
 }

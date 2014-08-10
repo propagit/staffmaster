@@ -18,7 +18,8 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
             <h2>Your Pay Rates</h2>
-            <p>Drag and select to change multiple pay rates at the same time.</p>
+            <?=modules::run('payrate/field_select', 'payrate_id', $payrate_id);?>
+            <br /><br />
             <div id="menu_payrates">
             	
             </div>
@@ -99,26 +100,20 @@ $(function(){
 					$('#f_' + data.error_id).addClass('has-error');
 					$('#' + data.error_id).focus();
 				} else {
-					if (data.reload) {
-						location.reload();
-					} else {						
-						$('#add-payrate-modal').modal('hide');
-						load_nav_payrates(data.payrate_id);
-					}
-					$('#form_add_payrate')[0].reset();
+					window.location = '<?=base_url();?>attribute/payrate/' + data.payrate_id;
 				}				
 			}
 		}) 
 	});
-	<? if (count($payrates) > 0) { ?>
-	load_nav_payrates(<?=$payrates[0]['payrate_id'];?>);
-	<? } else { ?>
-	load_nav_payrates();
-	<? } ?>
 	
+	$('#payrate_id').change(function(){
+		load_pay_rates();
+	})
+	load_pay_rates();
 });
-function load_pay_rates(payrate_id)
+function load_pay_rates()
 {
+	var payrate_id = $('#payrate_id').val();
 	preloading($('#list_payrates'));
 	$.ajax({
 		type: "POST",
@@ -126,21 +121,6 @@ function load_pay_rates(payrate_id)
 		data: {payrate_id: payrate_id},
 		success: function(html) {
 			loaded($('#list_payrates'), html);
-		}
-	})
-}
-function load_nav_payrates(payrate_id)
-{
-	preloading($('#nav_payrates'));
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>attribute/ajax/load_nav_payrates",
-		data: {payrate_id: payrate_id},
-		success: function(html) {
-			loaded($('#nav_payrates'), html);
-			if (html) {
-				load_pay_rates(payrate_id);
-			}			
 		}
 	})
 }

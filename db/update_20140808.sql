@@ -1,0 +1,1 @@
+ALTER TABLE `attribute_payrate_data` ADD `group` VARCHAR(100) NOT NULL , ADD `color` VARCHAR(10) NOT NULL ;

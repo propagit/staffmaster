@@ -24,7 +24,7 @@ class Payrate extends MX_Controller {
 					$this->delete_payrate($param);
 				break;
 			default:
-					$this->main_view();
+					$this->main_view($method);
 				break;
 		}
 	}
@@ -38,15 +38,21 @@ class Payrate extends MX_Controller {
 	*    
 	*/
 	
-	function main_view()
+	function main_view($payrate_id = '')
 	{
 		$data['payrates'] = $this->payrate_model->get_payrates();
+		$data['payrate_id'] = $payrate_id;
 		$this->load->view('payrate/main_view', isset($data) ? $data : NULL);
 	}
 	
 	function get_payrate_data($payrate_id, $type, $day, $hour)
 	{
 		return $this->payrate_model->get_payrate_data($payrate_id, $type, $day, $hour);
+	}
+	
+	function get_payrate_full_data($payrate_id, $type, $day, $hour)
+	{
+		return $this->payrate_model->get_payrate_full_data($payrate_id, $type, $day, $hour);
 	}
 	
 

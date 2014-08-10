@@ -75,6 +75,13 @@ h1, h2, h3, h4, h5, h6 {
 .table-hover > tbody > .white:hover > th {
   background-color: #fff;
 }
+.table.table-no-margin tr td {
+	margin: 0;
+	padding-left: 0;
+}
+.table.table-no-margin .colorSelector {
+	margin-bottom: 0;
+}
 
 /* style for drag & drop */
 body.dragging, body.dragging * {
