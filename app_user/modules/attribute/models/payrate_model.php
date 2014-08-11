@@ -62,6 +62,13 @@ class Payrate_model extends CI_Model {
 		return $this->db->delete('attribute_payrates');
 	}
 	
+	function get_payrate_single_data($id)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->get('attribute_payrate_data');
+		return $query->first_row('array');
+	}
+	
 	function get_payrate_data($payrate_id, $type, $day, $hour)
 	{
 		$this->db->where('payrate_id', $payrate_id);
@@ -98,6 +105,17 @@ class Payrate_model extends CI_Model {
 		$this->db->where('day', $day);
 		$this->db->where('hour', $hour);
 		return $this->db->update('attribute_payrate_data', array('value' => $value));
+	}
+	
+	function reset_payrate_data($payrate_id, $group, $color)
+	{
+		$this->db->where('payrate_id', $payrate_id);
+		$this->db->where('group', $group);
+		$this->db->where('color', $color);
+		return $this->db->update('attribute_payrate_data', array(
+			'group' => '',
+			'color' => ''
+		));
 	}
 	
 	function insert_payrate_data($payrate_id, $data)

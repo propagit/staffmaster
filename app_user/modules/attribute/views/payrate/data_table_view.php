@@ -7,16 +7,23 @@
 Set pay rate groups or client charge out groups to control how data for this pay rate should be exported the other systems</p>
 <br />
 
-<? if(count($groups) > 0) { ?>
+
 <h4>Pay Rate Groups</h4>
 <div class="table-responsive">
-<table class="table table-condensed table-no-margin">
-
+<table class="table table-condensed table-no-margin" width="100%">
 	<tr>
 		<td width="30"></td>
 		<td><b>Colour</b></td>
 		<td><b>Name<b></td>
 		<td><b>Type<b></td>
+		<td width="40"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>#ffffff (White)</td>
+		<td><?=$payrate['name'];?></td>
+		<td>Staff & Client</td>
+		<td></td>
 	</tr>
 	<? $i=0; foreach($groups as $group) { ?>
 	<tr>
@@ -27,11 +34,11 @@ Set pay rate groups or client charge out groups to control how data for this pay
 		<td><?=$group['color'];?></td>
 		<td><?=$group['group'];?></td>
 		<td><?=($group['type']) ? 'Client' : 'Staff';?></td>
+		<td class="right"><a onclick="delete_payrate_group(<?=$group['id'];?>)"><i class="fa fa-times"></i></a></td>
 	</tr>
 	<? $i++; } ?>
 </table>
 </div>
-<? } ?>
 
 <?
 	$days = array(
@@ -243,6 +250,17 @@ $(function(){
 	init_colour_picker('#staff_color','#00b1eb');
 	init_colour_picker('#client_color','#00b1eb');
 })
+function delete_payrate_group(id)
+{
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>attribute/ajax_payrate/delete_group",
+		data: {id: id},
+		success: function(html) {
+			load_pay_rates();
+		}
+	})
+}
 function init_colour_picker(colour_id,current_colour)
 {
   $(colour_id).ColorPicker({

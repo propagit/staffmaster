@@ -48,4 +48,11 @@ class Ajax_payrate extends MX_Controller {
 			$this->payrate_model->delete_payrate($payrate_id);
 		}
 	}
+	
+	function delete_group()
+	{
+		$id = $this->input->post('id');
+		$data = $this->payrate_model->get_payrate_single_data($id);
+		$this->payrate_model->reset_payrate_data($data['payrate_id'], $data['group'], $data['color']);
+	}
 }
