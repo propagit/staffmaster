@@ -261,7 +261,15 @@ class Ajax extends MX_Controller {
 			$pushed_msg = '';
 			if ($platform == 'shoebooks') {
 				$pushed_results = modules::run('api/shoebooks/append_payslip', $payrun_id);
-				$pushed_msg = count($pushed_results) . '/' . count($timesheets) . ' time sheets have been pushed to Shoebooks successfully!';
+				if (count($pushed_results) > 0)
+				{
+					$pushed_msg = '<p> ' . count($pushed_results) . '/' . count($timesheets) . ' time sheets have been pushed to Shoebooks successfully!';
+				}
+				if (count($timesheets) > count($pushed_results))
+				{
+					$pushed_msg .= '<p> ' . (count($timesheets) - count($pushed_results)) . ' time sheets have been pushed to Shoebooks with errors!';
+				}
+				
 			}
 			
 			echo json_encode(array(
