@@ -12,7 +12,7 @@
 		array('value' => 'export', 'label' => 'Export Selected'),
 		array('value' => 'mark_unpaid', 'label' => 'Mark Selected as Unpaid'),
 		array('value' => 'mark_paid', 'label' => 'Mark Selected as Paid'),
-		array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
+		#array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
 	);
 	echo modules::run('common/menu_dropdown', $data, 'exp-action', 'Actions');
 ?>

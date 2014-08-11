@@ -11,7 +11,7 @@
 	$data = array(
 		array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
 	);
-	echo modules::run('common/menu_dropdown', $data, 'payrun2-action', 'Actions');
+	#echo modules::run('common/menu_dropdown', $data, 'payrun2-action', 'Actions');
 ?>
 </div>
 <div class="table-responsive">
