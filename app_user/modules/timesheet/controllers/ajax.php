@@ -33,7 +33,8 @@ class Ajax extends MX_Controller {
 				$timesheet[$field] = $shift[$field];
 			}
 			$job = modules::run('job/get_job', $shift['job_id']);
-			$timesheet['client_id'] = $job['client_id'];
+			$client_id = (isset($job['client_id'])) ? $job['client_id'] : 0;
+			$timesheet['client_id'] = $client_id;
 			$timesheet_id = $this->timesheet_model->insert_timesheet($timesheet);
 			#$this->update_timesheet_hour_rate($timesheet_id);
 		}
