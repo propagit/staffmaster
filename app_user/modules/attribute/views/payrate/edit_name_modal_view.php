@@ -38,7 +38,7 @@ $(function(){
 			url: "<?=base_url();?>attribute/ajax_payrate/update_name",
 			data: $('#form_edit_payrate_name').serialize(),
 			success: function(html) {
-				load_nav_payrates(<?=$payrate['payrate_id'];?>);
+				load_pay_rates();
 				$('.bs-modal-lg').modal('hide');
 			}
 		})

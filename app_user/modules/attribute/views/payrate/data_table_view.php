@@ -5,8 +5,12 @@
 <h2><?=$payrate['name'];?></h2>
 <p>Drag and select to change charge out rates for this pay rate based on the time of the day.<br />
 Set pay rate groups or client charge out groups to control how data for this pay rate should be exported the other systems</p>
-<br />
 
+<p>
+	<a class="btn btn-core" onclick="edit_payrate_name(<?=$payrate['payrate_id'];?>)"><i class="fa fa-pencil-square-o"></i> Edit name</a>
+	&nbsp;
+	<a class="btn btn-danger" onclick="delete_payrate(<?=$payrate['payrate_id'];?>)"><i class="fa fa-times"></i> Delete</a>
+</p>
 
 <h4>Pay Rate Groups</h4>
 <div class="table-responsive">
@@ -19,7 +23,7 @@ Set pay rate groups or client charge out groups to control how data for this pay
 		<td width="40"></td>
 	</tr>
 	<tr>
-		<td></td>
+		<td><div style="background-color:#ffffff; width:20px; height:20px;"></div></td>
 		<td>#ffffff (White)</td>
 		<td><?=$payrate['name'];?></td>
 		<td>Staff & Client</td>
@@ -202,7 +206,7 @@ $(function(){
 				$(this).parent().find('.input-staff-group').val(staff_group);
 			})
 		}
-		if (staff_color)
+		if (staff_group && staff_color)
 		{
 			$('.ui-selected.input-staff').each(function(){
 				$(this).parent().find('.input-staff-color').val(staff_color);
@@ -218,7 +222,7 @@ $(function(){
 				$(this).parent().find('.input-client-group').val(client_group);
 			})
 		}
-		if (client_color)
+		if (client_group && client_color)
 		{
 			$('.ui-selected.input-client').each(function(){
 				$(this).parent().find('.input-client-color').val(client_color);
@@ -260,6 +264,18 @@ function delete_payrate_group(id)
 			load_pay_rates();
 		}
 	})
+}
+function edit_payrate_name(payrate_id) {
+	$('.bs-modal-lg').modal({
+		remote: "<?=base_url();?>attribute/ajax_payrate/load_edit_name_modal/" + payrate_id,
+		show: true
+	});
+}
+function delete_payrate(payrate_id) {
+	$('.bs-modal-lg').modal({
+		remote: "<?=base_url();?>attribute/ajax_payrate/load_delete_modal/" + payrate_id,
+		show: true
+	});
 }
 function init_colour_picker(colour_id,current_colour)
 {

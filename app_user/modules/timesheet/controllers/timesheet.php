@@ -140,7 +140,7 @@ class Timesheet extends MX_Controller {
 				);
 				
 				# Then clear to set up new rate
-				$current_rate = $rate;
+				$current_rate = $rate['value'];
 				$current_start = $i;
 				$current_hours = 0.25;				
 			}			
