@@ -317,6 +317,8 @@ class Ajax extends MX_Controller {
 		$invoice_id = $this->input->post('invoice_id');
 		$this->invoice_model->delete_invoice_items($invoice_id);
 		$this->invoice_model->delete_invoice($invoice_id);
+		# Reset all time sheet of the invoice
+		$this->invoice_model->unlink_invoice_timesheets($invoice_id);
 	}
 	
 	function delete_invoices() {
