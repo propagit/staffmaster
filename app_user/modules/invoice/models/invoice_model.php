@@ -214,7 +214,7 @@ class Invoice_model extends CI_Model {
 		$sql_select_job_id = "SELECT job_id 
 								FROM `job_shift_timesheets` 
 								WHERE status = " . TIMESHEET_BATCHED . "
-								AND status_invoice_client <= " . INVOICE_READY . "
+								AND status_invoice_client <= " . INVOICE_READY . " AND status_invoice_client > " . INVOICE_DELETED . "
 								GROUP BY job_id";
 		$sql = "SELECT uc.*, count(*) as `total_jobs` FROM user_clients uc
 					LEFT JOIN jobs j ON j.client_id = uc.user_id
