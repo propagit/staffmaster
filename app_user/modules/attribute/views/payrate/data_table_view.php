@@ -134,7 +134,7 @@ Set pay rate groups or client charge out groups to control how data for this pay
 						</div>
 						<div class="colorSelector col-md-6" id="staff_color">
 					      <div style="background-color:#00b1eb"></div>
-					      <input type="hidden" id="staff_color_input" /> 
+					      <input type="hidden" id="staff_color_input" value="#00b1eb" /> 
 					   </div>
 					</div>
 					<div class="form-group">
@@ -153,7 +153,7 @@ Set pay rate groups or client charge out groups to control how data for this pay
 						</div>
 						<div class="colorSelector col-md-6" id="client_color">
 					      <div style="background-color:#00b1eb"></div>
-					      <input type="hidden" id="client_color_input" /> 
+					      <input type="hidden" id="client_color_input" value="#00b1eb" /> 
 					   </div>
 					</div>
 					<div class="form-group">
