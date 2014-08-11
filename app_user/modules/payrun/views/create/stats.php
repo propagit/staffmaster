@@ -9,7 +9,9 @@
 		<td>TFN</td>
 		<td class="center"><?=($c = modules::run('payrun/count_staff', STAFF_TFN));?></td>
 		<td class="right">$<?=money_format('%i',($a = modules::run('payrun/get_total_amount', STAFF_TFN)));?></td>
-		<td><a class="btn btn-core btn-xs<?=($a==0) ? ' disabled': '';?>" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>payrun/ajax/load_export/<?=STAFF_TFN;?>"><i class="fa fa-download"></i> Export</a></td>
+		<td><a class="btn btn-core btn-xs<?=($a==0) ? ' disabled': '';?>" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>payrun/ajax/load_export/<?=STAFF_TFN;?>"><i class="fa fa-download"></i> Export</a>
+			<?=modules::run('payrun/btn_api', $a);?>
+		</td>
 	</tr>
 	<tr>
 		<td>ABN</td>

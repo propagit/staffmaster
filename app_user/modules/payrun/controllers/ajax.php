@@ -166,8 +166,9 @@ class Ajax extends MX_Controller {
 		$this->expense_model->delete_timesheet_expenses($timesheet_id);
 	}
 		
-	function load_export($type) {
+	function load_export($type, $mode = '') {
 		$data['type'] = $type;
+		$data['mode'] = $mode;
 		$this->load->view('create/export_view', isset($data) ? $data : NULL);
 	}
 	
@@ -189,6 +190,7 @@ class Ajax extends MX_Controller {
 	function create_payrun() {
 		$input = $this->input->post();
 		$export = false;
+		
 		if (isset($input['export_csv'])) {
 			if (!isset($input['export_id']) || $input['export_id'] == '') {
 				echo json_encode(array(
@@ -243,17 +245,30 @@ class Ajax extends MX_Controller {
 		foreach($timesheets as $timesheet) {
 			$this->payrun_model->add_timesheet_to_payrun($timesheet['timesheet_id'], $payrun_id);
 		}
-		if ($export) {
+				
+		if ($export) # Export to CSV
+		{
 			$file_name = $this->_export_payrun($payrun_id, $this->input->post('export_id'));
 			echo json_encode(array(
 				'ok' => true,
 				'export' => true,
 				'file_name' => $file_name
 			));
-		} else {
+		} 
+		else 
+		{
+			$platform = $this->input->post('platform');
+			$pushed_msg = '';
+			if ($platform == 'shoebooks') {
+				$pushed_results = modules::run('api/shoebooks/append_payslip', $payrun_id);
+				$pushed_msg = count($pushed_results) . '/' . count($timesheets) . ' time sheets have been pushed to Shoebooks successfully!';
+			}
+			
 			echo json_encode(array(
 				'ok' => true,
-				'export' => false
+				'export' => false,
+				'payrun_id' => $payrun_id,
+				'pushed_msg' => $pushed_msg
 			));
 		}
 	}
@@ -345,6 +360,12 @@ class Ajax extends MX_Controller {
 						$value = str_replace('{payable_date}', date($date_format, strtotime($timesheet['payable_date'])), $value);				
 						$value = str_replace('{start_time}', date('H:ia', $pay_rate['start']), $value);
 						$value = str_replace('{finish_time}', date('H:ia', $pay_rate['finish']), $value);
+						$group = trim($pay_rate['group']);
+						if (!$group)
+						{
+							$group = $timesheet['payrate'];
+						}
+						$value = str_replace('{pay_rate_group}', $group, $value);
 						
 						$value = str_replace('{hours}', $pay_rate['hours'], $value);
 						$value = str_replace('{job_date}', date($date_format, $pay_rate['start']), $value);

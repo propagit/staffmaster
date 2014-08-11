@@ -2,18 +2,33 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h4 class="modal-title">Generate Pay Run</h4>
+			
+			<h4 class="modal-title">
+				<? if($mode != '') { ?>
+					Push to <?=ucwords($mode);?>
+				<? } else { ?>
+					Generate Pay Run
+				<? } ?>
+			</h4>
 		</div>
 		<div class="col-md-12">
 			<form id="create-payrun-form">
 			<input type="hidden" name="type" value="<?=$type;?>" />
 			<div class="modal-body">
+				<? if($mode != '') { ?>
+				<input type="hidden" name="platform" value="<?=strtolower($mode);?>" />		
+
+				<? } else { ?>
 				<div class="form-group alert alert-info clearfix">
-					<input type="checkbox" id="check_to_export" name="export_csv" checked /> &nbsp; Export to CSV
-					<h2 id="f_export_id" class="hide">
+					<div class="checkbox no-margin">
+						<label><input type="checkbox" id="check_to_export" name="export_csv" checked /> &nbsp; Export to CSV</label>
+					</div>
+					
+					<div id="f_export_id" class="hide"><br />
 						<?=modules::run('payrun/field_select_export_templates', $type, 'export_id');?>
-					</h2>
+					</div>
 				</div>
+				<? } ?>
 				
 				<div class="panel panel-default">
 					<!-- Default panel contents -->
@@ -56,6 +71,12 @@
 </div><!-- /.modal-dialog -->
 <script>
 $(function(){
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
+	})
+
 	$('#add-save-payrun').click(function(){
 		save_payrun();
 	});
@@ -115,31 +136,58 @@ function include_export() {
 		$('#add-save-payrun').html('Generate and Export Pay Run');
 		$('#f_export_id').removeClass('hide');
 	} else {
-		$('#add-save-payrun').html('Generate Pay Run');
+		<? if($mode != '') { ?>
+			$('#add-save-payrun').html('Push to <?=ucwords($mode);?>');
+		<? } else { ?>
+			$('#add-save-payrun').html('Generate Pay Run');
+		<? } ?>
+		
 		$('#f_export_id').addClass('hide');
 	}
 }
 function save_payrun() {
+	$('.bs-modal-lg').modal('hide');
+	$('#waitingModal').modal('show');
 	$('#create-payrun-form').find('.has-error').removeClass('has-error');
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/create_payrun",
 		data: $('#create-payrun-form').serialize(),
-		success: function(data) {
+		success: function(data) {			
 			data = $.parseJSON(data);
 			if (!data.ok) {
+				//$('.bs-modal-lg').modal('show');
 				$('#f_' + data.error_id).addClass('has-error');
 				$('input[name="' + data.error_id + '"]').focus();
 			}
 			else {
 				if (data.export) {
 					window.location = '<?=base_url().EXPORTS_URL;?>/payrun/' + data.file_name;
+					$('.bs-modal-lg').modal('hide');
+					$('#waitingModal').modal('hide');
+					list_staffs();
+					get_payrun_stats();
 				}
-				$('.bs-modal-lg').modal('hide');
-				list_staffs();
-				get_payrun_stats();
+				else
+				{
+					if (data.pushed_msg) 
+					{
+						$('#order-message').html('<h2>Push Results</h2><p>' + data.pushed_msg + '</p><br /><p><a href="<?=base_url();?>payrun/search-payslip/' + data.payrun_id + '" class="btn btn-core">View Pay Run</a> &nbsp; <a class="btn btn-default" onclick="close_modal()">Run Another Pay Run</a></p>');
+						$('#waitingModal').modal('show');
+					}
+					//$('.bs-modal-lg').modal('hide');
+					//list_staffs();
+					//get_payrun_stats();
+				}
+				
 			}
 		}
 	})
+}
+function close_modal()
+{
+	$('#waitingModal').modal('hide');
+	list_staffs();
+	get_payrun_stats();
 }
 </script>

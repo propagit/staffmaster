@@ -85,7 +85,7 @@ class Staff_model extends CI_Model {
 	*	@param: $user_id, $data = array()
 	*	@return: (boolean)
 	*/
-	function update_staff($user_id, $data = array())
+	function update_staff($user_id, $data = array(), $bypass_api=false)
 	{
 		$data = $this->prepare_staff_data($data);
 		if (count($data) > 0)
@@ -108,7 +108,10 @@ class Staff_model extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		$updated = $this->db->update('user_staffs', $data);
 		
-		$this->auto_update_staff($user_id);
+		if (!$bypass_api)
+		{
+			$this->auto_update_staff($user_id);
+		}		
 		
 		return $updated;
 	}

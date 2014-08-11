@@ -517,6 +517,8 @@ class Shoebooks extends MX_Controller {
 				</Login>
 				<NewPayslip>
 					<EmployeeID>' . $timesheet['external_staff_id'] . '</EmployeeID>
+					<DateEffect>' . date('Y-m-d') . '</DateEffect>
+					<DateAccrual>' . date('Y-m-d') . '</DateAccrual>
 					' . $start . '
 					' . $finish . '
 					<AccountID></AccountID>
@@ -526,13 +528,24 @@ class Shoebooks extends MX_Controller {
 					<PayslipLines>';
 			foreach($pay_rates as $pay_rate)
 			{
+				$earningID = $pay_rate['group'];
+				if (!$earningID)
+				{
+					$earningID = $timesheet['payrate'];
+				}
+				$break = '';
+				if ($pay_rate['break']) {
+					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
+				}
+				
 				$request .= '
 						<PRPayslipLine>
-							<EarningID>' . $timesheet['payrate'] . '</EarningID>
+							<EarningID>' . $earningID . '</EarningID>
 							<Hours>' . $pay_rate['hours'] . '</Hours>
 							<Amount>' . $pay_rate['rate'] . '</Amount>
 							<Total>' . ($pay_rate['hours'] * $pay_rate['rate']) . '</Total>
 							<WorkDate>' . date('Y-m-d', $pay_rate['start']) . '</WorkDate>
+							<Notes>' . $timesheet['job_name'] . ' - ' . $timesheet['venue'] . ' - ' . $timesheet['client'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break . '</Notes>
 							<DivID>0</DivID>
 							<JobID></JobID>
 						</PRPayslipLine>';
@@ -541,7 +554,7 @@ class Shoebooks extends MX_Controller {
 					</PayslipLines>
 				</NewPayslip>
 			</AppendPayslip>';
-			return $request;
+			#var_dump($request); die();
 			$client = new nusoap_client($this->host);
 			$error = $client->getError();
 			if ($error)
@@ -551,8 +564,15 @@ class Shoebooks extends MX_Controller {
 			}
 			$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 			$result = $client->send($msg, $action);
-			return $result;
-			$results[] = $result;
+			if ($result['AppendPayslipResult']['ErrorMessage'] == "OK")
+			{
+				$results[] = $result;
+			}
+			$this->payrun_model->update_synced($timesheet['timesheet_id'], array(
+				'external_id' => $result['AppendPayslipResult']['NewRecordID'],
+				'external_msg' => $result['AppendPayslipResult']['ErrorMessage']
+			));
+				
 		}
 		return $results;
 	}

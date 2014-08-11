@@ -7,6 +7,10 @@
 		<div class="col-md-4">
 			<?=modules::run('payrun/field_select_type', 'type');?>
 		</div>
+		<label class="col-md-2 control-label">Pay Run ID</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="payrun_id" />
+		</div>
 	</div>
 </div>
 <div class="row">
@@ -100,4 +104,8 @@ function search_payslips() {
 		}
 	})
 }
+<? if($this->uri->segment(3)) { ?>
+	$('input[name="payrun_id"]').val(<?=$this->uri->segment(3);?>);
+	search_payslips();
+<? } ?>
 </script>

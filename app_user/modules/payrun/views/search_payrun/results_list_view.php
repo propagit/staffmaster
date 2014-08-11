@@ -25,7 +25,8 @@
 		<th class="center" width="80">To</th>
 		<th class="center" width="100">Staff</th>
 		<th class="center" width="100">Time Sheets</th>
-		<th class="center" width="120">Amount <i class="fa fa-sort sort-result" sort-by="amount"></i></th>
+		<th class="center" width="120">Amount <i class="fa fa-sort sort-result" sort-by="amount"></i></th>'
+		<th class="center" width="80">Details</th>
 		<th class="center" width="80">Export</th>
 		<!-- <th class="center" width="40"></th> -->
 	</tr>
@@ -59,6 +60,7 @@
 		<td class="center"><?=$payrun['total_staffs'];?></td>
 		<td class="center"><?=$payrun['total_timesheets'];?></td>
 		<td class="center">$<?=$payrun['amount'];?></td>
+		<td class="center"><a href="<?=base_url();?>payrun/search-payslip/<?=$payrun['payrun_id'];?>"><i class="fa fa-search"></i></a></td>
 		<td class="center"><a data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>payrun/ajax/export_payrun/<?=$payrun['payrun_id'];?>"><i class="fa fa-download"></i></a></td>
 		<!-- <td class="center"><a><i class="fa fa-plus-square-o"></i></a></td> -->
 	</tr>

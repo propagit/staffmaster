@@ -22,7 +22,7 @@ class Ajax extends MX_Controller {
 			$this->job_shift_model->update_job_shift($shift['shift_id'], array('status' => SHIFT_FINISHED));
 			# Update user_staffs table field - last_worked_date
 			$data_user_staff = array('last_worked_date' => $shift['job_date'].' 00:00:00');
-			$this->staff_model->update_staff($shift['staff_id'],$data_user_staff);
+			$this->staff_model->update_staff($shift['staff_id'],$data_user_staff, true);
 			
 			$copy_fields = array('shift_id','job_id','staff_id','supervisor_id',
 					'job_date','start_time','finish_time','break_time',

@@ -144,4 +144,25 @@ class Payrun extends MX_Controller {
 	function get_total_amount($tfn) {
 		return $this->payrun_model->get_total_amount($tfn);
 	}
+	
+	function btn_api($staff_count)
+	{
+		$platform = $this->config_model->get('accounting_platform');
+		
+		if (!$platform)
+		{
+			return;
+		}
+		if ($platform == 'myob')
+		{
+			if (!$this->config_model->get('myob_company_id'))
+			{
+				return;
+			}
+			$platform = 'MYOB';
+		}
+		$data['platform'] = $platform;
+		$data['staff_count'] = $staff_count;
+		$this->load->view('btn_api', isset($data) ? $data : NULL);
+	}
 }

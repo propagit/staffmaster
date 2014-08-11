@@ -1,0 +1,1 @@
+<a class="btn btn-core btn-xs<?=($staff_count==0) ? ' disabled': '';?>" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>payrun/ajax/load_export/<?=STAFF_TFN;?>/<?=$platform;?>"><i class="fa fa-arrow-right"></i> Push</a>

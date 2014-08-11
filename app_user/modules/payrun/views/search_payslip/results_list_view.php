@@ -7,9 +7,12 @@
 <?
 	# Action menu
 	$data = array(
-		array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
+		#array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
 	);
-	#echo modules::run('common/menu_dropdown', $data, 'payslip-action', 'Actions');
+	if (count($data) > 0) 
+	{
+		echo modules::run('common/menu_dropdown', $data, 'payslip-action', 'Actions');
+	}
 ?>
 </div>
 <div class="table-responsive">
@@ -17,6 +20,7 @@
 <thead>
 	<tr>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_payslips" /></th>
+		<th>External ID</th>
 		<th class="center">From</th>
 		<th class="center">To</th>
 		<th class="center">Processed</th>
@@ -35,6 +39,7 @@
 <? foreach($payslips as $payslip) { ?>
 	<tr>
 		<td><input type="checkbox" class="selected_payslip" value="<?=$payslip['timesheet_id'];?>" /></td>
+		<td><?=$payslip['external_id'];?></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', $payslip['start_time']);?></span>
 			<span class="wk_date"><?=date('d', $payslip['start_time']);?></span>

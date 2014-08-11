@@ -14,7 +14,7 @@ class Payrun_model extends CI_Model {
 	}
 	
 	function get_export_timesheets($payrun_id) {
-		$sql = "SELECT t.*, j.name as job_name,
+		$sql = "SELECT t.*, j.name as job_name, uc.company_name as client,
 						pr.date_from, pr.date_to, pr.payable_date,
 						u.first_name, u.last_name, 
 						s.user_id, s.external_staff_id, 
@@ -27,6 +27,7 @@ class Payrun_model extends CI_Model {
 					LEFT JOIN user_staffs s ON t.staff_id = s.user_id
 					LEFT JOIN users u ON t.staff_id = u.user_id
 					LEFT JOIN payruns pr ON pr.payrun_id = t.payrun_id
+					LEFT JOIN user_clients uc ON uc.user_id = t.client_id
 					WHERE t.payrun_id = '" . $payrun_id . "'
 					ORDER BY s.external_staff_id ASC";
 		$query = $this->db->query($sql);
@@ -118,6 +119,9 @@ class Payrun_model extends CI_Model {
 		if (isset($params['date_to']) && $params['date_to'] != '') {
 			$date_to = date('Y-m-d', strtotime($params['date_to']));
 			$sql .= " AND job_date <= '" . $date_to . "'";
+		}
+		if (isset($params['payrun_id']) && $params['payrun_id'] != '') {
+			$sql .= " AND payrun_id = " . $params['payrun_id'];
 		}
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -322,5 +326,11 @@ class Payrun_model extends CI_Model {
 			'status_payrun_staff' => PAYRUN_PENDING,
 			'status_invoice_client' => INVOICE_PENDING
 		));
+	}
+	
+	function update_synced($timesheet_id, $data)
+	{
+		$this->db->where('timesheet_id', $timesheet_id);
+		return $this->db->update('job_shift_timesheets', $data);
 	}
 }

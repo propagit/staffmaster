@@ -1681,6 +1681,8 @@ CREATE TABLE IF NOT EXISTS `job_shift_staff_apply` (
 
 CREATE TABLE IF NOT EXISTS `job_shift_timesheets` (
   `timesheet_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `external_id` VARCHAR(20) NOT NULL,
+  `external_msg` VARCHAR(1000) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0: pending, 1: submitted, 2: approved, 3: batched, 4: processing, 5: paid',
   `status_payrun_staff` tinyint(4) NOT NULL COMMENT '0: processing, 1: ready, 3: paid',
   `payrun_id` bigint(20) NOT NULL,
