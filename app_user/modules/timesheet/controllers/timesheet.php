@@ -110,37 +110,32 @@ class Timesheet extends MX_Controller {
 		$pay_rates = array();
 		
 		$current_rate = null;
-		$current_group = '';
 		$current_start = null;
 		$current_hours = 0;
 		for($i = $start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes
 			$day = date('N', $i); # Get day of the week (1: monday - 7: sunday)
 			$hour = date('G', $i); # Get hour of the day (0 - 23)
 			# Get the pay rate amount
-			#$rate = $this->payrate_model->get_payrate_data($payrate_id, $user_type, $day, $hour);
-			$rate = $this->payrate_model->get_payrate_full_data($payrate_id, $user_type, $day, $hour);
+			$rate = $this->payrate_model->get_payrate_data($payrate_id, $user_type, $day, $hour);
 			if ($current_rate == null) { # First rate
-				#$current_rate = $rate;
-				$current_rate = $rate['value'];
-				$current_group = $rate['group'];
+				$current_rate = $rate;
 				$current_start = $start_time;
 			}
-			if ($rate['value'] == $current_rate) { # The same rate
+			if ($rate == $current_rate) { # The same rate
 				$current_hours += 0.25;
 			}			
-			if ($rate['value'] != $current_rate) { # There is new rate
+			if ($rate != $current_rate) { # There is new rate
 				# First store current rate
 				$pay_rates[] = array(
 					'start' => $current_start,
 					'finish' => $current_start + $current_hours * 3600,
 					'hours' => $current_hours,
 					'rate' => $current_rate,
-					'break' => 0,
-					'group' => $rate['group']
+					'break' => 0
 				);
 				
 				# Then clear to set up new rate
-				$current_rate = $rate['value'];
+				$current_rate = $rate;
 				$current_start = $i;
 				$current_hours = 0.25;				
 			}			
@@ -151,8 +146,7 @@ class Timesheet extends MX_Controller {
 			'finish' => $current_start + $current_hours * 3600,
 			'hours' => $current_hours,
 			'rate' => $current_rate,
-			'break' => 0,
-			'group' => $current_group
+			'break' => 0
 		);
 		
 		
