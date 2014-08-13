@@ -666,7 +666,8 @@ class Myob extends MX_Controller {
 			);
 			
 			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
-			#var_dump($url);
+			var_dump($url); die();
+			
 			$ch = curl_init($url); 
 			
 			
