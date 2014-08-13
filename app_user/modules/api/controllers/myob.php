@@ -598,6 +598,7 @@ class Myob extends MX_Controller {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
+		$errors = array();
 		foreach($timesheets as $timesheet)
 		{
 			$employee = $this->read_employee($timesheet['external_staff_id']);
@@ -685,8 +686,12 @@ class Myob extends MX_Controller {
 			$response = curl_exec($ch);
 			curl_close($ch);
 			$response = json_decode($response);
-			var_dump($response);	
+			if (isset($response->Errors))
+			{
+				$errors[] = $response->Errors;
+			}	
 		}
+		return $errors;
 		
 	}
 	
