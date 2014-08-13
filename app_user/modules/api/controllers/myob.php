@@ -554,11 +554,6 @@ class Myob extends MX_Controller {
 		return null;
 	}
 	
-	function data()
-	{
-		$a = $this->read_payroll('Level1WednesdayNight');
-		var_dump($a);
-	}
 	
 	function read_timesheets($external_id)
 	{
@@ -660,6 +655,8 @@ class Myob extends MX_Controller {
 				'Lines' => $lines
 			);
 			
+			var_dump($timesheet_data);
+			/*
 			$params = json_encode($timesheet_data);
 			
 			$cftoken = base64_encode('Administrator:');
@@ -687,7 +684,7 @@ class Myob extends MX_Controller {
 			
 			
 			$response = curl_exec($ch);
-			curl_close($ch);
+			curl_close($ch); */
 			
 		}
 		
