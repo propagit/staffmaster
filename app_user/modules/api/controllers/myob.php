@@ -130,6 +130,12 @@ class Myob extends MX_Controller {
 			case 'update_employee_payment':
 					$result = $this->update_employee_payment($params[1]);
 				break;
+			case 'read_payroll':
+					$result = $this->read_payroll($params[1]);
+				break;
+			case 'append_timesheets':
+					$result = $this->append_timesheets($params[1]);
+				break;
 			case 'append_employee_payroll':
 					#$result = $this->append_employee_payroll();
 				break;
