@@ -548,6 +548,12 @@ class Myob extends MX_Controller {
 		return null;
 	}
 	
+	function data()
+	{
+		$a = $this->read_payroll('Level1Monday');
+		var_dump($a);
+	}
+	
 	function read_timesheets($external_id)
 	{
 		$employee = $this->read_employee($external_id);
