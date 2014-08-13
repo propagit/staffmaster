@@ -187,6 +187,19 @@ class Ajax extends MX_Controller {
 	function update_financial()
 	{
 		$data = $this->input->post();
+		if (!$data['f_acc_name']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'f_acc_name', 'msg' => 'Account name is required'));
+			return;
+		}	
+		if (!$data['f_bsb']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB is required'));
+			return;
+		}	
+		if (!$data['f_acc_number']) {
+			echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number is required'));
+			return;
+		}
+		
 		$staff_data = array(
 			'f_aus_resident' => isset($data['f_aus_resident']) ? $data['f_aus_resident'] : 0,
 			'f_tax_free_threshold' => isset($data['f_tax_free_threshold']) ? $data['f_tax_free_threshold'] : 0,
@@ -204,6 +217,8 @@ class Ajax extends MX_Controller {
 			'update_description' => 'financial details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
+		echo json_encode(array('ok' => true));
+		
 	}
 	
 	function update_super()

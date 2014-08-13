@@ -1,23 +1,24 @@
 <div class="staff-profile-detail-box">
 	<h2> Financial Details </h2>
+	<p>Please note <span class="text-danger">**</span> denotes a required field</p>
 </div>
 <form class="form-horizontal" role="form" id="form_update_staff_financial">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">
-	<div class="form-group">
-		<label for="f_acc_name" class="col-md-4 control-label">Account Name</label>
+	<div class="form-group" id="f_f_acc_name">
+		<label for="f_acc_name" class="col-md-4 control-label">Account Name <span class="text-danger">**</span></label>
 		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_acc_name" name="f_acc_name" value="<?=$staff['f_acc_name'];?>" tabindex="1" />
 		</div>
 	</div>
-	<div class="form-group">
-		<label for="f_bsb" class="col-md-4 control-label">BSB</label>
+	<div class="form-group" id="f_f_bsb">
+		<label for="f_bsb" class="col-md-4 control-label">BSB <span class="text-danger">**</span></label>
 		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'];?>" tabindex="2" />
 		</div>
 	</div>
-	<div class="form-group">
-		<label for="f_acc_number" class="col-md-4 control-label">Account Number</label>
+	<div class="form-group" id="f_f_acc_number">
+		<label for="f_acc_number" class="col-md-4 control-label">Account Number <span class="text-danger">**</span></label>
 		<div class="col-md-3">
 			<input type="text" class="form-control" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" tabindex="3" />
 		</div>
@@ -151,9 +152,9 @@
 </div>
 <div class="row">
 	<div class="form-group">
-		<div class="col-lg-4 col-lg-offset-4">
+		<div class="col-lg-8 col-lg-offset-4">
 			<div class="alert alert-success hide" id="msg-update-financial"><i class="fa fa-check"></i> &nbsp; Staff financial details has been updated successfully!</div>
-			<button type="button" class="btn btn-core" id="btn_update_financial"><i class="fa fa-save"></i> Update Financial Details</button>
+			<button type="button" class="btn btn-core" id="btn_update_financial" data-loading-text="Updating financial details..."><i class="fa fa-save"></i> Update Financial Details</button>
 		</div>
 	</div>
 </div>
@@ -173,15 +174,28 @@ $(function(){
 		load_f_employed();
 	});
 	$('#btn_update_financial').click(function(){
+		var btn = $(this);
+		btn.button('loading');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>staff/ajax/update_financial",
 			data: $('#form_update_staff_financial').serialize(),
-			success: function(html) {
-				$('#msg-update-financial').removeClass('hide');
-				setTimeout(function(){
-					$('#msg-update-financial').addClass('hide');
-				}, 2000);
+			success: function(data) {
+				btn.button('reset');
+				data = $.parseJSON(data);
+				if (!data.ok) {
+					$('#f_' + data.error_id).addClass('has-error');
+					$('input[name="' + data.error_id + '"]').tooltip({
+						title: data.msg,
+						placement: 'bottom'
+					});
+					$('input[name="' + data.error_id + '"]').focus();
+				} else {
+					$('#msg-update-financial').removeClass('hide');
+					setTimeout(function(){
+						$('#msg-update-financial').addClass('hide');
+					}, 2000);
+				}
 			}
 		})
 	})

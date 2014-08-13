@@ -271,6 +271,10 @@ class Ajax extends MX_Controller {
 				}
 				
 			}
+			else if ($platform == 'myob')
+			{
+				modules::run('api/shoebooks/connect', 'append_timesheets~' . $payrun_id);
+			}
 			
 			echo json_encode(array(
 				'ok' => true,

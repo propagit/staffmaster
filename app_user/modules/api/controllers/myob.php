@@ -35,10 +35,10 @@ class Myob extends MX_Controller {
 					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
 					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
 					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
-					$this->config_model->add(array(
-						'key' => 'myob_refresh_token',
-						'value' => $oauth_tokens->refresh_token
-					));
+					#$this->config_model->add(array(
+					#	'key' => 'myob_refresh_token',
+					#	'value' => $oauth_tokens->refresh_token
+					#));
 				}
 				else
 				{
@@ -96,10 +96,10 @@ class Myob extends MX_Controller {
 					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
 					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
 					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
-					$this->config_model->add(array(
-						'key' => 'myob_refresh_token',
-						'value' => $oauth_tokens->refresh_token
-					));
+					#$this->config_model->add(array(
+					#	'key' => 'myob_refresh_token',
+					#	'value' => $oauth_tokens->refresh_token
+					#));
 					
 					header("Location: " . base_url() . 'api/myob/connect/' . $function);
 				}
@@ -126,6 +126,9 @@ class Myob extends MX_Controller {
 				break;
 			case 'search_employee':
 					$result = $this->search_employee();
+				break;
+			case 'update_employee_payment':
+					$result = $this->update_employee_payment($params[1]);
 				break;
 			case 'append_employee_payroll':
 					#$result = $this->append_employee_payroll();
@@ -198,6 +201,32 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch);
 		return ($response);
+	}
+	
+	function preferences()
+	{
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		#var_dump($headers); die();
+		$url = $this->cloud_api_url . $this->company_id . '/Company/Preferences';
+		
+		$ch = curl_init($url); 
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch);
+		$response = json_decode($response);
+		return $response;
 	}
 	
 	function test()
@@ -393,6 +422,262 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch);
 		curl_close($ch);
 		return true;
+	}
+	
+	function read_employee_payment($external_id)
+	{
+		$employee = $this->read_employee($external_id);
+		if (!isset($employee))
+		{
+			return null;
+		}
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePaymentDetails/' . $employee->EmployeePaymentDetails->UID;
+		
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		
+		$response = json_decode($response);
+		#var_dump($response);
+		return $response;
+	}
+	
+	function update_employee_payment($user_id)
+	{
+		$staff = modules::run('staff/get_staff', $user_id);
+		if (!$staff)
+		{
+			return false;
+		}
+		$payment = $this->read_employee_payment($staff['external_staff_id']);
+		if (!isset($payment))
+		{
+			return false;
+		}
+		$bsb = str_replace(' ', '', $staff['f_bsb']);
+		$bsb = trim($bsb);
+		$bsb = substr($bsb,0,3) . '-' . substr($bsb, 3);
+		
+		$payment_details = array(
+			'UID' => $payment->UID,
+			'Employee' => array(
+				'UID' => $payment->Employee->UID
+			),
+			'PaymentMethod' => 'Electronic',
+			'BankStatementText' => strtoupper('wages ' . $staff['first_name'] . ' ' . $staff['last_name']),
+			'BankAccounts' => array(
+				array(
+					'BSBNumber' => $bsb,
+					'BankAccountNumber' => $staff['f_acc_number'],
+					'BankAccountName' => $staff['f_acc_name'],
+					'Value' => '100',
+					'Unit' => 'Percent'
+				)
+			),
+			'RowVersion' => $payment->RowVersion
+		);
+		$params = json_encode($payment_details);
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePaymentDetails/' . $payment->UID;
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		return true;
+	}
+	
+	function read_payroll($name)
+	{
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Payroll/PayrollCategory/?$' . $filter;
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		
+		$response = json_decode($response);
+		if (isset($response->Items[0]))
+		{
+			return $response->Items[0];
+		}
+		return null;
+	}
+	
+	function read_timesheets($external_id)
+	{
+		$employee = $this->read_employee($external_id);
+		if (!$employee)
+		{
+			return;
+		}
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
+		
+		$ch = curl_init($url); 
+		
+		
+		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		var_dump($response);
+	}
+	
+	function append_timesheets($payrun_id)
+	{
+		$this->load->model('payrun/payrun_model');
+		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		usort($timesheets, function($a, $b) { // anonymous function
+		    // compare numbers only
+		    if (isset($a['external_staff_id'])) {
+			    return $a['external_staff_id'] - $b['external_staff_id'];
+		    }
+		});
+		foreach($timesheets as $timesheet)
+		{
+			$employee = $this->read_employee($timesheet['external_staff_id']);
+			if (!$employee)
+			{
+				continue;
+			}
+			
+			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+			$lines = array();
+			foreach($pay_rates as $pay_rate)
+			{
+				$earningID = $pay_rate['group'];
+				if (!$earningID)
+				{
+					$earningID = $timesheet['payrate'];
+				}
+				
+				$payroll = $this->read_payroll(urlencode($earningID));
+				$lines[] = array(
+					'PayrollCategory' => array(
+						'UID' => $payroll->UID
+					),
+					'Job' => null,
+					'Activity' => null,
+					'Customer' => null,
+					'Notes' => 'Imported from StaffBooks',
+					'Entries' => array(
+						array(
+							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+							'Hours' => $pay_rate['hours'],
+							'Processed' => false
+						)
+					)
+				);
+			}
+			
+			$start_date = date('Y-m-d H:i:s', $timesheet['start_time']);
+			if ($timesheet['date_from'] && $timesheet['date_from'] != '0000-00-00')
+			{
+				$start_date = date('Y-m-d H:i:s', strtotime($timesheet['date_from']));
+			}
+			$end_date = date('Y-m-d H:i:s', $timesheet['finish_time']);
+			if ($timesheet['date_to'] && $timesheet['date_to'] != '0000-00-00')
+			{
+				$end_date = date('Y-m-d H:i:s', strtotime($timesheet['date_to']));
+			}
+			
+			$timesheet_data = array(
+				'Employee' => array(
+					'UID' => $employee->UID
+				),
+				'StartDate' => $start_date,
+				'EndDate' => $end_date,
+				'Lines' => $lines
+			);
+			
+			$params = json_encode($timesheet_data);
+			
+			$cftoken = base64_encode('Administrator:');
+			$headers = array(
+				'Authorization: Bearer ' . $this->session->userdata('access_token'),
+		        'x-myobapi-cftoken: '.$cftoken,
+		        'x-myobapi-key: ' . $this->api_key,
+		        'x-myobapi-version: v2',
+		        'Content-Type: application/json',
+		        'Content-Length: ' . strlen($params)
+			);
+			
+			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
+			#var_dump($url);
+			$ch = curl_init($url); 
+			
+			
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+			
+			
+			$response = curl_exec($ch);
+			curl_close($ch);
+			
+		}
+		
 	}
 	
 	function append_employee_payroll($subdomain, $user_id)

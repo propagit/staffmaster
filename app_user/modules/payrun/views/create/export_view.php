@@ -175,6 +175,10 @@ function save_payrun() {
 						$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a href="<?=base_url();?>payrun/search-payslip/' + data.payrun_id + '" class="btn btn-core">View Pay Run</a> &nbsp; <a class="btn btn-default" onclick="close_modal()">Run Another Pay Run</a></p>');
 						$('#waitingModal').modal('show');
 					}
+					else
+					{
+						close_modal();
+					}
 					//$('.bs-modal-lg').modal('hide');
 					//list_staffs();
 					//get_payrun_stats();
