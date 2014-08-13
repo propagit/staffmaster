@@ -550,7 +550,7 @@ class Myob extends MX_Controller {
 	
 	function data()
 	{
-		$a = $this->read_payroll('Level1Monday');
+		$a = $this->read_payroll('Level1WednesdayNight');
 		var_dump($a);
 	}
 	
