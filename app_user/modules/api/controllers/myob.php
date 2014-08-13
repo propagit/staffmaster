@@ -653,7 +653,7 @@ class Myob extends MX_Controller {
 				'EndDate' => $end_date,
 				'Lines' => $lines
 			);
-			
+			var_dump($timesheet_data); die();
 			$params = json_encode($timesheet_data);
 			
 			$cftoken = base64_encode('Administrator:');
