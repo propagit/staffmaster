@@ -263,11 +263,11 @@ class Ajax extends MX_Controller {
 				$pushed_results = modules::run('api/shoebooks/append_payslip', $payrun_id);
 				if (count($pushed_results) > 0)
 				{
-					$pushed_msg = '<p> ' . count($pushed_results) . '/' . count($timesheets) . ' time sheets have been pushed to Shoebooks successfully!';
+					$pushed_msg = '<p> ' . count($pushed_results) . '/' . count($timesheets) . ' time sheets have been pushed to Shoebooks successfully!</p>';
 				}
 				if (count($timesheets) > count($pushed_results))
 				{
-					$pushed_msg .= '<p> ' . (count($timesheets) - count($pushed_results)) . ' time sheets have been pushed to Shoebooks with errors!';
+					$pushed_msg .= '<p> ' . (count($timesheets) - count($pushed_results)) . ' time sheets have been pushed to Shoebooks with errors!</p>';
 				}
 				
 			}
@@ -276,7 +276,7 @@ class Ajax extends MX_Controller {
 				$errors = modules::run('api/myob/connect', 'append_timesheets~' . $payrun_id);
 				if (count($errors) > 0)
 				{
-					$pushed_msg .= '<p> ' . count($errors) . ' time sheets have been pushed to MYOB with errors!';
+					$pushed_msg .= '<p> ' . count($errors) . ' time sheets have been pushed to MYOB with errors!</p><p>' . var_dump($errors) . '</p>';
 				}
 			}
 			
