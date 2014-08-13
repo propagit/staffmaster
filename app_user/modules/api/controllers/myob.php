@@ -653,6 +653,8 @@ class Myob extends MX_Controller {
 				'EndDate' => $end_date,
 				'Lines' => $lines
 			);
+			var_dump($timesheet_data);
+			/*
 			$params = json_encode($timesheet_data);
 			
 			$cftoken = base64_encode('Administrator:');
@@ -666,7 +668,7 @@ class Myob extends MX_Controller {
 			);
 			
 			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
-			var_dump($url); die();
+			#var_dump($url); die();
 			
 			$ch = curl_init($url); 
 			
@@ -681,7 +683,7 @@ class Myob extends MX_Controller {
 			
 			$response = curl_exec($ch);
 			curl_close($ch);
-			
+			*/
 		}
 		
 	}
