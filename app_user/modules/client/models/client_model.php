@@ -65,6 +65,10 @@ class Client_model extends CI_Model {
 		{
 			modules::run('api/shoebooks/append_customer', $user_id);
 		}
+		else if ($platform == 'myob')
+		{
+			modules::run('api/myob/connect', 'append_customer~' . $user_id);
+		}
 	}
 	
 	/**
@@ -108,6 +112,10 @@ class Client_model extends CI_Model {
 		if ($platform == 'shoebooks')
 		{
 			modules::run('api/shoebooks/update_customer', $client['external_client_id']);
+		}
+		else if ($platform == 'myob')
+		{
+			modules::run('api/myob/connect', 'update_customer~' . $client['external_client_id']);
 		}
 	}
 	

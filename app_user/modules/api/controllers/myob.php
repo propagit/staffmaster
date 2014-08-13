@@ -130,6 +130,15 @@ class Myob extends MX_Controller {
 			case 'update_employee_payment':
 					$result = $this->update_employee_payment($params[1]);
 				break;
+			case 'read_customer':
+					$result = $this->read_customer($params[1]);
+				break;
+			case 'append_customer':
+					$result = $this->append_customer($params[1]);
+				break;
+			case 'update_customer':
+					$result = $this->update_customer($params[1]);
+				break;
 			case 'read_payroll':
 					$result = $this->read_payroll($params[1]);
 				break;
@@ -233,6 +242,37 @@ class Myob extends MX_Controller {
 		curl_close($ch);
 		$response = json_decode($response);
 		return $response;
+	}
+	
+	function taxcode()
+	{
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		#var_dump($headers); die();
+		$url = $this->cloud_api_url . $this->company_id . '/GeneralLedger/TaxCode';
+		
+		$ch = curl_init($url); 
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch);
+		$response = json_decode($response);
+		if (isset($response->Items))
+		{
+			$items = $response->Items;
+			return $items[5];
+		}
+		return null;
 	}
 	
 	function test()
@@ -524,6 +564,219 @@ class Myob extends MX_Controller {
 		return true;
 	}
 	
+	function search_customer()
+	{
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		#var_dump($headers); die();
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer';
+		
+		$ch = curl_init($url); 
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch);
+		$response = json_decode($response);
+		if (isset($response->Items))
+		{
+			#var_dump($response->Items);
+			return $response->Items;
+		}
+		return null;
+	}
+	
+	function read_customer($external_id)
+	{
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/?$' . $filter;
+		
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		
+		$response = json_decode($response);
+		if (isset($response->Items[0]))
+		{
+			return $response->Items[0];
+		}
+		return false;
+	}
+	
+	function append_customer($user_id)
+	{
+		$client = modules::run('client/get_client', $user_id);
+		if (!$client)
+		{
+			return false;
+		}
+		$names = explode(' ', $client['full_name']);
+		$customer = array(
+			'CompanyName' => $client['company_name'],
+			'LastName' => isset($names[1]) ? $names[1] : $names[0],
+			'FirstName' => $names[0],
+			'IsIndividual' => 'True',
+			'DisplayID' => 'SBCUS' . $client['user_id'],
+			'IsActive' => 'True',
+			'Addresses' => array(
+				array(
+					'Location' => 1,
+					'Street' => $client['address'],
+					'City' => $client['city'],
+					'State' => $client['state'],
+					'PostCode' => $client['postcode'],
+					'Country' => $client['country'],
+					'Phone1' => $client['phone'],
+					'Phone2' => $client['mobile'],
+					'Email' => $client['email_address'],
+					'Salutation' => $client['title']
+				)
+			),
+			'Notes' => 'Imported from StaffBooks',
+			'ABN' => $client['abn'],
+			'SellingDetails' => array(
+				'TaxCode' => array(
+					'UID' => $this->taxcode()->UID
+				),
+				'FreightTaxCode' => array(
+					'UID' => $this->taxcode()->UID
+				)
+			),
+			'LastModified' => $client['modified_on']
+		);
+		#var_dump($customer); die();
+		$params = json_encode($customer);
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer';
+		
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+				
+		$response = curl_exec($ch); 
+		curl_close($ch);
+		
+		$this->load->model('client/client_model');
+		$this->client_model->update_client($user_id, array('external_client_id' => 'SBCUS' . $user_id));
+		var_dump($response);	
+	}
+	
+	function update_customer($external_id)
+	{
+		$customer = $this->read_customer($external_id);
+		if (!isset($customer))
+		{
+			return false;
+		}
+		$client = modules::run('client/get_client_by_external_id', $external_id);
+		if (!$client)
+		{
+			return false;
+		}
+		$names = explode(' ', $client['full_name']);
+		$updated_customer = array(
+			'UID' => $customer->UID,
+			'CompanyName' => $client['company_name'],
+			'LastName' => isset($names[1]) ? $names[1] : $names[0],
+			'FirstName' => $names[0],
+			'IsIndividual' => 'True',
+			'DisplayID' => 'SBCUS' . $client['user_id'],
+			'IsActive' => 'True',
+			'Addresses' => array(
+				array(
+					'Location' => 1,
+					'Street' => $client['address'],
+					'City' => $client['city'],
+					'State' => $client['state'],
+					'PostCode' => $client['postcode'],
+					'Country' => $client['country'],
+					'Phone1' => $client['phone'],
+					'Phone2' => $client['mobile'],
+					'Email' => $client['email_address'],
+					'Salutation' => $client['title']
+				)
+			),
+			'Notes' => 'Updated from StaffBooks',
+			'ABN' => $client['abn'],
+			'SellingDetails' => array(
+				'TaxCode' => array(
+					'UID' => $this->taxcode()->UID
+				),
+				'FreightTaxCode' => array(
+					'UID' => $this->taxcode()->UID
+				)
+			),
+			'LastModified' => $client['modified_on'],
+			'RowVersion' => $customer->RowVersion
+		);
+		
+		$params = json_encode($updated_customer);
+		$cftoken = base64_encode('Administrator:');
+		$headers = array(
+			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/' . $customer->UID;
+		
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		return true;
+	}
+	
 	function read_payroll($name)
 	{
 		$cftoken = base64_encode('Administrator:');
@@ -695,6 +948,7 @@ class Myob extends MX_Controller {
 				$errors[] = $response->Errors;
 			}	
 		}
+		var_dump($errors);
 		return $errors;
 		
 	}

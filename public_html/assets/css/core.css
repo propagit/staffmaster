@@ -1368,6 +1368,9 @@ ol.example li.placeholder:before {
 .purple {
 	background: #6548b5;
 }
+.btn.purple {
+	color: #fff;
+}
 tr.purple {
 	background: #e0daf0;
 }

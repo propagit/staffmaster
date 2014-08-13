@@ -97,7 +97,7 @@
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">
 			<div class="alert alert-success hide" id="msg-update"><i class="fa fa-check"></i> &nbsp; Client details has been updated successfully!</div>
-			<button type="button" class="btn btn-core" id="btn_update_client"><i class="fa fa-save"></i> Update Client</button>
+			<button type="button" class="btn btn-core" id="btn_update_client"  data-loading-text="Updating client..."><i class="fa fa-save"></i> Update Client</button>
 		</div>
 	</div>
 </div>
@@ -105,6 +105,8 @@
 <script>
 $(function(){
 	$('#btn_update_client').click(function(){
+		var btn = $(this);
+		btn.button('loading');
 		$('.form-group').find('div[id^=f_]').removeClass('has-error');
 		$('#form_update_client').find('input').tooltip('destroy');
 		$.ajax({
@@ -112,6 +114,7 @@ $(function(){
 			url: "<?=base_url();?>client/ajax/update_details",
 			data: $('#form_update_client').serialize(),
 			success: function(data) {
+				btn.button('reset');
 				data = $.parseJSON(data);
 				if (!data.ok) {
 					$('#f_' + data.error_id).addClass('has-error');

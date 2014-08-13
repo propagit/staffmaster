@@ -247,12 +247,29 @@ class Client extends MX_Controller {
 	
 	function btn_api($user_id='', $external_id='')
 	{
-		if ($this->config_model->get('accounting_platform') != 'shoebooks')
+		$platform = $this->config_model->get('accounting_platform');
+		
+		if (!$platform)
 		{
 			return;
 		}
+		$existed = false;
+		if ($platform == 'myob')
+		{
+			if (!$this->config_model->get('myob_company_id'))
+			{
+				return;
+			}
+			if ($external_id)
+			{
+				$external_id = modules::run('api/myob/connect', 'read_customer~' . $external_id);
+			}
+			
+			$platform = 'MYOB';
+		}
 		$data['user_id'] = $user_id;
 		$data['external_id'] = $external_id;
+		$data['platform'] = $platform;
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
 }

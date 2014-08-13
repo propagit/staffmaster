@@ -197,9 +197,9 @@ $(function(){
 			url: "<?=base_url();?>staff/ajax/add_staff",
 			data: $('#form_add_staff').serialize(),
 			success: function(data) {
+				btn.button('reset');
 				data = $.parseJSON(data);
-				if (!data.ok) {
-					btn.button('reset');
+				if (!data.ok) {					
 					$('#f_' + data.error_id).addClass('has-error');
 					$('input[name="' + data.error_id + '"]').tooltip({
 						title: data.msg,

@@ -2,7 +2,7 @@
 <div class="pull-right alert alert-default">
 	<div class="checkbox no-margin">
 	    <label>
-	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_update_client')) ? 'checked' : '';?>> Auto update to Shoebooks
+	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_update_client')) ? 'checked' : '';?>> Auto update to <?=ucwords($platform);?>
 	    </label>
 	</div> 
 </div>
@@ -20,28 +20,53 @@ $('#auto-sync').click(function(){
 	})
 })
 </script>
-<? } else if($user_id) { # Add to shoebooks ?>
-<a class="pull-right btn btn-lg btn-primary" id="btn-shoebooks">
-	Add to Shoebooks &nbsp;  
-	<i class="fa fa-arrow-right"></i> 
-</a>
-
-<script>
-$('#btn-shoebooks').click(function(){
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>api/shoebooks/append_customer/<?=$user_id;?>",
-		success: function(html) {
-			location.reload();
-		}
+<? } else if($user_id) { 
+	if (strtolower($platform) == 'shoebooks') { # Add to shoebooks ?>
+	<button class="pull-right btn btn-lg btn-primary" id="btn-shoebooks" data-loading-text="Adding to Shoebooks...">
+		Add to Shoebooks &nbsp;  
+		<i class="fa fa-arrow-right"></i> 
+	</button>
+	
+	<script>
+	$('#btn-shoebooks').click(function(){
+		var btn = $(this);
+		btn.button('loading');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>api/shoebooks/append_customer/<?=$user_id;?>",
+			success: function(html) {
+				location.reload();
+			}
+		})
 	})
-})
-</script>
+	</script>
+	<? } else if (strtolower($platform) == 'myob') { ?>
+	<button class="pull-right btn btn-lg purple" id="btn-myob" data-loading-text="Adding to MYOB...">
+		Add to MYOB &nbsp;  
+		<i class="fa fa-arrow-right"></i> 
+	</button>
+	
+	<script>
+	$('#btn-myob').click(function(){
+		var btn = $(this);
+		btn.button('loading');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>api/myob/append_customer/<?=$user_id;?>",
+			success: function(html) {
+				location.reload();
+			}
+		})
+	})
+	</script>
+	
+	<? } ?>
+
 <? } else { # Auto add to shoebooks ?>
 <div class="pull-right alert alert-default">
 	<div class="checkbox no-margin">
 	    <label>
-	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_add_client')) ? 'checked' : '';?>> Auto add to Shoebooks
+	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_add_client')) ? 'checked' : '';?>> Auto add to <?=ucwords($platform);?>
 	    </label>
 	</div> 
 </div>
