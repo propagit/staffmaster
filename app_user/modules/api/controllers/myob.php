@@ -616,6 +616,10 @@ class Myob extends MX_Controller {
 				{
 					$earningID = $timesheet['payrate'];
 				}
+				$break = '';
+				if ($pay_rate['break']) {
+					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
+				}
 				
 				$payroll = $this->read_payroll(urlencode($earningID));
 				$lines[] = array(
@@ -625,7 +629,7 @@ class Myob extends MX_Controller {
 					'Job' => null,
 					'Activity' => null,
 					'Customer' => null,
-					'Notes' => 'Imported from StaffBooks',
+					'Notes' => $timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break,
 					'Entries' => array(
 						array(
 							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
