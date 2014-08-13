@@ -691,7 +691,7 @@ class Myob extends MX_Controller {
 				$errors[] = $response->Errors;
 			}	
 		}
-		return $errors;
+		var_dump($errors);
 		
 	}
 	
