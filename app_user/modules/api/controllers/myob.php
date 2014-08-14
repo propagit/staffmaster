@@ -22,23 +22,19 @@ class Myob extends MX_Controller {
 		
 	function connect($function='')
 	{	
-		$access_token = $this->session->userdata('access_token');
+		$access_token = $this->config_model->get('myob_access_token');
 		if ($access_token)
 		{
-			$expiry_time = time() + 600;
-			if ($expiry_time > $this->session->userdata('access_token_expires'))
+			$expiry_time = time() + 600; # Add 600 second (10 minutes) before it expires
+			if ($expiry_time > $this->config_model->get('myob_access_token_expires'))
 			{
 				$oauth = new myob_api_oauth();
-				$oauth_tokens = $oauth->refreshAccessToken($this->api_key, $this->api_secret, $this->session->userdata('refresh_token'));
+				$oauth_tokens = $oauth->refreshAccessToken($this->api_key, $this->api_secret, $this->config_model->get('myob_refresh_token'));
 				if ($oauth_tokens)
-				{			
-					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
-					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
-					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
-					#$this->config_model->add(array(
-					#	'key' => 'myob_refresh_token',
-					#	'value' => $oauth_tokens->refresh_token
-					#));
+				{
+					$this->config_model->add(array('key' => 'myob_access_token', 'value' => $oauth_tokens->access_token));
+					$this->config_model->add(array('key' => 'myob_access_token_expires', 'value' => time() + $oauth_tokens->expires_in));
+					$this->config_model->add(array('key' => 'myob_refresh_token', 'value' => $oauth_tokens->refresh_token));
 				}
 				else
 				{
@@ -48,65 +44,38 @@ class Myob extends MX_Controller {
 		}
 		else
 		{
-			if ($this->config_model->get('myob_refresh_token'))
+			
+			$redirect_url = base_url() . 'api/myob/connect';
+			$api_scope = 'CompanyFile';
+			
+			if (!isset($_GET['code']))
 			{
-				$oauth = new myob_api_oauth();
-				#var_dump($this->config_model->get('myob_refresh_token')); die();
-				$oauth_tokens = $oauth->refreshAccessToken($this->api_key, $this->api_secret, $this->config_model->get('myob_refresh_token'));
-				var_dump($oauth_tokens); die();
-				if ($oauth_tokens)
-				{			
-					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
-					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
-					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
-					$this->config_model->add(array(
-						'key' => 'myob_refresh_token',
-						'value' => $oauth_tokens->refresh_token
-					));
-				}
-				else
+				$url = "https://secure.myob.com/oauth2/account/authorize?client_id=" . $this->api_key . "&redirect_uri=" . urlencode($redirect_url) . "&response_type=code&scope=$api_scope";
+				if ($function)
 				{
-					die("Error #1.");
+					$url .= "&state=" . urlencode($function);
 				}
+				header("Location: $url");
+			}
+			$api_access_code = $_GET['code'];
+			$oauth = new myob_api_oauth();
+			$oauth_tokens = $oauth->getAccessToken($this->api_key, $this->api_secret, $redirect_url, $api_access_code, $api_scope);
+			if ($oauth_tokens)
+			{
+				$function = '';
+				if (isset($_GET['state']))
+				{
+					$function = urldecode($_GET['state']);
+				}
+				$this->config_model->add(array('key' => 'myob_access_token', 'value' => $oauth_tokens->access_token));
+				$this->config_model->add(array('key' => 'myob_access_token_expires', 'value' => time() + $oauth_tokens->expires_in));
+				$this->config_model->add(array('key' => 'myob_refresh_token', 'value' => $oauth_tokens->refresh_token));
+				
+				header("Location: " . base_url() . 'api/myob/connect/' . $function);
 			}
 			else
 			{
-				$redirect_url = base_url() . 'api/myob/connect';
-				$api_scope = 'CompanyFile';
-				
-				if (!isset($_GET['code']))
-				{
-					$url = "https://secure.myob.com/oauth2/account/authorize?client_id=" . $this->api_key . "&redirect_uri=" . urlencode($redirect_url) . "&response_type=code&scope=$api_scope";
-					if ($function)
-					{
-						$url .= "&state=" . urlencode($function);
-					}
-					header("Location: $url");
-				}
-				$api_access_code = $_GET['code'];
-				$oauth = new myob_api_oauth();
-				$oauth_tokens = $oauth->getAccessToken($this->api_key, $this->api_secret, $redirect_url, $api_access_code, $api_scope);
-				if ($oauth_tokens)
-				{
-					$function = '';
-					if (isset($_GET['state']))
-					{
-						$function = urldecode($_GET['state']);
-					}
-					$this->session->set_userdata('access_token', $oauth_tokens->access_token);
-					$this->session->set_userdata('access_token_expires', time() + $oauth_tokens->expires_in);
-					$this->session->set_userdata('refresh_token', $oauth_tokens->refresh_token);
-					#$this->config_model->add(array(
-					#	'key' => 'myob_refresh_token',
-					#	'value' => $oauth_tokens->refresh_token
-					#));
-					
-					header("Location: " . base_url() . 'api/myob/connect/' . $function);
-				}
-				else
-				{
-					die("Error #2");
-				}
+				die("Error #2");
 			}
 			
 		}
@@ -162,15 +131,14 @@ class Myob extends MX_Controller {
 	
 	function company()
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
 		$url = $this->cloud_api_url;
-		#return $headers;
 		$ch = curl_init($url); 
 		
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -181,25 +149,20 @@ class Myob extends MX_Controller {
 		
 		$response = curl_exec($ch); 
 		curl_close($ch);
-		#return $response;
 		$company = json_decode($response);
 		if (isset($company[0]))
 		{
-			$this->config_model->add(array(
-				'key' => 'myob_company_id',
-				'value' => $company[0]->Id
-			));
+			$this->config_model->add(array('key' => 'myob_company_id', 'value' => $company[0]->Id));
 			header("Location: " . base_url() . 'setting/integration');
 		}
-		$this->session->set_flashdata('connect_myob_failed', true);
-		header("Location: " . base_url() . 'setting/integration');
+		header("Location: " . base_url() . 'setting/integration/failed');
 	}
 	
 	function info()
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -220,9 +183,9 @@ class Myob extends MX_Controller {
 	
 	function preferences()
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -246,9 +209,9 @@ class Myob extends MX_Controller {
 	
 	function taxcode()
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -287,14 +250,13 @@ class Myob extends MX_Controller {
 	
 	function search_employee()
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		#var_dump($headers); die();
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee';
 		
 		$ch = curl_init($url); 
@@ -317,9 +279,9 @@ class Myob extends MX_Controller {
 	
 	function read_employee($external_id)
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -376,9 +338,9 @@ class Myob extends MX_Controller {
 			'LastModified' => $staff['modified_on']
 		);
 		$params = json_encode($employee);
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2',
@@ -442,9 +404,9 @@ class Myob extends MX_Controller {
 			'RowVersion' => $employee->RowVersion
 		);
 		$params = json_encode($updated_employee);
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2',
@@ -477,9 +439,9 @@ class Myob extends MX_Controller {
 		{
 			return null;
 		}
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -537,9 +499,9 @@ class Myob extends MX_Controller {
 			'RowVersion' => $payment->RowVersion
 		);
 		$params = json_encode($payment_details);
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2',
@@ -566,9 +528,9 @@ class Myob extends MX_Controller {
 	
 	function search_customer()
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -597,9 +559,9 @@ class Myob extends MX_Controller {
 	
 	function read_customer($external_id)
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -638,7 +600,7 @@ class Myob extends MX_Controller {
 			'CompanyName' => $client['company_name'],
 			'LastName' => isset($names[1]) ? $names[1] : $names[0],
 			'FirstName' => $names[0],
-			'IsIndividual' => 'True',
+			'IsIndividual' => 'False',
 			'DisplayID' => 'SBCUS' . $client['user_id'],
 			'IsActive' => 'True',
 			'Addresses' => array(
@@ -669,9 +631,9 @@ class Myob extends MX_Controller {
 		);
 		#var_dump($customer); die();
 		$params = json_encode($customer);
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2',
@@ -749,9 +711,9 @@ class Myob extends MX_Controller {
 		);
 		
 		$params = json_encode($updated_customer);
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2',
@@ -779,9 +741,9 @@ class Myob extends MX_Controller {
 	
 	function read_payroll($name)
 	{
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -815,9 +777,9 @@ class Myob extends MX_Controller {
 		{
 			return;
 		}
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
-			'Authorization: Bearer ' . $this->session->userdata('access_token'),
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 	        'x-myobapi-cftoken: '.$cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
@@ -917,9 +879,9 @@ class Myob extends MX_Controller {
 			
 			$params = json_encode($timesheet_data);
 			
-			$cftoken = base64_encode('Administrator:');
+			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 			$headers = array(
-				'Authorization: Bearer ' . $this->session->userdata('access_token'),
+				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
 		        'x-myobapi-cftoken: '.$cftoken,
 		        'x-myobapi-key: ' . $this->api_key,
 		        'x-myobapi-version: v2',
@@ -1073,7 +1035,7 @@ class Myob extends MX_Controller {
 		
 		$params = json_encode($preferences);
 		#echo '<pre>'; print_r($params); echo '</pre>'; die();
-		$cftoken = base64_encode('Administrator:');
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $oauth_tokens->access_token,
 	        'x-myobapi-cftoken: '.$cftoken,

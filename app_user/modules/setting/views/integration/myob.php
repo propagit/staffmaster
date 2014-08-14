@@ -114,7 +114,7 @@ $(function(){
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>config/ajax/add",
-			data: {myob_company_id : ''},
+			data: {myob_company_id : '', myob_access_token_expires: 0, myob_access_token: '', myob_refresh_token: ''},
 			success: function(html) {
 				location.reload();
 			}
@@ -125,23 +125,19 @@ $(function(){
 	
 
 <? } else { ?>
-
-<? if($this->session->flashdata('connect_myob_failed')) { ?>
-<div class="alert alert-danger">Cannot connect to MYOB. Please contact system administrator.</div>
-<? } ?>
-
-<a class="btn btn-myob" href="<?=base_url();?>api/myob/connect">Connect to MYOB</a>
-<? } ?>
-
-<? /*
 <form role="form" id="form-myob">
 <div class="form-group">
-    <label for="myob_company_id" class="control-label">MYOB Company ID</label>    
-	<input type="text" class="form-control" id="myob_company_id" name="myob_company_id" value="<?=$this->config_model->get('myob_company_id');?>" />
-</div>         
-        
-
-<button type="button" class="btn btn-core" id="btn-update">Update</button> &nbsp;
+    <label for="myob_username" class="control-label">Username</label>    
+	<input type="text" class="form-control" id="myob_username" name="myob_username" value="<?=($this->config_model->get('myob_username')) ? $this->config_model->get('myob_username') : 'Administrator';?>" />
+</div>       
+<div class="form-group">
+	<label for="myob_password" class="control-label">Password</label>
+	<input type="password" class="form-control" id="myob_password" name="myob_password" value="<?=$this->config_model->get('myob_password');?>" />
+</div>
+<p class="text-muted">The username and password for your company file is usually different from the one you use to sign into MYOB online. It is commonly 'Administrator' and a blank password.</p>
+<div class="alert alert-success hide" id="msg-success"></div>
+<div class="alert alert-danger hide" id="msg-error"></div>
+<button type="button" class="btn btn-myob" id="btn-update">Connect to MYOB</button>
 </form>
 
 <script>
@@ -152,13 +148,10 @@ $(function(){
 			url: "<?=base_url();?>config/ajax/add",
 			data: $('#form-myob').serialize(),
 			success: function(html) {
-				$('#msg-success').html('Updated successfully!');
-				$('#msg-success').removeClass('hide');
-				setTimeout(function(){
-					location.reload();
-				}, 2000);
+				window.location = '<?=base_url();?>api/myob/connect';
 			}
 		})
 	})
 })
-</script> */ ?>
+</script>
+<? } ?>
