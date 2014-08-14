@@ -120,6 +120,9 @@ class Myob extends MX_Controller {
 			case 'info':
 					$result = $this->info();
 				break;
+			case 'test':
+					echo $this->test(); die();
+				break;
 			case '':
 			default:
 					$result = $this->company();
@@ -158,6 +161,16 @@ class Myob extends MX_Controller {
 		header("Location: " . base_url() . 'setting/integration/failed');
 	}
 	
+	function test()
+	{
+		$a = $this->info();
+		if (isset($a->Errors))
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	function info()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -178,6 +191,7 @@ class Myob extends MX_Controller {
 		
 		$response = curl_exec($ch); 
 		curl_close($ch);
+		$response = json_decode($response);
 		return ($response);
 	}
 	
@@ -238,16 +252,12 @@ class Myob extends MX_Controller {
 		return null;
 	}
 	
-	function test()
-	{
-		$a = $this->info();
-		if (isset($a->Errors))
-		{
-			echo 'false';
-		}
-		echo 'true';
-	}
 	
+	/**
+	*	@desc: get all employees from MYOB
+	*	@return: array of objects (vector) of employee from MYOB
+	*				or null
+	*/
 	function search_employee()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -270,6 +280,7 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch);
 		$response = json_decode($response);
+		#var_dump($response); die();
 		if (isset($response->Items))
 		{
 			return $response->Items;
@@ -277,6 +288,12 @@ class Myob extends MX_Controller {
 		return null;		
 	}
 	
+	/**
+	*	@desc: get employee from MYOB
+	*	@params: $external_id (DisplayID in MYOB)
+	*	@return: object (vector) of employee data from MYOB
+	*				or null if not found
+	*/
 	function read_employee($external_id)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -301,6 +318,7 @@ class Myob extends MX_Controller {
 		curl_close($ch); 
 		
 		$response = json_decode($response);
+		#var_dump($response); die();
 		if (isset($response->Items[0]))
 		{
 			return $response->Items[0];
@@ -308,6 +326,12 @@ class Myob extends MX_Controller {
 		return null;
 	}
 	
+	/**
+	*	@desc: add new employee to MYOB
+	*	@params: $user_id (user_id in StaffBooks)
+	*	@return: true if success
+	*				or false if failed
+	*/
 	function append_employee($user_id)
 	{
 		$staff = modules::run('staff/get_staff', $user_id);
@@ -362,11 +386,23 @@ class Myob extends MX_Controller {
 				
 		$response = curl_exec($ch); 
 		curl_close($ch);
+		$response = json_decode($response);
+		
+		if (isset($response->Errors))
+		{
+			return false;
+		}
 		
 		$this->load->model('staff/staff_model');
-		return $this->staff_model->update_staff($user_id, array('external_staff_id' => 'SB' . $user_id));		
+		return $this->staff_model->update_staff($user_id, array('external_staff_id' => 'SB' . $user_id), true);		
 	}
 	
+	/**
+	*	@desc: update existed employee to MYOB
+	*	@params: $external_id (DisplayID in MYOB)
+	*	@return: true if success
+	*				or false if failed
+	*/
 	function update_employee($external_id)
 	{
 		$employee = $this->read_employee($external_id);
@@ -429,9 +465,23 @@ class Myob extends MX_Controller {
 		
 		$response = curl_exec($ch);
 		curl_close($ch);
+		
+		$response = json_decode($response);
+		
+		if (isset($response->Errors))
+		{
+			return false;
+		}
+		
 		return true;
 	}
 	
+	/**
+	*	@desc: get employee payment details from MYOB
+	*	@params: $external_id (DisplayID in MYOB)
+	*	@return: object (vector) of payment details of employee
+	*				or null if not found
+	*/
 	function read_employee_payment($external_id)
 	{
 		$employee = $this->read_employee($external_id);
@@ -460,10 +510,16 @@ class Myob extends MX_Controller {
 		curl_close($ch); 
 		
 		$response = json_decode($response);
-		#var_dump($response);
+		#var_dump($response); die();
 		return $response;
 	}
 	
+	/**
+	*	@desc: update employee payment details to MYOB
+	*	@params: $user_id (user_id in StaffBooks)
+	*	@return: true if success
+	*				or false if failed
+	*/
 	function update_employee_payment($user_id)
 	{
 		$staff = modules::run('staff/get_staff', $user_id);
@@ -523,9 +579,19 @@ class Myob extends MX_Controller {
 		
 		$response = curl_exec($ch);
 		curl_close($ch);
+		$response = json_decode($response);
+		if (isset($response->Errors))
+		{
+			return false;
+		}
 		return true;
 	}
 	
+	/**
+	*	@desc: get all customers from MYOB
+	*	@return: array of objects (vector) of customers from MYOB
+	*				or null
+	*/
 	function search_customer()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -535,7 +601,6 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		#var_dump($headers); die();
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer';
 		
 		$ch = curl_init($url); 
@@ -551,12 +616,17 @@ class Myob extends MX_Controller {
 		$response = json_decode($response);
 		if (isset($response->Items))
 		{
-			#var_dump($response->Items);
 			return $response->Items;
 		}
 		return null;
 	}
 	
+	/**
+	*	@desc: get customer from MYOB
+	*	@params: $external_id (DisplayID from MYOB)
+	*	@return: object (vector) of customer
+	*				or null if not found
+	*/
 	function read_customer($external_id)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -588,6 +658,12 @@ class Myob extends MX_Controller {
 		return false;
 	}
 	
+	/**
+	*	@desc: add new customer to MYOB
+	*	@params: $user_id (user_id in StaffBooks)
+	*	@return: true if success
+	*				or false if failed
+	*/
 	function append_customer($user_id)
 	{
 		$client = modules::run('client/get_client', $user_id);
@@ -629,7 +705,6 @@ class Myob extends MX_Controller {
 			),
 			'LastModified' => $client['modified_on']
 		);
-		#var_dump($customer); die();
 		$params = json_encode($customer);
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
@@ -655,12 +730,22 @@ class Myob extends MX_Controller {
 				
 		$response = curl_exec($ch); 
 		curl_close($ch);
+		$response = json_decode($response);
 		
+		if (isset($response->Errors))
+		{
+			return false;
+		}
 		$this->load->model('client/client_model');
-		$this->client_model->update_client($user_id, array('external_client_id' => 'SBCUS' . $user_id));
-		var_dump($response);	
+		return $this->client_model->update_client($user_id, array('external_client_id' => 'SBCUS' . $user_id), true);
 	}
 	
+	/**
+	*	@desc: update customer data to MYOB
+	*	@params: $external_id (DisplayID in MYOB)
+	*	@return: true if success
+	*				or false if failed
+	*/
 	function update_customer($external_id)
 	{
 		$customer = $this->read_customer($external_id);
@@ -679,7 +764,7 @@ class Myob extends MX_Controller {
 			'CompanyName' => $client['company_name'],
 			'LastName' => isset($names[1]) ? $names[1] : $names[0],
 			'FirstName' => $names[0],
-			'IsIndividual' => 'True',
+			'IsIndividual' => 'False',
 			'DisplayID' => 'SBCUS' . $client['user_id'],
 			'IsActive' => 'True',
 			'Addresses' => array(
@@ -736,6 +821,12 @@ class Myob extends MX_Controller {
 		
 		$response = curl_exec($ch);
 		curl_close($ch);
+		$response = json_decode($response);
+		
+		if (isset($response->Errors))
+		{
+			return false;
+		}
 		return true;
 	}
 	
@@ -951,128 +1042,5 @@ class Myob extends MX_Controller {
 			
 		);
 		return ($employee_payroll);
-	}
-		
-	function connect4()
-	{
-		$cloud_api_url = 'https://api.myob.com/accountright/';
-		$api_key = '6k2r6jwjj2a7t9qmh9n338w2';
-		$api_secret = 'EsJWfB3HXHGDke8RmZtpSfeS';
-		
-		$myob = new myob_api_oauth();
-		$redirect_url = 'http://sm.com/api/myob/connect';
-		$api_scope = 'CompanyFile';
-		$api_access_code = '';
-		if (!isset($_GET['code']))
-		{
-			$url = "https://secure.myob.com/oauth2/account/authorize?client_id=$api_key&redirect_uri=$redirect_url&response_type=code&scope=CompanyFile";
-			header("Location: $url");
-		}
-		$api_access_code = $_GET['code'];
-		$oauth_tokens = $myob->getAccessToken($api_key, $api_secret, $redirect_url, $api_access_code, $api_scope);
-		
-		if (isset($oauth_tokens->error)) {
-			header("Location: $redirect_url");
-		}
-		
-		$guid = $oauth_tokens->user->uid;
-		$guid = 'eaa033d6-6081-4b49-ab5e-e62f05ffa551'; # Sandbox
-		#var_dump($guid); die();
-		
-		#var_dump($oauth_tokens); die();
-		$employee = array(
-			'LastName' => 'Nguyen',
-			'FirstName' => 'Nam',
-			'IsIndividual' => 'True',
-		);
-		#$employee = json_encode($employee);
-		
-		$payroll = array(
-			'Name' => 'Advance',
-			'Type' => 'Wage',
-			'URI' => 'https://api.myob.com/accountright/eaa033d6-6081-4b49-ab5e-e62f05ffa551/Payroll/PayrollCategory/Wage/2ba32363-e120-4879-83aa-2f329a9a40f5'
-		);
-		
-		$wage = array(
-			'Name' => 'Base Hourly',
-			'Type' => 'Wage',
-			'WageType' => 'Hourly',
-			'HourlyDetails' => array(
-				'PayRate' => 'RegularRate',
-				'RegularRateMultiplier' => 1,
-				'FixedHourlyRate' => 50,
-				'AutomaticallyAdjustBaseAmounts' => true
-			)
-		);
-		
-				
-		$timesheet = array(
-			'Employee' => array(
-				'UID' => 'f4a40e1f-7a30-4555-baa5-3f41f8fb8033'
-			),			
-			'StartDate' => '2014-07-30 10:30:00',
-			'EndDate' => '2014-08-07 10:30:00',
-			'Lines' => array(array(
-				'PayrollCategory' => array(
-					'UID' => '2ba32363-e120-4879-83aa-2f329a9a40f5'
-				),
-				'Entries' => array(
-					array(
-						'Date' => '2014-08-02 09:00:00',
-						'Hours' => '8'
-					)
-				)
-			)),
-			
-		);
-		
-		$preferences = array(
-			'Timesheets' => array(
-				'UseTimesheetsFor' => 'Payroll',
-				'WeekStartsOn' => 'Monday'
-			)
-		);
-		
-		$params = json_encode($preferences);
-		#echo '<pre>'; print_r($params); echo '</pre>'; die();
-		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
-		$headers = array(
-			'Authorization: Bearer ' . $oauth_tokens->access_token,
-	        'x-myobapi-cftoken: '.$cftoken,
-	        'x-myobapi-key: ' . $api_key,
-	        'x-myobapi-version: v2',
-	        'Content-Type: application/json',
-	        #'Content-Length: ' . strlen($params)
-		);
-		
-		$url = $cloud_api_url . $guid . '/Payroll/Timesheet/f4a40e1f-7a30-4555-baa5-3f41f8fb8033';
-		
-		$url = $cloud_api_url . 'eaa033d6-6081-4b49-ab5e-e62f05ffa551/Contact/Employee';
-		
-		#var_dump($headers); die();
-		#var_dump($url); die();
-		#$params = http_build_query($employee);
-		 
-		#var_dump($params); die();
-		# 'LastName='.urlencode('Nguyen').'&FirstName='.urlencode('Nam').'&IsIndividual='.urlencode('true');
-		
-		#var_dump($params); die();
-		$session = curl_init($url); 
-		
-		
-		#curl_setopt($session, CURLOPT_POST, true); 
-		#curl_setopt($session, CURLOPT_CUSTOMREQUEST, "PUT");
-		#curl_setopt($session, CURLOPT_POSTFIELDS, $params); 
-		curl_setopt($session, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($session, CURLOPT_HEADER, false); 
-		curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($session, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		// get the response & close the session
-		$response = curl_exec($session); 
-		curl_close($session); 
-		// return what we got
-		var_dump($response);
 	}
 }

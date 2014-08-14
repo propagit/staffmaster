@@ -78,7 +78,7 @@ class Client_model extends CI_Model {
 	*	@param: $client_id, $data = array()
 	*	@return: (boolean)
 	*/
-	function update_client($user_id, $data)
+	function update_client($user_id, $data, $bypass_api=false)
 	{
 		$data = $this->prepare_client_data($data);
 		$log_data = array(
@@ -92,7 +92,12 @@ class Client_model extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		$updated = $this->db->update('user_clients', $data);
 		
-		$this->auto_update_client($user_id);
+		
+		if (!$bypass_api)
+		{
+			$this->auto_update_client($user_id);
+		}
+		
 		
 		return $updated;
 	}

@@ -837,7 +837,12 @@ class Staff extends MX_Controller {
 			if (!$this->config_model->get('myob_company_id'))
 			{
 				return;
+			}			
+			if ($external_id)
+			{
+				$external_id = modules::run('api/myob/connect', 'read_employee~' . $external_id);
 			}
+			
 			$platform = 'MYOB';
 		}
 		$data['user_id'] = $user_id;
