@@ -153,12 +153,13 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch);
 		$company = json_decode($response);
+		#var_dump($company); die();
 		if (isset($company[0]))
 		{
 			$this->config_model->add(array('key' => 'myob_company_id', 'value' => $company[0]->Id));
-			header("Location: " . base_url() . 'setting/integration');
+			#header("Location: " . base_url() . 'setting/integration');
 		}
-		header("Location: " . base_url() . 'setting/integration/failed');
+		header("Location: " . base_url() . 'setting/integration');
 	}
 	
 	function test()

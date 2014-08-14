@@ -43,9 +43,11 @@ else if (!$this->config_model->get('myob_company_id')) { ?>
 <? } 
 # Now test connection
 else if (!modules::run('api/myob/connect/test'))
-{ 
-	header("Location: " . base_url() . "api/myob/connect"); 		
-}
+{ ?>
+	<script>
+	window.location = '<?=base_url();?>api/myob/connect';
+	</script>
+<? }
 # Otherwise, all good
 else { ?>
 
