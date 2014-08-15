@@ -112,6 +112,8 @@ define('GST_YES', 1);
 define('GST_ADD', 2);
 define('TAX_FREE', 3);
 
+define('STAFF_PREFIX', 'SBEMP');
+define('CLIENT_PREFIX', 'SBCUS');
 
 define('LOG_WATCHED', 1);
 

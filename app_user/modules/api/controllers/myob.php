@@ -268,7 +268,9 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee';
+		
+		$filter = "filter=IsActive%20eq%20true";
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter;
 		
 		$ch = curl_init($url); 
 		
@@ -344,7 +346,7 @@ class Myob extends MX_Controller {
 			'LastName' => $staff['last_name'],
 			'FirstName' => $staff['first_name'],
 			'IsIndividual' => 'True',
-			'DisplayID' => 'SB' . $staff['user_id'],
+			'DisplayID' => STAFF_PREFIX . $staff['user_id'],
 			'IsActive' => 'True',
 			'Addresses' => array(
 				array(
@@ -395,7 +397,7 @@ class Myob extends MX_Controller {
 		}
 		
 		$this->load->model('staff/staff_model');
-		return $this->staff_model->update_staff($user_id, array('external_staff_id' => 'SB' . $user_id), true);		
+		return $this->staff_model->update_staff($user_id, array('external_staff_id' => STAFF_PREFIX . $user_id), true);		
 	}
 	
 	/**
@@ -602,7 +604,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer';
+		$filter = "filter=IsActive%20eq%20true";
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/?$' . $filter;
 		
 		$ch = curl_init($url); 
 		
@@ -617,6 +620,7 @@ class Myob extends MX_Controller {
 		$response = json_decode($response);
 		if (isset($response->Items))
 		{
+			#var_dump($response->Items);
 			return $response->Items;
 		}
 		return null;
@@ -654,6 +658,7 @@ class Myob extends MX_Controller {
 		$response = json_decode($response);
 		if (isset($response->Items[0]))
 		{
+			#var_dump($response->Items[0]);
 			return $response->Items[0];
 		}
 		return false;
@@ -678,7 +683,7 @@ class Myob extends MX_Controller {
 			'LastName' => isset($names[1]) ? $names[1] : $names[0],
 			'FirstName' => $names[0],
 			'IsIndividual' => 'False',
-			'DisplayID' => 'SBCUS' . $client['user_id'],
+			'DisplayID' => CLIENT_PREFIX . $client['user_id'],
 			'IsActive' => 'True',
 			'Addresses' => array(
 				array(
@@ -695,8 +700,8 @@ class Myob extends MX_Controller {
 				)
 			),
 			'Notes' => 'Imported from StaffBooks',
-			'ABN' => $client['abn'],
 			'SellingDetails' => array(
+				'ABN' => $client['abn'],
 				'TaxCode' => array(
 					'UID' => $this->taxcode()->UID
 				),
@@ -735,10 +740,11 @@ class Myob extends MX_Controller {
 		
 		if (isset($response->Errors))
 		{
-			return false;
+			$result = false;
 		}
 		$this->load->model('client/client_model');
-		return $this->client_model->update_client($user_id, array('external_client_id' => 'SBCUS' . $user_id), true);
+		$result = $this->client_model->update_client($user_id, array('external_client_id' => CLIENT_PREFIX . $user_id), true);
+		return $result;
 	}
 	
 	/**
@@ -783,8 +789,8 @@ class Myob extends MX_Controller {
 				)
 			),
 			'Notes' => 'Updated from StaffBooks',
-			'ABN' => $client['abn'],
 			'SellingDetails' => array(
+				'ABN' => $client['abn'],
 				'TaxCode' => array(
 					'UID' => $this->taxcode()->UID
 				),

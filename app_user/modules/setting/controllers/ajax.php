@@ -540,25 +540,34 @@ class Ajax extends MX_Controller {
 	
 	function sync_myob_staff()
 	{
+		$imported = 0;
+		$exported = 0;
+		$updated = 0;
+		$errors = 0;
+		
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
 		
 		# First get all employee from MYOB
-		$employee = modules::run('api/myob/connect', 'search_employee');
-		if (!$employee)
-		{
-			return;
-		}
+		$employee = modules::run('api/myob/connect/search_employee');
 		$e_ids = array();
+		
+		# Get all staff from StaffBooks
+		$staffs = $this->staff_model->search_staffs();
+		
+		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
 		foreach($employee as $e)
 		{
-			if ($e->DisplayID)
+			# Note: if employee doesnot have external id on MYOB (DisplayID), it won't be imported to StaffBooks
+			if ($e->DisplayID && $e->DisplayID != '*None')
 			{
-				$e_ids[] = $e->DisplayID;
 				$staff = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
-				if (!$staff)
+				if ($staff)
+				{					
+					$e_ids[] = $e->DisplayID;
+				}
+				else
 				{
-					$input = modules::run('api/myob/connect', 'read_employee~' . $e->DisplayID);
 					$user_data = array(
 						'status' => 1,
 						'is_admin' => 0,
@@ -567,51 +576,175 @@ class Ajax extends MX_Controller {
 						'email_address' => '',
 						'username' => '',
 						'password' => '',
-						'title' => $input->Addresses[0]->Salutation,
-						'first_name' => $input->FirstName,
-						'last_name' => $input->LastName,
-						'address' => $input->Addresses[0]->Street,
+						'title' => ($e->Addresses[0]->Salutation) ? $e->Addresses[0]->Salutation : '',
+						'first_name' => $e->FirstName,
+						'last_name' => $e->LastName,
+						'address' => ($e->Addresses[0]->Street) ? $e->Addresses[0]->Street : '',
 						'suburb' => '',
-						'city' => $input->Addresses[0]->City,
-						'state' => $input->Addresses[0]->State,
-						'postcode' => $input->Addresses[0]->PostCode,
-						'country' => $input->Addresses[0]->Country,
-						'phone' => $input->Addresses[0]->Phone1,
-						'mobile' => $input->Addresses[0]->Phone2			
+						'city' => ($e->Addresses[0]->City) ? $e->Addresses[0]->City : '',
+						'state' => ($e->Addresses[0]->State) ? $e->Addresses[0]->State : '',
+						'postcode' => ($e->Addresses[0]->PostCode) ? $e->Addresses[0]->PostCode : '',
+						'country' => ($e->Addresses[0]->Country) ? $e->Addresses[0]->Country : '',
+						'phone' => ($e->Addresses[0]->Phone1) ? $e->Addresses[0]->Phone1 : '',
+						'mobile' => ($e->Addresses[0]->Phone2) ? $e->Addresses[0]->Phone2 : ''			
 					);
 					$user_id = $this->user_model->insert_user($user_data);
-					
-					$staff_data = array(
-						'user_id' => $user_id,
-						'external_staff_id' => $e->DisplayID,
-						#'gender' => $input['Gender'],
-						#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
-						#'emergency_contact' => $input['EmergencyContact'],
-						#'emergency_phone' => $input['EmergencyPhone'],
-						#'f_tfn' => $input['SocialSecurity'],
-						#'f_acc_name'=> $input['BankName'],
-						#'f_bsb' => $input['BankNumber'],
-						#'f_acc_number' => $input['BankAccount']
-					);
-					$staff_id = $this->staff_model->insert_staff($staff_data, true);
+					if ($user_id)
+					{
+						$staff_data = array(
+							'user_id' => $user_id,
+							'external_staff_id' => $e->DisplayID,
+							#'gender' => $input['Gender'],
+							#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
+							#'emergency_contact' => $input['EmergencyContact'],
+							#'emergency_phone' => $input['EmergencyPhone'],
+							#'f_tfn' => $input['SocialSecurity'],
+							#'f_acc_name'=> $input['BankName'],
+							#'f_bsb' => $input['BankNumber'],
+							#'f_acc_number' => $input['BankAccount']
+						);
+						$staff_id = $this->staff_model->insert_staff($staff_data, true);
+						if ($staff_id)
+						{
+							$imported++;
+						}
+					}					
 				}
 			}						
 		}
 		
-		# Now transfer from Staffbooks to Shoebooks
-		$staff = $this->staff_model->search_staffs();
-		foreach($staff as $s)
+		# Now transfer from Staffbooks to MYOB				
+		foreach($staffs as $staff)
 		{
-			if (in_array($s['external_staff_id'], $e_ids)) 
+			if (in_array($staff['external_staff_id'], $e_ids)) 
 			{
 				# Update employee
-				modules::run('api/myob/connect', 'update_employee~' . $s['external_staff_id']);
+				if(modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id']))
+				{
+					$updated++;
+				}
 			}
 			else
 			{
 				# Add new employee
-				modules::run('api/myob/connect', 'append_employee~' . $s['user_id']);
+				if (modules::run('api/myob/connect', 'append_employee~' . $staff['user_id']))
+				{
+					$exported++;
+				}
+				else
+				{
+					$errors++;
+				}
 			}
 		}
+		
+		
+		$data['myob_total'] = count($employee);
+		$data['myob_old'] = count($e_ids);
+		$data['staffbooks_total'] = count($staffs);
+		$data['imported'] = $imported;
+		$data['exported'] = $exported;
+		$data['updated'] = $updated;
+		$data['errors'] = $errors;
+		$data['type'] = 'Staff';
+		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
+	}
+	
+	function sync_myob_client()
+	{
+		$imported = 0;
+		$exported = 0;
+		$updated = 0;
+		$errors = 0;
+		
+		$this->load->model('user/user_model');
+		$this->load->model('client/client_model');
+		
+		# Get all customers from MYOB
+		$customers = modules::run('api/myob/connect/search_customer');
+		$c_ids = array();
+		
+		# Get all clients from StaffBooks		
+		$clients = $this->client_model->search_clients();
+		
+		# Check if any customer is already in StaffBooks, otherwise add to StaffBooks
+		foreach($customers as $c)
+		{
+			# Note: if customer doesnot have external id on MYOB (DisplayID), it won't be imported to StaffBooks
+			if ($c->DisplayID && $c->DisplayID != '*None')
+			{				
+				$client = modules::run('client/get_client_by_external_id', $c->DisplayID);
+				if ($client)
+				{
+					$c_ids[] = $c->DisplayID;
+				}
+				else
+				{
+					$user_data = array(
+						'status' => CLIENT_ACTIVE,
+						'is_admin' => 0,
+						'is_staff' => 0,
+						'is_client' => 1,
+						'email_address' => isset($c->Addresses[0]->Email) ? $c->Addresses[0]->Email : '',
+						'username' => isset($c->Addresses[0]->Email) ? $c->Addresses[0]->Email : '',
+						'full_name' => ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName,
+						'address' => ($c->Addresses[0]->Street) ? $c->Addresses[0]->Street : '',
+						'suburb' => '',
+						'city' => ($c->Addresses[0]->City) ? $c->Addresses[0]->City : '',
+						'state' => ($c->Addresses[0]->State) ? $c->Addresses[0]->State : '',
+						'postcode' => ($c->Addresses[0]->PostCode) ? $c->Addresses[0]->PostCode : '',
+						'country' => ($c->Addresses[0]->Country) ? $c->Addresses[0]->Country : '',
+						'phone' => ($c->Addresses[0]->Phone1) ? $c->Addresses[0]->Phone1 : ''
+					);
+					$user_id = $this->user_model->insert_user($user_data);
+					if ($user_id)
+					{
+						$client_data = array(
+							'user_id' => $user_id,
+							'external_client_id' => $c->DisplayID,
+							'company_name' => ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName,
+							'abn' => isset($c->SellingDetails->ABN) ? $c->SellingDetails->ABN : ''
+						);
+						$client_id = $this->client_model->insert_client($client_data, true);
+						if ($client_id)
+						{
+							$imported++;
+						}
+					}
+				}
+			}
+		}
+		
+		# Now transfer from StaffBooks to MYOB
+		foreach($clients as $client)
+		{
+			if (in_array($client['external_client_id'], $c_ids))
+			{
+				if (modules::run('api/myob/connect/update_customer~' . $client['external_client_id']))
+				{
+					$updated++;
+				}
+			}
+			else
+			{
+				if (modules::run('api/myob/connect', 'append_customer~' . $client['user_id']))
+				{
+					$exported++;
+				}
+				else
+				{
+					$errors++;
+				}	
+			}
+		}
+		$data['myob_total'] = count($customers);
+		$data['myob_old'] = count($c_ids);
+		$data['staffbooks_total'] = count($clients);
+		$data['imported'] = $imported;
+		$data['exported'] = $exported;
+		$data['updated'] = $updated;
+		$data['errors'] = $errors;
+		$data['type'] = 'Clients';
+		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
 	}
 }

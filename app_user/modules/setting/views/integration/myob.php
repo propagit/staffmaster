@@ -121,6 +121,8 @@ else { ?>
 	</table>
 	</div>
 	
+	<div id="output"></div>
+	
 	<button type="button" class="btn btn-danger" id="btn-disconnect">Disconnect MYOB</button>
 	
 	<!-- Modal -->
@@ -148,8 +150,18 @@ else { ?>
 				type: "POST",
 				url: "<?=base_url();?>setting/ajax/sync_myob_staff",
 				success: function(html) {
-					//alert(html);
-					location.reload();
+					$('#order-message').html(html);
+				}
+			})
+		})
+		$('#btn-sync-client').click(function(){
+			$('.bs-modal-lg').modal('hide');
+			$('#waitingModal').modal('show');
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>setting/ajax/sync_myob_client",
+				success: function(html) {
+					$('#order-message').html(html);
 				}
 			})
 		})
@@ -174,6 +186,30 @@ else { ?>
 				type: "POST",
 				url: "<?=base_url();?>config/ajax/add",
 				data: {auto_update_staff: auto},
+				success: function(html) {}
+			})
+		})
+		$('#auto-add-client').click(function(){
+			var auto = '';
+			if ($(this).is(':checked')) {
+				auto = 1;
+			}
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>config/ajax/add",
+				data: {auto_add_client: auto},
+				success: function(html) {}
+			})
+		})
+		$('#auto-update-client').click(function(){
+			var auto = '';
+			if ($(this).is(':checked')) {
+				auto = 1;
+			}
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>config/ajax/add",
+				data: {auto_update_client: auto},
 				success: function(html) {}
 			})
 		})
