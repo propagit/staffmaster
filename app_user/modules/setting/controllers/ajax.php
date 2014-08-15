@@ -719,15 +719,16 @@ class Ajax extends MX_Controller {
 		}
 		
 		
-		$data['myob_total'] = count($employee);
-		$data['myob_old'] = count($e_ids);
+		$data['total'] = count($employee);
+		$data['old'] = count($e_ids);
 		$data['staffbooks_total'] = count($staffs);
 		$data['imported'] = $imported;
 		$data['exported'] = $exported;
 		$data['updated'] = $updated;
 		$data['errors'] = $errors;
 		$data['type'] = 'Staff';
-		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
+		$data['platform'] = 'MYOB';
+		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 	
 	function sync_myob_client()
@@ -817,14 +818,15 @@ class Ajax extends MX_Controller {
 				}	
 			}
 		}
-		$data['myob_total'] = count($customers);
-		$data['myob_old'] = count($c_ids);
+		$data['total'] = count($customers);
+		$data['old'] = count($c_ids);
 		$data['staffbooks_total'] = count($clients);
 		$data['imported'] = $imported;
 		$data['exported'] = $exported;
 		$data['updated'] = $updated;
 		$data['errors'] = $errors;
 		$data['type'] = 'Clients';
-		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
+		$data['platform'] = 'MYOB';
+		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 }
