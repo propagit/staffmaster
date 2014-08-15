@@ -726,9 +726,8 @@ class Ajax extends MX_Controller {
 		$data['exported'] = $exported;
 		$data['updated'] = $updated;
 		$data['errors'] = $errors;
-		$data['type'] = 'Staff';		
-		$data['platform'] = 'MYOB';
-		$this->load->view('integration/results', isset($data) ? $data : NULL);
+		$data['type'] = 'Staff';
+		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
 	}
 	
 	function sync_myob_client()
@@ -826,7 +825,6 @@ class Ajax extends MX_Controller {
 		$data['updated'] = $updated;
 		$data['errors'] = $errors;
 		$data['type'] = 'Clients';
-		$data['platform'] = 'MYOB';
-		$this->load->view('integration/results', isset($data) ? $data : NULL);
+		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
 	}
 }
