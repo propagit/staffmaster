@@ -417,17 +417,30 @@ class Ajax extends MX_Controller {
 	
 	function sync_shoebooks_staff()
 	{
+		$imported = 0;
+		$exported = 0;
+		$updated = 0;
+		$errors = 0;
+		
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
 		
 		# First get all employee from Shoebooks
 		$employee = modules::run('api/shoebooks/search_employee');
 		$e_ids = array();
+		
+		# Get all staff from StaffBooks
+		$staffs = $this->staff_model->search_staffs();
+		
+		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
 		foreach($employee as $e)
 		{
-			$e_ids[] = $e['DataID'];
 			$staff = modules::run('staff/get_staff_by_external_id', $e['DataID']);
-			if (!$staff)
+			if ($staff)
+			{
+				$e_ids[] = $e['DataID'];
+			}
+			else
 			{
 				$input = modules::run('api/shoebooks/read_employee', $e['DataID']);
 				$user_data = array(
@@ -446,54 +459,93 @@ class Ajax extends MX_Controller {
 					'city' => $input['City'],
 					'state' => $input['State'],
 					'postcode' => $input['Zip'],
-					'country' => $input['Country'],
-					#'phone' => $input['phone'],
-					#'mobile' => $input['mobile']			
+					'country' => $input['Country']			
 				);
 				$user_id = $this->user_model->insert_user($user_data);
-				
-				$staff_data = array(
-					'user_id' => $user_id,
-					'external_staff_id' => $e['DataID'],
-					'gender' => $input['Gender'],
-					'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
-					'emergency_contact' => $input['EmergencyContact'],
-					'emergency_phone' => $input['EmergencyPhone'],
-					'f_tfn' => $input['SocialSecurity'],
-					'f_acc_name'=> $input['BankName'],
-					'f_bsb' => $input['BankNumber'],
-					'f_acc_number' => $input['BankAccount']
-				);
-				$staff_id = $this->staff_model->insert_staff($staff_data, true);
+				if ($user_id)
+				{
+					$staff_data = array(
+						'user_id' => $user_id,
+						'external_staff_id' => $e['DataID'],
+						'gender' => $input['Gender'],
+						'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
+						'emergency_contact' => $input['EmergencyContact'],
+						'emergency_phone' => $input['EmergencyPhone'],
+						'f_tfn' => $input['SocialSecurity'],
+						'f_acc_name'=> $input['BankName'],
+						'f_bsb' => $input['BankNumber'],
+						'f_acc_number' => $input['BankAccount']
+					);					
+					$staff_id = $this->staff_model->insert_staff($staff_data, true);
+					if ($staff_id)
+					{
+						$imported++;
+					}
+				}				
 			}			
 		}
 		
-		# Now transfer from Staffbooks to Shoebooks
-		$staff = $this->staff_model->search_staffs();
-		foreach($staff as $s)
+		# Now transfer from Staffbooks to Shoebooks		
+		foreach($staffs as $staff)
 		{
-			if (in_array($s['external_staff_id'], $e_ids)) {
-				modules::run('api/shoebooks/update_employee', $s['external_staff_id']);
+			if (in_array($staff['external_staff_id'], $e_ids)) 
+			{
+				if(modules::run('api/shoebooks/update_employee', $staff['external_staff_id']))
+				{
+					$updated++;
+				}
 			}
 			else
 			{
-				modules::run('api/shoebooks/append_employee', $s['user_id']);
+				if(modules::run('api/shoebooks/append_employee', $staff['user_id']))
+				{
+					$exported++;
+				}
+				else
+				{
+					$errors++;
+				}
 			}
 		}
+		
+		$data['total'] = count($employee);
+		$data['old'] = count($e_ids);
+		$data['staffbooks_total'] = count($staffs);
+		$data['imported'] = $imported;
+		$data['exported'] = $exported;
+		$data['updated'] = $updated;
+		$data['errors'] = $errors;
+		$data['type'] = 'Staff';
+		$data['platform'] = 'Shoebooks';
+		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 	
 	function sync_shoebooks_client()
 	{
+		$imported = 0;
+		$exported = 0;
+		$updated = 0;
+		$errors = 0;
+		
 		$this->load->model('user/user_model');
 		$this->load->model('client/client_model');
 		
+		# Get all customers from Shoebooks
 		$customers = modules::run('api/shoebooks/search_customer');
 		$c_ids = array();
+		
+		# Get all clients from StaffBooks
+		$clients = $this->client_model->search_clients();
+		
+		# Check if any customer is already in StaffBooks, otherwise add to StaffBooks
 		foreach($customers as $c)
 		{
-			$c_ids[] = $c['DataID'];
 			$client = modules::run('client/get_client_by_external_id', $c['DataID']);
-			if (!$client)
+			if ($client)
+			{
+				$c_ids[] = $c['DataID'];
+			}
+			else
 			{
 				$input = modules::run('api/shoebooks/read_customer', $c['DataID']);
 				$user_data = array(
@@ -509,33 +561,59 @@ class Ajax extends MX_Controller {
 					'city' => $input['City'],
 					'state' => $input['State'],
 					'postcode' => $input['Zip'],
-					'country' => $input['Country'],
-					#'phone' => $input['phone']
+					'country' => $input['Country']
 				);
 				
 				$user_id = $this->user_model->insert_user($user_data);
-				
-				$client_data = array(
-					'user_id' => $user_id,
-					'external_client_id' => $c['DataID'],
-					'company_name' => $input['CompanyName'],
-					'abn' => $input['CompanyABN']
-				);
-				$client_id = $this->client_model->insert_client($client_data, true);
+				if ($user_id)
+				{
+					$client_data = array(
+						'user_id' => $user_id,
+						'external_client_id' => $c['DataID'],
+						'company_name' => $input['CompanyName'],
+						'abn' => $input['CompanyABN']
+					);
+					$client_id = $this->client_model->insert_client($client_data, true);
+					if ($client_id)
+					{
+						$imported++;
+					}
+				}				
 			}
 		}
 		
-		# Now transfer from Staffbooks to Shoebooks
-		$clients = $this->client_model->search_clients();
+		# Now transfer from Staffbooks to Shoebooks		
 		foreach($clients as $client)
 		{
-			if (in_array($client['external_client_id'], $c_ids)) {
-				modules::run('api/shoebooks/update_customer', $client['external_client_id']);
+			if (in_array($client['external_client_id'], $c_ids)) 
+			{
+				if (modules::run('api/shoebooks/update_customer', $client['external_client_id']))
+				{
+					$updated++;
+				}
 			}
-			else {
-				modules::run('api/shoebooks/append_customer', $client['user_id']);
+			else 
+			{
+				if (modules::run('api/shoebooks/append_customer', $client['user_id']))
+				{
+					$exported++;
+				}
+				else
+				{
+					$errors++;
+				}
 			}
 		}
+		$data['total'] = count($customers);
+		$data['old'] = count($c_ids);
+		$data['staffbooks_total'] = count($clients);
+		$data['imported'] = $imported;
+		$data['exported'] = $exported;
+		$data['updated'] = $updated;
+		$data['errors'] = $errors;
+		$data['type'] = 'Clients';
+		$data['platform'] = 'Shoebooks';
+		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 	
 	function sync_myob_staff()
@@ -591,6 +669,7 @@ class Ajax extends MX_Controller {
 					$user_id = $this->user_model->insert_user($user_data);
 					if ($user_id)
 					{
+						$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $e->DisplayID);
 						$staff_data = array(
 							'user_id' => $user_id,
 							'external_staff_id' => $e->DisplayID,
@@ -599,10 +678,11 @@ class Ajax extends MX_Controller {
 							#'emergency_contact' => $input['EmergencyContact'],
 							#'emergency_phone' => $input['EmergencyPhone'],
 							#'f_tfn' => $input['SocialSecurity'],
-							#'f_acc_name'=> $input['BankName'],
-							#'f_bsb' => $input['BankNumber'],
-							#'f_acc_number' => $input['BankAccount']
+							'f_acc_name'=> isset($payment_details->BankAccounts[0]->BankAccountName) ? $payment_details->BankAccounts[0]->BankAccountName : '',
+							'f_bsb' => isset($payment_details->BankAccounts[0]->BSBNumber) ? $payment_details->BankAccounts[0]->BSBNumber : '',
+							'f_acc_number' => isset($payment_details->BankAccounts[0]->BankAccountNumber) ? $payment_details->BankAccounts[0]->BankAccountNumber : ''
 						);
+						#var_dump($staff_data); die();
 						$staff_id = $this->staff_model->insert_staff($staff_data, true);
 						if ($staff_id)
 						{
@@ -646,8 +726,9 @@ class Ajax extends MX_Controller {
 		$data['exported'] = $exported;
 		$data['updated'] = $updated;
 		$data['errors'] = $errors;
-		$data['type'] = 'Staff';
-		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
+		$data['type'] = 'Staff';		
+		$data['platform'] = 'MYOB';
+		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 	
 	function sync_myob_client()
@@ -745,6 +826,7 @@ class Ajax extends MX_Controller {
 		$data['updated'] = $updated;
 		$data['errors'] = $errors;
 		$data['type'] = 'Clients';
-		$this->load->view('integration/myob_results', isset($data) ? $data : NULL);
+		$data['platform'] = 'MYOB';
+		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 }

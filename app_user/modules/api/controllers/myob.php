@@ -96,6 +96,9 @@ class Myob extends MX_Controller {
 			case 'search_employee':
 					$result = $this->search_employee();
 				break;
+			case 'read_employee_payment':
+					$result = $this->read_employee_payment($params[1]);
+				break;
 			case 'update_employee_payment':
 					$result = $this->update_employee_payment($params[1]);
 				break;
@@ -108,6 +111,9 @@ class Myob extends MX_Controller {
 			case 'update_customer':
 					$result = $this->update_customer($params[1]);
 				break;
+			case 'search_customer':
+					$result = $this->search_customer();
+				break;
 			case 'read_payroll':
 					$result = $this->read_payroll($params[1]);
 				break;
@@ -116,6 +122,9 @@ class Myob extends MX_Controller {
 				break;
 			case 'append_employee_payroll':
 					#$result = $this->append_employee_payroll();
+				break;
+			case 'read_activity':
+					$result = $this->read_activity($params[1]);
 				break;
 			case 'info':
 					$result = $this->info();
@@ -837,6 +846,37 @@ class Myob extends MX_Controller {
 		return true;
 	}
 	
+	function read_activity($external_id)
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
+		
+		$url = $this->cloud_api_url . $this->company_id . '/TimeBilling/Activity/?$' . $filter;
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		
+		$response = json_decode($response);
+		if (isset($response->Items[0]))
+		{
+			var_dump($response->Items[0]);
+			return $response->Items[0];
+		}
+		return null;
+	}
+	
 	function read_payroll($name)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -866,7 +906,6 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
 	
 	function read_timesheets($external_id)
 	{
@@ -935,14 +974,19 @@ class Myob extends MX_Controller {
 				}
 				
 				$payroll = $this->read_payroll(urlencode($earningID));
+				$customer = $this->read_customer($timesheet['external_client_id']);
+				#$activity = $this->read_activity();
+				
 				$lines[] = array(
 					'PayrollCategory' => array(
 						'UID' => $payroll->UID
 					),
 					'Job' => null,
 					'Activity' => null,
-					'Customer' => null,
-					'Notes' => $timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break,
+					'Customer' => ($customer) ? array(
+						'UID' => $customer->UID
+					) : null,
+					'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
 					'Entries' => array(
 						array(
 							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
@@ -1008,7 +1052,6 @@ class Myob extends MX_Controller {
 				$errors[] = $response->Errors;
 			}	
 		}
-		var_dump($errors);
 		return $errors;
 		
 	}

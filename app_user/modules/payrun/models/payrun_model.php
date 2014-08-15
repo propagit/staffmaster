@@ -14,7 +14,7 @@ class Payrun_model extends CI_Model {
 	}
 	
 	function get_export_timesheets($payrun_id) {
-		$sql = "SELECT t.*, j.name as job_name, uc.company_name as client,
+		$sql = "SELECT t.*, j.name as job_name, uc.company_name as client, uc.external_client_id as external_client_id,
 						pr.date_from, pr.date_to, pr.payable_date,
 						u.first_name, u.last_name, 
 						s.user_id, s.external_staff_id, 

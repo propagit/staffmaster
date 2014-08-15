@@ -125,7 +125,8 @@ $(function(){
 			type: "POST",
 			url: "<?=base_url();?>setting/ajax/sync_shoebooks_staff",
 			success: function(html) {
-				location.reload();
+				$('#order-message').html(html);
+				//location.reload();
 			}
 		})
 	})
@@ -136,7 +137,8 @@ $(function(){
 			type: "POST",
 			url: "<?=base_url();?>setting/ajax/sync_shoebooks_client",
 			success: function(html) {
-				location.reload();
+				$('#order-message').html(html);
+				//location.reload();
 			}
 		})
 	})

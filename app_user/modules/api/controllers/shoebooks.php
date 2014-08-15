@@ -153,7 +153,7 @@ class Shoebooks extends MX_Controller {
 		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
 			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
 		}		
-		$e_id = 'SB' . $staff['user_id'];
+		$e_id = STAFF_PREFIX . $staff['user_id'];
 		
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
@@ -294,7 +294,7 @@ class Shoebooks extends MX_Controller {
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
 		#return $result;
-		return false;
+		return true;
 	}
 	
 	function read_customer($id)
