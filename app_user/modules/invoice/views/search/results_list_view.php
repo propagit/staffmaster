@@ -27,6 +27,7 @@
 	<tr>
 		<? if (!$is_client) { ?>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
+		<th>External ID</th>
 		<? } ?>
 		<th class="center" width="80">Issued <i class="fa fa-sort sort-result" sort-by="issued_date"></i></th>
 		<th class="center" width="80">Due <i class="fa fa-sort sort-result" sort-by="due_date"></i></th>
@@ -53,6 +54,7 @@
 	<tr>
 		<? if (!$is_client) { ?>
 		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" /></td>
+		<td><?=$invoice['external_id'];?></td>
 		<? } ?>
 		<td class="wp-date center" width="80">
 			<span class="wk_day"><?=date('D', strtotime($invoice['issued_date']));?></span>

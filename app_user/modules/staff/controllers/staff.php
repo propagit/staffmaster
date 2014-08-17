@@ -832,6 +832,13 @@ class Staff extends MX_Controller {
 		{
 			return;
 		}
+		if ($platform == 'shoebooks')
+		{
+			if ($external_id)
+			{
+				$external_id = modules::run('api/shoebooks/read_employee', $external_id);
+			}
+		}
 		if ($platform == 'myob')
 		{
 			if (!$this->config_model->get('myob_company_id'))

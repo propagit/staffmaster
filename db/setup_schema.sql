@@ -1543,6 +1543,7 @@ INSERT INTO `information_sheet_config` (`information_sheet_config_id`, `element_
 
 CREATE TABLE IF NOT EXISTS `invoices` (
   `invoice_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `external_id` VARCHAR(20) NOT NULL,
   `invoice_number` varchar(100) NOT NULL,
   `po_number` varchar(100) NOT NULL,
   `client_id` bigint(20) NOT NULL,

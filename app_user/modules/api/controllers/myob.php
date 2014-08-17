@@ -355,7 +355,7 @@ class Myob extends MX_Controller {
 			'LastName' => $staff['last_name'],
 			'FirstName' => $staff['first_name'],
 			'IsIndividual' => 'True',
-			'DisplayID' => STAFF_PREFIX . $staff['user_id'],
+			'DisplayID' => ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'],
 			'IsActive' => 'True',
 			'Addresses' => array(
 				array(
@@ -692,7 +692,7 @@ class Myob extends MX_Controller {
 			'LastName' => isset($names[1]) ? $names[1] : $names[0],
 			'FirstName' => $names[0],
 			'IsIndividual' => 'False',
-			'DisplayID' => CLIENT_PREFIX . $client['user_id'],
+			'DisplayID' => ($client['external_client_id']) ? $client['external_client_id'] : CLIENT_PREFIX . $client['user_id'],
 			'IsActive' => 'True',
 			'Addresses' => array(
 				array(

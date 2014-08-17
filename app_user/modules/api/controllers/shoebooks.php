@@ -22,8 +22,8 @@ class Shoebooks extends MX_Controller {
 	
 	function index()
 	{
-		$a = $this->append_payslip(13);
-		var_dump($a);
+		#$a = $this->append_payslip(13);
+		#var_dump($a);
 	}
 	
 	function test() 
@@ -88,7 +88,7 @@ class Shoebooks extends MX_Controller {
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
-		if (isset($result['ReadEmployeeResult']['Employee']))
+		if ($result['ReadEmployeeResult']['Employee']['EmployeeID'])
 		{
 			return $result['ReadEmployeeResult']['Employee'];
 		}
@@ -153,7 +153,7 @@ class Shoebooks extends MX_Controller {
 		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
 			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
 		}		
-		$e_id = STAFF_PREFIX . $staff['user_id'];
+		$e_id = ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'];
 		
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
@@ -318,7 +318,8 @@ class Shoebooks extends MX_Controller {
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
-		if (isset($result['ReadCustomerResult']['Customer']))
+		#var_dump($result);
+		if (($result['ReadCustomerResult']['Customer']['CustomerID']))
 		{
 			return $result['ReadCustomerResult']['Customer'];
 		}
@@ -370,7 +371,7 @@ class Shoebooks extends MX_Controller {
 			return false;
 		}
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendCustomer';
-		$e_id = 'SB' . $client['user_id'];
+		$e_id = ($client['external_client_id']) ? $client['external_client_id'] : CLIENT_PREFIX . $client['user_id'];
 		$request = '<AppendCustomer xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>
@@ -408,6 +409,7 @@ class Shoebooks extends MX_Controller {
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
+		#var_dump($result);
 		if (isset($result['AppendCustomerResult']['NewRecordID']))
 		{
 			$this->load->model('client/client_model');
@@ -575,5 +577,157 @@ class Shoebooks extends MX_Controller {
 				
 		}
 		return $results;
+	}
+	
+	function read_invoice($external_id)
+	{
+		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadInvoice';
+		$request = '<ReadInvoice xmlns="http://www.shoebooks.com.au/accounting/v10/">
+			<Login>
+				<AccountName>' . $this->account_name . '</AccountName>
+				<LoginName>' . $this->login_name . '</LoginName>
+				<LoginPassword>' . $this->login_password . '</LoginPassword>
+				<SessionID></SessionID>
+			</Login>
+			<id>' . $external_id . '</id>
+		</ReadInvoice>';
+		$client = new nusoap_client($this->host);
+		$error = $client->getError();
+		if ($error)
+		{
+			#die("client construction error: {$error}\n");
+			return false;
+		}
+		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		$result = $client->send($msg, $action);
+		var_dump($result);
+		if (isset($result['ReadInvoiceResult']['Invoice']))
+		{
+			return $result['ReadInvoiceResult']['Invoice'];
+		}
+		return null;
+	}
+	
+	function append_invoice($invoice_id)
+	{
+		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendInvoice';
+		
+		$this->load->model('invoice/invoice_model');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		if (!$invoice)
+		{
+			return false;
+		}
+		
+		$client = modules::run('client/get_client', $invoice['client_id']);
+		
+		# Check if client is there
+		$customer = $this->read_customer($client['external_client_id']);
+		if (!$customer)
+		{
+			$this->append_customer($client['user_id']);
+			$client = modules::run('client/get_client', $client['user_id']);
+		}
+		
+		$request = '<AppendInvoice xmlns="http://www.shoebooks.com.au/accounting/v10/">
+			<Login>
+				<AccountName>' . $this->account_name . '</AccountName>
+				<LoginName>' . $this->login_name . '</LoginName>
+				<LoginPassword>' . $this->login_password . '</LoginPassword>
+				<SessionID></SessionID>
+			</Login>
+			<NewInvoice>
+				<CustomerID>' . $client['external_client_id'] . '</CustomerID>
+				<InvoiceDate>' . date('Y-m-d', strtotime($invoice['issued_date'])) . '</InvoiceDate>
+				<DueDate>' . date('Y-m-d', strtotime($invoice['due_date'])) . '</DueDate>
+				<CustomerPO>' . $invoice['po_number'] . '</CustomerPO>
+				<AccountID></AccountID>
+				<DivID>0</DivID>
+				<InvoiceLines>';
+		
+		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
+		
+		foreach($invoice_items as $item)
+		{
+			if ($item['include_timesheets']) # Item that include timesheets
+			{
+				$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice_id, $item['job_id']);
+				foreach($timesheets as $timesheet)
+				{
+					$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id'], 1);
+					$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+					
+					foreach($pay_rates as $pay_rate)
+					{
+						$break = '';
+						if ($pay_rate['break']) {
+							$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
+						}
+						$request .= '
+					<ARInvoiceLine>
+						<QtyOrdered>' . $pay_rate['hours'] . '</QtyOrdered>
+						<QtyShipped>' . $pay_rate['hours'] . '</QtyShipped>
+						<Description>' . trim($staff['first_name'] . ' ' . $staff['last_name'] . ' ' . date('H:ia', $pay_rate['start']) . ' - ' . date('H:ia', $pay_rate['finish']) . ' ' . $break) . '</Description>
+						<AccountID></AccountID>
+						<JobID></JobID>
+						<Taxable>Code1</Taxable>
+						<SalesPrice>' . $pay_rate['rate'] . '</SalesPrice>
+						<DivID>0</DivID>
+						<ItemDate>' . date('Y-m-d', $pay_rate['start']) . '</ItemDate>
+					</ARInvoiceLine>';
+					}
+				}
+			}
+			else
+			{
+				$tax = $item['tax'];
+				$amount = $item['amount'];
+				$tax_amount = 0;
+				$ex_tax_amount = $amount;
+				$inc_tax_amount = $amount;
+				if ($tax == GST_YES) {
+					$tax_amount = $amount/11;
+					$ex_tax_amount = $amount * 10/11;
+					$inc_tax_amount = $amount;
+				} else if ($tax == GST_ADD) {
+					$tax_amount = $amount / 10;
+					$ex_tax_amount = $amount;
+					$inc_tax_amount = $amount * 1.1;
+				}
+				
+				$request .= '
+					<ARInvoiceLine>
+						<QtyOrdered>1</QtyOrdered>
+						<Description>' . trim($item['title']) . '</Description>
+						<AccountID></AccountID>
+						<JobID></JobID>
+						<Taxable>Code1</Taxable>
+						<SalesPrice>' . $ex_tax_amount . '</SalesPrice>
+						<DivID>0</DivID>
+						<ItemDate>' . date('Y-m-d', $timesheet['start_time']) . '</ItemDate>
+					</ARInvoiceLine>';
+			}
+		}
+		
+		$request .= '
+				</InvoiceLines>
+			</NewInvoice>
+		</AppendInvoice>';
+		#var_dump($request); die();
+		$client = new nusoap_client($this->host);
+		$error = $client->getError();
+		if ($error)
+		{
+			#die("client construction error: {$error}\n");
+			return false;
+		}
+		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		$result = $client->send($msg, $action);
+		#var_dump($result);
+		if (isset($result['AppendInvoiceResult']['NewRecordID']))
+		{
+			return $this->invoice_model->update_invoice($invoice_id, array('external_id' => $result['AppendInvoiceResult']['NewRecordID']));
+		}
+		return false;
 	}
 }

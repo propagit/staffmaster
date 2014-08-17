@@ -1,0 +1,1 @@
+ALTER TABLE `invoices` ADD `external_id` VARCHAR(20) NOT NULL AFTER `invoice_id`;
