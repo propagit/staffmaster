@@ -137,7 +137,7 @@ class Myob extends MX_Controller {
 					$result = $this->company();
 				break;
 		}
-		var_dump($result);
+		#var_dump($result);
 		return $result;
 	}
 	
@@ -162,7 +162,7 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch);
 		$company = json_decode($response);
-		var_dump($company); die();
+		#var_dump($company); die();
 		if (isset($company[0]))
 		{
 			$this->config_model->add(array('key' => 'myob_company_id', 'value' => $company[0]->Id));
@@ -292,7 +292,7 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch);
 		$response = json_decode($response);
-		#var_dump($response); die();
+		var_dump($response); die();
 		if (isset($response->Items))
 		{
 			return $response->Items;
