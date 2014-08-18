@@ -1341,4 +1341,14 @@ class Ajax extends MX_Controller {
 		));
 		#$this->invoice_model->edit_invoice_timesheets($invoice['client_id'], $invoice_id);
 	}
+	
+	function push_shoebooks()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		if (modules::run('api/shoebooks/append_invoice', $invoice_id))
+		{
+			$invoice = $this->invoice_model->get_invoice($invoice_id);
+			echo $invoice['external_id'];
+		}
+	}
 }

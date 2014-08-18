@@ -27,7 +27,9 @@
 	<tr>
 		<? if (!$is_client) { ?>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
-		<th>External ID</th>
+			<? if ($this->config_model->get('accounting_platform') == 'shoebooks') { ?>
+			<th class="center">External ID</th>
+			<? } ?>
 		<? } ?>
 		<th class="center" width="80">Issued <i class="fa fa-sort sort-result" sort-by="issued_date"></i></th>
 		<th class="center" width="80">Due <i class="fa fa-sort sort-result" sort-by="due_date"></i></th>
@@ -54,7 +56,14 @@
 	<tr>
 		<? if (!$is_client) { ?>
 		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" /></td>
-		<td><?=$invoice['external_id'];?></td>
+			<? if ($this->config_model->get('accounting_platform') == 'shoebooks') { ?>
+			<td class="center">
+				<? if ($invoice['external_id']) { echo $invoice['external_id']; }
+				else { ?>
+				<button type="button" class="btn btn-primary btn-block btn-push-shoebooks" data-id="<?=$invoice['invoice_id'];?>" data-loading-text="Pushing...">Push</button>
+				<? } ?>
+			</td>
+			<? } ?>
 		<? } ?>
 		<td class="wp-date center" width="80">
 			<span class="wk_day"><?=date('D', strtotime($invoice['issued_date']));?></span>
@@ -152,7 +161,20 @@ $(function(){
 		get_email_model('#single-invoice-email-form');
 
 	});
-
+	$('.btn-push-shoebooks').click(function(){
+		var btn = $(this);
+		btn.button('loading');
+		var invoice_id = $(this).attr('data-id');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>invoice/ajax/push_shoebooks",
+			data: {invoice_id: invoice_id},
+			success: function(html) {
+				btn.button('reset');
+				btn.parent().html(html);
+			}
+		})
+	});
 });//ready
 function mark_as_paid(invoice_id) {
 	$.ajax({
