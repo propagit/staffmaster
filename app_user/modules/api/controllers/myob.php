@@ -166,6 +166,10 @@ class Myob extends MX_Controller {
 		if (isset($company[0]))
 		{
 			$this->config_model->add(array('key' => 'myob_company_id', 'value' => $company[0]->Id));
+		}
+		if (isset($company[1]))
+		{
+			$this->config_model->add(array('key' => 'myob_company_id', 'value' => $company[1]->Id));
 			#header("Location: " . base_url() . 'setting/integration');
 		}
 		header("Location: " . base_url() . 'setting/integration');
