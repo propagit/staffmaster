@@ -137,7 +137,7 @@ class Myob extends MX_Controller {
 					$result = $this->company();
 				break;
 		}
-		#var_dump($result);
+		var_dump($result);
 		return $result;
 	}
 	
