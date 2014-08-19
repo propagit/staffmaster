@@ -663,6 +663,7 @@ class Shoebooks extends MX_Controller {
 						if ($pay_rate['break']) {
 							$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 						}
+						# Taxable = 'Code2' which is always tax included
 						$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>' . $pay_rate['hours'] . '</QtyOrdered>
@@ -670,7 +671,7 @@ class Shoebooks extends MX_Controller {
 						<Description>' . trim($staff['first_name'] . ' ' . $staff['last_name'] . ' ' . date('H:ia', $pay_rate['start']) . ' - ' . date('H:ia', $pay_rate['finish']) . ' ' . $break) . '</Description>
 						<AccountID></AccountID>
 						<JobID></JobID>
-						<Taxable>Code1</Taxable>
+						<Taxable>Code2</Taxable>
 						<SalesPrice>' . $pay_rate['rate'] . '</SalesPrice>
 						<DivID>0</DivID>
 						<ItemDate>' . date('Y-m-d', $pay_rate['start']) . '</ItemDate>
@@ -685,23 +686,25 @@ class Shoebooks extends MX_Controller {
 				$tax_amount = 0;
 				$ex_tax_amount = $amount;
 				$inc_tax_amount = $amount;
+				$taxable = 'None';
 				if ($tax == GST_YES) {
 					$tax_amount = $amount/11;
 					$ex_tax_amount = $amount * 10/11;
 					$inc_tax_amount = $amount;
+					$taxable = 'Code1';
 				} else if ($tax == GST_ADD) {
 					$tax_amount = $amount / 10;
 					$ex_tax_amount = $amount;
 					$inc_tax_amount = $amount * 1.1;
-				}
-				
+					$taxable = 'Code1';
+				} 
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
 						<Description>' . trim($item['title']) . '</Description>
 						<AccountID></AccountID>
 						<JobID></JobID>
-						<Taxable>Code1</Taxable>
+						<Taxable>' . $taxable . '</Taxable>
 						<SalesPrice>' . $ex_tax_amount . '</SalesPrice>
 						<DivID>0</DivID>
 						<ItemDate>' . date('Y-m-d', $timesheet['start_time']) . '</ItemDate>
