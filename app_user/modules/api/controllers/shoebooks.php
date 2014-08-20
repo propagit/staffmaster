@@ -663,7 +663,8 @@ class Shoebooks extends MX_Controller {
 						if ($pay_rate['break']) {
 							$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 						}
-						# Taxable = 'Code2' which is always tax included
+						# Taxable = 'Code1' which is always tax included
+						$rate = $pay_rate['rate'] * 10 / 11;
 						$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>' . $pay_rate['hours'] . '</QtyOrdered>
@@ -671,8 +672,8 @@ class Shoebooks extends MX_Controller {
 						<Description>' . trim($staff['first_name'] . ' ' . $staff['last_name'] . ' ' . date('H:ia', $pay_rate['start']) . ' - ' . date('H:ia', $pay_rate['finish']) . ' ' . $break) . '</Description>
 						<AccountID></AccountID>
 						<JobID></JobID>
-						<Taxable>Code2</Taxable>
-						<SalesPrice>' . $pay_rate['rate'] . '</SalesPrice>
+						<Taxable>Code1</Taxable>
+						<SalesPrice>' . $rate . '</SalesPrice>
 						<DivID>0</DivID>
 						<ItemDate>' . date('Y-m-d', $pay_rate['start']) . '</ItemDate>
 					</ARInvoiceLine>';
