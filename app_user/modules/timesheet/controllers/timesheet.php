@@ -216,8 +216,9 @@ class Timesheet extends MX_Controller {
 			{
 				$length = $break->length;
 				$start_at = $break->start_at;
-				for($i=0; $i <= $length; $i = $i + 60*15) { # Every 15 minute
-					$start_at = $start_at + $i;
+				for($i=$start_at; $i < $start_at + $length; $i = $i + 60*15) {
+				#for($i=0; $i <= $length; $i = $i + 60*15) { # Every 15 minute
+					#$start_at = $start_at + $i;
 					$day = date('N', $i);
 					$hour = date('G', $i);
 					$total_amount_staff -= $this->payrate_model->get_payrate_data($payrate_id, 0, $day, $hour)/4;
