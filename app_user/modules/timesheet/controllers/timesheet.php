@@ -216,7 +216,7 @@ class Timesheet extends MX_Controller {
 			{
 				$length = $break->length;
 				$start_at = $break->start_at;
-				for($i=0; $i < $length; $i = $i + 60*15) { # Every 15 minute
+				for($i=0; $i <= $length; $i = $i + 60*15) { # Every 15 minute
 					$start_at = $start_at + $i;
 					$day = date('N', $i);
 					$hour = date('G', $i);
