@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<link rel="shortcut icon" href="<?=base_url();?>assets/img/favicon.ico">
 	<title>Login &middot; <?=$title;?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 

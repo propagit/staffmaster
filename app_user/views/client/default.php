@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
+	<link rel="shortcut icon" href="<?=base_url();?>assets/img/favicon.ico">
 	<title><?=$title;?> &middot; Client Portal &middot; <?=SITE_NAME;?></title>
 	
 	
