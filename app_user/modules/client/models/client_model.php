@@ -304,4 +304,7 @@ class Client_model extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		return $this->db->delete('user_client_venue_restrict');
 	}
+	
+	
+	
 }

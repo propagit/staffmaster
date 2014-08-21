@@ -935,4 +935,6 @@ class Staff_model extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		return $this->db->delete('user_staff_payrate_restrict');
 	}
+	
+
 }

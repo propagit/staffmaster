@@ -857,4 +857,6 @@ class Staff extends MX_Controller {
 		$data['platform'] = $platform;
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
+	
+	
 }
