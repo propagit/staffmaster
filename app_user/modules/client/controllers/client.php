@@ -284,7 +284,7 @@ class Client extends MX_Controller {
 	}
 	
 	# function to remove duplicate client
-	function _remove_duplicate()
+	function remove_duplicate()
 	{
 		$this->load->library('excel');
 		$file_name = UPLOADS_PATH.'/tmp/CUST.csv';

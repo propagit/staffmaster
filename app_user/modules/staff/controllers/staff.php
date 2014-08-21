@@ -899,7 +899,7 @@ class Staff extends MX_Controller {
 		echo $count;
 	
 		# get csv of records not updated
-		/*$csvdir = getcwd();
+		$csvdir = getcwd();
 		$csvname = 'staff-update-errors'.date('d-m-Y');
 		$csvname = $csvname.'.csv';
 		header('Content-type: application/csv; charset=utf-8;');
@@ -914,6 +914,6 @@ class Staff extends MX_Controller {
 						$not['B'],$not['A'],$not['C'],$not['D']
 					));
 		}
-		fclose($fp);	*/
+		fclose($fp);	
 	}
 }
