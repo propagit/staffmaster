@@ -304,4 +304,12 @@ class Client_model extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		return $this->db->delete('user_client_venue_restrict');
 	}
+	
+	# temp function to assist in removing duplicate client
+	function get_client_by_company($company){
+		$this->db->where('company_name', $company);	
+		return $this->db->get('user_clients')
+						->result_array();
+	}
+	
 }

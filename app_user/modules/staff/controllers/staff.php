@@ -68,6 +68,9 @@ class Staff extends MX_Controller {
 			case 'copy_files':
 					$this->copy_files();
 				break;
+			case 'update_external_id':
+					$this->update_external_id();
+				break;
 			default:
 					echo 'do nothing';
 				break;
@@ -856,5 +859,61 @@ class Staff extends MX_Controller {
 		$data['external_id'] = $external_id;
 		$data['platform'] = $platform;
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
+	}
+	
+	function update_external_id()
+	{
+		$this->load->library('excel');
+		$file_name = UPLOADS_PATH.'/tmp/EMPLOY.csv';
+		$savedValueBinder = PHPExcel_Cell::getValueBinder();
+        PHPExcel_Cell::setValueBinder(new TextValueBinder());
+		
+        
+		$objReader = PHPExcel_IOFactory::createReader('CSV');
+		$objPHPExcel = $objReader->load($file_name);
+		
+		PHPExcel_Cell::setValueBinder($savedValueBinder);
+		
+		$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);	
+		# echo '<pre>' . print_r($sheetData,true) . '</pre>';exit();
+		$count = 0;
+		$not_updated = array();
+		foreach($sheetData as $data){
+			$email = trim($data['D']);
+			if($email){
+				$staff = $this->staff_model->get_staff_by_email($email);
+				if($staff){
+					#echo $staff['user_id']; 
+					if($data['C'] && $data['C'] != '*None'){
+						$this->db->where('user_id',$staff['user_id'])
+							 	 ->update('user_staffs',array('external_staff_id' => $data['C']));	
+						$count++;
+						#echo $staff['user_id'];
+					}
+				}
+			}else{
+				$not_updated[] = $data;			
+			}
+		}
+		
+		echo $count;
+	
+		# get csv of records not updated
+		/*$csvdir = getcwd();
+		$csvname = 'staff-update-errors'.date('d-m-Y');
+		$csvname = $csvname.'.csv';
+		header('Content-type: application/csv; charset=utf-8;');
+        header("Content-Disposition: attachment; filename=$csvname");
+		$fp = fopen("php://output", 'w');
+		
+		$headings = array('First Name', 'Last Name', 'External ID', 'Email');
+		fputcsv($fp,$headings);
+		
+		foreach ($not_updated as $not){
+			fputcsv($fp,array(
+						$not['B'],$not['A'],$not['C'],$not['D']
+					));
+		}
+		fclose($fp);	*/
 	}
 }
