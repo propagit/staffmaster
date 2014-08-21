@@ -936,14 +936,5 @@ class Staff_model extends CI_Model {
 		return $this->db->delete('user_staff_payrate_restrict');
 	}
 	
-	function get_staff_by_email($email)
-	{
-		$sql = "SELECT s.*, u.*
-				FROM user_staffs s
-					LEFT JOIN users u ON s.user_id = u.user_id
-				WHERE u.username = '" . $email . "'
-					 AND u.status >= " . STAFF_INACTIVE;
-		$query = $this->db->query($sql);
-		return $query->first_row('array');	
-	}
+
 }

@@ -39,9 +39,6 @@ class Client extends MX_Controller {
 			case 'update_client_jobs_count':
 				$this->update_client_jobs_count($param);
 				break;
-			case 'remove_duplicate':
-				$this->remove_duplicate();
-				break;
 			default:
 					echo 'do nothing';
 				break;
@@ -283,37 +280,5 @@ class Client extends MX_Controller {
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
 	
-	# function to remove duplicate client
-	function remove_duplicate()
-	{
-		$this->load->library('excel');
-		$file_name = UPLOADS_PATH.'/tmp/CUST.csv';
-		$savedValueBinder = PHPExcel_Cell::getValueBinder();
-        PHPExcel_Cell::setValueBinder(new TextValueBinder());
-		
-        
-		$objReader = PHPExcel_IOFactory::createReader('CSV');
-		$objPHPExcel = $objReader->load($file_name);
-		
-		PHPExcel_Cell::setValueBinder($savedValueBinder);
-		
-		$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);	
-		# echo '<pre>' . print_r($sheetData,true) . '</pre>';
-		$count = 0;
-		foreach($sheetData as $data){
-			$clients = $this->client_model->get_client_by_company($data['A']);
-			if($clients){
-				foreach($clients as $c){
-					if($c['external_client_id'])	{
-						if($c['external_client_id'] != $data['B']){
-							$this->client_model->delete_client($c['user_id']);
-							echo 'removed - ' . $c['user_id'] . $c['external_client_id'] . '<br>';	
-							$count++;
-						}
-					}
-				}
-			}
-		}
-		echo 'total - ' . $count;
-	}
+	
 }
