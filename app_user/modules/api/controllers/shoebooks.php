@@ -687,28 +687,24 @@ class Shoebooks extends MX_Controller {
 				$tax_amount = 0;
 				$ex_tax_amount = $amount;
 				$inc_tax_amount = $amount;
-				$taxable = 'None';
-				if ($tax == GST_YES) {
+				$taxable = 'Code2';
+				if ($tax == GST_YES || $tax == GST_ADD) {
 					$tax_amount = $amount/11;
 					$ex_tax_amount = $amount * 10/11;
 					$inc_tax_amount = $amount;
-					$taxable = 'Code1';
-				} else if ($tax == GST_ADD) {
-					$tax_amount = $amount / 10;
-					$ex_tax_amount = $amount;
-					$inc_tax_amount = $amount * 1.1;
 					$taxable = 'Code1';
 				} 
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
+						<QtyShipped>1</QtyShipped>
 						<Description>' . trim($item['title']) . '</Description>
 						<AccountID></AccountID>
 						<JobID></JobID>
 						<Taxable>' . $taxable . '</Taxable>
 						<SalesPrice>' . $ex_tax_amount . '</SalesPrice>
 						<DivID>0</DivID>
-						<ItemDate>' . date('Y-m-d', $timesheet['start_time']) . '</ItemDate>
+						<ItemDate>' . date('Y-m-d', strtotime($invoice['issued_date'])) . '</ItemDate>
 					</ARInvoiceLine>';
 			}
 		}
