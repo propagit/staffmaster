@@ -390,6 +390,11 @@ class Ajax extends MX_Controller {
 		$this->load->view('system_settings/edit_information_sheet', isset($data) ? $data : NULL);
 	}
 	
+	function edit_others()
+	{
+		$this->load->view('system_settings/edit_others', isset($data) ? $data : NULL);
+	}
+	
 	function update_information_sheet()
 	{
 		$information_sheet_id = $this->input->post('information_sheet_id');	

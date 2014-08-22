@@ -192,7 +192,11 @@ class Timesheet extends MX_Controller {
 	function update_timesheet_hour_rate($timesheet_id) {
 		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
 		$payrate_id = $timesheet['payrate_id'];
-		$client_payrate_id = ($timesheet['client_payrate_id']) $timesheet['client_payrate_id'] ? $payrate_id;
+		$client_payrate_id = $payrate_id;
+		if ($this->config_model->get('separate_client_payrate') && $timesheet['client_payrate_id'])
+		{
+			$client_payrate_id = $timesheet['client_payrate_id'];
+		}
 		$start_time = $timesheet['start_time'];
 		$finish_time = $timesheet['finish_time'];
 		$total_mins = 0;

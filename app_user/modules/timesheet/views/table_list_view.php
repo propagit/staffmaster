@@ -34,6 +34,7 @@
 	</table>
 	</div>
 	<div id="wrapper_ts_break" class="hide"></div>
+	<div id="wrapper_ts_payrate" class="hide"></div>
 	<div id="wrapper_ts_staff" class="hide"></div>
 </div>
 <script>
@@ -57,15 +58,6 @@ function init_edit() {
 		});
 	})
 	
-	$('.ts_start_time').on('shown', function(e, editable) {
-		$('#wrapper_ts').find('.popover-break').hide();
-	});
-	$('.ts_finish_time').on('shown', function(e, editable) {
-		$('#wrapper_ts').find('.popover-break').hide();
-	});
-	$('.ts_payrate').on('shown', function(e, editable) {
-		$('#wrapper_ts').find('.popover-break').hide();
-	});
 	$('.ts_start_time').editable({
 		combodate: {
             firstItem: '',
@@ -96,7 +88,8 @@ function init_edit() {
 			}
         }
     });
-    $('.ts_payrate').editable({
+    /*
+$('.ts_payrate').editable({
 		url: '<?=base_url();?>timesheet/ajax/update_timesheet_payrate',
 		name: 'payrate_id',
 		title: 'Select Pay Rate',
@@ -105,6 +98,28 @@ function init_edit() {
 	        refrest_timesheet($(this).attr('data-pk'));
         }
 	});
+*/
+	
+	$('.ts_payrate').popover({
+		html: true,
+		placement: 'bottom',
+		trigger: 'manual',
+		selector: false,
+		title: 'Select Pay Rate',
+		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+		content: function(){
+			return $('#wrapper_ts_payrate').html();
+		}
+	})
+	
+	$('body').on('click', function (e) {
+	    $('[data-toggle=popover]').each(function () {
+	        // hide any open popovers when the anywhere else in the body is clicked
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+    });
 	var tmp = $.fn.popover.Constructor.prototype.show;
 	$.fn.popover.Constructor.prototype.show = function () {
 	  tmp.call(this);
@@ -222,6 +237,22 @@ function load_ts_breaks(obj) {
 		$('.break-cancel').click(function(){
 			$('.ts_breaks').popover('hide');
 		})
+	})
+}
+function load_ts_payrate(obj) {
+	$('#wrapper_ts_payrate').html('');
+	$('#wrapper_js').find('.popover-break').hide();
+	var pk = $(obj).attr('data-pk');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>timesheet/ajax/load_ts_payrates",
+		data: {pk: pk},
+		success: function(html)
+		{
+			$('#wrapper_ts_payrate').html(html);
+		}
+	}).done(function(){
+		$(obj).popover('show');
 	})
 }
 function load_ts_staff(obj) {

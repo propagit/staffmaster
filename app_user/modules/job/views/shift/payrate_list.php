@@ -1,13 +1,11 @@
 <div id="update-shift-payrate" style="width: 240px;">
 	<span id="staff_payrates"><?=modules::run('attribute/payrate/field_select', 'payrate_id', $shift['payrate_id']);?></span>
 	
-	<div class="checkbox pull-left">
-		<label>
-			<input type="checkbox" id="separate_client_payrate" <?=($this->config_model->get('separate_client_payrate')) ? 'checked' : '';?>> Separate client pay rate
-		</label>
-	</div>
-  
-	<span id="client_payrates"></span>
+	<? if($this->config_model->get('separate_client_payrate')) {
+		$client_payrate_id = ($shift['client_payrate_id']) ? $shift['client_payrate_id'] : $shift['payrate_id'];
+		echo '<br /><br />' . modules::run('attribute/payrate/field_select', 'client_payrate_id', $client_payrate_id);
+		
+	} ?>
 	
 	<div class="clearfix" style="margin-bottom:5px;"></div>
 	<button id="btn-update-payrate" class="btn btn-sm btn-core"><i class="fa fa-check"></i></button>
@@ -46,36 +44,5 @@ $(function(){
 			}
 		})
 	})
-	$('#separate_client_payrate').click(function(){
-		var on = '';
-		if ($(this).is(':checked')) {
-			on = 1;
-		}
-		$.ajax({
-			type: "POST",
-			url: "<?=base_url();?>config/ajax/add",
-			data: {separate_client_payrate: on},
-			success: function(html) {
-				load_client_payrates();
-			}
-		})
-	})
-	load_client_payrates();
 })
-function load_client_payrates()
-{
-	var on = $('#separate_client_payrate').is(':checked');
-	if (on) {
-		$.ajax({
-			type: "POST",
-			url: "<?=base_url();?>job/ajax_shift/load_client_payrates",
-			data: {payrate_id: <?=($shift['client_payrate_id']) ? $shift['client_payrate_id'] : $shift['payrate_id'];?>},
-			success: function(html) {
-				$('#client_payrates').html(html);
-			}
-		})
-	} else {
-		$('#client_payrates').html('');
-	}
-}
 </script>

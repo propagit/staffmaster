@@ -32,8 +32,9 @@
 	<td class="center">
 		<a class="update_link shift_payrate" onclick="load_shift_payrate(this)" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover">
 			<?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?>
-			<? if($shift['client_payrate_id']) { ?>
-				<br /><span class="text-muted"><?=modules::run('attribute/payrate/display_payrate', $shift['client_payrate_id']);?></span>
+			<? if($this->config_model->get('separate_client_payrate')) { 
+				$client_payrate_id = ($shift['client_payrate_id']) ? $shift['client_payrate_id'] : $shift['payrate_id']; ?>
+				<br /><span class="text-muted"><?=modules::run('attribute/payrate/display_payrate', $client_payrate_id);?></span>
 			<? } ?>
 		</a>
 	</td>

@@ -36,7 +36,7 @@
 		</a>
 	</td>
 	<td class="center">
-		<a href="#" class="ts_payrate prim-color-to-txt-color" data-type="select" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=$timesheet['payrate_id'];?>">
+		<a class="ts_payrate prim-color-to-txt-color" onclick="load_ts_payrate(this)" data-pk="<?=$timesheet['timesheet_id'];?>" data-toggle="popover">
 			<? if ($timesheet['payrate_id'] != $shift['payrate_id']) { ?>
 			<span class="text-red">
 				<?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?>
@@ -44,6 +44,16 @@
 			<? } else { ?>
 			<?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?>
 			<? } ?>
+			
+			<? if($this->config_model->get('separate_client_payrate')) { 
+				$shift_client_payrate_id = ($shift['client_payrate_id']) ? $shift['client_payrate_id'] : $shift['payrate_id'];
+				$client_payrate_id = ($timesheet['client_payrate_id']) ? $timesheet['client_payrate_id'] : $timesheet['payrate_id']; 
+				if ($shift_client_payrate_id != $client_payrate_id) { ?>
+				<br /><span class="text-red"><?=modules::run('attribute/payrate/display_payrate', $client_payrate_id);?></span>
+				<? } else { ?>
+				<br /><span class="text-muted"><?=modules::run('attribute/payrate/display_payrate', $client_payrate_id);?></span>
+				<? }
+			} ?>
 		</a>
 	</td>
 	<td>

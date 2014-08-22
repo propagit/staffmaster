@@ -152,7 +152,11 @@ class Ajax extends MX_Controller {
 	*/
 	function update_timesheet_payrate() {
 		$timesheet_id = $this->input->post('pk');
-		$this->timesheet_model->update_timesheet($timesheet_id, array('payrate_id' => $this->input->post('value')));
+		$this->timesheet_model->update_timesheet($timesheet_id, array(
+			'payrate_id' => $this->input->post('value'),
+			'client_payrate_id' => $this->input->post('client_payrate_id')
+		));
+		echo modules::run('timesheet/row_timesheet', $timesheet_id);
 	}
 	
 	/**
@@ -165,6 +169,14 @@ class Ajax extends MX_Controller {
 	function refresh_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
 		echo modules::run('timesheet/row_timesheet', $timesheet_id);
+	}
+	
+	function load_ts_payrates() {
+		$timesheet_id = $this->input->post('pk');
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$data['timesheet'] = $timesheet;
+		#$data['payrates'] = $this->staff_model->get_active_payrates($shift['staff_id']);
+		$this->load->view('edit/payrate_list', isset($data) ? $data : NULL);
 	}
 	
 	/**
