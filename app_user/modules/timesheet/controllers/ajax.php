@@ -26,7 +26,7 @@ class Ajax extends MX_Controller {
 			
 			$copy_fields = array('shift_id','job_id','staff_id','supervisor_id',
 					'job_date','start_time','finish_time','break_time',
-					'venue_id','role_id','uniform_id','payrate_id','expenses');
+					'venue_id','role_id','uniform_id','payrate_id', 'client_payrate_id','expenses');
 					
 			$timesheet = array();
 			foreach($copy_fields as $field) {

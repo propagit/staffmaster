@@ -954,6 +954,10 @@ class Ajax_shift extends MX_Controller {
 		$this->load->view('shift/payrate_list', isset($data) ? $data : NULL);
 	}
 	
+	function load_client_payrates() {
+		echo modules::run('attribute/payrate/field_select', 'client_payrate_id', $this->input->post('payrate_id'));
+	}
+	
 	function filter_payrate() {
 		$user_id = $this->input->post('user_id');
 		$payrate_id = $this->input->post('payrate_id');

@@ -29,7 +29,14 @@
 		<a id="shift_break_<?=$shift['shift_id'];?>" onclick="load_shift_breaks(this)" class="update_link shift_breaks editable-click" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover"><?=modules::run('common/break_time', $shift['break_time']);?></a>
 	</td>
 	<? if (!$is_client) { ?>
-	<td class="center"><a class="update_link shift_payrate" onclick="load_shift_payrate(this)" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover"><?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?></a></td>
+	<td class="center">
+		<a class="update_link shift_payrate" onclick="load_shift_payrate(this)" data-pk="<?=$shift['shift_id'];?>" data-toggle="popover">
+			<?=modules::run('attribute/payrate/display_payrate', $shift['payrate_id']);?>
+			<? if($shift['client_payrate_id']) { ?>
+				<br /><span class="text-muted"><?=modules::run('attribute/payrate/display_payrate', $shift['client_payrate_id']);?></span>
+			<? } ?>
+		</a>
+	</td>
 	<? } ?>
 	<td class="staff_assigned">
 		<?
