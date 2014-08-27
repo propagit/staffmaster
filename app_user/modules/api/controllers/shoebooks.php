@@ -90,6 +90,7 @@ class Shoebooks extends MX_Controller {
 		$result = $client->send($msg, $action);
 		if ($result['ReadEmployeeResult']['Employee']['EmployeeID'])
 		{
+			#var_dump($result['ReadEmployeeResult']['Employee']);
 			return $result['ReadEmployeeResult']['Employee'];
 		}
 		return null;
@@ -155,6 +156,14 @@ class Shoebooks extends MX_Controller {
 		}		
 		$e_id = ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'];
 		
+		$fund_name = $staff['s_fund_name'];
+		$membership = $staff['s_membership'];
+		if ($staff['s_choice'] == 'employer')
+		{
+			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+			$membership = modules::run('setting/superinformasi', 'super_product_id','');
+		}
+		
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>
@@ -187,8 +196,8 @@ class Shoebooks extends MX_Controller {
 				<BankAccount>' . $staff['f_acc_number'] . '</BankAccount>
 				<ExtraVendorID></ExtraVendorID>
 				<BankType></BankType>
-				<ExtraFundName>' . $staff['s_fund_name'] . '</ExtraFundName>
-				<ExtraFundNumber>' . $staff['s_membership'] . '</ExtraFundNumber>
+				<ExtraFundName>' . $fund_name . '</ExtraFundName>
+				<ExtraFundNumber>' . $membership . '</ExtraFundNumber>
 				<EmploymentType></EmploymentType>
 				<VendorID></VendorID>
 				<ContactNumbers>
