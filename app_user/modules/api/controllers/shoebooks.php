@@ -271,7 +271,7 @@ class Shoebooks extends MX_Controller {
 				<BankAccount>' . $staff['f_acc_number'] . '</BankAccount>
 				<ExtraVendorID></ExtraVendorID>
 				<BankType></BankType>
-				<ExtraFundName>' . ($staff['s_choice'] == 'own') ? $staff['s_fund_name'] : modules::run('setting/superinformasi', 'super_fund_name','') . '</ExtraFundName>
+				<ExtraFundName>' . $staff['s_fund_name'] . '</ExtraFundName>
 				<ExtraFundNumber>' . $staff['s_membership'] . '</ExtraFundNumber>
 				<EmploymentType></EmploymentType>
 				<VendorID></VendorID>
