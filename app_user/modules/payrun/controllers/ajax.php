@@ -249,7 +249,7 @@ class Ajax extends MX_Controller {
 						'ok' => true,
 						'export' => false,
 						'pushed_ok' => false,
-						'pushed_msg' => $result['msg'];
+						'pushed_msg' => $result['msg']
 					));
 					return;
 				}
