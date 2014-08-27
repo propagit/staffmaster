@@ -110,7 +110,8 @@ class Timesheet extends MX_Controller {
 		$pay_rates = array();
 		
 		$current_rate = null;
-		$current_group = '';
+		$payrate = $this->payrate_model->get_payrate($payrate_id);
+		$current_group = $payrate['name'];
 		$current_start = null;
 		$current_hours = 0;
 		for($i = $start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes

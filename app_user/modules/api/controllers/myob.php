@@ -120,11 +120,23 @@ class Myob extends MX_Controller {
 			case 'append_timesheets':
 					$result = $this->append_timesheets($params[1]);
 				break;
+			case 'read_invoices':
+					$result = $this->read_invoices();
+				break;
+			case 'read_invoice':
+					$result = $this->read_invoice($params[1]);
+				break;
+			case 'append_invoice':
+					$result = $this->append_invoice($params[1]);
+				break;
 			case 'append_employee_payroll':
 					#$result = $this->append_employee_payroll();
 				break;
 			case 'read_activity':
 					$result = $this->read_activity($params[1]);
+				break;
+			case 'read_accounts':
+					$result = $this->read_accounts($params[1]);
 				break;
 			case 'info':
 					$result = $this->info();
@@ -235,7 +247,7 @@ class Myob extends MX_Controller {
 		return $response;
 	}
 	
-	function taxcode()
+	function taxcode($code)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
@@ -245,7 +257,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		#var_dump($headers); die();
-		$url = $this->cloud_api_url . $this->company_id . '/GeneralLedger/TaxCode';
+		$filter = "filter=substringof('". $code ."',%20Code)%20eq%20true";
+		$url = $this->cloud_api_url . $this->company_id . '/GeneralLedger/TaxCode/?$' . $filter;
 		
 		$ch = curl_init($url); 
 		
@@ -258,10 +271,10 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch); 
 		curl_close($ch);
 		$response = json_decode($response);
-		if (isset($response->Items))
+		if (isset($response->Items[0]))
 		{
-			$items = $response->Items;
-			return $items[5];
+			#var_dump($response->Items[0]);
+			return $response->Items[0];
 		}
 		return null;
 	}
@@ -716,10 +729,10 @@ class Myob extends MX_Controller {
 			'SellingDetails' => array(
 				'ABN' => $client['abn'],
 				'TaxCode' => array(
-					'UID' => $this->taxcode()->UID
+					'UID' => $this->taxcode('GST')->UID
 				),
 				'FreightTaxCode' => array(
-					'UID' => $this->taxcode()->UID
+					'UID' => $this->taxcode('GST')->UID
 				)
 			),
 			'LastModified' => $client['modified_on']
@@ -805,10 +818,10 @@ class Myob extends MX_Controller {
 			'SellingDetails' => array(
 				'ABN' => $client['abn'],
 				'TaxCode' => array(
-					'UID' => $this->taxcode()->UID
+					'UID' => $this->taxcode('GST')->UID
 				),
 				'FreightTaxCode' => array(
-					'UID' => $this->taxcode()->UID
+					'UID' => $this->taxcode('GST')->UID
 				)
 			),
 			'LastModified' => $client['modified_on'],
@@ -850,6 +863,37 @@ class Myob extends MX_Controller {
 		return true;
 	}
 	
+	function read_accounts($class)
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		$filter = "filter=Classification%20eq%20'". $class ."'";
+		
+		$url = $this->cloud_api_url . $this->company_id . '/GeneralLedger/Account/?$' . $filter;
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		
+		$response = json_decode($response);
+		if (isset($response->Items))
+		{
+			#var_dump($response->Items);
+			return $response->Items;
+		}
+		return null;
+	}
+	
 	function read_activity($external_id)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -875,10 +919,66 @@ class Myob extends MX_Controller {
 		$response = json_decode($response);
 		if (isset($response->Items[0]))
 		{
-			var_dump($response->Items[0]);
+			#var_dump($response->Items[0]);
 			return $response->Items[0];
 		}
 		return null;
+	}
+	
+	function append_activity($external_id, $rate)
+	{
+		$activity = array(
+			'DisplayID' => $external_id,
+			'Name' => $external_id,
+			#'Description' => '',
+			'IsActive' => 'True',
+			'Type' => 'Hourly',
+			'UnitOfMeasurement' => 'Hour',
+			'Status' => 'Chargeable',
+			'ChargeableDetails' => array(
+				'UseDescriptionOnSales' => 'False',
+				'IncomeAccount' => null,
+				'TaxCode' => array(
+					'UID' => $this->taxcode('GST')->UID
+				),
+				'Rate' => 'ActivityRate',
+				'ActivityRateExcludingTax' => $rate * 10/11
+			)
+		);
+		$params = json_encode($activity);
+			
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/TimeBilling/Activity';
+		
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		var_dump($response);
+		$response = json_decode($response);
+		if (isset($response->Errors))
+		{
+			$errors[] = $response->Errors;
+		}
+		return $errors;
 	}
 	
 	function read_payroll($name)
@@ -960,7 +1060,10 @@ class Myob extends MX_Controller {
 			$employee = $this->read_employee($timesheet['external_staff_id']);
 			if (!$employee)
 			{
-				continue;
+				# Create new employee record in MYOB
+				$this->append_employee($timesheet['staff_id']);
+				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+				$employee = $this->read_employee($staff['external_staff_id']);
 			}
 			
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
@@ -1058,6 +1161,374 @@ class Myob extends MX_Controller {
 		}
 		return $errors;
 		
+	}
+	
+	function read_invoices()
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice';
+		
+		$ch = curl_init($url); 
+		
+		
+		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response = json_decode($response);
+		return ($response->Items);
+	}
+	
+	function read_invoice($external_id)
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		$filter = "filter=substringof('". $external_id ."',%20Number)%20eq%20true";
+		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/?$' . $filter;
+		
+		$ch = curl_init($url); 
+		
+		
+		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response = json_decode($response);
+		if (isset($response->Items[0]))
+		{
+			#var_dump($response->Items[0]);
+			return $response->Items[0];
+		}
+		return null;
+	}
+	
+	function read_invoice_services($external_id)
+	{
+		$invoice = $this->read_invoice($external_id);
+		if (!$invoice)
+		{
+			return null;
+		}
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/Service/' . $invoice->UID;
+		
+		$ch = curl_init($url); 
+		
+		
+		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response = json_decode($response);
+		var_dump($response);
+	}
+	
+	
+	function read_invoice_items()
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/Item';
+		
+		$ch = curl_init($url); 
+		
+		
+		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		var_dump($response);
+		$response = json_decode($response);
+	} 
+	
+	function append_invoice($invoice_id)
+	{
+		$this->load->model('invoice/invoice_model');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		if (!$invoice)
+		{
+			return false;
+		}
+		$client = modules::run('client/get_client', $invoice['client_id']);
+		$customer = $this->read_customer($client['external_client_id']);
+		if (!$customer)
+		{
+			$this->append_customer($client['user_id']);
+			$client = modules::run('client/get_client', $invoice['client_id']);
+			$customer = $this->read_customer($client['external_client_id']);
+		}
+		
+		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
+		
+		$timesheet_lines = array();
+		$manual_lines = array();
+		foreach($invoice_items as $item)
+		{
+			if ($item['include_timesheets'])
+			{
+				$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice_id, $item['job_id']);
+				foreach($timesheets as $timesheet)
+				{
+					$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id'], 1);
+					$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+					
+					foreach($pay_rates as $pay_rate)
+					{
+						$group = $pay_rate['group'];
+						$break = '';
+						if ($pay_rate['break']) {
+							$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
+						}
+						$activity = $this->read_activity($group);
+						if (!$activity)
+						{
+							continue;
+						}
+						
+						$timesheet_lines[] = array(
+							'Type' => 'Transaction',
+							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+							'Hours' => $pay_rate['hours'],
+							'Activity' => array(
+								'UID' => $activity->UID
+							),
+							'Item' => null,
+							'Rate' => $pay_rate['rate'],
+							'Description' => trim($staff['first_name'] . ' ' . $staff['last_name'] . ' ' . date('H:ia', $pay_rate['start']) . ' - ' . date('H:ia', $pay_rate['finish']) . ' ' . $break),
+							'TaxCode' => array(
+								'UID' => $this->taxcode('GST')->UID
+							),
+						);
+					}
+					
+				}
+			}
+			else
+			{
+				$taxcode = 'FRE';
+				if ($item['tax'] == GST_YES || $item['tax'] == GST_ADD)
+				{
+					$taxcode = 'GST';
+				}
+				
+				if (!$this->config_model->get('myob_invoice_account'))
+				{			
+					$accounts = $this->read_accounts('Income');
+					$this->config_model->add(array('key' => 'myob_invoice_account', 'value' => $accounts[0]->UID));
+				}
+				
+				$manual_lines[] = array(
+					'Type' => 'Transaction',
+					'Description' => $item['title'],
+					'Total' => $item['amount'],
+					'Account' => array(
+						'UID' => $this->config_model->get('myob_invoice_account')
+					),
+					#'Job' => null,
+					'TaxCode' => array(
+						'UID' => $this->taxcode($taxcode)->UID
+					)
+				);
+			}
+		}
+		
+		#var_dump($timesheet_lines); die();		
+		#var_dump($manual_lines); die();
+		
+		$number = intval($invoice['invoice_number']);
+		if (!$number)
+		{
+			$myob_invoices = $this->read_invoices();
+			$numbers = array();
+			foreach($myob_invoices as $myob_invoice)
+			{
+				$numbers[] = intval($myob_invoice->Number);
+			}
+			$number = max($numbers);
+			#$number = str_pad(max($numbers) + 1, 8, "0", STR_PAD_LEFT);
+		}
+		
+		$errors = array();
+		$external_ids = array();
+		
+		if (count($timesheet_lines) > 0) # Push TimeBilling invoice
+		{
+			$external_ids[] = str_pad($number + 1, 8, "0", STR_PAD_LEFT);
+			$timebilling_invoice = array(
+				'Number' => str_pad($number + 1, 8, "0", STR_PAD_LEFT),
+				'Date' => date('Y-m-d H:i:s', strtotime($invoice['issued_date'])),
+				'CustomerPurchaseOrderNumber' => $invoice['po_number'],
+				'Customer' => array(
+					'UID' => $customer->UID
+				),
+				'Status' => 'Open',
+				'Lines' => $timesheet_lines,
+				'IsTaxInclusive' => 'True'	
+			);
+			$params = json_encode($timebilling_invoice);
+			
+			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+			$headers = array(
+				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+		        'x-myobapi-cftoken: '.$cftoken,
+		        'x-myobapi-key: ' . $this->api_key,
+		        'x-myobapi-version: v2',
+		        'Content-Type: application/json',
+		        'Content-Length: ' . strlen($params)
+			);
+			
+			$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/TimeBilling';
+			
+			$ch = curl_init($url); 
+			
+			
+			curl_setopt($ch, CURLOPT_POST, true); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+			
+			
+			$response = curl_exec($ch);
+			curl_close($ch);
+			$response = json_decode($response);
+			if (isset($response->Errors))
+			{
+				$errors[] = $response->Errors;
+			}	
+		}
+		
+		if (count($manual_lines) > 0) # Push Miscellaneous invoice
+		{
+			$external_ids[] = str_pad($number + 2, 8, "0", STR_PAD_LEFT);
+			$miscellaneous_invoice = array(
+				'Number' => str_pad($number + 2, 8, "0", STR_PAD_LEFT),
+				'Date' => date('Y-m-d H:i:s', strtotime($invoice['issued_date'])),
+				'CustomerPurchaseOrderNumber' => $invoice['po_number'],
+				'Customer' => array(
+					'UID' => $customer->UID
+				),
+				'Status' => 'Open',
+				'Lines' => $manual_lines,
+				'IsTaxInclusive' => 'True'				
+			);
+			#var_dump($miscellaneous_invoice); die();
+			$params = json_encode($miscellaneous_invoice);
+			
+			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+			$headers = array(
+				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+		        'x-myobapi-cftoken: '.$cftoken,
+		        'x-myobapi-key: ' . $this->api_key,
+		        'x-myobapi-version: v2',
+		        'Content-Type: application/json',
+		        'Content-Length: ' . strlen($params)
+			);
+			
+			$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/Miscellaneous';
+			
+			$ch = curl_init($url); 
+			
+			
+			curl_setopt($ch, CURLOPT_POST, true); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+			
+			
+			$response = curl_exec($ch);
+			curl_close($ch);
+			$response = json_decode($response);
+			if (isset($response->Errors))
+			{
+				$errors[] = $response->Errors;
+			}
+		}
+		$external_id = implode(' - ' , $external_ids);
+		var_dump($errors);
+		if (count($errors) > 0)
+		{
+			return $errors;
+		}
+		else
+		{
+			return $this->invoice_model->update_invoice($invoice_id, array('external_id' => $external_id));
+		}
+		
+	}
+	
+	function append_invoice_services($invoice_id)
+	{
+		$this->load->model('invoice/invoice_model');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		if (!$invoice)
+		{
+			return false;
+		}
+		$client = modules::run('client/get_client', $invoice['client_id']);
+		$customer = $this->read_customer($client['external_client_id']);
+		if (!$customer)
+		{
+			$this->append_customer($client['user_id']);
+			$client = modules::run('client/get_client', $invoice['client_id']);
+			$customer = $this->read_customer($client['external_client_id']);
+		}
+		
+		$errors = array();
+		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
+		$lines = array();
 	}
 	
 	function append_employee_payroll($subdomain, $user_id)

@@ -227,7 +227,7 @@ class Ajax extends MX_Controller {
 		$items = $this->invoice_model->get_invoice_items($invoice_id);
 		foreach($items as $item) {
 			$total += $item['amount'];
-			if ($item['tax']) {
+			if ($item['tax'] == GST_YES || $item['tax'] == GST_ADD) {
 				$gst += $item['amount'] / 11;
 			}
 		}
@@ -1346,6 +1346,16 @@ class Ajax extends MX_Controller {
 	{
 		$invoice_id = $this->input->post('invoice_id');
 		if (modules::run('api/shoebooks/append_invoice', $invoice_id))
+		{
+			$invoice = $this->invoice_model->get_invoice($invoice_id);
+			echo $invoice['external_id'];
+		}
+	}
+	
+	function push_myob()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		if (modules::run('api/myob/connect', 'append_invoice~' . $invoice_id))
 		{
 			$invoice = $this->invoice_model->get_invoice($invoice_id);
 			echo $invoice['external_id'];

@@ -41,7 +41,7 @@ $('#auto-sync').click(function(){
 	})
 	</script>
 	<? } else if (strtolower($platform) == 'myob') { ?>
-	<button class="pull-right btn btn-lg purple" id="btn-myob" data-loading-text="Adding to MYOB...">
+	<button class="pull-right btn btn-lg btn-myob" id="btn-myob" data-loading-text="Adding to MYOB...">
 		Add to MYOB &nbsp;  
 		<i class="fa fa-arrow-right"></i> 
 	</button>

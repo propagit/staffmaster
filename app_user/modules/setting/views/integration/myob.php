@@ -54,6 +54,15 @@ else { ?>
 	<div class="alert alert-success">
 		Your MYOB Account is connected successfully!	
 	</div>
+	<p><b>The below table displays how many staff and clients you have in StaffBooks and MYOB.</b></p>
+	<p><i>Note:</i>
+	<ul>
+		<li>Clicking the sync button will bring MYOB staff and clients into StaffBooks (Provided they have a unique Card ID in MYOB).</li>
+		<li>Staff and clients will also be sent to MYOB if they have no External ID set in StaffBooks. </li>
+		<li>New staff pushed into MYOB will be assigned a Card ID that will appear  in StaffBooks in the External ID field</li>
+		<li>Clicking the auto add functions on will automatically add and update staff and client data to MYOB</li>
+	</ul>
+	</p><br />
 
 	<div id="platform-data" class="table-responsive">
 	<table class="table table-bordered table-hover table-middle" width="100%">
@@ -93,32 +102,58 @@ else { ?>
 			</td>
 		</tr>
 		<tr>
-		<td>Client / Customer</td>
-		<td class="center">
-			<label>
-				<input type="checkbox" id="auto-add-client" <?=($this->config_model->get('auto_add_client')) ? 'checked' : '';?>>
-			</label>
-		</td>
-		<td class="center">
-			<label>
-				<input type="checkbox" id="auto-update-client" <?=($this->config_model->get('auto_update_client')) ? 'checked' : '';?>>
-			</label>
-		</td>
-		<td class="center">
-			<span class="badge success"><?=modules::run('client/get_total_client');?></span>
-		</td>
-		<td class="center">
-			<span class="badge primary"><?=count(modules::run('api/myob/connect/search_customer'));?></span>							
-		</td>
-		<td class="center">
-			<a class="btn btn-core" id="btn-sync-client">
-				<i class="fa fa-exchange"></i> Quick Sync								
-			</a>
-		</td>
-	</tr>
-		
+			<td>Client / Customer</td>
+			<td class="center">
+				<label>
+					<input type="checkbox" id="auto-add-client" <?=($this->config_model->get('auto_add_client')) ? 'checked' : '';?>>
+				</label>
+			</td>
+			<td class="center">
+				<label>
+					<input type="checkbox" id="auto-update-client" <?=($this->config_model->get('auto_update_client')) ? 'checked' : '';?>>
+				</label>
+			</td>
+			<td class="center">
+				<span class="badge success"><?=modules::run('client/get_total_client');?></span>
+			</td>
+			<td class="center">
+				<span class="badge primary"><?=count(modules::run('api/myob/connect/search_customer'));?></span>							
+			</td>
+			<td class="center">
+				<a class="btn btn-core" id="btn-sync-client">
+					<i class="fa fa-exchange"></i> Quick Sync								
+				</a>
+			</td>
+		</tr>
 	</tbody>
 	</table>
+	
+	<br />
+	<p><b>Settings</b></p>
+	<p><i>Note:</i>
+	<ul>
+		<li>Client Invoice data that have shifts details attached to them will push to MYOB as "TimeBilling".</li>
+		<li>Client invoices that include manual line items can not be pushed as "Time Billing" and will be pushed as "Miscellaneous"</li>
+	</ul><br />
+	<p>You can choose what account in MYOB you would to push manual invoice data to below.</p>
+	<table class="table table-bordered table-hover table-middle" width="100%">
+	<tbody>
+		<tr>
+			<td>Invoice</td>
+			<td>
+				<? $accounts = modules::run('api/myob/connect', 'read_accounts~Income'); ?>
+				<select id="myob_invoice_account" class="form-control">
+					<option value="">Please select</option>
+					<? for($i=0; $i < count($accounts) - 1; $i++) { ?>
+					<option value="<?=$accounts[$i]->UID;?>"<?=($accounts[$i]->UID == $this->config_model->get('myob_invoice_account')) ? ' selected' : '';?>><?=$accounts[$i]->Name;?></option>
+					<? } ?>
+				</select>
+			</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	
 	</div>
 	
 	<div id="output"></div>
@@ -138,10 +173,20 @@ else { ?>
 	
 	<script>
 	$(function(){
+		init_select();
 		$('#waitingModal').modal({
 			backdrop: 'static',
 			keyboard: true,
 			show: false
+		})
+		$('#myob_invoice_account').change(function(){
+			var myob_invoice_account = $(this).val();
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>config/ajax/add",
+				data: {myob_invoice_account: myob_invoice_account},
+				success: function(html) {}
+			})
 		})
 		$('#btn-sync-staff').click(function(){
 			$('.bs-modal-lg').modal('hide');

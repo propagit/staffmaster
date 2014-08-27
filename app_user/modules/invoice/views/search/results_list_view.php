@@ -27,7 +27,7 @@
 	<tr>
 		<? if (!$is_client) { ?>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
-			<? if ($this->config_model->get('accounting_platform') == 'shoebooks') { ?>
+			<? if ($accounting_platform = $this->config_model->get('accounting_platform')) { ?>
 			<th class="center">External ID</th>
 			<? } ?>
 		<? } ?>
@@ -56,11 +56,18 @@
 	<tr>
 		<? if (!$is_client) { ?>
 		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" /></td>
-			<? if ($this->config_model->get('accounting_platform') == 'shoebooks') { ?>
+			<? if ($accounting_platform == 'shoebooks') { ?>
 			<td class="center">
 				<? if ($invoice['external_id']) { echo $invoice['external_id']; }
 				else { ?>
 				<button type="button" class="btn btn-primary btn-block btn-push-shoebooks" data-id="<?=$invoice['invoice_id'];?>" data-loading-text="Pushing...">Push</button>
+				<? } ?>
+			</td>
+			<? } else if ($accounting_platform == 'myob') { ?>
+			<td class="center">
+				<? if ($invoice['external_id']) { echo $invoice['external_id']; }
+				else { ?>
+				<button type="button" class="btn btn-myob btn-block btn-push-myob" data-id="<?=$invoice['invoice_id'];?>" data-loading="Pushing...">Push</button>
 				<? } ?>
 			</td>
 			<? } ?>
@@ -168,6 +175,20 @@ $(function(){
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>invoice/ajax/push_shoebooks",
+			data: {invoice_id: invoice_id},
+			success: function(html) {
+				btn.button('reset');
+				btn.parent().html(html);
+			}
+		})
+	});
+	$('.btn-push-myob').click(function(){
+		var btn = $(this);
+		btn.button('loading');
+		var invoice_id = $(this).attr('data-id');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>invoice/ajax/push_myob",
 			data: {invoice_id: invoice_id},
 			success: function(html) {
 				btn.button('reset');
