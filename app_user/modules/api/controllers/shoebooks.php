@@ -238,7 +238,11 @@ class Shoebooks extends MX_Controller {
 		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
 			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
 		}	
-		
+		$fund_name = $staff['s_fund_name'];
+		if ($staff['s_choice'] != 'own')
+		{
+			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+		}
 		$request = '<UpdateEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>
@@ -271,7 +275,7 @@ class Shoebooks extends MX_Controller {
 				<BankAccount>' . $staff['f_acc_number'] . '</BankAccount>
 				<ExtraVendorID></ExtraVendorID>
 				<BankType></BankType>
-				<ExtraFundName>' . $staff['s_fund_name'] . '</ExtraFundName>
+				<ExtraFundName>' . $fund_name . '</ExtraFundName>
 				<ExtraFundNumber>' . $staff['s_membership'] . '</ExtraFundNumber>
 				<EmploymentType></EmploymentType>
 				<VendorID></VendorID>
