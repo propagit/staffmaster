@@ -1331,8 +1331,7 @@ class Myob extends MX_Controller {
 						$activity = $this->read_activity($group);
 						if (!$activity)
 						{
-							var_dump($group);
-							#continue;
+							continue;
 						}
 						
 						$timesheet_lines[] = array(
@@ -1382,7 +1381,7 @@ class Myob extends MX_Controller {
 			}
 		}
 		
-		var_dump($timesheet_lines); die();		
+		#var_dump($timesheet_lines); die();		
 		#var_dump($manual_lines); die();
 		
 		$number = intval($invoice['invoice_number']);
