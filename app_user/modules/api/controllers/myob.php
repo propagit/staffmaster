@@ -1124,7 +1124,7 @@ class Myob extends MX_Controller {
 				'Lines' => $lines
 			);
 			
-			#var_dump($timesheet_data);
+			var_dump($timesheet_data); die();
 			
 			$params = json_encode($timesheet_data);
 			
