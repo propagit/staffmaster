@@ -1381,7 +1381,7 @@ class Myob extends MX_Controller {
 			}
 		}
 		
-		#var_dump($timesheet_lines); die();		
+		var_dump($timesheet_lines); die();		
 		#var_dump($manual_lines); die();
 		
 		$number = intval($invoice['invoice_number']);
