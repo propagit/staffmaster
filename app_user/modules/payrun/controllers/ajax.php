@@ -169,6 +169,7 @@ class Ajax extends MX_Controller {
 	function load_export($type, $mode = '') {
 		$data['type'] = $type;
 		$data['mode'] = $mode;
+		$data['period'] = $this->payrun_model->get_payrun_timesheets_date_period($type);
 		$this->load->view('create/export_view', isset($data) ? $data : NULL);
 	}
 	
@@ -218,7 +219,7 @@ class Ajax extends MX_Controller {
 					));
 					return;
 				}
-				if (!isset($input['date_to']) || $input['date_to'] == '' || $period['finish_time'] > strtotime($input['date_to'])) {
+				if (!isset($input['date_to']) || $input['date_to'] == '' || $period['finish_date'] > strtotime($input['date_to'])) {
 					echo json_encode(array(
 						'ok' => false,
 						'error_id' => 'date_to'
