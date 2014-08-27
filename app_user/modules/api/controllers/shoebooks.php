@@ -425,7 +425,7 @@ class Shoebooks extends MX_Controller {
 		{
 			return false;
 		}
-		
+		var_dump($client);
 		$action = 'http://www.shoebooks.com.au/accounting/v10/UpdateCustomer';
 		$request = '<UpdateCustomer xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
