@@ -169,14 +169,15 @@ function save_payrun() {
 				}
 				else
 				{
-					if (data.pushed_msg) 
+					if (data.pushed_ok) 
 					{
 						$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a href="<?=base_url();?>payrun/search-payslip/' + data.payrun_id + '" class="btn btn-core">View Pay Run</a> &nbsp; <a class="btn btn-default" onclick="close_modal()">Run Another Pay Run</a></p>');
 						$('#waitingModal').modal('show');
 					}
 					else
 					{
-						close_modal();
+						$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a class="btn btn-danger" onclick="close_modal()">Close</a></p>');
+						$('#waitingModal').modal('show');
 					}
 				}				
 			}

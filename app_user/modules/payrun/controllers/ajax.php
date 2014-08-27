@@ -238,6 +238,24 @@ class Ajax extends MX_Controller {
 		
 		
 		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
+		if ($platform == 'myob')
+		{
+			foreach($timesheets as $timesheet)
+			{
+				$result = modules::run('api/myob/connect', 'validate_append_timesheet~' . $timesheet['timesheet_id']);
+				if (!$result['ok'])
+				{
+					echo json_encode(array(
+						'ok' => true,
+						'export' => false,
+						'pushed_ok' => false,
+						'pushed_msg' => $result['msg'];
+					));
+					return;
+				}
+			}			
+		}
+		
 		$amount = $this->payrun_model->get_total_amount($type);
 		$total_staffs = $this->payrun_model->count_staff($type);
 		$data = array(
@@ -285,16 +303,13 @@ class Ajax extends MX_Controller {
 				{
 					$pushed_msg = '<p>' . count($timesheets) . ' time sheets have been pushed to MYOB successfully!</p>';
 				}
-				else
-				{
-					$pushed_msg .= $result['msg'];
-				}
 			}
 			
 			echo json_encode(array(
 				'ok' => true,
 				'export' => false,
 				'payrun_id' => $payrun_id,
+				'pushed_ok' => true,
 				'pushed_msg' => $pushed_msg
 			));
 		}

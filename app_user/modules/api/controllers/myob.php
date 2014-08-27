@@ -120,6 +120,9 @@ class Myob extends MX_Controller {
 			case 'read_payroll':
 					$result = $this->read_payroll($params[1]);
 				break;
+			case 'validate_append_timesheet':
+					$result = $this->validate_append_timesheet($params[1]);
+				break;
 			case 'append_timesheets':
 					$result = $this->append_timesheets($params[1]);
 				break;
@@ -131,9 +134,6 @@ class Myob extends MX_Controller {
 				break;
 			case 'append_invoice':
 					$result = $this->append_invoice($params[1]);
-				break;
-			case 'append_employee_payroll':
-					#$result = $this->append_employee_payroll();
 				break;
 			case 'read_activity':
 					$result = $this->read_activity($params[1]);
@@ -1080,6 +1080,79 @@ class Myob extends MX_Controller {
 		var_dump($response);
 	}
 	
+	function validate_append_timesheet($timesheet_id)
+	{
+		$timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
+		$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+		foreach($pay_rates as $pay_rate)
+		{
+			$earningID = $pay_rate['group'];
+			if (!$earningID)
+			{
+				$payrate = modules::run('attribute/payrate/get_payrate', $timesheet['payrate_id']);
+				$earningID = $payrate['name'];
+			}
+			$payroll = $this->read_payroll(urlencode($earningID));
+			
+			# Make sure all the payroll categories are set up on MYOB
+			if (!$payroll)
+			{
+				$result = array(
+					'ok' => false,
+					'msg' => "<p>Payroll category <b>$earningID</b> is not found in MYOB</p>"
+				);
+				#var_dump($result);
+				return $result;
+			}
+		}
+		
+		# Make sure the staff is set up on MYOB
+		$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+		if (!$staff['external_staff_id'])
+		{			
+			$result = array(
+				'ok' => false,
+				'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> is not found in MYOB</p>'
+			);
+			#var_dump($result);
+			return $result;
+		}
+		
+		$employee = $this->read_employee($staff['external_staff_id']);
+		if (!$employee)
+		{
+			$result = array(
+				'ok' => false,
+				'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> is not found in MYOB</p>'
+			);
+			#var_dump($result);
+			return $result;
+		}
+		
+		# Make sure payroll category is assigned to staff
+		$employee_payrolls = $this->read_employee_payroll($employee->DisplayID)->Wage->WageCategories;
+		$valid_employee_payroll = false;
+		foreach($employee_payrolls as $e_payroll)
+		{
+			if ($e_payroll->UID == $payroll->UID)
+			{
+				$valid_employee_payroll = true;
+			}
+		}
+		if (!$valid_employee_payroll)
+		{
+			$result = array(
+				'ok' => false,
+				'msg' => '<p>Payroll category <b>' . $payroll->Name . '</b> has not been assigned to staff <b>' . $employee->FirstName . ' ' . $employee->LastName . '</b> on MYOB yet</p>'
+			);
+			#var_dump($result);
+			return $result;
+		}
+		return array(
+			'ok' => true
+		);
+	}
+	
 	function append_timesheets($payrun_id)
 	{
 		$this->load->model('payrun/payrun_model');
@@ -1090,76 +1163,6 @@ class Myob extends MX_Controller {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
-		
-		# First check conditions
-		foreach($timesheets as $timesheet)
-		{
-			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
-			foreach($pay_rates as $pay_rate)
-			{
-				$earningID = $pay_rate['group'];
-				if (!$earningID)
-				{
-					$earningID = $timesheet['payrate'];
-				}
-				$payroll = $this->read_payroll(urlencode($earningID));
-				
-				# Make sure all the payroll categories are set up on MYOB
-				if (!$payroll)
-				{
-					$result = array(
-						'ok' => false,
-						'msg' => "<p>Payroll category <b>$earningID</b> is not found in MYOB</p>"
-					);
-					#var_dump($result);
-					return $result;
-				}
-			}
-			
-			# Make sure the staff is set up on MYOB
-			if (!$timesheet['external_staff_id'])
-			{
-				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-				$result = array(
-					'ok' => false,
-					'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> not found in MYOB</p>'
-				);
-				#var_dump($result);
-				return $result;
-			}
-			
-			$employee = $this->read_employee($timesheet['external_staff_id']);
-			if (!$employee)
-			{
-				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-				$result = array(
-					'ok' => false,
-					'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> not found in MYOB</p>'
-				);
-				#var_dump($result);
-				return $result;
-			}
-			
-			# Make sure payroll category is assigned to staff
-			$employee_payrolls = $this->read_employee_payroll($employee->DisplayID)->Wage->WageCategories;
-			$valid_employee_payroll = false;
-			foreach($employee_payrolls as $e_payroll)
-			{
-				if ($e_payroll->UID == $payroll->UID)
-				{
-					$valid_employee_payroll = true;
-				}
-			}
-			if (!$valid_employee_payroll)
-			{
-				$result = array(
-					'ok' => false,
-					'msg' => '<p>Payroll category <b>' . $payroll->Name . '</b> has not been assigned to staff <b>' . $employee->FirstName . ' ' . $employee->LastName . '</b> on MYOB yet</p>'
-				);
-				#var_dump($result);
-				return $result;
-			}
-		}
 		
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
@@ -1620,63 +1623,4 @@ class Myob extends MX_Controller {
 		
 	}
 	
-	function append_invoice_services($invoice_id)
-	{
-		$this->load->model('invoice/invoice_model');
-		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		if (!$invoice)
-		{
-			return false;
-		}
-		$client = modules::run('client/get_client', $invoice['client_id']);
-		$customer = $this->read_customer($client['external_client_id']);
-		if (!$customer)
-		{
-			$this->append_customer($client['user_id']);
-			$client = modules::run('client/get_client', $invoice['client_id']);
-			$customer = $this->read_customer($client['external_client_id']);
-		}
-		
-		$errors = array();
-		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
-		$lines = array();
-	}
-	
-	function append_employee_payroll($subdomain, $user_id)
-	{
-		if (!$subdomain || !$user_id)
-		{
-			return false;
-		}
-		$employee = $this->read_employee($subdomain, $user_id);
-		if (!$employee)
-		{
-			return false;
-		}
-		$staff = $this->api_model->get_staff($subdomain, $user_id);
-		
-		$gender = '';
-		if ($staff['gender'] == 'f')
-		{
-			$gender = 'Female';
-		}
-		else if ($staff['gender'] == 'm')
-		{
-			$gender = 'Male';
-		}
-		
-		$employee_payroll = array(
-			'UID' => $employee->Items[0]->EmployeePayrollDetails->UID,
-			'Employee' => array(
-				'UID' => $employee->Items[0]->UID
-			),
-			'DateOfBirth' => date('Y-m-d H:i:s', strtotime($staff['dob'])),
-			'Gender' => $gender,
-			'StartDate' => $staff['created_on'],
-			'EmploymentBasis' => 'Individual',
-			
-			
-		);
-		return ($employee_payroll);
-	}
 }
