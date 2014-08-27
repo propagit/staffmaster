@@ -1156,8 +1156,8 @@ class Myob extends MX_Controller {
 					'ok' => false,
 					'msg' => '<p>Payroll category <b>' . $payroll->Name . '</b> has not been assigned to staff <b>' . $employee->FirstName . ' ' . $employee->LastName . '</b> on MYOB yet</p>'
 				);
-				var_dump($result);
-				#return $result;
+				#var_dump($result);
+				return $result;
 			}
 		}
 		
