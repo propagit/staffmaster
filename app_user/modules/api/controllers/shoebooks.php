@@ -283,7 +283,7 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewEmployee>
 		</UpdateEmployee>';
-		#var_dump($request);
+		var_dump($request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -292,6 +292,7 @@ class Shoebooks extends MX_Controller {
 			return false;
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		var_dump($msg);
 		$result = $client->send($msg, $action);
 		var_dump($result);
 		#return $result;
