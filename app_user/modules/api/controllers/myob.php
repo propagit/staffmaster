@@ -1381,7 +1381,7 @@ class Myob extends MX_Controller {
 			}
 		}
 		
-		var_dump($timesheet_lines); die();		
+		#var_dump($timesheet_lines); die();		
 		#var_dump($manual_lines); die();
 		
 		$number = intval($invoice['invoice_number']);
@@ -1414,6 +1414,7 @@ class Myob extends MX_Controller {
 				'Lines' => $timesheet_lines,
 				'IsTaxInclusive' => 'True'	
 			);
+			var_dump($timebilling_invoice); die();
 			$params = json_encode($timebilling_invoice);
 			
 			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
