@@ -293,6 +293,7 @@ class Shoebooks extends MX_Controller {
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
+		var_dump($result);
 		#return $result;
 		return true;
 	}
@@ -425,7 +426,7 @@ class Shoebooks extends MX_Controller {
 		{
 			return false;
 		}
-		var_dump($client);
+		
 		$action = 'http://www.shoebooks.com.au/accounting/v10/UpdateCustomer';
 		$request = '<UpdateCustomer xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
@@ -459,12 +460,11 @@ class Shoebooks extends MX_Controller {
 		$error = $client->getError();
 		if ($error)
 		{
-			die("client construction error: {$error}\n");
+			#die("client construction error: {$error}\n");
 			return false;
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
-		var_dump($result);
 		return true;
 	}
 		
