@@ -99,6 +99,9 @@ class Myob extends MX_Controller {
 			case 'read_employee_payment':
 					$result = $this->read_employee_payment($params[1]);
 				break;
+			case 'read_employee_payroll':
+					$result = $this->read_employee_payroll($params[1]);
+				break;
 			case 'update_employee_payment':
 					$result = $this->update_employee_payment($params[1]);
 				break;
@@ -527,6 +530,38 @@ class Myob extends MX_Controller {
 		);
 		
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePaymentDetails/' . $employee->EmployeePaymentDetails->UID;
+		
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		
+		$response = json_decode($response);
+		#var_dump($response); die();
+		return $response;
+	}
+	
+	function read_employee_payroll($external_id)
+	{
+		$employee = $this->read_employee($external_id);
+		if (!isset($employee))
+		{
+			return null;
+		}
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePayrollDetails/' . $employee->EmployeePayrollDetails->UID;
 		
 		$ch = curl_init($url); 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -1004,6 +1039,7 @@ class Myob extends MX_Controller {
 		curl_close($ch); 
 		
 		$response = json_decode($response);
+		#var_dump($response);
 		if (isset($response->Items[0]))
 		{
 			return $response->Items[0];
@@ -1054,18 +1090,81 @@ class Myob extends MX_Controller {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
-		$errors = array();
+		
+		# First check conditions
 		foreach($timesheets as $timesheet)
 		{
+			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+			foreach($pay_rates as $pay_rate)
+			{
+				$earningID = $pay_rate['group'];
+				if (!$earningID)
+				{
+					$earningID = $timesheet['payrate'];
+				}
+				$payroll = $this->read_payroll(urlencode($earningID));
+				
+				# Make sure all the payroll categories are set up on MYOB
+				if (!$payroll)
+				{
+					$result = array(
+						'ok' => false,
+						'msg' => "<p>Payroll category <b>$earningID</b> is not found in MYOB</p>"
+					);
+					#var_dump($result);
+					return $result;
+				}
+			}
+			
+			# Make sure the staff is set up on MYOB
+			if (!$timesheet['external_staff_id'])
+			{
+				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+				$result = array(
+					'ok' => false,
+					'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> not found in MYOB</p>'
+				);
+				#var_dump($result);
+				return $result;
+			}
+			
 			$employee = $this->read_employee($timesheet['external_staff_id']);
 			if (!$employee)
 			{
-				# Create new employee record in MYOB
-				$this->append_employee($timesheet['staff_id']);
 				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-				$employee = $this->read_employee($staff['external_staff_id']);
+				$result = array(
+					'ok' => false,
+					'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> not found in MYOB</p>'
+				);
+				#var_dump($result);
+				return $result;
 			}
 			
+			# Make sure payroll category is assigned to staff
+			$employee_payrolls = $this->read_employee_payroll($employee->DisplayID)->Wage->WageCategories;
+			$valid_employee_payroll = false;
+			foreach($employee_payrolls as $e_payroll)
+			{
+				if ($e_payroll->UID == $payroll->UID)
+				{
+					$valid_employee_payroll = true;
+				}
+			}
+			if (!$valid_employee_payroll)
+			{
+				$result = array(
+					'ok' => false,
+					'msg' => '<p>Payroll category <b>' . $payroll->Name . '</b> has not been assigned to staff <b>' . $employee->FirstName . ' ' . $employee->LastName . '</b> on MYOB yet</p>'
+				);
+				var_dump($result);
+				#return $result;
+			}
+		}
+		
+		# Now all conditions are satisfied, push to MYOB
+		foreach($timesheets as $timesheet)
+		{
+			$employee = $this->read_employee($timesheet['external_staff_id']);			
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 			$lines = array();
 			foreach($pay_rates as $pay_rate)
@@ -1160,7 +1259,18 @@ class Myob extends MX_Controller {
 				$errors[] = $response->Errors;
 			}	
 		}
-		return $errors;
+		if (count($errors) > 0)
+		{
+			$result = array(
+				'ok' => false,
+				'msg' => '<p> ' . count($errors) . ' time sheets have been pushed to MYOB with errors!</p><p>' . var_dump($errors) . '</p>'
+			);
+			return $result;
+		}
+		
+		return array(
+			'ok' => true
+		);
 		
 	}
 	

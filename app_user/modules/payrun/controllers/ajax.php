@@ -280,10 +280,14 @@ class Ajax extends MX_Controller {
 			}
 			else if ($platform == 'myob')
 			{
-				$errors = modules::run('api/myob/connect', 'append_timesheets~' . $payrun_id);
-				if (count($errors) > 0)
+				$result = modules::run('api/myob/connect', 'append_timesheets~' . $payrun_id);
+				if ($result['ok'])
 				{
-					$pushed_msg .= '<p> ' . count($errors) . ' time sheets have been pushed to MYOB with errors!</p><p>' . var_dump($errors) . '</p>';
+					$pushed_msg = '<p>' . count($timesheets) . ' time sheets have been pushed to MYOB successfully!</p>';
+				}
+				else
+				{
+					$pushed_msg .= $result['msg'];
 				}
 			}
 			
