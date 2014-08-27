@@ -1331,6 +1331,7 @@ class Myob extends MX_Controller {
 						$activity = $this->read_activity($group);
 						if (!$activity)
 						{
+							var_dump($group);
 							#continue;
 						}
 						
