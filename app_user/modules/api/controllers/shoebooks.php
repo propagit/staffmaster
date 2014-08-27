@@ -294,7 +294,7 @@ class Shoebooks extends MX_Controller {
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		#var_dump($msg);
 		$result = $client->send($msg, $action);
-		var_dump($result);
+		#var_dump($result);
 		#return $result;
 		return true;
 	}
