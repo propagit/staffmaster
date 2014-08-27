@@ -145,13 +145,25 @@ class Payrun_model extends CI_Model {
 	}
 	
 	function get_payrun_timesheets($tfn=STAFF_TFN) {
-		$sql = "SELECT j.timesheet_id FROM `job_shift_timesheets` j
+		$sql = "SELECT j.timesheet_id, j.start_time, j.finish_time
+				FROM `job_shift_timesheets` j
 					LEFT JOIN `user_staffs` u ON j.staff_id = u.user_id
 					WHERE j.status = " . TIMESHEET_BATCHED . " 
 					AND j.status_payrun_staff = " . PAYRUN_READY . " 
 					AND u.f_employed = " . $tfn;
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+	
+	function get_payrun_timesheets_date_period($tfn=STAFF_TFN) {
+		$sql = "SELECT min(j.start_time) as start_date, max(j.finish_time) as finish_date
+				FROM `job_shift_timesheets` j
+					LEFT JOIN `user_staffs` u ON j.staff_id = u.user_id
+					WHERE j.status = " . TIMESHEET_BATCHED . " 
+					AND j.status_payrun_staff = " . PAYRUN_READY . " 
+					AND u.f_employed = " . $tfn;
+		$query = $this->db->query($sql);
+		return $query->first_row('array');
 	}
 	
 	/**

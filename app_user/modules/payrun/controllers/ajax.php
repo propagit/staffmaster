@@ -203,25 +203,31 @@ class Ajax extends MX_Controller {
 		}
 		
 		$type = $input['type'];
+		$platform = isset($input['platform']) ? $input['platform'] : '';
 		$date_from = '';
 		$date_to = '';
 		$payable_date = '';
 		if ($type == STAFF_TFN) {
-			/* if (!isset($input['date_from']) || $input['date_from'] == '') {
-				echo json_encode(array(
-					'ok' => false,
-					'error_id' => 'date_from'
-				));
-				return;
+			if ($platform == 'myob')
+			{
+				$period = $this->payrun_model->get_payrun_timesheets_date_period($type);
+				if (!isset($input['date_from']) || $input['date_from'] == '' || $period['start_date'] < strtotime($input['date_from'])) {
+					echo json_encode(array(
+						'ok' => false,
+						'error_id' => 'date_from'
+					));
+					return;
+				}
+				if (!isset($input['date_to']) || $input['date_to'] == '' || $period['finish_time'] > strtotime($input['date_to'])) {
+					echo json_encode(array(
+						'ok' => false,
+						'error_id' => 'date_to'
+					));
+					return;
+				}
+				
 			}
-			if (!isset($input['date_to']) || $input['date_to'] == '') {
-				echo json_encode(array(
-					'ok' => false,
-					'error_id' => 'date_to'
-				));
-				return;
-			}
-			*/
+			
 			$date_from = date('Y-m-d', strtotime($input['date_from']));
 			$date_to = date('Y-m-d', strtotime($input['date_to']));
 			$payable_date = date('Y-m-d', strtotime($input['payable_date']));
@@ -229,9 +235,10 @@ class Ajax extends MX_Controller {
 		
 		
 		
+		
+		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
 		$amount = $this->payrun_model->get_total_amount($type);
 		$total_staffs = $this->payrun_model->count_staff($type);
-		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
 		$data = array(
 			'date_from' => $date_from,
 			'date_to' => $date_to,
@@ -257,7 +264,6 @@ class Ajax extends MX_Controller {
 		} 
 		else 
 		{
-			$platform = $this->input->post('platform');
 			$pushed_msg = '';
 			if ($platform == 'shoebooks') {
 				$pushed_results = modules::run('api/shoebooks/append_payslip', $payrun_id);

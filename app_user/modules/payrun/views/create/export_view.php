@@ -146,24 +146,23 @@ function include_export() {
 	}
 }
 function save_payrun() {
-	$('.bs-modal-lg').modal('hide');
 	$('#waitingModal').modal('show');
 	$('#create-payrun-form').find('.has-error').removeClass('has-error');
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>payrun/ajax/create_payrun",
 		data: $('#create-payrun-form').serialize(),
-		success: function(data) {			
+		success: function(data) {
 			data = $.parseJSON(data);
 			if (!data.ok) {
-				//$('.bs-modal-lg').modal('show');
+				$('#waitingModal').modal('hide');
 				$('#f_' + data.error_id).addClass('has-error');
 				$('input[name="' + data.error_id + '"]').focus();
 			}
 			else {
+				$('.bs-modal-lg').modal('hide');
 				if (data.export) {
 					window.location = '<?=base_url().EXPORTS_URL;?>/payrun/' + data.file_name;
-					$('.bs-modal-lg').modal('hide');
 					$('#waitingModal').modal('hide');
 					list_staffs();
 					get_payrun_stats();
@@ -179,11 +178,7 @@ function save_payrun() {
 					{
 						close_modal();
 					}
-					//$('.bs-modal-lg').modal('hide');
-					//list_staffs();
-					//get_payrun_stats();
-				}
-				
+				}				
 			}
 		}
 	})
