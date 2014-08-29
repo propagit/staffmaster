@@ -190,9 +190,19 @@ $(function(){
 			type: "POST",
 			url: "<?=base_url();?>invoice/ajax/push_myob",
 			data: {invoice_id: invoice_id},
-			success: function(html) {
+			success: function(data) {
 				btn.button('reset');
-				btn.parent().html(html);
+				data = $.parseJSON(data);
+				if (data.ok)
+				{					
+					btn.parent().html(data.msg);
+				}
+				else
+				{
+					
+					$('#order-message').html('<h2>Push Results</h2><div class="alert alert-danger">' + data.msg + '</div>');
+					$('#waitingModal').modal('show');
+				}				
 			}
 		})
 	});

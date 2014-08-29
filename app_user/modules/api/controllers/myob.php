@@ -132,6 +132,9 @@ class Myob extends MX_Controller {
 			case 'read_invoice':
 					$result = $this->read_invoice($params[1]);
 				break;
+			case 'validate_append_invoice':
+					$result = $this->validate_append_invoice($params[1]);
+				break;
 			case 'append_invoice':
 					$result = $this->append_invoice($params[1]);
 				break;
@@ -695,6 +698,10 @@ class Myob extends MX_Controller {
 	*/
 	function read_customer($external_id)
 	{
+		if (!$external_id)
+		{
+			return false;
+		}
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -931,6 +938,10 @@ class Myob extends MX_Controller {
 	
 	function read_activity($external_id)
 	{
+		if (!$external_id)
+		{
+			return false;
+		}
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1402,25 +1413,94 @@ class Myob extends MX_Controller {
 		curl_close($ch);
 		var_dump($response);
 		$response = json_decode($response);
+	}
+	
+	function validate_append_invoice($invoice_id)
+	{
+		$this->load->model('invoice/invoice_model');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		if (!$invoice)
+		{
+			$result = array(
+				'ok' => false,
+				'msg' => '<p>Invoice is not found in StaffBooks</p>'
+			);
+			return $result;
+		}
+		$client = modules::run('client/get_client', $invoice['client_id']);
+		if (!$client)
+		{
+			$result = array(
+				'ok' => false,
+				'msg' => '<p>Client for this invoice is not found in StaffBooks</p>'
+			);
+			return $result;
+		}
+		$customer = $this->read_customer($client['external_client_id']);
+		if (!$customer)
+		{
+			$result = array(
+				'ok' => false,
+				'msg' => '<p>Client <b>' . $client['company_name'] . '</b> is not found in MYOB'
+			);
+			return $result;
+		}
+		
+		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
+		foreach($invoice_items as $item)
+		{
+			if ($item['include_timesheets']) # TimeBilling
+			{
+				$timesheets = modules::run('invoice/get_invoice_timesheets', $invoice_id, $item['job_id']);
+				foreach($timesheets as $timesheet)
+				{
+					$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id'], 1);
+					foreach($pay_rates as $pay_rate)
+					{
+						$group = $pay_rate['group'];
+						if (!$group)
+						{
+							$payrate = modules::run('attribute/payrate/get_payrate', $timesheet['payrate_id']);
+							$group = $payrate['name'];
+						}
+						$activity = $this->read_activity($group);
+						if (!$activity)
+						{
+							$result = array(
+								'ok' => false,
+								'msg' => '<p>Pay rate <b>' . $group . '</b> for client is not found in MYOB Activity</p>'
+							);
+							#var_dump($result);
+							return $result;
+						}
+					}
+				}
+			}
+			else # Miscellaneous
+			{
+				if (!$this->config_model->get('myob_invoice_account'))
+				{			
+					$result = array(
+						'ok' => false,
+						'msg' => '<p>Please set up MYOB Account for Invoice in System Settings > Accounts Integration</p>'
+					);
+					return $result;
+				}
+			}
+		}
+		$result = array(
+			'ok' => true
+		);
+		#var_dump($result);
+		return $result;
 	} 
 	
 	function append_invoice($invoice_id)
 	{
 		$this->load->model('invoice/invoice_model');
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		if (!$invoice)
-		{
-			return false;
-		}
 		$client = modules::run('client/get_client', $invoice['client_id']);
 		$customer = $this->read_customer($client['external_client_id']);
-		if (!$customer)
-		{
-			$this->append_customer($client['user_id']);
-			$client = modules::run('client/get_client', $invoice['client_id']);
-			$customer = $this->read_customer($client['external_client_id']);
-		}
-		
 		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
 		
 		$timesheet_lines = array();
@@ -1443,10 +1523,6 @@ class Myob extends MX_Controller {
 							$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 						}
 						$activity = $this->read_activity($group);
-						if (!$activity)
-						{
-							continue;
-						}
 						
 						$timesheet_lines[] = array(
 							'Type' => 'Transaction',
@@ -1473,13 +1549,6 @@ class Myob extends MX_Controller {
 				{
 					$taxcode = 'GST';
 				}
-				
-				if (!$this->config_model->get('myob_invoice_account'))
-				{			
-					$accounts = $this->read_accounts('Income');
-					$this->config_model->add(array('key' => 'myob_invoice_account', 'value' => $accounts[0]->UID));
-				}
-				
 				$manual_lines[] = array(
 					'Type' => 'Transaction',
 					'Description' => $item['title'],
@@ -1611,16 +1680,24 @@ class Myob extends MX_Controller {
 			}
 		}
 		$external_id = implode(' - ' , $external_ids);
-		var_dump($errors);
+		
 		if (count($errors) > 0)
 		{
-			return $errors;
+			return array(
+				'ok' => false,
+				'msg' => $errors
+			);
 		}
 		else
 		{
-			return $this->invoice_model->update_invoice($invoice_id, array('external_id' => $external_id));
-		}
-		
+			if($this->invoice_model->update_invoice($invoice_id, array('external_id' => $external_id)))
+			{
+				return array(
+					'ok' => true,
+					'msg' => $external_id
+				);
+			}
+		}		
 	}
 	
 }

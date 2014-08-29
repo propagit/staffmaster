@@ -1355,10 +1355,17 @@ class Ajax extends MX_Controller {
 	function push_myob()
 	{
 		$invoice_id = $this->input->post('invoice_id');
-		if (modules::run('api/myob/connect', 'append_invoice~' . $invoice_id))
+		$result = modules::run('api/myob/connect', 'validate_append_invoice~' . $invoice_id);
+		if (!$result['ok'])
 		{
-			$invoice = $this->invoice_model->get_invoice($invoice_id);
-			echo $invoice['external_id'];
+			echo json_encode($result);
+			return;
+		}
+		else
+		{
+			$result = modules::run('api/myob/connect', 'append_invoice~' . $invoice_id);
+			echo json_encode($result);
+			return;
 		}
 	}
 }
