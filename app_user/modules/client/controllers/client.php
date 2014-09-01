@@ -39,11 +39,35 @@ class Client extends MX_Controller {
 			case 'update_client_jobs_count':
 				$this->update_client_jobs_count($param);
 				break;
+			case 'merge_deleted':
+					$this->merge_deleted();
+				break;
 			default:
 					echo 'do nothing';
 				break;
 		}
 	}
+	
+	function merge_deleted()
+	{
+		$clients = $this->db->query("SELECT * FROM `users` WHERE `status` = -2 AND `is_client` = 1")->result_array();
+		if ($clients)
+		{
+			foreach($clients as $client)
+			{
+				$username = $client['username'];
+				$duplicated = $this->db->query("SELECT * FROM `users` WHERE `status` = 1 AND `is_client` = 1 AND `username` LIKE '%$username%'")->first_row('array');
+				if ($duplicated)
+				{
+					$duplicated_id = $duplicated['user_id'];
+					$client_id = $client['user_id'];
+					$this->db->query("UPDATE jobs SET client_id = $duplicated_id WHERE client_id = $client_id");
+					$this->db->query("UPDATE job_shift_timesheets SET client_id = $duplicated_id WHERE client_id = $client_id");
+					$this->db->query("UPDATE invoices SET client_id = $duplicated_id WHERE client_id = $client_id");
+				}
+			}
+		}
+	}	
 	
 	/**
 	*
