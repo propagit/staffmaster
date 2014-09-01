@@ -684,7 +684,7 @@ class Myob extends MX_Controller {
 		$response = json_decode($response);
 		if (isset($response->Items))
 		{
-			#var_dump($response->Items);
+			var_dump($response->Items);
 			return $response->Items;
 		}
 		return null;
