@@ -724,12 +724,13 @@ class Myob extends MX_Controller {
 		curl_close($ch); 
 		
 		$response = json_decode($response);
+		var_dump($response);
 		if (isset($response->Items[0]))
 		{
 			#var_dump($response->Items[0]);
 			return $response->Items[0];
 		}
-		return false;
+		return null;
 	}
 	
 	/**
