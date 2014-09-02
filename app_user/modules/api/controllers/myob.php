@@ -84,6 +84,7 @@ class Myob extends MX_Controller {
 		$params = explode('~', $function);
 		switch($params[0])
 		{
+			$param = isset($params[1]) ? urlencode($params[1]) : '';
 			case 'read_employee':
 					$result = $this->read_employee($params[1]);
 				break;
