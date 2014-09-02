@@ -256,9 +256,13 @@ class Client_model extends CI_Model {
 	
 	function get_client_total_jobs_by_client_id_and_year($client_id,$year = NULL)
 	{
-		$sql = "select count(job_id) as total_jobs from jobs where client_id = ".$client_id;
+		$sql_select_job_id = "SELECT job_id FROM job_shifts
+								WHERE status > " . SHIFT_DELETED . " 
+								GROUP BY job_id ";
+		$sql = "SELECT count(job_id) AS total_jobs FROM jobs WHERE job_id IN ($sql_select_job_id)
+			   AND client_id = " . $client_id;
 		if($year){
-			$sql .= " and year(createdon) = '".$year."'";	
+			$sql .= " AND year(createdon) = '".$year."'";	
 		}
 		$jobs = $this->db->query($sql)->row();
 		if($jobs){
