@@ -698,7 +698,7 @@ class Myob extends MX_Controller {
 	
 	function test_read_customer($external_id)
 	{
-		$c = $this->read_customer($external_id);
+		$c = $this->read_customer(urlencode($external_id));
 		var_dump($c);
 	}
 	
