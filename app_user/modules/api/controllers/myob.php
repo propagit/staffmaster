@@ -82,68 +82,68 @@ class Myob extends MX_Controller {
 		
 		$result = '';
 		$params = explode('~', $function);
+		$param = isset($params[1]) ? urlencode($params[1]) : '';
 		switch($params[0])
 		{
-			$param = isset($params[1]) ? urlencode($params[1]) : '';
 			case 'read_employee':
-					$result = $this->read_employee($params[1]);
+					$result = $this->read_employee($param);
 				break;
 			case 'append_employee':
-					$result = $this->append_employee($params[1]);
+					$result = $this->append_employee($param);
 				break;
 			case 'update_employee':
-					$result = $this->update_employee($params[1]);
+					$result = $this->update_employee($param);
 				break;
 			case 'search_employee':
 					$result = $this->search_employee();
 				break;
 			case 'read_employee_payment':
-					$result = $this->read_employee_payment($params[1]);
+					$result = $this->read_employee_payment($param);
 				break;
 			case 'read_employee_payroll':
-					$result = $this->read_employee_payroll($params[1]);
+					$result = $this->read_employee_payroll($param);
 				break;
 			case 'update_employee_payment':
-					$result = $this->update_employee_payment($params[1]);
+					$result = $this->update_employee_payment($param);
 				break;
 			case 'read_customer':
-					$result = $this->read_customer($params[1]);
+					$result = $this->read_customer($param);
 				break;
 			case 'append_customer':
-					$result = $this->append_customer($params[1]);
+					$result = $this->append_customer($param);
 				break;
 			case 'update_customer':
-					$result = $this->update_customer($params[1]);
+					$result = $this->update_customer($param);
 				break;
 			case 'search_customer':
 					$result = $this->search_customer();
 				break;
 			case 'read_payroll':
-					$result = $this->read_payroll($params[1]);
+					$result = $this->read_payroll($param);
 				break;
 			case 'validate_append_timesheet':
-					$result = $this->validate_append_timesheet($params[1]);
+					$result = $this->validate_append_timesheet($param);
 				break;
 			case 'append_timesheets':
-					$result = $this->append_timesheets($params[1]);
+					$result = $this->append_timesheets($param);
 				break;
 			case 'read_invoices':
 					$result = $this->read_invoices();
 				break;
 			case 'read_invoice':
-					$result = $this->read_invoice($params[1]);
+					$result = $this->read_invoice($param);
 				break;
 			case 'validate_append_invoice':
-					$result = $this->validate_append_invoice($params[1]);
+					$result = $this->validate_append_invoice($param);
 				break;
 			case 'append_invoice':
-					$result = $this->append_invoice($params[1]);
+					$result = $this->append_invoice($param);
 				break;
 			case 'read_activity':
-					$result = $this->read_activity($params[1]);
+					$result = $this->read_activity($param);
 				break;
 			case 'read_accounts':
-					$result = $this->read_accounts($params[1]);
+					$result = $this->read_accounts($param);
 				break;
 			case 'info':
 					$result = $this->info();
