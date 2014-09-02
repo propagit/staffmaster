@@ -323,6 +323,12 @@ class Myob extends MX_Controller {
 		return null;		
 	}
 	
+	function test_read_employee($external_id)
+	{
+		$e = $this->read_employee($external_id);
+		var_dump($e);
+	}
+	
 	/**
 	*	@desc: get employee from MYOB
 	*	@params: $external_id (DisplayID in MYOB)
