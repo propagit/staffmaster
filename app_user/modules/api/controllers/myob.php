@@ -699,7 +699,7 @@ class Myob extends MX_Controller {
 	
 	function test_read_customer()
 	{
-		$c = $this->read_customer(urlencode('SBCUS1061'));
+		$c = $this->search_customer();
 		var_dump($c);
 	}
 	
