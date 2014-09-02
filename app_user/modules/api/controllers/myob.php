@@ -696,6 +696,12 @@ class Myob extends MX_Controller {
 		return null;
 	}
 	
+	function test_read_customer($external_id)
+	{
+		$c = $this->read_customer($external_id);
+		var_dump($c);
+	}
+	
 	/**
 	*	@desc: get customer from MYOB
 	*	@params: $external_id (DisplayID from MYOB)
