@@ -314,7 +314,8 @@ function reset_invoice() {
 		url: "<?=base_url();?>invoice/ajax/delete_invoice",
 		data: {invoice_id: <?=$invoice['invoice_id'];?>},
 		success: function(html) {
-			window.location = '<?=base_url();?>invoice/create/<?=$invoice['client_id'];?>';
+			//window.location = '<?=base_url();?>invoice/create/<?=$invoice['client_id'];?>';
+			window.close();
 		}
 	})
 }
