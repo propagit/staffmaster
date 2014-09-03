@@ -88,15 +88,14 @@ class Invoice extends MX_Controller {
 	*	@name: create
 	*	@desc: create the invoice record for a client
 	*	@access: public
-	*	@param: (int) $user_id
+	*	@param: (int) $user_id (client)
 	*	@return: (void) redirect to (html) invoice page
 	*/
 	function create($user_id) {
 		$invoice_id = $this->invoice_model->check_client_invoice($user_id);
 		# If found invoice, delete it
 		if ($invoice_id) {
-			$this->invoice_model->delete_invoice_items($invoice_id);
-			$this->invoice_model->delete_invoice($invoice_id);
+			redirect('invoice/edit/' . $invoice_id);
 		}
 		$client = modules::run('client/get_client', $user_id);
 		$profile = modules::run('setting/company_profile');
