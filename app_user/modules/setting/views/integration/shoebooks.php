@@ -95,6 +95,26 @@
 </table>
 </div>
 
+<br />
+<p><b>Settings</b></p>
+<p>You can set up what account in Shoebooks you would to push invoice data to below.</p>
+<div class="table-responsive">
+<table class="table table-bordered table-hover table-middle" width="100%">
+<tbody>
+	<tr>
+		<td>Invoice</td>
+		<td>
+			<input type="text" class="form-control" id="shoebooks_invoice_account" value="<?=$this->config_model->get('shoebooks_invoice_account');?>" />
+		</td>
+		<td>
+			<button class="btn btn-core btn-block" id="btn-update-invoice-setting">Update</button>
+		</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<div class="alert alert-success hide" id="msg-update-invoice-setting">Invoice setting has been updated successfully!</div>
+
 <!-- Modal -->
 <div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -113,7 +133,19 @@ $(function(){
 		keyboard: true,
 		show: false
 	})
-	
+	$('#btn-update-invoice-setting').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>config/ajax/add",
+			data: {shoebooks_invoice_account: $('#shoebooks_invoice_account').val()},
+			success: function(html) {
+				$('#msg-update-invoice-setting').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-update-invoice-setting').addClass('hide');
+				}, 2000);
+			}
+		})
+	});
 	$('#btn-update').click(function(){
 		$.ajax({
 			type: "POST",

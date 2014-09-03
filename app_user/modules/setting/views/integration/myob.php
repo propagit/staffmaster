@@ -133,6 +133,7 @@ else { ?>
 		</tr>
 	</tbody>
 	</table>
+	</div>
 	
 	<br />
 	<p><b>Settings</b></p>
@@ -142,6 +143,7 @@ else { ?>
 		<li>Client invoices that include manual line items can not be pushed as "Time Billing" and will be pushed as "Miscellaneous"</li>
 	</ul><br />
 	<p>You can choose what account in MYOB you would to push manual invoice data to below.</p>
+	<div class="table-responsive">
 	<table class="table table-bordered table-hover table-middle" width="100%">
 	<tbody>
 		<tr>
@@ -159,8 +161,8 @@ else { ?>
 	</tbody>
 	</table>
 	
-	
 	</div>
+	
 	
 	<div id="output"></div>
 	

@@ -106,9 +106,9 @@ class Shoebooks extends MX_Controller {
 	{
 		$employee = $this->search_employee();
 		$last = $employee[count($employee) - 1];
-		while($last && count($employee) < 1000)
+		while($last && count($employee) < 3000)
 		{
-			$employee = array_merge($employee, $this->search_employee($last['DataID']));
+			$employee = array_merge($employee, $this->search_employee($last['DataID'] + 1));
 			$last = $employee[count($employee) - 1];
 		}
 		var_dump($employee);
@@ -125,11 +125,11 @@ class Shoebooks extends MX_Controller {
 				<SessionID></SessionID>
 			</Login>
 		<args>
-			<StatutoryEmployee>true</StatutoryEmployee>
 			<DataID>
 				<MinValue>' . $min . '</MinValue>
 				<MaxValue></MaxValue>
 			</DataID>
+			<Terminated>0001-01-01 00:00:00</Terminated>
 		</args>
 		</SearchEmployee>';		
 		
@@ -666,7 +666,7 @@ class Shoebooks extends MX_Controller {
 			$this->append_customer($client['user_id']);
 			$client = modules::run('client/get_client', $client['user_id']);
 		}
-		
+		$account_id = ($this->config_model->get('shoebooks_invoice_account')) ? $this->config_model->get('shoebooks_invoice_account') : '';
 		$request = '<AppendInvoice xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>
@@ -679,7 +679,7 @@ class Shoebooks extends MX_Controller {
 				<InvoiceDate>' . date('Y-m-d', strtotime($invoice['issued_date'])) . '</InvoiceDate>
 				<DueDate>' . date('Y-m-d', strtotime($invoice['due_date'])) . '</DueDate>
 				<CustomerPO>' . $invoice['po_number'] . '</CustomerPO>
-				<AccountID></AccountID>
+				<AccountID>' . $account_id . '</AccountID>
 				<DivID>0</DivID>
 				<InvoiceLines>';
 		
