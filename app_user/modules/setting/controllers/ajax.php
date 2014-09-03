@@ -1152,7 +1152,7 @@ class Ajax extends MX_Controller {
 				$company_name = ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName;
 				if (strtolower($client['company_name']) != strtolower($company_name))
 				{
-					$warnings[] = $e->DisplayID;
+					$warnings[] = $c->DisplayID;
 				}
 			}
 		}
