@@ -304,8 +304,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		
-		$filter = "filter=IsActive%20eq%20true&top=5000";
-		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter;
+		$filter = "filter=IsActive%20eq%20true";
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter . '&$top=5000';
 		
 		$ch = curl_init($url); 
 		
@@ -677,8 +677,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$filter = "filter=IsActive%20eq%20true&top=5000";
-		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/?$' . $filter;
+		$filter = "filter=IsActive%20eq%20true";
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/?$' . $filter . '&$top=5000';
 		
 		$ch = curl_init($url); 
 		
