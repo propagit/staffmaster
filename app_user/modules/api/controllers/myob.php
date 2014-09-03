@@ -264,7 +264,9 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		#var_dump($headers); die();
-		$filter = "filter=substringof('". $code ."',%20Code)%20eq%20true";
+		#$filter = "filter=substringof('". $code ."',%20Code)%20eq%20true";
+		$filter = "filter=Code%20eq%20'". $code ."'";
+		
 		$url = $this->cloud_api_url . $this->company_id . '/GeneralLedger/TaxCode/?$' . $filter;
 		
 		$ch = curl_init($url); 
@@ -963,7 +965,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
+		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
+		$filter = "filter=DisplayID%20eq%20'". $external_id ."'";
 		
 		$url = $this->cloud_api_url . $this->company_id . '/TimeBilling/Activity/?$' . $filter;
 		$ch = curl_init($url); 
@@ -1050,7 +1053,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
+		#$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
+		$filter = "filter=Name%20eq%20'". $name ."'";
 		
 		$url = $this->cloud_api_url . $this->company_id . '/Payroll/PayrollCategory/?$' . $filter;
 		$ch = curl_init($url); 
@@ -1340,7 +1344,10 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$filter = "filter=substringof('". $external_id ."',%20Number)%20eq%20true";
+		#$filter = "filter=substringof('". $external_id ."',%20Number)%20eq%20true";
+		$filter = "filter=Number%20eq%20'". $external_id ."'";
+		
+		
 		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/?$' . $filter;
 		
 		$ch = curl_init($url); 
