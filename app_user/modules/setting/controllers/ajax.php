@@ -967,6 +967,40 @@ class Ajax extends MX_Controller {
 		echo $file_name;
 	}
 	
+	function download_myob_staff_report()
+	{
+		$ids = unserialize($this->input->post('ids'));
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("MYOB Staff Report");
+		$objPHPExcel->getProperties()->setSubject("MYOB Staff Report");
+		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to MYOB Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Name');
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$s = modules::run('staff/get_staff_by_external_id', $ids[$i]);
+			$e = modules::run('api/myob/connect', 'read_employee~' . $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $s['user_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name'] . ' ' . $s['last_name']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e->FirstName . ' ' . $e->LastName);
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
+	}
+	
 	function sync_myob_staff()
 	{
 		$imported = 0;
