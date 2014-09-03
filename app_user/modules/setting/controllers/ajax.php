@@ -876,7 +876,7 @@ class Ajax extends MX_Controller {
 				$s = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
 				if (strtolower($s['first_name'] . ' ' . $s['last_name']) != strtolower($e->FirstName . ' ' . $e->LastName))
 				{
-					$warnings[] = $external_id;
+					$warnings[] = $e->DisplayID;
 				}
 			}
 		}
