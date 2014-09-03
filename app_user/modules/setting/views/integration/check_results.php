@@ -1,4 +1,4 @@
-<h2><?=$type;?> Summary</h2>
+<h2><?=ucwords($type);?> Summary</h2>
 <br />
 <div id="platform-data" class="table-responsive">
 <table class="table table-bordered table-hover table-middle" width="100%">
@@ -49,7 +49,7 @@ $(function(){
 function download_report() {
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>setting/ajax/download_shoebooks_staff_report",
+		url: "<?=base_url();?>setting/ajax/download_shoebooks_<?=$type;?>_report",
 		data: {ids: '<?=serialize($warnings);?>'},
 		success: function(html) {
 			window.location = '<?=base_url().EXPORTS_URL;?>/error/' + html;

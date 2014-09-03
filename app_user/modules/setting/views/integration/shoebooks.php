@@ -83,6 +83,9 @@
 			<span class="badge primary"><?=$customer;?></span>							
 		</td>
 		<td class="center">
+			<a class="btn btn-core" id="btn-check-client">
+				Check
+			</a> &nbsp; 
 			<a class="btn btn-core" id="btn-sync-client">
 				<i class="fa fa-exchange"></i> Quick Sync								
 			</a>
@@ -139,6 +142,19 @@ $(function(){
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>setting/ajax/sync_shoebooks_staff",
+			success: function(html) {
+				$('#order-message').html(html);
+				//location.reload();
+			}
+		})
+	})
+	
+	$('#btn-check-client').click(function(){
+		$('.bs-modal-lg').modal('hide');
+		$('#waitingModal').modal('show');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>setting/ajax/check_shoebooks_client",
 			success: function(html) {
 				$('#order-message').html(html);
 				//location.reload();

@@ -451,7 +451,7 @@ class Ajax extends MX_Controller {
 			}
 		}
 		
-		$data['type'] = 'Staff';
+		$data['type'] = 'staff';
 		$data['platform'] = 'Shoebooks';
 		$data['total_staffbooks'] = count($staff);
 		$data['total_shoebooks'] = count($employee);
@@ -486,9 +486,9 @@ class Ajax extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e['FirstName'] . ' ' . $e['LastName']);
 		}
 		
-		$objPHPExcel->getActiveSheet()->setTitle('sync_report_');
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
-		$file_name = "sync_report_" . time() . ".xlsx";
+		$file_name = "sync_report_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
@@ -596,6 +596,80 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'Staff';
 		$data['platform'] = 'Shoebooks';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
+	}
+	
+	function check_shoebooks_client()
+	{
+		# Get all customers from Shoebooks
+		$customers = modules::run('api/shoebooks/search_customer');
+		$customer_ids = array();
+		foreach($customers as $c)
+		{
+			$customer_ids[] = $c['DataID'];
+		}
+		
+		# Get all clients from StaffBooks
+		$this->load->model('client/client_model');
+		$clients = $this->client_model->search_clients();
+		$client_ids = array();
+		foreach($clients as $client)
+		{
+			$client_ids[] = $client['external_client_id'];
+		}
+		
+		$synced = array_intersect($customer_ids, $client_ids);
+		$warnings = array();
+		foreach($synced as $external_id)
+		{
+			$client = modules::run('client/get_client_by_external_id', $external_id);
+			$customer = modules::run('api/shoebooks/read_customer', $external_id);
+			if (strtolower($client['company_name']) != strtolower($customer['CompanyName']))
+			{
+				$warnings[] = $external_id;
+			}
+		}
+		
+		$data['type'] = 'client';
+		$data['platform'] = 'Shoebooks';
+		$data['total_staffbooks'] = count($clients);
+		$data['total_shoebooks'] = count($customers);
+		$data['synced'] = count($synced);
+		$data['warnings'] = $warnings;
+		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
+	}
+	
+	function download_shoebooks_client_report()
+	{
+		$ids = unserialize($this->input->post('ids'));
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("Shoebooks Client Report");
+		$objPHPExcel->getProperties()->setSubject("Shoebooks Client Report");
+		$objPHPExcel->getProperties()->setDescription("Check Client for Sync to Shoebooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Company Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Company Name');
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$client = modules::run('client/get_client_by_external_id', $ids[$i]);
+			$customer = modules::run('api/shoebooks/read_customer', $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $client['user_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $client['company_name']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $customer['CompanyName']);
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_client_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_client_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
 	}
 	
 	function sync_shoebooks_client()
