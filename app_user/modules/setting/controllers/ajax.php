@@ -459,6 +459,85 @@ class Ajax extends MX_Controller {
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
 	}
+	
+	function download_not_synced_staff_shoebooks()
+	{
+		$employee = modules::run('api/shoebooks/search_employee');
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("Shoebooks Employee Report");
+		$objPHPExcel->getProperties()->setSubject("Shoebooks Employee Report");
+		$objPHPExcel->getProperties()->setDescription("Check Shoebooks Employee for Sync to StaffBooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Data ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'First Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Last Name');
+		
+		$i = 0;
+		foreach($employee as $e)
+		{
+			if (!modules::run('staff/get_staff_by_external_id', $e['DataID']))
+			{
+				$emp = modules::run('api/shoebooks/read_employee', $e['DataID']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $e['DataID']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $emp['FirstName']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $emp['LastName']);
+				$i++;
+			}
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
+	}
+	
+	function download_not_synced_staff_shoebooks_staffbooks()
+	{
+		$this->load->model('staff/staff_model');
+		$staff = $this->staff_model->search_staffs();
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("StaffBooks Staff Report");
+		$objPHPExcel->getProperties()->setSubject("StaffBooks Staff Report");
+		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to Shoebooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'First Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Last Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Email Address');
+		
+		$i = 0;
+		foreach($staff as $s)
+		{
+			if (!modules::run('api/shoebooks/read_employee', $s['external_staff_id']))
+			{
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $s['user_id']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $s['external_staff_id']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $s['last_name']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), $s['email_address']);
+				$i++;
+			}
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
+	}
+	
 	function download_shoebooks_staff_report()
 	{
 		$ids = unserialize($this->input->post('ids'));
@@ -766,6 +845,126 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'Clients';
 		$data['platform'] = 'Shoebooks';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
+	}
+	
+	function check_myob_staff()
+	{
+		# First get all employee from MYOB
+		$employee = modules::run('api/myob/connect/search_employee');
+		$e_ids = array();
+		foreach($employee as $e)
+		{
+			$e_ids[] = $e->DisplayID;
+		}
+		
+		# Get all staff from StaffBooks
+		$this->load->model('staff/staff_model');
+		$staff = $this->staff_model->search_staffs();
+		$s_ids = array();
+		foreach($staff as $s)
+		{
+			$s_ids[] = $s['external_staff_id'];
+		}
+		
+		$synced = array_intersect($e_ids, $s_ids);
+		$warnings = array();
+		
+		foreach($employee as $e)
+		{
+			if (in_array($e->DisplayID, $synced))
+			{
+				$s = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
+				if (strtolower($s['first_name'] . ' ' . $s['last_name']) != strtolower($e->FirstName . ' ' . $e->LastName))
+				{
+					$warnings[] = $external_id;
+				}
+			}
+		}
+		
+		$data['type'] = 'staff';
+		$data['platform'] = 'MYOB';
+		$data['total_staffbooks'] = count($staff);
+		$data['total_shoebooks'] = count($employee);
+		$data['synced'] = count($synced);
+		$data['warnings'] = $warnings;
+		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
+	}
+	
+	function download_not_synced_staff_myob()
+	{
+		$employee = modules::run('api/myob/connect/search_employee');
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("MYOB Employee Report");
+		$objPHPExcel->getProperties()->setSubject("MYOB Employee Report");
+		$objPHPExcel->getProperties()->setDescription("Check MYOB Employee for Sync to StaffBooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Display ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'First Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Last Name');
+		
+		$i = 0;
+		foreach($employee as $e)
+		{
+			if (!modules::run('staff/get_staff_by_external_id', $e->DisplayID))
+			{
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $e->DisplayID);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $e->FirstName);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $e->LastName);
+				$i++;
+			}
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
+	}
+	
+	function download_not_synced_staff_myob_staffbooks()
+	{
+		$this->load->model('staff/staff_model');
+		$staff = $this->staff_model->search_staffs();
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("StaffBooks Staff Report");
+		$objPHPExcel->getProperties()->setSubject("StaffBooks Staff Report");
+		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to MYOB Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'First Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Last Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Email Address');
+		
+		$i = 0;
+		foreach($staff as $s)
+		{
+			if (!modules::run('api/myob/connect', 'read_employee~' . $s['external_staff_id']))
+			{
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $s['user_id']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $s['external_staff_id']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $s['last_name']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), $s['email_address']);
+				$i++;
+			}
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
 	}
 	
 	function sync_myob_staff()

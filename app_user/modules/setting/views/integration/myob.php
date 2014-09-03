@@ -96,6 +96,9 @@ else { ?>
 				<span class="badge primary"><?=count(modules::run('api/myob/connect/search_employee'));?></span>
 			</td>
 			<td class="center">
+				<a class="btn btn-core" id="btn-check-staff">
+					Check
+				</a> &nbsp; 
 				<a class="btn btn-core" id="btn-sync-staff">
 					<i class="fa fa-exchange"></i> Quick Sync								
 				</a>
@@ -171,6 +174,7 @@ else { ?>
 		</div>
 	</div>
 	
+	
 	<script>
 	$(function(){
 		init_select();
@@ -186,6 +190,17 @@ else { ?>
 				url: "<?=base_url();?>config/ajax/add",
 				data: {myob_invoice_account: myob_invoice_account},
 				success: function(html) {}
+			})
+		})
+		$('#btn-check-staff').click(function(){
+			$('.bs-modal-lg').modal('hide');
+			$('#waitingModal').modal('show');
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>setting/ajax/check_myob_staff",
+				success: function(html) {
+					$('#order-message').html(html);
+				}
 			})
 		})
 		$('#btn-sync-staff').click(function(){
@@ -269,6 +284,11 @@ else { ?>
 			})
 		})
 	})
+	
+	function close_waiting_modal()
+	{
+		$('#waitingModal').modal('hide');
+	}
 	</script>
 	
 <? } ?>

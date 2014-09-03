@@ -654,7 +654,14 @@ span.dash-invoice-value{
 	border: 1px solid #ccc; 
 	border-bottom:0;
 }
-
+#loadingModal {
+	text-align: center;
+	background: url('../img/bg_disabled.png');
+}
+#loadingModal img {
+	top: 30%;
+	position: absolute;
+}
 .modal-form .row {
 	padding: 0;
 }

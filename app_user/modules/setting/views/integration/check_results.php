@@ -15,7 +15,12 @@
 	<tr>
 		<td align="left"><b><?=$platform;?></b></td>
 		<td><span class="badge badge-default"><?=$total_shoebooks;?></span></td>
-		<td><span class="badge warning"><?=$total_shoebooks - $synced;?></span></td>
+		<td>
+			<span class="badge warning" id="not_synced"><?=$total_shoebooks - $synced;?></span>
+			<? if($total_shoebooks > $synced) { ?>
+			<a onclick="download_not_synced()"><i class="fa fa-download"></i></a>
+			<? } ?>
+		</td>
 		<td rowspan="2"><span class="badge success"><?=$synced;?></span></td>
 		<td rowspan="2">
 			<span id="synced_warning" class="badge danger"><?=count($warnings);?></span>
@@ -27,7 +32,12 @@
 	<tr>
 		<td align="left"><b>StaffBooks</b></td>
 		<td><span class="badge badge-default"><?=$total_staffbooks;?></span></td>
-		<td><span class="badge warning"><?=$total_staffbooks - $synced;?></span></td>
+		<td>
+			<span class="badge warning" id="not_synced_staffbooks"><?=$total_staffbooks - $synced;?></span>
+			<? if ($total_staffbooks > $synced) { ?>
+			<a onclick="download_not_synced_staffbooks()"><i class="fa fa-download"></i></a>
+			<? } ?>
+		</td>
 	</tr>
 	</tbody>
 </table>
@@ -37,6 +47,21 @@
 
 <script>
 $(function(){
+	<? if($total_shoebooks > $synced) { ?>
+	$('#not_synced').popover({
+		content: 'There are <?=($total_shoebooks - $synced) . ' ' . $type;?> in <?=$platform;?> were not synced with StaffBooks because the External ID is not found in StaffBooks. Click the icon to download the list for more details.',
+		title: 'What is it?',
+		trigger: 'hover'
+	})
+	<? } ?>
+	
+	<? if($total_staffbooks > $synced) { ?>
+	$('#not_synced_staffbooks').popover({
+		content: 'There are <?=($total_staffbooks - $synced) . ' ' . $type;?> in StaffBooks that are not found in <?=$platform;?>. Click the icon to download the list for more details.',
+		title: 'What is it?',
+		trigger: 'hover'
+	})
+	<? } ?>
 	
 	<? if(count($warnings) > 0) { ?>
 	$('#synced_warning').popover({
@@ -47,11 +72,39 @@ $(function(){
 	<? } ?>
 })
 function download_report() {
+	$('#loadingModal').modal('show');
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>setting/ajax/download_shoebooks_<?=$type;?>_report",
 		data: {ids: '<?=serialize($warnings);?>'},
 		success: function(html) {
+			$('#loadingModal').modal('hide');
+			window.location = '<?=base_url().EXPORTS_URL;?>/error/' + html;
+		}
+	})
+}
+function download_not_synced()
+{
+	$('#loadingModal').modal('show');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>setting/ajax/download_not_synced_<?=$type;?>_<?=strtolower($platform);?>",
+		data: {},
+		success: function(html) {
+			$('#loadingModal').modal('hide');
+			window.location = '<?=base_url().EXPORTS_URL;?>/error/' + html;
+		}
+	})
+}
+function download_not_synced_staffbooks()
+{
+	$('#loadingModal').modal('show');
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>setting/ajax/download_not_synced_<?=$type;?>_<?=strtolower($platform);?>_staffbooks",
+		data: {},
+		success: function(html) {
+			$('#loadingModal').modal('hide');
 			window.location = '<?=base_url().EXPORTS_URL;?>/error/' + html;
 		}
 	})

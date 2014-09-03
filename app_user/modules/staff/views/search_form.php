@@ -113,7 +113,14 @@
 					<div class="col-md-4">
 						<?=modules::run('common/field_select_yes_no','timesheet_in_payrun');?>
 					</div>
-				</div>				
+					<label for="external_staff_id" class="col-md-2 control-label">External ID</label>
+					<div class="col-md-4">
+						<div class="input-group">
+						  <span class="input-group-addon"><input type="checkbox" name="check_external_id" /></span>
+						  <input type="text" class="form-control" id="external_staff_id" name="external_staff_id" />
+						</div>						
+					</div>
+				</div>
 			</div>
             
             <div class="row">
@@ -269,6 +276,11 @@ $(function(){
 		reset_page();
 	});
 	
+	
+	<? if(isset($_GET['external_id'])) { ?>
+	$('input[name="check_external_id"]').prop('checked', true);
+	search_staffs();
+	<? } ?>
 	
 	$('#btn_search_staffs').click(function(){
 		//reset_page();

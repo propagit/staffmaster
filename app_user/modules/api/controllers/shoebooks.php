@@ -104,11 +104,17 @@ class Shoebooks extends MX_Controller {
 	
 	function test_search_employee()
 	{
-		$a = $this->search_employee();
-		var_dump($a);
+		$employee = $this->search_employee();
+		$last = $employee[count($employee) - 1];
+		while($last && count($employee) < 1000)
+		{
+			$employee = array_merge($employee, $this->search_employee($last['DataID']));
+			$last = $employee[count($employee) - 1];
+		}
+		var_dump($employee);
 	}
 	
-	function search_employee()
+	function search_employee($min='')
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/SearchEmployee';
 		$request = '<SearchEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
@@ -118,7 +124,13 @@ class Shoebooks extends MX_Controller {
 				<LoginPassword>' . $this->login_password . '</LoginPassword>
 				<SessionID></SessionID>
 			</Login>
-		<args />
+		<args>
+			<StatutoryEmployee>true</StatutoryEmployee>
+			<DataID>
+				<MinValue>' . $min . '</MinValue>
+				<MaxValue></MaxValue>
+			</DataID>
+		</args>
 		</SearchEmployee>';		
 		
 		$client = new nusoap_client($this->host);

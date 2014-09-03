@@ -117,6 +117,17 @@
 <div class="modal fade bs-modal-sml" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"></div>
 
 
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<img src="<?=base_url();?>assets/img/loading3.gif" />
+</div>
+<script>
+$('#loadingModal').modal({
+	backdrop: 'static',
+	keyboard: true,
+	show: false
+})
+</script>
 <footer>
     <div id="sm-footer-wrap">
         <a target="_blank" href="http://www.staffbooks.com"><div class="footer-copy">&copy; StaffBooks - www.staffbooks.com</div></a>

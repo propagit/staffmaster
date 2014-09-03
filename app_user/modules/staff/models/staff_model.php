@@ -257,7 +257,11 @@ class Staff_model extends CI_Model {
 				$sql .= " AND s.user_id NOT IN ".$payrun_exist_sql;
 			}
 		}
-
+		
+		if (isset($params['check_external_id']) && isset($params['external_staff_id']))
+		{
+			$sql .= " AND s.external_staff_id = '" . $params['external_staff_id'] . "'";
+		}
 		
 		if (isset($params['keyword']) && $params['keyword'] != '') 
 		{ 
