@@ -157,6 +157,7 @@ $(function(){
 		})
 	})
 	$('#btn-check-staff').click(function(){
+		$('#order-message').html('<img src="<?=base_url();?>assets/img/loading3.gif" /><h2>Please wait!</h2><p>Please wait a moment while we are processing your request ...</p>');
 		$('.bs-modal-lg').modal('hide');
 		$('#waitingModal').modal('show');
 		$.ajax({
@@ -182,6 +183,7 @@ $(function(){
 	})
 	
 	$('#btn-check-client').click(function(){
+		$('#order-message').html('<img src="<?=base_url();?>assets/img/loading3.gif" /><h2>Please wait!</h2><p>Please wait a moment while we are processing your request ...</p>');
 		$('.bs-modal-lg').modal('hide');
 		$('#waitingModal').modal('show');
 		$.ajax({
