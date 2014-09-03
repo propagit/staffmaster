@@ -949,15 +949,18 @@ class Ajax extends MX_Controller {
 		$i = 0;
 		foreach($staff as $s)
 		{
-			if (!modules::run('api/myob/connect', 'read_employee~' . $s['external_staff_id']))
+			if ($s['external_staff_id'])
 			{
-				$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $s['user_id']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $s['external_staff_id']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $s['last_name']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), $s['email_address']);
-				$i++;
-			}
+				if (!modules::run('api/myob/connect', 'read_employee~' . $s['external_staff_id']))
+				{
+					$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $s['user_id']);
+					$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $s['external_staff_id']);
+					$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name']);
+					$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $s['last_name']);
+					$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), $s['email_address']);
+					$i++;
+				}
+			}			
 		}
 		
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
