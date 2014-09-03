@@ -140,22 +140,20 @@
 </div>
 
 
+<? if(!modules::run('auth/is_staff')){ ?>	
 <div class="row">
 	<div class="form-group">
-		<? if(!modules::run('auth/is_staff')){ ?>	
 		<label for="status" class="col-md-2 control-label">Status</label>
 		<div class="col-md-4">
 			<?=modules::run('staff/field_select_status', 'status', (int)$staff['status']);?>
 		</div>
-		
-		<? } ?>
-
 		<label for="external_id" class="col-md-2 control-label">External Staff ID</label>
 		<div class="col-md-4">
 			<input type="text" class="form-control" id="external_staff_id" name="external_staff_id" value="<?=$staff['external_staff_id'];?>"  />
-		</div>
+		</div>		
 	</div> 
 </div>
+<? } ?>
 <div class="row">
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">

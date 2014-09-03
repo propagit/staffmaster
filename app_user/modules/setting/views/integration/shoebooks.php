@@ -54,6 +54,9 @@
 			<span class="badge primary"><?=$employee;?></span>
 		</td>
 		<td class="center">
+			<a class="btn btn-core" id="btn-check-staff">
+				Check
+			</a> &nbsp; 
 			<a class="btn btn-core" id="btn-sync-staff">
 				<i class="fa fa-exchange"></i> Quick Sync								
 			</a>
@@ -115,6 +118,18 @@ $(function(){
 			data: $('#form-shoebooks').serialize(),
 			success: function(html) {
 				test_shoebooks();
+			}
+		})
+	})
+	$('#btn-check-staff').click(function(){
+		$('.bs-modal-lg').modal('hide');
+		$('#waitingModal').modal('show');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>setting/ajax/check_shoebooks_staff",
+			success: function(html) {
+				$('#order-message').html(html);
+				//location.reload();
 			}
 		})
 	})
@@ -191,6 +206,10 @@ $(function(){
 		})
 	})
 })
+function close_waiting_modal()
+{
+	$('#waitingModal').modal('hide');
+}
 function test_shoebooks()
 {
 	$.ajax({

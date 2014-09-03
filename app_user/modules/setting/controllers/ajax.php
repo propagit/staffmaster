@@ -406,7 +406,7 @@ class Ajax extends MX_Controller {
 					);
 		echo $this->setting_model->update_information_sheet_configuration($information_sheet_id,$data);
 	}
-
+	
 	function accounting_platform()
 	{
 		$accounting_platform = $this->input->post('accounting_platform');
@@ -418,6 +418,79 @@ class Ajax extends MX_Controller {
 		{
 			$this->load->view('integration/' . $accounting_platform);
 		}
+	}
+		
+	function check_shoebooks_staff()
+	{
+		# Get all employee from Shoebooks
+		$employee = modules::run('api/shoebooks/search_employee');
+		$e_ids = array();
+		foreach($employee as $e)
+		{
+			$e_ids[] = $e['DataID'];
+		}
+		
+		# Get all staff from StaffBooks
+		$this->load->model('staff/staff_model');
+		$staff = $this->staff_model->search_staffs();
+		$s_ids = array();
+		foreach($staff as $s)
+		{
+			$s_ids[] = $s['external_staff_id'];
+		}
+		
+		$synced = array_intersect($e_ids, $s_ids);
+		$warnings = array();
+		foreach($synced as $external_id)
+		{
+			$s = modules::run('staff/get_staff_by_external_id', $external_id);
+			$e = modules::run('api/shoebooks/read_employee', $external_id);
+			if (strtolower($s['first_name'] . ' ' . $s['last_name']) != strtolower($e['FirstName'] . ' ' . $e['LastName']))
+			{
+				$warnings[] = $external_id;
+			}
+		}
+		
+		$data['type'] = 'Staff';
+		$data['platform'] = 'Shoebooks';
+		$data['total_staffbooks'] = count($staff);
+		$data['total_shoebooks'] = count($employee);
+		$data['synced'] = count($synced);
+		$data['warnings'] = $warnings;
+		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
+	}
+	function download_shoebooks_staff_report()
+	{
+		$ids = unserialize($this->input->post('ids'));
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("Shoebooks Staff Report");
+		$objPHPExcel->getProperties()->setSubject("Shoebooks Staff Report");
+		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to Shoebooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Name');
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$s = modules::run('staff/get_staff_by_external_id', $ids[$i]);
+			$e = modules::run('api/shoebooks/read_employee', $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $s['user_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name'] . ' ' . $s['last_name']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e['FirstName'] . ' ' . $e['LastName']);
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
 	}
 	
 	function sync_shoebooks_staff()

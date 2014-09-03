@@ -170,7 +170,7 @@ class Ajax extends MX_Controller {
 		
 		$this->user_model->update_user($data['user_id'], $user_data);
 		$staff_data = array(
-			'external_staff_id' => $data['external_staff_id'],
+			#'external_staff_id' => $data['external_staff_id'],
 			#'rating' => $data['profile_rating'],
 			'gender' => $data['gender'],
 			'dob' => date('Y-m-d',strtotime($data['dob']['year'].'-'.$data['dob']['month']. '-'.$data['dob']['day'])),
@@ -178,6 +178,11 @@ class Ajax extends MX_Controller {
 			'emergency_phone' => $data['emergency_phone'],
 			'update_description' => 'personal details'
 		);
+		if (isset($data['external_staff_id']))
+		{
+			$staff_data['external_staff_id'] = $data['external_staff_id'];
+		}
+		
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 		echo json_encode(array('ok' => true));
 		
