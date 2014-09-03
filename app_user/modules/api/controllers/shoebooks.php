@@ -66,6 +66,12 @@ class Shoebooks extends MX_Controller {
 		echo json_encode($output);
 	}
 	
+	function test_read_employee($id)
+	{
+		$a = $this->read_employee($id);
+		var_dump($a);
+	}
+	
 	function read_employee($id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadEmployee';
