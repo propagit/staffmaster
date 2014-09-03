@@ -874,7 +874,7 @@ class Ajax extends MX_Controller {
 			if (in_array($e->DisplayID, $synced))
 			{
 				$s = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
-				if (strtolower($s['first_name'] . ' ' . $s['last_name']) != strtolower($e->FirstName . ' ' . $e->LastName))
+				if (trim(strtolower($s['first_name'] . ' ' . $s['last_name'])) != trim(strtolower($e->FirstName . ' ' . $e->LastName)))
 				{
 					$warnings[] = $e->DisplayID;
 				}
@@ -919,9 +919,9 @@ class Ajax extends MX_Controller {
 			}
 		}
 		
-		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objPHPExcel->getActiveSheet()->setTitle('check_myob_staff');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
-		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$file_name = "check_myob_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
@@ -966,9 +966,9 @@ class Ajax extends MX_Controller {
 			}			
 		}
 		
-		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objPHPExcel->getActiveSheet()->setTitle('check_staffbooks_staff');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
-		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$file_name = "check_staffbooks_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
@@ -1000,9 +1000,9 @@ class Ajax extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e->FirstName . ' ' . $e->LastName);
 		}
 		
-		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objPHPExcel->getActiveSheet()->setTitle('check_myob_staff');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
-		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$file_name = "check_myob_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
@@ -1150,7 +1150,7 @@ class Ajax extends MX_Controller {
 			{
 				$client = modules::run('client/get_client_by_external_id', $c->DisplayID);
 				$company_name = ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName;
-				if (strtolower($client['company_name']) != strtolower($company_name))
+				if (trim(strtolower($client['company_name'])) != trim(strtolower($company_name)))
 				{
 					$warnings[] = $c->DisplayID;
 				}
