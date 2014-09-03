@@ -96,6 +96,12 @@ class Shoebooks extends MX_Controller {
 		return null;
 	}
 	
+	function test_search_employee()
+	{
+		$a = $this->search_employee();
+		var_dump($a);
+	}
+	
 	function search_employee()
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/SearchEmployee';
