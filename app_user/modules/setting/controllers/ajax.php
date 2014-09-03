@@ -454,7 +454,7 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'staff';
 		$data['platform'] = 'Shoebooks';
 		$data['total_staffbooks'] = count($staff);
-		$data['total_shoebooks'] = count($employee);
+		$data['total'] = count($employee);
 		$data['synced'] = count($synced);
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
@@ -711,7 +711,7 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'client';
 		$data['platform'] = 'Shoebooks';
 		$data['total_staffbooks'] = count($clients);
-		$data['total_shoebooks'] = count($customers);
+		$data['total'] = count($customers);
 		$data['synced'] = count($synced);
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
@@ -884,7 +884,7 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'staff';
 		$data['platform'] = 'MYOB';
 		$data['total_staffbooks'] = count($staff);
-		$data['total_shoebooks'] = count($employee);
+		$data['total'] = count($employee);
 		$data['synced'] = count($synced);
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
@@ -1120,6 +1120,164 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'Staff';
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
+	}
+	
+	function check_myob_client()
+	{
+		# Get all customers from MYOB
+		$customers = modules::run('api/myob/connect/search_customer');
+		$customer_ids = array();
+		foreach($customers as $c)
+		{
+			$customer_ids[] = $c->DisplayID;
+		}
+		
+		# Get all clients from StaffBooks
+		$this->load->model('client/client_model');
+		$clients = $this->client_model->search_clients();
+		$client_ids = array();
+		foreach($clients as $client)
+		{
+			$client_ids[] = $client['external_client_id'];
+		}
+		
+		$synced = array_intersect($customer_ids, $client_ids);
+		$warnings = array();
+		
+		foreach($customers as $c)
+		{
+			if (in_array($c->DisplayID, $synced))
+			{
+				$client = modules::run('client/get_client_by_external_id', $c->DisplayID);
+				$company_name = ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName;
+				if (strtolower($client['company_name']) != strtolower($company_name))
+				{
+					$warnings[] = $e->DisplayID;
+				}
+			}
+		}
+		
+		$data['type'] = 'client';
+		$data['platform'] = 'MYOB';
+		$data['total_staffbooks'] = count($clients);
+		$data['total'] = count($customers);
+		$data['synced'] = count($synced);
+		$data['warnings'] = $warnings;
+		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
+		
+	}
+	
+	function download_not_synced_client_myob()
+	{
+		$customers = modules::run('api/myob/connect/search_customer');
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("MYOB Customer Report");
+		$objPHPExcel->getProperties()->setSubject("MYOB Customer Report");
+		$objPHPExcel->getProperties()->setDescription("Check MYOB Customer for Sync to StaffBooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Display ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Company Name');
+		
+		$i = 0;
+		foreach($customers as $c)
+		{
+			if (!modules::run('client/get_client_by_external_id', $c->DisplayID))
+			{
+				$company_name = ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName;
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $c->DisplayID);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $company_name);
+				$i++;
+			}
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('check_myob_client');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "check_myob_client_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
+	}
+		
+	function download_not_synced_client_myob_staffbooks()
+	{
+		$this->load->model('client/client_model');
+		$clients = $this->client_model->search_clients();
+		$customers = modules::run('api/myob/connect/search_customer');
+		$customer_ids = array();
+		foreach($customers as $c)
+		{
+			$customer_ids[] = $c->DisplayID;
+		}
+		
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("StaffBooks Staff Report");
+		$objPHPExcel->getProperties()->setSubject("StaffBooks Staff Report");
+		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to MYOB Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Company Name');
+		
+		$i = 0;
+		foreach($clients as $c)
+		{
+			if (!in_array($c['external_client_id'], $customer_ids))
+			{
+				$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $c['user_id']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $c['external_client_id']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $c['company_name']);
+				$i++;
+			}			
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('check_staffbook_client');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "check_staffbook_client_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
+	}
+	
+	function download_myob_client_report()
+	{
+		$ids = unserialize($this->input->post('ids'));
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("MYOB Client Report");
+		$objPHPExcel->getProperties()->setSubject("MYOB Client Report");
+		$objPHPExcel->getProperties()->setDescription("Check Client for Sync to MYOB Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Company Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'MYOB Company Name');
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$client = modules::run('client/get_client_by_external_id', $ids[$i]);
+			$customer = modules::run('api/myob/connect', 'read_customer~' . $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $client['user_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $ids[$i]);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $client['company_name']);
+			$company_name = ($customer->IsIndividual) ? $customer->FirstName . ' ' . $customer->LastName : $customer->CompanyName;
+			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $company_name);
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('check_client');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "check_client_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
 	}
 	
 	function sync_myob_client()

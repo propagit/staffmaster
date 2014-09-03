@@ -14,10 +14,10 @@
 	<tbody>
 	<tr>
 		<td align="left"><b><?=$platform;?></b></td>
-		<td><span class="badge badge-default"><?=$total_shoebooks;?></span></td>
+		<td><span class="badge badge-default"><?=$total;?></span></td>
 		<td>
-			<span class="badge warning" id="not_synced"><?=$total_shoebooks - $synced;?></span>
-			<? if($total_shoebooks > $synced) { ?>
+			<span class="badge warning" id="not_synced"><?=$total - $synced;?></span>
+			<? if($total > $synced) { ?>
 			<a onclick="download_not_synced()"><i class="fa fa-download"></i></a>
 			<? } ?>
 		</td>
@@ -47,9 +47,9 @@
 
 <script>
 $(function(){
-	<? if($total_shoebooks > $synced) { ?>
+	<? if($total > $synced) { ?>
 	$('#not_synced').popover({
-		content: 'There are <?=($total_shoebooks - $synced) . ' ' . $type;?> in <?=$platform;?> were not synced with StaffBooks because the External ID is not found in StaffBooks. Click the icon to download the list for more details.',
+		content: 'There are <?=($total - $synced) . ' ' . $type;?> in <?=$platform;?> were not synced with StaffBooks because the External ID is not found in StaffBooks. Click the icon to download the list for more details.',
 		title: 'What is it?',
 		trigger: 'hover'
 	})
