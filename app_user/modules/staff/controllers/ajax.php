@@ -82,15 +82,7 @@ class Ajax extends MX_Controller {
 			#'phone' => $input['phone'],
 			'mobile' => $input['mobile']			
 		);
-		if (isset($input['external_staff_id']))
-		{
-			# check if the external staff id is unique
-			if ($this->staff_model->check_external_id($input['external_staff_id'])) {
-				echo json_encode(array('ok' => false, 'error_id' => 'external_staff_id', 'msg' => 'Duplicate External ID!'));
-				return;
-			}
-			$user_data['external_staff_id'] = $input['external_staff_id'];
-		}
+		
 
 		$user_id = $this->user_model->insert_user($user_data);
 		
@@ -114,6 +106,15 @@ class Ajax extends MX_Controller {
 			's_name' =>  $input['first_name'].' '.$input['last_name'],
 			's_fund_name' => $company_profile['super_fund_name']			
 		);
+		if (isset($input['external_staff_id']))
+		{
+			# check if the external staff id is unique
+			if ($this->staff_model->check_external_id($input['external_staff_id'])) {
+				echo json_encode(array('ok' => false, 'error_id' => 'external_staff_id', 'msg' => 'Duplicate External ID!'));
+				return;
+			}
+			$staff_data['external_staff_id'] = $input['external_staff_id'];
+		}
 		$staff_id = $this->staff_model->insert_staff($staff_data);
 		modules::run('staff/send_welcome_email', $user_id, $input['email_address'], $input['password']);
 		echo json_encode(array('ok' => true, 'user_id' => $user_id));
