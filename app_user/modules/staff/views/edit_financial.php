@@ -14,13 +14,13 @@
 	<div class="form-group" id="f_f_bsb">
 		<label for="f_bsb" class="col-md-4 control-label">BSB <span class="text-danger">**</span></label>
 		<div class="col-md-3">
-			<input type="text" class="form-control" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'];?>" tabindex="2" />
+			<input type="text" class="form-control bank-details" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'];?>" tabindex="2" onkeypress="return help.check_numeric(this, event,'h');" maxlength="8"/>
 		</div>
 	</div>
 	<div class="form-group" id="f_f_acc_number">
 		<label for="f_acc_number" class="col-md-4 control-label">Account Number <span class="text-danger">**</span></label>
 		<div class="col-md-3">
-			<input type="text" class="form-control" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" tabindex="3" />
+			<input type="text" class="form-control bank-details" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" tabindex="3" onkeypress="return help.check_numeric(this, event,'n');" maxlength="20"/>
 		</div>
 	</div>
     <div class="form-group">
@@ -174,13 +174,15 @@ $(function(){
 		load_f_employed();
 	});
 	$('#btn_update_financial').click(function(){
+		// remove previous error class and start fresh
+		$('#form_update_staff_financial .form-group').removeClass('has-error');
 		var btn = $(this);
 		btn.button('loading');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>staff/ajax/update_financial",
 			data: $('#form_update_staff_financial').serialize(),
-			success: function(data) {
+			success: function(data) {				
 				btn.button('reset');
 				data = $.parseJSON(data);
 				if (!data.ok) {
@@ -199,6 +201,7 @@ $(function(){
 			}
 		})
 	})
+
 })
 function load_senior_couple_status()
 {
@@ -239,4 +242,5 @@ function load_f_employed()
 		$('#f_gst').show();
 	}
 }
+
 </script>

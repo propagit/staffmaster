@@ -60,6 +60,8 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('ok' => false, 'error_id' => 'password', 'msg' => 'Password is required'));
 			return;
 		}
+		
+		
 		$user_data = array(
 			'status' => 1,
 			'is_admin' => 0,
@@ -80,6 +82,16 @@ class Ajax extends MX_Controller {
 			#'phone' => $input['phone'],
 			'mobile' => $input['mobile']			
 		);
+		if (isset($input['external_staff_id']))
+		{
+			# check if the external staff id is unique
+			if ($this->staff_model->check_external_id($input['external_staff_id'])) {
+				echo json_encode(array('ok' => false, 'error_id' => 'external_staff_id', 'msg' => 'Duplicate External ID!'));
+				return;
+			}
+			$user_data['external_staff_id'] = $input['external_staff_id'];
+		}
+
 		$user_id = $this->user_model->insert_user($user_data);
 		
 		if ($input['group_id']) {
@@ -127,6 +139,7 @@ class Ajax extends MX_Controller {
 	function update_personal()
 	{
 		$input = $this->input->post();
+		
 		if (!$input['first_name']) {
 			echo json_encode(array('ok' => false, 'error_id' => 'first_name', 'msg' => 'First name is required'));
 			return;
@@ -180,6 +193,11 @@ class Ajax extends MX_Controller {
 		);
 		if (isset($data['external_staff_id']))
 		{
+			# check if the external staff id is unique
+			if ($this->staff_model->check_external_id($data['external_staff_id'], $data['user_id'])) {
+				echo json_encode(array('ok' => false, 'error_id' => 'external_staff_id', 'msg' => 'Duplicate External ID!'));
+				return;
+			}
 			$staff_data['external_staff_id'] = $data['external_staff_id'];
 		}
 		
@@ -199,10 +217,21 @@ class Ajax extends MX_Controller {
 		if (!$data['f_bsb']) {
 			echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB is required'));
 			return;
-		}	
+		}else{
+			$temp_bsb = str_replace('-','',$data['f_bsb']);
+			if(!is_numeric($temp_bsb)){
+				echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB should be in numeric format.'));
+				return;	
+			}
+		}
 		if (!$data['f_acc_number']) {
 			echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number is required'));
 			return;
+		}else{
+			if(!is_numeric($data['f_acc_number'])){
+				echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number should be in numeric format.'));
+				return;	
+			}	
 		}
 		
 		$staff_data = array(
@@ -213,8 +242,8 @@ class Ajax extends MX_Controller {
 			'f_help_debt' => isset($data['f_help_debt']) ? $data['f_help_debt'] : 0,
 			'f_help_variation' => isset($data['f_help_variation']) ? $data['f_help_variation'] : '',
 			'f_acc_name' => $data['f_acc_name'],
-			'f_bsb' => $data['f_bsb'],
-			'f_acc_number' => $data['f_acc_number'],
+			'f_bsb' => trim($data['f_bsb']),
+			'f_acc_number' => trim($data['f_acc_number']),
 			'f_tfn' => $data['f_tfn'],
 			'f_employed' => $data['f_employed'],
 			'f_abn' => $data['f_abn'],
