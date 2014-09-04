@@ -951,7 +951,8 @@ class Staff_model extends CI_Model {
 				   AND u.user_id = s.user_id 
 				   AND u.user_id != " . $user_id;
 		}else{
-			$sql = "SELECT user_staffs s  
+			$sql = "SELECT s.* 
+				   FROM user_staffs s  
 				   WHERE s.external_staff_id = " . $external_staff_id;
 		}
 		$staff = $this->db->query($sql)->result_array();
