@@ -106,7 +106,7 @@ class Ajax extends MX_Controller {
 			's_name' =>  $input['first_name'].' '.$input['last_name'],
 			's_fund_name' => $company_profile['super_fund_name']			
 		);
-		if (isset($input['external_staff_id']))
+		if (isset($input['external_staff_id']) && trim($input['external_staff_id']))
 		{
 			# check if the external staff id is unique
 			if ($this->staff_model->check_external_id($input['external_staff_id'])) {
