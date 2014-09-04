@@ -951,15 +951,12 @@ class Staff_model extends CI_Model {
 				   AND u.user_id = s.user_id 
 				   AND u.user_id != " . $user_id;
 		}else{
-			$sql = "SELECT u.*
-				   FROM users u, user_staffs s  
-				   WHERE s.external_staff_id = " . $external_staff_id . "
-				   AND u.status != " . USER_DELETED . " 
-				   AND u.user_id = s.user_id";
+			$sql = "SELECT user_staffs s  
+				   WHERE s.external_staff_id = " . $external_staff_id;
 		}
 		$staff = $this->db->query($sql)->result_array();
 		if($staff){
-			return $staff;	
+			return true;	
 		}
 		return false;
 	}
