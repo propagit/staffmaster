@@ -197,7 +197,7 @@ class Ajax extends MX_Controller {
 		if (isset($data['external_staff_id']))
 		{
 			# check if the external staff id is unique
-			if ($this->staff_model->check_external_id($data['external_staff_id'], $data['user_id'])) {
+			if ($data['external_staff_id'] != '' && $this->staff_model->check_external_id($data['external_staff_id'], $data['user_id'])) {
 				echo json_encode(array('ok' => false, 'error_id' => 'external_staff_id', 'msg' => 'Duplicate External ID!'));
 				return;
 			}
