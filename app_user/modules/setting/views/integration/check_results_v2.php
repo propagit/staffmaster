@@ -58,7 +58,7 @@ function download_report() {
 	$('#loadingModal').modal('show');
 	$.ajax({
 		type: "POST",
-		url: "<?=base_url();?>setting/ajax/download_<?=strtolower($platform);?>_<?=$type;?>_report",
+		url: "<?=base_url();?>setting/ajax/download_<?=strtolower($platform);?>_<?=$type;?>_report_v2",
 		data: {ids: '<?=serialize($warnings);?>'},
 		success: function(html) {
 			$('#loadingModal').modal('hide');

@@ -438,7 +438,7 @@ class Ajax extends MX_Controller {
 					$synced++;
 					if (strtolower(trim($s['first_name']) . ' ' . trim($s['last_name'])) != strtolower(trim($e['FirstName']) . ' ' . trim($e['LastName'])))
 					{
-						$warnings[] = $e['EmployeeID'];
+						$warnings[] = $s['user_id'];
 					}
 				}
 			}			
@@ -561,6 +561,40 @@ class Ajax extends MX_Controller {
 				$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), $s['email_address']);
 				$i++;
 			}
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_staff_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
+	}
+	
+	function download_shoebooks_staff_report_v2()
+	{
+		$ids = unserialize($this->input->post('ids'));
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("Shoebooks Staff Report");
+		$objPHPExcel->getProperties()->setSubject("Shoebooks Staff Report");
+		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to Shoebooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Name');
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$s = modules::run('staff/get_staff', $ids[$i]);
+			$e = modules::run('api/shoebooks/read_employee', $s['external_staff_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $s['user_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $s['external_staff_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name'] . ' ' . $s['last_name']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e['FirstName'] . ' ' . $e['LastName']);
 		}
 		
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
@@ -727,7 +761,7 @@ class Ajax extends MX_Controller {
 					$synced++;
 					if (strtolower(trim($client['company_name'])) != strtolower(trim($customer['CompanyName'])))
 					{
-						$warnings[] = $customer['CustomerID'];
+						$warnings[] = $client['user_id'];
 					}
 				}
 			}
@@ -780,6 +814,40 @@ class Ajax extends MX_Controller {
 		$data['synced'] = count($synced);
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
+	}
+	
+	function download_shoebooks_client_report_v2()
+	{
+		$ids = unserialize($this->input->post('ids'));
+		$this->load->library('excel');
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("Admin Portal");
+		$objPHPExcel->getProperties()->setLastModifiedBy("Admin Portal");
+		$objPHPExcel->getProperties()->setTitle("Shoebooks Client Report");
+		$objPHPExcel->getProperties()->setSubject("Shoebooks Client Report");
+		$objPHPExcel->getProperties()->setDescription("Check Client for Sync to Shoebooks Excel file, generated from Admin Portal.");
+		
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
+		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Company Name');
+		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Company Name');
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$client = modules::run('client/get_client', $ids[$i]);
+			$customer = modules::run('api/shoebooks/read_customer', $client['external_client_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A' . ($i+2), $client['user_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $client['external_client_id']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $client['company_name']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $customer['CompanyName']);
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('sync_report_client_');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+		$file_name = "sync_report_client_" . time() . ".xlsx";
+		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
+		echo $file_name;
 	}
 	
 	function download_shoebooks_client_report()
