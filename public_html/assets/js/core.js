@@ -140,14 +140,20 @@ var help = {
 	check_numeric:function(field, event,type){
 		var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
 		//numeric with dot 0-9,.
-		if(type=="nd"){
+		if(type == "nd"){
 			if((keyCode >=48 && keyCode<=57)||keyCode==46||keyCode==8||keyCode==9){return true;} 
 			else{return false;}
 		}
 		//numeric without dot		
-		if(type=="n"){
+		if(type == "n"){
 			if((keyCode >=48 && keyCode<=57) || keyCode==8 || keyCode==9){return true;} 
 			else{return false;}
+		}
+		
+		//hyphen
+		if(type == "h"){
+			if((keyCode >=48 && keyCode<=57) || keyCode==8 || keyCode==9 || keyCode==45){return true;} 
+			else{return false;}	
 		}
 	},
 	
