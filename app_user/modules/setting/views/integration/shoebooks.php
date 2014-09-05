@@ -192,7 +192,7 @@ $(function(){
 		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
-			url: "<?=base_url();?>setting/ajax/check_shoebooks_client",
+			url: "<?=base_url();?>setting/ajax/check_shoebooks_client_v2",
 			success: function(html) {
 				$('#order-message').html(html);
 				//location.reload();

@@ -709,6 +709,39 @@ class Ajax extends MX_Controller {
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 	
+	function check_shoebooks_client_v2()
+	{
+		# Get all clients from StaffBooks
+		$this->load->model('client/client_model');
+		$clients = $this->client_model->search_clients();
+		
+		$synced = 0;
+		$warnings = array();
+		foreach($clients as $client)
+		{
+			if ($client['external_client_id'])
+			{
+				$customer = modules::run('api/shoebooks/read_customer', $client['external_client_id']);
+				if ($customer)
+				{
+					$synced++;
+					if (strtolower(trim($client['company_name'])) != strtolower(trim($customer['CompanyName'])))
+					{
+						$warnings[] = $customer['CustomerID'];
+					}
+				}
+			}
+		}
+				
+		
+		$data['type'] = 'client';
+		$data['platform'] = 'Shoebooks';
+		$data['total_staffbooks'] = count($clients);
+		$data['synced'] = $synced;
+		$data['warnings'] = $warnings;
+		$this->load->view('integration/check_results_v2', isset($data) ? $data : NULL);
+	}
+	
 	function check_shoebooks_client()
 	{
 		# Get all customers from Shoebooks
