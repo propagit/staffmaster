@@ -200,6 +200,27 @@ class Client_model extends CI_Model {
 		return $query->first_row('array');
 	}
 	
+	function check_external_id($external_id, $user_id = null)
+	{
+		if($user_id){
+			$sql = "SELECT u.*
+				   FROM users u, user_clients c  
+				   WHERE c.external_client_id = '" . $external_id . "'
+				   AND u.status != " . USER_DELETED . " 
+				   AND u.user_id = c.user_id 
+				   AND u.user_id != " . $user_id;
+		}else{
+			$sql = "SELECT * 
+				   FROM user_staffs 
+				   WHERE external_client_id = '" . $external_id . "'";
+		}
+		$client = $this->db->query($sql)->result_array();
+		if($client){
+			return true;	
+		}
+		return false;
+	}
+	
 	function get_client_by_client_id($client_id)
 	{
 		$sql = "SELECT c.*, u.*
