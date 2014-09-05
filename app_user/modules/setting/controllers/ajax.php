@@ -436,7 +436,7 @@ class Ajax extends MX_Controller {
 				if ($e)
 				{
 					$synced++;
-					if (trim(strtolower(trim($s['first_name']) . ' ' . trim($s['last_name']))) != trim(strtolower(trim($e['FirstName']) . ' ' . trim($e['LastName']))))
+					if (strtolower(trim($s['first_name']) . ' ' . trim($s['last_name'])) != strtolower(trim($e['FirstName']) . ' ' . trim($e['LastName'])))
 					{
 						$warnings[] = $e['EmployeeID'];
 					}
