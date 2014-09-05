@@ -105,12 +105,26 @@ class Shoebooks extends MX_Controller {
 	function test_search_employee()
 	{
 		$employee = $this->search_employee();
+		usort($employee, function($a, $b) {
+		    if (isset($a['DataID'])) {
+			    return $a['DataID'] - $b['DataID'];
+		    }
+		});
+		
 		$last = $employee[count($employee) - 1];
-		while($last && count($employee) < 3000)
+		
+		while($last && count($employee) < 2000)
 		{
 			$employee = array_merge($employee, $this->search_employee($last['DataID'] + 1));
+			usort($employee, function($a, $b) {
+			    if (isset($a['DataID'])) {
+				    return $a['DataID'] - $b['DataID'];
+			    }		    
+			});
 			$last = $employee[count($employee) - 1];
 		}
+		
+		
 		var_dump($employee);
 	}
 	
@@ -127,9 +141,8 @@ class Shoebooks extends MX_Controller {
 		<args>
 			<DataID>
 				<MinValue>' . $min . '</MinValue>
-				<MaxValue></MaxValue>
+				<MaxValue>3249</MaxValue>
 			</DataID>
-			<Terminated>0001-01-01 00:00:00</Terminated>
 		</args>
 		</SearchEmployee>';		
 		

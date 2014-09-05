@@ -419,6 +419,38 @@ class Ajax extends MX_Controller {
 			$this->load->view('integration/' . $accounting_platform);
 		}
 	}
+	
+	function check_shoebooks_staff_v2()
+	{
+		# Get all staff from StaffBooks
+		$this->load->model('staff/staff_model');
+		$staff = $this->staff_model->search_staffs();
+		
+		$synced = 0;
+		$warnings = array();
+		foreach($staff as $s)
+		{
+			if ($s['external_staff_id'])
+			{
+				$e = modules::run('api/shoebooks/read_employee', $s['external_staff_id']); 
+				if ($e)
+				{
+					$synced++;
+					if (strtolower($s['first_name'] . ' ' . $s['last_name']) != strtolower($e['FirstName'] . ' ' . $e['LastName']))
+					{
+						$warnings[] = $e['EmployeeID'];
+					}
+				}
+			}			
+		}
+		
+		$data['type'] = 'staff';
+		$data['platform'] = 'Shoebooks';
+		$data['total_staffbooks'] = count($staff);
+		$data['synced'] = $synced;
+		$data['warnings'] = $warnings;
+		$this->load->view('integration/check_results_v2', isset($data) ? $data : NULL);
+	}
 		
 	function check_shoebooks_staff()
 	{

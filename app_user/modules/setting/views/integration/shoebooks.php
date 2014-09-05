@@ -29,12 +29,12 @@
 		<th class="center">Auto Add</th>
 		<th class="center">Auto Update</th>
 		<th class="center">StaffBooks</th>
-		<th class="center"><?=ucwords($accounting_platform = $this->config_model->get('accounting_platform'));?></th>
+		<!-- <th class="center"><?=ucwords($accounting_platform = $this->config_model->get('accounting_platform'));?></th> -->
 		<th class="center">Action</th>
 	</tr>
 </thead>
 <tbody>
-	<? $employee = count(modules::run('api/shoebooks/search_employee')); ?>
+	<? # $employee = count(modules::run('api/shoebooks/search_employee')); ?>
 	<tr>
 		<td>Staff / Employee</td>
 		<td class="center">
@@ -50,9 +50,11 @@
 		<td class="center">
 			<span class="badge success"><?=modules::run('staff/get_total_staff', STAFF_ACTIVE);?></span>
 		</td>
+		<!--
 		<td class="center">							
-			<span class="badge primary"><?=$employee;?></span>
+			<span class="badge primary"><? #=$employee;?></span>
 		</td>
+		-->
 		<td class="center">
 			<a class="btn btn-core" id="btn-check-staff">
 				Check
@@ -63,7 +65,7 @@
 		</td>
 	</tr>
 	
-	<? $customer = count(modules::run('api/shoebooks/search_customer')); ?>
+	<? # $customer = count(modules::run('api/shoebooks/search_customer')); ?>
 	<tr>
 		<td>Client / Customer</td>
 		<td class="center">
@@ -79,9 +81,11 @@
 		<td class="center">
 			<span class="badge success"><?=modules::run('client/get_total_client');?></span>
 		</td>
+		<!--
 		<td class="center">
-			<span class="badge primary"><?=$customer;?></span>							
+			<span class="badge primary"><? #=$customer;?></span>							
 		</td>
+		-->
 		<td class="center">
 			<a class="btn btn-core" id="btn-check-client">
 				Check
@@ -162,7 +166,7 @@ $(function(){
 		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
-			url: "<?=base_url();?>setting/ajax/check_shoebooks_staff",
+			url: "<?=base_url();?>setting/ajax/check_shoebooks_staff_v2",
 			success: function(html) {
 				$('#order-message').html(html);
 				//location.reload();
