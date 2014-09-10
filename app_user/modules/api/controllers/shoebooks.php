@@ -887,7 +887,7 @@ class Shoebooks extends MX_Controller {
 				</InvoiceLines>
 			</NewInvoice>
 		</AppendInvoice>';
-		var_dump($request); die();
+		#var_dump($request); die();
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -897,7 +897,8 @@ class Shoebooks extends MX_Controller {
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
-		#var_dump($result);
+		var_dump($result);
+		die();
 		if (isset($result['AppendInvoiceResult']['NewRecordID']))
 		{
 			return $this->invoice_model->update_invoice($invoice_id, array('external_id' => $result['AppendInvoiceResult']['NewRecordID']));
