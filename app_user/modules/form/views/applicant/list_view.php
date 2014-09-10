@@ -62,11 +62,13 @@ $(function(){
 	    "paging": false,
 	    "info": false,
 	    "searching": false,
-		"aoColumnDefs": [
-			{ 
-				'bSortable': false, 
-				'aTargets': [ 0, 3, 4, 5 ] 
-			}
+		"aoColumns": [
+			null,
+			{ "bSortable": true },
+			{ "sType": "string" }, //THIS IS THE DATE
+			null,
+			null,
+			null
 		]
     });
     
