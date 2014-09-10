@@ -25,7 +25,7 @@
 			<thead>
 		        <tr class="heading">
 		        	<th class="center" width="40"><input type="checkbox" id="select_all_applicants" /></th>
-		            <th class="center col-md-2">Applicant Name  <i class="fa fa-sort sort-result" sort-by="applicant_name"></i></th>
+		            <th class="left col-md-2">Applicant Name  <i class="fa fa-sort sort-result" sort-by="applicant_name"></i></th>
 		            <th class="left">Applied On  <i class="fa fa-sort sort-result" sort-by="applied_on"></i></th>
 		            <th class="center">Provided Data</th>
 		            <th class="left">Form Name</th>
@@ -39,7 +39,7 @@
 			?>
 				<tr id="applicant_<?=$applicant['applicant_id'];?>">
 					<td class="center"><input type="checkbox" name="applicant_ids[]" value="<?=$applicant['applicant_id'];?>" /></td>
-					<td class="center"><?=$name;?></td>
+					<td class="left"><?=$name;?></td>
 					<td class="left"><!--<?=date('Ymd', strtotime($applicant['applied_on']));?>--> <?=date('d/m/Y H:i', strtotime($applicant['applied_on']));?></td>
 					<td class="center"><?=$applicant['total_fields'];?></td>
 					<td class="left"><?=$applicant['name'];?></td>
