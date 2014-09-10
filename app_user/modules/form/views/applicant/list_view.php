@@ -1,4 +1,5 @@
 <!-- Data Tables -->
+<script type="text/javascript" src="<?=base_url();?>assets/datatables/dateTimeSorting.js"></script> 
 <script type="text/javascript" src="<?=base_url();?>assets/datatables/media/js/jquery.dataTables.min.js"></script> 
 
 <!--begin top box--->
@@ -66,10 +67,16 @@ $(function(){
 			{ 
 				'bSortable': false, 
 				'aTargets': [ 0, 3, 4, 5 ] 
+			},
+			{
+				"sType": "datetime-au",
+				"aTargets" : [2]
 			}
 		]
     });
-    
+    //$('#tblCases').dataTable({aoColumnDefs: [{ "sType": "datetime-au", "aTargets": [1] }]
+ 
+ 
 	$('#select_all_applicants').click(function(){
 		$('input[name="applicant_ids[]"]').prop('checked', this.checked);		
 	});
