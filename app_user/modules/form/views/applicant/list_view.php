@@ -64,10 +64,6 @@ $(function(){
 	    "info": false,
 	    "searching": false,
 		"aoColumnDefs": [
-			{ 
-				'bSortable': false, 
-				'aTargets': [ 0, 3, 4, 5 ] 
-			},
 			{
 				"sType": "datetime-au",
 				"aTargets" : [2]
