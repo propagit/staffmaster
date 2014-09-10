@@ -40,7 +40,7 @@
 				<tr id="applicant_<?=$applicant['applicant_id'];?>">
 					<td class="center"><input type="checkbox" name="applicant_ids[]" value="<?=$applicant['applicant_id'];?>" /></td>
 					<td class="center"><?=$name;?></td>
-					<td class="left"><!--<?=date('Ymd', $applicant['applied_on']);?>--> <?=date('d/m/Y H:i', strtotime($applicant['applied_on']));?></td>
+					<td class="left"><!-- <?=date('Ymd', $applicant['applied_on']);?>--> <?=date('d/m/Y H:i', strtotime($applicant['applied_on']));?></td>
 					<td class="center"><?=$applicant['total_fields'];?></td>
 					<td class="left"><?=$applicant['name'];?></td>
 					<td class="center"><a onclick="view_applicant(<?=$applicant['applicant_id'];?>)"><i class="fa fa-eye"></i></a></td>
