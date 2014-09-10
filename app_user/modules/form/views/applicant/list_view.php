@@ -59,11 +59,11 @@
 <script>
 $(function(){
 	$('#table-applicants').dataTable({
-	    "dom" : '<"top"f<"manify">i>rt<"row"<"col-md-3 actions"><"col-md-6 col-center"p><"col-md-3"l>><"clear">',
-	    "paging": false,
-	    "info": false,
-	    "searching": false,
-		"aoColumnDefs": [
+	    dom : '<"top"f<"manify">i>rt<"row"<"col-md-3 actions"><"col-md-6 col-center"p><"col-md-3"l>><"clear">',
+	    paging: false,
+	    info: false,
+	    searching: false,
+		aoColumnDefs: [
 			{
 				"sType": "datetime-au",
 				"aTargets" : [2]
