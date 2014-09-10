@@ -1,5 +1,4 @@
 <!-- Data Tables -->
-<script type="text/javascript" src="<?=base_url();?>assets/datatables/dateTimeSorting.js"></script> 
 <script type="text/javascript" src="<?=base_url();?>assets/datatables/media/js/jquery.dataTables.min.js"></script> 
 
 <!--begin top box--->
@@ -41,7 +40,7 @@
 				<tr id="applicant_<?=$applicant['applicant_id'];?>">
 					<td class="center"><input type="checkbox" name="applicant_ids[]" value="<?=$applicant['applicant_id'];?>" /></td>
 					<td class="center"><?=$name;?></td>
-					<td class="left"><?=date('d/m/Y H:i', strtotime($applicant['applied_on']));?></td>
+					<td class="left"><!-- <?=strtotime($applicant['applied_on']);?> --> <?=date('d-m-Y \a\t H:i', strtotime($applicant['applied_on']));?></td>
 					<td class="center"><?=$applicant['total_fields'];?></td>
 					<td class="left"><?=$applicant['name'];?></td>
 					<td class="center"><a onclick="view_applicant(<?=$applicant['applicant_id'];?>)"><i class="fa fa-eye"></i></a></td>
@@ -59,20 +58,18 @@
 <script>
 $(function(){
 	$('#table-applicants').dataTable({
-	    dom : '<"top"f<"manify">i>rt<"row"<"col-md-3 actions"><"col-md-6 col-center"p><"col-md-3"l>><"clear">',
-	    paging: false,
-	    info: false,
-	    searching: false,
-		aoColumnDefs: [
-			{
-				"sType": "datetime-au",
-				"aTargets" : [2]
+	    "dom" : '<"top"f<"manify">i>rt<"row"<"col-md-3 actions"><"col-md-6 col-center"p><"col-md-3"l>><"clear">',
+	    "paging": false,
+	    "info": false,
+	    "searching": false,
+		"aoColumnDefs": [
+			{ 
+				'bSortable': false, 
+				'aTargets': [ 0, 3, 4, 5 ] 
 			}
 		]
     });
-    //$('#tblCases').dataTable({aoColumnDefs: [{ "sType": "datetime-au", "aTargets": [1] }]
- 
- 
+    
 	$('#select_all_applicants').click(function(){
 		$('input[name="applicant_ids[]"]').prop('checked', this.checked);		
 	});
