@@ -121,6 +121,12 @@ class Ajax extends MX_Controller {
 			'abn' => $data['abn']
 		);
 		$this->client_model->update_client($data['user_id'], $client_data);
+		
+		# check if the external staff id is unique
+		if ($data['external_client_id'] != '' && $this->client_model->check_external_id($data['external_client_id'], $data['user_id'])) {
+			echo json_encode(array('ok' => true));
+		}
+		
 		echo json_encode(array('ok' => true));
 	}
 	

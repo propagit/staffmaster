@@ -134,6 +134,33 @@ class Form_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_applicant_name($applicant_id)
+	{
+		$sql = "SELECT f.form_id, f.label, f.name, d.value
+				FROM form_applicant_data d, form_fields f
+				WHERE d.applicant_id = $applicant_id
+				AND f.form_field_id = d.form_field_id AND f.name = 'first_name'";
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		$name = '';
+		if ($result)
+		{
+			$name = $result['value'];
+		}
+		
+		$sql = "SELECT f.form_id, f.label, f.name, d.value
+				FROM form_applicant_data d, form_fields f
+				WHERE d.applicant_id = $applicant_id
+				AND f.form_field_id = d.form_field_id AND f.name = 'last_name'";
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		if ($result)
+		{
+			$name .= ' ' . $result['value'];
+		}
+		return trim($name);
+	}
+	
 	function get_applicant($applicant_id) {
 		$sql = "SELECT f.form_id, f.label, f.name, d.value, c.type
 				FROM form_applicant_data d

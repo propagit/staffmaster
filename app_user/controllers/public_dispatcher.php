@@ -20,12 +20,16 @@ class Public_dispatcher extends MX_Controller {
 	
 	function form($form_id, $action='')
 	{
-		
 		$this->load->model('form/form_model');
 		$form = $this->form_model->get_form($form_id);
 		if (!$form) {
 			show_error('Sorry, form not found');
 			exit();
+		}
+		if ($action == 'submitted')
+		{
+			echo $this->load->view('public/submitted_message', $form, true);
+			die();
 		}
 		if ($action == 'upload_files') {
 			$this->upload_files();

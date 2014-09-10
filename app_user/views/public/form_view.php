@@ -390,11 +390,12 @@ $(function(){
 					}
 					$('body').scrollTo('body', 500 );
 				} else {
-					$('#successModal').modal('show');
+					window.location = '<?=base_url();?>public/form/<?=$form['form_id'];?>/submitted';
+					/*$('#successModal').modal('show');
 					$('#form<?=$form['form_id'];?>')[0].reset();
 					setTimeout(function(){
 						location.reload();
-					}, 2000);
+					}, 2000);*/
 				}
 			}
 		})

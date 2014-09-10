@@ -1,3 +1,6 @@
+<!-- Data Tables -->
+<script type="text/javascript" src="<?=base_url();?>assets/datatables/media/js/jquery.dataTables.min.js"></script> 
+
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
@@ -18,12 +21,12 @@
 				echo modules::run('common/menu_dropdown', $data, 'applicant-action', 'Actions');
 			?>
 			<div class="table-responsive">
-			<table class="table table-bordered table-hover table-middle">
+			<table class="table table-bordered table-hover table-middle" id="table-applicants">
 			<thead>
 		        <tr class="heading">
 		        	<th class="center" width="40"><input type="checkbox" id="select_all_applicants" /></th>
-		            <th class="center col-md-2">Applicant ID</th>
-		            <th class="left">Applied On</th>
+		            <th class="center col-md-2">Applicant Name  <i class="fa fa-sort sort-result" sort-by="applicant_name"></i></th>
+		            <th class="left">Applied On  <i class="fa fa-sort sort-result" sort-by="applied_on"></i></th>
 		            <th class="center">Provided Data</th>
 		            <th class="left">Form Name</th>
 		            <th class="center">View</th>
@@ -31,10 +34,12 @@
 		    </thead>
 		    <form id="multi-applicants-form">
 		    <tbody>
-			<? foreach($applicants as $applicant) { ?>
+			<? foreach($applicants as $applicant) { 
+				$name = $this->form_model->get_applicant_name($applicant['applicant_id']);
+			?>
 				<tr id="applicant_<?=$applicant['applicant_id'];?>">
 					<td class="center"><input type="checkbox" name="applicant_ids[]" value="<?=$applicant['applicant_id'];?>" /></td>
-					<td class="center"><?=$applicant['applicant_id'];?></td>
+					<td class="center"><?=$name;?></td>
 					<td class="left"><?=date('j M Y \a\t H:i', strtotime($applicant['applied_on']));?></td>
 					<td class="center"><?=$applicant['total_fields'];?></td>
 					<td class="left"><?=$applicant['name'];?></td>
@@ -52,6 +57,19 @@
 
 <script>
 $(function(){
+	$('#table-applicants').dataTable({
+	    "dom" : '<"top"f<"manify">i>rt<"row"<"col-md-3 actions"><"col-md-6 col-center"p><"col-md-3"l>><"clear">',
+	    "paging": false,
+	    "info": false,
+	    "searching": false,
+		"aoColumnDefs": [
+			{ 
+				'bSortable': false, 
+				'aTargets': [ 1, 2 ] 
+			}
+		]
+    });
+    
 	$('#select_all_applicants').click(function(){
 		$('input[name="applicant_ids[]"]').prop('checked', this.checked);		
 	});
