@@ -65,7 +65,7 @@ $(function(){
 		"aoColumnDefs": [
 			{ 
 				'bSortable': false, 
-				'aTargets': [ 1, 2 ] 
+				'aTargets': [ 0, 3, 4, 5 ] 
 			}
 		]
     });
