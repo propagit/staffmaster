@@ -315,14 +315,14 @@ class Staff_model extends CI_Model {
 		# Location (if location id is set use this to filter the search)
 		if (isset($params['location_id']) && $params['location_id'] != '')
 		{ 
-			$sql .= " AND s.locations LIKE '%" . $params['location_id'] . "%'";
+			$sql .= " AND s.locations LIKE '%\"" . $params['location_id'] . "\"%'";
 		}
 		else
 		{
 			# If location id is not set use parent location id from posted data to filter the search
 			if(isset($params['location_parent_id']) && $params['location_parent_id'] != '')
 			{
-				$sql .= " AND s.locations LIKE '%" . $params['location_parent_id'] . "%'";
+				$sql .= " AND s.locations LIKE '%\"" . $params['location_parent_id'] . "\"%'";
 			}
 		}
 		
