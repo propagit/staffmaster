@@ -279,6 +279,7 @@ var help = {
 				}, 2000);
 				help.reload_conversations(container_id,action_url);	
 				$('#wrapper_loading').remove();
+				$('.bs-modal-lg').modal('hide');
 			});	
 			return false;
 		});

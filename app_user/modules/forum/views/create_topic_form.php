@@ -123,7 +123,7 @@
                                  <div class="form-group add-top-margin-20 hide"  id="msg-poll-started-successfully">
                                      <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
                                       <div class="col-sm-10 modal-add-left-padding">
-                                           <div class="alert alert-success"><i class="fa fa-check"></i> &nbsp; Poll Succesfully Posted</div>
+                                           <div class="alert alert-success"><i class="fa fa-check"></i> &nbsp; Poll Successfully Posted</div>
                                       </div>
                                  </div>
                             </form>
