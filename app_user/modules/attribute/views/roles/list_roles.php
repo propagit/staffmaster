@@ -3,7 +3,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Manage Roles</h2>
+   		 <h2><i class="icon-roles"></i> &nbsp; Manage Roles</h2>
 		 <p>A role is the skill required for a staff member to perform on a shift. When you create a job you will be asked for the role the staff member is required to perform on the job. You can set roles that staff can work on via their personal profiles. The roles you set staff to work will effect what jobs they can apply for and what staff will appear when you search for staff by the role.</p>
             <button class="btn btn-info" data-toggle="modal" href="#addRole" ><i class="fa fa-plus"></i> Add New Role</button>  
     </div>

@@ -6,7 +6,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Manage Company Profile</h2>
+   		 <h2><i class="icon-company"></i> &nbsp; Manage Company Profile</h2>
 		 <p>Your company profile information is used in various areas of the system such as email correspondence, your invoices, your quotes and login screen, Please ensure the below information is accurate.</p>
     </div>
 </div>

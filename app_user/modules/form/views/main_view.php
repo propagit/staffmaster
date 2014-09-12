@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Manage Forms</h2>
+   		 <h2><i class="icon-formBuilder"></i> &nbsp; Manage Forms</h2>
 		 <p>You can feed a recruitment form directly to your website that will allow applicants to apply to work for you. Create and configure the form and then get your web developer to use the "Embedded Code" to integrate the form into your website.</p>
             <button class="btn btn-info" data-toggle="modal" href="#addForm" ><i class="fa fa-plus"></i> Create New Form</button>  
     </div>

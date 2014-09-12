@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-		<h2>Pay Run</h2>
+		<h2><i class="icon-accountsPayrun"></i> &nbsp; Pay Run</h2>
 		<p>Create a pay run and export it to your favourite accounts package. Time sheets have been batched together by staff name. Set the status of the time sheets you would like to process to “Pay Now”, and use the filters to create your pay run for export.</p>
 	</div>
 </div>

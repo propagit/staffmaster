@@ -7,7 +7,7 @@
 
 <div class="col-md-12">
 	<div class="box top-box">
-		<h2>Search Clients</h2>
+		<h2><i class="icon-searchClient"></i> &nbsp; Search Clients</h2>
 		<p>Search and manage your client list.</p>         
     </div>
 </div>

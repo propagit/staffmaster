@@ -4,7 +4,7 @@
 		<div class="pull-right">
 			<a class="btn btn-core mobile-tab" id="btn-generate">Generate Time Sheets</a>
 		</div>
-		<h2>Time Sheets</h2>
+		<h2><i class="icon-accountsTimesheetss"></i> &nbsp; Time Sheets</h2>
 		<p>To process your pay we require you to submit your time sheets. As you complete your shifts time sheets will become available below for you to submit.</p>
 	</div>
 </div>

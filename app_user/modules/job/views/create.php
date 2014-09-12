@@ -2,7 +2,7 @@
 
 <div class="col-md-12">
 	<div class="box top-box">
-        <h2>Create Jobs</h2>
+        <h2><i class="icon-addJobs"></i> &nbsp; Create Jobs</h2>
         <p>To start creating jobs select a client and a campaign name. A campaign name is used for you to find the shifts you create later. A job campaign can contain many shifts across many days, weeks or months.</p>
     </div>
 </div>

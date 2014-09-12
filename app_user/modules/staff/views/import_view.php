@@ -3,7 +3,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Import Staff</h2>
+   		 <h2><i class="icon-importStaff"></i> &nbsp; Import Staff</h2>
     	 <p>To import your staff, download the <a href="<?=base_url();?>assets/sample_docs/StaffImport.csv">Sample File</a> and open it in a program such as Microsoft Excel. Enter your own information and save the file as a .csv then click the upload file button.</p>
     </div>
 </div>

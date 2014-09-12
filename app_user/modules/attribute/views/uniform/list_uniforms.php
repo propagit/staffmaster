@@ -3,7 +3,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Manage Uniforms</h2>
+   		 <h2><i class="icon-attributesUniforms"></i> &nbsp; Manage Uniforms</h2>
 		 <p>
          	Uniforms can be added to job details when you create jobs. 
             Add common dress attire your staff will be required to wear when working on jobs.

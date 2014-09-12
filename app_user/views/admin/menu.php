@@ -7,36 +7,36 @@ $menu = array(
 		array('path' => 'staff/import', 'icon' => 'icon-importStaff', 'title' => 'Import Staff'),
 		array('path' => 'form/applicant', 'icon' => 'icon-applicantStaff', 'title' => 'Applicants')
 	)),
-	array('path' => '#', 'icon' => 'fa-book', 'title' => 'Manage Clients', 'sub' => array(
-		array('path' => 'client/search', 'icon' => 'fa-search', 'title' => 'Search Clients'),
-		array('path' => 'client/add', 'icon' => 'fa-plus', 'title' => 'Add Client'),
+	array('path' => '#', 'icon' => 'icon-client', 'title' => 'Manage Clients', 'sub' => array(
+		array('path' => 'client/search', 'icon' => 'icon-searchClient', 'title' => 'Search Clients'),
+		array('path' => 'client/add', 'icon' => 'icon-addClient', 'title' => 'Add Client'),
 		array('path' => 'client/import', 'icon' => 'fa-upload', 'title' => 'Import Client')
 	)),
-	array('path' => '#', 'icon' => 'fa-folder-open', 'title' => 'Manage Jobs', 'sub' => array(
-		array('path' => 'job/search', 'icon' => 'fa-search', 'title' => 'Search Jobs'),
-		array('path' => 'job/create', 'icon' => 'fa-plus', 'title' => 'Create Job'),
+	array('path' => '#', 'icon' => 'icon-jobs', 'title' => 'Manage Jobs', 'sub' => array(
+		array('path' => 'job/search', 'icon' => 'icon-searchJobs', 'title' => 'Search Jobs'),
+		array('path' => 'job/create', 'icon' => 'icon-addJobs', 'title' => 'Create Job'),
 		array('path' => 'job/calendar', 'icon' => 'fa-calendar', 'title' => 'Company Calendar')
 	)),
-	array('path' => '#', 'icon' => 'fa-key', 'title' => 'Edit Attributes', 'sub' => array(		
-		array('path' => 'attribute/payrate', 'icon' => 'fa-usd', 'title' => 'Pay Rates'),
-		array('path' => 'attribute/role', 'icon' => 'fa-star', 'title' => 'Roles'),
-		array('path' => 'attribute/venue', 'icon' => 'fa-map-marker', 'title' => 'Venues'),
-		array('path' => 'attribute/uniform', 'icon' => 'fa-puzzle-piece', 'title' => 'Uniforms'),
-		array('path' => 'attribute/custom', 'icon' => 'fa-pencil', 'title' => 'Custom Attributes'),
-		array('path' => 'attribute/group', 'icon' => 'fa-sitemap', 'title' => 'Groups')
+	array('path' => '#', 'icon' => 'icon-attributes', 'title' => 'Edit Attributes', 'sub' => array(		
+		array('path' => 'attribute/payrate', 'icon' => 'icon-attributesPayrate', 'title' => 'Pay Rates'),
+		array('path' => 'attribute/role', 'icon' => 'icon-roles', 'title' => 'Roles'),
+		array('path' => 'attribute/venue', 'icon' => 'icon-attributesVenues', 'title' => 'Venues'),
+		array('path' => 'attribute/uniform', 'icon' => 'icon-attributesUniforms', 'title' => 'Uniforms'),
+		array('path' => 'attribute/custom', 'icon' => 'icon-attributesCustom', 'title' => 'Custom Attributes'),
+		array('path' => 'attribute/group', 'icon' => 'icon-attributesGroups', 'title' => 'Groups')
 	)),
 	array('path' => '#', 'icon' => 'fa-usd', 'title' => 'Payroll / Accounts', 'sub' => array(
-		array('path' => 'report', 'icon' => 'fa-dashboard', 'title' => 'Accounts Reports'),
-		array('path' => 'timesheet', 'icon' => 'fa-thumbs-up', 'title' => 'Time Sheets'),
-		array('path' => 'payrun', 'icon' => 'fa-stack-exchange', 'title' => 'Pay Run'),
-		array('path' => 'expense', 'icon' => 'fa-dollar', 'title' => 'Staff Expenses'),
-		array('path' => 'invoice', 'icon' => 'fa-file-text', 'title' => 'Client Invoices'),
-		array('path' => 'account/topup', 'icon' => 'fa-credit-card', 'title' => 'Buy Credits'),
+		array('path' => 'report', 'icon' => 'icon-accountsReports', 'title' => 'Accounts Reports'),
+		array('path' => 'timesheet', 'icon' => 'icon-accountsTimesheetss', 'title' => 'Time Sheets'),
+		array('path' => 'payrun', 'icon' => 'icon-accountsPayrun', 'title' => 'Pay Run'),
+		array('path' => 'expense', 'icon' => 'icon-accountsExpense', 'title' => 'Staff Expenses'),
+		array('path' => 'invoice', 'icon' => 'icon-accountsInvoices', 'title' => 'Client Invoices'),
+		array('path' => 'account/topup', 'icon' => 'icon-accountsCREDITS', 'title' => 'Buy Credits'),
 		#array('path' => '#', 'icon' => 'fa-phone', 'title' => 'Buy SMS Credits')
 	)),
 	array('path' => '#', 'icon' => 'fa-lightbulb-o', 'title' => 'Training Centre', 'sub' => array(
 		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
-		array('path' => 'brief', 'icon' => 'fa-book', 'title' => 'Brief Builder'),
+		array('path' => 'brief', 'icon' => 'icon-trainingBrief', 'title' => 'Brief Builder'),
 		array('path' => 'http://resources.staffbooks.com', 'icon' => 'fa-question', 'title' => 'User Guide'),
 		#array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
 		#array('path' => '#', 'icon' => 'fa-folder-open-o', 'title' => 'Training Centre'),
@@ -48,9 +48,9 @@ $menu = array(
 		#array('path' => '#', 'icon' => 'fa-file-o', 'title' => 'Create Webpage')
 	)),
 	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
-		array('path' => 'setting/company', 'icon' => 'fa-flag', 'title' => 'Company Profile'),
-		array('path' => 'form', 'icon' => 'fa-file-text-o', 'title' => 'Form Builder'),
-		array('path' => 'export', 'icon' => 'fa-list-alt', 'title' => 'Export Templates'),
+		array('path' => 'setting/company', 'icon' => 'icon-company', 'title' => 'Company Profile'),
+		array('path' => 'form', 'icon' => 'icon-formBuilder', 'title' => 'Form Builder'),
+		array('path' => 'export', 'icon' => 'icon-exportTemplates', 'title' => 'Export Templates'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
 		array('path' => 'sms', 'icon' => 'fa-mobile', 'title' => 'SMS Settings'),
 		array('path' => 'setting/system_settings', 'icon' => 'fa-cog', 'title' => 'Other Settings'),

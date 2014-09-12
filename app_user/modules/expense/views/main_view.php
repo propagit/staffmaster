@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-		<h2>Staff Expenses</h2>
+		<h2><i class="icon-accountsExpense"></i> &nbsp; Staff Expenses</h2>
 	</div>
 </div>
 <!--end top box-->

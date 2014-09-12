@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Manage Groups</h2>
+   		 <h2><i class="icon-attributesGroups"></i> &nbsp; Manage Groups</h2>
 		 <p>
          	Groups are used to group staff together so you can communicate with a group of staff.
          	Staff can be assigned to the groups you create below. You can select group to communicate 

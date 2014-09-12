@@ -4,7 +4,7 @@
 		<div class="pull-right">
         	<?=modules::run('account/box_credits');?>
         </div>
-		<h2>Buy Credits</h2>
+		<h2><i class="icon-accountsCREDITS"></i> &nbsp; Buy Credits</h2>
         <p>The StaffBooks system uses a credit based system where by you only pay for what you use.<br />You can top up your balance any time. The price matrix provides a discount based on bulk purchases.</p>
 	</div>
 </div>

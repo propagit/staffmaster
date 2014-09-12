@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Manage Custom Attributes</h2>
+   		 <h2><i class="icon-attributesCustom"></i> &nbsp; Manage Custom Attributes</h2>
 		 <p class="desktop-visible">
          Add custom attributes that can be assigned to your staff profiles.<br  />
          Drag and drop questions from the menu on the right to create custom attributes.<br  />

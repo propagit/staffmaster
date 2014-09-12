@@ -3,7 +3,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Manage Pay Rates</h2>
+   		 <h2><i class="icon-attributesPayrate"></i> &nbsp; Manage Pay Rates</h2>
 		 <p>Add pay rates to assign your staff working on jobs. An hourly client charge out rate and a staff pay rate can be set. Penalty rates can be applied based on the time and the day.</p>
 		 <button class="btn btn-core" type="button" data-toggle="modal" data-target="#add-payrate-modal"><i class="fa fa-plus"></i> Add Pay Rate</button>
     </div>

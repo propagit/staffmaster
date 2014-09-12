@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Export Templates</h2>
+   		 <h2><i class="icon-exportTemplates"></i> &nbsp; Export Templates</h2>
 		 <p>Create and save your export so that you can transport data easily into other systems.</p>
     </div>
 </div>
