@@ -5,7 +5,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Search Staff</h2>
+   		 <h2><i class="icon-searchStaff"></i> &nbsp; Search Staff</h2>
 		 <p>Browse and search our staff profiles below.</p>
     </div>
 </div>

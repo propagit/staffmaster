@@ -150,7 +150,7 @@ class Ajax extends MX_Controller {
 			return true;
 		}
 		else {
-			print "Error: An invalid response was recieved from the payment gateway.";
+			$this->session->set_userdata('eway_msg', "Error: An invalid response was recieved from the payment gateway.");
 			return false;
 		}		
 	}

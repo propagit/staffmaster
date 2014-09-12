@@ -1,0 +1,121 @@
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot?7l1mhb');
+	src:url('fonts/icomoon.eot?#iefix7l1mhb') format('embedded-opentype'),
+		url('fonts/icomoon.woff?7l1mhb') format('woff'),
+		url('fonts/icomoon.ttf?7l1mhb') format('truetype'),
+		url('fonts/icomoon.svg?7l1mhb#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-accountIntergration:before {
+	content: "\e600";
+}
+.icon-accountIntergration2:before {
+	content: "\e601";
+}
+.icon-accountIntergration3:before {
+	content: "\e602";
+}
+.icon-exportTemplates:before {
+	content: "\e603";
+}
+.icon-formBuilder:before {
+	content: "\e604";
+}
+.icon-company:before {
+	content: "\e605";
+}
+.icon-trainingBrief:before {
+	content: "\e606";
+}
+.icon-accountsInvoices:before {
+	content: "\e607";
+}
+.icon-accountsCREDITS:before {
+	content: "\e608";
+}
+.icon-accountsPayrun:before {
+	content: "\e609";
+}
+.icon-accountsExpense:before {
+	content: "\e60a";
+}
+.icon-accountsExpenses:before {
+	content: "\e60b";
+}
+.icon-accountsTimesheetss:before {
+	content: "\e60c";
+}
+.icon-accountsReports:before {
+	content: "\e60d";
+}
+.icon-attributesPayrate:before {
+	content: "\e60e";
+}
+.icon-attributesUniforms:before {
+	content: "\e60f";
+}
+.icon-attributesGroups:before {
+	content: "\e610";
+}
+.icon-attributesCustom:before {
+	content: "\e611";
+}
+.icon-attributesVenues:before {
+	content: "\e612";
+}
+.icon-roles:before {
+	content: "\e613";
+}
+.icon-attributes:before {
+	content: "\e614";
+}
+.icon-addJobs:before {
+	content: "\e615";
+}
+.icon-searchJobs:before {
+	content: "\e616";
+}
+.icon-jobs:before {
+	content: "\e617";
+}
+.icon-searchClient:before {
+	content: "\e618";
+}
+.icon-addClient:before {
+	content: "\e619";
+}
+.icon-client:before {
+	content: "\e61a";
+}
+.icon-staff:before {
+	content: "\e61b";
+}
+.icon-searchStaff:before {
+	content: "\e61c";
+}
+.icon-applicantStaff:before {
+	content: "\e61d";
+}
+.icon-importStaff:before {
+	content: "\e61e";
+}
+.icon-addStaff:before {
+	content: "\e61f";
+}

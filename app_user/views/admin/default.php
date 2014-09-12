@@ -73,7 +73,9 @@
     <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/js/rating/jRating.jquery.css" media="screen" />
 	<script type="text/javascript" src="<?=base_url()?>assets/js/rating/jRating.jquery.js"></script>
     
+    <!-- icon -->
     
+    <link href="<?=base_url();?>assets/icons/style.css" rel="stylesheet" media="screen">
 	
 </head>
 <body>

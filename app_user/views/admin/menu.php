@@ -1,11 +1,11 @@
 <?
 $page = $this->uri->segment(1) ? $this->uri->segment(1) : 'dashboard';
 $menu = array(
-	array('path' => '#', 'icon' => 'fa-users', 'title' => 'Manage Staff', 'sub' => array(
-		array('path' => 'staff/search', 'icon' => 'fa-search', 'title' => 'Search Staff'),
-		array('path' => 'staff/add', 'icon' => 'fa-plus', 'title' => 'Add Staff'),
-		array('path' => 'staff/import', 'icon' => 'fa-upload', 'title' => 'Import Staff'),
-		array('path' => 'form/applicant', 'icon' => 'fa-file-text-o', 'title' => 'Applicants')
+	array('path' => '#', 'icon' => 'icon-staff', 'title' => 'Manage Staff', 'sub' => array(
+		array('path' => 'staff/search', 'icon' => 'icon-searchStaff', 'title' => 'Search Staff'),
+		array('path' => 'staff/add', 'icon' => 'icon-addStaff', 'title' => 'Add Staff'),
+		array('path' => 'staff/import', 'icon' => 'icon-importStaff', 'title' => 'Import Staff'),
+		array('path' => 'form/applicant', 'icon' => 'icon-applicantStaff', 'title' => 'Applicants')
 	)),
 	array('path' => '#', 'icon' => 'fa-book', 'title' => 'Manage Clients', 'sub' => array(
 		array('path' => 'client/search', 'icon' => 'fa-search', 'title' => 'Search Clients'),

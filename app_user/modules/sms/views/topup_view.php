@@ -225,7 +225,7 @@ function buy_credits() {
 					location.reload();
 				}, 2000);
 			} else {
-				$('#order-message').html('<i class="fa fa-done fa-times fa-3x text-danger"></i><h2 class="text-danger">Payment Failed!</h2><p>Credit Card Transaction Failed. Error: Invalid credit card number</p>');
+				$('#order-message').html('<i class="fa fa-done fa-times fa-3x text-danger"></i><h2 class="text-danger">Payment Failed!</h2><p><?=$this->session->userdata('eway_msg');?></p>');
 				setTimeout(function() {
 					$('#waitingModal').modal('hide');
 				}, 2000);
