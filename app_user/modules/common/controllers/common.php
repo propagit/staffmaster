@@ -136,6 +136,20 @@ class Common extends MX_Controller {
 		return $this->common_model->get_countries();
 	}
 	
+	function field_select_myob_super_fund($field_name, $field_value=null, $size=null)
+	{
+		$funds = modules::run('api/myob/connect', 'search_super_funds');
+		$array = array();
+		foreach($funds as $fund)
+		{
+			$array[] = array(
+				'value' => $fund->UID,
+				'label' => $fund->Name
+			);
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+	
 	/**
 	*	@name: field_select_countries
 	*	@desc: custom select countries field

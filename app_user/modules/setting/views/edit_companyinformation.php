@@ -109,8 +109,15 @@
                 <input type="email" class="form-control" id="email" name="email" data="email" value="<?=(isset($company['email'])) ? $company['email'] : '' ?>" tabindex="7" />
             </div>
             <label for="super_fund_name" class="col-lg-2 control-label">Super Fund Name </label>
-            <div class="col-lg-4">                    
-                <input type="text" class="form-control" id="super_fund_name" name="super_fund_name" value="<?=(isset($company['super_fund_name'])) ? $company['super_fund_name'] : '' ?>" tabindex="17" />					
+            <div class="col-lg-4">
+            	<? $platform = $this->config_model->get('accounting_platform');
+	            if ($platform == 'myob') {
+		            echo modules::run('common/field_select_myob_super_fund', 'super_fund_external_id');
+	            } else { ?>
+	                             
+                <input type="text" class="form-control" id="super_fund_name" name="super_fund_name" value="<?=(isset($company['super_fund_name'])) ? $company['super_fund_name'] : '' ?>" tabindex="17" />
+                
+				<? } ?>					
             </div>
         </div>
     </div>
@@ -121,10 +128,12 @@
             <div class="col-lg-4">
                 <input type="url" class="form-control" id="website_account" name="website_account" value="<?=(isset($company['website_account'])) ? $company['website_account'] : '' ?>" tabindex="8" />
             </div>
+            <? if (!$platform) { ?>
             <label for="super_fund_product_id" class="col-lg-2 control-label">Super Product ID </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" id="super_product_id" name="super_product_id" value="<?=(isset($company['super_product_id'])) ? $company['super_product_id'] : '' ?>" tabindex="18" />
             </div>
+            <? } ?>
         </div>
     </div>
     
@@ -134,10 +143,12 @@
             <div class="col-lg-4">
                 <input type="text" class="form-control" id="telephone" name="telephone" value="<?=(isset($company['telephone'])) ? $company['telephone'] : '' ?>" tabindex="9" />
             </div>
+            <? if (!$platform) { ?>
             <label for="super_fund_phone" class="col-lg-2 control-label">Super Fund Phone </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" id="super_phone" name="super_fund_phone" value="<?=(isset($company['super_fund_phone'])) ? $company['super_fund_phone'] : '' ?>" tabindex="19" />
             </div>
+            <? } ?>
         </div>
     </div>
     <div class="row">
@@ -146,10 +157,12 @@
             <div class="col-lg-4">
                 <input type="text" class="form-control" id="fax" name="fax" value="<?=(isset($company['fax'])) ? $company['fax'] : '' ?>" tabindex="10" />
             </div>
+            <? if (!$platform) { ?>
             <label for="super_fund_website" class="col-lg-2 control-label">Super Fund Website </label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" id="super_website" name="super_fund_website" value="<?=(isset($company['super_fund_website'])) ? $company['super_fund_website'] : '' ?>" tabindex="20" />
             </div>
+            <? } ?>
         </div>
     </div>
               
