@@ -1284,7 +1284,7 @@ class Myob extends MX_Controller {
 		#var_dump($response);
 		if (isset($response->Items))
 		{
-			#var_dump($response->Items);
+			var_dump($response->Items);
 			return $response->Items;
 		}
 		return null;
