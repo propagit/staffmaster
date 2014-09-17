@@ -1090,7 +1090,6 @@ class Myob extends MX_Controller {
 			return false;
 		}
 		
-		#var_dump($updated_customer); die();
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1106,7 +1105,7 @@ class Myob extends MX_Controller {
 		$ch = curl_init($url); 
 		
 		
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_HEADER, false); 
