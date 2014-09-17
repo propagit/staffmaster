@@ -151,7 +151,10 @@ class Myob extends MX_Controller {
 				
 			case 'search_super_funds':
 					$result = $this->search_super_funds();
-				break;	
+				break;
+			case 'read_super_fund':
+					$result = $this->read_super_fund($param);
+				break;
 			case 'read_accounts':
 					$result = $this->read_accounts($param);
 				break;
@@ -1285,6 +1288,31 @@ class Myob extends MX_Controller {
 			return $response->Items;
 		}
 		return null;
+	}
+	
+	function read_super_fund($uid)
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		$filter = "filter=UID%20eq%20'". $uid ."'";
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund/' . $uid;
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		$response = json_decode($response);
+		return $response;		
 	}
 	
 	function append_super_fund()

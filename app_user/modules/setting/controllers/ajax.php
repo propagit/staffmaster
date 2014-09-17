@@ -47,6 +47,7 @@ class Ajax extends MX_Controller {
 			'bank_bsb' => $data['bank_bsb'],
 			'accept_cc' => 0,
 			'accept_cc_msg' => $data['accept_cc_msg'],
+			'super_fund_external_id' => $data['super_fund_external_id'],
 			'super_fund_name' => $data['super_fund_name'],
 			'super_product_id' => $data['super_product_id'],
 			'super_fund_phone' => $data['super_fund_phone'],

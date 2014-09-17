@@ -18,6 +18,58 @@
 		</div>
 	</div>
 </div>
+<? $platform = $this->config_model->get('accounting_platform');
+if ($platform == 'myob') { 
+	$id = modules::run('setting/superinformasi', 'super_fund_external_id');
+	if ($id) {
+		$super_fund = modules::run('api/myob/connect', 'read_super_fund~' . $id);
+	}	
+?>
+<div class="row" id="employer_choice">
+	<? if (isset($super_fund)) { ?>
+	<div class="form-group">
+		<label class="col-md-2 control-label">Super Fund</label>
+		<div class="col-md-4">
+			<?=$super_fund->Name;?>
+			<? if ($super_fund->EmployerMembershipNumber) { ?>
+			<br />Employer Membership Number: <?=$super_fund->EmployerMembershipNumber;?>
+			<? } ?>
+			<? if ($super_fund->PhoneNumber) { ?>
+			<br />Phone Number: <?=$super_fund->PhoneNumber;?>
+			<? } ?>
+			<? if ($super_fund->Website) { ?>
+			<br />Website: <?=$super_fund->Website;?>
+			<? } ?>
+		</div>
+		<label for="s_employee_id" class="col-md-2 control-label">Membership Number</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
+		</div>
+	</div>
+	<? } else { ?>
+	<div class="form-group">
+		<div class="col-md-10 col-md-offset-2">
+			The employer has not provided super fund details.
+		</div>
+	</div>
+	<? } ?>
+</div>
+
+
+<div class="row" id="own_choice">
+	<div class="form-group">
+		<label class="col-md-2 control-label">Super Fund</label>
+		<div class="col-md-4">
+			<?=modules::run('common/field_select_myob_super_fund', 'super_fund_external_id');?>
+		</div>
+		<label for="s_employee_id" class="col-md-2 control-label">Membership Number</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
+		</div>
+	</div>
+</div>
+
+<? } else { ?>
 <div class="row">
 	<div class="form-group">
 		<label for="s_name" class="col-md-2 control-label">Name</label>
@@ -30,13 +82,6 @@
 		</div>
 	</div>
 
-
-	<div class="form-group">
-		<label for="s_tfn_1" class="col-md-2 control-label">TFN Number</label>
-		<div class="col-md-4">
-			<input type="text" class="form-control" id="s_tfn" name="s_tfn" value="<?=($staff['s_tfn'] == '') ? $staff['f_tfn'] : $staff['s_tfn'];?>" />
-		</div>
-	</div>
 	
 	<div class="form-group<? //if(modules::run('common/check_super', $staff['s_fund_name'])) { echo ' has-success'; } else { echo '  has-warning'; } ?>">
 		<label for="s_fund_name" class="col-md-2 control-label">Super Fund Name</label>
@@ -102,7 +147,8 @@
 			<input type="text" class="form-control" id="s_fund_postcode" name="s_fund_postcode" value="<?=$staff['s_fund_postcode'];?>" />
 		</div>
 	</div>
-</div>				
+</div>
+<? } ?>				
 <br />
 <div class="row">
 	<div class="form-group">

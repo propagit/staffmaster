@@ -50,7 +50,7 @@ class Account extends MX_Controller {
 	{
 		$this->load->model('account_model');
 		$accounts = $this->account_model->get_accounts(array('status' => 1));
-		$sql = @file_get_contents('./../db/add_client_payrate.sql');
+		$sql = @file_get_contents('./../db/update_20140917.sql');
 		$count = 0;
 		$this->load->model('setup_model');
 		foreach($accounts as $account)
