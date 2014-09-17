@@ -1002,6 +1002,15 @@ class Myob extends MX_Controller {
 			return false;
 		}
 		$names = explode(' ', $client['full_name']);
+		
+		$abn = '';
+		if ($client['abn'])
+		{
+			$abn = str_replace(' ', '', $client['abn']);
+			$abn = trim($abn);
+			$abn = substr($abn,0,2) . ' ' . substr($abn, 2,3) . ' ' . substr($abn, 5,3) . ' ' . substr($abn, 8);
+		}
+		
 		$updated_customer = array(
 			'UID' => $customer->UID,
 			'CompanyName' => $client['company_name'],
@@ -1026,7 +1035,7 @@ class Myob extends MX_Controller {
 			),
 			'Notes' => 'Updated from StaffBooks',
 			'SellingDetails' => array(
-				'ABN' => $client['abn'],
+				'ABN' => $abn,
 				'TaxCode' => array(
 					'UID' => $this->taxcode('GST')->UID
 				),
@@ -1037,7 +1046,7 @@ class Myob extends MX_Controller {
 			'LastModified' => $client['modified_on'],
 			'RowVersion' => $customer->RowVersion
 		);
-		
+		#var_dump($updated_customer); die();
 		$params = json_encode($updated_customer);
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
