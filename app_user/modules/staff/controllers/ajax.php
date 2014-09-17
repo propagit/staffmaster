@@ -264,6 +264,7 @@ class Ajax extends MX_Controller {
 		$staff_data = array(
 			's_choice' => isset($data['s_choice']) ? $data['s_choice'] : '',
 			's_name' => $data['s_name'],
+			's_external_id' => $data['s_external_id'],
 			's_employee_id' => $data['s_employee_id'],
 			's_tfn' => $data['s_tfn'],			
 			's_fund_name' => $data['s_fund_name'],

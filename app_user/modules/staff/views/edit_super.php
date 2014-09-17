@@ -29,8 +29,8 @@ if ($platform == 'myob') {
 	<? if (isset($super_fund)) { ?>
 	<div class="form-group">
 		<label class="col-md-2 control-label">Super Fund</label>
-		<div class="col-md-4">
-			<b><?=$super_fund->Name;?></b>
+		<label class="col-md-4 control-label">
+			<?=$super_fund->Name;?>
 			<? if ($super_fund->EmployerMembershipNumber) { ?>
 			<br />Employer Membership Number: <?=$super_fund->EmployerMembershipNumber;?>
 			<? } ?>
@@ -40,7 +40,7 @@ if ($platform == 'myob') {
 			<? if ($super_fund->Website) { ?>
 			<br />Website: <?=$super_fund->Website;?>
 			<? } ?>
-		</div>
+		</label>
 		<label for="s_employee_id" class="col-md-3 control-label">Employee Membership Number</label>
 		<div class="col-md-3">
 			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
