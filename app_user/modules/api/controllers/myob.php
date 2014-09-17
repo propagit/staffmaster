@@ -688,9 +688,26 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
-		$gender = '';
+		$gender = null;
 		if ($staff['gender'] == 'm') { $gender = 'Male'; }
 		else if ($staff['gender'] == 'f') { $gender = 'Female'; }
+		
+		$s_external_id = $staff['s_external_id'];
+		if (!$s_external_id)
+		{
+			$s_external_id = modules::run('setting/superinformasi', 'super_fund_external_id');
+		}
+		$super = null;
+		if ($s_external_id)
+		{
+			$super = array(
+				'SuperannuationFund' => array(
+					'UID' => $s_external_id
+				),
+				'EmployeeMembershipNumber' => $staff['s_employee_id']
+			);
+		}
+		
 		$payroll_details = array(
 			'UID' => $payroll->UID,
 			'Employee' => array(
@@ -699,6 +716,7 @@ class Myob extends MX_Controller {
 			'DateOfBirth' => $staff['dob'] . ' 00:00:00',
 			'Gender' => $gender,
 			'Wage' => json_decode(json_encode($payroll->Wage), true),
+			'Superannuation' => $super,
 			'Tax' => array(
 				'TaxFileNumber' => $staff['f_tfn'],
 				'TaxTable' => json_decode(json_encode($payroll->Tax->TaxTable), true)

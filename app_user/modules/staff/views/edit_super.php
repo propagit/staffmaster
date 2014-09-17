@@ -41,15 +41,14 @@ if ($platform == 'myob') {
 			<br />Website: <?=$super_fund->Website;?>
 			<? } ?>
 		</label>
-		<label for="s_employee_id" class="col-md-3 control-label">Employee Membership Number</label>
-		<div class="col-md-3">
-			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
-		</div>
 	</div>
 	<? } else { ?>
 	<div class="form-group">
 		<div class="col-md-10 col-md-offset-2">
-			The employer has not provided super fund details.
+			No company super fund is currently set up. 
+			<? if(!modules::run('auth/is_staff')){ ?>
+			<br />To set up a default company super fund go to "System Settings" > "Company Profile"
+			<? } ?>
 		</div>
 	</div>
 	<? } ?>
@@ -60,10 +59,18 @@ if ($platform == 'myob') {
 	<div class="form-group">
 		<label class="col-md-2 control-label">Super Fund</label>
 		<div class="col-md-4">
-			<?=modules::run('common/field_select_myob_super_fund', 'super_fund_external_id');?>
+			<?=modules::run('common/field_select_myob_super_fund', 's_external_id', $staff['s_external_id']);?>
 		</div>
-		<label for="s_employee_id" class="col-md-3 control-label">Employee Membership Number</label>
-		<div class="col-md-3">
+		<div class="col-md-6">
+			<span class="help-block">If you cant find your super fund in the list please <a href="<?=base_url();?>support">contact us</a></span>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="form-group">		
+		<label for="s_employee_id" class="col-md-2 control-label">Staff Membership Number</label>
+		<div class="col-md-4">
 			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
 		</div>
 	</div>
@@ -175,7 +182,7 @@ if ($platform == 'myob') {
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">
 			<div class="alert alert-success hide" id="msg-update-super"><i class="fa fa-check"></i> &nbsp; Staff super details has been updated successfully!</div>
-			<button type="button" class="btn btn-core" id="btn_update_super"><i class="fa fa-save"></i> Update Super Details</button>
+			<button type="button" class="btn btn-core" id="btn_update_super" data-loading-text="Updating staff..."><i class="fa fa-save"></i> Update Super Details</button>
 		</div>
 	</div>
 </div>
@@ -188,11 +195,14 @@ $(function(){
 	});
 	
 	$('#btn_update_super').click(function(){
+		var btn = $(this);
+		btn.button('loading');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>staff/ajax/update_super",
 			data: $('#form_update_staff_super').serialize(),
 			success: function(html) {
+				btn.button('reset');
 				$('#msg-update-super').removeClass('hide');
 				setTimeout(function(){
 					$('#msg-update-super').addClass('hide');
