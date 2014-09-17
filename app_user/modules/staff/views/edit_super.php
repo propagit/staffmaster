@@ -30,7 +30,7 @@ if ($platform == 'myob') {
 	<div class="form-group">
 		<label class="col-md-2 control-label">Super Fund</label>
 		<div class="col-md-4">
-			<?=$super_fund->Name;?>
+			<b><?=$super_fund->Name;?></b>
 			<? if ($super_fund->EmployerMembershipNumber) { ?>
 			<br />Employer Membership Number: <?=$super_fund->EmployerMembershipNumber;?>
 			<? } ?>
@@ -41,8 +41,8 @@ if ($platform == 'myob') {
 			<br />Website: <?=$super_fund->Website;?>
 			<? } ?>
 		</div>
-		<label for="s_employee_id" class="col-md-2 control-label">Membership Number</label>
-		<div class="col-md-4">
+		<label for="s_employee_id" class="col-md-3 control-label">Employee Membership Number</label>
+		<div class="col-md-3">
 			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
 		</div>
 	</div>
@@ -62,8 +62,8 @@ if ($platform == 'myob') {
 		<div class="col-md-4">
 			<?=modules::run('common/field_select_myob_super_fund', 'super_fund_external_id');?>
 		</div>
-		<label for="s_employee_id" class="col-md-2 control-label">Membership Number</label>
-		<div class="col-md-4">
+		<label for="s_employee_id" class="col-md-3 control-label">Employee Membership Number</label>
+		<div class="col-md-3">
 			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
 		</div>
 	</div>
