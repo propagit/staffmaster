@@ -905,6 +905,21 @@ class Myob extends MX_Controller {
 		return $result;
 	}
 	
+	function test_update_customer($external_id)
+	{
+		$customer = $this->read_customer($external_id);
+		if (!isset($customer))
+		{
+			return false;
+		}
+		$client = modules::run('client/get_client_by_external_id', $external_id);
+		if (!$client)
+		{
+			return false;
+		}
+		var_dump($client);
+	}
+	
 	/**
 	*	@desc: update customer data to MYOB
 	*	@params: $external_id (DisplayID in MYOB)
