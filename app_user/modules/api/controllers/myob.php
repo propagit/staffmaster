@@ -917,7 +917,70 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
-		var_dump($client);
+		$names = explode(' ', $client['full_name']);
+		$updated_customer = array(
+			'UID' => $customer->UID,
+			'CompanyName' => $client['company_name'],
+			'LastName' => isset($names[1]) ? $names[1] : $names[0],
+			'FirstName' => $names[0],
+			'IsIndividual' => 'False',
+			'DisplayID' => 'SBCUS' . $client['user_id'],
+			'IsActive' => 'True',
+			'Addresses' => array(
+				array(
+					'Location' => 1,
+					'Street' => $client['address'],
+					'City' => $client['city'],
+					'State' => $client['state'],
+					'PostCode' => $client['postcode'],
+					'Country' => $client['country'],
+					'Phone1' => $client['phone'],
+					'Phone2' => $client['mobile'],
+					'Email' => $client['email_address'],
+					'Salutation' => $client['title']
+				)
+			),
+			'Notes' => 'Updated from StaffBooks',
+			'SellingDetails' => array(
+				'ABN' => $client['abn'],
+				'TaxCode' => array(
+					'UID' => $this->taxcode('GST')->UID
+				),
+				'FreightTaxCode' => array(
+					'UID' => $this->taxcode('GST')->UID
+				)
+			),
+			'LastModified' => $client['modified_on'],
+			'RowVersion' => $customer->RowVersion
+		);
+		
+		$params = json_encode($updated_customer);
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/' . $customer->UID;
+		
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		var_dump($response);
 	}
 	
 	/**
