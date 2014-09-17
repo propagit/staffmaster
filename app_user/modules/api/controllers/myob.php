@@ -106,6 +106,11 @@ class Myob extends MX_Controller {
 			case 'update_employee_payment':
 					$result = $this->update_employee_payment($param);
 				break;
+			case 'update_employee_payroll':
+					$result = $this->update_employee_payroll($param);
+				break;
+				
+				
 			case 'read_customer':
 					$result = $this->read_customer($param);
 				break;
@@ -142,6 +147,11 @@ class Myob extends MX_Controller {
 			case 'read_activity':
 					$result = $this->read_activity($param);
 				break;
+				
+				
+			case 'search_super_funds':
+					$result = $this->search_super_funds();
+				break;	
 			case 'read_accounts':
 					$result = $this->read_accounts($param);
 				break;
@@ -663,6 +673,70 @@ class Myob extends MX_Controller {
 		return true;
 	}
 	
+	function update_employee_payroll($user_id)
+	{
+		$staff = modules::run('staff/get_staff', $user_id);
+		if (!$staff)
+		{
+			return false;
+		}
+		$payroll = $this->read_employee_payroll($staff['external_staff_id']);
+		if (!$payroll)
+		{
+			return false;
+		}
+		$gender = '';
+		if ($staff['gender'] == 'm') { $gender = 'Male'; }
+		else if ($staff['gender'] == 'f') { $gender = 'Female'; }
+		$payroll_details = array(
+			'UID' => $payroll->UID,
+			'Employee' => array(
+				'UID' => $payroll->Employee->UID
+			),
+			'DateOfBirth' => $staff['dob'] . ' 00:00:00',
+			'Gender' => $gender,
+			'Wage' => json_decode(json_encode($payroll->Wage), true),
+			'Tax' => array(
+				'TaxFileNumber' => $staff['f_tfn'],
+				'TaxTable' => json_decode(json_encode($payroll->Tax->TaxTable), true)
+			),
+			'RowVersion' => $payroll->RowVersion
+		);
+		#var_dump($payroll_details); die();
+		$params = json_encode($payroll_details);
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePayrollDetails/' . $payroll->UID;
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		#var_dump($response);
+		$response = json_decode($response);
+		if (isset($response->Errors))
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	*	@desc: get all customers from MYOB
 	*	@return: array of objects (vector) of customers from MYOB
@@ -701,7 +775,7 @@ class Myob extends MX_Controller {
 	
 	function test_read_customer()
 	{
-		$c = $this->read_customer('De');
+		$c = $this->search_customer();
 		var_dump($c);
 	}
 	
@@ -1042,6 +1116,83 @@ class Myob extends MX_Controller {
 			$errors[] = $response->Errors;
 		}
 		return $errors;
+	}
+	
+	function search_super_funds()
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		#$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
+		#$filter = "filter=Name%20eq%20'". $name ."'";
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund';
+		$ch = curl_init($url); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch); 
+		curl_close($ch); 
+		
+		$response = json_decode($response);
+		#var_dump($response);
+		if (isset($response->Items))
+		{
+			var_dump($response->Items);
+			return $response->Items;
+		}
+		return null;
+	}
+	
+	function append_super_fund()
+	{
+		$super_fund = array(
+			'Name' => 'Test New Super Fund',
+			'EmployerMembershipNumber' => '',
+			'PhoneNumber' => '04 0213 3066',
+			'Website' => 'www.propagate.com.au'
+		);
+		$params = json_encode($super_fund);
+			
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund';
+		
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		var_dump($response);
+		$response = json_decode($response);
+		if (isset($response->Errors))
+		{
+			#$errors[] = $response->Errors;
+		}
+		#return $errors;
 	}
 	
 	function read_payroll($name)
