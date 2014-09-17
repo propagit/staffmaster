@@ -105,13 +105,20 @@ class Timesheet extends MX_Controller {
 	function extract_timesheet_payrate($timesheet_id, $user_type = 0) {
 		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
 		$payrate_id = $timesheet['payrate_id'];
+		$client_payrate_id = $payrate_id;
+		if ($timesheet['client_payrate_id'] > 0)
+		{
+			$client_payrate_id = $timesheet['client_payrate_id'];
+		}
 		$start_time = $timesheet['start_time'];
 		$finish_time = $timesheet['finish_time'];
 		$pay_rates = array();
 		
 		$current_rate = null;
 		$payrate = $this->payrate_model->get_payrate($payrate_id);
+		$client_payrate = $this->payrate_model->get_payrate($client_payrate_id);
 		$current_group = $payrate['name'];
+		$current_activity = $client_payrate['name'];
 		$current_start = null;
 		$current_hours = 0;
 		for($i = $start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes
@@ -120,10 +127,12 @@ class Timesheet extends MX_Controller {
 			# Get the pay rate amount
 			#$rate = $this->payrate_model->get_payrate_data($payrate_id, $user_type, $day, $hour);
 			$rate = $this->payrate_model->get_payrate_full_data($payrate_id, $user_type, $day, $hour);
+			$client_rate = $this->payrate_model->get_payrate_full_data($client_payrate_id, 1, $day, $hour);
 			if ($current_rate == null) { # First rate
 				#$current_rate = $rate;
 				$current_rate = $rate['value'];
 				$current_group = $rate['group'];
+				$current_activity = $client_rate['group'];
 				$current_start = $start_time;
 			}
 			if ($rate['value'] == $current_rate) { # The same rate
@@ -137,7 +146,8 @@ class Timesheet extends MX_Controller {
 					'hours' => $current_hours,
 					'rate' => $current_rate,
 					'break' => 0,
-					'group' => $rate['group']
+					'group' => $rate['group'],
+					'activity' => $client_rate['group']
 				);
 				
 				# Then clear to set up new rate
@@ -153,7 +163,8 @@ class Timesheet extends MX_Controller {
 			'hours' => $current_hours,
 			'rate' => $current_rate,
 			'break' => 0,
-			'group' => $current_group
+			'group' => $current_group,
+			'activity' => $current_group
 		);
 		
 		

@@ -261,7 +261,7 @@
                 <td width="20%"><?=date('H:i', $timesheet['start_time']);?> - <?=date('H:i', $timesheet['finish_time']);?> <?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-danger">*</span>': '';?></td>
                 <td width="9%"><?=modules::run('common/break_time', $timesheet['break_time']);?></td>
                 <td width="9%"><?=$timesheet['total_minutes']/60;?></td>
-                <td width="9%"><?=modules::run('attribute/payrate/display_payrate', $timesheet['payrate_id']);?></td>
+                <td width="9%"><?=modules::run('attribute/payrate/display_payrate', ($timesheet['client_payrate_id'] > 0) ? $timesheet['client_payrate_id'] : $timesheet['payrate_id']);?></td>
                 <td width="9%"><?=modules::run('common/format_money',$timesheet['total_amount_client']);?></td>
             </tr>
 			<? } ?>

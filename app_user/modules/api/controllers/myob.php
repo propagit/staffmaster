@@ -1156,6 +1156,12 @@ class Myob extends MX_Controller {
 		return null;
 	}
 	
+	function search_activity()
+	{
+		$a = $this->read_activity('Level 3');
+		var_dump($a);
+	}
+	
 	function read_activity($external_id)
 	{
 		if (!$external_id)
@@ -1170,7 +1176,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
-		$filter = "filter=DisplayID%20eq%20'". $external_id ."'";
+		$filter = "filter=DisplayID%20eq%20'". urlencode($external_id) ."'";
 		
 		$url = $this->cloud_api_url . $this->company_id . '/TimeBilling/Activity/?$' . $filter;
 		$ch = curl_init($url); 
@@ -1325,6 +1331,12 @@ class Myob extends MX_Controller {
 		#return $errors;
 	}
 	
+	function search_payroll()
+	{
+		$p = $this->read_payroll('Level 1');
+		var_dump($p);
+	}
+	
 	function read_payroll($name)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1335,7 +1347,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		#$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
-		$filter = "filter=Name%20eq%20'". $name ."'";
+		$filter = "filter=Name%20eq%20'". urlencode($name) ."'";
 		
 		$url = $this->cloud_api_url . $this->company_id . '/Payroll/PayrollCategory/?$' . $filter;
 		$ch = curl_init($url); 
@@ -1393,6 +1405,8 @@ class Myob extends MX_Controller {
 	function validate_append_timesheet($timesheet_id)
 	{
 		$timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
+		
+		# Check payroll category for employee on MYOB
 		$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 		foreach($pay_rates as $pay_rate)
 		{
@@ -1402,7 +1416,7 @@ class Myob extends MX_Controller {
 				$payrate = modules::run('attribute/payrate/get_payrate', $timesheet['payrate_id']);
 				$earningID = $payrate['name'];
 			}
-			$payroll = $this->read_payroll(urlencode($earningID));
+			$payroll = $this->read_payroll($earningID);
 			
 			# Make sure all the payroll categories are set up on MYOB
 			if (!$payroll)
@@ -1414,6 +1428,29 @@ class Myob extends MX_Controller {
 				#var_dump($result);
 				return $result;
 			}
+			
+			$activityID = $pay_rate['activity'];
+			if (!$activityID)
+			{
+				$payrate_id = $timesheet['payrate_id'];
+				if ($timesheet['client_payrate_id'] > 0)
+				{
+					$payrate_id = $timesheet['client_payrate_id'];
+				}
+				$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
+				$activityID = $payrate['name'];
+			}
+			$activity = $this->read_activity($activityID);
+			if (!$activity)
+			{
+				$result = array(
+					'ok' => false,
+					'msg' => '<p>Pay rate <b>' . $activityID . '</b> for client is not found in MYOB Activity</p>'
+				);
+				#var_dump($result);
+				return $result;
+			}
+			
 		}
 		
 		# Make sure the staff is set up on MYOB
@@ -1473,7 +1510,7 @@ class Myob extends MX_Controller {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
-		
+		$errors = array();
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
 		{
@@ -1487,21 +1524,35 @@ class Myob extends MX_Controller {
 				{
 					$earningID = $timesheet['payrate'];
 				}
+				$activityID = $pay_rate['activity'];
+				if (!$activityID)
+				{
+					$payrate_id = $timesheet['payrate_id'];
+					if ($timesheet['client_payrate_id'] > 0)
+					{
+						$payrate_id = $timesheet['client_payrate_id'];
+					}
+					$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
+					$activityID = $payrate['name'];
+				}
+				
 				$break = '';
 				if ($pay_rate['break']) {
 					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 				}
 				
-				$payroll = $this->read_payroll(urlencode($earningID));
+				$payroll = $this->read_payroll($earningID);
 				$customer = $this->read_customer($timesheet['external_client_id']);
-				#$activity = $this->read_activity();
+				$activity = $this->read_activity($activityID);
 				
 				$lines[] = array(
 					'PayrollCategory' => array(
 						'UID' => $payroll->UID
 					),
 					'Job' => null,
-					'Activity' => null,
+					'Activity' => array(
+						'UID' => $activity->UID
+					),
 					'Customer' => ($customer) ? array(
 						'UID' => $customer->UID
 					) : null,
@@ -1762,7 +1813,12 @@ class Myob extends MX_Controller {
 						$group = $pay_rate['group'];
 						if (!$group)
 						{
-							$payrate = modules::run('attribute/payrate/get_payrate', $timesheet['payrate_id']);
+							$payrate_id = $timesheet['payrate_id'];
+							if ($timesheet['client_payrate_id'] > 0)
+							{
+								$payrate_id = $timesheet['client_payrate_id'];
+							}
+							$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
 							$group = $payrate['name'];
 						}
 						$activity = $this->read_activity($group);
@@ -1824,8 +1880,18 @@ class Myob extends MX_Controller {
 						if ($pay_rate['break']) {
 							$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 						}
-						$activity = $this->read_activity($group);
+						if (!$group)
+						{
+							$payrate_id = $timesheet['payrate_id'];
+							if ($timesheet['client_payrate_id'] > 0)
+							{
+								$payrate_id = $timesheet['client_payrate_id'];
+							}
+							$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
+							$group = $payrate['name'];
+						}
 						
+						$activity = $this->read_activity($group);
 						$timesheet_lines[] = array(
 							'Type' => 'Transaction',
 							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
@@ -1982,7 +2048,7 @@ class Myob extends MX_Controller {
 			}
 		}
 		$external_id = implode(' - ' , $external_ids);
-		
+		#var_dump($errors);
 		if (count($errors) > 0)
 		{
 			return array(
