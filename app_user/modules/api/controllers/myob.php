@@ -775,7 +775,7 @@ class Myob extends MX_Controller {
 	
 	function test_read_customer()
 	{
-		$c = $this->search_customer();
+		$c = $this->read_customer('SBCUS1084');
 		var_dump($c);
 	}
 	
