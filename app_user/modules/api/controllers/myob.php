@@ -1082,6 +1082,50 @@ class Myob extends MX_Controller {
 		return true;
 	}
 	
+	function delete_customer($external_id)
+	{
+		$customer = $this->read_customer($external_id);
+		if (!isset($customer))
+		{
+			return false;
+		}
+		
+		#var_dump($updated_customer); die();
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        #'Content-Length: ' . strlen($params)
+		);
+		
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/' . $customer->UID;
+		
+		$ch = curl_init($url); 
+		
+		
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+		
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+		var_dump($response);
+		$response = json_decode($response);
+		
+		if (isset($response->Errors))
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	function read_accounts($class)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
