@@ -197,6 +197,7 @@ if(!String.prototype.format) {
 	};
 
 	var browser_timezone = '';
+	//var default_timezone = 'Australia/Sydney';
 	try {
 		if($.type(window.jstz) == 'object' && $.type(jstz.determine) == 'function') {
 			browser_timezone = jstz.determine().name();
@@ -204,11 +205,13 @@ if(!String.prototype.format) {
 				browser_timezone = '';
 			}
 		}
-		browser_timezone = 'Australia/Sydney';
 	}
 	catch(e) {
 	}
-	//alert(browser_timezone); // = 'Australia/Sydney';
+	alert(browser_timezone); // = 'Australia/Sydney';
+	//var d = new Date();
+	//var n = d.getTimezoneOffset();
+	//alert(n);
 	function buildEventsUrl(events_url, data) {
 		var separator, key, url;
 		url = events_url;
