@@ -1798,6 +1798,7 @@ class Myob extends MX_Controller {
 				$errors[] = $response->Errors;
 			}	
 		}
+		var_dump($errors);
 		if (count($errors) > 0)
 		{
 			$result = array(
