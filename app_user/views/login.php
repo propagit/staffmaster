@@ -16,7 +16,7 @@
 <body>
 <div class="container">
 	<?=$check_browser;?>
-	<? echo date_default_timezone_get(); ?>	
+		
 	<? if ($check_browser) { ?>
 	<div id="check_browser" style="display:none">
 	<? } ?>
