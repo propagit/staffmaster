@@ -1197,7 +1197,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
-		$filter = "filter=DisplayID%20eq%20'". urlencode($external_id) ."'";
+		$filter = "filter=Name%20eq%20'". urlencode($external_id) ."'";
 		
 		$url = $this->cloud_api_url . $this->company_id . '/TimeBilling/Activity/?$' . $filter;
 		$ch = curl_init($url); 
