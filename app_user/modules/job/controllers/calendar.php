@@ -143,6 +143,12 @@ class Calendar extends MX_Controller {
 		}
 		
 		foreach($merged_array as $key => $val){
+			
+			$key = strtotime($key);
+			if (date('I', $key))
+			{
+				$key += 3600;
+			}
 			$out[] = array(
 							'active_job_campaigns' => isset($val['job_campaign']['count']) ? $val['job_campaign']['count'] : '',
 							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',							
@@ -152,11 +158,16 @@ class Calendar extends MX_Controller {
 							'confirmed_shift' => isset($val['confirmed']['count']) ? $val['confirmed']['count'] : '',
 							'completed_shift' => isset($val['completed']['count']) ? $val['completed']['count'] : '',
 							'url' => 'test',
-							'start' => strtotime($key).'000',
-							'end' => strtotime($key).'000'
+							'start' => $key.'000',
+							'end' => $key.'000'
 						);
 		}
 		if(!$out){
+			$new_date = strtotime($new_date);
+			if (date('I', $new_date))
+			{
+				$new_date += 3600;
+			}
 			$out[] = array(
 				'active_job_campaigns' => '-',
 				'unfilled_shifts' => '-',
@@ -165,8 +176,8 @@ class Calendar extends MX_Controller {
 				'confirmed_shift' => '-',
 				'completed_shift' => '-',
 				'url' => 'test',
-				'start' => strtotime($new_date).'000',
-				'end' => strtotime($new_date).'000'
+				'start' => $new_date.'000',
+				'end' => $new_date.'000'
 				);
 		}
 		
