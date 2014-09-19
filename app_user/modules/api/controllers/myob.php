@@ -1798,13 +1798,13 @@ class Myob extends MX_Controller {
 				$errors[] = $response->Errors;
 			}	
 		}
-		var_dump($errors);
 		if (count($errors) > 0)
 		{
 			$result = array(
 				'ok' => false,
-				'msg' => '<p> ' . count($errors) . ' timesheets have been pushed to MYOB with errors!</p>'
+				'msg' => '<p> ' . $errors[0][0]['Message'] . '</p>'
 			);
+			var_dump($result);
 			return $result;
 		}
 		
