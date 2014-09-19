@@ -2059,6 +2059,14 @@ tr.purple {
 		display:block;
 		margin-right:100%;
 	}
+	#sys-fixed-btns{
+		top:188px;	
+	}
+	
+	#btn_search_clients{
+		margin-bottom:10px;
+		float:left;	
+	}
 	
 
 }
@@ -2089,6 +2097,9 @@ tr.purple {
 	.dob-day,.dob-mth,.dob-year{
 		width:100%;
 		margin-bottom:15px;	
+	}
+	#sys-fixed-btns{
+		top:160px;	
 	}
 	
 }
