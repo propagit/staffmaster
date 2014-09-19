@@ -129,6 +129,9 @@ class Myob extends MX_Controller {
 			case 'validate_append_timesheet':
 					$result = $this->validate_append_timesheet($param);
 				break;
+			case 'test_append_timesheets':
+					$result = $this->test_append_timesheets($param);
+				break;
 			case 'append_timesheets':
 					$result = $this->append_timesheets($param);
 				break;
@@ -1546,6 +1549,132 @@ class Myob extends MX_Controller {
 		);
 	}
 	
+	function test_append_timesheets($payrun_id)
+	{
+		$this->load->model('payrun/payrun_model');
+		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		usort($timesheets, function($a, $b) { // anonymous function
+		    // compare numbers only
+		    if (isset($a['external_staff_id'])) {
+			    return $a['external_staff_id'] - $b['external_staff_id'];
+		    }
+		});
+		$errors = array();
+		# Now all conditions are satisfied, push to MYOB
+		foreach($timesheets as $timesheet)
+		{
+			$employee = $this->read_employee($timesheet['external_staff_id']);			
+			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+			$lines = array();
+			foreach($pay_rates as $pay_rate)
+			{
+				$earningID = $pay_rate['group'];
+				if (!$earningID)
+				{
+					$earningID = $timesheet['payrate'];
+				}
+				$activityID = $pay_rate['activity'];
+				if (!$activityID)
+				{
+					$payrate_id = $timesheet['payrate_id'];
+					if ($timesheet['client_payrate_id'] > 0)
+					{
+						$payrate_id = $timesheet['client_payrate_id'];
+					}
+					$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
+					$activityID = $payrate['name'];
+				}
+				
+				$break = '';
+				if ($pay_rate['break']) {
+					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
+				}
+				
+				$payroll = $this->read_payroll($earningID);
+				$customer = $this->read_customer($timesheet['external_client_id']);
+				$activity = $this->read_activity($activityID);
+				
+				$lines[] = array(
+					'PayrollCategory' => array(
+						'UID' => $payroll->UID
+					),
+					'Job' => null,
+					'Activity' => array(
+						'UID' => $activity->UID
+					),
+					'Customer' => ($customer) ? array(
+						'UID' => $customer->UID
+					) : null,
+					'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
+					'Entries' => array(
+						array(
+							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+							'Hours' => $pay_rate['hours'],
+							'Processed' => false
+						)
+					)
+				);
+			}
+			
+			$start_date = date('Y-m-d H:i:s', $timesheet['start_time']);
+			if ($timesheet['date_from'] && $timesheet['date_from'] != '0000-00-00')
+			{
+				$start_date = date('Y-m-d H:i:s', strtotime($timesheet['date_from']));
+			}
+			$end_date = date('Y-m-d H:i:s', $timesheet['finish_time']);
+			if ($timesheet['date_to'] && $timesheet['date_to'] != '0000-00-00')
+			{
+				$end_date = date('Y-m-d H:i:s', strtotime($timesheet['date_to']));
+			}
+			
+			$timesheet_data = array(
+				'Employee' => array(
+					'UID' => $employee->UID
+				),
+				'StartDate' => $start_date,
+				'EndDate' => $end_date,
+				'Lines' => $lines
+			);
+			
+			#var_dump($timesheet_data); continue;
+			
+			$params = json_encode($timesheet_data);
+			
+			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+			$headers = array(
+				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+		        'x-myobapi-cftoken: '.$cftoken,
+		        'x-myobapi-key: ' . $this->api_key,
+		        'x-myobapi-version: v2',
+		        'Content-Type: application/json',
+		        'Content-Length: ' . strlen($params)
+			);
+			
+			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
+			
+			$ch = curl_init($url); 
+			
+			
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+			
+			
+			$response = curl_exec($ch);
+			curl_close($ch);
+			#var_dump($response);
+			$response = json_decode($response);
+			if (isset($response->Errors))
+			{
+				$errors[] = $response->Errors;
+			}	
+		}
+		var_dump($errors);		
+	}
+	
 	function append_timesheets($payrun_id)
 	{
 		$this->load->model('payrun/payrun_model');
@@ -1684,6 +1813,12 @@ class Myob extends MX_Controller {
 		
 	}
 	
+	function test_read_invoices()
+	{
+		$a = $this->read_invoices();
+		var_dump($a);
+	}
+	
 	function read_invoices()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1694,7 +1829,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		
-		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice';
+		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice?$orderby=Number';
 		
 		$ch = curl_init($url); 
 		
