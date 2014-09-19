@@ -54,6 +54,7 @@
 	
 	
 	<script src="<?=base_url();?>assets/js/bootstrap-fileupload.min.js"></script>
+	<script src="<?=base_url();?>assets/js/jstz-1.0.4.min.js"></script>
 	<script src="<?=base_url();?>assets/js/calendar.js"></script>
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
