@@ -208,7 +208,7 @@ if(!String.prototype.format) {
 	}
 	catch(e) {
 	}
-	alert(browser_timezone); // = 'Australia/Sydney';
+	//alert(browser_timezone); // = 'Australia/Sydney';
 	//var d = new Date();
 	//var n = d.getTimezoneOffset();
 	//alert(n);
