@@ -1829,7 +1829,7 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		
-		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice?$orderby=Number';
+		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice?$orderby=Number%20desc';
 		
 		$ch = curl_init($url); 
 		
