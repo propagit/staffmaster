@@ -196,7 +196,7 @@ if(!String.prototype.format) {
 		d6: 'Sat'
 	};
 
-	var browser_timezone = 'Australia/Melbourne';
+	var browser_timezone = '';
 	try {
 		if($.type(window.jstz) == 'object' && $.type(jstz.determine) == 'function') {
 			browser_timezone = jstz.determine().name();
