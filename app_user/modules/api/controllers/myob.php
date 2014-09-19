@@ -1491,7 +1491,7 @@ class Myob extends MX_Controller {
 			{
 				$result = array(
 					'ok' => false,
-					'msg' => '<p>Pay rate <b>' . $activityID . '</b> for client is not found in MYOB Activity</p>'
+					'msg' => '<p>Activity Name <b>' . $activityID . '</b> is not found in MYOB</p>'
 				);
 				#var_dump($result);
 				return $result;
@@ -1505,7 +1505,7 @@ class Myob extends MX_Controller {
 		{			
 			$result = array(
 				'ok' => false,
-				'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> is not found in MYOB</p>'
+				'msg' => '<p>Employee <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> is not found in MYOB</p>'
 			);
 			#var_dump($result);
 			return $result;
@@ -1516,7 +1516,7 @@ class Myob extends MX_Controller {
 		{
 			$result = array(
 				'ok' => false,
-				'msg' => '<p>Staff <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> is not found in MYOB</p>'
+				'msg' => '<p>Employee <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> is not found in MYOB</p>'
 			);
 			#var_dump($result);
 			return $result;
@@ -1536,7 +1536,7 @@ class Myob extends MX_Controller {
 		{
 			$result = array(
 				'ok' => false,
-				'msg' => '<p>Payroll category <b>' . $payroll->Name . '</b> has not been assigned to staff <b>' . $employee->FirstName . ' ' . $employee->LastName . '</b> on MYOB yet</p>'
+				'msg' => '<p>Payroll category <b>' . $payroll->Name . '</b> has not been assigned to employee <b>' . $employee->FirstName . ' ' . $employee->LastName . '</b> in MYOB</p>'
 			);
 			#var_dump($result);
 			return $result;
@@ -1673,7 +1673,7 @@ class Myob extends MX_Controller {
 		{
 			$result = array(
 				'ok' => false,
-				'msg' => '<p> ' . count($errors) . ' time sheets have been pushed to MYOB with errors!</p><p>' . var_dump($errors) . '</p>'
+				'msg' => '<p> ' . count($errors) . ' timesheets have been pushed to MYOB with errors!</p><p>' . var_dump($errors) . '</p>'
 			);
 			return $result;
 		}
@@ -1840,7 +1840,7 @@ class Myob extends MX_Controller {
 		{
 			$result = array(
 				'ok' => false,
-				'msg' => '<p>Client <b>' . $client['company_name'] . '</b> is not found in MYOB'
+				'msg' => '<p>Customer <b>' . $client['company_name'] . '</b> is not found in MYOB'
 			);
 			return $result;
 		}
@@ -1872,7 +1872,7 @@ class Myob extends MX_Controller {
 						{
 							$result = array(
 								'ok' => false,
-								'msg' => '<p>Pay rate <b>' . $group . '</b> for client is not found in MYOB Activity</p>'
+								'msg' => '<p>Activity Name <b>' . $group . '</b> is not found in MYOB</p>'
 							);
 							#var_dump($result);
 							return $result;
