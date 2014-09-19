@@ -1673,7 +1673,7 @@ class Myob extends MX_Controller {
 		{
 			$result = array(
 				'ok' => false,
-				'msg' => '<p> ' . count($errors) . ' timesheets have been pushed to MYOB with errors!</p><p>' . var_dump($errors) . '</p>'
+				'msg' => '<p> ' . count($errors) . ' timesheets have been pushed to MYOB with errors!</p>'
 			);
 			return $result;
 		}
