@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Support</h2>
+   		 <h2><i class="icon-support"></i> &nbsp; Support</h2>
 		 <p>
          	Need support?<br />
             Contact our team via the below form to receive a prompt response.
@@ -16,7 +16,7 @@
 	<div class="box bottom-box">
     	<div class="inner-box push full-width">
            <h2>Lodge Support Ticket</h2>
-           <p>Support tickets are lodget to StaffMaster support staff. Support tickets will be responded to via the email address of the user who submits the ticket.</p>
+           <p>Support tickets are lodged to StaffBooks support staff. Support tickets will be responded to via the email address of the user who submits the ticket.</p>
            <br />
            <form id="lodge-support-form" class="form-horizontal">
              <div class="form-group">

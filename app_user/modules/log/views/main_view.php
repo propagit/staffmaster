@@ -1,8 +1,8 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Activity Logs</h2>
-    	 <p>You can find all records of your actitives on the system.</p>
+   		 <h2><i class="icon-activityLogs"></i> &nbsp; Activity Logs</h2>
+    	 <p>You can find all records of your activities on the system.</p>
     </div>
 </div>
 <!--end top box-->

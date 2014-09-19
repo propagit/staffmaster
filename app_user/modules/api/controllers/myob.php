@@ -1287,7 +1287,7 @@ class Myob extends MX_Controller {
 		#$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
 		#$filter = "filter=Name%20eq%20'". $name ."'";
 		
-		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund';
+		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund?$orderby=Name';
 		$ch = curl_init($url); 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_HEADER, false); 

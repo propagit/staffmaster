@@ -10,7 +10,7 @@ $menu = array(
 	array('path' => '#', 'icon' => 'icon-client', 'title' => 'Manage Clients', 'sub' => array(
 		array('path' => 'client/search', 'icon' => 'icon-searchClient', 'title' => 'Search Clients'),
 		array('path' => 'client/add', 'icon' => 'icon-addClient', 'title' => 'Add Client'),
-		array('path' => 'client/import', 'icon' => 'fa-upload', 'title' => 'Import Client')
+		array('path' => 'client/import', 'icon' => 'icon-importClient', 'title' => 'Import Client')
 	)),
 	array('path' => '#', 'icon' => 'icon-jobs', 'title' => 'Manage Jobs', 'sub' => array(
 		array('path' => 'job/search', 'icon' => 'icon-searchJobs', 'title' => 'Search Jobs'),
@@ -55,9 +55,9 @@ $menu = array(
 		array('path' => 'sms', 'icon' => 'fa-mobile', 'title' => 'SMS Settings'),
 		array('path' => 'setting/system_settings', 'icon' => 'fa-cog', 'title' => 'Other Settings'),
 		#array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
-		array('path' => 'setting/integration', 'icon' => 'fa-share-alt', 'title' => 'Accounts Integration'), 
-		array('path' => 'log', 'icon' => 'fa-tasks', 'title' => 'Activity Logs'),
-		array('path' => 'support/admin_support', 'icon' => 'fa-phone', 'title' => 'Support')
+		array('path' => 'setting/integration', 'icon' => 'icon-accountIntergration', 'title' => 'Accounts Integration'), 
+		array('path' => 'log', 'icon' => 'icon-activityLogs', 'title' => 'Activity Logs'),
+		array('path' => 'support/admin_support', 'icon' => 'icon-support', 'title' => 'Support')
 	))
 );
 ?>

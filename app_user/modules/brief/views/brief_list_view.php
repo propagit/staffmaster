@@ -4,7 +4,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Brief Builder</h2>
+   		 <h2><i class="icon-trainingBrief"></i> &nbsp; Brief Builder</h2>
 		 <p>
          	Use the brief builder to build briefs and attach them to shifts you create. Your staff will be able to access the briefs when they view their roster or apply to work on shifts you create.
         </p>

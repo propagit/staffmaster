@@ -1,7 +1,7 @@
 <!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
-   		 <h2>Accounts Integration</h2>
+   		 <h2><i class="icon-accountIntergration"></i> &nbsp; Accounts Integration</h2>
    		 <select class="form-control" id="accounting_platform">
 			<option value="">Please select the accounting platform</option>
 			<option value="shoebooks">Shoebooks</option>
