@@ -1802,7 +1802,7 @@ class Myob extends MX_Controller {
 		{
 			$result = array(
 				'ok' => false,
-				'msg' => '<p> ' . $errors[0][0]['Message'] . '</p>'
+				'msg' => '<p> ' . $errors[0][0]->Message . '</p>'
 			);
 			var_dump($result);
 			return $result;
