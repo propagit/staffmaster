@@ -405,7 +405,11 @@ class Ajax extends MX_Controller {
 				
 				#$unassign = modules::run('job/count_job_shifts', $job_id, $date['job_date'], '0');
 				#$completed = modules::run('job/count_job_shifts', $job_id, $date['job_date'], SHIFT_FINISHED); 
-
+				$key = strtotime($date['job_date']);
+				if (date('I', $key))
+				{
+					$key += 3600;
+				}
 
 				$out[] = array(
 					'unassigned' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], '0'),
@@ -415,8 +419,8 @@ class Ajax extends MX_Controller {
 					'completed' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], SHIFT_FINISHED),
 					'title' => $job_id,
 					'url' => $date['job_date'],
-					'start' => strtotime($date['job_date']) . '000',
-					'end' => strtotime($date['job_date']) . '000',
+					'start' => $key . '000',
+					'end' => $key . '000',
 				);
 			}
 			$data['events_source'] = json_encode($out);
