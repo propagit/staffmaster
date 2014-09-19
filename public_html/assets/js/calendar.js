@@ -204,10 +204,11 @@ if(!String.prototype.format) {
 				browser_timezone = '';
 			}
 		}
+		browser_timezone = 'Australia/Sydney';
 	}
 	catch(e) {
 	}
-	browser_timezone = 'Australia/Sydney';
+	//alert(browser_timezone); // = 'Australia/Sydney';
 	function buildEventsUrl(events_url, data) {
 		var separator, key, url;
 		url = events_url;
