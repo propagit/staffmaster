@@ -45,7 +45,9 @@
     	
     	<span class="text-red">**</span> denotes Required Field
     	
-    	<? if($personal_fields['actived'] > 0) { ?>
+    	<? 
+    	$platform = $this->config_model->get('accounting_platform');
+    	if($personal_fields['actived'] > 0) { ?>
     	<h2>Personal Details</h2>
     	<p class="text-muted">Please fill in your personal details</p>
     	<? foreach($personal_fields as $name => $field) { if(isset($field['active'])) { ?>
@@ -109,7 +111,13 @@
 					<? } ?>
 				</label>
 				<div class="col-sm-10">
+					<? 
+		            if ($name == 's_fund_name' && $platform == 'myob') {
+		            	#$super_fund_external_id = modules::run('setting/superinformasi', 'super_fund_external_id');
+			            echo modules::run('common/field_select_myob_super_fund', $field['form_field_id']);
+		            } else { ?>
 					<input type="text" class="form-control" id="field_<?=$name;?>" name="<?=$field['form_field_id'];?>" />
+					<? } ?>
 				</div>
 			</div>
     	<? } } ?>

@@ -1179,7 +1179,7 @@ class Myob extends MX_Controller {
 	
 	function search_activity()
 	{
-		$a = $this->read_activity('Level 3');
+		$a = $this->read_activity('Gen Lab Base Rate $33');
 		var_dump($a);
 	}
 	

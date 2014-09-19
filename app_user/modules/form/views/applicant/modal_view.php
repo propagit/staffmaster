@@ -6,7 +6,8 @@
 		</div>
 		<div class="col-md-12">			
 			<div class="modal-body">
-			<? foreach($applicant as $field) { ?>
+			<? $platform = $this->config_model->get('accounting_platform');
+			foreach($applicant as $field) { ?>
 				<? 
 					$name = $field['name'];
 					$value = $field['value'];
@@ -26,7 +27,11 @@
 							}
 							
 							
-						} else if ($name == 'location') {
+						} else if ($name == 's_fund_name' && $platform == 'myob') {
+							$super_fund = modules::run('api/myob/connect', 'read_super_fund~' . $value);
+							$value = $super_fund->Name;
+						}
+						else if ($name == 'location') {
 							$value = modules::run('attribute/location/display_location', $value);
 						} else if ($name == 'picture') {
 							$pictures = json_decode($value);							

@@ -1,6 +1,6 @@
 <div class="col-md-12">
 	<div class="box top-box">
-        <h2>Company Calendar</h2>
+        <h2><i class="fa fa-calendar"></i> &nbsp; Company Calendar</h2>
         <p>As you create jobs they will plot to the company calendar below. All shifts on all job campaigns are displayed and colour coded based on unfilled, unconfirmed, confirmed, rejected or completed. Active job campaigns are  show in charcoal and shifts created by clients will be shown in purple . Click the numbers to quick jump to those jobs.</p>
         <div id="shifts_badge">
 			<div class="shift_badge first-child">
