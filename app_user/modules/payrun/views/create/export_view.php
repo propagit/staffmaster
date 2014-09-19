@@ -62,7 +62,7 @@
 				</div>
 
 				<div class="form-group">
-					<button id="add-save-payrun" type="button" class="btn btn-core">Generate Pay Run</button>
+					<button id="add-save-payrun" type="button" class="btn btn-core" data-loading-text="Processing...">Generate Pay Run</button>
 				</div>
 			</div>
 			</form>
@@ -78,7 +78,46 @@ $(function(){
 	})
 
 	$('#add-save-payrun').click(function(){
-		save_payrun();
+		var btn = $(this);
+		btn.button('loading');
+		$('#waitingModal').modal('show');
+		$('#create-payrun-form').find('.has-error').removeClass('has-error');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>payrun/ajax/create_payrun",
+			data: $('#create-payrun-form').serialize(),
+			success: function(data) {
+				btn.button('reset');
+				data = $.parseJSON(data);
+				if (!data.ok) {
+					$('#waitingModal').modal('hide');
+					$('#f_' + data.error_id).addClass('has-error');
+					$('input[name="' + data.error_id + '"]').focus();
+				}
+				else {
+					$('.bs-modal-lg').modal('hide');
+					if (data.export) {
+						window.location = '<?=base_url().EXPORTS_URL;?>/payrun/' + data.file_name;
+						$('#waitingModal').modal('hide');
+						list_staffs();
+						get_payrun_stats();
+					}
+					else
+					{
+						if (data.pushed_ok) 
+						{
+							$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a href="<?=base_url();?>payrun/search-payslip/' + data.payrun_id + '" class="btn btn-core">View Pay Run</a> &nbsp; <a class="btn btn-default" onclick="close_modal()">Run Another Pay Run</a></p>');
+							$('#waitingModal').modal('show');
+						}
+						else
+						{
+							$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a class="btn btn-danger" onclick="close_modal()">Close</a></p>');
+							$('#waitingModal').modal('show');
+						}
+					}				
+				}
+			}
+		})
 	});
 	$('#check_to_export').click(function(){
 		include_export();
@@ -144,45 +183,6 @@ function include_export() {
 		
 		$('#f_export_id').addClass('hide');
 	}
-}
-function save_payrun() {
-	$('#waitingModal').modal('show');
-	$('#create-payrun-form').find('.has-error').removeClass('has-error');
-	$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>payrun/ajax/create_payrun",
-		data: $('#create-payrun-form').serialize(),
-		success: function(data) {
-			data = $.parseJSON(data);
-			if (!data.ok) {
-				$('#waitingModal').modal('hide');
-				$('#f_' + data.error_id).addClass('has-error');
-				$('input[name="' + data.error_id + '"]').focus();
-			}
-			else {
-				$('.bs-modal-lg').modal('hide');
-				if (data.export) {
-					window.location = '<?=base_url().EXPORTS_URL;?>/payrun/' + data.file_name;
-					$('#waitingModal').modal('hide');
-					list_staffs();
-					get_payrun_stats();
-				}
-				else
-				{
-					if (data.pushed_ok) 
-					{
-						$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a href="<?=base_url();?>payrun/search-payslip/' + data.payrun_id + '" class="btn btn-core">View Pay Run</a> &nbsp; <a class="btn btn-default" onclick="close_modal()">Run Another Pay Run</a></p>');
-						$('#waitingModal').modal('show');
-					}
-					else
-					{
-						$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a class="btn btn-danger" onclick="close_modal()">Close</a></p>');
-						$('#waitingModal').modal('show');
-					}
-				}				
-			}
-		}
-	})
 }
 function close_modal()
 {
