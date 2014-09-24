@@ -584,7 +584,7 @@ span.dash-invoice-value{
 	width:50%;
 }
 .modal-applicant .img-thumbnail {
-	height: 100px;
+	max-height: 250px;
 	margin: 10px 10px 10px 0;
 }
 /* system styles */
