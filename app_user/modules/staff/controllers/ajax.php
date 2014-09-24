@@ -142,7 +142,6 @@ class Ajax extends MX_Controller {
 	function update_personal()
 	{
 		$input = $this->input->post();
-		
 		if (!$input['first_name']) {
 			echo json_encode(array('ok' => false, 'error_id' => 'first_name', 'msg' => 'First name is required'));
 			return;

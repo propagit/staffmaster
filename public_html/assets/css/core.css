@@ -1365,6 +1365,9 @@ ol.example li.placeholder:before {
 	font-size: .9em;
 	border-radius: .9em;
 }
+.label-purple {
+	background: #6548b5;
+}
 .purple {
 	background: #6548b5;
 }

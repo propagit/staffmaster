@@ -70,6 +70,13 @@ class Staff_model extends CI_Model {
 			modules::run('api/myob/connect', 'append_employee~' . $user_id);
 			modules::run('api/myob/connect', 'update_employee_payroll~' . $user_id);
 		}
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $user_id,
+			'action' => $platform
+		);
+		$this->log_model->insert_log($log_data);
 	}
 	
 	function get_custom_attributes()
@@ -139,6 +146,13 @@ class Staff_model extends CI_Model {
 			modules::run('api/myob/connect', 'update_employee_payroll~' . $user_id);
 			modules::run('api/myob/connect', 'update_employee_payment~' . $user_id);
 		}
+		$log_data = array(
+			'module' => $this->module,
+			'object' => $this->object,
+			'object_id' => $user_id,
+			'action' => $platform
+		);
+		$this->log_model->insert_log($log_data);
 	}
 	
 	/**

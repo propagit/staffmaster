@@ -16,7 +16,9 @@ switch($log['action']) {
 <?=$user['first_name'] . ' ' . $user['last_name'];?>
 &nbsp; 
 <?=$log['action'];?>d client
+<? if ($client) { ?>
 <a href="<?=base_url();?>client/edit/<?=$client['user_id'];?>" target="_blank">
+
 <?=$client['company_name'];?></a>'s 
 <? if($log['action'] == 'update') { ?>
 <?=$log['description'];?>
@@ -25,3 +27,5 @@ switch($log['action']) {
 <? if ($log['action'] == 'create' || $log['action'] == 'delete') {
 	echo 'account';
 } ?>
+
+<? } ?>
