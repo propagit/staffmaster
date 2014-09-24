@@ -18,7 +18,7 @@
 	<?=$check_browser;?>
 	<?
 	$time = time();
-	echo date('I', 1412863200);
+	#echo date('I', 1412863200);
 	?>
 	<? if ($check_browser) { ?>
 	<div id="check_browser" style="display:none">
