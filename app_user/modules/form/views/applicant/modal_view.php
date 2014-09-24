@@ -37,7 +37,7 @@
 							$pictures = json_decode($value);							
 							$value = '';
 							if (count($pictures) > 0) foreach($pictures as $picture) {
-								$value .= '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" />';
+								$value .= '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" href="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" /></i>';
 							}
 							
 						} else if (is_array(json_decode($value))) {
@@ -83,3 +83,23 @@
 		</div>
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
+
+<script>
+
+	$('.img-thumbnail').magnificPopup({
+		type: 'image',
+		tLoading: 'Loading image #%curr%...',
+		mainClass: 'mfp-img-mobile',
+		gallery: {
+			enabled: true,
+			navigateByImgClick: true,
+			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+		},
+		image: {
+			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+			titleSrc: function(item) {
+				return item.el.attr('title');
+			}
+		}
+	});
+</script>
