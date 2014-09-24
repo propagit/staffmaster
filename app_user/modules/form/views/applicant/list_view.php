@@ -16,10 +16,12 @@
 			<?
 				# Action menu
 				$data = array(
+					array('value' => 'print', 'label' => 'Print Selected'),
 					array('value' => 'reject', 'label' => 'Reject Selected')
 				);
 				echo modules::run('common/menu_dropdown', $data, 'applicant-action', 'Actions');
 			?>
+		    <form id="multi-applicants-form">
 			<div class="table-responsive">
 			<table class="table table-bordered table-hover table-middle" id="table-applicants">
 			<thead>
@@ -32,7 +34,6 @@
 		            <th class="center">View</th>
 		        </tr>
 		    </thead>
-		    <form id="multi-applicants-form">
 		    <tbody>
 			<? foreach($applicants as $applicant) { 
 				$name = $this->form_model->get_applicant_name($applicant['applicant_id']);
@@ -47,13 +48,24 @@
 				</tr>
 			<? } ?>
 		    </tbody>
-		    </form>
 			</table>
 			</div>
+		    </form>
 		</div>
 	</div>
 </div>
 <!--end bottom box -->
+
+<!-- Modal -->
+<div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="order-message">
+			<img src="<?=base_url();?>assets/img/loading3.gif" />
+			<h2>Please wait!</h2>
+			<p>Please wait a moment while we are processing your request ...</p>
+		</div>
+	</div>
+</div>
 
 <script>
 $(function(){
@@ -89,6 +101,26 @@ $(function(){
 			})
 		}
 	});
+	
+	$('#menu-applicant-action ul li a[data-value="print"]').click(function(e){
+		e.preventDefault();
+		$('#waitingModal').modal('show');
+		$.ajax({
+			type: "POST",
+			async: false,
+			url: "<?=base_url();?>form/ajax/print_applicants",
+			data: $('#multi-applicants-form').serialize(),
+			success: function(html) {
+				$('#waitingModal').modal('hide');
+				window.open('<?=base_url() . UPLOADS_URL;?>/pdf/' + html, 'Shifts List');
+			}
+		})
+	})
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
+	})
 })
 function view_applicant(applicant_id) {
 	$('.bs-modal-lg').modal({

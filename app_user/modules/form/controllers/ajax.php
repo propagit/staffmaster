@@ -248,5 +248,49 @@ class Ajax extends MX_Controller {
 			$this->form_model->delete_applicant($applicant_id);
 		}
 	}
+	
+	function print_applicants() {
+		$applicant_ids = $this->input->post('applicant_ids');
+		
+		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
+		$filename = "applicants_" . date('Y-m-d');
+		#if(!file_exists(UPLOADS_PATH.'/pdf/'.$filename.'.pdf')){
+			$pdfFilePath = UPLOADS_PATH."/pdf/$filename.pdf";
+			
+			$dir = UPLOADS_PATH.'/pdf/';
+			if(!is_dir($dir))
+			{
+			  mkdir($dir);
+			  chmod($dir,0777);
+			  $fp = fopen($dir.'/index.html', 'w');
+			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			  fclose($fp);
+			}
+			 
+			ini_set('memory_limit','128M'); # boost the memory limit if it's low 
+			
+			$applicants = array();
+			foreach($applicant_ids as $applicant_id)
+			{
+				$data['applicant_id'] = $applicant_id;
+				$data['applicant'] = $this->form_model->get_applicant($applicant_id);
+				$applicants[] = $this->load->view('applicant/download_view', isset($data) ? $data : NULL, true);
+			}
+			$html = implode('<pagebreak />', $applicants);
+			
+					
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load(); 			
+			$stylesheet = file_get_contents('./assets/css/pdf.css');
+			$custom_styles = '<style>'.modules::run('custom_styles').'</style>';
+			//echo $custom_styles;exit();
+			$pdf->WriteHTML($stylesheet,1);
+			$pdf->WriteHTML($custom_styles,1);
+			$pdf->WriteHTML($html,2);
+			$pdf->Output($pdfFilePath, 'F'); // save to file 
+		#}
+		
+		echo $filename . ".pdf";
+	}
 }
 	

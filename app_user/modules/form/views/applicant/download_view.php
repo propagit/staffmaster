@@ -1,11 +1,5 @@
-<div class="modal-dialog modal-lg modal-applicant">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-			<h4 class="modal-title" id="myModalLabel">Applicant Information</h4>
-		</div>
-		<div class="col-md-12">			
-			<div class="modal-body">
+<h4>Applicant Information</h4>
+<table cellpadding="0" cellspacing="10">
 			<? $platform = $this->config_model->get('accounting_platform');
 			foreach($applicant as $field) { ?>
 				<? 
@@ -71,35 +65,10 @@
 						$value = '<a href="' . base_url() . UPLOADS_URL . '/tmp/' . $value . '" target="_blank">' . $value . '</a>';
 					}
 					?>
-				<div class="col-md-3 text-muted"><?=$field['label'];?>&nbsp;</div>
-				<div class="col-md-9"><?=$value;?>&nbsp;</div>
+				<tr valign="top">
+					<td><?=$field['label'];?>&nbsp;</td>
+					<td width="20"></td>
+					<td><?=$value;?>&nbsp;</td>
+				</tr>
 			<? } ?>
-			</div>
-		</div>
-		<div class="modal-footer">
-			<button class="btn btn-success" onclick="accept_applicant(<?=$applicant_id;?>, <?=STAFF_ACTIVE;?>)"><i class="fa fa-check"></i> Approve to Staff</button>
-			<button class="btn btn-warning" onclick="accept_applicant(<?=$applicant_id;?>, <?=STAFF_PENDING;?>)">Add to Pending</button>
-			<button class="btn btn-danger" onclick="reject_applicant(<?=$applicant_id;?>)">Reject</button>
-		</div>
-	</div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-
-<script>
-
-	$('.img-thumbnail').magnificPopup({
-		type: 'image',
-		tLoading: 'Loading image #%curr%...',
-		mainClass: 'mfp-img-mobile',
-		gallery: {
-			enabled: true,
-			navigateByImgClick: true,
-			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-		},
-		image: {
-			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-			titleSrc: function(item) {
-				return item.el.attr('title');
-			}
-		}
-	});
-</script>
+</table>
