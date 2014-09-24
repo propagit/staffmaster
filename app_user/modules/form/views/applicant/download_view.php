@@ -66,7 +66,7 @@
 					}
 					?>
 				<tr valign="top">
-					<td><?=$field['label'];?>&nbsp;</td>
+					<td width="100"><?=$field['label'];?>&nbsp;</td>
 					<td width="20"></td>
 					<td><?=$value;?>&nbsp;</td>
 				</tr>
