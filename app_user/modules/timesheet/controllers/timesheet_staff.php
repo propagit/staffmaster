@@ -7,6 +7,8 @@
 
 class Timesheet_staff extends MX_Controller {
 
+	var $user_id = null;
+	
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +16,8 @@ class Timesheet_staff extends MX_Controller {
 		$this->load->model('timesheet_staff_model');
 		$this->load->model('job/job_shift_model');
 		$this->load->model('expense/expense_model');
+		$user = $this->session->userdata('user_data');
+		$this->user_id = $user['user_id'];
 	}
 	
 	
@@ -63,6 +67,13 @@ class Timesheet_staff extends MX_Controller {
 		}
 		$data['total_expenses'] = $total_expenses;
 		$data['is_supervised'] = $is_supervised;
+		
+		$updatable = false;
+		if ($timesheet['status'] < TIMESHEET_SUBMITTED || # Timesheet never been submitted
+				($timesheet['status'] < TIMESHEET_APPROVED && $timesheet['supervisor_id'] == $this->user_id)) {
+			$updatable = true;
+		}
+		$data['updatable'] = $updatable;
 		$this->load->view('staff/timesheet_row_view', isset($data) ? $data : NULL);
 	}
 	

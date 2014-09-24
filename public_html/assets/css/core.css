@@ -2184,3 +2184,17 @@ tr.purple {
 .records-per-page-btn{
 		
 }
+
+/**
+ * This hack targets the Webkit browser engine
+ * which includes Safari and Chrome.
+ */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+ 
+    .popover .wp_break_length {
+		width: 158px;
+    }
+    .popover .wp_break_start_at {
+	    width: 263px;
+    }
+}

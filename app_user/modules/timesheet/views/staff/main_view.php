@@ -25,9 +25,9 @@
 			<div class="btn-group btn-nav tab-respond mob-class">
 				<ul class="nav nav-tabs tab-respond">
 					<li class="active"><a href="#yours_timesheets" data-toggle="tab">Your Time Sheets</a></li>
-					<? if (count($supervised_timesheets) > 0) { ?>
+					
 					<li><a href="#supervised_timesheets" data-toggle="tab">Your Supervised Time Sheets</a></li>
-					<? } ?>
+					
 				</ul>
 			</div>
 			<div class="tab-content">
@@ -78,6 +78,7 @@ $(function(){
 			url: "<?=base_url();?>timesheet/ajax_staff/generate_timesheets",
 			success: function(html) {
 				list_timesheets();
+				load_supervised_timesheets();
 				setTimeout(function() {
 					$('#waitingModal').modal('hide');
 				}, 2000);				

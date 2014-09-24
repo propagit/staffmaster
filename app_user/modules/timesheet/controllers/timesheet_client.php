@@ -3,6 +3,8 @@
 
 class Timesheet_client extends MX_Controller {
 
+	var $user_id = null;
+	
 	function __construct()
 	{
 		parent::__construct();
@@ -10,6 +12,8 @@ class Timesheet_client extends MX_Controller {
 		$this->load->model('timesheet_client_model');
 		$this->load->model('job/job_shift_model');
 		$this->load->model('expense/expense_model');
+		$user = $this->session->userdata('user_data');
+		$this->user_id = $user['user_id'];
 	}
 	
 	
@@ -58,6 +62,13 @@ class Timesheet_client extends MX_Controller {
 			$total_expenses += $client_cost;
 		}
 		$data['total_expenses'] = $total_expenses;
+		
+		$updatable = false;
+		if ($timesheet['status'] < TIMESHEET_APPROVED) {
+			$updatable = true;
+		}
+		$data['updatable'] = $updatable;
+		
 		$this->load->view('client/timesheet_row_view', isset($data) ? $data : NULL);
 	}
 	
