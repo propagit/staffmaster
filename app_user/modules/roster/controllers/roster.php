@@ -31,7 +31,8 @@ class Roster extends MX_Controller {
 	function get_roster_email($user_id)
 	{
 		$active_month = date('Y-m');
-		$data['rosters'] = $this->roster_model->get_user_rosters_by_month($user_id,$active_month);
+		#$data['rosters'] = $this->roster_model->get_user_rosters_by_month($user_id,$active_month);
+		$data['rosters'] = $this->roster_model->get_user_rosters($user_id);
 		$this->load->view('email/email_roster_table', isset($data) ? $data : NULL);	
 	}
 		
