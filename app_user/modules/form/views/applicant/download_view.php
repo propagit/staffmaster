@@ -30,8 +30,12 @@
 						} else if ($name == 'picture') {
 							$pictures = json_decode($value);							
 							$value = '';
-							if (count($pictures) > 0) foreach($pictures as $picture) {
-								$value .= '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" href="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" />';
+							if (count($pictures) > 0) 
+							{
+								$value .= '<pagebreak />';
+								foreach($pictures as $picture) {
+									$value .= '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" href="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" />';
+								}
 							}
 							
 						} else if (is_array(json_decode($value))) {
