@@ -29,10 +29,10 @@
 							$value = modules::run('attribute/location/display_location', $value);
 						} else if ($name == 'picture') {
 							$pagebreak = true;
-							/*
-$pictures = json_decode($value);							
+							$pictures = json_decode($value);							
 							$value = '';
-							if (count($pictures) > 0) 
+							/*
+if (count($pictures) > 0) 
 							{
 								$value .= '<pagebreak />';
 								foreach($pictures as $picture) {
