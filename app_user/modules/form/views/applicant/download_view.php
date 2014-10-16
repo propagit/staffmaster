@@ -30,7 +30,7 @@
 						} else if ($name == 'picture') {
 							$pagebreak = true;
 							$pictures = json_decode($value);							
-							$value = '';
+							$value = 'See next page';
 							/*
 if (count($pictures) > 0) 
 							{
