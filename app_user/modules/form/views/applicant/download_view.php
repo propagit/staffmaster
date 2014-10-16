@@ -1,6 +1,6 @@
 <h4>Applicant Information</h4>
 <table cellpadding="0" cellspacing="10">
-			<? $platform = $this->config_model->get('accounting_platform');
+			<? $platform = $this->config_model->get('accounting_platform'); $pagebreak = false;
 			foreach($applicant as $field) { ?>
 				<? 
 					$name = $field['name'];
@@ -28,7 +28,9 @@
 						else if ($name == 'location') {
 							$value = modules::run('attribute/location/display_location', $value);
 						} else if ($name == 'picture') {
-							$pictures = json_decode($value);							
+							$pagebreak = true;
+							/*
+$pictures = json_decode($value);							
 							$value = '';
 							if (count($pictures) > 0) 
 							{
@@ -37,6 +39,7 @@
 									$value .= '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" href="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" />';
 								}
 							}
+*/
 							
 						} else if (is_array(json_decode($value))) {
 							$values = json_decode($value);
@@ -76,3 +79,22 @@
 				</tr>
 			<? } ?>
 </table>
+
+<? if($pagebreak) { ?>
+<pagebreak />
+<? } ?>
+
+<? foreach($applicant as $field) { 
+	$name = $field['name'];
+	$value = $field['value'];
+	if ($value && $name == 'picture') {
+		$pictures = json_decode($value);							
+		$value = '';
+		if (count($pictures) > 0) 
+		{
+			foreach($pictures as $picture) {
+				echo '<img class="img-thumbnail" src="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" href="' . base_url() . UPLOADS_URL . '/tmp/' . $picture . '" />';
+			}
+		}
+	}
+} ?>
