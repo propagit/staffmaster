@@ -10,7 +10,7 @@
 				</div>
 			</div>
 		</div>
-   		 <h2><i class="fa fa-message"></i> &nbsp; SMS Settings</h2>
+   		 <h2><i class="fa fa-mobile"></i> &nbsp; SMS Settings</h2>
 		 <p>Customise your automated SMS messages that are sent to staff.</p>
     </div>
 </div>
