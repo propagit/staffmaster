@@ -1,4 +1,4 @@
-<!--begin top box--->
+<!--begin top box -->
 <div class="col-md-12">
 	<div class="box top-box">
 		<div class="pull-right">
@@ -10,8 +10,8 @@
 				</div>
 			</div>
 		</div>
-   		 <h2>SMS Settings</h2>
-		 <p>Customise your automated SMS messages that are sent to staff.</p>		 
+   		 <h2><i class="fa fa-message"></i> &nbsp; SMS Settings</h2>
+		 <p>Customise your automated SMS messages that are sent to staff.</p>
     </div>
 </div>
 <!--end top box-->
@@ -23,7 +23,7 @@
     		<div class="alert alert-default clearfix">
 				<?=modules::run('common/field_select', $templates, 'template_id', '','', false);?>
 			</div>
-			
+
 			<div id="template-setting">
 			</div>
     	</div>
