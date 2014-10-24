@@ -1554,7 +1554,9 @@ tr.purple {
 	Responsive tabs - when the page has a lot of tabs such that it no longer fits or responds properly
 	add this class to the tab .tab-respond
  */
-
+.tab-respond{
+	margin-top:-10px;	
+}
 .tab-respond li{
 	/* padding-top:5px; */	
 }
@@ -1563,6 +1565,7 @@ tr.purple {
 	padding-right:10px;
 	padding-top: 8px;
 	padding-bottom: 7px;
+	margin-top:10px;
 }
 .tab-pane p:first-child{
 	margin-top:10px;	
@@ -2012,6 +2015,25 @@ tr.purple {
 	.staff_timesheet_time .editable-inline{
 		width:250px;	
 	}
+	.custom-pagination{
+		width:100%;	
+	}
+	.records-per-page{
+		padding:10px 0;
+		width:100%;
+		margin:0 !important;
+	}
+	.records-per-page span{
+		display:block;	
+	}
+	.records-per-page-btn{
+			
+	}
+	.company-calendar-nav-wrap{
+		margin-top: 10px;
+		width:auto;
+	}
+
 }
 
 @media (max-width:490px){
@@ -2032,6 +2054,18 @@ tr.purple {
 	}
 	.pagination{
 		width:100%;	
+	}
+	.company-calendar-nav-wrap .nav-tabs li:first-child{
+		display:block;
+		margin-right:100%;
+	}
+	#sys-fixed-btns{
+		top:188px;	
+	}
+	
+	#btn_search_clients{
+		margin-bottom:10px;
+		float:left;	
 	}
 	
 
@@ -2063,6 +2097,9 @@ tr.purple {
 	.dob-day,.dob-mth,.dob-year{
 		width:100%;
 		margin-bottom:15px;	
+	}
+	#sys-fixed-btns{
+		top:160px;	
 	}
 	
 }
