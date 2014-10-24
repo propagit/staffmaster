@@ -122,7 +122,7 @@ define('LIVE_CK_TOOLS',"['Bold', 'Italic', 'Underline', 'Strike'],[ 'NumberedLis
 
 //records per page
 define('SHIFTS_PER_LOAD', 10);
-define('CLIENTS_PER_PAGE',30);
+define('CLIENTS_PER_PAGE',150);
 define('STAFF_PER_PAGE',50);
 define('DEFAULT_PER_PAGE',50);
 define('PAYRUN_PER_PAGE',50);
