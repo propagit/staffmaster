@@ -22,7 +22,7 @@ $config['force_https'] = FALSE;
 |	Default: xml
 |
 */
-$config['rest_default_format'] = 'xml';
+$config['rest_default_format'] = 'json';
 
 /*
 |--------------------------------------------------------------------------
@@ -355,12 +355,12 @@ $config['rest_access_table'] = 'access';
 
 /*
 |--------------------------------------------------------------------------
-| REST Method Access Control 
+| REST Method Access Control
 |--------------------------------------------------------------------------
 |
-| When set to true REST_Controller will check the access table to see if 
+| When set to true REST_Controller will check the access table to see if
 | the API KEY can access that controller.  rest_enable_keys *must* be enabled
-| to use this. 
+| to use this.
 |
 |	FALSE
 |
@@ -420,12 +420,12 @@ $config['rest_limits_table'] = 'limits';
 	  PRIMARY KEY (`id`)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
-| To specify limits, within your Controller __construct() method add per-method 
+| To specify limits, within your Controller __construct() method add per-method
 | limits with:
 
  $this->method['METHOD_NAME']['limit'] = [NUM_REQUESTS_PER_HOUR];
- 
-| See application/controllers/api/example.php for examples. 
+
+| See application/controllers/api/example.php for examples.
 */
 $config['rest_enable_limits'] = FALSE;
 
