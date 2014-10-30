@@ -77,10 +77,10 @@ class Roster_model extends CI_Model {
 		# daylight saving
 		$time = time();
 		$date = date('Y-m');
-		if (date('I', strtotime($date)))
-		{
+		#if (date('I', strtotime($date)))
+		#{
 			$time -= 3600;
-		}
+		#}
 		$sql = "SELECT js.*, j.client_id FROM `job_shifts` js
 				LEFT JOIN `jobs` j ON j.job_id = js.job_id 
 				WHERE js.`staff_id` = '" . $user_id . "'
