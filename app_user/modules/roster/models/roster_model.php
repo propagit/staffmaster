@@ -77,7 +77,7 @@ class Roster_model extends CI_Model {
 		$sql = "SELECT js.*, j.client_id FROM `job_shifts` js
 				LEFT JOIN `jobs` j ON j.job_id = js.job_id 
 				WHERE js.`staff_id` = '" . $user_id . "'
-				AND js.`start_time` > " . time() . " 
+				AND js.`finish_time` > " . time() . " 
 				AND js.`status` NOT IN ('-1','-2')";
 		$query = $this->db->query($sql);
 		return $query->result_array();
