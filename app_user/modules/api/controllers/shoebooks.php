@@ -10,7 +10,7 @@ class Shoebooks extends MX_Controller {
 	var $account_name = '';
 	var $login_name = '';
 	var $login_password = '';
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -19,14 +19,14 @@ class Shoebooks extends MX_Controller {
 		$this->login_name = $this->config_model->get('shoebooks_login_name');
 		$this->login_password = $this->config_model->get('shoebooks_login_password');
 	}
-	
+
 	function index()
 	{
 		#$a = $this->append_payslip(13);
 		#var_dump($a);
 	}
-	
-	function test() 
+
+	function test()
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/Defaults';
 		$request = '<Defaults xmlns="http://www.shoebooks.com.au/accounting/v10/">
@@ -65,13 +65,13 @@ class Shoebooks extends MX_Controller {
 		}
 		echo json_encode($output);
 	}
-	
+
 	function test_read_employee($id)
 	{
 		$a = $this->read_employee($id);
 		var_dump($a);
 	}
-	
+
 	function read_employee($id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadEmployee';
@@ -84,7 +84,7 @@ class Shoebooks extends MX_Controller {
 			</Login>
 			<id>' . $id . '</id>
 			</ReadEmployee>';
-		
+
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -101,7 +101,7 @@ class Shoebooks extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function test_search_employee()
 	{
 		$employee = $this->search_employee();
@@ -110,24 +110,24 @@ class Shoebooks extends MX_Controller {
 			    return $a['DataID'] - $b['DataID'];
 		    }
 		});
-		
+
 		$last = $employee[count($employee) - 1];
-		
+
 		while($last && count($employee) < 2000)
 		{
 			$employee = array_merge($employee, $this->search_employee($last['DataID'] + 1));
 			usort($employee, function($a, $b) {
 			    if (isset($a['DataID'])) {
 				    return $a['DataID'] - $b['DataID'];
-			    }		    
+			    }
 			});
 			$last = $employee[count($employee) - 1];
 		}
-		
-		
+
+
 		var_dump($employee);
 	}
-	
+
 	function search_employee($min='')
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/SearchEmployee';
@@ -144,8 +144,8 @@ class Shoebooks extends MX_Controller {
 				<MaxValue>3249</MaxValue>
 			</DataID>
 		</args>
-		</SearchEmployee>';		
-		
+		</SearchEmployee>';
+
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -155,7 +155,7 @@ class Shoebooks extends MX_Controller {
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
-		if (isset($result['SearchEmployeeResult']['Results']) 
+		if (isset($result['SearchEmployeeResult']['Results'])
 			&& is_array($result['SearchEmployeeResult']['Results']) && $result['SearchEmployeeResult']['Results'] != '')
 		{
 			$item = $result['SearchEmployeeResult']['Results']['DataItem'];
@@ -169,7 +169,7 @@ class Shoebooks extends MX_Controller {
 		}
 		return array();
 	}
-	
+
 	function append_employee($user_id)
 	{
 		$staff = modules::run('staff/get_staff', $user_id);
@@ -178,7 +178,7 @@ class Shoebooks extends MX_Controller {
 			return false;
 		}
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendEmployee';
-		
+
 		$dob = '';
 		if ($staff['dob'] && $staff['dob'] != '0000-00-00') {
 			$dob = '<BirthDate>' . $staff['dob'] . '</BirthDate>';
@@ -190,9 +190,9 @@ class Shoebooks extends MX_Controller {
 		$date_modified = '';
 		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
 			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
-		}		
+		}
 		$e_id = ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'];
-		
+
 		$fund_name = $staff['s_fund_name'];
 		$membership = $staff['s_membership'];
 		if ($staff['s_choice'] == 'employer')
@@ -200,7 +200,7 @@ class Shoebooks extends MX_Controller {
 			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
 			$membership = modules::run('setting/superinformasi', 'super_product_id','');
 		}
-		
+
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>
@@ -245,7 +245,7 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewEmployee>
 		</AppendEmployee>';
-		
+
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -262,7 +262,7 @@ class Shoebooks extends MX_Controller {
 		}
 		return false;
 	}
-	
+
 	function update_employee($external_id)
 	{
 		$staff = modules::run('staff/get_staff_by_external_id', $external_id);
@@ -271,7 +271,7 @@ class Shoebooks extends MX_Controller {
 			return false;
 		}
 		$action = 'http://www.shoebooks.com.au/accounting/v10/UpdateEmployee';
-		
+
 		$dob = '';
 		if ($staff['dob'] && $staff['dob'] != '0000-00-00') {
 			$dob = '<BirthDate>' . $staff['dob'] . '</BirthDate>';
@@ -283,7 +283,7 @@ class Shoebooks extends MX_Controller {
 		$date_modified = '';
 		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
 			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
-		}	
+		}
 		$fund_name = $staff['s_fund_name'];
 		if ($staff['s_choice'] != 'own')
 		{
@@ -315,7 +315,7 @@ class Shoebooks extends MX_Controller {
 				<EmergencyContact>' . $staff['emergency_contact'] . '</EmergencyContact>
 				<EmergencyPhone>' . $staff['emergency_phone'] . '</EmergencyPhone>' .
 				$date_entered .
-				$date_modified . '				
+				$date_modified . '
 				<BankName>' . $staff['f_acc_name'] . '</BankName>
 				<BankNumber>' . $staff['f_bsb'] . '</BankNumber>
 				<BankAccount>' . $staff['f_acc_number'] . '</BankAccount>
@@ -347,7 +347,7 @@ class Shoebooks extends MX_Controller {
 		#return $result;
 		return true;
 	}
-	
+
 	function read_customer($id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadCustomer';
@@ -376,7 +376,7 @@ class Shoebooks extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function search_customer()
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/SearchCustomer';
@@ -388,8 +388,8 @@ class Shoebooks extends MX_Controller {
 				<SessionID></SessionID>
 			</Login>
 		<args />
-		</SearchCustomer>';		
-		
+		</SearchCustomer>';
+
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -401,7 +401,7 @@ class Shoebooks extends MX_Controller {
 		$result = $client->send($msg, $action);
 		if (isset($result['SearchCustomerResult']['Results'])
 			&& is_array($result['SearchCustomerResult']['Results']) && $result['SearchCustomerResult']['Results'] != '')
-		{			
+		{
 			$item = $result['SearchCustomerResult']['Results']['DataItem'];
 			if (isset($item['DataID']))
 			{
@@ -413,7 +413,7 @@ class Shoebooks extends MX_Controller {
 		}
 		return array();
 	}
-	
+
 	function append_customer($user_id)
 	{
 		$client = modules::run('client/get_client', $user_id);
@@ -439,7 +439,7 @@ class Shoebooks extends MX_Controller {
 				<City>' . $client['city'] . '</City>
 				<State>' . $client['state'] . '</State>
 				<Zip>' . $client['postcode'] . '</Zip>
-				<Country>' . $client['country'] . '</Country>				
+				<Country>' . $client['country'] . '</Country>
 				<CompanyACN></CompanyACN>
 				<CompanyABN>' . $client['abn'] . '</CompanyABN>
 				<ContactNumbers>
@@ -450,7 +450,7 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewCustomer>
 		</AppendCustomer>';
-		
+
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -468,7 +468,7 @@ class Shoebooks extends MX_Controller {
 		}
 		return false;
 	}
-	
+
 	function update_customer($external_id)
 	{
 		$client = modules::run('client/get_client_by_external_id', $external_id);
@@ -476,7 +476,7 @@ class Shoebooks extends MX_Controller {
 		{
 			return false;
 		}
-		
+
 		$action = 'http://www.shoebooks.com.au/accounting/v10/UpdateCustomer';
 		$request = '<UpdateCustomer xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
@@ -494,7 +494,7 @@ class Shoebooks extends MX_Controller {
 				<City>' . $client['city'] . '</City>
 				<State>' . $client['state'] . '</State>
 				<Zip>' . $client['postcode'] . '</Zip>
-				<Country>' . $client['country'] . '</Country>				
+				<Country>' . $client['country'] . '</Country>
 				<CompanyACN></CompanyACN>
 				<CompanyABN>' . $client['abn'] . '</CompanyABN>
 				<ContactNumbers>
@@ -505,7 +505,7 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewCustomer>
 		</UpdateCustomer>';
-		
+
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -517,11 +517,11 @@ class Shoebooks extends MX_Controller {
 		$result = $client->send($msg, $action);
 		return true;
 	}
-		
-	function append_payslip($payrun_id)
+
+	function test_append_payslip($payrun_id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
-		
+
 		$this->load->model('payrun/payrun_model');
 		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		#return $timesheets;
@@ -542,9 +542,9 @@ class Shoebooks extends MX_Controller {
 				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
 				$timesheet['external_staff_id'] = $staff['external_staff_id'];
 			}
-			
+
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
-			
+
 			$start = '';
 			if ($timesheet['date_from'] && $timesheet['date_from'] != '0000-00-00')
 			{
@@ -560,7 +560,7 @@ class Shoebooks extends MX_Controller {
 			{
 				$pay_date = '<PayDate>' . date('Y-m-d', strtotime($timesheet['payable_date'])) . '</PayDate>';
 			}
-			
+
 			$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
 				<Login>
 					<AccountName>' . $this->account_name . '</AccountName>
@@ -576,7 +576,7 @@ class Shoebooks extends MX_Controller {
 					' . $finish . '
 					<AccountID></AccountID>
 					<JobID></JobID>
-					' . $pay_date . '				
+					' . $pay_date . '
 					<DivID>0</DivID>
 					<PayslipLines>';
 			foreach($pay_rates as $pay_rate)
@@ -590,7 +590,120 @@ class Shoebooks extends MX_Controller {
 				if ($pay_rate['break']) {
 					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 				}
-				
+
+				$request .= '
+						<PRPayslipLine>
+							<EarningID>' . $earningID . '</EarningID>
+							<Hours>' . $pay_rate['hours'] . '</Hours>
+							<Amount>' . $pay_rate['rate'] . '</Amount>
+							<Total>' . ($pay_rate['hours'] * $pay_rate['rate']) . '</Total>
+							<WorkDate>' . date('Y-m-d', $pay_rate['start']) . '</WorkDate>
+							<Notes>' . $timesheet['job_name'] . ' - ' . $timesheet['venue'] . ' - ' . $timesheet['client'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break . '</Notes>
+							<DivID>0</DivID>
+							<JobID></JobID>
+						</PRPayslipLine>';
+			}
+			$request .= '
+					</PayslipLines>
+				</NewPayslip>
+			</AppendPayslip>';
+			var_dump($request); die();
+
+			$client = new nusoap_client($this->host);
+			$error = $client->getError();
+			if ($error)
+			{
+				#die("client construction error: {$error}\n");
+				return false;
+			}
+			$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+			$result = $client->send($msg, $action);
+			if ($result['AppendPayslipResult']['ErrorMessage'] == "OK")
+			{
+				$results[] = $result;
+			}
+			$this->payrun_model->update_synced($timesheet['timesheet_id'], array(
+				'external_id' => $result['AppendPayslipResult']['NewRecordID'],
+				'external_msg' => $result['AppendPayslipResult']['ErrorMessage']
+			));
+
+		}
+		return $results;
+	}
+
+	function append_payslip($payrun_id)
+	{
+		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
+
+		$this->load->model('payrun/payrun_model');
+		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		#return $timesheets;
+		usort($timesheets, function($a, $b) { // anonymous function
+		    // compare numbers only
+		    if (isset($a['external_staff_id'])) {
+			    return $a['external_staff_id'] - $b['external_staff_id'];
+		    }
+		});
+		$results = array();
+		foreach($timesheets as $timesheet)
+		{
+			# Check if staff is there
+			$employee = $this->read_employee($timesheet['external_staff_id']);
+			if (!$employee['EmployeeID'])
+			{
+				$this->append_employee($timesheet['staff_id']);
+				$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+				$timesheet['external_staff_id'] = $staff['external_staff_id'];
+			}
+
+			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+
+			$start = '';
+			if ($timesheet['date_from'] && $timesheet['date_from'] != '0000-00-00')
+			{
+				$start = '<PeriodStart>' . date('Y-m-d', strtotime($timesheet['date_from'])) . '</PeriodStart>';
+			}
+			$finish = '';
+			if ($timesheet['date_to'] && $timesheet['date_to'] != '0000-00-00')
+			{
+				$finish = '<PeriodFinish>' . date('Y-m-d', strtotime($timesheet['date_to'])) . '</PeriodFinish>';
+			}
+			$pay_date = '';
+			if ($timesheet['payable_date'] && $timesheet['payable_date'] != '0000-00-00')
+			{
+				$pay_date = '<PayDate>' . date('Y-m-d', strtotime($timesheet['payable_date'])) . '</PayDate>';
+			}
+
+			$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
+				<Login>
+					<AccountName>' . $this->account_name . '</AccountName>
+					<LoginName>' . $this->login_name . '</LoginName>
+					<LoginPassword>' . $this->login_password . '</LoginPassword>
+					<SessionID></SessionID>
+				</Login>
+				<NewPayslip>
+					<EmployeeID>' . $timesheet['external_staff_id'] . '</EmployeeID>
+					<DateEffect>' . date('Y-m-d') . '</DateEffect>
+					<DateAccrual>' . date('Y-m-d') . '</DateAccrual>
+					' . $start . '
+					' . $finish . '
+					<AccountID></AccountID>
+					<JobID></JobID>
+					' . $pay_date . '
+					<DivID>0</DivID>
+					<PayslipLines>';
+			foreach($pay_rates as $pay_rate)
+			{
+				$earningID = $pay_rate['group'];
+				if (!$earningID)
+				{
+					$earningID = $timesheet['payrate'];
+				}
+				$break = '';
+				if ($pay_rate['break']) {
+					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
+				}
+
 				$request .= '
 						<PRPayslipLine>
 							<EarningID>' . $earningID . '</EarningID>
@@ -625,11 +738,11 @@ class Shoebooks extends MX_Controller {
 				'external_id' => $result['AppendPayslipResult']['NewRecordID'],
 				'external_msg' => $result['AppendPayslipResult']['ErrorMessage']
 			));
-				
+
 		}
 		return $results;
 	}
-	
+
 	function read_invoice($external_id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadInvoice';
@@ -658,20 +771,20 @@ class Shoebooks extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function append_invoice($invoice_id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendInvoice';
-		
+
 		$this->load->model('invoice/invoice_model');
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
 		if (!$invoice)
 		{
 			return false;
 		}
-		
+
 		$client = modules::run('client/get_client', $invoice['client_id']);
-		
+
 		# Check if client is there
 		$customer = $this->read_customer($client['external_client_id']);
 		if (!$customer)
@@ -695,9 +808,9 @@ class Shoebooks extends MX_Controller {
 				<AccountID>' . $account_id . '</AccountID>
 				<DivID>0</DivID>
 				<InvoiceLines>';
-		
+
 		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
-		
+
 		foreach($invoice_items as $item)
 		{
 			if ($item['include_timesheets']) # Item that include timesheets
@@ -707,7 +820,7 @@ class Shoebooks extends MX_Controller {
 				{
 					$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id'], 1);
 					$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-					
+
 					foreach($pay_rates as $pay_rate)
 					{
 						$break = '';
@@ -744,7 +857,7 @@ class Shoebooks extends MX_Controller {
 					$ex_tax_amount = $amount * 10/11;
 					$inc_tax_amount = $amount;
 					$taxable = 'Code1';
-				} 
+				}
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
@@ -759,7 +872,7 @@ class Shoebooks extends MX_Controller {
 					</ARInvoiceLine>';
 			}
 		}
-		
+
 		$request .= '
 				</InvoiceLines>
 			</NewInvoice>
@@ -781,20 +894,20 @@ class Shoebooks extends MX_Controller {
 		}
 		return false;
 	}
-	
+
 	function test_append_invoice($invoice_id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendInvoice';
-		
+
 		$this->load->model('invoice/invoice_model');
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
 		if (!$invoice)
 		{
 			return false;
 		}
-		
+
 		$client = modules::run('client/get_client', $invoice['client_id']);
-		
+
 		# Check if client is there
 		$customer = $this->read_customer($client['external_client_id']);
 		if (!$customer)
@@ -818,9 +931,9 @@ class Shoebooks extends MX_Controller {
 				<AccountID>' . $account_id . '</AccountID>
 				<DivID>0</DivID>
 				<InvoiceLines>';
-		
+
 		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
-		
+
 		foreach($invoice_items as $item)
 		{
 			if ($item['include_timesheets']) # Item that include timesheets
@@ -830,7 +943,7 @@ class Shoebooks extends MX_Controller {
 				{
 					$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id'], 1);
 					$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-					
+
 					foreach($pay_rates as $pay_rate)
 					{
 						$break = '';
@@ -867,7 +980,7 @@ class Shoebooks extends MX_Controller {
 					$ex_tax_amount = $amount * 10/11;
 					$inc_tax_amount = $amount;
 					$taxable = 'Code1';
-				} 
+				}
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
@@ -882,7 +995,7 @@ class Shoebooks extends MX_Controller {
 					</ARInvoiceLine>';
 			}
 		}
-		
+
 		$request .= '
 				</InvoiceLines>
 			</NewInvoice>
