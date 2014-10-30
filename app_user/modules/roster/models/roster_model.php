@@ -76,7 +76,8 @@ class Roster_model extends CI_Model {
 	{
 		# daylight saving
 		$time = time();
-		if (date('I', $time))
+		$date = date('Y-m');
+		if (date('I', strtotime($date)))
 		{
 			$time += 3600;
 		}
