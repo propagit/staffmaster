@@ -521,7 +521,7 @@ class Shoebooks extends MX_Controller {
 	function test_single()
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
-
+		$a = '&';
 		$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
 				<Login>
 					<AccountName>CavalryPeople</AccountName>
@@ -530,7 +530,7 @@ class Shoebooks extends MX_Controller {
 					<SessionID></SessionID>
 				</Login>
 				<NewPayslip>
-					<EmployeeID>SB774</EmployeeID>
+					<EmployeeID>683</EmployeeID>
 					<DateEffect>2014-10-31</DateEffect>
 					<DateAccrual>2014-10-31</DateAccrual>
 					<PeriodStart>2014-10-13</PeriodStart>
@@ -542,11 +542,11 @@ class Shoebooks extends MX_Controller {
 					<PayslipLines>
 						<PRPayslipLine>
 							<EarningID>Adult Saturday</EarningID>
-							<Hours>6.5</Hours>
+							<Hours>6</Hours>
 							<Amount>25.13</Amount>
-							<Total>163.345</Total>
+							<Total>150.78</Total>
 							<WorkDate>2014-10-25</WorkDate>
-							<Notes>FB Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00 </Notes>
+							<Notes>F'. $a . 'B Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00  w/ 0.5 hour break</Notes>
 							<DivID>0</DivID>
 							<JobID></JobID>
 						</PRPayslipLine>
