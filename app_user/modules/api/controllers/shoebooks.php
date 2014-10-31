@@ -521,7 +521,7 @@ class Shoebooks extends MX_Controller {
 	function test_single()
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
-		$a = '&';
+		$a = urlencode('&');
 		$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
 				<Login>
 					<AccountName>CavalryPeople</AccountName>
