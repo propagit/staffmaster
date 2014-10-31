@@ -518,6 +518,53 @@ class Shoebooks extends MX_Controller {
 		return true;
 	}
 
+	function test_single()
+	{
+		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
+
+		$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
+				<Login>
+					<AccountName>CavalryPeople</AccountName>
+					<LoginName>cavalrypeople</LoginName>
+					<LoginPassword>Julius_93</LoginPassword>
+					<SessionID></SessionID>
+				</Login>
+				<NewPayslip>
+					<EmployeeID>705</EmployeeID>
+					<DateEffect>2014-10-31</DateEffect>
+					<DateAccrual>2014-10-31</DateAccrual>
+					<PeriodStart>2014-10-13</PeriodStart>
+					<PeriodFinish>2014-10-26</PeriodFinish>
+					<AccountID></AccountID>
+					<JobID></JobID>
+					<PayDate>2014-10-29</PayDate>
+					<DivID>0</DivID>
+					<PayslipLines>
+						<PRPayslipLine>
+							<EarningID>Adult Saturday</EarningID>
+							<Hours>6</Hours>
+							<Amount>25.13</Amount>
+							<Total>150.78</Total>
+							<WorkDate>2014-10-25</WorkDate>
+							<Notes>F&B Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00  w/ 0.5 hour break</Notes>
+							<DivID>0</DivID>
+							<JobID></JobID>
+						</PRPayslipLine>
+					</PayslipLines>
+				</NewPayslip>
+			</AppendPayslip>';
+		$client = new nusoap_client($this->host);
+		$error = $client->getError();
+		if ($error)
+		{
+			#die("client construction error: {$error}\n");
+			return false;
+		}
+		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		$result = $client->send($msg, $action);
+		var_dump($result);
+	}
+
 	function test_append_payslip($payrun_id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
