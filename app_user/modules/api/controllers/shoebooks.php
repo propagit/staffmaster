@@ -520,49 +520,19 @@ class Shoebooks extends MX_Controller {
 
 	function test_single()
 	{
-		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
-		$a = urlencode('&');
-		$request = '<AppendPayslip xmlns="http://www.shoebooks.com.au/accounting/v10/">
-				<Login>
-					<AccountName>CavalryPeople</AccountName>
-					<LoginName>cavalrypeople</LoginName>
-					<LoginPassword>Julius_93</LoginPassword>
-					<SessionID></SessionID>
-				</Login>
-				<NewPayslip>
-					<EmployeeID>683</EmployeeID>
-					<DateEffect>2014-10-31</DateEffect>
-					<DateAccrual>2014-10-31</DateAccrual>
-					<PeriodStart>2014-10-13</PeriodStart>
-					<PeriodFinish>2014-10-26</PeriodFinish>
-					<AccountID></AccountID>
-					<JobID></JobID>
-					<PayDate>2014-10-29</PayDate>
-					<DivID>0</DivID>
-					<PayslipLines>
-						<PRPayslipLine>
-							<EarningID>Adult Saturday</EarningID>
-							<Hours>6</Hours>
-							<Amount>25.13</Amount>
-							<Total>150.78</Total>
-							<WorkDate>2014-10-25</WorkDate>
-							<Notes>F'. $a . 'B Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00  w/ 0.5 hour break</Notes>
-							<DivID>0</DivID>
-							<JobID></JobID>
-						</PRPayslipLine>
-					</PayslipLines>
-				</NewPayslip>
-			</AppendPayslip>';
-		$client = new nusoap_client($this->host);
-		$error = $client->getError();
-		if ($error)
-		{
-			#die("client construction error: {$error}\n");
-			return false;
-		}
-		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
-		$result = $client->send($msg, $action);
-		var_dump($result);
+		// $action = 'http://www.shoebooks.com.au/accounting/v10/AppendPayslip';
+		// $a = urlencode('&');
+		// $request = '';
+		// $client = new nusoap_client($this->host);
+		// $error = $client->getError();
+		// if ($error)
+		// {
+		// 	#die("client construction error: {$error}\n");
+		// 	return false;
+		// }
+		// $msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		// $result = $client->send($msg, $action);
+		// var_dump($result);
 	}
 
 	function test_append_payslip($payrun_id)
@@ -750,7 +720,7 @@ class Shoebooks extends MX_Controller {
 				if ($pay_rate['break']) {
 					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 				}
-
+				$job_name = str_replace('&', ' ', $timesheet['job_name']);
 				$request .= '
 						<PRPayslipLine>
 							<EarningID>' . $earningID . '</EarningID>
@@ -758,7 +728,7 @@ class Shoebooks extends MX_Controller {
 							<Amount>' . $pay_rate['rate'] . '</Amount>
 							<Total>' . ($pay_rate['hours'] * $pay_rate['rate']) . '</Total>
 							<WorkDate>' . date('Y-m-d', $pay_rate['start']) . '</WorkDate>
-							<Notes>' . $timesheet['job_name'] . ' - ' . $timesheet['venue'] . ' - ' . $timesheet['client'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break . '</Notes>
+							<Notes>' . $job_name . ' - ' . $timesheet['venue'] . ' - ' . $timesheet['client'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break . '</Notes>
 							<DivID>0</DivID>
 							<JobID></JobID>
 						</PRPayslipLine>';
