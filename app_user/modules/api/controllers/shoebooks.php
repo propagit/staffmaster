@@ -546,7 +546,7 @@ class Shoebooks extends MX_Controller {
 							<Amount>25.13</Amount>
 							<Total>163.345</Total>
 							<WorkDate>2014-10-25</WorkDate>
-							<Notes>F&B Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00 </Notes>
+							<Notes>FB Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00 </Notes>
 							<DivID>0</DivID>
 							<JobID></JobID>
 						</PRPayslipLine>
