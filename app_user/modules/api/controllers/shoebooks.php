@@ -530,7 +530,7 @@ class Shoebooks extends MX_Controller {
 					<SessionID></SessionID>
 				</Login>
 				<NewPayslip>
-					<EmployeeID>705</EmployeeID>
+					<EmployeeID>SB774</EmployeeID>
 					<DateEffect>2014-10-31</DateEffect>
 					<DateAccrual>2014-10-31</DateAccrual>
 					<PeriodStart>2014-10-13</PeriodStart>
@@ -542,11 +542,11 @@ class Shoebooks extends MX_Controller {
 					<PayslipLines>
 						<PRPayslipLine>
 							<EarningID>Adult Saturday</EarningID>
-							<Hours>6</Hours>
+							<Hours>6.5</Hours>
 							<Amount>25.13</Amount>
-							<Total>150.78</Total>
+							<Total>163.345</Total>
 							<WorkDate>2014-10-25</WorkDate>
-							<Notes>FB Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00  w/ 0.5 hour break</Notes>
+							<Notes>F&B Service SEC - Sheldon Event Centre (Sheldon College) - Sheldon Event Centre 17:30 - 00:00 </Notes>
 							<DivID>0</DivID>
 							<JobID></JobID>
 						</PRPayslipLine>
