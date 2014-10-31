@@ -720,7 +720,11 @@ class Shoebooks extends MX_Controller {
 				if ($pay_rate['break']) {
 					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 				}
-				$job_name = str_replace('&', ' ', $timesheet['job_name']);
+
+				$job_name = trim($timesheet['job_name']);
+				$job_name = str_replace('&', ' ', $job_name);
+				$job_name = str_replace('<', ' ', $job_name);
+				$job_name = str_replace('>', ' ', $job_name);
 				$request .= '
 						<PRPayslipLine>
 							<EarningID>' . $earningID . '</EarningID>
@@ -875,11 +879,16 @@ class Shoebooks extends MX_Controller {
 					$inc_tax_amount = $amount;
 					$taxable = 'Code1';
 				}
+
+				$title = trim($item['title']);
+				$title = str_replace('&', ' ', $title);
+				$title = str_replace('<', ' ', $title);
+				$title = str_replace('>', ' ', $title);
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
 						<QtyShipped>1</QtyShipped>
-						<Description>' . trim($item['title']) . '</Description>
+						<Description>' . $title . '</Description>
 						<AccountID></AccountID>
 						<JobID></JobID>
 						<Taxable>' . $taxable . '</Taxable>
@@ -998,11 +1007,15 @@ class Shoebooks extends MX_Controller {
 					$inc_tax_amount = $amount;
 					$taxable = 'Code1';
 				}
+				$title = trim($item['title']);
+				$title = str_replace('&', ' ', $title);
+				$title = str_replace('<', ' ', $title);
+				$title = str_replace('>', ' ', $title);
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
 						<QtyShipped>1</QtyShipped>
-						<Description>' . trim($item['title']) . '</Description>
+						<Description>' . $title . '</Description>
 						<AccountID></AccountID>
 						<JobID></JobID>
 						<Taxable>' . $taxable . '</Taxable>
