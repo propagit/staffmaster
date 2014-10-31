@@ -607,25 +607,25 @@ class Shoebooks extends MX_Controller {
 					</PayslipLines>
 				</NewPayslip>
 			</AppendPayslip>';
-			var_dump($request); die();
+			var_dump($request);
 
-			$client = new nusoap_client($this->host);
-			$error = $client->getError();
-			if ($error)
-			{
-				#die("client construction error: {$error}\n");
-				return false;
-			}
-			$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
-			$result = $client->send($msg, $action);
-			if ($result['AppendPayslipResult']['ErrorMessage'] == "OK")
-			{
-				$results[] = $result;
-			}
-			$this->payrun_model->update_synced($timesheet['timesheet_id'], array(
-				'external_id' => $result['AppendPayslipResult']['NewRecordID'],
-				'external_msg' => $result['AppendPayslipResult']['ErrorMessage']
-			));
+			// $client = new nusoap_client($this->host);
+			// $error = $client->getError();
+			// if ($error)
+			// {
+			// 	#die("client construction error: {$error}\n");
+			// 	return false;
+			// }
+			// $msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+			// $result = $client->send($msg, $action);
+			// if ($result['AppendPayslipResult']['ErrorMessage'] == "OK")
+			// {
+			// 	$results[] = $result;
+			// }
+			// $this->payrun_model->update_synced($timesheet['timesheet_id'], array(
+			// 	'external_id' => $result['AppendPayslipResult']['NewRecordID'],
+			// 	'external_msg' => $result['AppendPayslipResult']['ErrorMessage']
+			// ));
 
 		}
 		return $results;
