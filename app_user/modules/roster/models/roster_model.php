@@ -63,18 +63,19 @@ class Roster_model extends CI_Model {
 
 	function get_user_rosters_by_month($user_id,$active_month)
 	{
-		$ts = strtotime($active_month);
-		$end_ts = $ts + 30*24*60*60; // 30 days ahead
-		$end_month = date('Y-m', $end_ts);
+		return $this->get_user_rosters($user_id);
 
-		$sql = "SELECT js.*, j.client_id FROM `job_shifts` js
-				LEFT JOIN `jobs` j ON j.job_id = js.job_id
-				WHERE js.`staff_id` = '" . $user_id . "'
-				AND js.`status` NOT IN ('-1','-2')
-				AND (js.`job_date` LIKE '" . $active_month . "%'
-					OR js.`job_date` LIKE '" . $end_month . "%')";
-		$query = $this->db->query($sql);
-		return $query->result_array();
+		// $ts = strtotime($active_month);
+		// $end_ts = $ts + 30*24*60*60; // 30 days ahead
+		// $end_month = date('Y-m', $end_ts);
+
+		// $sql = "SELECT js.*, j.client_id FROM `job_shifts` js
+		// 		LEFT JOIN `jobs` j ON j.job_id = js.job_id
+		// 		WHERE js.`staff_id` = '" . $user_id . "'
+		// 		AND js.`status` NOT IN ('-1','-2')
+		// 		AND js.`start_time` > ";
+		// $query = $this->db->query($sql);
+		// return $query->result_array();
 	}
 
 	function get_user_rosters($user_id)
@@ -86,13 +87,12 @@ class Roster_model extends CI_Model {
 		{
 			$time -= 3600;
 		}
-		$end_point = $time + 30*24*60*60; // 30 days ahead
+		#$end_point = $time + 30*24*60*60; // 30 days ahead
 
 		$sql = "SELECT js.*, j.client_id FROM `job_shifts` js
 				LEFT JOIN `jobs` j ON j.job_id = js.job_id
 				WHERE js.`staff_id` = '" . $user_id . "'
 				AND js.`finish_time` > " . $time . "
-				AND js.`finish_time` < " . $end_point . "
 				AND js.`status` NOT IN ('-1','-2')";
 		$query = $this->db->query($sql);
 		return $query->result_array();
