@@ -47,7 +47,12 @@
 	width:72px;
 	height:72px;
 }
-
+ul.tab-respond{
+	margin-top:0px;	
+}
+#nav_works ul.tab-respond{
+	margin-top:0px;	
+}
 
 @media (min-width:768px){
 	#list_works .hidden-xs,
