@@ -72,7 +72,7 @@ class Roster_model extends CI_Model {
 				WHERE js.`staff_id` = '" . $user_id . "'
 				AND js.`status` NOT IN ('-1','-2')
 				AND (js.`job_date` LIKE '" . $active_month . "%'
-					OR js.`job_date` LIKE '" . $end_month . "%)";
+					OR js.`job_date` LIKE '" . $end_month . "%')";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
