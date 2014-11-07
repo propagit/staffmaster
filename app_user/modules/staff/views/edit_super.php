@@ -118,7 +118,7 @@ if ($platform == 'myob') {
 	<div class="form-group">
 		<label class="col-md-2 control-label">Super Fund</label>
 		<div class="col-md-4">
-
+			<?=modules::run('common/field_select_supers', 's_external_id', $staff['s_external_id']);?>
 		</div>
 		<div class="col-md-6">
 			<span class="help-block">If you cant find your super fund in the list please <a href="<?=base_url();?>support">contact us</a></span>

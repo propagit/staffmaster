@@ -2,7 +2,7 @@
 
 /**
 *    @class_desc: controller to handle common module such as field_select and can be used in any views/modules
-*    
+*
 */
 
 class Common extends MX_Controller {
@@ -14,13 +14,13 @@ class Common extends MX_Controller {
 		$this->load->model('setting/setting_model');
 		#$this->load->model('staff/staff_model'); Who wrote this line and never use it?
 	}
-	
+
 	function parse_redirect($string)
 	{
 		$a = explode(':', $string);
 		return $a[1];
 	}
-	
+
 	function mime_to_icon($file_path)
 	{
 		$this->load->helper('file');
@@ -47,7 +47,7 @@ class Common extends MX_Controller {
 		}
 		return $icon;
 	}
-	
+
 	function array_day() {
 		return array(
 			'1' => 'Monday',
@@ -59,7 +59,7 @@ class Common extends MX_Controller {
 			'7' => 'Sunday'
 		);
 	}
-	
+
 	/**
 	*	@name: field_select
 	*	@desc: custom select input field
@@ -67,7 +67,7 @@ class Common extends MX_Controller {
 	*	@param: - $array: an array of field value/label pairs
 	*			- $field_name: string of field name
 	*			- $field_value (optional): selected value of field
-	*			- $size (optional): size 
+	*			- $size (optional): size
 	*	@return: custom view of select input field
 	*/
 	function field_select($array, $field_name, $field_value=null, $size=null, $title = true) {
@@ -80,7 +80,7 @@ class Common extends MX_Controller {
 		);
 		$this->load->view('field_select', isset($data) ? $data : NULL);
 	}
-	
+
 	function field_select_gst($field_name, $field_value=null, $size=null, $title = false) {
 		$array = array(
 			array('value' => GST_NO, 'label' => 'No GST'),
@@ -90,7 +90,7 @@ class Common extends MX_Controller {
 		);
 		return $this->field_select($array, $field_name, $field_value, $size, $title);
 	}
-	
+
 	function reverse_field_gst($value, $edit = false) {
 		$add_gst = 'Add GST';
 		if (!$edit) {
@@ -103,14 +103,14 @@ class Common extends MX_Controller {
 			case TAX_FREE: return 'Tax Free';
 		}
 	}
-	
+
 	/**
 	*	@name: field_select_states
 	*	@desc: custom select states field
 	*	@access: public
 	*	@param: - $field_name: string of field name
 	*			- $field_value (optional): selected state code
-	*			- $size (optional): size 
+	*			- $size (optional): size
 	*	@return: custom view of select states field
 	*/
 	function field_select_states($field_name, $field_value=null, $size=null) {
@@ -125,17 +125,17 @@ class Common extends MX_Controller {
 		}
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
-	
+
 	function get_states()
 	{
 		return $this->common_model->get_states();
 	}
-	
+
 	function get_countries()
 	{
 		return $this->common_model->get_countries();
 	}
-	
+
 	function field_select_myob_super_fund($field_name, $field_value=null, $size=null)
 	{
 		$funds = modules::run('api/myob/connect', 'search_super_funds');
@@ -149,14 +149,28 @@ class Common extends MX_Controller {
 		}
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
-	
+
+	function field_select_supers($field_name, $field_value=null, $size=null)
+	{
+		$supers = $this->common_model->get_supers();
+		$array = array();
+		foreach($supers as $super)
+		{
+			$array[] = array(
+				'value' => $super['super_id'],
+				'label' => $super['name']
+			);
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+
 	/**
 	*	@name: field_select_countries
 	*	@desc: custom select countries field
 	*	@access: public
 	*	@param: - $field_name: string of field name
 	*			- $field_value (optional): selected country code
-	*			- $size (optional): size 
+	*			- $size (optional): size
 	*	@return: custom view of select states field
 	*/
 	function field_select_countries($field_name, $field_value=null, $size=null) {
@@ -175,7 +189,7 @@ class Common extends MX_Controller {
 		}
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
-	
+
 	/**
 	*	@name: field_select_genders
 	*	@desc: custom select genders field
@@ -192,8 +206,8 @@ class Common extends MX_Controller {
 		);
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
-	
-	
+
+
 	function field_select_dob($field_name, $field_value=null, $size=null) {
 		$day_array = array();
 		$month_array = array();
@@ -224,7 +238,7 @@ class Common extends MX_Controller {
 		$output .= $this->field_select($year_array, $field_name . '-year', $field_year);
 		return $output;
 	}
-	
+
 	/**
 	*	@name: field_select_title
 	*	@desc: custom select title field
@@ -243,14 +257,14 @@ class Common extends MX_Controller {
 		);
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
-	
+
 	/**
 	*    @name: field_rating
 	*    @desc: custom input field for rating
 	*    @access public
 	*    @param: - $field_name
-	*			- $field_value (optional) 
-	*    @return: custom input field for rating 
+	*			- $field_value (optional)
+	*    @return: custom input field for rating
 	*/
 	function field_rating($field_name,$field_value=null,$selector='basic',$ajax_reload_container = 'wp-rating',$user_id = 0,$ajax_update = false,$disabled=false) {
 		$data['field_name'] = $field_name;
@@ -262,8 +276,8 @@ class Common extends MX_Controller {
 		$data['user_id'] = $user_id;
 		$this->load->view('field_rating', isset($data) ? $data : NULL);
 	}
-	
-	
+
+
 	function menu_dropdown($array, $id, $label) {
 		$data = array(
 			'data' => $array,
@@ -272,7 +286,7 @@ class Common extends MX_Controller {
 		);
 		$this->load->view('menu_dropdown', isset($data) ? $data : NULL);
 	}
-	
+
 	function menu_dropdown_states($id, $label) {
 		$states = $this->common_model->get_states();
 		$array = array();
@@ -286,24 +300,24 @@ class Common extends MX_Controller {
 		}
 		return $this->menu_dropdown($array, $id, $label);
 	}
-	
-	
+
+
 	function dropdown_actions($target, $actions)
 	{
 		$data['target'] = $target;
 		$data['actions'] = $actions;
 		$this->load->view('dropdown_actions', isset($data) ? $data : NULL);
 	}
-	
+
 	function dropdown_status($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('dropdown_status', isset($data) ? $data : NULL);
 	}
-	
-	
-	
+
+
+
 	function dropdown_supers($field_name, $field_value=null)
 	{
 		$data['field_name'] = $field_name;
@@ -311,17 +325,17 @@ class Common extends MX_Controller {
 		$data['supers'] = $this->common_model->get_supers(true);
 		$this->load->view('dropdown_super', isset($data) ? $data : NULL);
 	}
-	
-		
+
+
 	function list_supers()
 	{
 		$supers = $this->common_model->get_supers();
-		foreach($supers as $super) { echo '"' . $super['name'] . '",'; } 
+		foreach($supers as $super) { echo '"' . $super['name'] . '",'; }
 	}
-	
+
 	function check_super()
 	{
-		
+
 		$name = $this->input->post('super_value');
 		$supers = $this->common_model->get_supers();
 		$found = 1;
@@ -334,10 +348,10 @@ class Common extends MX_Controller {
 		}
 		echo $found;
 		//return $found;
-		
+
 	}
-	
-		
+
+
 	function dropdown_dob($day=null, $month=null, $year=null)
 	{
 		$data['day'] = $day;
@@ -345,7 +359,7 @@ class Common extends MX_Controller {
 		$data['year'] = $year;
 		$this->load->view('dropdown_dob', isset($data) ? $data : NULL);
 	}
-	
+
 	# Improvement for dob field
 	function field_dob($field_name, $day=null, $month=null, $year=null)
 	{
@@ -355,12 +369,12 @@ class Common extends MX_Controller {
 		$data['field_name'] = $field_name;
 		$this->load->view('field_dob', isset($data) ? $data : NULL);
 	}
-	
+
 	function break_time($string)
 	{
 		$a = json_decode($string);
-		
-		if (count($a) > 0) 
+
+		if (count($a) > 0)
 		{
 			$total = 0;
 			foreach($a as $break)
@@ -374,7 +388,7 @@ class Common extends MX_Controller {
 			echo 0;
 		}
 	}
-	
+
 	function calculate_expenses($expenses)
 	{
 		$total = 0;
@@ -385,7 +399,7 @@ class Common extends MX_Controller {
 		}
 		return $total;
 	}
-	
+
 	function the_week($date)
 	{
 		$timestamp = strtotime($date);
@@ -402,7 +416,7 @@ class Common extends MX_Controller {
 			'end' => max($dates)
 		);
 	}
-		
+
 	function define_area()
 	{
 		$loc='';
@@ -410,19 +424,19 @@ class Common extends MX_Controller {
 		$suburb = str_replace('&amp;','&',$suburb);
 
 		$detail = $this->common_model->get_locations_byname($loc,$suburb);
-		
+
 		echo $detail['location_id'].'#';
-		
+
 	}
-	
+
 	/**
 	*    @name: create_pagination
 	*    @desc: Generates Pagination for search results
 	*    @access public
-	*    @param: ([int] total records, [int] records per page, [int] current page number) 
+	*    @param: ([int] total records, [int] records per page, [int] current page number)
 	*    @return: Loads page numbers for search results
 	*/
-	
+
 	function create_pagination($total_records,$records_per_page = 6,$current_page = 1)
 	{
 		$data['total_records'] = $total_records;
@@ -440,16 +454,16 @@ class Common extends MX_Controller {
 	function generate_password($password_length = 6)
 	{
 		$alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
-		$pass = array(); 
-		$alpha_length = strlen($alphabet) - 1; 
+		$pass = array();
+		$alpha_length = strlen($alphabet) - 1;
 		for ($i = 0; $i < $password_length; $i++) {
 			$n = rand(0, $alpha_length);
 			$pass[] = $alphabet[$n];
 		}
-		return implode($pass); 
+		return implode($pass);
 	}
-	
-	
+
+
 	/**
 	*    @name: get_states
 	*    @desc: Queries database for all avaliable states.
@@ -466,14 +480,14 @@ class Common extends MX_Controller {
 		$data['subscript_cents'] = $subscript_cents;
 		$this->load->view('money_format',isset($data) ? $data : NULL);
 	}
-	
+
 	function field_select_edit_time($field_name, $field_value=null, $size=null, $title = false) {
 		$prefix = '0';
 		for($i = 0;$i<24;$i++){
 			$val = ($i < 10 ? $prefix.$i : $i);
-			$data['hours'][$i] = array('value' => $val, 'label' => $val);	
+			$data['hours'][$i] = array('value' => $val, 'label' => $val);
 		}
-		
+
 		$data['minutes'] = array(
 					array('value' => '00', 'label' => '00'),
 					array('value' => '15', 'label' => '15'),
@@ -484,10 +498,10 @@ class Common extends MX_Controller {
 		$data['field_value'] = $field_value;
 		$data['size'] = $size;
 		$data['title'] = $title;
-		
+
 		$this->load->view('field_select_time', isset($data) ? $data : NULL);
 	}
-	
+
 	function field_select_yes_no($field_name, $field_value=null, $size=null, $title = false) {
 		$array = array(
 			array('value' => 'yes', 'label' => 'Yes'),
@@ -496,7 +510,7 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size, true);
 	}
 
-	
+
 	function field_select_month($field_name, $field_value=null, $size=null) {
 		$months = array(
 			array('value' => '01', 'label' => '01'),
@@ -514,7 +528,7 @@ class Common extends MX_Controller {
 		);
 		return modules::run('common/field_select', $months, $field_name, $field_value, $size, false);
 	}
-	
+
 	function field_select_year($field_name, $field_value=null, $size=null) {
 		$years = array();
 		for($i=2010; $i < 2020; $i++) {
@@ -522,13 +536,13 @@ class Common extends MX_Controller {
 		}
 		return modules::run('common/field_select', $years, $field_name, $field_value, $size, false);
 	}
-	
+
 	function get_country_name_from_country_code($country_code)
 	{
 		$country = $this->common_model->get_country_name_from_country_code($country_code);
 		return $country->name;
 	}
-	
+
 	function alphaID($in, $to_num = false, $pad_up = false) {
 		$index = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		$base  = strlen($index);
