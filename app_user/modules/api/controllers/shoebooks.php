@@ -72,6 +72,7 @@ class Shoebooks extends MX_Controller {
 		var_dump($a);
 	}
 
+
 	function read_employee($id)
 	{
 		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadEmployee';
@@ -375,6 +376,47 @@ class Shoebooks extends MX_Controller {
 			return $result['ReadCustomerResult']['Customer'];
 		}
 		return null;
+	}
+
+
+	function search_vendors()
+	{
+		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadVendor';
+		$request = '<ReadVendor xmlns="http://www.shoebooks.com.au/accounting/v10/">
+			<Login>
+				<AccountName>' . $this->account_name . '</AccountName>
+				<LoginName>' . $this->login_name . '</LoginName>
+				<LoginPassword>' . $this->login_password . '</LoginPassword>
+				<SessionID></SessionID>
+			</Login>
+		<args />
+		</ReadVendor>';
+
+		$client = new nusoap_client($this->host);
+		$error = $client->getError();
+		if ($error)
+		{
+			#die("client construction error: {$error}\n");
+			return false;
+		}
+		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		$result = $client->send($msg, $action);
+
+		var_dump($result); die();
+
+		if (isset($result['SearchCustomerResult']['Results'])
+			&& is_array($result['SearchCustomerResult']['Results']) && $result['SearchCustomerResult']['Results'] != '')
+		{
+			$item = $result['SearchCustomerResult']['Results']['DataItem'];
+			if (isset($item['DataID']))
+			{
+				$a = array();
+				$a[] = $item;
+				return $a;
+			}
+			return $item;
+		}
+		return array();
 	}
 
 	function search_customer()
