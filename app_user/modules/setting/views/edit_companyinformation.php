@@ -188,8 +188,8 @@
 <script>
 $(function(){
 	$('#btn_update_company_profile').click(function(){
-		var valid = true; //help.validate_form('form_update_company_profile');
-
+		var valid = help.validate_form('form_update_company_profile');
+		alert(valid);
 		if(valid){
 			$.ajax({
 				type: "POST",
