@@ -76,8 +76,68 @@ if ($platform == 'myob') {
 	</div>
 </div>
 
-<? } else { ?>
+<? } else {
+#
+	$super_fund = modules::run('setting/superinformasi', 'super_fund_name');
+	$super_product_id = modules::run('setting/superinformasi', 'super_product_id');
+	$super_fund_phone = modules::run('setting/superinformasi', 'super_fund_phone');
+	$super_fund_website = modules::run('setting/superinformasi', 'super_fund_website');
+	?>
+
+<div class="row" id="employer_choice">
+	<? if ($super_fund) { ?>
+	<div class="form-group">
+		<label class="col-md-2 control-label">Super Fund</label>
+		<label class="col-md-4 control-label">
+			<?=$super_fund;?>
+			<? if ($super_product_id) { ?>
+			<br />Employer Membership Number: <?=$super_product_id;?>
+			<? } ?>
+			<? if ($super_fund_phone) { ?>
+			<br />Phone Number: <?=$super_fund_phone;?>
+			<? } ?>
+			<? if ($super_fund_website) { ?>
+			<br />Website: <?=$super_fund_website;?>
+			<? } ?>
+		</label>
+	</div>
+	<? } else { ?>
+	<div class="form-group">
+		<div class="col-md-10 col-md-offset-2">
+			No company super fund is currently set up.
+			<? if(!modules::run('auth/is_staff')){ ?>
+			<br />To set up a default company super fund go to "System Settings" > "Company Profile"
+			<? } ?>
+		</div>
+	</div>
+	<? } ?>
+</div>
+
+
+<div class="row" id="own_choice">
+	<div class="form-group">
+		<label class="col-md-2 control-label">Super Fund</label>
+		<div class="col-md-4">
+
+		</div>
+		<div class="col-md-6">
+			<span class="help-block">If you cant find your super fund in the list please <a href="<?=base_url();?>support">contact us</a></span>
+		</div>
+	</div>
+</div>
+
 <div class="row">
+	<div class="form-group">
+		<label for="s_employee_id" class="col-md-2 control-label">Staff Membership Number</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
+		</div>
+	</div>
+</div>
+
+
+
+<!-- <div class="row">
 	<div class="form-group">
 		<label for="s_name" class="col-md-2 control-label">Name</label>
 		<div class="col-md-4">
@@ -100,7 +160,7 @@ if ($platform == 'myob') {
 			<? //if(!modules::run('common/check_super', $staff['s_fund_name'])) { echo '<span class="help-block"> &nbsp; &nbsp; Super fund name not found in our system</span>'; } ?>
 		</div>
 	</div>
-</div>
+</div> -->
 
 
 <!-- <div class="row" id="employer_choice">
@@ -216,18 +276,18 @@ function load_s_choice()
 	var employee_super_name = '<?=modules::run('setting/superinformasi', 'super_fund_name','')?>';
 	var s_choice = $('input[name="s_choice"]:checked').val();
 	if (s_choice == "own") {
-		//$('#own_choice').show();
+		$('#own_choice').show();
 		$('input[name="s_fund_name"]').prop('readonly',false);
 		$('#own').prop('checked',true);
-		//$('#employer_choice').hide();
+		$('#employer_choice').hide();
 		//$('input[name="s_fund_name"]').val('')
 	}
 	else
 	{
-		//$('#employer_choice').show();
+		$('#employer_choice').show();
 		$('input[name="s_fund_name"]').attr('readonly','readonly');
 		$('#employer').prop('checked',true);
-		//$('#own_choice').hide();
+		$('#own_choice').hide();
 		$('input[name="s_fund_name"]').val(employee_super_name);
 	}
 }
