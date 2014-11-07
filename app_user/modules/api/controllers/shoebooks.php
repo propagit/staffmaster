@@ -381,8 +381,8 @@ class Shoebooks extends MX_Controller {
 
 	function search_vendors()
 	{
-		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadVendor';
-		$request = '<ReadVendor xmlns="http://www.shoebooks.com.au/accounting/v10/">
+		$action = 'http://www.shoebooks.com.au/accounting/v10/SearchVendor';
+		$request = '<SearchVendor xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>
 				<LoginName>' . $this->login_name . '</LoginName>
@@ -390,7 +390,7 @@ class Shoebooks extends MX_Controller {
 				<SessionID></SessionID>
 			</Login>
 		<args />
-		</ReadVendor>';
+		</SearchVendor>';
 
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
@@ -404,10 +404,10 @@ class Shoebooks extends MX_Controller {
 
 		var_dump($result); die();
 
-		if (isset($result['SearchCustomerResult']['Results'])
-			&& is_array($result['SearchCustomerResult']['Results']) && $result['SearchCustomerResult']['Results'] != '')
+		if (isset($result['ReadVendorResult']['Results'])
+			&& is_array($result['ReadVendorResult']['Results']) && $result['ReadVendorResult']['Results'] != '')
 		{
-			$item = $result['SearchCustomerResult']['Results']['DataItem'];
+			$item = $result['ReadVendorResult']['Results']['DataItem'];
 			if (isset($item['DataID']))
 			{
 				$a = array();
