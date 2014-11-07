@@ -20,12 +20,6 @@ class Common_model extends CI_Model {
 		return $query->result_array();
 	}
 
-	function get_supers()
-	{
-		$query = $this->db->get('supers');
-		return $query->result_array();
-	}
-
 	function get_country_name_from_country_code($country_code)
 	{
 		return $this->db->where('code',$country_code)
