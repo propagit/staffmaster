@@ -189,6 +189,7 @@
 $(function(){
 	$('#btn_update_company_profile').click(function(){
 		var valid = help.validate_form('form_update_company_profile');
+        alert($('#form_update_company_profile').serialize());
 		if(valid){
 			$.ajax({
 				type: "POST",
