@@ -378,6 +378,35 @@ class Shoebooks extends MX_Controller {
 		return null;
 	}
 
+	function read_vendor($id)
+	{
+		$action = 'http://www.shoebooks.com.au/accounting/v10/ReadVendor';
+		$request = '<ReadVendor xmlns="http://www.shoebooks.com.au/accounting/v10/">
+			<Login>
+				<AccountName>' . $this->account_name . '</AccountName>
+				<LoginName>' . $this->login_name . '</LoginName>
+				<LoginPassword>' . $this->login_password . '</LoginPassword>
+				<SessionID></SessionID>
+			</Login>
+			<id>' . $id . '</id>
+		</ReadVendor>';
+		$client = new nusoap_client($this->host);
+		$error = $client->getError();
+		if ($error)
+		{
+			#die("client construction error: {$error}\n");
+			return false;
+		}
+		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		$result = $client->send($msg, $action);
+		var_dump($result);
+		if (($result['ReadCustomerResult']['Customer']['CustomerID']))
+		{
+			return $result['ReadCustomerResult']['Customer'];
+		}
+		return null;
+	}
+
 
 	function search_vendors()
 	{
@@ -411,6 +440,7 @@ class Shoebooks extends MX_Controller {
 			{
 				$a = array();
 				$a[] = $item;
+				var_dump($a);
 				return $a;
 			}
 			var_dump($item);
