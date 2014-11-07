@@ -189,13 +189,13 @@
 $(function(){
 	$('#btn_update_company_profile').click(function(){
 		var valid = help.validate_form('form_update_company_profile');
-		alert(valid);
 		if(valid){
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>setting/ajax/update_company_profile",
 				data: $('#form_update_company_profile').serialize(),
 				success: function(html) {
+                    alert(html);
 					reload_wizard('company');
 					$('#msg-update-company-profile').removeClass('hide');
 					setTimeout(function(){
