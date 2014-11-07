@@ -136,7 +136,7 @@
     <?php if(modules::run('setting/get_information_sheet_config_status',13)){ ?>
     <tr>
     	<td class="info-sheet-label">Expenses:</td>
-        <td class="info-sheet-bolder-txt"><?=($shift_info->expenses ? $shift->expenses : 'None');?></td>
+        <td class="info-sheet-bolder-txt"><?=($shift_info->expenses ? $shift_info->expenses : 'None');?></td>
     </tr>
     <?php } ?>
 </table>
