@@ -20,9 +20,9 @@
             <div class="col-lg-4">
                 <input type="text" class="form-control" id="abn_acn" name="abn_acn" value="<?=(isset($company['abn_acn'])) ? $company['abn_acn'] : '' ?>" tabindex="11" />
             </div>
-        </div>            
+        </div>
 	</div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_address" class="col-lg-2 control-label">Address </label>
@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_suburb" class="col-lg-2 control-label">Suburb </label>
@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_postcode" class="col-lg-2 control-label">Postcode </label>
@@ -61,12 +61,12 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_state" class="col-lg-2 control-label">State </label>
-            <div class="col-lg-4">                    
-                <?=modules::run('common/field_select_states', 'state', (isset($company['state'])) ? $company['state'] : '');?>                    
+            <div class="col-lg-4">
+                <?=modules::run('common/field_select_states', 'state', (isset($company['state'])) ? $company['state'] : '');?>
             </div>
             <label class="col-lg-2 control-label"> Accept Credit Card</label>
             <div class="col-lg-4">
@@ -78,11 +78,11 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_country" class="col-lg-2 control-label">Country </label>
-            <div class="col-lg-4">                                    
+            <div class="col-lg-4">
                 <?=modules::run('common/field_select_countries', 'country', (isset($company['country'])) ? $company['country'] : '');?>
             </div>
             <label class="col-lg-2 control-label">&nbsp;</label>
@@ -101,7 +101,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_email" class="col-lg-2 control-label">Email </label>
@@ -114,14 +114,14 @@
 	            if ($platform == 'myob') {
 		            echo modules::run('common/field_select_myob_super_fund', 'super_fund_external_id', $company['super_fund_external_id']);
 	            } else { ?>
-	                             
+
                 <input type="text" class="form-control" id="super_fund_name" name="super_fund_name" value="<?=(isset($company['super_fund_name'])) ? $company['super_fund_name'] : '' ?>" tabindex="17" />
-                
-				<? } ?>					
+
+				<? } ?>
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_website" class="col-lg-2 control-label">Website </label>
@@ -136,7 +136,7 @@
             <? } ?>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="form-group">
             <label for="company_phone" class="col-lg-2 control-label">Telephone </label>
@@ -165,14 +165,14 @@
             <? } ?>
         </div>
     </div>
-              
+
     <div class="row">
-        <h4 class="company-profile-header">Terms & Conditions of Payment</h4> 
+        <h4 class="company-profile-header">Terms & Conditions of Payment</h4>
         <div class="form-group">
             <label for="terms_and_conditions" class="col-lg-2 control-label">Text </label>
             <div class="col-lg-10">
                 <textarea class="form-control" id="term_and_conditions" name="term_and_conditions" rows="4"><?=(isset($company['term_and_conditions'])) ? $company['term_and_conditions'] : '' ?></textarea>
-                
+
             </div>
         </div>
     </div>
@@ -183,25 +183,25 @@
                 <button id="btn_update_company_profile" type="button" class="btn btn-info"><i class="fa fa-save"></i> Update Company Profile</button>
     		</div>
 		</div>
-	</div>     
+	</div>
 </form>
 <script>
 $(function(){
 	$('#btn_update_company_profile').click(function(){
-		var valid = help.validate_form('form_update_company_profile');
-		
+		var valid = true; //help.validate_form('form_update_company_profile');
+
 		if(valid){
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>setting/ajax/update_company_profile",
 				data: $('#form_update_company_profile').serialize(),
 				success: function(html) {
-					reload_wizard('company');					
+					reload_wizard('company');
 					$('#msg-update-company-profile').removeClass('hide');
 					setTimeout(function(){
 						$('#msg-update-company-profile').addClass('hide');
 					}, 2000);
-				}	
+				}
 			})
 		}
 	})
