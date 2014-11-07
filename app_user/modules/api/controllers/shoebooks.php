@@ -402,18 +402,18 @@ class Shoebooks extends MX_Controller {
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		$result = $client->send($msg, $action);
 
-		var_dump($result); die();
 
-		if (isset($result['ReadVendorResult']['Results'])
-			&& is_array($result['ReadVendorResult']['Results']) && $result['ReadVendorResult']['Results'] != '')
+		if (isset($result['SearchVendorResult']['Results'])
+			&& is_array($result['SearchVendorResult']['Results']) && $result['SearchVendorResult']['Results'] != '')
 		{
-			$item = $result['ReadVendorResult']['Results']['DataItem'];
+			$item = $result['SearchVendorResult']['Results']['DataItem'];
 			if (isset($item['DataID']))
 			{
 				$a = array();
 				$a[] = $item;
 				return $a;
 			}
+			var_dump($item);
 			return $item;
 		}
 		return array();
