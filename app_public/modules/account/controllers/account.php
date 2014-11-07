@@ -6,7 +6,7 @@ class Account extends MX_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	function index($method='', $param1='', $param2='')
 	{
 		switch($method)
@@ -17,18 +17,18 @@ class Account extends MX_Controller {
 			case 'update':
 				$this->update();
 				break;
-			default:	
+			default:
 				$this->signup_form();
 				break;
 		}
 	}
-	
-	
+
+
 	function signup_form()
-	{		
+	{
 		$this->load->view('signup_form', isset($data) ? $data : NULL);
 	}
-	
+
 	function setup($subdomain, $code)
 	{
 		if (!$subdomain || !$code)
@@ -45,12 +45,12 @@ class Account extends MX_Controller {
 		$data['subdomain'] = $subdomain;
 		$this->load->view('setup_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function update()
 	{
 		$this->load->model('account_model');
 		$accounts = $this->account_model->get_accounts(array('status' => 1));
-		$sql = @file_get_contents('./../db/update_config.sql');
+		$sql = @file_get_contents('./../db/update_20140917.sql');
 		$count = 0;
 		$this->load->model('setup_model');
 		foreach($accounts as $account)
@@ -62,5 +62,5 @@ class Account extends MX_Controller {
 		}
 		echo $count . ' accounts have been updated';
 	}
-	
+
 }
