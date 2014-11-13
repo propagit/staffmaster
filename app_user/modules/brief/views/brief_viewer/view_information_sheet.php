@@ -136,7 +136,19 @@
     <?php if(modules::run('setting/get_information_sheet_config_status',13)){ ?>
     <tr>
     	<td class="info-sheet-label">Expenses:</td>
-        <td class="info-sheet-bolder-txt"><?=($shift_info->expenses ? $shift->expenses : 'None');?></td>
+        <td class="info-sheet-bolder-txt">
+        	<?php if($shift_info->expenses) {
+					  $expenses = unserialize($shift_info->expenses);
+					  # list expenses
+					  foreach($expenses as $expense){
+							echo $expense['description'] . ' - $' . number_format($expense['staff_cost'],2) . '<br>'; 
+					  }
+					  
+				  } else{
+					  echo 'None';	
+				  }
+			?>
+        </td>
     </tr>
     <?php } ?>
 </table>
