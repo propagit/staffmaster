@@ -34,35 +34,35 @@
 
 			<ul class="nav nav-tabs tab-respond" id="nav-staff-profile">
                 <li class="active mobile-tab"><a href="#personal" data-toggle="tab">Personal Details</a></li>
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_picture')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_picture')) { ?>
                 <li class="mobile-tab"><a href="#pictures" data-toggle="tab">Pictures</a></li>
                 <? } ?>
 
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_financial')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_financial')) { ?>
                 <li class="mobile-tab"><a href="#financial" data-toggle="tab">Financial Details</a></li>
                 <? } ?>
 
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_super')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_super')) { ?>
                 <li class="mobile-tab"><a href="#super" data-toggle="tab">Super Details</a></li>
                 <? } ?>
 
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_role')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_role')) { ?>
                 <li class="mobile-tab"><a href="#roles" data-toggle="tab">Roles</a></li>
                 <? } ?>
 
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_availability')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_availability')) { ?>
                 <li class="mobile-tab"><a href="#availability" data-toggle="tab">Availability</a></li>
                 <? } ?>
 
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_location')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_location')) { ?>
                 <li class="mobile-tab"><a href="#location" data-toggle="tab">Locations</a></li>
                 <? } ?>
 
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_group')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_group')) { ?>
                 <li class="mobile-tab"><a href="#group" data-toggle="tab">Groups</a></li>
                 <? } ?>
 
-                <? if(modules::run('auth/is_admin') || $this->config->get('sp_attribute')) { ?>
+                <? if(!modules::run('auth/is_staff') || $this->config_model->get('sp_attribute')) { ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>
                 <? } ?>
 
