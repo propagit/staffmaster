@@ -16,7 +16,7 @@ class Email extends MX_Controller {
 		$this->load->model('brief/brief_model');
 		$this->load->model('setting/setting_model');
 	}
-	
+
 	public function index($method = '', $param1 = '',$param2 = '')
 	{
 		switch($method)
@@ -28,9 +28,9 @@ class Email extends MX_Controller {
 					$this->main_view();
 				break;
 		}
-		
+
 	}
-	
+
 	/**
 	*	@name: main_view
 	*	@desc: Load the landing page for email template. This is where the user will be able to modify email templates.
@@ -51,7 +51,7 @@ class Email extends MX_Controller {
 	function is_email_set_as_autosend($email_template_id){
 		$template = $this->email_template_model->get_template($email_template_id);
 		if($template->auto_send == 'yes'){
-			return true;	
+			return true;
 		}
 		return false;
 	}
@@ -69,7 +69,7 @@ class Email extends MX_Controller {
 		$company = $params['company'];
 		$password = isset($params['password']) ? $params['password'] : '';
 		$obj = array();
-		
+
 		if($template_id && $user_id && $company){
 			$user = $this->user_model->get_user($user_id);
 			switch($template_id){
@@ -83,12 +83,12 @@ class Email extends MX_Controller {
 							'last_name' => $user['last_name'],
 							'company_name' => $company['company_name'],
 							'system_url' => base_url(),
-							'username' => $user['username'],
+							'username' => $user['email_address'],
 							'password' => $password
 							);
-				
+
 				break;
-				
+
 				case ROSTER_UPDATE_EMAIL_TEMPLATE_ID:
 				//roster update
 				$obj = array(
@@ -99,7 +99,7 @@ class Email extends MX_Controller {
 							'roster' => modules::run('roster/get_roster_email',$user_id)
 							);
 				break;
-				
+
 				case APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID:
 				//apply for shifts
 				$obj = array(
@@ -110,7 +110,7 @@ class Email extends MX_Controller {
 							'selected_shifts' => modules::run('job/shift/get_apply_for_shift_email',$params['shift_ids'])
 							);
 				break;
-				
+
 				case SHIFT_REMINDER_EMAIL_TEMPLATE_ID:
 				//shift reminder
 				$shift_reminder_email_params['shift_ids'] = $params['shift_ids'];
@@ -123,7 +123,7 @@ class Email extends MX_Controller {
 							'shift_info' => modules::run('job/shift/get_shift_reminders_email',$shift_reminder_email_params)
 							);
 				break;
-				
+
 				case WORK_CONFIRMATION_EMAIL_TEMPLATE_ID:
 				//work confirmation
 				$obj = array(
@@ -134,7 +134,7 @@ class Email extends MX_Controller {
 							'shift_info' => modules::run('job/shift/get_shift_info_for_email',$params['shift_id'])
 							);
 				break;
-				
+
 				case FORGOT_PASSWORD_EMAIL_TEMPLATE_ID:
 				//forgot password
 				$obj = array(
@@ -146,7 +146,7 @@ class Email extends MX_Controller {
 							'password' => $params['skip_pwd_reset'] ? 'password' : modules::run('user/reset_password',$user_id)
 							);
 				break;
-				
+
 				case CLIENT_INVOICE_EMAIL_TEMPLATE_ID:
 				//client invoice
 				$client = $this->client_model->get_client($user_id);
@@ -162,12 +162,12 @@ class Email extends MX_Controller {
 							'due_date' => date('dS F, Y',strtotime($invoice['due_date']))
 							);
 				break;
-				
+
 				case CLIENT_QUOTE_EMAIL_TEMPLATE_ID:
 				//client quote
-				
+
 				break;
-				
+
 				case BRIEF_EMAIL_TEMPLATE_ID:
 				//brief
 				$brief = $this->brief_model->get_brief($params['brief_id']);
@@ -183,12 +183,12 @@ class Email extends MX_Controller {
 		}
 		return $obj;
 	}
-	
+
 	/**
 	*	@name: email_templates_dropdown
-	*	@desc: 
+	*	@desc:
 	*	@access: public
-	*	@param: 
+	*	@param:
 	*/
 	function email_templates_dropdown($params)
 	{
@@ -213,14 +213,14 @@ class Email extends MX_Controller {
 				}
 			}
 		}
-		
+
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
 	/**
 	*	@name: format_template_body
-	*	@desc: 
+	*	@desc:
 	*	@access: public
-	*	@param: 
+	*	@param:
 	*/
 	function format_template_body($email,$obj = NULL)
 	{
@@ -244,24 +244,24 @@ class Email extends MX_Controller {
 				$email = str_replace('{SelectedShifts}',$obj['selected_shifts'],$email);
 		}
 		return $email;
-		
+
 	}
 	/**
 	*	@name: description_merge_fields
-	*	@desc: 
+	*	@desc:
 	*	@access: public
-	*	@param: 
+	*	@param:
 	*/
 	function description_merge_fields($text_area_id,$template_id = '')
 	{
 		$data['text_area_id'] = $text_area_id;
 		if(!$template_id){
-			$template_id = WELCOME_EMAIL_TEMPLATE_ID;	
+			$template_id = WELCOME_EMAIL_TEMPLATE_ID;
 		}
 		$data['merge_fields'] = $this->email_template_model->get_email_merge_fields_by_template_id($template_id);
 		$this->load->view('description_merge_fields', isset($data) ? $data : NULL);
 	}
-	
+
 	function test()
 	{
 		$data = array(
@@ -272,7 +272,7 @@ class Email extends MX_Controller {
 		);
 		$this->send_email($data);
 	}
-	
+
 	/**
 	*	@name: send_email
 	*	@desc: A central function to send email
@@ -297,13 +297,13 @@ class Email extends MX_Controller {
 	function send_email_live($data)
 	{
 		$to = '';
-		$from = '';	
+		$from = '';
 		$cc = '';
 		$bcc = '';
 		$from_text = '';
-		$subject = ''; 
-		$message = ''; 
-		$attachment = ''; 
+		$subject = '';
+		$message = '';
+		$attachment = '';
 		$bcc = '';
 		if($data){
 			foreach($data as $key=>$val){
@@ -311,53 +311,53 @@ class Email extends MX_Controller {
 					case 'to':
 						$to = $val;
 					break;
-					
+
 					case 'from':
 						$from = $val;
 					break;
-					
+
 					case 'cc':
 						$cc = $val;
 					break;
-										
+
 					case 'bcc':
 						$bcc = $val;
 					break;
-					
+
 					case 'from_text':
 						$from_text = $val;
 					break;
-					
+
 					case 'subject':
 						$subject = $val;
 					break;
-					
+
 					case 'message':
 						$message = $val;
 					break;
-					
+
 					case 'attachment':
 						$attachment = $val;
-					break;	
+					break;
 				}
-				
-				
+
+
 			}
-			
+
 			if($from == ''){
 				$from = 'noreply@staffbooks.systems';
 				$company = $this->setting_model->get_profile();
 				if($company){
 					if($company['email_c_email']){
-						$from = $company['email_c_email'];	
+						$from = $company['email_c_email'];
 					}
 				}
 			}
-		
+
 			$this->load->library('email');
 			$config['mailtype'] = 'html';
 			$this->email->initialize($config);
-			$this->email->from($from,$from_text);		
+			$this->email->from($from,$from_text);
 			$this->email->to($to);
 			$this->email->cc($cc);
 			$this->email->bcc($bcc);
@@ -367,29 +367,29 @@ class Email extends MX_Controller {
 				$email_signature = modules::run('setting/get_email_footer');
 				$message = $company_logo . '<br /><br /><br />'.$message . $email_signature;
 			}
-			
+
 			$this->email->subject($subject);
 			$this->email->message($message);
 			if($attachment){
 				$this->email->attach($attachment);
 			}
 			$this->email->send();
-			$this->email->clear(true);	
+			$this->email->clear(true);
 			return 'Email Sent';
-					
+
 		}else{
-			return false;	
+			return false;
 		}
-		
+
 
 	}
-	
+
 	/**
 	*	@desc Test function to send email from localhost
 	*
 	*   @name send_email
 	*	@access public
-	*	
+	*
 	*/
 	function send_email_localhost($data)
 	{
@@ -403,57 +403,57 @@ class Email extends MX_Controller {
 		  'charset' => 'iso-8859-1',
 		  'wordwrap' => TRUE
 		);
-		
+
 		$to = '';
 		$from = '';
 		$cc = '';
 		$bcc = '';
 		$from_text = '';
-		$subject = ''; 
-		$message = ''; 
-		$attachment = ''; 
+		$subject = '';
+		$message = '';
+		$attachment = '';
 		$bcc = '';
-		
+
 		if($data){
 		foreach($data as $key=>$val){
 				switch($key){
 					case 'to':
 						$to = $val;
 					break;
-					
+
 					case 'from':
 						$from = $val;
 					break;
-					
+
 					case 'cc':
 						$cc = $val;
 					break;
-										
+
 					case 'bcc':
 						$bcc = $val;
 					break;
-					
+
 					case 'from_text':
 						$from_text = $val;
 					break;
-					
+
 					case 'subject':
 						$subject = $val;
 					break;
-					
+
 					case 'message':
 						$message = $val;
 					break;
-					
+
 					case 'attachment':
 						$attachment = $val;
-					break;	
+					break;
 				}
-				
-				
+
+
 			}
 		}
-		
+
 
 		$this->load->library('email', $config);
 		$this->email->set_newline("\r\n");
@@ -466,11 +466,11 @@ class Email extends MX_Controller {
 			$email_signature = modules::run('setting/get_email_footer');
 			$message = $company_logo . '<br /><br /><br />'.$message . $email_signature;
 		}
-		
+
 		$this->email->subject($subject);
 		$this->email->message($message);
-			
-			
+
+
 		if($attachment){
 			$this->email->attach($attachment);
 		}
@@ -478,9 +478,9 @@ class Email extends MX_Controller {
 		  	echo 'Email sent.';
 		}else{
 			show_error($this->email->print_debugger());
-		} 
+		}
 	}
-	
-	
-	
+
+
+
 }
