@@ -21,6 +21,12 @@ class Common extends MX_Controller {
 		return $a[1];
 	}
 
+	function switch_config($key)
+	{
+		$data['key'] = $key;
+		$this->load->view('common/switch_config', $data);
+	}
+
 	function mime_to_icon($file_path)
 	{
 		$this->load->helper('file');

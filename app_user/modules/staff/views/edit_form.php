@@ -10,7 +10,7 @@
 		<? if(!modules::run('auth/is_staff')){ ?>
 		<?=modules::run('staff/btn_api', $staff['user_id'], $staff['external_staff_id']);?>
 		<? } ?>
-		
+
     	 <div id="staff-edit-page-avatar">
 			<?=modules::run('staff/get_profile_picture',$staff['user_id']);?>
    		 </div>
@@ -31,36 +31,56 @@
 <div class="col-md-12">
 	<div class="box bottom-box">
     	<div class="inner-box push full-width">
-			
+
 			<ul class="nav nav-tabs tab-respond" id="nav-staff-profile">
                 <li class="active mobile-tab"><a href="#personal" data-toggle="tab">Personal Details</a></li>
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_picture')) { ?>
                 <li class="mobile-tab"><a href="#pictures" data-toggle="tab">Pictures</a></li>
+                <? } ?>
+
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_financial')) { ?>
                 <li class="mobile-tab"><a href="#financial" data-toggle="tab">Financial Details</a></li>
+                <? } ?>
+
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_super')) { ?>
                 <li class="mobile-tab"><a href="#super" data-toggle="tab">Super Details</a></li>
-                <? if(!modules::run('auth/is_staff')){ ?>
+                <? } ?>
+
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_role')) { ?>
                 <li class="mobile-tab"><a href="#roles" data-toggle="tab">Roles</a></li>
                 <? } ?>
-                <li class="mobile-tab"><a href="#availability" data-toggle="tab">Availability</a></li>                
+
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_availability')) { ?>
+                <li class="mobile-tab"><a href="#availability" data-toggle="tab">Availability</a></li>
+                <? } ?>
+
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_location')) { ?>
                 <li class="mobile-tab"><a href="#location" data-toggle="tab">Locations</a></li>
-                <? if(!modules::run('auth/is_staff')){ ?>
+                <? } ?>
+
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_group')) { ?>
                 <li class="mobile-tab"><a href="#group" data-toggle="tab">Groups</a></li>
                 <? } ?>
+
+                <? if(modules::run('auth/is_admin') || $this->config->get('sp_attribute')) { ?>
                 <li class="mobile-tab"><a href="#attribute" data-toggle="tab">Attributes</a></li>
+                <? } ?>
+
                 <? if(!modules::run('auth/is_staff')){ ?>
                 <li class="mobile-tab"><a href="#payrate" data-toggle="tab">Pay Rates</a></li>
                 <li class="mobile-tab"><a href="#settings" data-toggle="tab">Settings</a></li>
                 <? } ?>
 			</ul>
-			
+
 			<div class="tab-content">
-				<div class="tab-pane active" id="personal"></div>	
-                <div class="tab-pane" id="pictures"></div>			
+				<div class="tab-pane active" id="personal"></div>
+                <div class="tab-pane" id="pictures"></div>
 				<div class="tab-pane" id="financial"></div>
 				<div class="tab-pane" id="super"></div>
 				<? if(!modules::run('auth/is_staff')){ ?>
                 <div class="tab-pane" id="roles"></div>
                 <? } ?>
-				<div class="tab-pane" id="availability"></div>				
+				<div class="tab-pane" id="availability"></div>
 				<div class="tab-pane" id="location"></div>
 				<? if(!modules::run('auth/is_staff')){ ?>
                 <div class="tab-pane" id="group"></div>
@@ -70,7 +90,7 @@
 				<div class="tab-pane" id="payrate"></div>
                 <div class="tab-pane" id="settings"></div>
                 <? } ?>
-				
+
 			</div>
 		 </div>
     </div>
@@ -87,10 +107,10 @@ function init_tabs() {
 	show_tab($('.tab-pane.active'));
 	$('#nav-staff-profile a').on('shown.bs.tab', function(e) {
 		tab = $('#' + $(e.target).attr('href').substr(1));
-		show_tab(tab);	
+		show_tab(tab);
 	});
 }
 $(function(){
-	init_tabs();	
+	init_tabs();
 });
 </script>

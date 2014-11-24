@@ -13,7 +13,7 @@ class Config extends MX_Controller {
 		$this->load->model('config_model');
 		$this->load->model('user/user_model');
 	}
-	
+
 	public function index()
 	{
 		if ($this->input->post('upload_logo'))
@@ -27,7 +27,7 @@ class Config extends MX_Controller {
 		$data['user'] = $this->session->userdata('user_data');
 		$this->load->view('config', isset($data) ? $data : NULL);
 	}
-	
+
 	function shipping_cost()
 	{
 		$cost = $this->config_model->get_config('shipping_cost');
@@ -66,11 +66,11 @@ class Config extends MX_Controller {
 			);
 		}
 	}
-	
+
 	function update_colours()
 	{
 		$user = $this->session->userdata('user_data');
-		
+
 		$data = array(
 			'colour_primary' => ($_POST['colour_primary']) ? $_POST['colour_primary'] : COLOR_PRIM,
 			'colour_secondary' => ($_POST['colour_secondary']) ? $_POST['colour_secondary'] : COLOR_SECO,

@@ -7,7 +7,7 @@ class Ajax extends MX_Controller {
 		parent::__construct();
 		$this->load->model('setting_model');
 	}
-	
+
 	/**
 	*	@name: update_company
 	*	@desc: abstract function to call element of company profile
@@ -17,15 +17,28 @@ class Ajax extends MX_Controller {
 	*/
 	function update_company($tab)
 	{
-		$data['company'] = $this->setting_model->get_profile();				
+		$data['company'] = $this->setting_model->get_profile();
+		if ($tab == 'systemstyles')
+		{
+			$data['styles'] = array(
+				'primary_colour' => COLOUR_PRIM,
+				'rollover_colour' => COLOUR_ROLL,
+				'secondary_colour' => COLOUR_SECO,
+				'text_colour' => TEXT_COLOUR
+			);
+			$current_styles = $this->setting_model->get_system_styles(1);
+			if($current_styles){
+				$data['styles'] = $current_styles;
+			}
+		}
 		$this->load->view('edit_' . $tab, isset($data) ? $data : NULL);
 	}
 	/**
 	*	@name: update_company_profile
-	*	@desc: abstract function to update company profile. When no company profile data, it will create otherwise it will update the data 
+	*	@desc: abstract function to update company profile. When no company profile data, it will create otherwise it will update the data
 	*	@access: public
 	*	@param: POST
-	*	
+	*
 	*/
 	function update_company_profile()
 	{
@@ -36,8 +49,8 @@ class Ajax extends MX_Controller {
 			'suburb' => $data['suburb'],
 			'postcode' => $data['postcode'],
 			'state' => $data['state'],
-			'country' => $data['country'],			
-			'email' => $data['email'],			
+			'country' => $data['country'],
+			'email' => $data['email'],
 			'telephone' => $data['telephone'],
 			'fax' => $data['fax'],
 			'website_account' => $data['website_account'],
@@ -58,8 +71,8 @@ class Ajax extends MX_Controller {
 			'email_c_suburb' => $data['suburb'],
 			'email_c_postcode' => $data['postcode'],
 			'email_c_state' => $data['state'],
-			'email_c_country' => $data['country'],			
-			'email_c_email' => $data['email'],			
+			'email_c_country' => $data['country'],
+			'email_c_email' => $data['email'],
 			'email_c_telephone' => $data['telephone'],
 			'email_c_fax' => $data['fax'],
 			'email_c_website' => $data['website_account'],
@@ -67,33 +80,33 @@ class Ajax extends MX_Controller {
 		if (isset($data['accept_cc'])) {
 			$company_data['accept_cc'] = 1;
 		}
-		if($data['company_id']==0){			
-			$this->setting_model->create_company_profile($company_data);		
+		if($data['company_id']==0){
+			$this->setting_model->create_company_profile($company_data);
 		}
 		else
 		{
-			$this->setting_model->update_profile($data['company_id'], $company_data);		
+			$this->setting_model->update_profile($data['company_id'], $company_data);
 		}
 	}
-	
+
 	/**
 	*	@name: update_company_signature
-	*	@desc: abstract function to update company profile. When no company profile data, it will create otherwise it will update the data 
+	*	@desc: abstract function to update company profile. When no company profile data, it will create otherwise it will update the data
 	*	@access: public
 	*	@param: POST
-	*	
+	*
 	*/
 	function update_company_signature()
 	{
 		$data = $this->input->post();
-		$company_data = array(			
+		$company_data = array(
 			'email_c_name' => $data['email_c_name'],
 			'email_c_address' => $data['email_c_address'],
 			'email_c_suburb' => $data['email_c_suburb'],
 			'email_c_postcode' => $data['email_c_postcode'],
 			'email_c_state' => $data['email_c_state'],
-			'email_c_country' => $data['email_c_country'],			
-			'email_c_email' => $data['email_c_email'],			
+			'email_c_country' => $data['email_c_country'],
+			'email_c_email' => $data['email_c_email'],
 			'email_c_telephone' => $data['email_c_telephone'],
 			'email_c_fax' => $data['email_c_fax'],
 			'email_c_website' => $data['email_c_website'],
@@ -102,34 +115,34 @@ class Ajax extends MX_Controller {
 			'email_s_linkedin' => $data['email_s_linkedin'],
 			'email_s_google' => $data['email_s_google'],
 			'email_s_youtube' => $data['email_s_youtube'],
-			'email_s_instagram' => $data['email_s_instagram'],	
-			'email_background_colour' => $data['email_background_colour'],			
+			'email_s_instagram' => $data['email_s_instagram'],
+			'email_background_colour' => $data['email_background_colour'],
 			'email_font_colour' => $data['email_font_colour'],
-			'email_common_text' => $data['email_common_text']			
+			'email_common_text' => $data['email_common_text']
 		);
-		if($data['company_id']==0){			
-			$this->setting_model->create_company_profile($company_data);		
+		if($data['company_id']==0){
+			$this->setting_model->create_company_profile($company_data);
 		}
 		else
 		{
-			$this->setting_model->update_profile($data['company_id'], $company_data);		
+			$this->setting_model->update_profile($data['company_id'], $company_data);
 		}
 	}
-	
+
 	/**
 	*	@name: upload_logo
-	*	@desc: Upload logo of the company. the image will be resized with ratio 150:150 stored on thumbnail folder. There is no thumbnail needed for upload logo 
+	*	@desc: Upload logo of the company. the image will be resized with ratio 150:150 stored on thumbnail folder. There is no thumbnail needed for upload logo
 	*	@access: public
 	*	@param: (via POST) (int) company_id
 	*	@updates: Resize image is now being called from upload modules, works for image type, jpeg,png and gif
 	*	@updated_by: Kaushtuv
-	*	
+	*
 	*/
 	function upload_logo()
 	{
-		
+
 		$company_id = $this->input->post('company_id');
-		
+
 		if($company_id==0){$comp_id=1;}else{$comp_id=$company_id;}
 		$path = UPLOADS_PATH."/company";
 		$dir = $path;
@@ -141,7 +154,7 @@ class Ajax extends MX_Controller {
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
-		
+
 		$path = UPLOADS_PATH."/company/logo";
 		$dir = $path;
 		if(!is_dir($dir))
@@ -162,7 +175,7 @@ class Ajax extends MX_Controller {
 		  $fp = fopen($dir.'/index.html', 'w');
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
-		}		
+		}
 		$config['upload_path'] = $dir;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg';
 		$config['max_size']	= '4096'; // 4 MB
@@ -170,37 +183,37 @@ class Ajax extends MX_Controller {
 		$config['max_height']  = '2000';
 		$config['overwrite'] = FALSE;
 		$config['remove_space'] = TRUE;
-	
+
 		$this->load->library('upload', $config);
-		
-				
-		
+
+
+
 		if ( ! $this->upload->do_upload())
 		{
-			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());			
-		}	
+			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());
+		}
 		else
 		{
 			//prep data so that old image can be safely removed
 			$old_company_logo_data = $this->setting_model->get_profile();
-			
+
 			$data = array('upload_data' => $this->upload->data());
 			$file_name = $data['upload_data']['file_name'];
 			$width = $data['upload_data']['image_width'];
 			$height = $data['upload_data']['image_height'];
-			$photo = array(				
+			$photo = array(
 				'company_logo' => $file_name,
-				'modified' => date('Y-m-d H:i:s'),				
+				'modified' => date('Y-m-d H:i:s'),
 			);
-			if($company_id==0){			
-				$company_id = $this->setting_model->create_company_profile($photo);		
+			if($company_id==0){
+				$company_id = $this->setting_model->create_company_profile($photo);
 			}
 			else
 			{
-				$this->setting_model->update_profile($company_id, $photo);		
+				$this->setting_model->update_profile($company_id, $photo);
 			}
-			
-			
+
+
 			$dirs=$dir.'/thumbnail';
 			if(!is_dir($dirs))
 			{
@@ -209,10 +222,10 @@ class Ajax extends MX_Controller {
 			  $fp = fopen($dirs.'/index.html', 'w');
 			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 			  fclose($fp);
-			}						
+			}
 			//copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			//$target = $dirs."/".$file_name;
-			//$this->imageResizer($target,$target,260,100);	
+			//$this->imageResizer($target,$target,260,100);
 			modules::run('upload/resize_photo',$file_name,$dir,'thumbnail',275,100,TRUE);
 			//delete old logo
 			modules::run('setting/delete_company_logo',$dir,$old_company_logo_data['company_logo']);
@@ -223,9 +236,9 @@ class Ajax extends MX_Controller {
 	*	@desc: Resize Image from uploaded logo. this will resize based on ratio parameter which is in this case 150:150
 	*	@access: public
 	*	@param: image, url target, width and height ratio image
-	*	
+	*
 	*/
-	function imageResizer($image_u,$target, $width, $height) {        
+	function imageResizer($image_u,$target, $width, $height) {
         list($width_orig, $height_orig) = getimagesize($image_u);
 		$myImage = imagecreatefromjpeg($image_u);
         $ratio_orig = $width_orig/$height_orig;
@@ -244,20 +257,20 @@ class Ajax extends MX_Controller {
         // Output the image
         imagejpeg($image_p, $target, 100);
     }
-	
-	
+
+
 	/**
 	*	@name: load_picture
 	*	@desc: show the company logo picture
 	*	@access: public
 	*	@param: (via POST) (int) company_id
-	*	
+	*
 	*/
 	function load_picture($company_id)
 	{
 		$company_id = $this->input->post('company_id',true);
-		$data['company'] = $this->setting_model->get_profile();				
-		
+		$data['company'] = $this->setting_model->get_profile();
+
 		$this->load->view('setting/list_photo', isset($data) ? $data : NULL);
 	}
 	/**
@@ -265,14 +278,14 @@ class Ajax extends MX_Controller {
 	*	@desc: Delete the currently logo and will be replaced with the default logo staff master
 	*	@access: public
 	*	@param: (via POST) (int) company_id
-	*	
+	*
 	*/
 	function delete_logo($company_id)
 	{
 		$company_id = $this->input->post('company_id');
-		$photo = array(				
+		$photo = array(
 				'company_logo' => '',
-				'modified' => date('Y-m-d H:i:s'),				
+				'modified' => date('Y-m-d H:i:s'),
 		);
 		if($company_id!=0){	$this->setting_model->update_profile($company_id, $photo);}
 	}
@@ -281,7 +294,7 @@ class Ajax extends MX_Controller {
 	*	@desc: Get Email Footer Template
 	*	@access: public
 	*	@param: (via POST) Background color and Font color
-	*	
+	*
 	*/
 	function get_template_footer()
 	{
@@ -300,15 +313,15 @@ class Ajax extends MX_Controller {
 			$color = $this->input->post('color');
 			$font_color = $this->input->post('font_color');
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 		$data['color'] = $color;
 		$data['font_color'] = $font_color;
 		$data['company'] = $company;
-		$this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);	
+		$this->load->view('setting/email_footer_template', isset($data) ? $data : NULL);
 	}
 	/**
 	*	@name: send_email_template
@@ -317,7 +330,7 @@ class Ajax extends MX_Controller {
 	*/
 	function send_email_template()
 	{
-		
+
 		$config = Array(
 			'protocol' => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -328,7 +341,7 @@ class Ajax extends MX_Controller {
 			'charset' => 'iso-8859-1',
 			'wordwrap' => TRUE
 		);
-		
+
 		$subject ="Email Template Company Profile";
 		$this->load->library('email', $config);
 		$this->email->set_newline("\r\n");
@@ -338,7 +351,7 @@ class Ajax extends MX_Controller {
 		$email_signature = modules::run('setting/ajax/get_template_footer');
 		$this->email->subject($subject);
 		$this->email->message($company_logo . '<br />'.$message . $email_signature);
-		
+
 		if($this->email->send())
 		{
 		echo 'Email sent.';
@@ -347,15 +360,15 @@ class Ajax extends MX_Controller {
 		{
 			show_error($this->email->print_debugger());
 		}
-		
+
 	}
-	
+
 	function reload_header_logo()
 	{
-		echo modules::run('setting/company_logo');	
-	}	
-	
-	
+		echo modules::run('setting/company_logo');
+	}
+
+
 	/**
 	*	@name: edit_system_styles
 	*	@desc: Provides UI to change system colour
@@ -373,11 +386,16 @@ class Ajax extends MX_Controller {
 							);
 		$current_styles = $this->setting_model->get_system_styles(1);
 		if($current_styles){
-			$data['styles'] = $current_styles;	
+			$data['styles'] = $current_styles;
 		}
 		$this->load->view('system_settings/edit_system_styles', isset($data) ? $data : NULL);
 	}
-	
+
+	function edit_staff_portal()
+	{
+		$this->load->view('system_settings/edit_staff_portal');
+	}
+
 	/**
 	*	@name: edit_information_sheet
 	*	@desc: Provides UI to change information sheet configuration
@@ -390,15 +408,15 @@ class Ajax extends MX_Controller {
 		$data['info_sheet_configs'] = $this->setting_model->get_information_sheet_configuration();
 		$this->load->view('system_settings/edit_information_sheet', isset($data) ? $data : NULL);
 	}
-	
+
 	function edit_others()
 	{
 		$this->load->view('system_settings/edit_others', isset($data) ? $data : NULL);
 	}
-	
+
 	function update_information_sheet()
 	{
-		$information_sheet_id = $this->input->post('information_sheet_id');	
+		$information_sheet_id = $this->input->post('information_sheet_id');
 		$cur_status = $this->setting_model->get_information_sheet_configuration($information_sheet_id);
 		$update_status = ($cur_status->element_active == 'yes') ? 'no' : 'yes';
 		$data = array(
@@ -407,7 +425,7 @@ class Ajax extends MX_Controller {
 					);
 		echo $this->setting_model->update_information_sheet_configuration($information_sheet_id,$data);
 	}
-	
+
 	function accounting_platform()
 	{
 		$accounting_platform = $this->input->post('accounting_platform');
@@ -420,20 +438,20 @@ class Ajax extends MX_Controller {
 			$this->load->view('integration/' . $accounting_platform);
 		}
 	}
-	
+
 	function check_shoebooks_staff_v2()
 	{
 		# Get all staff from StaffBooks
 		$this->load->model('staff/staff_model');
 		$staff = $this->staff_model->search_staffs();
-		
+
 		$synced = 0;
 		$warnings = array();
 		foreach($staff as $s)
 		{
 			if ($s['external_staff_id'])
 			{
-				$e = modules::run('api/shoebooks/read_employee', $s['external_staff_id']); 
+				$e = modules::run('api/shoebooks/read_employee', $s['external_staff_id']);
 				if ($e)
 				{
 					$synced++;
@@ -442,9 +460,9 @@ class Ajax extends MX_Controller {
 						$warnings[] = $s['user_id'];
 					}
 				}
-			}			
+			}
 		}
-		
+
 		$data['type'] = 'staff';
 		$data['platform'] = 'Shoebooks';
 		$data['total_staffbooks'] = count($staff);
@@ -452,7 +470,7 @@ class Ajax extends MX_Controller {
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results_v2', isset($data) ? $data : NULL);
 	}
-		
+
 	function check_shoebooks_staff()
 	{
 		# Get all employee from Shoebooks
@@ -462,7 +480,7 @@ class Ajax extends MX_Controller {
 		{
 			$e_ids[] = $e['DataID'];
 		}
-		
+
 		# Get all staff from StaffBooks
 		$this->load->model('staff/staff_model');
 		$staff = $this->staff_model->search_staffs();
@@ -471,7 +489,7 @@ class Ajax extends MX_Controller {
 		{
 			$s_ids[] = $s['external_staff_id'];
 		}
-		
+
 		$synced = array_intersect($e_ids, $s_ids);
 		$warnings = array();
 		foreach($synced as $external_id)
@@ -483,7 +501,7 @@ class Ajax extends MX_Controller {
 				$warnings[] = $external_id;
 			}
 		}
-		
+
 		$data['type'] = 'staff';
 		$data['platform'] = 'Shoebooks';
 		$data['total_staffbooks'] = count($staff);
@@ -492,11 +510,11 @@ class Ajax extends MX_Controller {
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
 	}
-	
+
 	function download_not_synced_staff_shoebooks()
 	{
 		$employee = modules::run('api/shoebooks/search_employee');
-		
+
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("Admin Portal");
@@ -504,12 +522,12 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("Shoebooks Employee Report");
 		$objPHPExcel->getProperties()->setSubject("Shoebooks Employee Report");
 		$objPHPExcel->getProperties()->setDescription("Check Shoebooks Employee for Sync to StaffBooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Data ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'First Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Last Name');
-		
+
 		$i = 0;
 		foreach($employee as $e)
 		{
@@ -522,19 +540,19 @@ class Ajax extends MX_Controller {
 				$i++;
 			}
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "sync_report_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function download_not_synced_staff_shoebooks_staffbooks()
 	{
 		$this->load->model('staff/staff_model');
 		$staff = $this->staff_model->search_staffs();
-		
+
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("Admin Portal");
@@ -542,14 +560,14 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("StaffBooks Staff Report");
 		$objPHPExcel->getProperties()->setSubject("StaffBooks Staff Report");
 		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to Shoebooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'First Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Last Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Email Address');
-		
+
 		$i = 0;
 		foreach($staff as $s)
 		{
@@ -563,14 +581,14 @@ class Ajax extends MX_Controller {
 				$i++;
 			}
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "sync_report_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function download_shoebooks_staff_report_v2()
 	{
 		$ids = unserialize($this->input->post('ids'));
@@ -581,13 +599,13 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("Shoebooks Staff Report");
 		$objPHPExcel->getProperties()->setSubject("Shoebooks Staff Report");
 		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to Shoebooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Name');
-		
+
 		for($i=0; $i<count($ids); $i++)
 		{
 			$s = modules::run('staff/get_staff', $ids[$i]);
@@ -597,14 +615,14 @@ class Ajax extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name'] . ' ' . $s['last_name']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e['FirstName'] . ' ' . $e['LastName']);
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "sync_report_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function download_shoebooks_staff_report()
 	{
 		$ids = unserialize($this->input->post('ids'));
@@ -615,13 +633,13 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("Shoebooks Staff Report");
 		$objPHPExcel->getProperties()->setSubject("Shoebooks Staff Report");
 		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to Shoebooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Name');
-		
+
 		for($i=0; $i<count($ids); $i++)
 		{
 			$s = modules::run('staff/get_staff_by_external_id', $ids[$i]);
@@ -631,31 +649,31 @@ class Ajax extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name'] . ' ' . $s['last_name']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e['FirstName'] . ' ' . $e['LastName']);
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_staff_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "sync_report_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function sync_shoebooks_staff()
 	{
 		$imported = 0;
 		$exported = 0;
 		$updated = 0;
 		$errors = 0;
-		
+
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
-		
+
 		# First get all employee from Shoebooks
 		$employee = modules::run('api/shoebooks/search_employee');
 		$e_ids = array();
-		
+
 		# Get all staff from StaffBooks
 		$staffs = $this->staff_model->search_staffs();
-		
+
 		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
 		foreach($employee as $e)
 		{
@@ -683,7 +701,7 @@ class Ajax extends MX_Controller {
 					'city' => $input['City'],
 					'state' => $input['State'],
 					'postcode' => $input['Zip'],
-					'country' => $input['Country']			
+					'country' => $input['Country']
 				);
 				$user_id = $this->user_model->insert_user($user_data);
 				if ($user_id)
@@ -699,20 +717,20 @@ class Ajax extends MX_Controller {
 						'f_acc_name'=> $input['BankName'],
 						'f_bsb' => $input['BankNumber'],
 						'f_acc_number' => $input['BankAccount']
-					);					
+					);
 					$staff_id = $this->staff_model->insert_staff($staff_data, true);
 					if ($staff_id)
 					{
 						$imported++;
 					}
-				}				
-			}			
+				}
+			}
 		}
-		
-		# Now transfer from Staffbooks to Shoebooks		
+
+		# Now transfer from Staffbooks to Shoebooks
 		foreach($staffs as $staff)
 		{
-			if (in_array($staff['external_staff_id'], $e_ids)) 
+			if (in_array($staff['external_staff_id'], $e_ids))
 			{
 				if(modules::run('api/shoebooks/update_employee', $staff['external_staff_id']))
 				{
@@ -731,7 +749,7 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-		
+
 		$data['total'] = count($employee);
 		$data['old'] = count($e_ids);
 		$data['staffbooks_total'] = count($staffs);
@@ -743,13 +761,13 @@ class Ajax extends MX_Controller {
 		$data['platform'] = 'Shoebooks';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
-	
+
 	function check_shoebooks_client_v2()
 	{
 		# Get all clients from StaffBooks
 		$this->load->model('client/client_model');
 		$clients = $this->client_model->search_clients();
-		
+
 		$synced = 0;
 		$warnings = array();
 		foreach($clients as $client)
@@ -767,8 +785,8 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-				
-		
+
+
 		$data['type'] = 'client';
 		$data['platform'] = 'Shoebooks';
 		$data['total_staffbooks'] = count($clients);
@@ -776,7 +794,7 @@ class Ajax extends MX_Controller {
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results_v2', isset($data) ? $data : NULL);
 	}
-	
+
 	function check_shoebooks_client()
 	{
 		# Get all customers from Shoebooks
@@ -786,7 +804,7 @@ class Ajax extends MX_Controller {
 		{
 			$customer_ids[] = $c['DataID'];
 		}
-		
+
 		# Get all clients from StaffBooks
 		$this->load->model('client/client_model');
 		$clients = $this->client_model->search_clients();
@@ -795,7 +813,7 @@ class Ajax extends MX_Controller {
 		{
 			$client_ids[] = $client['external_client_id'];
 		}
-		
+
 		$synced = array_intersect($customer_ids, $client_ids);
 		$warnings = array();
 		foreach($synced as $external_id)
@@ -807,7 +825,7 @@ class Ajax extends MX_Controller {
 				$warnings[] = $external_id;
 			}
 		}
-		
+
 		$data['type'] = 'client';
 		$data['platform'] = 'Shoebooks';
 		$data['total_staffbooks'] = count($clients);
@@ -816,7 +834,7 @@ class Ajax extends MX_Controller {
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
 	}
-	
+
 	function download_shoebooks_client_report_v2()
 	{
 		$ids = unserialize($this->input->post('ids'));
@@ -827,13 +845,13 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("Shoebooks Client Report");
 		$objPHPExcel->getProperties()->setSubject("Shoebooks Client Report");
 		$objPHPExcel->getProperties()->setDescription("Check Client for Sync to Shoebooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Company Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Company Name');
-		
+
 		for($i=0; $i<count($ids); $i++)
 		{
 			$client = modules::run('client/get_client', $ids[$i]);
@@ -843,14 +861,14 @@ class Ajax extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $client['company_name']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $customer['CompanyName']);
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_client_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "sync_report_client_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function download_shoebooks_client_report()
 	{
 		$ids = unserialize($this->input->post('ids'));
@@ -861,13 +879,13 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("Shoebooks Client Report");
 		$objPHPExcel->getProperties()->setSubject("Shoebooks Client Report");
 		$objPHPExcel->getProperties()->setDescription("Check Client for Sync to Shoebooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Company Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Company Name');
-		
+
 		for($i=0; $i<count($ids); $i++)
 		{
 			$client = modules::run('client/get_client_by_external_id', $ids[$i]);
@@ -877,31 +895,31 @@ class Ajax extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $client['company_name']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $customer['CompanyName']);
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('sync_report_client_');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "sync_report_client_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function sync_shoebooks_client()
 	{
 		$imported = 0;
 		$exported = 0;
 		$updated = 0;
 		$errors = 0;
-		
+
 		$this->load->model('user/user_model');
 		$this->load->model('client/client_model');
-		
+
 		# Get all customers from Shoebooks
 		$customers = modules::run('api/shoebooks/search_customer');
 		$c_ids = array();
-		
+
 		# Get all clients from StaffBooks
 		$clients = $this->client_model->search_clients();
-		
+
 		# Check if any customer is already in StaffBooks, otherwise add to StaffBooks
 		foreach($customers as $c)
 		{
@@ -928,7 +946,7 @@ class Ajax extends MX_Controller {
 					'postcode' => $input['Zip'],
 					'country' => $input['Country']
 				);
-				
+
 				$user_id = $this->user_model->insert_user($user_data);
 				if ($user_id)
 				{
@@ -943,21 +961,21 @@ class Ajax extends MX_Controller {
 					{
 						$imported++;
 					}
-				}				
+				}
 			}
 		}
-		
-		# Now transfer from Staffbooks to Shoebooks		
+
+		# Now transfer from Staffbooks to Shoebooks
 		foreach($clients as $client)
 		{
-			if (in_array($client['external_client_id'], $c_ids)) 
+			if (in_array($client['external_client_id'], $c_ids))
 			{
 				if (modules::run('api/shoebooks/update_customer', $client['external_client_id']))
 				{
 					$updated++;
 				}
 			}
-			else 
+			else
 			{
 				if (modules::run('api/shoebooks/append_customer', $client['user_id']))
 				{
@@ -980,7 +998,7 @@ class Ajax extends MX_Controller {
 		$data['platform'] = 'Shoebooks';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
-	
+
 	function check_myob_staff()
 	{
 		# First get all employee from MYOB
@@ -990,7 +1008,7 @@ class Ajax extends MX_Controller {
 		{
 			$e_ids[] = $e->DisplayID;
 		}
-		
+
 		# Get all staff from StaffBooks
 		$this->load->model('staff/staff_model');
 		$staff = $this->staff_model->search_staffs();
@@ -999,10 +1017,10 @@ class Ajax extends MX_Controller {
 		{
 			$s_ids[] = $s['external_staff_id'];
 		}
-		
+
 		$synced = array_intersect($e_ids, $s_ids);
 		$warnings = array();
-		
+
 		foreach($employee as $e)
 		{
 			if (in_array($e->DisplayID, $synced))
@@ -1014,7 +1032,7 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-		
+
 		$data['type'] = 'staff';
 		$data['platform'] = 'MYOB';
 		$data['total_staffbooks'] = count($staff);
@@ -1023,11 +1041,11 @@ class Ajax extends MX_Controller {
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
 	}
-	
+
 	function download_not_synced_staff_myob()
 	{
 		$employee = modules::run('api/myob/connect/search_employee');
-		
+
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("Admin Portal");
@@ -1035,12 +1053,12 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("MYOB Employee Report");
 		$objPHPExcel->getProperties()->setSubject("MYOB Employee Report");
 		$objPHPExcel->getProperties()->setDescription("Check MYOB Employee for Sync to StaffBooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Display ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'First Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Last Name');
-		
+
 		$i = 0;
 		foreach($employee as $e)
 		{
@@ -1052,14 +1070,14 @@ class Ajax extends MX_Controller {
 				$i++;
 			}
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('check_myob_staff');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "check_myob_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function download_not_synced_staff_myob_staffbooks()
 	{
 		$this->load->model('staff/staff_model');
@@ -1070,7 +1088,7 @@ class Ajax extends MX_Controller {
 		{
 			$e_ids[] = $e->DisplayID;
 		}
-		
+
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("Admin Portal");
@@ -1078,14 +1096,14 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("StaffBooks Staff Report");
 		$objPHPExcel->getProperties()->setSubject("StaffBooks Staff Report");
 		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to MYOB Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'First Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Last Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('E1', 'Email Address');
-		
+
 		$i = 0;
 		foreach($staff as $s)
 		{
@@ -1097,16 +1115,16 @@ class Ajax extends MX_Controller {
 				$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $s['last_name']);
 				$objPHPExcel->getActiveSheet()->SetCellValue('E' . ($i+2), $s['email_address']);
 				$i++;
-			}			
+			}
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('check_staffbooks_staff');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "check_staffbooks_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function download_myob_staff_report()
 	{
 		$ids = unserialize($this->input->post('ids'));
@@ -1117,13 +1135,13 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("MYOB Staff Report");
 		$objPHPExcel->getProperties()->setSubject("MYOB Staff Report");
 		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to MYOB Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Shoebooks Name');
-		
+
 		for($i=0; $i<count($ids); $i++)
 		{
 			$s = modules::run('staff/get_staff_by_external_id', $ids[$i]);
@@ -1133,31 +1151,31 @@ class Ajax extends MX_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $s['first_name'] . ' ' . $s['last_name']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $e->FirstName . ' ' . $e->LastName);
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('check_myob_staff');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "check_myob_staff_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function sync_myob_staff()
 	{
 		$imported = 0;
 		$exported = 0;
 		$updated = 0;
 		$errors = 0;
-		
+
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
-		
+
 		# First get all employee from MYOB
 		$employee = modules::run('api/myob/connect/search_employee');
 		$e_ids = array();
-		
+
 		# Get all staff from StaffBooks
 		$staffs = $this->staff_model->search_staffs();
-		
+
 		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
 		foreach($employee as $e)
 		{
@@ -1166,7 +1184,7 @@ class Ajax extends MX_Controller {
 			{
 				$staff = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
 				if ($staff)
-				{					
+				{
 					$e_ids[] = $e->DisplayID;
 				}
 				else
@@ -1189,7 +1207,7 @@ class Ajax extends MX_Controller {
 						'postcode' => ($e->Addresses[0]->PostCode) ? $e->Addresses[0]->PostCode : '',
 						'country' => ($e->Addresses[0]->Country) ? $e->Addresses[0]->Country : '',
 						'phone' => ($e->Addresses[0]->Phone1) ? $e->Addresses[0]->Phone1 : '',
-						'mobile' => ($e->Addresses[0]->Phone2) ? $e->Addresses[0]->Phone2 : ''			
+						'mobile' => ($e->Addresses[0]->Phone2) ? $e->Addresses[0]->Phone2 : ''
 					);
 					$user_id = $this->user_model->insert_user($user_data);
 					if ($user_id)
@@ -1213,15 +1231,15 @@ class Ajax extends MX_Controller {
 						{
 							$imported++;
 						}
-					}					
+					}
 				}
-			}						
+			}
 		}
-		
-		# Now transfer from Staffbooks to MYOB				
+
+		# Now transfer from Staffbooks to MYOB
 		foreach($staffs as $staff)
 		{
-			if (in_array($staff['external_staff_id'], $e_ids)) 
+			if (in_array($staff['external_staff_id'], $e_ids))
 			{
 				# Update employee
 				if(modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id']))
@@ -1242,8 +1260,8 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-		
-		
+
+
 		$data['total'] = count($employee);
 		$data['old'] = count($e_ids);
 		$data['staffbooks_total'] = count($staffs);
@@ -1255,7 +1273,7 @@ class Ajax extends MX_Controller {
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
-	
+
 	function check_myob_client()
 	{
 		# Get all customers from MYOB
@@ -1265,7 +1283,7 @@ class Ajax extends MX_Controller {
 		{
 			$customer_ids[] = $c->DisplayID;
 		}
-		
+
 		# Get all clients from StaffBooks
 		$this->load->model('client/client_model');
 		$clients = $this->client_model->search_clients();
@@ -1274,10 +1292,10 @@ class Ajax extends MX_Controller {
 		{
 			$client_ids[] = $client['external_client_id'];
 		}
-		
+
 		$synced = array_intersect($customer_ids, $client_ids);
 		$warnings = array();
-		
+
 		foreach($customers as $c)
 		{
 			if (in_array($c->DisplayID, $synced))
@@ -1290,7 +1308,7 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-		
+
 		$data['type'] = 'client';
 		$data['platform'] = 'MYOB';
 		$data['total_staffbooks'] = count($clients);
@@ -1298,13 +1316,13 @@ class Ajax extends MX_Controller {
 		$data['synced'] = count($synced);
 		$data['warnings'] = $warnings;
 		$this->load->view('integration/check_results', isset($data) ? $data : NULL);
-		
+
 	}
-	
+
 	function download_not_synced_client_myob()
 	{
 		$customers = modules::run('api/myob/connect/search_customer');
-		
+
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("Admin Portal");
@@ -1312,11 +1330,11 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("MYOB Customer Report");
 		$objPHPExcel->getProperties()->setSubject("MYOB Customer Report");
 		$objPHPExcel->getProperties()->setDescription("Check MYOB Customer for Sync to StaffBooks Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Display ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Company Name');
-		
+
 		$i = 0;
 		foreach($customers as $c)
 		{
@@ -1328,14 +1346,14 @@ class Ajax extends MX_Controller {
 				$i++;
 			}
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('check_myob_client');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "check_myob_client_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-		
+
 	function download_not_synced_client_myob_staffbooks()
 	{
 		$this->load->model('client/client_model');
@@ -1346,7 +1364,7 @@ class Ajax extends MX_Controller {
 		{
 			$customer_ids[] = $c->DisplayID;
 		}
-		
+
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("Admin Portal");
@@ -1354,12 +1372,12 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("StaffBooks Staff Report");
 		$objPHPExcel->getProperties()->setSubject("StaffBooks Staff Report");
 		$objPHPExcel->getProperties()->setDescription("Check Staff for Sync to MYOB Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Company Name');
-		
+
 		$i = 0;
 		foreach($clients as $c)
 		{
@@ -1369,16 +1387,16 @@ class Ajax extends MX_Controller {
 				$objPHPExcel->getActiveSheet()->SetCellValue('B' . ($i+2), $c['external_client_id']);
 				$objPHPExcel->getActiveSheet()->SetCellValue('C' . ($i+2), $c['company_name']);
 				$i++;
-			}			
+			}
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('check_staffbook_client');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "check_staffbook_client_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function download_myob_client_report()
 	{
 		$ids = unserialize($this->input->post('ids'));
@@ -1389,13 +1407,13 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("MYOB Client Report");
 		$objPHPExcel->getProperties()->setSubject("MYOB Client Report");
 		$objPHPExcel->getProperties()->setDescription("Check Client for Sync to MYOB Excel file, generated from Admin Portal.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Internal ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B1', 'External ID');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C1', 'StaffBooks Company Name');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D1', 'MYOB Company Name');
-		
+
 		for($i=0; $i<count($ids); $i++)
 		{
 			$client = modules::run('client/get_client_by_external_id', $ids[$i]);
@@ -1406,37 +1424,37 @@ class Ajax extends MX_Controller {
 			$company_name = ($customer->IsIndividual) ? $customer->FirstName . ' ' . $customer->LastName : $customer->CompanyName;
 			$objPHPExcel->getActiveSheet()->SetCellValue('D' . ($i+2), $company_name);
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('check_client');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
 		$file_name = "check_client_" . time() . ".xlsx";
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function sync_myob_client()
 	{
 		$imported = 0;
 		$exported = 0;
 		$updated = 0;
 		$errors = 0;
-		
+
 		$this->load->model('user/user_model');
 		$this->load->model('client/client_model');
-		
+
 		# Get all customers from MYOB
 		$customers = modules::run('api/myob/connect/search_customer');
 		$c_ids = array();
-		
-		# Get all clients from StaffBooks		
+
+		# Get all clients from StaffBooks
 		$clients = $this->client_model->search_clients();
-		
+
 		# Check if any customer is already in StaffBooks, otherwise add to StaffBooks
 		foreach($customers as $c)
 		{
 			# Note: if customer doesnot have external id on MYOB (DisplayID), it won't be imported to StaffBooks
 			if ($c->DisplayID && $c->DisplayID != '*None')
-			{				
+			{
 				$client = modules::run('client/get_client_by_external_id', $c->DisplayID);
 				if ($client)
 				{
@@ -1478,7 +1496,7 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-		
+
 		# Now transfer from StaffBooks to MYOB
 		foreach($clients as $client)
 		{
@@ -1498,7 +1516,7 @@ class Ajax extends MX_Controller {
 				else
 				{
 					$errors++;
-				}	
+				}
 			}
 		}
 		$data['total'] = count($customers);

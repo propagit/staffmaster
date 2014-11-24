@@ -7,7 +7,7 @@
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2><i class="icon-company"></i> &nbsp; Manage Company Profile</h2>
-		 <p>Your company profile information is used in various areas of the system such as email correspondence, your invoices, your quotes and login screen, Please ensure the below information is accurate.</p>
+		 <p>Your company profile information is used in various areas of the system such as email correspondence, your invoices, your quotes and login screen. Please ensure the below information is accurate.</p>
     </div>
 </div>
 <!--end top box-->
@@ -20,12 +20,14 @@
 			<ul class="nav nav-tabs tab-respond" id="nav-company-profile">
                 <li class="active mobile-tab"><a href="#companyinformation" data-toggle="tab">Company Information</a></li>
                 <li class="mobile-tab"><a href="#companylogo" data-toggle="tab">Your Company Logo</a></li>
+                <li class="mobile-tab"><a href="#systemstyles" data-toggle="tab">System Styles</a></li>
                 <li class="mobile-tab"><a href="#companyemail" data-toggle="tab">Your Email Signature</a></li>
 			</ul>
 
 			<div class="tab-content">
 				<div class="tab-pane active" id="companyinformation"></div>
                 <div class="tab-pane" id="companylogo"></div>
+                <div class="tab-pane" id="systemstyles"></div>
 				<div class="tab-pane" id="companyemail"></div>
 			</div>
 		 </div>

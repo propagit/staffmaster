@@ -17,7 +17,7 @@ $menu = array(
 		array('path' => 'job/create', 'icon' => 'icon-addJobs', 'title' => 'Create Job'),
 		array('path' => 'job/calendar', 'icon' => 'fa-calendar', 'title' => 'Company Calendar')
 	)),
-	array('path' => '#', 'icon' => 'icon-attributes', 'title' => 'Edit Attributes', 'sub' => array(		
+	array('path' => '#', 'icon' => 'icon-attributes', 'title' => 'Edit Attributes', 'sub' => array(
 		array('path' => 'attribute/payrate', 'icon' => 'icon-attributesPayrate', 'title' => 'Pay Rates'),
 		array('path' => 'attribute/role', 'icon' => 'icon-roles', 'title' => 'Roles'),
 		array('path' => 'attribute/venue', 'icon' => 'icon-attributesVenues', 'title' => 'Venues'),
@@ -49,13 +49,13 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-gears', 'title' => 'System Settings', 'sub' => array(
 		array('path' => 'setting/company', 'icon' => 'icon-company', 'title' => 'Company Profile'),
+        array('path' => 'setting/system_settings', 'icon' => 'fa-cog', 'title' => 'Preferences'),
+        array('path' => 'setting/integration', 'icon' => 'icon-accountIntergration', 'title' => 'Accounts Integration'),
+        array('path' => 'export', 'icon' => 'icon-exportTemplates', 'title' => 'Export Templates'),
 		array('path' => 'form', 'icon' => 'icon-formBuilder', 'title' => 'Form Builder'),
-		array('path' => 'export', 'icon' => 'icon-exportTemplates', 'title' => 'Export Templates'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
 		array('path' => 'sms', 'icon' => 'fa-mobile', 'title' => 'SMS Settings'),
-		array('path' => 'setting/system_settings', 'icon' => 'fa-cog', 'title' => 'Other Settings'),
-		#array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),		
-		array('path' => 'setting/integration', 'icon' => 'icon-accountIntergration', 'title' => 'Accounts Integration'), 
+		#array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),
 		array('path' => 'log', 'icon' => 'icon-activityLogs', 'title' => 'Activity Logs'),
 		array('path' => 'support/admin_support', 'icon' => 'icon-support', 'title' => 'Support')
 	))
@@ -80,9 +80,9 @@ $menu = array(
             </ul>
         </div>
     </div>
-    
-    
-    
+
+
+
     <!-- begin mob nav-->
     <div class="row desktop-hidden">
         <div class="navbar navbar-inverse">

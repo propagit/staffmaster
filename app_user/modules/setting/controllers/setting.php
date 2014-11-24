@@ -12,7 +12,7 @@ class Setting extends MX_Controller {
 		$this->load->model('user/user_model');
 		$this->load->model('setting_model');
 	}
-	
+
 	public function index($method='', $param='')
 	{
 		switch($method)
@@ -45,20 +45,20 @@ class Setting extends MX_Controller {
 	}
 	/**
 	*	@name: company
-	*	@desc: function to call the view of one of company profile 
-	*	@access: public	
+	*	@desc: function to call the view of one of company profile
+	*	@access: public
 	*	@return: view based on tab
 	*/
 	function company()
 	{
-		$company = $this->setting_model->get_profile();				
+		$company = $this->setting_model->get_profile();
 		$data['company'] = $company;
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
 	/**
 	*	@name: update_profile
 	*	@desc: function to update company profile
-	*	@access: public	
+	*	@access: public
 	*	@return: view based on tab
 	*/
 	function update_profile()
@@ -70,7 +70,7 @@ class Setting extends MX_Controller {
 			$data = $this->input->post();
 			$this->setting_model->update_profile(1, array(
 				'company_name' => $data['company_name'],
-				'company_address' => $data['company_address'], 
+				'company_address' => $data['company_address'],
 				'company_suburb' => $data['company_suburb'],
 				'company_postcode' => $data['company_postcode'],
 				'company_state' => $data['company_state'],
@@ -90,17 +90,17 @@ class Setting extends MX_Controller {
 			));
 		}
 		$data['states'] = $this->user_model->get_states();
-		$data['company'] = $company;		
+		$data['company'] = $company;
 		$this->load->view('company_profile', isset($data) ? $data : NULL);
 	}
-	
-	
+
+
 	function form_upload_photo($company_id)
 	{
 		$data['company_id'] = $company_id;
-		$this->load->view('upload_logo_form', isset($data) ? $data : NULL);	
+		$this->load->view('upload_logo_form', isset($data) ? $data : NULL);
 	}
-	
+
 	function superinformasi($field_name='',$field_value='')
 	{
 		$company = $this->setting_model->get_profile();
@@ -108,13 +108,13 @@ class Setting extends MX_Controller {
 		{
 			echo $company[$field_name];
 		}
-	}		
+	}
 	/**
 	*	@name: get_template_footer
 	*	@desc: Get Email Footer Template
 	*	@access: public
 	*	@param: (via POST) Background color and Font color
-	*	
+	*
 	*/
 	function get_email_footer()
 	{
@@ -131,39 +131,39 @@ class Setting extends MX_Controller {
 				$font_color = $company['email_font_colour'];
 			}
 		}
-		
+
 		$data['color'] = $color;
 		$data['font_color'] = $font_color;
 		$data['company'] = $company;
-		$this->load->view('email_footer_template', isset($data) ? $data : NULL);	
+		$this->load->view('email_footer_template', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: company_logo
 	*	@desc: ajax function to get company logo
 	*	@access: public
-	*	
-	*	
+	*
+	*
 	*/
 	function company_logo()
 	{
 		$data['company'] = $this->setting_model->get_profile();
 		$this->load->view('company_logo', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: company_profile
 	*	@desc: ajax function to get company logo
 	*	@access: public
-	*	
-	*	
+	*
+	*
 	*/
 	function company_profile()
 	{
-		return $this->setting_model->get_profile();		
+		return $this->setting_model->get_profile();
 	}
-	
-	
+
+
 	/**
 	*	@name: update_system_styles
 	*	@desc: Updates System styles
@@ -184,18 +184,18 @@ class Setting extends MX_Controller {
 		//update email signature colors
 		$company = $this->company_profile();
 		$data = $this->input->post();
-		$company_data = array(			
-			'email_background_colour' => trim($this->input->post('primary_colour'),'#'),			
-			'email_font_colour' => trim($this->input->post('secondary_colour'),'#')		
+		$company_data = array(
+			'email_background_colour' => trim($this->input->post('primary_colour'),'#'),
+			'email_font_colour' => trim($this->input->post('secondary_colour'),'#')
 		);
-	
-		if(!$company){			
-			$this->setting_model->create_company_profile($company_data);		
+
+		if(!$company){
+			$this->setting_model->create_company_profile($company_data);
 		}else		{
-			$this->setting_model->update_profile($company['id'], $company_data);		
+			$this->setting_model->update_profile($company['id'], $company_data);
 		}
-		
-		redirect('setting/system_settings');
+
+		redirect('setting/company');
 	}
 	/**
 	*	@name: delete_company_logo
@@ -213,9 +213,9 @@ class Setting extends MX_Controller {
 		//delete thumb
 		if(file_exists($path.'/thumbnail/'.$file_name)){
 			unlink($path.'/thumbnail/'.$file_name);
-		}	
+		}
 	}
-	
+
 	/**
 	*	@name: system_settings
 	*	@desc: Provides UI to update system settings such as system styles, information sheet configuration etc
@@ -227,7 +227,7 @@ class Setting extends MX_Controller {
 	{
 		$this->load->view('system_settings/main_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: get_information_sheet_config_status
 	*	@desc: This function checks if an element of the information sheet is set as active or not
@@ -244,11 +244,11 @@ class Setting extends MX_Controller {
 			return false;
 		}
 	}
-	
+
 	function integration()
 	{
 		$this->load->view('integration', isset($data) ? $data : NULL);
 	}
-	
-	
+
+
 }

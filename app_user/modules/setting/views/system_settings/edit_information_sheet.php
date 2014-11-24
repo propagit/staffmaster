@@ -1,8 +1,8 @@
 <div class="company-profile-detail-box">
-	<h2>Information Sheet - Configuration</h2>
+	<h2>Information Sheet</h2>
 	<p>
     The information sheet can be downloaded by staff when they view their roster or apply for shifts and click the view brief icon. <br />
-    You can control what information will appear on the information sheet by clicking the below criteria on or off. 
+    You can control what information will appear on the information sheet by clicking the below criteria on or off.
     </p>
 </div>
 <p>Tick the appropriate boxes you would like to include on the informaton sheet<br /><br /></p>
@@ -16,18 +16,18 @@
 		foreach($info_sheet_configs as $config){
 		if($counter > $row_count){
 			echo '</div><div class="col-md-3">';
-			$counter = 0;	
+			$counter = 0;
 		}
-?>		
+?>
 		<div class="checkbox">
 			<label>
 			  <input class="update-info-sheet-config" type="checkbox" <?=$config->element_active == 'yes' ? 'checked="checked"' : ''?> data-id="<?=$config->information_sheet_config_id;?>" data-status="<?=$config->element_active;?>"> <?=$config->element_label;?>
 			</label>
 		</div>
 <?php
-		$counter++;		
+		$counter++;
 		}
-		echo '</div>';	
+		echo '</div>';
 	}
 ?>
 </div>
@@ -54,6 +54,6 @@ function update_information_sheet(obj)
 				$('#msg-success').addClass('hide');
 			}, 2000);
 		}
-	});	
+	});
 }
 </script>

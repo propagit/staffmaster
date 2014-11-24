@@ -1,26 +1,49 @@
 <?
+$menu = array();
+if ($this->config_model->get('sp_dashboard')) {
+  $menu[] = array('path' => '', 'icon' => 'fa-dashboard', 'title' => 'Dashboard', 'sub' => array(
+    ));
+}
+
+$menu[] = array('path' => 'staff', 'icon' => 'fa-user', 'title' => 'Your Profile', 'sub' => array(
+  ));
+if ($this->config_model->get('sp_work')) {
+  $menu[] = array('path' => 'work', 'icon' => 'fa-thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(
+    ));
+}
+$menu[] = array('path' => 'roster', 'icon' => 'fa-calendar', 'title' => 'Your Roster', 'sub' => array(
+  ));
+
+if ($this->config_model->get('sp_timesheet')) {
+  $menu[] = array('path' => 'timesheet', 'icon' => 'fa-clock-o', 'title' => 'Time Sheets', 'sub' => array(
+    ));
+}
+$menu[] = array('path' => 'support', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(
+  ));
+
 $page = $this->uri->segment(1) ? $this->uri->segment(1) : 'dashboard';
-$menu = array(
-	array('path' => '', 'icon' => 'fa-dashboard', 'title' => 'Dashboard', 'sub' => array(
-	)),
-	array('path' => 'staff', 'icon' => 'fa-user', 'title' => 'Your Profile', 'sub' => array(
-	)),
-	array('path' => 'work', 'icon' => 'fa-thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(		
-	)),
-	array('path' => 'roster', 'icon' => 'fa-calendar', 'title' => 'Your Roster', 'sub' => array(
-	)),
-	array('path' => 'timesheet', 'icon' => 'fa-clock-o', 'title' => 'Time Sheets', 'sub' => array(		
-	)),
-	#array('path' => '#', 'icon' => 'book', 'title' => 'Training Centre', 'sub' => array(		
-	#)),
-	array('path' => 'support', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(		
-	))
-);
+
+// $menu = array(
+// 	array('path' => '', 'icon' => 'fa-dashboard', 'title' => 'Dashboard', 'sub' => array(
+// 	)),
+// 	array('path' => 'staff', 'icon' => 'fa-user', 'title' => 'Your Profile', 'sub' => array(
+// 	)),
+// 	array('path' => 'work', 'icon' => 'fa-thumbs-o-up', 'title' => 'Apply For Work', 'sub' => array(
+// 	)),
+// 	array('path' => 'roster', 'icon' => 'fa-calendar', 'title' => 'Your Roster', 'sub' => array(
+// 	)),
+// 	array('path' => 'timesheet', 'icon' => 'fa-clock-o', 'title' => 'Time Sheets', 'sub' => array(
+// 	)),
+// 	#array('path' => '#', 'icon' => 'book', 'title' => 'Training Centre', 'sub' => array(
+// 	#)),
+// 	array('path' => 'support', 'icon' => 'fa-phone', 'title' => 'Support', 'sub' => array(
+// 	))
+// );
 ?>
 
 <div id="nav-wrap">
 	<div class="row desktop-visible">
-    	<div class="col-md-12"> 
+    	<div class="col-md-12">
             <ul class="nav nav-pills top-nav">
             <? foreach($menu as $item) { ?>
                  <li class="dropdown<?=($page == $item['path']) ? ' active' : '';?>">
@@ -32,9 +55,9 @@ $menu = array(
             </ul>
         </div>
     </div>
-    
-    
-    
+
+
+
     <!-- begin mob nav-->
     <div class="row desktop-hidden">
         <div class="navbar navbar-inverse">
@@ -59,8 +82,8 @@ $menu = array(
         </div>
     </div>
     <!-- end mob nv-->
-    
-    
-</div>    
+
+
+</div>
 
 
