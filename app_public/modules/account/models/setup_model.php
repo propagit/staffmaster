@@ -104,4 +104,16 @@ class Setup_model extends CI_Model {
 			return false; # Database Platform Not Supported!
 		}
 	}
+
+	function get_monthly_usage($subdomain, $month)
+	{
+		$this->init($subdomain);
+		$sql = "SELECT count(*) as `usage`
+				FROM job_shifts
+				WHERE status != -2
+				AND job_date LIKE '$month%'";
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		return $result['usage'];
+	}
 }

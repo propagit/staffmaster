@@ -63,4 +63,21 @@ class Account extends MX_Controller {
 		echo $count . ' accounts have been updated';
 	}
 
+	function fee()
+	{
+		$this->load->model('account_model');
+		$accounts = $this->account_model->get_accounts(array('status' => 1));
+		$this->load->model('setup_model');
+		$month = '2014-10';
+		$usages = array();
+		foreach($accounts as $account)
+		{
+			$usages[] = array(
+				'id' => $account['subdomain'],
+				'usage' => $this->setup_model->get_monthly_usage($account['subdomain'], $month);
+				);
+		}
+		echo json_encode($usages);
+	}
+
 }
