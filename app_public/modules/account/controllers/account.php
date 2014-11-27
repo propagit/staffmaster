@@ -77,7 +77,7 @@ class Account extends MX_Controller {
 		{
 			$usages[] = array(
 				'id' => $account['subdomain'],
-				'usage' => $this->setup_model->get_monthly_usage($account['subdomain'], $month);
+				'usage' => $this->setup_model->get_monthly_usage($account['subdomain'], $month)
 				);
 		}
 		echo json_encode($usages);
