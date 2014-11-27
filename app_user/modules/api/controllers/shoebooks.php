@@ -247,6 +247,8 @@ class Shoebooks extends MX_Controller {
 			</NewEmployee>
 		</AppendEmployee>';
 		$request = str_replace('&', '&#038;', $request);
+		$request = str_replace('>', '&gt;', $request);
+		$request = str_replace('<', '&lt;', $request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -340,7 +342,9 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewEmployee>
 		</AppendEmployee>';
-
+		$request = str_replace('&', '&#038;', $request);
+		$request = str_replace('>', '&gt;', $request);
+		$request = str_replace('<', '&lt;', $request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -428,6 +432,10 @@ class Shoebooks extends MX_Controller {
 			</NewEmployee>
 		</UpdateEmployee>';
 		#var_dump($request);
+
+		$request = str_replace('&', '&#038;', $request);
+		$request = str_replace('>', '&gt;', $request);
+		$request = str_replace('<', '&lt;', $request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -616,6 +624,9 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewCustomer>
 		</AppendCustomer>';
+		$request = str_replace('&', '&#038;', $request);
+		$request = str_replace('>', '&gt;', $request);
+		$request = str_replace('<', '&lt;', $request);
 
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
@@ -671,7 +682,9 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewCustomer>
 		</UpdateCustomer>';
-
+		$request = str_replace('&', '&#038;', $request);
+		$request = str_replace('>', '&gt;', $request);
+		$request = str_replace('<', '&lt;', $request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -888,9 +901,6 @@ class Shoebooks extends MX_Controller {
 				}
 
 				$job_name = trim($timesheet['job_name']);
-				$job_name = str_replace('&', ' ', $job_name);
-				$job_name = str_replace('<', ' ', $job_name);
-				$job_name = str_replace('>', ' ', $job_name);
 				$request .= '
 						<PRPayslipLine>
 							<EarningID>' . $earningID . '</EarningID>
@@ -907,6 +917,10 @@ class Shoebooks extends MX_Controller {
 					</PayslipLines>
 				</NewPayslip>
 			</AppendPayslip>';
+
+			$request = str_replace('&', '&#038;', $request);
+			$request = str_replace('>', '&gt;', $request);
+			$request = str_replace('<', '&lt;', $request);
 			#var_dump($request); die();
 			$client = new nusoap_client($this->host);
 			$error = $client->getError();
@@ -1047,9 +1061,6 @@ class Shoebooks extends MX_Controller {
 				}
 
 				$title = trim($item['title']);
-				$title = str_replace('&', ' ', $title);
-				$title = str_replace('<', ' ', $title);
-				$title = str_replace('>', ' ', $title);
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
@@ -1069,6 +1080,10 @@ class Shoebooks extends MX_Controller {
 				</InvoiceLines>
 			</NewInvoice>
 		</AppendInvoice>';
+
+		$request = str_replace('&', '&#038;', $request);
+		$request = str_replace('>', '&gt;', $request);
+		$request = str_replace('<', '&lt;', $request);
 		#var_dump($request); die();
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
@@ -1174,9 +1189,6 @@ class Shoebooks extends MX_Controller {
 					$taxable = 'Code1';
 				}
 				$title = trim($item['title']);
-				$title = str_replace('&', ' ', $title);
-				$title = str_replace('<', ' ', $title);
-				$title = str_replace('>', ' ', $title);
 				$request .= '
 					<ARInvoiceLine>
 						<QtyOrdered>1</QtyOrdered>
@@ -1196,6 +1208,10 @@ class Shoebooks extends MX_Controller {
 				</InvoiceLines>
 			</NewInvoice>
 		</AppendInvoice>';
+
+		$request = str_replace('&', '&#038;', $request);
+		$request = str_replace('>', '&gt;', $request);
+		$request = str_replace('<', '&lt;', $request);
 		#var_dump($request); die();
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
