@@ -17,6 +17,9 @@ class Account extends MX_Controller {
 			case 'update':
 				$this->update();
 				break;
+			case 'usages':
+				$this->usages();
+				break;
 			default:
 				$this->signup_form();
 				break;
@@ -63,7 +66,7 @@ class Account extends MX_Controller {
 		echo $count . ' accounts have been updated';
 	}
 
-	function fee()
+	function usages()
 	{
 		$this->load->model('account_model');
 		$accounts = $this->account_model->get_accounts(array('status' => 1));
