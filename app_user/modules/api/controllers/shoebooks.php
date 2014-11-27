@@ -246,7 +246,7 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewEmployee>
 		</AppendEmployee>';
-
+		var_dump($request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
