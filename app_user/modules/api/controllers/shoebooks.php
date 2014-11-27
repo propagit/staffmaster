@@ -171,6 +171,100 @@ class Shoebooks extends MX_Controller {
 		return array();
 	}
 
+	function test_append_employee($user_id)
+	{
+		$staff = modules::run('staff/get_staff', $user_id);
+		if (!$staff)
+		{
+			return false;
+		}
+		$action = 'http://www.shoebooks.com.au/accounting/v10/AppendEmployee';
+
+		$dob = '';
+		if ($staff['dob'] && $staff['dob'] != '0000-00-00') {
+			$dob = '<BirthDate>' . $staff['dob'] . '</BirthDate>';
+		}
+		$date_entered = '';
+		if ($staff['created_on'] && $staff['created_on'] != '0000-00-00 00:00:00') {
+			$date_entered = '<DateEntered>' . date('Y-m-d', strtotime($staff['created_on'])) . '</DateEntered>';
+		}
+		$date_modified = '';
+		if ($staff['modified_on'] && $staff['modified_on'] != '0000-00-00 00:00:00') {
+			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
+		}
+		$e_id = ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'];
+
+		$fund_name = $staff['s_fund_name'];
+		$membership = $staff['s_membership'];
+		if ($staff['s_choice'] == 'employer')
+		{
+			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+			$membership = modules::run('setting/superinformasi', 'super_product_id','');
+		}
+
+		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
+			<Login>
+				<AccountName>' . $this->account_name . '</AccountName>
+				<LoginName>' . $this->login_name . '</LoginName>
+				<LoginPassword>' . $this->login_password . '</LoginPassword>
+				<SessionID></SessionID>
+			</Login>
+			<NewEmployee>
+				<EmployeeID>' . $e_id . '</EmployeeID>
+				<Company>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</Company>
+				<SocialSecurity>' . $staff['f_tfn'] . '</SocialSecurity>
+				<Title>' . $staff['title'] . '</Title>
+				<FirstName>' . $staff['first_name'] . '</FirstName>
+				<MiddleName></MiddleName>
+				<LastName>' . $staff['last_name'] . '</LastName>
+				<Address>' . $staff['address'] . '</Address>
+				<County>' . $staff['suburb'] . '</County>
+				<City>' . $staff['city'] . '</City>
+				<State>' . $staff['state'] . '</State>
+				<Zip>' . $staff['postcode'] . '</Zip>
+				<Country>' . $staff['country'] . '</Country>' .
+				$dob . '
+				<Gender>' . $staff['gender'] . '</Gender>
+				<EmergencyContact>' . $staff['emergency_contact'] . '</EmergencyContact>
+				<EmergencyPhone>' . $staff['emergency_phone'] . '</EmergencyPhone>' .
+				$date_entered .
+				$date_modified . '
+				<BankName>' . $staff['f_acc_name'] . '</BankName>
+				<BankNumber>' . $staff['f_bsb'] . '</BankNumber>
+				<BankAccount>' . $staff['f_acc_number'] . '</BankAccount>
+				<ExtraVendorID></ExtraVendorID>
+				<BankType></BankType>
+				<ExtraFundName>' . $fund_name . '</ExtraFundName>
+				<ExtraFundNumber>' . $membership . '</ExtraFundNumber>
+				<EmploymentType></EmploymentType>
+				<VendorID></VendorID>
+				<ContactNumbers>
+					<ContactNumber>
+						<PhoneNumber>' . $staff['phone'] . '</PhoneNumber>
+						<ContactMethod></ContactMethod>
+					</ContactNumber>
+				</ContactNumbers>
+			</NewEmployee>
+		</AppendEmployee>';
+
+		$client = new nusoap_client($this->host);
+		$error = $client->getError();
+		if ($error)
+		{
+			#die("client construction error: {$error}\n");
+			return false;
+		}
+		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		$result = $client->send($msg, $action);
+		var_dump($result); die();
+		if (isset($result['AppendEmployeeResult']['NewRecordID']))
+		{
+			$this->load->model('staff/staff_model');
+			return $this->staff_model->update_staff($user_id, array('external_staff_id' => $result['AppendEmployeeResult']['NewRecordID']));
+		}
+		return false;
+	}
+
 	function append_employee($user_id)
 	{
 		$staff = modules::run('staff/get_staff', $user_id);
