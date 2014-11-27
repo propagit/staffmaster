@@ -12,56 +12,56 @@ class Dispatcher extends MX_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	function index()
 	{
 		$this->website_dispatcher();
 	}
-	
+
 	function website_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
 	{
 		header("Location: http://staffbooks.com", TRUE, 301);
-		
+
 		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run('website/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+			echo modules::run('website/' . $method . '/' . $param1, $param2, $param3, $param4); exit();
 		}
-		
+
 		$content = modules::run('website', $method, $param1, $param2, $param3, $param4);
 		$this->template->set_template('website');
 		$this->template->write('content', $content);
 		$this->template->render();
 		//$this->account_dispatcher('signup');
 	}
-	
-	
-	
-	
+
+
+
+
 	function blog_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
-	{	
+	{
 		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run('blog/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+			echo modules::run('blog/' . $method . '/' . $param1, $param2, $param3, $param4); exit();
 		}
 		$content = modules::run('blog', $method, $param1, $param2, $param3, $param4);
 		$this->template->set_template('blog_admin');
 		$this->template->write_view('menu', 'blog_admin/menu');
 		$this->template->write('content', $content);
-		$this->template->render();	
+		$this->template->render();
 	}
-	
+
 	function account_dispatcher($method='', $param1='',$param2='',$param3='',$param4='')
-	{		
+	{
 		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run('account/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+			echo modules::run('account/' . $method . '/' . $param1, $param2, $param3, $param4); exit();
 		}
-		if ($method != 'setup' && $method != 'update')
+		if ($method != 'setup' && $method != 'update' && $method != 'usages')
 		{
 			header("Location: http://staffbooks.com", TRUE, 301);
 		}
 		$content = modules::run('account', $method, $param1, $param2, $param3, $param4);
-		
+
 		switch($method)
 		{
 			case 'setup':
@@ -75,7 +75,7 @@ class Dispatcher extends MX_Controller {
 		$this->template->write('title', 'Account - ' . $title);
 		$this->template->write('content', $content);
 		$this->template->render();
-	}	
+	}
 }
 
 /* End of file dispatcher.php */
