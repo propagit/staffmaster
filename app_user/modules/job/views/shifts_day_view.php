@@ -100,7 +100,7 @@
 		<? if (!$is_client) { ?>
 		<th class="center">Pay rate</th>
 		<? } ?>
-		<th>Staff Assigned &nbsp; <i onclick="sort_shifts('status')" class="fa fa-sort"></i></th>
+		<th>Staff Assigned &nbsp; <i onclick="sort_shifts('staff')" class="fa fa-sort"></i></th>
 
 		<? if (!$is_client) { ?>
 		<th class="center" colspan="2">Find</th>

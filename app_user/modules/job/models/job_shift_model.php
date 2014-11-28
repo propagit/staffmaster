@@ -200,10 +200,12 @@ class Job_shift_model extends CI_Model {
 		$sql = "SELECT
 					js.*,
 					v.name as venue_name,
-					r.name as role_name
+					r.name as role_name,
+					s.first_name as staff,
 				FROM `job_shifts` js
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id
+					LEFT JOIN `users` u ON u.user_id = js.staff_id
 				WHERE js.job_id = '" . $job_id . "'
 				AND js.status > " . SHIFT_DELETED;
 		if ($status != null) {
@@ -233,6 +235,11 @@ class Job_shift_model extends CI_Model {
 		{
 			$sql .= " ORDER BY js.status " . $sort_value;
 		}
+		if ($sort_key == 'staff')
+		{
+			$sql .= " ORDER BY staff " . $sort_value;
+		}
+
 		$sql .= " LIMIT $position, " . SHIFTS_PER_LOAD;
 
 		$query = $this->db->query($sql);
