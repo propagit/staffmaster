@@ -6,6 +6,7 @@
         </div>
 		<h2><i class="icon-accountsCREDITS"></i> &nbsp; Buy Credits</h2>
         <p>The StaffBooks system uses a credit based system where by you only pay for what you use.<br />You can top up your balance any time. The price matrix provides a discount based on bulk purchases.</p>
+        <p>Note - The minimum system credit usage is 25 credits a month. If less than 25 credits are used in a month your credit balance will be adjusted to the minimum monthly spend.</p>
 	</div>
 </div>
 <!--end top box-->
