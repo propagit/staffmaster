@@ -153,7 +153,7 @@ $(function(){
 		barColor: '#0fb507'
 	}));
 
-    <? if($this->session->userdata('view_whole_week')) { ?>
+    <? if($job['type'] == 1 && $this->session->userdata('view_whole_week')) { ?>
     load_week_shifts(<?=$job['job_id'];?>,"<?=$job['start_date'];?>");
     <? } else { ?>
 	load_job_shifts(<?=$job['job_id'];?>);
