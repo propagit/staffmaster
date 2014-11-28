@@ -88,7 +88,7 @@ function load_week_shifts(job_id, monday)
         data: {job_id: job_id, monday: monday},
         success: function(html) {
             loaded($('#wrapper_js'), html);
-            load_job_calendar(job_id, date);
+            load_job_calendar(job_id, monday);
         }
     })
 }
