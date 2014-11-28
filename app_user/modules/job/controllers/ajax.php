@@ -282,6 +282,19 @@ class Ajax extends MX_Controller {
 		$job = $this->job_model->get_job($job_id);
 
 		$date = $this->input->post('monday');
+		# Once get the date, get the monday
+		$timestamp = strtotime($date);
+		$week_day = date('N', $timestamp);
+
+		if ($week_day == 1) # Monday
+		{
+			$week_start = date('Y-m-d', strtotime('this monday', $timestamp));
+		}
+		else
+		{
+			$week_start = date('Y-m-d', strtotime('this week last monday', $timestamp));
+		}
+		$date = $week_start;
 
 		$job_dates = array();
 		$week_total_shifts = 0;
