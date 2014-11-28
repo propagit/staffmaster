@@ -201,7 +201,7 @@ class Job_shift_model extends CI_Model {
 					js.*,
 					v.name as venue_name,
 					r.name as role_name,
-					s.first_name as staff,
+					u.first_name as staff
 				FROM `job_shifts` js
 					LEFT JOIN `attribute_venues` v ON v.venue_id = js.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = js.role_id
