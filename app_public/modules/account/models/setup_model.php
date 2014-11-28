@@ -116,4 +116,23 @@ class Setup_model extends CI_Model {
 		$result = $query->first_row('array');
 		return $result['usage'];
 	}
+
+	function minimum_usage($subdomain, $month)
+	{
+		$this->init($subdomain);
+
+		$sql = "SELECT count(*) as `usage`
+				FROM job_shifts
+				WHERE status != -2
+				AND job_date LIKE '$month%'";
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		$usage = $result['usage'];
+		if ($usage < 25)
+		{
+			$deducted = 25 - $usage;
+			$sql = "UPDATE `account` SET `system_credits`= `system_credits` - $deducted";
+			$this->db->query($sql);
+		}
+	}
 }

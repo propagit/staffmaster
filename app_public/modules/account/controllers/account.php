@@ -71,16 +71,19 @@ class Account extends MX_Controller {
 		$this->load->model('account_model');
 		$accounts = $this->account_model->get_accounts(array('status' => 1));
 		$this->load->model('setup_model');
-		$month = '2014-10';
-		$usages = array();
-		foreach($accounts as $account)
+		$date = date('j');
+
+		$this->setup_model->minimum_usage('demo', '2014-10');
+
+		if ($date == 1)
 		{
-			$usages[] = array(
-				'id' => $account['subdomain'],
-				'usage' => $this->setup_model->get_monthly_usage($account['subdomain'], $month)
-				);
+			$month = date('Y-m-d', strtotime('last month'));
+			foreach($accounts as $account)
+			{
+				$this->setup_model->minimum_usage($account['subdomain'], $month);
+			}
 		}
-		echo json_encode($usages);
+
 	}
 
 }
