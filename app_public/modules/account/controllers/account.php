@@ -73,7 +73,7 @@ class Account extends MX_Controller {
 		$this->load->model('setup_model');
 		$date = date('j');
 
-		$this->setup_model->minimum_usage('demo', '2014-10');
+		#$this->setup_model->minimum_usage('demo', '2014-10');
 
 		if ($date == 1)
 		{
