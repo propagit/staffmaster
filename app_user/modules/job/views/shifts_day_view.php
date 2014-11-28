@@ -33,7 +33,7 @@
 	<? if ($job['type'] == 1 && $week_total_shifts > 0) { ?>
 	<div class="btn-group btn-nav pull-right">
 		<ul class="nav nav-tabs tab-respond">
-			<li<?=($this->session->userdata('view_whole_week')) ? '  class="active"' : '';?>><a onclick="view_whole_week(<?=$job_id;?>)"><i class="fa fa-expand"></i></a></li>
+			<li<?=($this->session->userdata('view_whole_week')) ? '  class="active"' : '';?>><a onclick="load_week_shifts(<?=$job_id;?>, '<?=$date;?>')"><i class="fa fa-expand"></i></a></li>
 			<li class="active"><a id="copy_roster" data-date="<?=$job_dates[0]['job_date'];?>"><i class="fa fa-copy"></i> &nbsp; Copy Roster</a></li>
 		</ul>
 	</div>
@@ -44,9 +44,18 @@
 
 			<? if ($job['type'] == 1) { ?>
 				<? if(strtotime($job['start_date']) < strtotime($job_dates[0]['job_date'])) { ?>
-			<li><a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) - 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-left"></i> &nbsp; </a></li>
+					<? if($this->session->userdata('view_whole_week')) { ?>
+					<li><a onclick="load_week_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) - 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-left"></i> &nbsp; </a></li>
+					<? } else { ?>
+					<li><a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) - 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-left"></i> &nbsp; </a></li>
+					<? } ?>
 				<? } ?>
-			<li class="pull-right"><a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) + 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-right"></i> &nbsp; </a></li>
+
+				<? if($this->session->userdata('view_whole_week')) { ?>
+				<li class="pull-right"><a onclick="load_week_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) + 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-right"></i> &nbsp; </a></li>
+				<? } else { ?>
+				<li class="pull-right"><a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) + 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-right"></i> &nbsp; </a></li>
+				<? } ?>
 
 
 			<? } else { ?>

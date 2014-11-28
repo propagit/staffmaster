@@ -18,13 +18,13 @@
 				</div>
 				<a href="<?=base_url();?>job/create" class="btn btn-core top-create-btn"><i class="fa fa-plus"></i> Create New Campaign</a>
 			</div>
-			<? 
+			<?
 				$shifts_count = modules::run('job/count_job_shifts', $job['job_id']);
-				$completed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_FINISHED); 
-				$confirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_CONFIRMED); 
+				$completed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_FINISHED);
+				$confirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_CONFIRMED);
 				$unconfirmed = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_UNCONFIRMED);
-				$unassigned = modules::run('job/count_job_shifts', $job['job_id'], null, '0'); 
-				$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED); 
+				$unassigned = modules::run('job/count_job_shifts', $job['job_id'], null, '0');
+				$rejected = modules::run('job/count_job_shifts', $job['job_id'], null, SHIFT_REJECTED);
 				$completed_percentage = 0;
 				if ($shifts_count > 0) {
 					$completed_percentage = number_format($completed / $shifts_count * 100, 2, '.', '');
@@ -38,7 +38,7 @@
 					Shifts Completed
 				</div>
 			</div>
-			
+
 			<? if ($shifts_count != $completed) { ?>
 			<div class="span2 pie-chart pull-right">
 				<div id="chart-incompleted-shifts">
@@ -49,41 +49,41 @@
 			</div>
 			<? } ?>
 		</div>
-				
-    </div>       
+
+    </div>
 </div>
 
 
 <div class="col-md-12">
 	<div class="box bottom-box">
-    
+
     	<div class="col-md-6 white-box">
             <div class="inner-box">
                 <?=modules::run('job/shift/form_create', $job['job_id']);?>
             </div>
         </div>
-        
+
         <div class="col-md-6 white-box">
             <div class="inner-box">
             	<h2>Weeks - Months Shifts</h2>
             	<p>Below you can see a schedule of all the jobs you have on for the week - month for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green.</p>
 
                 <div id="wrapper_calendar">
-				</div>                
-                
+				</div>
+
             </div>
         </div>
-        
+
 	</div>
-	
+
 	<div class="box bottom-box">
     	<div class="inner-box">
     		<h2>Days Shifts</h2>
 
 			<p>All shifts for the day on this job campaign are displayed below. Click the columns to perform in-line editing. <br />Using the checkbox to select shifts  will allow you to perform group functions such as deleting and duplicating.</p><br />
-			
+
 			<div id="wrapper_js">
-			</div>           
+			</div>
         </div>
     </div>
 </div>
@@ -118,14 +118,14 @@ $(function(){
         plotOptions: {
             pie: {
             	dataLabels: {
-	            	enabled: false	
+	            	enabled: false
             	},
                 shadow: false,
                 center: ['50%', '50%']
             }
         },
         credits: {
-	    	enabled: false  
+	    	enabled: false
         },
         series: [{
             type: 'pie',
@@ -152,14 +152,18 @@ $(function(){
 	$('#easy-pie-chart-1').easyPieChart($.extend({}, easyPieChartDefaults, {
 		barColor: '#0fb507'
 	}));
-			
+
+    <? if($this->session->userdata('view_whole_week')) { ?>
+    load_week_shifts(<?=$job['job_id'];?>,"<?=$job['start_date'];?>");
+    <? } else { ?>
 	load_job_shifts(<?=$job['job_id'];?>);
-	
+    <? } ?>
+
 	//email apply for shift
 	$(document).on('click','.send-email-from-modal',function(){
 		email_apply_for_shift();
 	});
-	
+
 	//email apply for shift
 	$(document).on('click','#send-sample-email',function(){
 		email_sample_apply_for_shift();

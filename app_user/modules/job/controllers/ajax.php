@@ -271,9 +271,44 @@ class Ajax extends MX_Controller {
 		}
 	}
 
-	function view_whole_week()
+	/**
+	*	Load list view of shifts by week
+	*/
+	function load_week_shifts()
 	{
 		$this->session->set_userdata('view_whole_week', true);
+
+		$job_id = $this->input->post('job_id');
+		$job = $this->job_model->get_job($job_id);
+
+		$date = $this->input->post('monday');
+
+		$job_dates = array();
+		$week_total_shifts = 0;
+		$job_shifts = array();
+		for($i=0; $i < 7; $i++) {
+			$x['job_date'] = date('Y-m-d', strtotime($date) + $i*24*60*60);
+			$job_dates[] = $x;
+			$week_total_shifts += $this->job_shift_model->count_job_shifts($job_id, $x['job_date']);
+			$day_shifts = $this->job_shift_model->get_job_shifts($job_id, $x['job_date'],
+						$this->session->userdata('shift_status_filter'),
+						$this->session->userdata('shifts_sort_key'),
+						$this->session->userdata('shifts_sort_value'));
+			$job_shifts = array_merge($job_shifts, $day_shifts);
+		}
+
+		$data['job_dates'] = $job_dates;
+		$data['total_date'] = count($job_dates);
+		$data['date'] = $date;
+		$data['job_shifts'] = $job_shifts;
+		$data['total_shifts'] = count($job_shifts);
+		$data['week_total_shifts'] = $week_total_shifts;
+
+
+		$data['job_id'] = $job_id;
+		$data['job'] = $job;
+		$data['is_client'] = $this->is_client;
+		$this->load->view('shifts_day_view', isset($data) ? $data : NULL);
 	}
 
 	/**

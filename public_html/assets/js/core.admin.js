@@ -79,13 +79,16 @@ function init_date() {
     });
 }
 
-function view_whole_week(job_id)
+function load_week_shifts(job_id, monday)
 {
+    preloading($('#wrapper_js'));
     $.ajax({
         type: "POST",
-        url: base_url + 'job/ajax/view_whole_week',
+        url: base_url + 'job/ajax/load_week_shifts',
+        data: {job_id: job_id, monday: monday},
         success: function(html) {
-            load_job_shifts(job_id);
+            loaded($('#wrapper_js'), html);
+            load_job_calendar(job_id, date);
         }
     })
 }
