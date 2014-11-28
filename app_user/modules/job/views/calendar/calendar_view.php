@@ -10,6 +10,7 @@ $(function(){
 		tmpl_path: "<?=base_url();?>assets/bootstrap-calendar/company_calendar/",
 		tmpl_cache: false,
 		day: '<?=$custom_date;?>',
+        first_day: 1,
 		onAfterViewLoad: function(view) {
 			$('#header-company-calendar-month').text(this.getTitle());
 		}

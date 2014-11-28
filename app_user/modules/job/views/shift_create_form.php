@@ -7,25 +7,25 @@
 		<label class="col-lg-3 control-label">Start Date/Time</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="start_date">
-				<input type="text" class="form-control" name="start_date" readonly />
+				<input type="text" class="form-control" name="start_date" readonly value="<?=$start_date;?>" />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group" id="f_finish_time">
 		<label class="col-lg-3 control-label">Finish Date/Time</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="finish_time">
-				<input type="text" class="form-control" name="finish_time" readonly />
+				<input type="text" class="form-control" name="finish_time" readonly value="<?=$finish_time;?>" />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 	<div class="form-group">
 		<label class="col-lg-3 control-label">Break Length</label>
 		<div class="col-lg-4">
@@ -35,24 +35,24 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group" id="f_break_start_at">
 		<label class="col-lg-3 control-label">Break Start At</label>
 		<div class="col-lg-6">
 			<div class="input-group date" id="break_start_time">
-				<input type="text" class="form-control" name="break_start_at" readonly />
+				<input type="text" class="form-control" name="break_start_at" readonly value="<?=$break_start_at;?>" />
 				<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 			</div>
 		</div>
 	</div>
-		
+
 	<div class="form-group" id="f_venue">
 		<label for="venue" class="col-lg-3 control-label">Venue</label>
 		<div class="col-lg-6">
 			<?=modules::run('attribute/venue/field_select', 'venue_id');?>
 		</div>
-		
+
 		<? if (!$is_client) { ?>
 		<div class="col-lg-3 help-block">
 			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/venue/create">Create Venue</a>
@@ -90,36 +90,36 @@
 		</div>
 		<? } ?>
 	</div>
-	
+
 	<? if (!$is_client) { ?>
 	<div class="form-group" id="f_payrate_id">
 		<label for="payrate" class="col-lg-3 control-label">Payrate</label>
 		<div class="col-lg-6">
 			<?=modules::run('attribute/payrate/field_select', 'payrate_id');?>
 		</div>
-		
+
 		<div class="col-lg-3 help-block">
 			<a><b><i class="fa fa-plus"></i></b></a> &nbsp; <a href="<?=base_url();?>attribute/payrate" target="_blank">Create Pay rate</a>
 		</div>
 	</div>
-	
+
 	<div class="form-group" id="f_supervisor">
 		<label for="supervisor" class="col-lg-3 control-label">Supervisor</label>
 		<div class="col-lg-6">
 			<?=modules::run('user/field_select', 'supervisor_id');?>
 		</div>
-	</div>	
+	</div>
 	<? } ?>
-	
+
 	<div class="form-group">
 		<div class="col-lg-offset-3 col-lg-8">
 			<button type="button" class="btn btn-core" id="btn_create_js" data-loading-text="Creating shifts..." ><i class="fa fa-plus-circle"></i> Create Shifts</button>
-			&nbsp; 
+			&nbsp;
 			<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset Form</button>
 		</div>
 	</div>
-	
-	
+
+
 </form>
 <script>
 $(function(){
@@ -167,8 +167,8 @@ $(function(){
         minuteStep: 15,
         format: 'dd-mm-yyyy hh:ii',
     });
-    
-    
+
+
     $('#btn_create_js').click(function(){
     	var btn = $(this);
 		btn.button('loading');
@@ -195,8 +195,8 @@ $(function(){
 				{
 					load_job_shifts(<?=$job_id;?>, data.job_date);
 				}
-				
-			}			
+
+			}
 		})
     });
 })

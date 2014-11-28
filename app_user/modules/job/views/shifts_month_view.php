@@ -22,11 +22,12 @@ $(function(){
 		tmpl_path: "<?=base_url();?>assets/bootstrap-calendar/tmpls/",
 		tmpl_cache: false,
 		day: '<?=date('Y-m-d', $custom_date);?>',
+        first_day: 1,
 		onAfterViewLoad: function(view) {
 			$('#header-month').text(this.getTitle());
 		},
 	};
-	
+
 	var calendar = $('#calendar').calendar(options);
 	$('a[data-calendar-nav]').each(function() {
 		var $this = $(this);
@@ -40,14 +41,14 @@ $(function(){
 	$('*[data-cal-date]').parent().click(function() {
 		load_job_shifts(<?=$job_id;?>, $(this).find('[data-cal-date]').data('cal-date'));
 	});
-	
-	
+
+
 	$('.load_month_view').click(function(){
 		load_month_view(<?=$job_id;?>, <?=$custom_date;?>);
 	});
 	$('.load_week_view').click(function(){
 		load_week_view(<?=$job_id;?>, <?=$custom_date;?>);
 	});
-	
+
 })
 </script>

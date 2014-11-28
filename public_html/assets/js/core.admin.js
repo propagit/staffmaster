@@ -79,6 +79,17 @@ function init_date() {
     });
 }
 
+function view_whole_week(job_id)
+{
+    $.ajax({
+        type: "POST",
+        url: base_url + 'job/ajax/view_whole_week',
+        success: function(html) {
+            load_job_shifts(job_id);
+        }
+    })
+}
+
 /**
  * job_id: (int), date: (string) YYYY-MM-DD format
  */
@@ -88,11 +99,11 @@ function load_job_shifts(job_id, date, scroll)
 	{
 		var job_date = moment(date).format("DD-MM-YYYY");
 		//$('input[name="start_date"]').val(job_date + " 12:00");
-		$('#start_date').datetimepicker('update', date + " 12:00");
+		$('#start_date').datetimepicker('update', date + " 09:00");
 		//$('#start_date').datetimepicker('setStartDate', job_date + " 12:00");
 		//$('input[name="finish_time"]').val(job_date + " 12:00");
-		$('#finish_time').datetimepicker('update', date + " 12:00");
-    	$('#finish_time').datetimepicker('setStartDate', job_date + " 12:00");
+		$('#finish_time').datetimepicker('update', date + " 17:00");
+    	$('#finish_time').datetimepicker('setStartDate', job_date + " 09:00");
     	//$('input[name="break_start_at"]').val(job_date + " 12:00");
     	$('#break_start_time').datetimepicker('update', date + " 12:00");
     	$('#break_start_time').datetimepicker('setStartDate', job_date + " 12:00");

@@ -6,7 +6,7 @@
 		</div>
 		<div class="col-md-12">
 			<div class="modal-body">
-				
+
 				<? if($shift) { ?>
 				<div class="btn-group">
 					<a data-calendar-nav="prev" type="button" class="btn btn-info"><i class="fa fa-arrow-left"></i></a>
@@ -18,8 +18,8 @@
 				No shift selected yet
 				<? } ?>
 				<div class="has-error"><span class="help-block" id="error_day_selected"></span></div>
-				
-				
+
+
 			</div>
 		</div>
 		<div class="modal-footer">
@@ -58,7 +58,7 @@ $(function(){
 					$('#error_day_selected').html(data.msg);
 					setTimeout(function(){
 						$('#error_day_selected').html('');
-					}, 1500);					
+					}, 1500);
 				}
 			}
 		})
@@ -72,10 +72,11 @@ function load_copy_calendar()
 		tmpl_path: "<?=base_url();?>assets/bootstrap-calendar/shift_copy/",
 		tmpl_cache: false,
 		day: '<?=$shift['job_date'];?>',
+        first_day: 1,
 		onAfterViewLoad: function(view) {
 			$('#modal-header-month').text(this.getTitle());
 		},
-	};	
+	};
 	var calendar = $('#calendar-copy').calendar(options);
 	$('.modal-dialog').find('a[data-calendar-nav]').each(function() {
 		var $this = $(this);

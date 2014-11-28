@@ -1,5 +1,5 @@
 <div id="nav_shifts">
-<?	
+<?
 	# Action menu
 	$data = array(
 		array('value' => 'copy', 'label' => '<i class="fa fa-copy"></i> Copy Selected'),
@@ -13,7 +13,7 @@
 		$data[] = array('value' => 'contact_staff', 'label' => '<i class="fa fa-envelope-o"></i> Contact Staff');
 	}
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
-	
+
 	# Filter menu
 	$data = array(
 		array('value' => '', 'label' => 'Any'),
@@ -30,17 +30,39 @@
 	}
 	echo modules::run('common/menu_dropdown', $data, 'status', $label);
 ?>
+	<? if ($job['type'] == 1 && $week_total_shifts > 0) { ?>
+	<div class="btn-group btn-nav pull-right">
+		<ul class="nav nav-tabs tab-respond">
+			<li<?=($this->session->userdata('view_whole_week')) ? '  class="active"' : '';?>><a onclick="view_whole_week(<?=$job_id;?>)"><i class="fa fa-expand"></i></a></li>
+			<li class="active"><a id="copy_roster" data-date="<?=$job_dates[0]['job_date'];?>"><i class="fa fa-copy"></i> &nbsp; Copy Roster</a></li>
+		</ul>
+	</div>
+	<? } ?>
+
 	<div class="btn-group btn-nav">
 		<ul class="nav nav-tabs tab-respond">
+
+			<? if ($job['type'] == 1) { ?>
+				<? if(strtotime($job['start_date']) < strtotime($job_dates[0]['job_date'])) { ?>
+			<li><a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) - 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-left"></i> &nbsp; </a></li>
+				<? } ?>
+			<li class="pull-right"><a onclick="load_job_shifts(<?=$job_id;?>,'<?=date('Y-m-d', strtotime($job_dates[0]['job_date']) + 7*24*60*60);?>')"> &nbsp; <i class="fa fa-angle-right"></i> &nbsp; </a></li>
+
+
+			<? } else { ?>
 			<li class="pull-right"><a class="load_month_view"><i class="fa fa-calendar"></i></a></li>
 			<li class="pull-right"><a class="load_week_view"><i class="fa fa-list"></i></a></li>
 			<li<?=($this->session->userdata('job_date') == 'all') ? ' class="active"' : '';?>><a onclick="load_job_shifts(<?=$job_id;?>,'all')">Total:  <?=$total_date;?> days and <?=modules::run('job/count_job_shifts', $job_id, null, $filter);?> shifts</a></li>
+
+			<? } ?>
 			<? foreach($job_dates as $date) { ?>
-			<li<?=($this->session->userdata('job_date') == $date['job_date']) ? ' class="active"' : '';?>>
+			<li class="tab-day<?=($this->session->userdata('job_date') == $date['job_date'] && !$this->session->userdata('view_whole_week')) ? ' active' : '';?>">
 				<a onclick="load_job_shifts(<?=$job_id;?>,'<?=$date['job_date'];?>')">
-					<?=date('d', strtotime($date['job_date']));?>
-					<span class="month"><?=date('M', strtotime($date['job_date']));?></span>
+					<b class="uc"><?=date('D', strtotime($date['job_date']));?></b>
+
 					(<?=modules::run('job/count_job_shifts', $job_id, strtotime($date['job_date']), $filter);?>)
+					<br />
+					<span class="month"><?=date('jS M', strtotime($date['job_date']));?></span>
 				</a>
 			</li>
 			<? } ?>
@@ -49,10 +71,10 @@
 </div>
 <? if (count($job_shifts) == 0) { ?>
 <div class="alert alert-warning">
-	There is no shifts.
+	There are no shifts. <a onclick="start()">Add new shift</a>
 </div>
-<? } else { ?> 
-      
+<? } else { ?>
+
 <div class="table-responsive" id="shifts_search_list">
 <table class="table table-bordered table-hover table-middle" width="100%">
 <thead>
@@ -64,13 +86,13 @@
 		<? if ($is_client) { ?>
 		<th>Uniform</th>
 		<? } ?>
-		<th class="center">Start - Finish</th>
+		<th class="center">Start - Finish <i onclick="sort_shifts('start_time')" class="fa fa-sort"></i></th>
 		<th class="center">Break</th>
 		<? if (!$is_client) { ?>
 		<th class="center">Pay rate</th>
 		<? } ?>
 		<th>Staff Assigned &nbsp; <i onclick="sort_shifts('status')" class="fa fa-sort"></i></th>
-		
+
 		<? if (!$is_client) { ?>
 		<th class="center" colspan="2">Find</th>
 		<th class="center" colspan="2">Settings</th>
@@ -83,7 +105,7 @@
 </thead>
 <tbody id="list-shifts">
 <? foreach($job_shifts as $shift) {
-	echo modules::run('job/shift/row_view', $shift['shift_id']);	
+	echo modules::run('job/shift/row_view', $shift['shift_id']);
 } ?>
 </tbody>
 </table>
@@ -114,19 +136,18 @@ $(function(){
 	var track_load = 1; // total loaded record group(s)
 	var loading = false; // to prevents multipal ajax loads
 	var total_groups = <?=ceil($total_shifts/SHIFTS_PER_LOAD);?>; // total record group(s)
-	//$('#list-shifts').load("<?=base_url();?>job/ajax/load_day_shifts_partly", {'group_no':track_load}, function() {track_load++;}); //load first group
 	if (total_groups > 1) {
-		
-		$(window).scroll(function() { //detect page scroll	
+
+		$(window).scroll(function() { //detect page scroll
 			if($(window).scrollTop() + $(window).height() == $(document).height())  //user scrolled to bottom of the page?
 			{
-		
+
 				if(track_load <= total_groups && loading==false) //there's more data to load
 				{
 					loading = true; //prevent further ajax loading
 					$('.animation_image').show(); //show loading image
 					//load data from the server using a HTTP POST request
-					$.post('<?=base_url();?>job/ajax/load_more_day_shifts',{'group_no': track_load, 'job_id': <?=$job_id;?>, 'date': '<?=$this->session->userdata('job_date');?>'}, function(data){	
+					$.post('<?=base_url();?>job/ajax/load_more_day_shifts',{'group_no': track_load, 'job_id': <?=$job_id;?>, 'date': '<?=$this->session->userdata('job_date');?>'}, function(data){
 						$("#list-shifts").append(data); //append received data into the element
 						//hide loading image
 						$('.animation_image').hide(); //hide loading image once data is received
@@ -141,9 +162,9 @@ $(function(){
 				}
 			}
 		});
-	}	
-	
-	
+	}
+
+
 	$('#menu-status ul li a').click(function(){
 		var value = $(this).attr('data-value');
 		$.ajax({
@@ -155,20 +176,20 @@ $(function(){
 				//alert(value);
 				//window.location = '<?=base_url();?>job/details/<?=$job_id;?>';
 			}
-		})		
+		})
 	});
-	
-	
-	
-	  
-    
+
+
+
+
+
     var selected_shifts = new Array();
-    	
+
 
 	$('#selected_all_shifts').click(function(){
-		$('input.selected_shifts').prop('checked', this.checked);		
+		$('input.selected_shifts').prop('checked', this.checked);
 	});
-	
+
 	$('#menu-day-action ul li a[data-value="delete"]').confirmModal({
 		confirmTitle: 'Delete selected shifts',
 		confirmMessage: 'Are you sure you want to delete selected shifts?',
@@ -192,6 +213,15 @@ $(function(){
 			});
 		}
 	});
+
+	$('#copy_roster').click(function(){
+		var date = $(this).attr('data-date');
+		$('#copy_shift').modal({
+			remote: "<?=base_url();?>job/ajax/load_roster_copy/<?=$job_id;?>/" + date,
+			show: true
+		});
+	});
+
 	$('#menu-day-action ul li a[data-value="edit"]').click(function(){
 		selected_shifts.length = 0;
 		$('.selected_shifts:checked').each(function(){
@@ -203,7 +233,7 @@ $(function(){
 				show: true
 			});
 		}
-		
+
 	});
 	//attach brief to multiple shift
 	$('#menu-day-action ul li a[data-value="attach_brief"]').click(function(){
@@ -217,7 +247,7 @@ $(function(){
 				show: true
 			});
 		}
-		
+
 	});
 	//attach notes to multiple shift
 	$('#menu-day-action ul li a[data-value="attach_note"]').click(function(){
@@ -231,9 +261,9 @@ $(function(){
 				show: true
 			});
 		}
-		
+
 	});
-		
+
 	//contact staff
 	$('#menu-day-action ul li a[data-value="contact_staff"]').click(function(){
 		var shift_selected = false;
@@ -241,7 +271,7 @@ $(function(){
 		$('.selected_shifts:checked').each(function(){
 			shift_selected = true;
 			if ($(this).attr('data-staff-user-id') != '0')
-			{				
+			{
 				$('#selected-shift-email-info').append('<input type="hidden" name="selected_module_ids[]" value="'+$(this).val()+'" />');
 				$('#selected-shift-email-info').append('<input type="hidden" name="user_staff_selected_user_id[]" value="'+$(this).attr('data-staff-user-id')+'" />');
 			}
@@ -254,13 +284,16 @@ $(function(){
 			  success: function(html) {
 			  	//alert(html);
 				  $('#ajax-email-apply-shift-modal').html(html);
-				  $('#email-modal').modal('show');	
+				  $('#email-modal').modal('show');
 			  }
 		  });
 		}
-		
+
 	});
-})
+});
+function start() {
+	$('body').scrollTo('#form_create_js', 500 );
+}
 function init_inline_edit() {
 	$('.update_link').on('save', function(e, params) {
 		$(this).parent().parent().removeClass('purple');
@@ -296,7 +329,7 @@ function init_inline_edit() {
 			return;
 		}
 	});
-	
+
 	<? } else { ?>
 	$('.shift_uniform').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_uniform',
@@ -305,7 +338,7 @@ function init_inline_edit() {
 		source: [<?=modules::run('attribute/uniform/get_uniforms', 'data_source');?>]
 	});
 	<? } ?>
-	
+
 	$.each($('tr.disabled'), function() {
 		$(this).find('input').remove();
 		disabled($(this));
@@ -319,7 +352,7 @@ function init_inline_edit() {
 		disabled($(this));
 		var pk = $(this).find('.shift_uniform').attr('data-pk');
 		$(this).find('.content-disabled').html('<a class="btn btn-danger" onclick="load_paid_shift(' + pk + ')"><i class="fa fa-dollar"></i></a>');
-		
+
 	});
 	$('.btn-unlock-shift').confirmModal({
 		confirmTitle: 'Unlock shift',
@@ -330,7 +363,7 @@ function init_inline_edit() {
 	});
 	$('.shift_start_time').editable({
 		combodate: {
-            firstItem: '',            
+            firstItem: '',
             minuteStep: 15
         },
 		url: '<?=base_url();?>job/ajax/update_shift_start_time',
@@ -371,7 +404,7 @@ function init_inline_edit() {
 	    this.options.callback();
 	  }
 	}
-	
+
 	/*
 $('.shift_payrate').editable({
 		url: '<?=base_url();?>job/ajax/update_shift_payrate',
@@ -381,7 +414,7 @@ $('.shift_payrate').editable({
 		sourceCache: false
 	});
 */
-	
+
 	$('.shift_payrate').popover({
 		html: true,
 		placement: 'bottom',
@@ -393,7 +426,7 @@ $('.shift_payrate').editable({
 			return $('#wrapper_shift_payrate').html();
 		}
 	})
-	
+
 	$('.shift_breaks').popover({
 		html: true,
 		placement: 'bottom',
@@ -414,7 +447,7 @@ $('.shift_payrate').editable({
 		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
 		content: function(){
 			return $('#wrapper_staff_hours').html();
-		}		
+		}
 	})
 	$('.shift_staff').popover({
 		html: true,
@@ -450,7 +483,7 @@ function email_apply_for_shift(){
 				$('#email-modal').modal('hide');
 			}, 4000);
 		}
-	}); 
+	});
 }
 
 function email_sample_apply_for_shift(){
@@ -468,7 +501,7 @@ function email_sample_apply_for_shift(){
 				$('#msg-email-sent-successfully').addClass('hide');
 			}, 3000);
 		}
-	}); 
+	});
 }
 
 
@@ -482,7 +515,7 @@ function unlock_shift(pk) {
 			$('#shift_' + pk).replaceWith(html);
 		}
 	})
-	
+
 }
 function load_paid_shift(pk) {
 	$('.bs-modal-lg').modal({
@@ -523,7 +556,7 @@ function load_shift_staff(obj) {
 	}).done(function(){
 		$(obj).popover('show');
 	})
-	
+
 }
 function load_shift_payrate(obj) {
 	$('#wrapper_shift_payrate').html('');
@@ -553,7 +586,7 @@ function load_shift_breaks(obj) {
 		{
 			$('#wrapper_shift_break').html(html);
 		}
-	}).done(function(){		
+	}).done(function(){
 		$(obj).popover('show');
 		$('.break-add').click(function(){
 			var list_breaks = $(this).parent().find('#list-breaks');
@@ -565,8 +598,8 @@ function load_shift_breaks(obj) {
 				{
 					$(list_breaks).append(html);
 				}
-			})			
-		});		
+			})
+		});
 		$('.break-submit').click(function(){
 			$.ajax({
 		    	type: "POST",
@@ -576,7 +609,7 @@ function load_shift_breaks(obj) {
 				{
 					data = $.parseJSON(data);
 					if (!data.ok)
-					{	
+					{
 						$('.editable-breaks').each(function(i,obj) {
 							$(obj).removeClass('has-error');
 							if (i== data.number)
@@ -590,8 +623,8 @@ function load_shift_breaks(obj) {
 						$('.shift_breaks').popover('hide');
 						$('#shift_break_' + data.shift_id).html(data.minutes);
 					}
-					
-				}			
+
+				}
 			})
 		})
 		$('.break-cancel').click(function(){
