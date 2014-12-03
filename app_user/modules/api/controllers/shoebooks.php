@@ -249,6 +249,7 @@ class Shoebooks extends MX_Controller {
 		$request = str_replace('&', '&#038;', $request);
 		$request = str_replace('>', '&gt;', $request);
 		$request = str_replace('<', '&lt;', $request);
+		echo '<pre>'; var_dump($request); echo '</pre>';
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
