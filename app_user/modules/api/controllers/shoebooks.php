@@ -247,11 +247,11 @@ class Shoebooks extends MX_Controller {
 			</NewEmployee>
 		</AppendEmployee>';
 		$request = str_replace('&', '&#038;', $request);
-		$request = str_replace('>', '&gt;', $request);
-		$request = str_replace('<', '&lt;', $request);
-		echo '<pre>'; var_dump($request); echo '</pre>';
+		#$request = str_replace('>', '&gt;', $request);
+		#$request = str_replace('<', '&lt;', $request);
+		#echo '<pre>'; var_dump($request); echo '</pre>';
 		$client = new nusoap_client($this->host);
-		echo '<pre>'; var_dump($client); echo '</pre>';
+		#echo '<pre>'; var_dump($client); echo '</pre>';
 		$error = $client->getError();
 		if ($error)
 		{
@@ -259,9 +259,9 @@ class Shoebooks extends MX_Controller {
 			return false;
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
-		echo '<pre>'; var_dump($msg); echo '</pre>'; die();
+		#echo '<pre>'; var_dump($msg); echo '</pre>'; die();
 		$result = $client->send($msg, $action);
-		#echo '<pre>'; var_dump($result); echo '</pre>'; die();
+		echo '<pre>'; var_dump($result); echo '</pre>'; die();
 		if (isset($result['AppendEmployeeResult']['NewRecordID']))
 		{
 			$this->load->model('staff/staff_model');
@@ -346,8 +346,8 @@ class Shoebooks extends MX_Controller {
 			</NewEmployee>
 		</AppendEmployee>';
 		$request = str_replace('&', '&#038;', $request);
-		$request = str_replace('>', '&gt;', $request);
-		$request = str_replace('<', '&lt;', $request);
+		#$request = str_replace('>', '&gt;', $request);
+		#$request = str_replace('<', '&lt;', $request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -437,8 +437,8 @@ class Shoebooks extends MX_Controller {
 		#var_dump($request);
 
 		$request = str_replace('&', '&#038;', $request);
-		$request = str_replace('>', '&gt;', $request);
-		$request = str_replace('<', '&lt;', $request);
+		#$request = str_replace('>', '&gt;', $request);
+		#$request = str_replace('<', '&lt;', $request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -628,8 +628,8 @@ class Shoebooks extends MX_Controller {
 			</NewCustomer>
 		</AppendCustomer>';
 		$request = str_replace('&', '&#038;', $request);
-		$request = str_replace('>', '&gt;', $request);
-		$request = str_replace('<', '&lt;', $request);
+		#$request = str_replace('>', '&gt;', $request);
+		#$request = str_replace('<', '&lt;', $request);
 
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
@@ -686,8 +686,8 @@ class Shoebooks extends MX_Controller {
 			</NewCustomer>
 		</UpdateCustomer>';
 		$request = str_replace('&', '&#038;', $request);
-		$request = str_replace('>', '&gt;', $request);
-		$request = str_replace('<', '&lt;', $request);
+		#$request = str_replace('>', '&gt;', $request);
+		#$request = str_replace('<', '&lt;', $request);
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
 		if ($error)
@@ -922,8 +922,8 @@ class Shoebooks extends MX_Controller {
 			</AppendPayslip>';
 
 			$request = str_replace('&', '&#038;', $request);
-			$request = str_replace('>', '&gt;', $request);
-			$request = str_replace('<', '&lt;', $request);
+			#$request = str_replace('>', '&gt;', $request);
+			#$request = str_replace('<', '&lt;', $request);
 			#var_dump($request); die();
 			$client = new nusoap_client($this->host);
 			$error = $client->getError();
@@ -1085,8 +1085,8 @@ class Shoebooks extends MX_Controller {
 		</AppendInvoice>';
 
 		$request = str_replace('&', '&#038;', $request);
-		$request = str_replace('>', '&gt;', $request);
-		$request = str_replace('<', '&lt;', $request);
+		#$request = str_replace('>', '&gt;', $request);
+		#$request = str_replace('<', '&lt;', $request);
 		#var_dump($request); die();
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
@@ -1213,8 +1213,8 @@ class Shoebooks extends MX_Controller {
 		</AppendInvoice>';
 
 		$request = str_replace('&', '&#038;', $request);
-		$request = str_replace('>', '&gt;', $request);
-		$request = str_replace('<', '&lt;', $request);
+		#$request = str_replace('>', '&gt;', $request);
+		#$request = str_replace('<', '&lt;', $request);
 		#var_dump($request); die();
 		$client = new nusoap_client($this->host);
 		$error = $client->getError();
