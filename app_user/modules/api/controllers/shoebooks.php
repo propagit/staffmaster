@@ -251,6 +251,7 @@ class Shoebooks extends MX_Controller {
 		$request = str_replace('<', '&lt;', $request);
 		echo '<pre>'; var_dump($request); echo '</pre>';
 		$client = new nusoap_client($this->host);
+		echo '<pre>'; var_dump($client); echo '</pre>';
 		$error = $client->getError();
 		if ($error)
 		{
@@ -258,8 +259,9 @@ class Shoebooks extends MX_Controller {
 			return false;
 		}
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
+		echo '<pre>'; var_dump($msg); echo '</pre>'; die();
 		$result = $client->send($msg, $action);
-		var_dump($result); die();
+		#echo '<pre>'; var_dump($result); echo '</pre>'; die();
 		if (isset($result['AppendEmployeeResult']['NewRecordID']))
 		{
 			$this->load->model('staff/staff_model');
