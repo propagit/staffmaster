@@ -241,7 +241,7 @@ class Shoebooks extends MX_Controller {
 				<ContactNumbers>
 					<ContactNumber>
 						<PhoneNumber>' . $staff['phone'] . '</PhoneNumber>
-						<ContactMethod></ContactMethod>
+						<ContactMethod>Phone</ContactMethod>
 					</ContactNumber>
 				</ContactNumbers>
 			</NewEmployee>
@@ -338,7 +338,7 @@ class Shoebooks extends MX_Controller {
 				<ContactNumbers>
 					<ContactNumber>
 						<PhoneNumber>' . $staff['phone'] . '</PhoneNumber>
-						<ContactMethod></ContactMethod>
+						<ContactMethod>Phone</ContactMethod>
 					</ContactNumber>
 				</ContactNumbers>
 			</NewEmployee>
