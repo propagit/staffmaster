@@ -32,8 +32,8 @@
     	<td style="padding:15px;" width="35%">
         	<?=(isset($company['email_c_telephone']) && $company['email_c_telephone']!='') ? 'T:&nbsp;&nbsp;&nbsp;'.$company['email_c_telephone'].'<br />' : '';?>
 			<?=(isset($company['email_c_fax']) && $company['email_c_fax']!='') ? 'F:&nbsp;&nbsp;&nbsp;'.$company['email_c_fax'].'<br />' : '';?>
-            <?=(isset($company['email_c_email']) && $company['email_c_email']!='') ? 'E:&nbsp;&nbsp;&nbsp;<a href="#" style="color:'.(isset($font_color) && $font_color !='') ? '#'.$font_color : '#fff'.';text-decoration: none;">'.$company['email_c_email'].'</a><br />' : '';?>
-            <?=(isset($company['email_c_website']) && $company['email_c_website']!='') ? 'W:&nbsp;&nbsp;&nbsp;<a href="#" style="color:'.(isset($font_color) && $font_color !='') ? '#'.$font_color : '#fff'.';text-decoration: none;">'.$company['email_c_website'].'</a>' : '';?> 
+            <?=(isset($company['email_c_email']) && $company['email_c_email']!='') ? 'E:&nbsp;&nbsp;&nbsp;<a href="#" style="color:#fff;text-decoration: none;">'.$company['email_c_email'].'</a><br />' : '';?>
+            <?=(isset($company['email_c_website']) && $company['email_c_website']!='') ? 'W:&nbsp;&nbsp;&nbsp;<a href="#" style="color:#fff;text-decoration: none;">'.$company['email_c_website'].'</a>' : '';?> 
         </td>
         <td style="padding:15px;" width="65%"  align="right">
        		<?=(isset($company['email_common_text'])) ? $company['email_common_text'] : '';?>
