@@ -1,4 +1,4 @@
-<table style="background:<?=(isset($color) && $color !='') ? '#'.$color : '#00bbf8' ?>; color:<?=(isset($font_color) && $font_color !='') ? '#'.$font_color : '#fff' ?>; font-size:11px; font-family:Arial, Helvetica, sans-serif;padding:15px;" width="100%">
+<table style="background:<?=(isset($color) && $color !='') ? '#'.$color : '#00bbf8' ?>; color:<?=$font_color != '' ? '#'.$font_color : '#fff' ?>; font-size:11px; font-family:Arial, Helvetica, sans-serif;padding:15px;" width="100%">
 	<tr valign="bottom">
     	<td style="padding:15px;" width="35%">
         	<?=(isset($company['email_c_name'])&& $company['email_c_name']!='') ? '<span style="font-size:14px; font-weight:bold;">'.$company['email_c_name'].'</span><br /><br />' : '';?>
