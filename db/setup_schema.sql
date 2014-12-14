@@ -1609,8 +1609,11 @@ CREATE TABLE IF NOT EXISTS `invoice_items` (
 -- Table structure for table `jobs`
 --
 
+
 CREATE TABLE IF NOT EXISTS `jobs` (
   `job_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0: scheduling, 1: standard roster',
+  `start_date` date NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0: temporary, 1: created',
   `client_id` bigint(20) NOT NULL,
   `department_id` bigint(20) NOT NULL,
