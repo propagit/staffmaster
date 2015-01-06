@@ -238,7 +238,7 @@ class Ajax extends MX_Controller {
 				echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number should be in numeric format.'));
 				return;	
 			}
-			if(strlen($$data['f_acc_number']) > 14){
+			if(strlen($data['f_acc_number']) > 14){
 				echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number should not be more than 14 digits.'));
 				return;		
 			}	
