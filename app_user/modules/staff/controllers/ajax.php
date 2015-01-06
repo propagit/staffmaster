@@ -225,6 +225,10 @@ class Ajax extends MX_Controller {
 				echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB should be in numeric format.'));
 				return;	
 			}
+			if(strlen($temp_bsb) > 6){
+				echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB should not be more than 6 digits.'));
+				return;		
+			}
 		}
 		if (!$data['f_acc_number']) {
 			echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number is required'));
@@ -233,6 +237,10 @@ class Ajax extends MX_Controller {
 			if(!is_numeric($data['f_acc_number'])){
 				echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number should be in numeric format.'));
 				return;	
+			}
+			if(strlen($temp_bsb) > 14){
+				echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'Account number should not be more than 14 digits.'));
+				return;		
 			}	
 		}
 		
@@ -260,6 +268,14 @@ class Ajax extends MX_Controller {
 	function update_super()
 	{
 		$data = $this->input->post();
+		
+		# if user choose their own superannuation, then super fund name is mandatory
+		if ($data['s_choice'] == 'own') {
+			if(!$data['s_external_id']){
+				echo json_encode(array('ok' => false, 'error_id' => 's_external_id', 'msg' => 'Super Fund is required'));
+				return;
+			}
+		}
 		$staff_data = array(
 			's_choice' => isset($data['s_choice']) ? $data['s_choice'] : '',
 			's_name' => isset($data['s_name']) ? $data['s_name'] : '',
@@ -277,6 +293,7 @@ class Ajax extends MX_Controller {
 			'update_description' => 'super details'
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
+		echo json_encode(array('ok' => true));
 	}
 	
 	/**

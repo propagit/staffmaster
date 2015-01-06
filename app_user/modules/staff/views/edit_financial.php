@@ -14,13 +14,13 @@
 	<div class="form-group" id="f_f_bsb">
 		<label for="f_bsb" class="col-md-4 control-label">BSB <span class="text-danger">**</span></label>
 		<div class="col-md-3">
-			<input type="text" class="form-control bank-details" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'];?>" tabindex="2" onkeypress="return help.check_numeric(this, event,'h');" maxlength="8"/>
+			<input type="text" class="form-control bank-details" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'];?>" tabindex="2" onkeypress="return help.check_numeric(this, event,'n');" maxlength="6"/>
 		</div>
 	</div>
 	<div class="form-group" id="f_f_acc_number">
 		<label for="f_acc_number" class="col-md-4 control-label">Account Number <span class="text-danger">**</span></label>
 		<div class="col-md-3">
-			<input type="text" class="form-control bank-details" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" tabindex="3" onkeypress="return help.check_numeric(this, event,'n');" maxlength="20"/>
+			<input type="text" class="form-control bank-details" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" tabindex="3" onkeypress="return help.check_numeric(this, event,'n');" maxlength="14"/>
 		</div>
 	</div>
     <div class="form-group">

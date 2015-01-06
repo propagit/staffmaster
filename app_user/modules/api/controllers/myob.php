@@ -486,7 +486,7 @@ class Myob extends MX_Controller {
 				array(
 					'Location' => 1,
 					'Street' => $staff['address'],
-					'City' => $staff['city'],
+					'City' => trim($staff['city']) ? $staff['city'] : $staff['suburb'],
 					'State' => $staff['state'],
 					'PostCode' => $staff['postcode'],
 					'Country' => $staff['country'],

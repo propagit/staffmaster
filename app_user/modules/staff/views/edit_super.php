@@ -242,6 +242,7 @@ if ($platform == 'myob') {
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">
 			<div class="alert alert-success hide" id="msg-update-super"><i class="fa fa-check"></i> &nbsp; Staff super details has been updated successfully!</div>
+            <div class="alert alert-danger hide" id="msg-update-super-error"><i class="fa fa-times"></i> &nbsp; <span id="super-update-error-msg"></span></div>
 			<button type="button" class="btn btn-core" id="btn_update_super" data-loading-text="Updating staff..."><i class="fa fa-save"></i> Update Super Details</button>
 		</div>
 	</div>
@@ -261,12 +262,19 @@ $(function(){
 			type: "POST",
 			url: "<?=base_url();?>staff/ajax/update_super",
 			data: $('#form_update_staff_super').serialize(),
-			success: function(html) {
+			success: function(data) {
 				btn.button('reset');
-				$('#msg-update-super').removeClass('hide');
-				setTimeout(function(){
-					$('#msg-update-super').addClass('hide');
-				}, 2000);
+				data = $.parseJSON(data);
+				if (!data.ok) {
+					$('#super-update-error-msg').html(data.msg);
+					$('#msg-update-super-error').removeClass('hide');
+				}else{
+					$('#msg-update-super-error').addClass('hide');
+					$('#msg-update-super').removeClass('hide');
+					setTimeout(function(){
+						$('#msg-update-super').addClass('hide');
+					}, 2000);
+				}
 			}
 		})
 	})
