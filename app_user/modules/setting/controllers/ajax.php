@@ -1530,4 +1530,10 @@ class Ajax extends MX_Controller {
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
+	
+	# Email timesheet to supervisor/staff etc setting
+	function edit_timesheet()
+	{
+		$this->load->view('system_settings/edit_timesheet', isset($data) ? $data : NULL);	
+	}
 }

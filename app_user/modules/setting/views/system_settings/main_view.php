@@ -17,12 +17,14 @@
 			<ul class="nav nav-tabs tab-respond" id="nav-campaign-resource">
             	<li class="active mobile-tab"><a href="#staff_portal" data-toggle="tab">Staff Portal</a></li>
                 <li class="mobile-tab"><a href="#information_sheet" data-toggle="tab">Information Sheet</a></li>
+                <li class="mobile-tab"><a href="#timesheet" data-toggle="tab">Timesheet</a></li>
                 <li class="mobile-tab"><a href="#others" data-toggle="tab">Others</a>
 			</ul>
 
 			<div class="tab-content">
             	<div class="tab-pane active" id="staff_portal"></div>
 				<div class="tab-pane" id="information_sheet"></div>
+                <div class="tab-pane" id="timesheet"></div>
 				<div class="tab-pane" id="others"></div>
 			</div>
 		 </div>
