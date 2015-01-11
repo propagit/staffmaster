@@ -1731,6 +1731,10 @@ CREATE TABLE IF NOT EXISTS `job_shift_timesheets` (
   `batched_on` datetime NOT NULL,
   `staff_paid_on` datetime NOT NULL,
   `client_paid_on` datetime NOT NULL,
+  `email_sent` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0: not sent, 1 : sent',
+  `supervisor_key` varchar(255) NOT NULL,
+  `staff_key` varchar(255) NOT NULL,
+  `reject_note` text NOT NULL,
   PRIMARY KEY (`timesheet_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

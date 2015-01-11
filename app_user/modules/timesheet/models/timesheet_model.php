@@ -133,4 +133,35 @@ class Timesheet_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	function get_timesheet_for_email($key_type = ''){
+		$sql = "SELECT t.* 
+				FROM `job_shift_timesheets` t 
+				WHERE t.status < " . TIMESHEET_APPROVED . " 
+				AND t.email_sent != " . TIMESHEET_EMAIL_SENT; 
+		if($key_type){
+				$group_by_key = $key_type == TIMESHEET_SUPERVISOR_KEY_TYPE ? 'supervisor_key' : 'staff_key';
+				$sql .= " AND t.$group_by_key != ''
+						GROUP BY $group_by_key";	
+		}
+		$query = $this->db->query($sql);
+		return $query->result_array();			
+	}
+	
+	function get_timesheet_by_key($key_type,$key)
+	{
+		$sql = "SELECT t.* 
+				FROM `job_shift_timesheets` t";
+		# supervisor - key_type - sp
+		if($key_type == TIMESHEET_SUPERVISOR_KEY_TYPE){
+			$sql .= " WHERE t.status < " . TIMESHEET_APPROVED . " 
+					  AND t.supervisor_id != 0 AND t.supervisor_key = '" . $key . "'";		
+		}else{
+		# staff - keytype - sf
+			$sql .= " WHERE t.status < " . TIMESHEET_SUBMITTED . " 
+					AND t.staff_key = '" . $key . "'";		
+		}
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	
 }

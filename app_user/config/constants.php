@@ -83,6 +83,13 @@ define('TIMESHEET_BATCHED', 3);
 define('TIMESHEET_PROCESSING', 4);
 define('TIMESHEET_PAID', 5);
 
+define('TIMESHEET_EMAIL_SENT',1);
+define('TIMESHEET_EMAIL_NOT_SENT',0);
+define('SUPERVISOR_TIMESHEET_SALT','sb-sp');
+define('STAFF_TIMESHEET_SALT','sb-sf');
+define('TIMESHEET_STAFF_KEY_TYPE','sf');
+define('TIMESHEET_SUPERVISOR_KEY_TYPE','sp');
+
 define('PAYRUN_DELETED', -1);
 define('PAYRUN_PENDING', 0);
 define('PAYRUN_READY', 1);

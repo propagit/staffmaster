@@ -1,6 +1,6 @@
 <h2>Work Summary</h2>
 <p>Quick stats on whats up soon</p>
-
+<?=modules::run('dashboard/shift_completion_stats');?>
 <div class="dash-daily-stats-row">
     <div class="counter small">
         <span><?=$active_jobs;?></span>

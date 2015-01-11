@@ -136,5 +136,12 @@ class Dashboard extends MX_Controller {
 	{
 		$data['logs'] = modules::run('log/get_notifications');
 		$this->load->view('activity_log', isset($data) ? $data : NULL);
-	}	
+	}
+	
+	# load shift completion stats
+	function shift_completion_stats()
+	{
+		$data['completed_shifts'] = modules::run('timesheet/get_ungenerated_timesheet_count');
+		$this->load->view('timesheet_statistics', isset($data) ? $data : NULL);	
+	}
 }

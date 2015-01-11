@@ -240,4 +240,6 @@ class Public_dispatcher extends MX_Controller {
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
 	
+	
+	
 }

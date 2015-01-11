@@ -17,7 +17,7 @@ class Brief_dispacher extends MX_Controller {
 	{
 		$this->template->set_template('brief');
 		$this->template->add_css('custom_styles');
-		$title = "Staff Master | Brief";
+		$title = "StaffBooks | Brief";
 		$content = modules::run($controller . '/index', $method, $param1,$param2,$param3,$param4);
 		$this->template->write('title', $title);
 		$this->template->write('content', $content);

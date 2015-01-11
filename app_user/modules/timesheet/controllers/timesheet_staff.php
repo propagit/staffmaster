@@ -16,8 +16,10 @@ class Timesheet_staff extends MX_Controller {
 		$this->load->model('timesheet_staff_model');
 		$this->load->model('job/job_shift_model');
 		$this->load->model('expense/expense_model');
-		$user = $this->session->userdata('user_data');
-		$this->user_id = $user['user_id'];
+		if($this->session->userdata('user_data')){
+			$user = $this->session->userdata('user_data');
+			$this->user_id = $user['user_id'];
+		}
 	}
 	
 	

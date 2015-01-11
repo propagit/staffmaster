@@ -18,8 +18,11 @@ class Staff extends MX_Controller {
 		$this->load->model('formbuilder/formbuilder_model');
 		$this->load->model('attribute/custom_field_model');
 		$this->load->model('export/export_model');
-		$this->user = $this->session->userdata('user_data');
-		$this->is_client = modules::run('auth/is_client');
+		if($this->session->userdata('user_data')){
+			$this->user = $this->session->userdata('user_data');
+			$this->is_client = modules::run('auth/is_client');
+		}
+		
 	}
 	
 	public function index($method='', $param='')

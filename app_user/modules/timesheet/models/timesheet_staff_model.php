@@ -10,8 +10,10 @@ class Timesheet_staff_model extends CI_Model {
 	{
 		parent::__construct();
 		$this->load->model('log/log_model');
-		$user = $this->session->userdata('user_data');
-		$this->user_id = $user['user_id'];
+		if($this->session->userdata('user_data')){
+			$user = $this->session->userdata('user_data');
+			$this->user_id = $user['user_id'];
+		}
 	}
 
 	function get_finished_shifts() {

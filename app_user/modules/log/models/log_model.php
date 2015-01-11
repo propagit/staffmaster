@@ -6,8 +6,10 @@ class Log_model extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
-		$user = $this->session->userdata('user_data');
-		$this->user_id = $user['user_id'];
+		if($this->session->userdata('user_data')){
+			$user = $this->session->userdata('user_data');
+			$this->user_id = $user['user_id'];
+		}
 	}
 	
 	function insert_log($data) 

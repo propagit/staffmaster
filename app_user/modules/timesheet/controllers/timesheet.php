@@ -25,6 +25,9 @@ class Timesheet extends MX_Controller {
 			case 'generate':
 					$this->generate();
 				break;
+			case 'email_timesheet':
+					$this->email_timesheet();
+				break;
 			default:
 					$this->main_view();
 				break;
@@ -397,5 +400,68 @@ class Timesheet extends MX_Controller {
 			$total_expenses += $cost;
 		}
 		return $total_expenses;
+	}
+	
+	/**
+	*   @name: get_ungenerated_timesheet_count
+	*	@desc: Calculates the number of new timesheets to be generated
+	*/
+	function get_ungenerated_timesheet_count()
+	{
+		$shifts = $this->timesheet_model->get_finished_shifts();	
+		return count($shifts);
+	}
+	
+	# Email timesheet for approval
+	function email_timesheet()
+	{
+		# generate timesheet key
+		#$this->_generate_timesheet_key();
+
+		# if configured to send timesheet to all staff 
+		if($this->config_model->get('ts_email_staff')){
+			$this->_send_email_timesheet(TIMESHEET_STAFF_KEY_TYPE);	
+		}
+		
+		# if configured to send timesheet to supervisor
+		if($this->config_model->get('ts_email_supervisor')){
+			$this->_send_email_timesheet(TIMESHEET_SUPERVISOR_KEY_TYPE);		
+		}
+	}
+	
+	function _send_email_timesheet($key_type)
+	{
+		/**
+			Since the email only contains an encrypted key - and a link
+			The idea here to get as little data from db to optimize performance.
+			We do this by grouping the data by key as all the records for a staff or a supervisor has same key 
+				for the given number of generated timesheet at any given time - see the function 'get_timesheet_for_email()' in timesheet_model.php for sql
+		*/
+		$timesheets = $this->timesheet_model->get_timesheet_for_email($key_type);	
+		echo '<pre>' . print_r($timesheets,true). '</pre>';
+	}
+	
+	
+	# generate timesheet key
+	function _generate_timesheet_key()
+	{
+		# the generated key will be different each time and won't affect previous records 
+		# this is because it only affects records that has not been approved for payrun and records that as not been marked as email sent
+		
+		# IMPORTANT - Please note that this function is to be called in conjustion of _send_email_timesheet() as this function tags the record as email sent
+		
+		$timesheets = $this->timesheet_model->get_timesheet_for_email();
+		$time = time();
+				
+		# insert supervisor key
+		foreach($timesheets as $ts){
+			  # flush supervisor key to prevent previous value being added to the records
+			  $data['supervisor_key'] = '';
+			  if($ts['supervisor_id']){
+			  	$data['supervisor_key'] = md5($time . SUPERVISOR_TIMESHEET_SALT . $ts['supervisor_id']);
+			  }
+			  $data['staff_key'] = md5($time . STAFF_TIMESHEET_SALT . $ts['staff_id']);
+			  $this->timesheet_model->update_timesheet($ts['timesheet_id'], $data);
+		}	
 	}
 }

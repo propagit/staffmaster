@@ -104,6 +104,33 @@ $route['brief/view_brief/(:any)/(:any)'] = 'dispatcher/user_dispatcher/brief/vie
 $route['brief/view_information_sheet'] = 'dispatcher/user_dispatcher/brief/view_information_sheet';
 $route['brief/view_information_sheet/(:any)'] = 'dispatcher/user_dispatcher/brief/view_information_sheet/$1';
 
+# public view for timesheet approval
+$route['pts/ls_ts'] = 'public_timesheet_dispatcher/list_timesheet';
+$route['pts/ls_ts/(:any)'] = 'public_timesheet_dispatcher/list_timesheet/$1';
+$route['pts/ls_ts/(:any)/(:any)'] = 'public_timesheet_dispatcher/list_timesheet/$1/$2';
+$route['pts/ap_ts'] = 'public_timesheet_dispatcher/approve_timesheet';
+$route['pts/rj_ts'] = 'public_timesheet_dispatcher/reject_timsheet';
+
+# routes for timesheet ajax function that are public and accessed by encrypted url
+$ts_ajax_funcs = array(
+					'update_timesheet_start_time',
+					'update_timesheet_finish_time',
+					'refresh_timesheet',
+					'load_ts_breaks',
+					'add_ts_break',
+					'update_ts_breaks',
+					'load_expenses_modal',
+					'list_expenses',
+					'add_expense',
+					'delete_expense',
+					'details'
+					);
+foreach($ts_ajax_funcs as $func){
+$route['pts/' .$func] = 'public_timesheet_dispatcher/' . $func;	
+$route['pts/' . $func . '/(:any)'] = 'public_timesheet_dispatcher/' . $func . '/$1';	
+}
+
+
 $route['404_override'] = '';
 
 

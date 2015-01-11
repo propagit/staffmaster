@@ -1,0 +1,2 @@
+ALTER TABLE `job_shift_timesheets` ADD `email_sent` TINYINT NOT NULL DEFAULT '0' COMMENT '0: not sent, 1 : sent' , ADD `supervisor_key` VARCHAR(255) NOT NULL , ADD `staff_key` VARCHAR(255) NOT NULL ;
+ALTER TABLE `job_shift_timesheets` ADD `reject_note` TEXT NOT NULL ;

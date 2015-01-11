@@ -140,6 +140,13 @@ $template['brief'] = array(
 		'content'
 	)
 );
+$template['public_timesheet'] = array(
+	'template' => 'public/timesheet/default_template',
+	'regions' => array(
+		'title',
+		'content'
+	)
+);
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */
