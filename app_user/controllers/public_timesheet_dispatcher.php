@@ -75,7 +75,9 @@ class Public_timesheet_dispatcher extends MX_Controller {
 		echo 'ok';
 	}
 	
-	# reject timesheet()
+	# reject timesheet
+	# leave the status as TIMESHEET_PENDING, fill in the reject note 
+	# on the admin side if the reject note is filled in then show it as rejected
 	function reject_timsheet()
 	{
 		$input = $this->input->post();
@@ -85,10 +87,15 @@ class Public_timesheet_dispatcher extends MX_Controller {
 			echo 'Error rejecting this shift. Please reload the page and try again';
 			return;		
 		}
-		if(!$timesheet_id){
+		if(!trim($note)){
 			echo 'Please enter a reason for rejecting this timesheet';
 			return;	
 		}
+		
+		# insert the reject note
+		$this->timesheet_model->update_timesheet($timesheet_id,array('reject_note' => $note));
+		echo 'ok';
+		return;
 		
 	}
 	

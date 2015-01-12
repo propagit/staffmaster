@@ -1,2 +1,6 @@
 ALTER TABLE `job_shift_timesheets` ADD `email_sent` TINYINT NOT NULL DEFAULT '0' COMMENT '0: not sent, 1 : sent' , ADD `supervisor_key` VARCHAR(255) NOT NULL , ADD `staff_key` VARCHAR(255) NOT NULL ;
 ALTER TABLE `job_shift_timesheets` ADD `reject_note` TEXT NOT NULL ;
+
+INSERT INTO `email_templates` (`email_template_id`, `template_name`, `template_content`, `email_from`, `email_subject`, `default_template`, `auto_send`, `created`, `modified`) VALUES (NULL, 'Timesheet Approval', '<p><span style="font-size:12px">Dear&nbsp;</span><span style="font-size:12px">{FirstName}</span></p> <p>Your employees have timesheet that need to be approved.</p> <p><strong>Please perform this task ASAP so that your staff get paid on time.&nbsp;</strong></p> <p>{Timesheets}</p> ', 'team@staffbooks.com', 'Timesheet Approval', '', 'no', '2015-01-12 15:30:43', '2015-01-12 15:30:43');
+
+INSERT INTO `email_merge_fields` (`merge_field_id`, `email_template_id`, `merge_label`, `merge_field`, `merge_order`) VALUES (NULL, '10', 'Staff First Name', '{FirstName}', '0'), (NULL, '10', 'Staff Family Name', '{FamilyName}', '0'), (NULL, '10', 'Company Name', '{CompanyName}', '0'), (NULL, '10', 'System URL', '{SystemURL}', '0'), (NULL, '10', 'Time Sheets', '{Timesheets}', '0');

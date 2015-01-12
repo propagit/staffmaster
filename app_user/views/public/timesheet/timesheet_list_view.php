@@ -1,71 +1,77 @@
-<style>
-.table i{
-	margin-left:0;	
-}
-</style>
-<p>The below time time sheets need to be approved before being submitted to payroll. Start times, finish times, breaks and 
+<!--begin top box--->
+<div class="col-md-12">
+	<div class="box top-box">
+		<h2>Approve Time Sheets</h2>
+		<p>The below time time sheets need to be approved before being submitted to payroll. Start times, finish times, breaks and 
 expenses can be edited by clicking on them. Please amend the timesheet to be correct or provide a reason for rejecting the time sheet </p>
-<div id="wrapper_ts">
-	<!-- Filter Menus -->
-	<div id="nav_payruns">
-		<?
-			$data = array(
-				array('value' => 'submit', 'label' => '<i class="fa fa-arrow-right"></i> Submit Selected')
-			);
-			echo modules::run('common/menu_dropdown', $data, 'timesheet-action', 'Actions');
-		?>		
-	</div><!-- End Filter Menus -->
-    <table class="table table-bordered table-hover table-middle" width="100%">
-        <thead>
-            <th class="center" width="20"><input type="checkbox" class="selected_all_timesheets" /></th>
-            <th class="center">Date</th>
-            <th>Client</th>
-            <th>Venue</th>
-            <th>Staff</th>
-            <th class="center">Start - Finish</th>
-            <th class="center">Break</th>
-            <th class="center">Pay rate</th>
-            <th class="center">Expenses</th>
-            <th class="center" width="40">View</th>
-            <th class="center" width="140">Approve</th>
-            <th class="center" width="140">Reject</th>
-        </thead>
-        <tbody>
-            <? foreach($timesheets as $timesheet) { 
-					$data['timesheet_id'] = $timesheet['timesheet_id'];
-					$this->load->view('public/timesheet/timesheet_row_view',$data);
-			} ?>
-        </tbody>
-    </table>
 	</div>
-    <div id="wrapper_ts_break" class="hide"></div>
-    <div id="wrapper_ts_payrate" class="hide"></div>
-    <div id="wrapper_ts_staff" class="hide"></div>
 </div>
+<!--end top box-->
+
+<!--begin bottom box -->
+<div class="col-md-12">
+	<div class="box bottom-box">
+		<div class="inner-box">
+
+                <div id="wrapper_ts">
+                    <!-- Filter Menus -->
+                    <div id="menu-timesheet-action">
+                        <?
+                            $data = array(
+                                array('value' => 'approve', 'label' => '<i class="fa fa-arrow-right"></i> Approve Selected')
+                            );
+                            echo modules::run('common/menu_dropdown', $data, 'menu-timesheet-action', 'Actions');
+                        ?>		
+                    </div><!-- End Filter Menus -->
+                    <table class="table table-bordered table-hover table-middle" width="100%">
+                        <thead>
+                            <th class="center" width="20"><input type="checkbox" class="selected_all_timesheets" /></th>
+                            <th class="center">Date</th>
+                            <th>Client</th>
+                            <th>Venue</th>
+                            <th>Staff</th>
+                            <th class="center">Start - Finish</th>
+                            <th class="center">Break</th>
+                            <th class="center">Pay rate</th>
+                            <th class="center">Expenses</th>
+                            <th class="center" width="40">View</th>
+                            <th class="center" width="140">Approve</th>
+                            <th class="center" width="140">Reject</th>
+                        </thead>
+                        <tbody>
+                            <? foreach($timesheets as $timesheet) { 
+                                    $data['timesheet_id'] = $timesheet['timesheet_id'];
+                                    $this->load->view('public/timesheet/timesheet_row_view',$data);
+                            } ?>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div id="wrapper_ts_break" class="hide"></div>
+                    <div id="wrapper_ts_payrate" class="hide"></div>
+                    <div id="wrapper_ts_staff" class="hide"></div>
+                </div>
+			
+		</div>
+	</div>
+</div>
+
 <?php $this->load->view('public/timesheet/reject_modal_view');?>
-
-
 
 <script>
 $(function(){
 	
 	init_edit();
-	
+	$('#menu-timesheet-action ul li a[data-value="approve"]').click(function(){
+		var selected_timesheets = new Array();
+		$('.selected_timesheet:checked').each(function(){
+			//selected_timesheets.push($(this).val());
+			approve_timesheet($(this).val());
+		});
+	});
 	
 	// approve
 	$('.approve').click(function(){
-		var $this = $(this);
-		var ts_id = $this.attr('data-ts');
-		$.ajax({
-			type: "POST",
-			url: "<?=base_url();?>pts/ap_ts",
-			data: {ts_id: ts_id,ts_k:'<?=$key;?>',us_tp:'<?=$key_type?>'},
-			success: function(html) {
-				if(html == 'ok'){
-					$('#ts-r-'+ts_id).remove();
-				}
-			}
-		})
+		approve_timesheet($(this).attr('data-ts'));
 	});
 	
 	//reject
@@ -147,15 +153,17 @@ function init_edit() {
     });
 	
 }
-function submit_timesheet(timesheet_id) {
-	/*$.ajax({
-		type: "POST",
-		url: "<?=base_url();?>timesheet/ajax_staff/submit_timesheet",
-		data: {timesheet_id: timesheet_id},
-		success: function(html) {
-			refrest_timesheet(timesheet_id);
-		}
-	})*/
+function approve_timesheet(ts_id){
+	  $.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>pts/ap_ts",
+		  data: {ts_id: ts_id,ts_k:'<?=$key;?>',us_tp:'<?=$key_type?>'},
+		  success: function(html) {
+			  if(html == 'ok'){
+				  $('#ts-r-'+ts_id).remove();
+			  }
+		  }
+	  });
 }
 function refrest_timesheet(timesheet_id) {
 	$.ajax({

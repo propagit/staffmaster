@@ -28,6 +28,9 @@ class Timesheet extends MX_Controller {
 			case 'email_timesheet':
 					$this->email_timesheet();
 				break;
+			case 'test':
+					$this->test();
+				break;
 			default:
 					$this->main_view();
 				break;
@@ -309,8 +312,14 @@ class Timesheet extends MX_Controller {
 	*	@param: $status
 	*	@return: class_name
 	*/
-	function status_to_class($status) {
+	function status_to_class($status,$timesheet_id = '') {
 		$class = '';
+		if($timesheet_id){
+			$timesheet = $this->get_timesheet($timesheet_id);
+			if($timesheet['reject_note'] != '' && $timesheet['status'] == TIMESHEET_PENDING){
+				return 'danger';	
+			}
+		}
 		switch($status) {
 			case TIMESHEET_SUBMITTED: $class = 'warning';
 				break;
@@ -427,6 +436,22 @@ class Timesheet extends MX_Controller {
 		if($this->config_model->get('ts_email_supervisor')){
 			$this->_send_email_timesheet(TIMESHEET_SUPERVISOR_KEY_TYPE);		
 		}
+		
+		# mark this record as email sent
+		# this is run at the end because if both the staff and supervisor is configured to get the timesheet they might miss some records as only one field is used to track email sent status 
+		if($this->config_model->get('ts_email_staff')){
+			$timesheets = $this->timesheet_model->get_timesheet_for_email(TIMESHEET_STAFF_KEY_TYPE);
+			foreach($timesheets as $ts){
+				$this->timesheet_model->mark_record_as_email_sent(TIMESHEET_STAFF_KEY_TYPE,$ts['staff_key']);
+			}
+		
+		}
+		if($this->config_model->get('ts_email_supervisor')){
+			$timesheets = $this->timesheet_model->get_timesheet_for_email(TIMESHEET_SUPERVISOR_KEY_TYPE);
+			foreach($timesheets as $ts){
+				$this->timesheet_model->mark_record_as_email_sent(TIMESHEET_SUPERVISOR_KEY_TYPE,$ts['supervisor_key']);
+			}
+		}
 	}
 	
 	function _send_email_timesheet($key_type)
@@ -437,8 +462,52 @@ class Timesheet extends MX_Controller {
 			We do this by grouping the data by key as all the records for a staff or a supervisor has same key 
 				for the given number of generated timesheet at any given time - see the function 'get_timesheet_for_email()' in timesheet_model.php for sql
 		*/
+		$this->load->model('setting/setting_model');
+		$this->load->model('email/email_template_model');
+		
+		//get company profile
+		$company = $this->setting_model->get_profile();	
+		$template_info = $this->email_template_model->get_template(TIMESHEET_EMAIL_TEMPLATE_ID);
+		$email_body = $template_info->template_content;
 		$timesheets = $this->timesheet_model->get_timesheet_for_email($key_type);	
-		echo '<pre>' . print_r($timesheets,true). '</pre>';
+		#echo '<pre>'.print_r($timesheets,true).'</pre>';die();
+		foreach($timesheets as $ts){
+			//get receiver obj
+			$key = $key_type == TIMESHEET_SUPERVISOR_KEY_TYPE ? $ts['supervisor_key'] : $ts['staff_key'];
+			$email_obj_params = array(
+							'template_id' => TIMESHEET_EMAIL_TEMPLATE_ID,
+							'user_id' => $ts['staff_id'],
+							'company' => $company,
+							'timesheet_key_type' => $key_type,
+							'timesheet_key' => $key
+						);
+			$obj = modules::run('email/get_email_obj',$email_obj_params);	
+			$email_data = array(
+									'to' => 'kaushtuv@propagate.com.au',
+									'from' => $template_info->email_from,
+									'from_text' => $company['email_c_name'],
+									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
+									'message' => modules::run('email/format_template_body',$email_body,$obj)
+								);
+	
+			modules::run('email/send_email',$email_data);
+		}
+	}
+	
+	function get_timesheet_email($key_type,$key)
+	{
+		$this->load->helper('html');
+		#$key_type = TIMESHEET_SUPERVISOR_KEY_TYPE;
+		#$key = '4e919c0c109d3de1b0da400c08d1748a';
+		
+		
+		$total_timesheets = $this->timesheet_model->get_timesheet_by_key($key_type,$key);
+		# the last param is to group by staff
+		$total_staff = $this->timesheet_model->get_timesheet_by_key($key_type,$key,true);
+		$data['total_ts'] = count($total_timesheets);
+		$data['total_staff'] = count($total_staff);
+		$data['url'] = base_url().'pts/ls_ts/' . $key_type . '/' . $key;
+		return $this->load->view('email/email_template', isset($data) ? $data : NULL, true);
 	}
 	
 	
@@ -463,5 +532,21 @@ class Timesheet extends MX_Controller {
 			  $data['staff_key'] = md5($time . STAFF_TIMESHEET_SALT . $ts['staff_id']);
 			  $this->timesheet_model->update_timesheet($ts['timesheet_id'], $data);
 		}	
+	}
+	
+	function test()
+	{
+		$this->load->helper('html');
+		$key_type = TIMESHEET_SUPERVISOR_KEY_TYPE;
+		$key = '4e919c0c109d3de1b0da400c08d1748a';
+		
+		
+		$total_timesheets = $this->timesheet_model->get_timesheet_by_key($key_type,$key);
+		# the last param is to group by staff
+		$total_staff = $this->timesheet_model->get_timesheet_by_key($key_type,$key,true);
+		$data['total_ts'] = count($total_timesheets);
+		$data['total_staff'] = count($total_staff);
+		$data['url'] = base_url().'pts/ls_ts/' . $key_type . '/' . $key;
+		echo $this->load->view('email/email_template', isset($data) ? $data : NULL, true);
 	}
 }

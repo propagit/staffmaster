@@ -40,7 +40,10 @@
 <script>
 $(function(){
 	init_edit();
-    
+	
+	//init tooltip for rejected timesheets
+    $('[data-toggle="tooltip"]').tooltip();
+	
 	$('.sort-data').on('click',function(){
 		sort_data.sort_by = $(this).attr('sort-by');
 		//toggle sort order data for next sort

@@ -101,6 +101,12 @@
 						<td>$<?=$expense['staff_cost'] * $tax;?> (<?=modules::run('common/reverse_field_gst', $expense['tax']);?>)</td>
 					</tr>
 					<? } ?>
+                    <?php if($timesheet['reject_note']){ ?>
+                    <tr>
+						<th>Reject Note</th>
+						<td><?=$timesheet['reject_note'];?></td>
+					</tr>
+					<?php } ?>
 				</table>				
 				<button type="button" class="btn btn-core" id="btn-print-timesheet"><i class="fa fa-print"></i> Print</button>
 				&nbsp;

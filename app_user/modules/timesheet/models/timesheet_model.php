@@ -133,11 +133,14 @@ class Timesheet_model extends CI_Model {
 		return $query->result_array();
 	}
 	
+	
+	# timesheet for email 
 	function get_timesheet_for_email($key_type = ''){
 		$sql = "SELECT t.* 
 				FROM `job_shift_timesheets` t 
 				WHERE t.status < " . TIMESHEET_APPROVED . " 
-				AND t.email_sent != " . TIMESHEET_EMAIL_SENT; 
+				AND t.email_sent != " . TIMESHEET_EMAIL_SENT . " 
+				AND t.reject_note = ''"; 
 		if($key_type){
 				$group_by_key = $key_type == TIMESHEET_SUPERVISOR_KEY_TYPE ? 'supervisor_key' : 'staff_key';
 				$sql .= " AND t.$group_by_key != ''
@@ -147,21 +150,38 @@ class Timesheet_model extends CI_Model {
 		return $query->result_array();			
 	}
 	
-	function get_timesheet_by_key($key_type,$key)
+	function get_timesheet_by_key($key_type,$key,$group_by_staff = false)
 	{
 		$sql = "SELECT t.* 
-				FROM `job_shift_timesheets` t";
+				FROM `job_shift_timesheets` t  
+				WHERE t.reject_note = ''";
 		# supervisor - key_type - sp
 		if($key_type == TIMESHEET_SUPERVISOR_KEY_TYPE){
-			$sql .= " WHERE t.status < " . TIMESHEET_APPROVED . " 
-					  AND t.supervisor_id != 0 AND t.supervisor_key = '" . $key . "'";		
+			$sql .= " AND t.status < " . TIMESHEET_APPROVED . " 
+					 AND t.supervisor_id != 0 AND t.supervisor_key = '" . $key . "'";		
 		}else{
 		# staff - keytype - sf
-			$sql .= " WHERE t.status < " . TIMESHEET_SUBMITTED . " 
-					AND t.staff_key = '" . $key . "'";		
+			$sql .= " AND t.status < " . TIMESHEET_SUBMITTED . " 
+					 AND t.staff_key = '" . $key . "'";		
 		}
+		
+		# to get no of staffs
+		if($group_by_staff){
+			$sql .= " GROUP BY t.staff_id";	
+		}
+		
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+	
+	function mark_record_as_email_sent($key_type,$key)
+	{
+		if($key_type == TIMESHEET_SUPERVISOR_KEY_TYPE){
+			$this->db->where('supervisor_key',$key);		
+		}else{
+			$this->db->where('staff_key',$key);		
+		}
+		$this->db->update('job_shift_timesheets',array('email_sent' => 1));
 	}
 	
 }

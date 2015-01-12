@@ -24,6 +24,7 @@
                 <li class="mobile-tab"><a href="#client_invoice" data-toggle="tab">Client Invoice</a></li>
                 <!--<li class="mobile-tab"><a href="#client_quote" data-toggle="tab">Client Quote</a></li>-->
                 <li class="mobile-tab"><a href="#brief" data-toggle="tab">Brief</a></li>
+                <li class="mobile-tab"><a href="#timesheet_approval" data-toggle="tab">Timesheet Approval</a></li>
 			</ul>
 
 
@@ -37,6 +38,7 @@
                 <div class="tab-pane" id="client_invoice"></div>
                 <!--<div class="tab-pane" id="client_quote"></div>-->
                 <div class="tab-pane" id="brief"></div>
+                <div class="tab-pane" id="timesheet_approval"></div>
 			</div>
 
 			<div class="clearfix"></div>
@@ -82,5 +84,4 @@ function update_ckeditor()
             CKEDITOR.instances[instance].updateElement();
     }
 }
-
 </script>

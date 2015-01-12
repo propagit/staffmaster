@@ -179,10 +179,20 @@ class Email extends MX_Controller {
 							'brief_url' => base_url().'brief/view/'.$brief->encoded_url,
 							);
 				break;
+				
+				case TIMESHEET_EMAIL_TEMPLATE_ID:
+				$obj = array(
+							'first_name' => $user['first_name'],
+							'last_name' => $user['last_name'],
+							'company_name' => $company['company_name'],
+							'timesheets_email_body' => modules::run('timesheet/get_timesheet_email',$params['timesheet_key_type'],$params['timesheet_key'])
+							);
+				break;
 			}
 		}
 		return $obj;
 	}
+	
 
 	/**
 	*	@name: email_templates_dropdown
@@ -242,6 +252,7 @@ class Email extends MX_Controller {
 				$email = str_replace('{DueDate}',$obj['due_date'],$email);
 				$email = str_replace('{BriefURL}',$obj['brief_url'],$email);
 				$email = str_replace('{SelectedShifts}',$obj['selected_shifts'],$email);
+				$email = str_replace('{Timesheets}',$obj['timesheets_email_body'],$email);
 		}
 		return $email;
 
@@ -398,7 +409,7 @@ class Email extends MX_Controller {
 		  'smtp_host' => 'ssl://smtp.googlemail.com',
 		  'smtp_port' => 465,
 		  'smtp_user' => 'propagate.au@gmail.com', // change it to yours
-		  'smtp_pass' => 'morem0n3y', // change it to yours
+		  'smtp_pass' => 'm0r3m0n3Y', // change it to yours
 		  'mailtype' => 'html',
 		  'charset' => 'iso-8859-1',
 		  'wordwrap' => TRUE

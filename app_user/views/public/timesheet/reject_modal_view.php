@@ -14,7 +14,7 @@
                       <form id="reject-timesheet-form">
                             <div class="form-group editor-wrap">
                                  <div class="col-sm-12 remove-gutters">
-                                     <textarea class="form-control" name="reject_note" placeholder="please provide a reason for rejecting this timesheet"></textarea> 
+                                     <textarea class="form-control" name="reject_note" placeholder="Please provide a reason for rejecting this timesheet" rows="6"></textarea> 
                                  </div>
                              </div>
    
@@ -49,6 +49,7 @@ $(function(){
 			success: function(html) {
 				if(html == 'ok'){
 					$('#ts-r-'+ts_id).remove();
+					$('#reject-timesheet-modal').modal('hide');
 				}else{
 					$('#reject-error-msg').html(html);
 					$('#error-rejecting-shift').removeClass('hide');

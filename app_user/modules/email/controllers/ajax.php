@@ -50,6 +50,9 @@ class Ajax extends MX_Controller {
 			case 'brief':
 				$data['template'] = $this->email_template_model->get_template(BRIEF_EMAIL_TEMPLATE_ID);
 			break;
+			case 'timesheet_approval':
+				$data['template'] = $this->email_template_model->get_template(TIMESHEET_EMAIL_TEMPLATE_ID);
+			break;
 		}
 		$this->load->view($tab, isset($data) ? $data : NULL);
 	}

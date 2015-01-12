@@ -148,5 +148,6 @@ define('FORGOT_PASSWORD_EMAIL_TEMPLATE_ID',6);
 define('CLIENT_INVOICE_EMAIL_TEMPLATE_ID',7);
 define('CLIENT_QUOTE_EMAIL_TEMPLATE_ID',8);
 define('BRIEF_EMAIL_TEMPLATE_ID',9);
+define('TIMESHEET_EMAIL_TEMPLATE_ID',10);
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

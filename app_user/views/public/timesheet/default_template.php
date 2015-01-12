@@ -90,7 +90,11 @@
 	<script type="text/javascript" src="<?=base_url()?>assets/js/colorpicker/colorpicker.js"></script>
 </head>
 <body>
-
+<style>
+.table i{
+	margin-left:0;	
+}
+</style>
 <header>
     <div class="container-fluid" id="sm-head-wrap">
        <div class="row profile-bar">
@@ -111,7 +115,6 @@
 
 <div id="sys-fixed-btns">
 	<a href="http://resources.staffbooks.com/" target="_blank"><div class="btn btn-info sys-rt-btn"><i class="fa fa-info"></i></div></a>
-    <a href="<?=base_url();?>logout"><div class="btn btn-info sys-rt-btn"><i class="fa fa-power-off"></i></div></a>
     <button class="btn btn-info sys-rt-btn custom-hidden go-to-top"><i class="fa fa-arrow-up"></i></button>
 </div>
 

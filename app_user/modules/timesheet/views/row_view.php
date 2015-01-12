@@ -1,11 +1,18 @@
-<tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status']);?>" id="timesheet_<?=$timesheet['timesheet_id'];?>">
+<tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status'],$timesheet['timesheet_id']);?>" id="timesheet_<?=$timesheet['timesheet_id'];?>">
 	<td><input type="checkbox" class="select_timesheet" value="<?=$timesheet['timesheet_id'];?>" /></td>
 	<td class="wp-date" width="80">
 		<span class="wk_day"><?=date('D', strtotime($timesheet['job_date']));?></span>
 		<span class="wk_date"><?=date('d', strtotime($timesheet['job_date']));?></span>
 		<span class="wk_month"><?=date('M', strtotime($timesheet['job_date']));?></span>
 	</td>
-	<td><?=$client['company_name'];?></td>
+	<td>
+		<?=$client['company_name'];?>
+        <?
+			if($timesheet['reject_note']){
+		?>
+        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="<?=$timesheet['reject_note'];?>"><i class="fa fa-exclamation-circle text-danger"></i></a>
+        <?php } ?>
+    </td>
 	<td><?=$job['name'];?></td>
 	<td class="center">
 		<a href="#" class="ts_start_time prim-color-to-txt-color" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('Y-m-d H:i', $timesheet['start_time']);?>" data-title="Time sheet start date/time">
