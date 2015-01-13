@@ -535,11 +535,10 @@ class Timesheet extends MX_Controller {
 		}	
 	}
 	
-	function _test()
+	function test()
 	{
-		$this->load->helper('html');
 		$key_type = TIMESHEET_SUPERVISOR_KEY_TYPE;
-		$key = '4e919c0c109d3de1b0da400c08d1748a';
+		$key = 'd85d8af65ae09072ff38797b5028a060';
 		
 		
 		$total_timesheets = $this->timesheet_model->get_timesheet_by_key($key_type,$key);

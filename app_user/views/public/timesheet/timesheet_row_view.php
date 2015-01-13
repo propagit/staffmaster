@@ -129,6 +129,6 @@
         </td><!--expenses-->
         
         <td class="center"><a class="editable-click prim-color-to-txt-color" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>pts/details/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a></td>
-        <td><button class="btn btn-success approve" data-ts="<?=$timesheet_id;?>"><i class="fa fa-check"></i>  Approve</button></td>
-        <td><button class="btn btn-danger reject" data-ts="<?=$timesheet_id;?>"><i class="fa fa-times"></i>  Reject</button></td>
+        <td class="center"><button class="btn btn-success approve" data-ts="<?=$timesheet_id;?>"><i class="fa fa-check"></i>  Approve</button></td>
+        <td class="center"><button class="btn btn-danger reject" data-ts="<?=$timesheet_id;?>"><i class="fa fa-times"></i>  Reject</button></td>
 	</tr>   

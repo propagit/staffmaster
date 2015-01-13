@@ -9,7 +9,13 @@
 		<span class="wk_date"><?=date('d', strtotime($timesheet['job_date']));?></span>
 		<span class="wk_month"><?=date('M', strtotime($timesheet['job_date']));?></span>
 	</td>
-	<td><?=$client['company_name'];?></td>
+	<td><?=$client['company_name'];?>
+   		<?
+			if($timesheet['reject_note']){
+		?>
+        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="<?=$timesheet['reject_note'];?>"><i class="fa fa-exclamation-circle text-danger"></i></a>
+        <?php } ?>
+    </td>
 	<td>
 		<? if ($timesheet['venue_id']) { ?>
 		<i class="fa fa-map-marker"></i> &nbsp; <a data-toggle="modal" data-target="#modal_map" href="<?=base_url();?>common/ajax/load_venue_map/<?=$timesheet['venue_id'];?>"><?=modules::run('attribute/venue/display_venue', $timesheet['venue_id']);?></a>
@@ -89,7 +95,11 @@
 	<td class="center"><a class="editable-click prim-color-to-txt-color" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/details/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a></td>
 	<td class="center">
 		<? if ($timesheet['status'] < TIMESHEET_SUBMITTED) { ?>
-		<button class="btn btn-core btn-block btn-rt-padding" onclick="submit_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-arrow-right"></i> Submit</button>
+			<? if($timesheet['reject_note']){ ?>
+            <button class="btn btn-core btn-block btn-rt-padding" onclick="submit_timesheet(<?=$timesheet['timesheet_id'];?>)" style="background-color: #d9534f !important;border-color: #d43f3a;"><i class="fa fa-arrow-right"></i> Re-Submit</button>
+            <? }else {?>
+            <button class="btn btn-core btn-block btn-rt-padding" onclick="submit_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-arrow-right"></i> Submit</button>
+            <? }?>
 		<? } else if ($timesheet['status'] == TIMESHEET_SUBMITTED) { ?>
 			<? if ($updatable) { ?>
 			<button class="btn btn-core btn-block btn-rt-padding" onclick="submit_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-arrow-right"></i> Submit</button>

@@ -33,7 +33,6 @@
         
         <div class="col-md-6 white-box">
             <div class="inner-box desktop-visible-lg">
-            	<?=modules::run('dashboard/shift_completion_stats');?>
                 <?=modules::run('dashboard/load_daily_statistics');?>
             </div>
             <div class="inner-box add-top-margin">
@@ -66,14 +65,13 @@ $(function(){
 		show: false
 	});
 	
-	$('#generate-timesheet-admin').click(function(){
+	$(document).on('click','#generate-timesheet-admin',function(){
 		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>timesheet/ajax/generate_timesheets",
 			success: function(html) {
-				$('#completed-shift-count').html('0');
-				$('#waitingModal').modal('hide');			
+				location.reload();			
 			}
 		});
 	});

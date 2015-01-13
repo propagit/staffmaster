@@ -2,6 +2,17 @@
 <p>Quick stats on whats up soon</p>
 <div class="dash-daily-stats-row">
     <div class="counter small">
+        <span><?=$completed_shifts;?></span>
+    </div>
+    <div class="counter-label">
+        Completed Shifts
+        <span class="pull">
+        	<button class="btn btn-core" id="generate-timesheet-admin" type="button">Generate Timesheet Now</button>
+        </span>
+    </div>
+</div>
+<div class="dash-daily-stats-row">
+    <div class="counter small">
         <span><?=$active_jobs;?></span>
     </div>
     <div class="counter-label">
@@ -48,4 +59,3 @@
         </span>
     </div>
 </div>
-

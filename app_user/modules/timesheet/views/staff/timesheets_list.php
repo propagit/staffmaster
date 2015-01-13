@@ -30,6 +30,10 @@ There is no time sheet at the moment
 <script>
 $(function() {
 	init_edit();
+	
+	//init tooltip for rejected timesheets
+    $('[data-toggle="tooltip"]').tooltip();
+	
 	$('#menu-timesheet-action ul li a[data-value="submit"]').click(function(){
 		var selected_timesheets = new Array();
 		$('.selected_timesheet:checked').each(function(){

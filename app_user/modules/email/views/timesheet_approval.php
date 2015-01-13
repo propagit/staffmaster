@@ -21,12 +21,12 @@
             <div class="col-md-12 remove-gutters">
                 <div class="checkbox">
                     <label>
-                      <input type="checkbox" class="ts_email_setting" data-key="ts_email_supervisor" <?=($this->config_model->get('ts_email_supervisor')) ? 'checked' : '';?>> Email pending timesheet to supervisor for approval
+                      <input type="checkbox" class="ts_email_setting" data-key="ts_email_supervisor" <?=($this->config_model->get('ts_email_supervisor')) ? 'checked' : '';?>> Email timesheet to supervisor for approval
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                      <input type="checkbox" class="ts_email_setting" data-key="ts_email_staff" <?=($this->config_model->get('ts_email_staff')) ? 'checked' : '';?>> Email pending timesheet to staff for approval
+                      <input type="checkbox" class="ts_email_setting" data-key="ts_email_staff" <?=($this->config_model->get('ts_email_staff')) ? 'checked' : '';?>> Email timesheet to staff for approval
                     </label>
                 </div>
                 <div class="alert alert-success push hide" id="ts-msg-success"><i class="fa fa-check"></i> &nbsp; Your settings was successfully updated!</div>
