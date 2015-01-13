@@ -25,9 +25,9 @@ class Timesheet extends MX_Controller {
 			case 'generate':
 					$this->generate();
 				break;
-			case 'email_timesheet':
+			/*case 'email_timesheet':
 					$this->email_timesheet();
-				break;
+				break;*/
 			case 'test':
 					$this->test();
 				break;
@@ -425,7 +425,7 @@ class Timesheet extends MX_Controller {
 	function email_timesheet()
 	{
 		# generate timesheet key
-		#$this->_generate_timesheet_key();
+		$this->_generate_timesheet_key();
 
 		# if configured to send timesheet to all staff 
 		if($this->config_model->get('ts_email_staff')){
@@ -439,19 +439,19 @@ class Timesheet extends MX_Controller {
 		
 		# mark this record as email sent
 		# this is run at the end because if both the staff and supervisor is configured to get the timesheet they might miss some records as only one field is used to track email sent status 
-		if($this->config_model->get('ts_email_staff')){
+		#if($this->config_model->get('ts_email_staff')){
 			$timesheets = $this->timesheet_model->get_timesheet_for_email(TIMESHEET_STAFF_KEY_TYPE);
 			foreach($timesheets as $ts){
 				$this->timesheet_model->mark_record_as_email_sent(TIMESHEET_STAFF_KEY_TYPE,$ts['staff_key']);
 			}
 		
-		}
-		if($this->config_model->get('ts_email_supervisor')){
+		#}
+		#if($this->config_model->get('ts_email_supervisor')){
 			$timesheets = $this->timesheet_model->get_timesheet_for_email(TIMESHEET_SUPERVISOR_KEY_TYPE);
 			foreach($timesheets as $ts){
 				$this->timesheet_model->mark_record_as_email_sent(TIMESHEET_SUPERVISOR_KEY_TYPE,$ts['supervisor_key']);
 			}
-		}
+		#}
 	}
 	
 	function _send_email_timesheet($key_type)
@@ -472,6 +472,8 @@ class Timesheet extends MX_Controller {
 		$timesheets = $this->timesheet_model->get_timesheet_for_email($key_type);	
 		#echo '<pre>'.print_r($timesheets,true).'</pre>';die();
 		foreach($timesheets as $ts){
+			$user_id = $key_type == TIMESHEET_SUPERVISOR_KEY_TYPE ? $ts['supervisor_id'] : $ts['staff_id'];
+			$user = modules::run('user/get_user',$user_id);
 			//get receiver obj
 			$key = $key_type == TIMESHEET_SUPERVISOR_KEY_TYPE ? $ts['supervisor_key'] : $ts['staff_key'];
 			$email_obj_params = array(
@@ -483,7 +485,7 @@ class Timesheet extends MX_Controller {
 						);
 			$obj = modules::run('email/get_email_obj',$email_obj_params);	
 			$email_data = array(
-									'to' => 'kaushtuv@propagate.com.au',
+									'to' => $user['email_address'],
 									'from' => $template_info->email_from,
 									'from_text' => $company['email_c_name'],
 									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
@@ -496,7 +498,6 @@ class Timesheet extends MX_Controller {
 	
 	function get_timesheet_email($key_type,$key)
 	{
-		$this->load->helper('html');
 		#$key_type = TIMESHEET_SUPERVISOR_KEY_TYPE;
 		#$key = '4e919c0c109d3de1b0da400c08d1748a';
 		
@@ -534,7 +535,7 @@ class Timesheet extends MX_Controller {
 		}	
 	}
 	
-	function test()
+	function _test()
 	{
 		$this->load->helper('html');
 		$key_type = TIMESHEET_SUPERVISOR_KEY_TYPE;

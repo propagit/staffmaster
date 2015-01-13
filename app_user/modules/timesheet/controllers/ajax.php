@@ -38,6 +38,8 @@ class Ajax extends MX_Controller {
 			$timesheet_id = $this->timesheet_model->insert_timesheet($timesheet);
 			#$this->update_timesheet_hour_rate($timesheet_id);
 		}
+		# email timesheet
+		modules::run('timesheet/email_timesheet');
 	}
 	
 	/**

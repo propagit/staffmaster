@@ -1,4 +1,4 @@
 <div class="dash-btn-box">
-	<span><?=$completed_shifts;?> Completed Shifts</span>
-    <button class="btn btn-core">Generate Timesheet Now</button>
+	<span><span id="completed-shift-count"><?=$completed_shifts;?></span>Completed Shifts</span>
+    <button class="btn btn-core" id="generate-timesheet-admin" type="button">Generate Timesheet Now</button>
 </div>

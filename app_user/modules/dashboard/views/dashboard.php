@@ -33,6 +33,7 @@
         
         <div class="col-md-6 white-box">
             <div class="inner-box desktop-visible-lg">
+            	<?=modules::run('dashboard/shift_completion_stats');?>
                 <?=modules::run('dashboard/load_daily_statistics');?>
             </div>
             <div class="inner-box add-top-margin">
@@ -42,11 +43,39 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" id="order-message">
+			<img src="<?=base_url();?>assets/img/loading3.gif" />
+			<h2>Please wait!</h2>
+			Please wait a moment while we are generating time sheets ...
+		</div>
+	</div>
+</div>
 <script>
 $(function(){
 	//create conversation
 	help.create_conversation('load-conversations','<?=base_url();?>forum/ajax/reload_conversation');
 	//create poll
 	help.create_poll('load-conversations','<?=base_url();?>forum/ajax/reload_conversation');
+	
+	$('#waitingModal').modal({
+		backdrop: 'static',
+		keyboard: true,
+		show: false
+	});
+	
+	$('#generate-timesheet-admin').click(function(){
+		$('#waitingModal').modal('show');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>timesheet/ajax/generate_timesheets",
+			success: function(html) {
+				$('#completed-shift-count').html('0');
+				$('#waitingModal').modal('hide');			
+			}
+		});
+	});
 });//ready
 </script>

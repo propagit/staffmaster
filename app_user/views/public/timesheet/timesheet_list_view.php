@@ -70,12 +70,12 @@ $(function(){
 	});
 	
 	// approve
-	$('.approve').click(function(){
+	$(document).on('click','.approve',function(){
 		approve_timesheet($(this).attr('data-ts'));
 	});
 	
 	//reject
-	$('.reject').click(function(){
+	$(document).on('click','.reject',function(){
 		var $this = $(this);
 		var ts_id = $this.attr('data-ts');
 		$('#ts-id').val(ts_id);
