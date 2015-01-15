@@ -2,7 +2,7 @@
 <p>Quick stats on whats up soon</p>
 <div class="dash-daily-stats-row">
     <div class="counter small">
-        <span class="completed-shift-count">0</span>
+        <span class="completed-shift-count"><i class="fa fa-spinner fa-spin"></i></span>
     </div>
     <div class="counter-label">
         Completed Shifts 
