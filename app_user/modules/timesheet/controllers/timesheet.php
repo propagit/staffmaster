@@ -478,7 +478,7 @@ class Timesheet extends MX_Controller {
 			$key = $key_type == TIMESHEET_SUPERVISOR_KEY_TYPE ? $ts['supervisor_key'] : $ts['staff_key'];
 			$email_obj_params = array(
 							'template_id' => TIMESHEET_EMAIL_TEMPLATE_ID,
-							'user_id' => $ts['staff_id'],
+							'user_id' => $user_id,
 							'company' => $company,
 							'timesheet_key_type' => $key_type,
 							'timesheet_key' => $key

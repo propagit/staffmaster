@@ -2,12 +2,12 @@
 <p>Quick stats on whats up soon</p>
 <div class="dash-daily-stats-row">
     <div class="counter small">
-        <span><?=$completed_shifts;?></span>
+        <span class="completed-shift-count">0</span>
     </div>
     <div class="counter-label">
-        Completed Shifts
+        Completed Shifts 
         <span class="pull">
-        	<button class="btn btn-core dash-ts-btn" id="generate-timesheet-admin" type="button">Generate Timesheet Now</button>
+            <button class="btn btn-core dash-ts-btn generate-timesheet-admin" type="button">Generate Timesheet Now</button>
         </span>
     </div>
 </div>

@@ -65,15 +65,24 @@ $(function(){
 		show: false
 	});
 	
-	$(document).on('click','#generate-timesheet-admin',function(){
+	$(document).on('click','.generate-timesheet-admin',function(){
 		$('#waitingModal').modal('show');
 		$.ajax({
 			type: "POST",
 			url: "<?=base_url();?>timesheet/ajax/generate_timesheets",
 			success: function(html) {
-				location.reload();			
+				$('#waitingModal').modal('hide');
+				get_completed_shift_count();			
 			}
 		});
 	});
+	get_completed_shift_count();
+	
 });//ready
+function get_completed_shift_count(){
+	$.get( "<?=base_url();?>dashboard/ajax/get_completed_shift_count", function(data) {
+ 		 $('.completed-shift-count').html(data);
+	});
+}
+
 </script>

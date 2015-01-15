@@ -59,9 +59,6 @@ class Dashboard extends MX_Controller {
 		$data['this_month_shifts'] = count($this_month_shifts);
 		$data['active_jobs'] = $this->job_model->count_active_jobs();
 		
-		# Timesheet Stats
-		$data['completed_shifts'] = modules::run('timesheet/get_ungenerated_timesheet_count');
-		
 		$this->load->view('daily_statistics', isset($data) ? $data : NULL);	
 	}
 	
@@ -142,10 +139,4 @@ class Dashboard extends MX_Controller {
 		$this->load->view('activity_log', isset($data) ? $data : NULL);
 	}
 	
-	# load shift completion stats - depreciated
-	function shift_completion_stats()
-	{
-		$data['completed_shifts'] = modules::run('timesheet/get_ungenerated_timesheet_count');
-		$this->load->view('timesheet_statistics', isset($data) ? $data : NULL);	
-	}
 }

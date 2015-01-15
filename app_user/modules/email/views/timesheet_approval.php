@@ -2,8 +2,8 @@
 <div class="clearfix email-template">
     <div class="col-md-6">
     	<form id="edit-timesheet-approval-email-template-form" role="form">
-        <h2 class="email-template-title"> Welcome Staff </h2>
-        <p> The welcome staff email can be sent to staff to inform them of their accounts </p> 
+        <h2 class="email-template-title"> Timesheet Approval </h2>
+        <p> The timesheet approval email can be sent to supervisor or staff to inform them of their timesheets </p> 
         <br>               
         <div class="row">
             <div class="form-group">
