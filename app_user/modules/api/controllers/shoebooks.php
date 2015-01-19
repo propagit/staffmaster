@@ -196,11 +196,10 @@ class Shoebooks extends MX_Controller {
 
 		$fund_name = $staff['s_fund_name'];
 		$membership = $staff['s_employee_id'];
-		// if ($staff['s_choice'] == 'employer')
-		// {
-		// 	$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
-		// 	$membership = modules::run('setting/superinformasi', 'super_product_id','');
-		// }
+		if ($staff['s_choice'] == 'employer')
+		{
+			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+		}
 
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
@@ -293,11 +292,10 @@ class Shoebooks extends MX_Controller {
 
 		$fund_name = $staff['s_fund_name'];
 		$membership = $staff['s_employee_id'];
-		// if ($staff['s_choice'] == 'employer')
-		// {
-		// 	$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
-		// 	$membership = modules::run('setting/superinformasi', 'super_product_id','');
-		// }
+		if ($staff['s_choice'] == 'employer')
+		{
+			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+		}
 
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
