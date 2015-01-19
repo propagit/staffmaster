@@ -424,6 +424,7 @@ class Shoebooks extends MX_Controller {
 				<ContactNumbers>
 					<ContactNumber>
 						<PhoneNumber>' . $staff['phone'] . '</PhoneNumber>
+						<ContactMethod>Phone</ContactMethod>
 					</ContactNumber>
 				</ContactNumbers>
 			</NewEmployee>
