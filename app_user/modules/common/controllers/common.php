@@ -156,6 +156,11 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 
+	function get_super_name($super_id)
+	{
+		return $this->common_model->get_super_name($super_id);
+	}
+
 	function field_select_supers($field_name, $field_value=null, $size=null)
 	{
 		$supers = $this->common_model->get_supers();

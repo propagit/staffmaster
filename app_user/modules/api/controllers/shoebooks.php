@@ -295,6 +295,8 @@ class Shoebooks extends MX_Controller {
 		if ($staff['s_choice'] == 'employer')
 		{
 			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+		} else {
+			$fund_name = modules::run('common/get_super_name', $staff['s_external_id']);
 		}
 
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
@@ -384,7 +386,10 @@ class Shoebooks extends MX_Controller {
 		if ($staff['s_choice'] == 'employer')
 		{
 			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+		} else {
+			$fund_name = modules::run('common/get_super_name', $staff['s_external_id']);
 		}
+
 		$request = '<UpdateEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
 			<Login>
 				<AccountName>' . $this->account_name . '</AccountName>

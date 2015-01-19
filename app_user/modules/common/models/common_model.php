@@ -8,6 +8,14 @@ class Common_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	function get_super_name($super_id)
+	{
+		$this->db->where('super_id', $super_id);
+		$query = $this->db->get('supers');
+		$super = $query->first_row('array');
+		return $super['name'];
+	}
+
 	function get_states()
 	{
 		$query = $this->db->get('states');
