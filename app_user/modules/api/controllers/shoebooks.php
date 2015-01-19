@@ -430,7 +430,7 @@ class Shoebooks extends MX_Controller {
 				</ContactNumbers>
 			</NewEmployee>
 		</UpdateEmployee>';
-		var_dump($request); die();
+		#var_dump($request); die();
 
 		$request = str_replace('&', '&#038;', $request);
 		$client = new nusoap_client($this->host);
@@ -443,7 +443,7 @@ class Shoebooks extends MX_Controller {
 		$msg = $client->serializeEnvelope($request, '', array(), 'document', 'encoded', '');
 		#var_dump($msg);
 		$result = $client->send($msg, $action);
-		#var_dump($result);
+		var_dump($result); die();
 		#return $result;
 		return true;
 	}
