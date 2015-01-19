@@ -19,7 +19,7 @@ class Ajax extends MX_Controller {
 		$this->user = $this->session->userdata('user_data');
 		$this->is_client = modules::run('auth/is_client');
 	}
-	
+
 	function search_staffs()
 	{
 		$params = $this->input->post();
@@ -27,7 +27,7 @@ class Ajax extends MX_Controller {
 		$data['total_staff'] = $this->staff_model->search_staffs($params,true);
 		$data['current_page'] = $this->input->post('current_page',true);
 		$data['records_per_page'] = ($this->input->post('records_per_page',true) ? $this->input->post('records_per_page',true) : STAFF_PER_PAGE);
-		if ($this->is_client) 
+		if ($this->is_client)
 		{
 			$this->load->view('client/search_results', isset($data) ? $data : NULL);
 		}
@@ -36,7 +36,7 @@ class Ajax extends MX_Controller {
 			$this->load->view('search_results', isset($data) ? $data : NULL);
 		}
 	}
-	
+
 	function add_staff()
 	{
 		$input = $this->input->post();
@@ -60,7 +60,7 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('ok' => false, 'error_id' => 'password', 'msg' => 'Password is required'));
 			return;
 		}
-		
+
 		if (isset($input['external_staff_id']) && trim($input['external_staff_id']))
 		{
 			# check if the external staff id is unique
@@ -70,8 +70,8 @@ class Ajax extends MX_Controller {
 			}
 			$staff_data['external_staff_id'] = $input['external_staff_id'];
 		}
-		
-		
+
+
 		$user_data = array(
 			'status' => 1,
 			'is_admin' => 0,
@@ -90,21 +90,21 @@ class Ajax extends MX_Controller {
 			'postcode' => $input['postcode'],
 			'country' => $input['country'],
 			#'phone' => $input['phone'],
-			'mobile' => $input['mobile']			
+			'mobile' => $input['mobile']
 		);
-		
+
 
 		$user_id = $this->user_model->insert_user($user_data);
-		
+
 		if ($input['group_id']) {
 			$this->staff_model->update_staff_group($user_id, $input['group_id']);
 		}
-		
-		
-		
+
+
+
 		$this->load->model('profile/profile_model');
 		$company_profile = $this->profile_model->get_profile();
-		
+
 		$staff_data = array(
 			'user_id' => $user_id,
 			'external_staff_id' => $input['external_staff_id'],
@@ -114,14 +114,14 @@ class Ajax extends MX_Controller {
 			'emergency_phone' => $input['emergency_phone'],
 			's_choice' => 'employer',
 			's_name' =>  $input['first_name'].' '.$input['last_name'],
-			's_fund_name' => $company_profile['super_fund_name']			
+			's_fund_name' => $company_profile['super_fund_name']
 		);
 
 		$staff_id = $this->staff_model->insert_staff($staff_data);
 		modules::run('staff/send_welcome_email', $user_id, $input['email_address'], $input['password']);
 		echo json_encode(array('ok' => true, 'user_id' => $user_id));
 	}
-	
+
 	/**
 	*	@name: update_staff
 	*	@desc: abstract function to update staff profile
@@ -135,10 +135,10 @@ class Ajax extends MX_Controller {
 		if ($tab == 'attribute')
 		{
 			$data['fields'] = $this->staff_model->get_custom_fields($user_id);
-		}	
+		}
 		$this->load->view('edit_' . $tab, isset($data) ? $data : NULL);
 	}
-	
+
 	function update_personal()
 	{
 		$input = $this->input->post();
@@ -158,7 +158,7 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('ok' => false, 'error_id' => 'email_address', 'msg' => 'Email address is already used!'));
 			return;
 		}
-		
+
 		$data = $this->input->post();
 
 		$user_data = array(
@@ -168,7 +168,8 @@ class Ajax extends MX_Controller {
 			'last_name' => $data['last_name'],
 			'email_address' => $data['email_address'],
 			'address' => $data['address'],
-			'suburb' => $data['suburb'],			
+			'suburb' => $data['suburb'],
+			'city' => $data['city'],
 			'state' => $data['state'],
 			'postcode' => $data['postcode'],
 			'country' => $data['country'],
@@ -176,13 +177,13 @@ class Ajax extends MX_Controller {
 			'mobile' => $input['mobile'],
 			'modified_on' => date('Y-m-d H:i:s')
 		);
-		
+
 		if(isset($data['status'])){
-			$user_data['status'] = $data['status'];	
+			$user_data['status'] = $data['status'];
 		}
-		
-		
-		
+
+
+
 		$this->user_model->update_user($data['user_id'], $user_data);
 		$staff_data = array(
 			#'external_staff_id' => $data['external_staff_id'],
@@ -202,20 +203,20 @@ class Ajax extends MX_Controller {
 			}
 			$staff_data['external_staff_id'] = $data['external_staff_id'];
 		}
-		
+
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 		echo json_encode(array('ok' => true));
-		
+
 		#echo modules::run('common/field_rating', 'profile_rating', $data['profile_rating'],'basic','wp-rating',$data['user_id'],true,false);
 	}
-	
+
 	function update_financial()
 	{
 		$data = $this->input->post();
 		if (!$data['f_acc_name']) {
 			echo json_encode(array('ok' => false, 'error_id' => 'f_acc_name', 'msg' => 'Account name is required'));
 			return;
-		}	
+		}
 		if (!$data['f_bsb']) {
 			echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB is required'));
 			return;
@@ -223,11 +224,11 @@ class Ajax extends MX_Controller {
 			$temp_bsb = str_replace('-','',$data['f_bsb']);
 			if(!is_numeric($temp_bsb)){
 				echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB should be in numeric format.'));
-				return;	
+				return;
 			}
 			if(strlen($temp_bsb) > 6){
 				echo json_encode(array('ok' => false, 'error_id' => 'f_bsb', 'msg' => 'BSB should not be more than 6 digits.'));
-				return;		
+				return;
 			}
 		}
 		if (!$data['f_acc_number']) {
@@ -236,14 +237,14 @@ class Ajax extends MX_Controller {
 		}else{
 			if(!is_numeric($data['f_acc_number'])){
 				echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number should be in numeric format.'));
-				return;	
+				return;
 			}
 			if(strlen($data['f_acc_number']) > 14){
 				echo json_encode(array('ok' => false, 'error_id' => 'f_acc_number', 'msg' => 'Account number should not be more than 14 digits.'));
-				return;		
-			}	
+				return;
+			}
 		}
-		
+
 		$staff_data = array(
 			'f_aus_resident' => isset($data['f_aus_resident']) ? $data['f_aus_resident'] : 0,
 			'f_tax_free_threshold' => isset($data['f_tax_free_threshold']) ? $data['f_tax_free_threshold'] : 0,
@@ -262,13 +263,13 @@ class Ajax extends MX_Controller {
 		);
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 		echo json_encode(array('ok' => true));
-		
+
 	}
-	
+
 	function update_super()
 	{
 		$data = $this->input->post();
-		
+
 		# if user choose their own superannuation, then super fund name is mandatory
 		if ($data['s_choice'] == 'own') {
 			if(!$data['s_external_id']){
@@ -295,7 +296,7 @@ class Ajax extends MX_Controller {
 		$this->staff_model->update_staff($data['user_id'], $staff_data);
 		echo json_encode(array('ok' => true));
 	}
-	
+
 	/**
 	*	@desc Displayes all the available roles in the system and the roles that has been asigned to the staff.
 	*
@@ -303,7 +304,7 @@ class Ajax extends MX_Controller {
 	*	@access public
 	*	@param Post data - sort parameter and user id (staff id)
 	*	@return Lists all roles with roles that has been assigned to staffs checked
-	*	
+	*
 	*/
 	function get_staff_roles()
 	{
@@ -312,12 +313,12 @@ class Ajax extends MX_Controller {
 		$data['params'] = $params;
 		$this->load->view('ajax_list_roles_staff_profile', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: update_roles
-	*	@desc: ajax function to add or delete roles 
+	*	@desc: ajax function to add or delete roles
 	*	@access: public
-	*	@param: (via POST) 
+	*	@param: (via POST)
 	*			- (int) user_id
 	*			- (int) role_id
 	*/
@@ -326,31 +327,31 @@ class Ajax extends MX_Controller {
 		$user_id = $this->input->post('staff_id');
 		$role_id = $this->input->post('role_id');
 		if($this->staff_model->update_staff_role($user_id,$role_id)){
-			echo 'success';	
+			echo 'success';
 		}
 	}
-	
+
 	/**
 	*	@name: add_location
 	*	@desc: ajax function to add location of staff
 	*	@access: public
-	*	@param: (via POST) 
+	*	@param: (via POST)
 	*			- (int) location_parent_id
 	*			- (int) location_id
 	*			- (int) user_id
 	*	@return: json encode array {ok: (true/false)}
 	*/
-	function add_location() {		
+	function add_location() {
 		$parent_id = $this->input->post('location_parent_id');
 		if (!$parent_id) {
 			echo json_encode(array('ok' => false));
 			return;
 		}
 		$location_id = $this->input->post('location_id');
-		
+
 		$data = array();
-		$location = array();		
-		
+		$location = array();
+
 		if (!$location_id) { # Select all locations within location_parent_id
 			$all = modules::run('attribute/location/get_locations', $parent_id);
 			foreach($all as $a) {
@@ -362,12 +363,12 @@ class Ajax extends MX_Controller {
 			$location[] = $location_id;
 		}
 		$data[$parent_id] = $location;
-		
-		
+
+
 		# Now merging with current locations data
 		$staff = $this->staff_model->get_staff($this->input->post('user_id'));
 		$locations = json_decode($staff['locations']);
-		
+
 		if (count($locations) > 0) foreach($locations as $o_parent_id => $o_childrens)
 		{
 			if ($o_parent_id != $parent_id) # Adding old parent locations
@@ -390,11 +391,11 @@ class Ajax extends MX_Controller {
 				}
 			}
 		}
-		
+
 		$this->staff_model->update_staff($staff['user_id'], array('locations' => json_encode($data)));
 		echo json_encode(array('ok' => true));
 	}
-	
+
 	/**
 	*	@name: remove_location
 	*	@desc: ajax function to remove location of staff
@@ -411,7 +412,7 @@ class Ajax extends MX_Controller {
 		$parent_id = $this->input->post('parent_id');
 		$location_id = $this->input->post('location_id');
 		$locations = json_decode($staff['locations']);
-		
+
 		$data = array();
 		if (!$location_id)
 		{
@@ -436,11 +437,11 @@ class Ajax extends MX_Controller {
 				}
 				$data[$o_parent_id] = $new_locations;
 			}
-			
+
 		}
 		$this->staff_model->update_staff($staff['user_id'], array('locations' => json_encode($data)));
 	}
-	
+
 	/**
 	*	@name: load_locations
 	*	@desc: ajax function to load staff locations view
@@ -455,13 +456,13 @@ class Ajax extends MX_Controller {
 		$data['locations'] = json_decode($staff['locations']);
 		$this->load->view('staff_locations', isset($data) ? $data : NULL);
 	}
-	
-	
+
+
 	function list_staffs($query='')
 	{
 		$staffs = $this->staff_model->search_staffs(array('keyword' => $query));
 		$out = array();
-		
+
 		foreach($staffs as $staff)
 		{
 			$out[] = array(
@@ -473,7 +474,7 @@ class Ajax extends MX_Controller {
 		//$this->output->set_content_type('application/json');
 		echo json_encode($out);
 	}
-	
+
 	/**
 	*	@name: load_availability
 	*	@desc: ajax function to load staff availability view. If staff doesn't have availability, the funcition will create avaiability record as available all days all times
@@ -498,16 +499,16 @@ class Ajax extends MX_Controller {
 	*	@desc: initiate value of staff availability time, if there is no data yet. It will be initiated as available all days and all times
 	*	@access: public
 	*	@param: (via parameter) (int) user_id
-	*	
+	*
 	*/
 	function initiate_availability($user_id)
 	{
-		$values = '';			
+		$values = '';
 		for($day=1; $day <=7; $day++) {
 			for($hour=0; $hour <=23; $hour++) {
-				$values .= '('.$user_id.','.$day.','.$hour.',1),'; 		
+				$values .= '('.$user_id.','.$day.','.$hour.',1),';
 			}
-		}  
+		}
 		$values = rtrim($values,',');
 		$sql = "INSERT INTO `user_staff_availability` (`user_id`, `day`, `hour`, `value`) VALUES ".$values;
 		$this->db->query($sql);
@@ -517,31 +518,31 @@ class Ajax extends MX_Controller {
 	*	@desc: update value of staff availability time
 	*	@access: public
 	*	@param: (via POST) (int) user_id,name,value
-	*	
+	*
 	*/
 	function update_availability()
 	{
 		$value = $this->input->post('value_avail');
 		$name = $this->input->post('name');
-		$fields = explode('-', $name);		
+		$fields = explode('-', $name);
 		$day = $fields[1];
 		$hour = $fields[2];
 		$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
 	}
-	
+
 	function update_availabilities()
 	{
 		$value = $this->input->post('value_avail');
 		$names = $this->input->post('names');
 		foreach($names as $name)
 		{
-			$fields = explode('-', $name);		
+			$fields = explode('-', $name);
 			$day = $fields[1];
 			$hour = $fields[2];
 			$this->staff_model->update_available_data($this->input->post('user_id'), $day, $hour, $value);
 		}
 	}
-	
+
 	function update_level_access()
 	{
 		$user_id = $this->input->post('user_id');
@@ -553,7 +554,7 @@ class Ajax extends MX_Controller {
 		}
 		$this->user_model->update_user($user_id, $data);
 	}
-	
+
 	/**
 	*	@desc Displayes all the available groups in the system and the roles that has been asigned to the staff.
 	*
@@ -561,7 +562,7 @@ class Ajax extends MX_Controller {
 	*	@access public
 	*	@param Post data - sort parameter and user id (staff id)
 	*	@return Lists all roles with roles that has been assigned to staffs checked
-	*	
+	*
 	*/
 	function get_staff_groups()
 	{
@@ -572,9 +573,9 @@ class Ajax extends MX_Controller {
 	}
 	/**
 	*	@name: update_groups
-	*	@desc: ajax function to add or delete groups 
+	*	@desc: ajax function to add or delete groups
 	*	@access: public
-	*	@param: (via POST) 
+	*	@param: (via POST)
 	*			- (int) user_id
 	*			- (int) group_id
 	*/
@@ -583,15 +584,15 @@ class Ajax extends MX_Controller {
 		$user_id = $this->input->post('staff_id');
 		$group_id = $this->input->post('group_id');
 		if($this->staff_model->update_staff_group($user_id,$group_id)){
-			echo 'success';	
+			echo 'success';
 		}
 	}
-	
-	
+
+
 	function upload_photo()
 	{
 		$user_id = $this->input->post('user_id');
-		
+
 		$path = UPLOADS_PATH."/staff";
 		$dir = $path;
 		if(!is_dir($dir))
@@ -602,7 +603,7 @@ class Ajax extends MX_Controller {
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
-		
+
 		$dir = $path."/".$user_id;
 		if(!is_dir($dir))
 		{
@@ -621,7 +622,7 @@ class Ajax extends MX_Controller {
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
-		
+
 		$config['upload_path'] = $dir;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg';
 		$config['max_size']	= '4096'; // 4 MB
@@ -629,13 +630,13 @@ class Ajax extends MX_Controller {
 		$config['max_height']  = '2000';
 		$config['overwrite'] = FALSE;
 		$config['remove_space'] = TRUE;
-	
+
 		$this->load->library('upload', $config);
 
 		if ( ! $this->upload->do_upload())
 		{
-			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());			
-		}	
+			$this->session->set_flashdata('error_addphoto',$this->upload->display_errors());
+		}
 		else
 		{
 			$data = array('upload_data' => $this->upload->data());
@@ -646,21 +647,21 @@ class Ajax extends MX_Controller {
 				'user_id' => $user_id,
 				'name' => $file_name,
 				'modified' => date('Y-m-d H:i:s'),
-				'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)									
+				'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)
 			);
-			
+
 			$this->staff_model->add_picture($photo);
 			$this->load->helper('image');
-			$new_width=216;		
-			$new_height=216;		
+			$new_width=216;
+			$new_height=216;
 			copy($dir.'/'.$file_name, $dirs."/".$file_name);
 			$target = $dirs."/".$file_name;
-			scale_image($target,$target,$new_width,$new_height);			
+			scale_image($target,$target,$new_width,$new_height);
 
 		}
 	}
-	
-	
+
+
 	function upload_picture($user_id)
 	{
 		// Make sure file is not cached (as it happens for example on iOS devices)
@@ -709,7 +710,7 @@ class Ajax extends MX_Controller {
 		  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 		  fclose($fp);
 		}
-		
+
 		// Get a file name
 		if (isset($_REQUEST["name"])) {
 			$fileName = $_REQUEST["name"];
@@ -785,39 +786,39 @@ class Ajax extends MX_Controller {
 			$photo = array(
 				'user_id' => $user_id,
 				'name' => $fileName,
-				'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)									
+				'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)
 			);
-			
+
 			$this->staff_model->add_picture($photo);
 			$target = $dir_thumb . '/' . $fileName;
 			copy($filePath, $target);
 			$this->load->helper('image');
 			scale_image($target, $target, IMG_THUMB_SIZE, IMG_THUMB_SIZE);
-			
+
 		}
 
 		// Return Success JSON-RPC response
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
-	
+
 	/**
 	*	@name: load_picture
 	*	@desc: show the profile picture and gallery
 	*	@access: public
 	*	@param: (via POST) (int) user_id
-	*	
+	*
 	*/
 	function load_picture()
 	{
 		$user_id = $this->input->post('user_id',true);
 		$photos = $this->staff_model->get_all_photos($user_id);
-		$hero_photo = $this->staff_model->get_hero($user_id);	
+		$hero_photo = $this->staff_model->get_hero($user_id);
 		$data['hero_photo'] = $hero_photo;
 		$data['photos'] = $photos;
-		$data['user_id'] = $user_id;				
+		$data['user_id'] = $user_id;
 		$this->load->view('staff/list_photo', isset($data) ? $data : NULL);
 	}
-	
+
 	function update_custom_fields()
 	{
 		$user_id = $this->input->post('user_id');
@@ -830,9 +831,9 @@ class Ajax extends MX_Controller {
 				$this->staff_model->update_custom_field($user_id, $field_id, $value);
 			}
 		}
-		
+
 	}
-	
+
 	function load_file_field()
 	{
 		$user_id = $this->input->post('user_id');
@@ -842,21 +843,21 @@ class Ajax extends MX_Controller {
 		$data['user_id'] = $user_id;
 		$this->load->view('custom_field/' . $field['type'], isset($data) ? $data : NULL);
 	}
-	
+
 	function delete_file_field()
 	{
 		$user_id = $this->input->post('user_id');
 		$field_id = $this->input->post('field_id');
 		$file = $this->input->post('file');
-		$this->staff_model->delete_file_field($user_id, $field_id, $file);		
+		$this->staff_model->delete_file_field($user_id, $field_id, $file);
 	}
-	
+
 	/**
 	*	@name: update_custom_attributes
 	*	@desc: Update custom attribute of a staff
 	*	@access: public
 	*	@param: (via POST) custom attributes data
-	*	
+	*
 	*/
 	function update_custom_attributes()
 	{
@@ -866,7 +867,7 @@ class Ajax extends MX_Controller {
 		$this->staff_model->delete_staff_custom_attributes($user_id);
 		foreach($post_data as $key => $val){
 			if($key != 'user_staff_id'){
-				//for checkbox and multi select 
+				//for checkbox and multi select
 				if(modules::run('formbuilder/has_multiple_value',$key)){
 					$custom_attr = array(
 										'user_id' => $user_id,
@@ -878,20 +879,20 @@ class Ajax extends MX_Controller {
 										'user_id' => $user_id,
 										'attribute_name' => $key,
 										'attributes' => $val
-									);	
+									);
 				}
 				$this->staff_model->insert_staff_custom_attributes($custom_attr);
 			}
 		}
 		echo 'success';
 	}
-	
+
 	/**
 	*	@name: set_hero
 	*	@desc: Set hero image
 	*	@access: public
 	*	@param: (via POST) user_staff_picture_id
-	*	
+	*
 	*/
 	function set_hero_photo()
 	{
@@ -900,13 +901,13 @@ class Ajax extends MX_Controller {
 		$this->staff_model->uset_hero($user_id);
 		echo $this->staff_model->update_user_staff_picture($user_staff_picture_id,array('hero'=> 1));
 	}
-	
+
 	/**
 	*	@name: set_hero
 	*	@desc: Set hero image
 	*	@access: public
 	*	@param: (via POST) user id
-	*	
+	*
 	*/
 	function unset_hero_photo()
 	{
@@ -926,20 +927,20 @@ class Ajax extends MX_Controller {
 		$staff_user_id = $this->input->post('user_id',true);
 		echo modules::run('staff/get_profile_picture',$staff_user_id);
 	}
-	
+
 	function reload_avatar()
 	{
 		$loggedin_user = $this->session->userdata('user_data');
-		echo modules::run('staff/get_profile_picture',$loggedin_user['user_id']);	
+		echo modules::run('staff/get_profile_picture',$loggedin_user['user_id']);
 	}
-	
-	
+
+
 	/**
 	*	@name: delete_photo
 	*	@desc: Delete staff photo
 	*	@access: public
 	*	@param: (via POST) photo id
-	*	
+	*
 	*/
 	function delete_photo()
 	{
@@ -960,7 +961,7 @@ class Ajax extends MX_Controller {
 	*	@desc: Update rating
 	*	@access: public
 	*	@param: (via POST) field name of the rating to populate back, user id, ajax reload container, new rating
-	*	
+	*
 	*/
 	function update_ratings()
 	{
@@ -971,7 +972,7 @@ class Ajax extends MX_Controller {
 		$new_rating = $this->input->post('new_rating',true);
 		$data = array('rating' => $new_rating);
 		$this->staff_model->update_staff($user_id,$data);
-		
+
 		echo modules::run('common/field_rating', $field_name, $new_rating,$selector,$ajax_reload_container,$user_id,true,false);
 	}
 	/**
@@ -979,7 +980,7 @@ class Ajax extends MX_Controller {
 	*	@desc: Delete single staff
 	*	@access: public
 	*	@param: (via POST) user id
-	*	
+	*
 	*/
 	function delete_staff()
 	{
@@ -991,12 +992,12 @@ class Ajax extends MX_Controller {
 	*	@desc: Delete multiple staff
 	*	@access: public
 	*	@param: (via POST) user id
-	*	
+	*
 	*/
 	function delete_multi_staffs()
 	{
 		$user_ids = $this->input->post('user_staff_selected_user_id');
-		foreach($user_ids as $user_id) 
+		foreach($user_ids as $user_id)
 		{
 			$this->staff_model->delete_staff($user_id);
 		}
@@ -1006,7 +1007,7 @@ class Ajax extends MX_Controller {
 	*	@desc: Update rating for multiple staff
 	*	@access: public
 	*	@param: (via POST) user id and new rating
-	*	
+	*
 	*/
 	function update_rating_multi_staffs()
 	{
@@ -1019,7 +1020,7 @@ class Ajax extends MX_Controller {
 	*	@desc: Update status for multiple staff
 	*	@access: public
 	*	@param: (via POST) user id and new stats
-	*	
+	*
 	*/
 	function update_status_multi_staffs()
 	{
@@ -1027,13 +1028,13 @@ class Ajax extends MX_Controller {
 		$new_status = $this->input->post('new_multi_status',true);
 		return $this->user_model->update_status_multi_users(implode(',',$user_ids),$new_status);
 	}
-	
+
 	/**
 	*	@name: send_email
-	*	@desc: Send email to a particular email vai send email modal window UI. 
+	*	@desc: Send email to a particular email vai send email modal window UI.
 	*	@access: private
 	*	@param: (via POST)
-	*	
+	*
 	*/
 	function send_email()
 	{
@@ -1041,17 +1042,17 @@ class Ajax extends MX_Controller {
 		$this->load->model('email/email_template_model');
 		$this->load->model('roster/roster_model');
 		//get company profile
-		$company = $this->setting_model->get_profile();	
+		$company = $this->setting_model->get_profile();
 		//get post data
 		$email_body = $this->input->post('email_body');
 		$selected_user_ids = $this->input->post('selected_user_ids',true);
 		$email_template_id = $this->input->post('email_template_select',true);
-		
+
 		if($email_template_id){
 			$template_info = $this->email_template_model->get_template($email_template_id);
 			$email_subject = $template_info->email_subject;
 		}
-		
+
 		if($selected_user_ids){
 			//create obj parameters based on user and email template eg
 			$user_ids = json_decode($selected_user_ids);
@@ -1062,7 +1063,7 @@ class Ajax extends MX_Controller {
 					//check if this staff has already received a welcome email
 					$staff = $this->staff_model->get_staff($user_id);
 					if($staff['welcome_email_sent'] == 'yes'){
-						$send_email = false;	
+						$send_email = false;
 					}
 				}elseif($template_info->email_template_id == ROSTER_UPDATE_EMAIL_TEMPLATE_ID){
 					$active_month = date('Y-m');
@@ -1089,7 +1090,7 @@ class Ajax extends MX_Controller {
 									'message' => modules::run('email/format_template_body',$email_body,$obj)
 								);
 						modules::run('email/send_email',$email_data);
-						//if welcome email then mark this user has welcome email sent 
+						//if welcome email then mark this user has welcome email sent
 						if($template_info->email_template_id == WELCOME_EMAIL_TEMPLATE_ID){
 							$this->staff_model->update_staff($user_id,array('welcome_email_sent' => 'yes'));
 						}
@@ -1099,13 +1100,13 @@ class Ajax extends MX_Controller {
 		}
 		echo 'success';
 	}
-	
+
 	/**
 	*	@name: send_sample_email
-	*	@desc: Send email to a particular email vai send email modal window UI. 
+	*	@desc: Send email to a particular email vai send email modal window UI.
 	*	@access: private
 	*	@param: (via POST)
-	*	
+	*
 	*/
 	function send_sample_email()
 	{
@@ -1113,18 +1114,18 @@ class Ajax extends MX_Controller {
 		$this->load->model('email/email_template_model');
 		$this->load->model('roster/roster_model');
 		//get company profile
-		$company = $this->setting_model->get_profile();	
+		$company = $this->setting_model->get_profile();
 		//get post data
 		$email_body = $this->input->post('email_body');
 		$selected_user_ids = $this->input->post('selected_user_ids',true);
 		$email_template_id = $this->input->post('email_template_select',true);
 		$sample_email_address = $this->input->post('sample_email_to',true);
-		
+
 		if($email_template_id){
 			$template_info = $this->email_template_model->get_template($email_template_id);
 			$email_subject = $template_info->email_subject;
 		}
-		
+
 		if($selected_user_ids){
 			//create obj parameters based on user and email template eg
 			$user_ids = json_decode($selected_user_ids);
@@ -1160,14 +1161,14 @@ class Ajax extends MX_Controller {
 		}
 		echo 'success';
 	}
-	
-		
+
+
 	function load_export_modal($user_ids)
 	{
 		$data['user_ids'] = $user_ids;
 		$this->load->view('export_modal_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function exporting() {
 		$user_ids = $this->input->post('user_ids');
 		$user_ids = explode('~', $user_ids);
@@ -1175,18 +1176,18 @@ class Ajax extends MX_Controller {
 		if ($export_id == '') {
 			return;
 		}
-		
+
 		$file_name = $this->_export_staff($user_ids, $export_id);
 		echo $file_name;
 	}
-	
-	private function _export_staff($user_ids, $export_id) 
+
+	private function _export_staff($user_ids, $export_id)
 	{
 		$fields = modules::run('export/get_fields', $export_id);
-		
+
 		ini_set('memory_limit', '128M');
 		ini_set('max_execution_time', 3600); //300 seconds = 5 minutes
-		
+
 		$this->load->library('excel');
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("StaffBooks");
@@ -1194,7 +1195,7 @@ class Ajax extends MX_Controller {
 		$objPHPExcel->getProperties()->setTitle("Staff Data");
 		$objPHPExcel->getProperties()->setSubject("Staff Data");
 		$objPHPExcel->getProperties()->setDescription("Staff Data Excel file, generated from StaffBooks.");
-		
+
 		$objPHPExcel->setActiveSheetIndex(0);
 		$i = 0;
 		$row = 1;
@@ -1217,7 +1218,7 @@ class Ajax extends MX_Controller {
 			foreach($fields as $field) {
 				$is_string = false;
 				$value = $field['value']; # Convert $field, $timesheet
-				if (strpos($value,'phone') !== false) 
+				if (strpos($value,'phone') !== false)
 				{
 					$is_string = true;
 				}
@@ -1231,11 +1232,11 @@ class Ajax extends MX_Controller {
 				{
 					$dob = date('d/m/Y', strtotime($staff['dob']));
 				}
-				
+
 				$s_choice = "no";
 				if ($staff['s_choice'] == "employer")
 				{
-					$s_choice = "yes";	
+					$s_choice = "yes";
 				}
 				$value = str_replace('{internal_id}', $staff['user_id'], $value);
 				$value = str_replace('{title}', $staff['title'], $value);
@@ -1268,19 +1269,19 @@ class Ajax extends MX_Controller {
 				{
 					$product_id = modules::run('setting/superinformasi', 'super_product_id','');
 					$value = str_replace('{super_membership_number}', $product_id, $value);
-					
+
 					$product_name = modules::run('setting/superinformasi', 'super_fund_name','');
 					$value = str_replace('{super_fund_name}', $product_name, $value);
-					
+
 				}
 				else # Use membership number
 				{
 					$value = str_replace('{super_membership_number}', $staff['s_membership'], $value);
 					$value = str_replace('{super_fund_name}', $staff['s_fund_name'], $value);
 				}
-				
+
 				$value = str_replace('{joined_date}', date('d/m/Y', strtotime($staff['created_on'])), $value);
-				
+
 				if ($i < 26)
 				{
 					$letter = chr(97 + $i) . $row;
@@ -1289,7 +1290,7 @@ class Ajax extends MX_Controller {
 				{
 					$letter = 'A' . chr(97 + ($i-26)) . $row;
 				}
-				if ($is_string) 
+				if ($is_string)
 				{
 					$objPHPExcel->getActiveSheet()->getStyle($letter)->getNumberFormat()->setFormatCode('@');
 					$objPHPExcel->getActiveSheet()->getCell($letter)->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
@@ -1298,19 +1299,19 @@ class Ajax extends MX_Controller {
 				{
 					$objPHPExcel->getActiveSheet()->SetCellValue($letter, $value);
 				}
-				
+
 				$i++;
 			}
 			$i=0;
 		}
-		
+
 		$objPHPExcel->getActiveSheet()->setTitle('staff');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, "CSV");
 		$file_name = 'staff_' . time() . ".csv";
 		$objWriter->save(EXPORTS_PATH . "/staff/" . $file_name);
 		return $file_name;
 	}
-	
+
 	function upload_custom_files($user_id, $field_id)
 	{
 		// Make sure file is not cached (as it happens for example on iOS devices)
@@ -1428,19 +1429,19 @@ class Ajax extends MX_Controller {
 		// Return Success JSON-RPC response
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
-	
+
 	function get_payrates() {
 		$user_id = $this->input->post('user_id');
 		$data['payrates'] = $this->staff_model->get_payrates($user_id);
 		$data['user_id'] = $user_id;
 		$this->load->view('payrates_list', isset($data) ? $data : NULL);
 	}
-	
+
 	function restrict_payrate() {
 		$input = $this->input->post();
 		$this->staff_model->restrict_payrate($input);
 	}
-	
+
 	function unrestrict_all() {
 		$user_id = $this->input->post('user_id');
 		$unrestrict_all = $this->input->post('unrestrict_all');
@@ -1448,14 +1449,14 @@ class Ajax extends MX_Controller {
 			$payrates = modules::run('attribute/payrate/get_payrates');
 			foreach($payrates as $payrate) {
 				$this->staff_model->add_payrate(array(
-					'user_id' => $user_id, 
+					'user_id' => $user_id,
 					'payrate_id' => $payrate['payrate_id']));
 			}
 		} else { # Unrestrict all venues / Delete all venues from restrict list
 			$this->staff_model->delete_payrates($user_id);
 		}
 	}
-	
-	
-	
+
+
+
 }

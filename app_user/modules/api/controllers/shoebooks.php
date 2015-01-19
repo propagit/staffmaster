@@ -195,7 +195,7 @@ class Shoebooks extends MX_Controller {
 		$e_id = ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'];
 
 		$fund_name = $staff['s_fund_name'];
-		$membership = $staff['s_membership'];
+		$membership = $staff['s_employee_id'];
 		// if ($staff['s_choice'] == 'employer')
 		// {
 		// 	$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
@@ -292,7 +292,7 @@ class Shoebooks extends MX_Controller {
 		$e_id = ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'];
 
 		$fund_name = $staff['s_fund_name'];
-		$membership = $staff['s_membership'];
+		$membership = $staff['s_employee_id'];
 		// if ($staff['s_choice'] == 'employer')
 		// {
 		// 	$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
