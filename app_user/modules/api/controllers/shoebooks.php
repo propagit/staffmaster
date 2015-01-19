@@ -247,7 +247,7 @@ class Shoebooks extends MX_Controller {
 			</NewEmployee>
 		</AppendEmployee>';
 		$request = str_replace('&', '&#038;', $request);
-		#echo '<pre>'; var_dump($request); echo '</pre>';
+		echo '<pre>'; var_dump($request); echo '</pre>'; die();
 		$client = new nusoap_client($this->host);
 		#echo '<pre>'; var_dump($client); echo '</pre>';
 		$error = $client->getError();
