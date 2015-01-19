@@ -383,7 +383,7 @@ class Shoebooks extends MX_Controller {
 			$date_entered = '<LastModified>' . date('Y-m-d', strtotime($staff['modified_on'])) . '</LastModified>';
 		}
 		$fund_name = $staff['s_fund_name'];
-		if ($staff['s_choice'] != 'own')
+		if ($staff['s_choice'] == 'employer')
 		{
 			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
 		}
@@ -420,7 +420,7 @@ class Shoebooks extends MX_Controller {
 				<ExtraVendorID></ExtraVendorID>
 				<BankType></BankType>
 				<ExtraFundName>' . $fund_name . '</ExtraFundName>
-				<ExtraFundNumber>' . $staff['s_membership'] . '</ExtraFundNumber>
+				<ExtraFundNumber>' . $staff['s_employee_id'] . '</ExtraFundNumber>
 				<EmploymentType></EmploymentType>
 				<VendorID></VendorID>
 				<ContactNumbers>
