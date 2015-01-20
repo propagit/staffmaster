@@ -290,13 +290,20 @@ class Shoebooks extends MX_Controller {
 		}
 		$e_id = ($staff['external_staff_id']) ? $staff['external_staff_id'] : STAFF_PREFIX . $staff['user_id'];
 
+		// $fund_name = $staff['s_fund_name'];
+		// $membership = $staff['s_employee_id'];
+		// if ($staff['s_choice'] == 'employer')
+		// {
+		// 	$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
+		// } else {
+		// 	$fund_name = modules::run('common/get_super_name', $staff['s_external_id']);
+		// }
+
 		$fund_name = $staff['s_fund_name'];
 		$membership = $staff['s_employee_id'];
 		if ($staff['s_choice'] == 'employer')
 		{
 			$fund_name = modules::run('setting/superinformasi', 'super_fund_name','');
-		} else {
-			$fund_name = modules::run('common/get_super_name', $staff['s_external_id']);
 		}
 
 		$request = '<AppendEmployee xmlns="http://www.shoebooks.com.au/accounting/v10/">
