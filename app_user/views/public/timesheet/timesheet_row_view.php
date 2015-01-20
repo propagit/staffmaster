@@ -88,6 +88,15 @@
             <? } ?>
         <? } ?>
         <?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-red">*</span>': '';?>
+        <?php 
+			$break = modules::run('common/break_time', $timesheet['break_time']);
+			$total_hour = ($timesheet['finish_time'] - $timesheet['start_time']) / 3600;
+			echo '(';
+			echo $break ? $total_hour - ($break/60) : $total_hour;
+			echo ' h)';
+		?>
+        
+        
         </td><!--start - finish time -->
         
         <td class="center staff_timesheet_time">

@@ -268,6 +268,8 @@ class Ajax_shift extends MX_Controller {
 		$value = isset($input['value']) ? $input['value'] : '';
 		$shift_time_mode = 'start_time';
 		
+		#print_r($input);return;exit;
+		
 		$data = array();
 		
 		switch($field_id){
@@ -299,6 +301,10 @@ class Ajax_shift extends MX_Controller {
 				$time_hour = $this->input->post('finish_time_hour');
 				$time_minutes = $this->input->post('finish_time_minutes');
 				$shift_time_mode = 'finish_time';
+			break;
+			
+			case 'supervisor_id':
+				$data['supervisor_id'] = $input['supervisor_id'];
 			break;
 			
 			default:
