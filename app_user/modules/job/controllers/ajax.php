@@ -907,7 +907,9 @@ class Ajax extends MX_Controller {
 		for($i=0; $i < 7; $i++)
 		{
 			$date = date('Y-m-d', strtotime($current_monday) + $i*24*60*60);
-			$shifts = $this->job_shift_model->get_job_shifts($job_id, $date);
+			#$shifts = $this->job_shift_model->get_job_shifts($job_id, $date);
+			# Get all shifts on the date, not just 10
+			$shifts = $this->job_shift_model->get_job_shifts_for_copy_roster($job_id, $date);
 			if (count($shifts) > 0)
 			{
 				foreach($copy_steps as $step)
