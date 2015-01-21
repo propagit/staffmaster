@@ -15,21 +15,30 @@ class Sms extends MX_Controller {
 			case 'topup':
 					$this->topup_view();
 				break;
-			case 'test':
-					$this->test();
+			case 'test1':
+					$this->test1();
+				break;
+			case 'test2':
+					$this->test2();
 				break;
 			default:
 					$this->main_view();
 				break;
 		}
 	}
-	function test() {
+	function test1() {
 		$to = '61402133066';
-		$msg = 'Hello how are you!';
+		$msg = 'One way sms';
 		$a = $this->send_1way_sms($to, $msg);
 		var_dump($a);
-
 	}
+	function test2() {
+		$to = '61402133066';
+		$msg = 'Two way sms';
+		$a = $this->send_2ways_sms($to, $msg);
+		var_dump($a);
+	}
+
 
 	function send_1way_sms($to, $message) {
 		$this->load->library('cbf');
