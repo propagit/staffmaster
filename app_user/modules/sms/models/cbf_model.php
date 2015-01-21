@@ -2,8 +2,8 @@
 
 class Cbf_model extends CI_Model {
 	#var $url = 'https://sms1.cardboardfish.com:9444/HTTPSMS?';
-	var $url = 'http://sms1.cardboardfish.com:9001/HTTPSMS?';
-	
+	var $url = 'http://sms2.cardboardfish.com:9001/HTTPSMS?';
+
 	function send_1way_sms($destination, $message) {
 		$sender = VIRTUAL_NUMBER;
 		$company = modules::run('setting/company_profile');
@@ -12,41 +12,41 @@ class Cbf_model extends CI_Model {
 		}
 		return $this->send_sms($destination, $sender, $message, false);
 	}
-	
+
 	# Send two way sms message
 	function send_2ways_sms($destination, $message) {
 		return $this->send_sms($destination, VIRTUAL_NUMBER, $message, true);
 	}
-		
+
 	function send_sms ($destination, $source, $message,$twoway) {
 		#$delivery_time = $delivery_time + 39600;
-		
+
 		if ($twoway || is_numeric($source)) {
 			return $this->send_sms_full ($destination, $source, $message, 1,"","","","","","","");
 		} else {
-			return $this->send_sms_full ($destination, $source, $message, 5,"","","","","","","");			
+			return $this->send_sms_full ($destination, $source, $message, 5,"","","","","","","");
 		}
 	}
-	
+
 	function send_sms_full ($destination, $source, $message, $source_addr_ton = "", $dcs = "", $dr = "", $udh = "", $user_reference = "", $validity_period = "", $delay_until = "", $local_time = "") {
 		global $errstr, $errcode;
-	
+
 		$das = explode(",", $destination);
-	
+
 		$dests = count($das);
-	
+
 		$batches = array_chunk($das, 10);
-	
+
 		$replies = array();
-	
+
 		foreach ($batches as $batch) {
-	
+
 			$batchda = implode(",", $batch);
 			# Need to somehow initialize this sms object
 			$sms = new CBFSMS($batchda, $source, $message, $source_addr_ton, $dcs, $dr, $udh, $user_reference, $validity_period, $delay_until, $local_time);
 			$batchreplies = $this->send_sms_object($sms);
 			#return $batchreplies; # Debug
-				
+
 			if (!$batchreplies) {
 				if ($errcode == -15) {
 					$errcode = 0;
@@ -77,18 +77,18 @@ class Cbf_model extends CI_Model {
 			}
 			$replies = array_merge($replies, $batchreplies);
 		}
-	
+
 		return $replies;
 		#return $sms;
-	
+
 	}
-	
+
 	function send_sms_object ($sms) {
 		global $errstr, $errcode;
 		$systemtype = "H";
 		$username = urlencode(CBF_USER);
 		$password = urlencode(CBF_PASS);
-	
+
 		$dcs = $sms->data_coding_scheme;
 		if ($dcs == "" || $dcs == 1) {
 			$dcs = 6;
@@ -99,7 +99,7 @@ class Cbf_model extends CI_Model {
 		} else {
 			$msg = urlencode($sms->message);
 		}
-		
+
 		$request = $this->url . "S={$systemtype}&UN=${username}&P=${password}&DA={$sms->dest_addr}&SA={$sms->source_addr}&M=${msg}";
 		if (!$sms->source_addr_ton) {
 			preg_match("/\w/", $sms->source_addr, $matches);
@@ -116,7 +116,7 @@ class Cbf_model extends CI_Model {
 		$request .= $this->includeif ($sms->validity_period, "&VP=");
 		$request .= $this->includeif ($sms->delay_until, "&DU=");
 		$request .= $this->includeif ($sms->local_time, "&LT=");
-		
+
 		# echo "$request\n";
 		$ch = curl_init($request);
 		#return $request;
@@ -132,9 +132,9 @@ class Cbf_model extends CI_Model {
 			$errstr = "HTTP error: $code\n";
 			return false;
 		}
-	
+
 		preg_match("/(OK.*)\r$/", $serverresponse, $matches);
-	
+
 		if (!isset($matches[0])) {
 			$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if ($code == 400) {
@@ -161,34 +161,34 @@ class Cbf_model extends CI_Model {
 			}
 			return false;
 		}
-	
+
 		$response = $matches[1];
-	
+
 		preg_match("/^OK((\s\-?\d+)+)(\sUR:.+)?/", $response, $matches);
-	
+
 		$number = explode(" ", $matches[1]);
-	
+
 		# Drop the dead entry
 		array_shift($number);
-	
+
 		$to_return = array();
 		foreach ($number as $id) {
 			$to_return[] = $id;
 		}
-	
+
 		return $to_return;
 	}
-	
+
 	function GSMEncode ($to_encode) {
 
 		$gsmchar = array (
 			"\x0A" => "\x0A",
 			"\x0D" => "\x0D",
-	
+
 			"\x24" => "\x02",
-	
+
 			"\x40" => "\x00",
-	
+
 			"\x13" => "\x13",
 			"\x10" => "\x10",
 			"\x19" => "\x19",
@@ -199,28 +199,28 @@ class Cbf_model extends CI_Model {
 			"\x12" => "\x12",
 			"\x17" => "\x17",
 			"\x15" => "\x15",
-	
+
 			"\x5B" => "\x1B\x3C",
 			"\x5C" => "\x1B\x2F",
 			"\x5D" => "\x1B\x3E",
 			"\x5E" => "\x1B\x14",
 			"\x5F" => "\x11",
-	
+
 			"\x7B" => "\x1B\x28",
 			"\x7C" => "\x1B\x40",
 			"\x7D" => "\x1B\x29",
 			"\x7E" => "\x1B\x3D",
-			
+
 			"\x80" => "\x1B\x65",
-	
+
 			"\xA1" => "\x40",
 			"\xA3" => "\x01",
 			"\xA4" => "\x1B\x65",
 			"\xA5" => "\x03",
 			"\xA7" => "\x5F",
-	
+
 			"\xBF" => "\x60",
-	
+
 			"\xC0" => "\x41",
 			"\xC1" => "\x41",
 			"\xC2" => "\x41",
@@ -237,7 +237,7 @@ class Cbf_model extends CI_Model {
 			"\xCD" => "\x49",
 			"\xCE" => "\x49",
 			"\xCF" => "\x49",
-	
+
 			"\xD0" => "\x44",
 			"\xD1" => "\x5D",
 			"\xD2" => "\x4F",
@@ -252,7 +252,7 @@ class Cbf_model extends CI_Model {
 			"\xDC" => "\x5E",
 			"\xDD" => "\x59",
 			"\xDF" => "\x1E",
-	
+
 			"\xE0" => "\x7F",
 			"\xE1" => "\x61",
 			"\xE2" => "\x61",
@@ -269,7 +269,7 @@ class Cbf_model extends CI_Model {
 			"\xED" => "\x69",
 			"\xEE" => "\x69",
 			"\xEF" => "\x69",
-	
+
 			"\xF0" => "\x64",
 			"\xF1" => "\x7D",
 			"\xF2" => "\x08",
@@ -282,15 +282,15 @@ class Cbf_model extends CI_Model {
 			"\xFA" => "\x75",
 			"\xFB" => "\x75",
 			"\xFC" => "\x7E",
-			"\xFD" => "\x79" 
-	
+			"\xFD" => "\x79"
+
 		);
-	
+
 		# using the NO_EMPTY flag eliminates the need for the shift pop correction
 		$chars = preg_split("//", $to_encode, -1, PREG_SPLIT_NO_EMPTY);
-	
+
 		$to_return = "";
-	
+
 		foreach ($chars as $char) {
 			preg_match("/[A-Za-z0-9!\/#%&\"=\-'<>\?\(\)\*\+\,\.;:]/", $char, $matches);
 			if (isset($matches[0])) {
@@ -305,8 +305,8 @@ class Cbf_model extends CI_Model {
 		}
 		return $to_return;
 	}
-	
-	
+
+
 	function includeif ($existing, $prefix) {
 		if ($existing == "") {
 			return "";
@@ -314,7 +314,7 @@ class Cbf_model extends CI_Model {
 			return $prefix . $existing;
 		}
 	}
-	
+
 }
 
 $errstr = "";
