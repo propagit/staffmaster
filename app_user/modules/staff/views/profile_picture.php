@@ -5,7 +5,7 @@ if(count($photo)>0)
 	$class="resize";
 ?>
 <div class="profile_photo">
-	<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><img class="<?=$class?>" src="<?=$thumb_src;?>" title="<?=$staff['first_name'].' '.$staff['last_name']?>" alt="<?=$photo['name']?>" /></a>
+	<a href="<?=base_url();?>staff/edit/<?=$staff['user_id'];?>"><img class="<?=$class?>" src="<?=$thumb_src;?>" title="<?=$staff['first_name'].' '.$staff['last_name'] . ($staff['mobile'] ? ' | ' . $staff['mobile'] : '' );?>" alt="<?=$photo['name']?>" /></a>
 </div>
 <?php
 }
