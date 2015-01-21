@@ -2,7 +2,7 @@
 
 class Cbf_model extends CI_Model {
 	#var $url = 'https://sms1.cardboardfish.com:9444/HTTPSMS?';
-	var $url = 'http://sms1.cardboardfish.com:9001/HTTPSMS?';
+	var $url = 'http://sms2.cardboardfish.com:9001/HTTPSMS?';
 
 	function send_1way_sms($destination, $message) {
 		$sender = VIRTUAL_NUMBER;
