@@ -68,6 +68,15 @@ class Ajax_setup extends MX_Controller {
 		$url = str_replace('www.', '', $url);
 		$data['url'] = $url;
 		$data['email'] = $account['email_address'];
+		
+		# if the new fields first name, last name and phone exist set them and pass them to welcome email
+		if($account['first_name'] && $account['last_name'] && $account['phone'] && $account['package']){
+			$data['first_name'] = $account['first_name'];
+			$data['last_name'] = $account['last_name'];
+			$data['phone'] = $account['phone'];
+			$data['package'] = $account['package'];	
+		}
+		
 		$message = $this->load->view('email/welcome', $data, true);
 		modules::run('email/send_email', array(
 			'to' => $account['email_address'], #'nam@propagate.com.au',

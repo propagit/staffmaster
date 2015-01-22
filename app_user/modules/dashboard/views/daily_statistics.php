@@ -7,7 +7,7 @@
     <div class="counter-label">
         Completed Shifts 
         <span class="pull">
-            <button class="btn btn-core dash-ts-btn generate-timesheet-admin" type="button">Generate Timesheet Now</button>
+            <button class="btn btn-core dash-ts-btn generate-timesheet-admin" type="button">Generate Timesheets Now</button>
         </span>
     </div>
 </div>

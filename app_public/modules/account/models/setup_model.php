@@ -66,6 +66,14 @@ class Setup_model extends CI_Model {
 			'username' => $account['email_address'],
 			'password' => $account['password']
 		);
+		
+		# if the new fields first name, last name and phone exist set them and pass them to welcome email
+		if($account['first_name'] && $account['last_name'] && $account['phone'] && $account['package']){
+			$user_data['first_name'] = $account['first_name'];
+			$user_data['last_name'] = $account['last_name'];
+			$user_data['phone'] = $account['phone'];
+		}
+		
 		$this->db->insert('users', $user_data);
 		$user_id = $this->db->insert_id();
 		$this->db->insert('company_profile', array(
