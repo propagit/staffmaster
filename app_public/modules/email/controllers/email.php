@@ -87,8 +87,12 @@ class Email extends MX_Controller {
 			$this->email->initialize($config);
 			$this->email->from($from,$from_text);		
 			$this->email->to($to);
-			$this->email->cc($cc);
-			$this->email->bcc($bcc);
+			if($cc){
+				$this->email->cc($cc);
+			}
+			if($bcc){
+				$this->email->bcc($bcc);
+			}
 			#$company_logo = modules::run('setting/company_logo');
 			#$email_signature = modules::run('setting/ajax/get_template_footer');
 			$this->email->subject($subject);
