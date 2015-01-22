@@ -71,12 +71,16 @@ class Timesheet_staff_model extends CI_Model {
 	{
 		$timesheet = $this->get_timesheet($timesheet_id);
 		$status = TIMESHEET_SUBMITTED;
+		$data = array();
 		$action = 'submitted';
 		if ($timesheet['supervisor_id'] == $this->user_id)
 		{ # Approve timesheet
 			$status = TIMESHEET_APPROVED;
 			$action = 'approved';
+			$data['approved_on'] = date('Y-m-d H:i:s');
 		}
+		$data['status'] = $status;
+
 		$log_data = array(
 			'module' => $this->module,
 			'object' => $this->object,
@@ -86,6 +90,6 @@ class Timesheet_staff_model extends CI_Model {
 		$this->log_model->insert_log($log_data);
 
 		$this->db->where('timesheet_id', $timesheet_id);
-		return $this->db->update('job_shift_timesheets', array('status' => $status));
+		return $this->db->update('job_shift_timesheets', $data);
 	}
 }

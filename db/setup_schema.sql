@@ -1733,6 +1733,7 @@ CREATE TABLE IF NOT EXISTS `job_shift_timesheets` (
   `total_amount_client` decimal(10,2) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_on` datetime NOT NULL,
+  `approved_on` datetime NULL,
   `batched_on` datetime NOT NULL,
   `staff_paid_on` datetime NOT NULL,
   `client_paid_on` datetime NOT NULL,

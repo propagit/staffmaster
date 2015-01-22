@@ -7,10 +7,10 @@
 		<div class="col-md-12">
 			<div class="modal-body" id="modal-timesheet">
 				<table class="table table-middle table-condensed">
-					<? if($timesheet['staff_id']) { 
+					<? if($timesheet['staff_id']) {
 						$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
 					?>
-								
+
 					<tr class="active">
 						<th width="120"><?=modules::run('staff/profile_image', $staff['user_id']);?></th>
 						<th>
@@ -19,7 +19,7 @@
 						<td>&nbsp;</td>
 					</tr>
 					<? } ?>
-					
+
 					<tr>
 						<td>Role</td>
 						<td><?=modules::run('attribute/role/display_role', $timesheet['role_id']);?></td>
@@ -67,7 +67,7 @@
 					<tr>
 						<td>Supervisor</td>
 						<td>
-							<? if($timesheet['supervisor_id']) { $supervisor = modules::run('user/get_user', $timesheet['supervisor_id']); 
+							<? if($timesheet['supervisor_id']) { $supervisor = modules::run('user/get_user', $timesheet['supervisor_id']);
 								if ($supervisor['is_client'])
 								{
 									$supervisor = modules::run('user/get_user_client', $supervisor['user_id']);
@@ -77,7 +77,10 @@
 								{
 									echo $supervisor['first_name'] . ' ' . $supervisor['last_name'];
 								}
-												
+								if ($timesheet['approved_on']) {
+									echo ' approved at ' . date('H:i \o\n jS F, Y', $timesheet['approved_on']);
+								}
+
 							?>
 							<? } else { ?>
 							No Supervisor Assigned
@@ -91,13 +94,13 @@
 					</tr>
 					<? if ($expenses && $timesheet['status'] < TIMESHEET_BATCHED) { foreach($expenses as $expense) { $tax = 1; if ($expense['tax'] == GST_ADD) { $tax = 1.1; } ?>
 					<tr>
-						<td><?=$expense['description'];?></td>						
+						<td><?=$expense['description'];?></td>
 						<td>$<?=$expense['staff_cost'] * $tax;?> (<?=modules::run('common/reverse_field_gst', $expense['tax']);?>)</td>
 					</tr>
 					<? } } ?>
 					<? foreach($paid_expenses as $expense) { $tax = 1; if ($expense['tax'] == GST_ADD) { $tax = 1.1; } ?>
 					<tr>
-						<td><?=$expense['description'];?></td>						
+						<td><?=$expense['description'];?></td>
 						<td>$<?=$expense['staff_cost'] * $tax;?> (<?=modules::run('common/reverse_field_gst', $expense['tax']);?>)</td>
 					</tr>
 					<? } ?>
@@ -107,11 +110,11 @@
 						<td><?=$timesheet['reject_note'];?></td>
 					</tr>
 					<?php } ?>
-				</table>				
+				</table>
 				<button type="button" class="btn btn-core" id="btn-print-timesheet"><i class="fa fa-print"></i> Print</button>
 				&nbsp;
 				<button type="button" class="btn btn-core"><i class="fa fa-envelope-o"></i> Email</button>
-			</div>	
+			</div>
 		</div>
 	</div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
