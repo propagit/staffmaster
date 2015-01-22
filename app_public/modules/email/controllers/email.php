@@ -42,7 +42,6 @@ class Email extends MX_Controller {
 		$subject = ''; 
 		$message = ''; 
 		$attachment = ''; 
-		$bcc = '';
 		if($data){
 			foreach($data as $key=>$val){
 				switch($key){
