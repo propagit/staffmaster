@@ -12,8 +12,9 @@ class Ajax extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('job_model');
-		$this->load->model('job_shift_model');
+		$this->load->model('job/job_model');
+		$this->load->model('job/job_shift_model');
+		$this->load->model('timesheet/timesheet_model');
 		$this->user = $this->session->userdata('user_data');
 		$this->is_client = modules::run('auth/is_client');
 	}
@@ -89,6 +90,7 @@ class Ajax extends MX_Controller {
 
 
 		# Delete all timesheet in that job
+		$this->timesheet_model->delete_job_timesheets($job_id);
 
 		# Delete job
 		$this->job_model->delete_job($job_id);
