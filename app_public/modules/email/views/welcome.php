@@ -64,14 +64,14 @@ body {
 			if($first_name && $last_name && $phone && $package){
 		?>
         <tr>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Account Details</span></td> 
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Account Details:</span></td> 
         	<td width="15"></td>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#00aeec"><?=ucwords($first_name) . ' ' . ucwords($last_name) . '. Ph: ' . $phone;?></span></td>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($first_name) . ' ' . ucwords($last_name) . '. Ph: ' . $phone;?></span></td>
         </tr>
         <tr>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Package</span></td> 
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Package:</span></td> 
         	<td width="15"></td>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#00aeec"><?=ucwords($package);?></span></td>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($package);?></span></td>
         </tr>
         <?php } ?>
         <tr>
