@@ -1,5 +1,5 @@
 <!-- Data Tables -->
-<script type="text/javascript" src="<?=base_url();?>assets/datatables/media/js/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="<?=base_url();?>assets/datatables/media/js/jquery.dataTables.min.js"></script>
 
 <!--begin top box--->
 <div class="col-md-12">
@@ -35,7 +35,7 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-			<? foreach($applicants as $applicant) { 
+			<? foreach($applicants as $applicant) {
 				$name = $this->form_model->get_applicant_name($applicant['applicant_id']);
 			?>
 				<tr id="applicant_<?=$applicant['applicant_id'];?>">
@@ -83,9 +83,9 @@ $(function(){
 			null
 		]
     });
-    
+
 	$('#select_all_applicants').click(function(){
-		$('input[name="applicant_ids[]"]').prop('checked', this.checked);		
+		$('input[name="applicant_ids[]"]').prop('checked', this.checked);
 	});
 	$('#menu-applicant-action ul li a[data-value="reject"]').confirmModal({
 		confirmTitle: 'Reject selected applicants',
@@ -101,7 +101,7 @@ $(function(){
 			})
 		}
 	});
-	
+
 	$('#menu-applicant-action ul li a[data-value="print"]').click(function(e){
 		e.preventDefault();
 		$('#waitingModal').modal('show');
@@ -128,14 +128,16 @@ function view_applicant(applicant_id) {
 		show: true
 	});
 }
-function reject_applicant(applicant_id) {
+function reject_applicant(applicant_id, btn) {
 	help.confirm_delete('Reject Applicant','Are you sure you want to reject this applicant?',function(confirmed){
 		if(confirmed){
+			btn.button('loading');
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>form/ajax/reject_applicant",
 				data: {applicant_id: applicant_id},
 				success: function(html) {
+					btn.button('reset');
 					$('#applicant_' + applicant_id).remove();
 					$('.bs-modal-lg').modal('hide');
 				}
@@ -143,12 +145,14 @@ function reject_applicant(applicant_id) {
 		}
 	});
 }
-function accept_applicant(applicant_id, status) {
+function accept_applicant(applicant_id, status, btn) {
+	btn.button('loading');
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>form/ajax/accept_applicant",
 		data: {applicant_id: applicant_id, status: status},
 		success: function(html) {
+			btn.button('reset');
 			$('#applicant_' + applicant_id).remove();
 			$('.bs-modal-lg').modal('hide');
 		}
