@@ -5,12 +5,12 @@
  */
 
 class Myob extends MX_Controller {
-	
+
 	var $cloud_api_url = 'https://api.myob.com/accountright/';
 	var $api_key;
 	var $api_secret;
 	var $company_id;
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -19,9 +19,9 @@ class Myob extends MX_Controller {
 		$this->api_secret = $this->config_model->get('myob_api_secret');
 		$this->company_id = $this->config_model->get('myob_company_id');
 	}
-		
+
 	function connect($function='')
-	{	
+	{
 		$access_token = $this->config_model->get('myob_access_token');
 		if ($access_token)
 		{
@@ -44,10 +44,10 @@ class Myob extends MX_Controller {
 		}
 		else
 		{
-			
+
 			$redirect_url = base_url() . 'api/myob/connect';
 			$api_scope = 'CompanyFile';
-			
+
 			if (!isset($_GET['code']))
 			{
 				$url = "https://secure.myob.com/oauth2/account/authorize?client_id=" . $this->api_key . "&redirect_uri=" . urlencode($redirect_url) . "&response_type=code&scope=$api_scope";
@@ -70,16 +70,16 @@ class Myob extends MX_Controller {
 				$this->config_model->add(array('key' => 'myob_access_token', 'value' => $oauth_tokens->access_token));
 				$this->config_model->add(array('key' => 'myob_access_token_expires', 'value' => time() + $oauth_tokens->expires_in));
 				$this->config_model->add(array('key' => 'myob_refresh_token', 'value' => $oauth_tokens->refresh_token));
-				
+
 				header("Location: " . base_url() . 'api/myob/connect/' . $function);
 			}
 			else
 			{
 				die("Error #2");
 			}
-			
+
 		}
-		
+
 		$result = '';
 		$params = explode('~', $function);
 		$param = isset($params[1]) ? urlencode($params[1]) : '';
@@ -109,8 +109,8 @@ class Myob extends MX_Controller {
 			case 'update_employee_payroll':
 					$result = $this->update_employee_payroll($param);
 				break;
-				
-				
+
+
 			case 'read_customer':
 					$result = $this->read_customer($param);
 				break;
@@ -150,8 +150,8 @@ class Myob extends MX_Controller {
 			case 'read_activity':
 					$result = $this->read_activity($param);
 				break;
-				
-				
+
+
 			case 'search_super_funds':
 					$result = $this->search_super_funds();
 				break;
@@ -175,7 +175,7 @@ class Myob extends MX_Controller {
 		#var_dump($result);
 		return $result;
 	}
-	
+
 	function company()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -186,15 +186,15 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		$url = $this->cloud_api_url;
-		$ch = curl_init($url); 
-		
+		$ch = curl_init($url);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
+
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$company = json_decode($response);
 		#var_dump($company); die();
@@ -209,7 +209,7 @@ class Myob extends MX_Controller {
 		}
 		header("Location: " . base_url() . 'setting/integration');
 	}
-	
+
 	function test()
 	{
 		$a = $this->info();
@@ -219,7 +219,7 @@ class Myob extends MX_Controller {
 		}
 		return true;
 	}
-	
+
 	function info()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -230,20 +230,20 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		$url = $this->cloud_api_url . 'Info';
-		$ch = curl_init($url); 
-		
+		$ch = curl_init($url);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
+
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
 		return ($response);
 	}
-	
+
 	function preferences()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -255,21 +255,21 @@ class Myob extends MX_Controller {
 		);
 		#var_dump($headers); die();
 		$url = $this->cloud_api_url . $this->company_id . '/Company/Preferences';
-		
-		$ch = curl_init($url); 
-		
+
+		$ch = curl_init($url);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
+
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
 		return $response;
 	}
-	
+
 	function taxcode($code)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -282,18 +282,18 @@ class Myob extends MX_Controller {
 		#var_dump($headers); die();
 		#$filter = "filter=substringof('". $code ."',%20Code)%20eq%20true";
 		$filter = "filter=Code%20eq%20'". $code ."'";
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/GeneralLedger/TaxCode/?$' . $filter;
-		
-		$ch = curl_init($url); 
-		
+
+		$ch = curl_init($url);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
+
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
 		if (isset($response->Items[0]))
@@ -303,8 +303,8 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
-	
+
+
 	/**
 	*	@desc: get all employees from MYOB
 	*	@return: array of objects (vector) of employee from MYOB
@@ -319,19 +319,19 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		
+
 		$filter = "filter=IsActive%20eq%20true";
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter . '&$top=5000';
-		
-		$ch = curl_init($url); 
-		
+
+		$ch = curl_init($url);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
+
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
 		#var_dump($response); die();
@@ -339,15 +339,15 @@ class Myob extends MX_Controller {
 		{
 			return $response->Items;
 		}
-		return null;		
+		return null;
 	}
-	
+
 	function test_read_employee($external_id)
 	{
 		$e = $this->read_employee($external_id);
 		var_dump($e);
 	}
-	
+
 	/**
 	*	@desc: get employee from MYOB
 	*	@params: $external_id (DisplayID in MYOB)
@@ -366,17 +366,17 @@ class Myob extends MX_Controller {
 		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
 		$filter = "filter=DisplayID%20eq%20'". $external_id ."'";
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter;
-		
-		$ch = curl_init($url); 
+
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		#var_dump($response); die();
 		if (isset($response->Items[0]))
@@ -385,7 +385,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	/**
 	*	@desc: add new employee to MYOB
 	*	@params: $user_id (user_id in StaffBooks)
@@ -431,32 +431,32 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee';
-		
-		$ch = curl_init($url); 
-		
-		
-		curl_setopt($ch, CURLOPT_POST, true); 
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-				
-		$response = curl_exec($ch); 
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
-		
+
 		if (isset($response->Errors))
 		{
 			return false;
 		}
-		
+
 		$this->load->model('staff/staff_model');
-		return $this->staff_model->update_staff($user_id, array('external_staff_id' => STAFF_PREFIX . $user_id), true);		
+		return $this->staff_model->update_staff($user_id, array('external_staff_id' => STAFF_PREFIX . $user_id), true);
 	}
-	
+
 	/**
 	*	@desc: update existed employee to MYOB
 	*	@params: $external_id (DisplayID in MYOB)
@@ -509,33 +509,33 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/' . $employee->UID;
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
-		
+
 		$response = json_decode($response);
-		
+
 		if (isset($response->Errors))
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	*	@desc: get employee payment details from MYOB
 	*	@params: $external_id (DisplayID in MYOB)
@@ -556,24 +556,24 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePaymentDetails/' . $employee->EmployeePaymentDetails->UID;
-		
-		$ch = curl_init($url); 
+
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		#var_dump($response); die();
 		return $response;
 	}
-	
+
 	function read_employee_payroll($external_id)
 	{
 		$employee = $this->read_employee($external_id);
@@ -588,24 +588,30 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePayrollDetails/' . $employee->EmployeePayrollDetails->UID;
-		
-		$ch = curl_init($url); 
+
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		#var_dump($response); die();
 		return $response;
 	}
-	
+
+	function test_read_employee_payroll($external_id)
+	{
+		$payroll = $this->read_employee_payroll($external_id);
+		var_dump($payroll);
+	}
+
 	/**
 	*	@desc: update employee payment details to MYOB
 	*	@params: $user_id (user_id in StaffBooks)
@@ -627,7 +633,7 @@ class Myob extends MX_Controller {
 		$bsb = str_replace(' ', '', $staff['f_bsb']);
 		$bsb = trim($bsb);
 		$bsb = substr($bsb,0,3) . '-' . substr($bsb, 3);
-		
+
 		$payment_details = array(
 			'UID' => $payment->UID,
 			'Employee' => array(
@@ -656,19 +662,19 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePaymentDetails/' . $payment->UID;
-		$ch = curl_init($url); 
-		
-		
+		$ch = curl_init($url);
+
+
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
@@ -678,7 +684,7 @@ class Myob extends MX_Controller {
 		}
 		return true;
 	}
-	
+
 	function update_employee_payroll($user_id)
 	{
 		$staff = modules::run('staff/get_staff', $user_id);
@@ -694,7 +700,7 @@ class Myob extends MX_Controller {
 		$gender = null;
 		if ($staff['gender'] == 'm') { $gender = 'Male'; }
 		else if ($staff['gender'] == 'f') { $gender = 'Female'; }
-		
+
 		$s_external_id = $staff['s_external_id'];
 		if (!$s_external_id)
 		{
@@ -710,7 +716,7 @@ class Myob extends MX_Controller {
 				'EmployeeMembershipNumber' => $staff['s_employee_id']
 			);
 		}
-		
+
 		$payroll_details = array(
 			'UID' => $payroll->UID,
 			'Employee' => array(
@@ -737,19 +743,19 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePayrollDetails/' . $payroll->UID;
-		$ch = curl_init($url); 
-		
-		
+		$ch = curl_init($url);
+
+
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		#var_dump($response);
@@ -760,7 +766,7 @@ class Myob extends MX_Controller {
 		}
 		return true;
 	}
-	
+
 	/**
 	*	@desc: get all customers from MYOB
 	*	@return: array of objects (vector) of customers from MYOB
@@ -777,16 +783,16 @@ class Myob extends MX_Controller {
 		);
 		$filter = "filter=IsActive%20eq%20true";
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/?$' . $filter . '&$top=5000';
-		
-		$ch = curl_init($url); 
-		
+
+		$ch = curl_init($url);
+
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
+
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
 		if (isset($response->Items))
@@ -796,13 +802,13 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function test_read_customer()
 	{
 		$c = $this->search_customer();
 		var_dump($c);
 	}
-	
+
 	/**
 	*	@desc: get customer from MYOB
 	*	@params: $external_id (DisplayID from MYOB)
@@ -825,17 +831,17 @@ class Myob extends MX_Controller {
 		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
 		$filter = "filter=DisplayID%20eq%20'". $external_id ."'";
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/?$' . $filter;
-		
-		$ch = curl_init($url); 
+
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		#var_dump($response);
 		if (isset($response->Items[0]))
@@ -845,7 +851,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	/**
 	*	@desc: add new customer to MYOB
 	*	@params: $user_id (user_id in StaffBooks)
@@ -903,23 +909,23 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer';
-		
-		$ch = curl_init($url); 
-		
-		
-		curl_setopt($ch, CURLOPT_POST, true); 
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-				
-		$response = curl_exec($ch); 
+
+		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
-		
+
 		if (isset($response->Errors))
 		{
 			$result = false;
@@ -928,7 +934,7 @@ class Myob extends MX_Controller {
 		$result = $this->client_model->update_client($user_id, array('external_client_id' => CLIENT_PREFIX . $user_id), true);
 		return $result;
 	}
-	
+
 	function test_update_customer($external_id)
 	{
 		$customer = $this->read_customer($external_id);
@@ -977,7 +983,7 @@ class Myob extends MX_Controller {
 			'LastModified' => $client['modified_on'],
 			'RowVersion' => $customer->RowVersion
 		);
-		
+
 		$params = json_encode($updated_customer);
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
@@ -988,25 +994,25 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/' . $customer->UID;
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		var_dump($response);
 	}
-	
+
 	/**
 	*	@desc: update customer data to MYOB
 	*	@params: $external_id (DisplayID in MYOB)
@@ -1026,7 +1032,7 @@ class Myob extends MX_Controller {
 			return false;
 		}
 		$names = explode(' ', $client['full_name']);
-		
+
 		$abn = '';
 		if ($client['abn'])
 		{
@@ -1034,7 +1040,7 @@ class Myob extends MX_Controller {
 			$abn = trim($abn);
 			$abn = substr($abn,0,2) . ' ' . substr($abn, 2,3) . ' ' . substr($abn, 5,3) . ' ' . substr($abn, 8);
 		}
-		
+
 		$updated_customer = array(
 			'UID' => $customer->UID,
 			'CompanyName' => $client['company_name'],
@@ -1081,31 +1087,31 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/' . $customer->UID;
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
-		
+
 		if (isset($response->Errors))
 		{
 			return false;
 		}
 		return true;
 	}
-	
+
 	function delete_customer($external_id)
 	{
 		$customer = $this->read_customer($external_id);
@@ -1113,7 +1119,7 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
-		
+
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1123,32 +1129,32 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        #'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/' . $customer->UID;
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		var_dump($response);
 		$response = json_decode($response);
-		
+
 		if (isset($response->Errors))
 		{
 			return false;
 		}
 		return true;
 	}
-	
+
 	function read_accounts($class)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1159,18 +1165,18 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		$filter = "filter=Classification%20eq%20'". $class ."'";
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/GeneralLedger/Account/?$' . $filter;
-		$ch = curl_init($url); 
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		if (isset($response->Items))
 		{
@@ -1179,13 +1185,13 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function search_activity()
 	{
 		$a = $this->read_activity('Gen Lab Base Rate $33');
 		var_dump($a);
 	}
-	
+
 	function read_activity($external_id)
 	{
 		if (!$external_id)
@@ -1201,18 +1207,18 @@ class Myob extends MX_Controller {
 		);
 		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
 		$filter = "filter=Name%20eq%20'". urlencode($external_id) ."'";
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/TimeBilling/Activity/?$' . $filter;
-		$ch = curl_init($url); 
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		if (isset($response->Items[0]))
 		{
@@ -1221,7 +1227,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function append_activity($external_id, $rate)
 	{
 		$activity = array(
@@ -1243,7 +1249,7 @@ class Myob extends MX_Controller {
 			)
 		);
 		$params = json_encode($activity);
-			
+
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1253,20 +1259,20 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/TimeBilling/Activity';
-		
-		$ch = curl_init($url); 
-		
-		
-		curl_setopt($ch, CURLOPT_POST, true); 
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		var_dump($response);
@@ -1277,7 +1283,7 @@ class Myob extends MX_Controller {
 		}
 		return $errors;
 	}
-	
+
 	function search_super_funds()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1289,18 +1295,18 @@ class Myob extends MX_Controller {
 		);
 		#$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
 		#$filter = "filter=Name%20eq%20'". $name ."'";
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund?$orderby=Name';
-		$ch = curl_init($url); 
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		#var_dump($response);
 		if (isset($response->Items))
@@ -1310,7 +1316,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function read_super_fund($uid)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1321,21 +1327,21 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		$filter = "filter=UID%20eq%20'". $uid ."'";
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund/' . $uid;
-		$ch = curl_init($url); 
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
 		$response = json_decode($response);
-		return $response;		
+		return $response;
 	}
-	
+
 	function append_super_fund()
 	{
 		$super_fund = array(
@@ -1345,7 +1351,7 @@ class Myob extends MX_Controller {
 			'Website' => 'www.propagate.com.au'
 		);
 		$params = json_encode($super_fund);
-			
+
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1355,20 +1361,20 @@ class Myob extends MX_Controller {
 	        'Content-Type: application/json',
 	        'Content-Length: ' . strlen($params)
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Payroll/SuperannuationFund';
-		
-		$ch = curl_init($url); 
-		
-		
-		curl_setopt($ch, CURLOPT_POST, true); 
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		var_dump($response);
@@ -1379,13 +1385,13 @@ class Myob extends MX_Controller {
 		}
 		#return $errors;
 	}
-	
+
 	function search_payroll()
 	{
 		$p = $this->read_payroll('Level 1');
 		var_dump($p);
 	}
-	
+
 	function read_payroll($name)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1397,18 +1403,18 @@ class Myob extends MX_Controller {
 		);
 		#$filter = "filter=substringof('". $name ."',%20Name)%20eq%20true";
 		$filter = "filter=Name%20eq%20'". urlencode($name) ."'";
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Payroll/PayrollCategory/?$' . $filter;
-		$ch = curl_init($url); 
+		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
-		$response = curl_exec($ch); 
-		curl_close($ch); 
-		
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
 		$response = json_decode($response);
 		#var_dump($response);
 		if (isset($response->Items[0]))
@@ -1417,7 +1423,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function read_timesheets($external_id)
 	{
 		$employee = $this->read_employee($external_id);
@@ -1432,29 +1438,29 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		var_dump($response);
 	}
-	
+
 	function validate_append_timesheet($timesheet_id)
 	{
 		$timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
-		
+
 		# Check payroll category for employee on MYOB
 		$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 		foreach($pay_rates as $pay_rate)
@@ -1466,7 +1472,7 @@ class Myob extends MX_Controller {
 				$earningID = $payrate['name'];
 			}
 			$payroll = $this->read_payroll($earningID);
-			
+
 			# Make sure all the payroll categories are set up on MYOB
 			if (!$payroll)
 			{
@@ -1477,7 +1483,7 @@ class Myob extends MX_Controller {
 				#var_dump($result);
 				return $result;
 			}
-			
+
 			$activityID = $pay_rate['activity'];
 			if (!$activityID)
 			{
@@ -1499,13 +1505,13 @@ class Myob extends MX_Controller {
 				#var_dump($result);
 				return $result;
 			}
-			
+
 		}
-		
+
 		# Make sure the staff is set up on MYOB
 		$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
 		if (!$staff['external_staff_id'])
-		{			
+		{
 			$result = array(
 				'ok' => false,
 				'msg' => '<p>Employee <b>' . $staff['first_name'] . ' ' . $staff['last_name'] . '</b> is not found in MYOB</p>'
@@ -1513,7 +1519,7 @@ class Myob extends MX_Controller {
 			#var_dump($result);
 			return $result;
 		}
-		
+
 		$employee = $this->read_employee($staff['external_staff_id']);
 		if (!$employee)
 		{
@@ -1524,7 +1530,7 @@ class Myob extends MX_Controller {
 			#var_dump($result);
 			return $result;
 		}
-		
+
 		# Make sure payroll category is assigned to staff
 		$employee_payrolls = $this->read_employee_payroll($employee->DisplayID)->Wage->WageCategories;
 		$valid_employee_payroll = false;
@@ -1548,7 +1554,7 @@ class Myob extends MX_Controller {
 			'ok' => true
 		);
 	}
-	
+
 	function test_append_timesheets($payrun_id)
 	{
 		$this->load->model('payrun/payrun_model');
@@ -1563,7 +1569,7 @@ class Myob extends MX_Controller {
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
 		{
-			$employee = $this->read_employee($timesheet['external_staff_id']);			
+			$employee = $this->read_employee($timesheet['external_staff_id']);
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 			$lines = array();
 			foreach($pay_rates as $pay_rate)
@@ -1584,16 +1590,16 @@ class Myob extends MX_Controller {
 					$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
 					$activityID = $payrate['name'];
 				}
-				
+
 				$break = '';
 				if ($pay_rate['break']) {
 					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 				}
-				
+
 				$payroll = $this->read_payroll($earningID);
 				$customer = $this->read_customer($timesheet['external_client_id']);
 				$activity = $this->read_activity($activityID);
-				
+
 				$lines[] = array(
 					'PayrollCategory' => array(
 						'UID' => $payroll->UID
@@ -1615,7 +1621,7 @@ class Myob extends MX_Controller {
 					)
 				);
 			}
-			
+
 			$start_date = date('Y-m-d H:i:s', $timesheet['start_time']);
 			if ($timesheet['date_from'] && $timesheet['date_from'] != '0000-00-00')
 			{
@@ -1626,7 +1632,7 @@ class Myob extends MX_Controller {
 			{
 				$end_date = date('Y-m-d H:i:s', strtotime($timesheet['date_to']));
 			}
-			
+
 			$timesheet_data = array(
 				'Employee' => array(
 					'UID' => $employee->UID
@@ -1635,11 +1641,11 @@ class Myob extends MX_Controller {
 				'EndDate' => $end_date,
 				'Lines' => $lines
 			);
-			
+
 			#var_dump($timesheet_data); continue;
-			
+
 			$params = json_encode($timesheet_data);
-			
+
 			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 			$headers = array(
 				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1649,20 +1655,20 @@ class Myob extends MX_Controller {
 		        'Content-Type: application/json',
 		        'Content-Length: ' . strlen($params)
 			);
-			
+
 			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
-			
-			$ch = curl_init($url); 
-			
-			
+
+			$ch = curl_init($url);
+
+
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-			
-			
+
+
 			$response = curl_exec($ch);
 			curl_close($ch);
 			#var_dump($response);
@@ -1670,11 +1676,11 @@ class Myob extends MX_Controller {
 			if (isset($response->Errors))
 			{
 				$errors[] = $response->Errors;
-			}	
+			}
 		}
-		var_dump($errors);		
+		var_dump($errors);
 	}
-	
+
 	function append_timesheets($payrun_id)
 	{
 		$this->load->model('payrun/payrun_model');
@@ -1689,7 +1695,7 @@ class Myob extends MX_Controller {
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
 		{
-			$employee = $this->read_employee($timesheet['external_staff_id']);			
+			$employee = $this->read_employee($timesheet['external_staff_id']);
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 			$lines = array();
 			foreach($pay_rates as $pay_rate)
@@ -1710,16 +1716,16 @@ class Myob extends MX_Controller {
 					$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
 					$activityID = $payrate['name'];
 				}
-				
+
 				$break = '';
 				if ($pay_rate['break']) {
 					$break = ' w/ ' . $pay_rate['break'] / 3600 . ' hour break';
 				}
-				
+
 				$payroll = $this->read_payroll($earningID);
 				$customer = $this->read_customer($timesheet['external_client_id']);
 				$activity = $this->read_activity($activityID);
-				
+
 				$lines[] = array(
 					'PayrollCategory' => array(
 						'UID' => $payroll->UID
@@ -1741,7 +1747,7 @@ class Myob extends MX_Controller {
 					)
 				);
 			}
-			
+
 			$start_date = date('Y-m-d H:i:s', $timesheet['start_time']);
 			if ($timesheet['date_from'] && $timesheet['date_from'] != '0000-00-00')
 			{
@@ -1752,7 +1758,7 @@ class Myob extends MX_Controller {
 			{
 				$end_date = date('Y-m-d H:i:s', strtotime($timesheet['date_to']));
 			}
-			
+
 			$timesheet_data = array(
 				'Employee' => array(
 					'UID' => $employee->UID
@@ -1761,11 +1767,11 @@ class Myob extends MX_Controller {
 				'EndDate' => $end_date,
 				'Lines' => $lines
 			);
-			
+
 			#var_dump($timesheet_data); continue;
-			
+
 			$params = json_encode($timesheet_data);
-			
+
 			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 			$headers = array(
 				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1775,20 +1781,20 @@ class Myob extends MX_Controller {
 		        'Content-Type: application/json',
 		        'Content-Length: ' . strlen($params)
 			);
-			
+
 			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
-			
-			$ch = curl_init($url); 
-			
-			
+
+			$ch = curl_init($url);
+
+
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-			
-			
+
+
 			$response = curl_exec($ch);
 			curl_close($ch);
 			#var_dump($response);
@@ -1796,7 +1802,7 @@ class Myob extends MX_Controller {
 			if (isset($response->Errors))
 			{
 				$errors[] = $response->Errors;
-			}	
+			}
 		}
 		if (count($errors) > 0)
 		{
@@ -1807,19 +1813,19 @@ class Myob extends MX_Controller {
 			#var_dump($result);
 			return $result;
 		}
-		
+
 		return array(
 			'ok' => true
 		);
-		
+
 	}
-	
+
 	function test_read_invoices()
 	{
 		$a = $this->read_invoices();
 		var_dump($a);
 	}
-	
+
 	function read_invoices()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1829,26 +1835,26 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice?$orderby=Date%20desc';
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
 		return ($response->Items);
 	}
-	
+
 	function read_invoice($external_id)
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1860,21 +1866,21 @@ class Myob extends MX_Controller {
 		);
 		#$filter = "filter=substringof('". $external_id ."',%20Number)%20eq%20true";
 		$filter = "filter=Number%20eq%20'". $external_id ."'";
-		
-		
+
+
 		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/?$' . $filter;
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
@@ -1885,7 +1891,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function read_invoice_services($external_id)
 	{
 		$invoice = $this->read_invoice($external_id);
@@ -1900,27 +1906,27 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/Service/' . $invoice->UID;
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$response = json_decode($response);
 		var_dump($response);
 	}
-	
-	
+
+
 	function read_invoice_items()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1930,26 +1936,26 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		
+
 		$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/Item';
-		
-		$ch = curl_init($url); 
-		
-		
+
+		$ch = curl_init($url);
+
+
 		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_HEADER, false); 
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		
-		
+
+
 		$response = curl_exec($ch);
 		curl_close($ch);
 		var_dump($response);
 		$response = json_decode($response);
 	}
-	
+
 	function validate_append_invoice($invoice_id)
 	{
 		$this->load->model('invoice/invoice_model');
@@ -1980,7 +1986,7 @@ class Myob extends MX_Controller {
 			);
 			return $result;
 		}
-		
+
 		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
 		foreach($invoice_items as $item)
 		{
@@ -2019,7 +2025,7 @@ class Myob extends MX_Controller {
 			else # Miscellaneous
 			{
 				if (!$this->config_model->get('myob_invoice_account'))
-				{			
+				{
 					$result = array(
 						'ok' => false,
 						'msg' => '<p>Please set up MYOB Account for Invoice in System Settings > Accounts Integration</p>'
@@ -2033,8 +2039,8 @@ class Myob extends MX_Controller {
 		);
 		#var_dump($result);
 		return $result;
-	} 
-	
+	}
+
 	function append_invoice($invoice_id)
 	{
 		$this->load->model('invoice/invoice_model');
@@ -2042,7 +2048,7 @@ class Myob extends MX_Controller {
 		$client = modules::run('client/get_client', $invoice['client_id']);
 		$customer = $this->read_customer($client['external_client_id']);
 		$invoice_items = $this->invoice_model->get_invoice_items($invoice_id);
-		
+
 		$timesheet_lines = array();
 		$manual_lines = array();
 		foreach($invoice_items as $item)
@@ -2054,7 +2060,7 @@ class Myob extends MX_Controller {
 				{
 					$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id'], 1);
 					$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-					
+
 					foreach($pay_rates as $pay_rate)
 					{
 						$group = $pay_rate['group'];
@@ -2072,7 +2078,7 @@ class Myob extends MX_Controller {
 							$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
 							$group = $payrate['name'];
 						}
-						
+
 						$activity = $this->read_activity($group);
 						$timesheet_lines[] = array(
 							'Type' => 'Transaction',
@@ -2089,7 +2095,7 @@ class Myob extends MX_Controller {
 							),
 						);
 					}
-					
+
 				}
 			}
 			else
@@ -2113,10 +2119,10 @@ class Myob extends MX_Controller {
 				);
 			}
 		}
-		
-		#var_dump($timesheet_lines); die();		
+
+		#var_dump($timesheet_lines); die();
 		#var_dump($manual_lines); die();
-		
+
 		$number = intval($invoice['invoice_number']);
 		if (!$number)
 		{
@@ -2129,10 +2135,10 @@ class Myob extends MX_Controller {
 			$number = max($numbers);
 			#$number = str_pad(max($numbers) + 1, 8, "0", STR_PAD_LEFT);
 		}
-		
+
 		$errors = array();
 		$external_ids = array();
-		
+
 		if (count($timesheet_lines) > 0) # Push TimeBilling invoice
 		{
 			$external_ids[] = str_pad($number + 1, 8, "0", STR_PAD_LEFT);
@@ -2145,10 +2151,10 @@ class Myob extends MX_Controller {
 				),
 				'Status' => 'Open',
 				'Lines' => $timesheet_lines,
-				'IsTaxInclusive' => 'True'	
+				'IsTaxInclusive' => 'True'
 			);
 			$params = json_encode($timebilling_invoice);
-			
+
 			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 			$headers = array(
 				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -2158,29 +2164,29 @@ class Myob extends MX_Controller {
 		        'Content-Type: application/json',
 		        'Content-Length: ' . strlen($params)
 			);
-			
+
 			$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/TimeBilling';
-			
-			$ch = curl_init($url); 
-			
-			
-			curl_setopt($ch, CURLOPT_POST, true); 
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+
+			$ch = curl_init($url);
+
+
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-			
-			
+
+
 			$response = curl_exec($ch);
 			curl_close($ch);
 			$response = json_decode($response);
 			if (isset($response->Errors))
 			{
 				$errors[] = $response->Errors;
-			}	
+			}
 		}
-		
+
 		if (count($manual_lines) > 0) # Push Miscellaneous invoice
 		{
 			$external_ids[] = str_pad($number + 2, 8, "0", STR_PAD_LEFT);
@@ -2193,11 +2199,11 @@ class Myob extends MX_Controller {
 				),
 				'Status' => 'Open',
 				'Lines' => $manual_lines,
-				'IsTaxInclusive' => 'True'				
+				'IsTaxInclusive' => 'True'
 			);
 			#var_dump($miscellaneous_invoice); die();
 			$params = json_encode($miscellaneous_invoice);
-			
+
 			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 			$headers = array(
 				'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -2207,20 +2213,20 @@ class Myob extends MX_Controller {
 		        'Content-Type: application/json',
 		        'Content-Length: ' . strlen($params)
 			);
-			
+
 			$url = $this->cloud_api_url . $this->company_id . '/Sale/Invoice/Miscellaneous';
-			
-			$ch = curl_init($url); 
-			
-			
-			curl_setopt($ch, CURLOPT_POST, true); 
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
+
+			$ch = curl_init($url);
+
+
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_HEADER, false); 
+			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-			
-			
+
+
 			$response = curl_exec($ch);
 			curl_close($ch);
 			$response = json_decode($response);
@@ -2247,7 +2253,7 @@ class Myob extends MX_Controller {
 					'msg' => $external_id
 				);
 			}
-		}		
+		}
 	}
-	
+
 }
