@@ -131,13 +131,13 @@ function view_applicant(applicant_id) {
 function reject_applicant(applicant_id, btn) {
 	help.confirm_delete('Reject Applicant','Are you sure you want to reject this applicant?',function(confirmed){
 		if(confirmed){
-			//btn.button('loading');
+			$(btn).button('loading');
 			$.ajax({
 				type: "POST",
 				url: "<?=base_url();?>form/ajax/reject_applicant",
 				data: {applicant_id: applicant_id},
 				success: function(html) {
-					//btn.button('reset');
+					$(btn).button('reset');
 					$('#applicant_' + applicant_id).remove();
 					$('.bs-modal-lg').modal('hide');
 				}
@@ -146,13 +146,13 @@ function reject_applicant(applicant_id, btn) {
 	});
 }
 function accept_applicant(applicant_id, status, btn) {
-	//btn.button('loading');
+	$(btn).button('loading');
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>form/ajax/accept_applicant",
 		data: {applicant_id: applicant_id, status: status},
 		success: function(html) {
-			//btn.button('reset');
+			$(btn).button('reset');
 			$('#applicant_' + applicant_id).remove();
 			$('.bs-modal-lg').modal('hide');
 		}
