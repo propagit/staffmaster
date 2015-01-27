@@ -888,7 +888,7 @@ class Myob extends MX_Controller {
 			),
 			'RowVersion' => $payroll->RowVersion
 		);
-		var_dump($payroll_details); die();
+		#var_dump($payroll_details); die();
 		$params = json_encode($payroll_details);
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
@@ -900,7 +900,11 @@ class Myob extends MX_Controller {
 	        'Content-Length: ' . strlen($params)
 		);
 
+		var_dump($headers); echo '<hr />';
+
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePayrollDetails/' . $payroll->UID;
+
+		var_dump($url); echo '<hr />';
 		$ch = curl_init($url);
 
 
@@ -910,7 +914,7 @@ class Myob extends MX_Controller {
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-
+		var_dump($ch); die();
 
 		$response = curl_exec($ch);
 		curl_close($ch);
