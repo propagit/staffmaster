@@ -457,12 +457,6 @@ class Myob extends MX_Controller {
 		return $this->staff_model->update_staff($user_id, array('external_staff_id' => STAFF_PREFIX . $user_id), true);
 	}
 
-	/**
-	*	@desc: update existed employee to MYOB
-	*	@params: $external_id (DisplayID in MYOB)
-	*	@return: true if success
-	*				or false if failed
-	*/
 	function update_employee($external_id)
 	{
 		$employee = $this->read_employee($external_id);
@@ -500,6 +494,86 @@ class Myob extends MX_Controller {
 			'RowVersion' => $employee->RowVersion
 		);
 		$params = json_encode($updated_employee);
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/' . $employee->UID;
+
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		$response = json_decode($response);
+
+		if (isset($response->Errors))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	*	@desc: update existed employee to MYOB
+	*	@params: $external_id (DisplayID in MYOB)
+	*	@return: true if success
+	*				or false if failed
+	*/
+	function test_update_employee($external_id)
+	{
+		$employee = $this->read_employee($external_id);
+		if (!isset($employee))
+		{
+			return false;
+		}
+		$staff = modules::run('staff/get_staff_by_external_id', $external_id);
+		if (!$staff)
+		{
+			return false;
+		}
+		$updated_employee = array(
+			'UID' => $employee->UID,
+			'LastName' => $staff['last_name'],
+			'FirstName' => $staff['first_name'],
+			'IsIndividual' => 'True',
+			'DisplayID' => $staff['external_staff_id'],
+			'IsActive' => 'True',
+			'Addresses' => array(
+				array(
+					'Location' => 1,
+					'Street' => $staff['address'],
+					'City' => trim($staff['city']) ? $staff['city'] : $staff['suburb'],
+					'State' => $staff['state'],
+					'PostCode' => $staff['postcode'],
+					'Country' => $staff['country'],
+					'Phone1' => $staff['phone'],
+					'Phone2' => $staff['mobile'],
+					'Email' => $staff['email_address'],
+					'Salutation' => $staff['title']
+				)
+			),
+			'LastModified' => $staff['modified_on'],
+			'RowVersion' => $employee->RowVersion
+		);
+		$params = json_encode($updated_employee);
+		var_dump($params); die();
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
