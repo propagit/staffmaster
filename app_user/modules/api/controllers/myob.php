@@ -841,6 +841,88 @@ class Myob extends MX_Controller {
 		return true;
 	}
 
+	function test_update_employee_payroll($user_id)
+	{
+		$staff = modules::run('staff/get_staff', $user_id);
+		if (!$staff)
+		{
+			return false;
+		}
+		$payroll = $this->read_employee_payroll($staff['external_staff_id']);
+		if (!$payroll)
+		{
+			return false;
+		}
+		$gender = null;
+		if ($staff['gender'] == 'm') { $gender = 'Male'; }
+		else if ($staff['gender'] == 'f') { $gender = 'Female'; }
+
+		$s_external_id = $staff['s_external_id'];
+		if (!$s_external_id)
+		{
+			$s_external_id = modules::run('setting/superinformasi', 'super_fund_external_id');
+		}
+		$super = null;
+		if ($s_external_id)
+		{
+			$super = array(
+				'SuperannuationFund' => array(
+					'UID' => $s_external_id
+				),
+				'EmployeeMembershipNumber' => $staff['s_employee_id']
+			);
+		}
+
+		$payroll_details = array(
+			'UID' => $payroll->UID,
+			'Employee' => array(
+				'UID' => $payroll->Employee->UID
+			),
+			'DateOfBirth' => $staff['dob'] . ' 00:00:00',
+			'Gender' => $gender,
+			'Wage' => json_decode(json_encode($payroll->Wage), true),
+			'Superannuation' => $super,
+			'Tax' => array(
+				'TaxFileNumber' => $staff['f_tfn'],
+				'TaxTable' => json_decode(json_encode($payroll->Tax->TaxTable), true)
+			),
+			'RowVersion' => $payroll->RowVersion
+		);
+		var_dump($payroll_details); die();
+		$params = json_encode($payroll_details);
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePayrollDetails/' . $payroll->UID;
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+		#var_dump($response);
+		$response = json_decode($response);
+		if (isset($response->Errors))
+		{
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	*	@desc: get all customers from MYOB
 	*	@return: array of objects (vector) of customers from MYOB
