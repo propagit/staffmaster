@@ -60,20 +60,6 @@ body {
         <br>
         
         <table border="0" cellpadding="0" cellspacing="0">
-        <?php
-			if($first_name && $last_name && $phone && $package){
-		?>
-        <tr>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Account Details:</span></td> 
-        	<td width="15"></td>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($first_name) . ' ' . ucwords($last_name) . '. Ph: ' . $phone;?></span></td>
-        </tr>
-        <tr>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Package:</span></td> 
-        	<td width="15"></td>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($package);?></span></td>
-        </tr>
-        <?php } ?>
         <tr>
         	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your System Address:</span></td> 
         	<td width="15"></td>
@@ -89,6 +75,25 @@ body {
         	<td width="15"></td>
         	<td>******* (<a style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#00aeec" href="<?=$url;?>forgot-password">forgot it?</a>) </td>
         </tr>
+        <?php
+			if($first_name && $last_name && $phone && $package){
+		?>
+        <tr>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Name</span></td> 
+        	<td width="15"></td>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($first_name) . ' ' . ucwords($last_name);?></span></td>
+        </tr>
+        <tr>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Phone</span></td> 
+        	<td width="15"></td>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=$phone;?></span></td>
+        </tr>
+        <tr>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Package:</span></td> 
+        	<td width="15"></td>
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($package);?></span></td>
+        </tr>
+        <?php } ?>
         </table>
         </span>
         
