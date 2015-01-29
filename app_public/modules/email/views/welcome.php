@@ -79,12 +79,12 @@ body {
 			if($first_name && $last_name && $phone && $package){
 		?>
         <tr>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Name</span></td> 
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Name:</span></td> 
         	<td width="15"></td>
         	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=ucwords($first_name) . ' ' . ucwords($last_name);?></span></td>
         </tr>
         <tr>
-        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Phone</span></td> 
+        	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Your Phone:</span></td> 
         	<td width="15"></td>
         	<td><span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><?=$phone;?></span></td>
         </tr>
