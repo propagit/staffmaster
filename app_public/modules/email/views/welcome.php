@@ -97,7 +97,7 @@ body {
         </table>
         </span>
         
-        <span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d">Once activate you will be sent your username, password and unique web address for activating the system<br><br>
+        <span style="font-family:Tahoma, Geneva, sans-serif; font-size:16px; line-height:20px; color:#3d3d3d"><br><br>Once activate you will be sent your username, password and unique web address for activating the system<br><br>
       
       With your system activated you are ready to configure it to best suit your business by:</span></p>
       
