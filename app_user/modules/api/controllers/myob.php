@@ -573,7 +573,10 @@ class Myob extends MX_Controller {
 			'RowVersion' => $employee->RowVersion
 		);
 		$params = json_encode($updated_employee);
-		echo '<pre>'; var_dump($updated_employee); echo '</pre>'; die();
+		// echo '<pre>';
+		echo $updated_employee;
+		// echo '</pre>';
+		die();
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
