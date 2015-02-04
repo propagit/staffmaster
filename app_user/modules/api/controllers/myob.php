@@ -6,7 +6,9 @@
 
 class Myob extends MX_Controller {
 
-	var $cloud_api_url = 'https://api.myob.com/accountright/';
+	// var $cloud_api_url = 'https://api.myob.com/accountright/';
+	var $cloud_api_url = 'https://api-myob-com-z44bv7hnjcma.runscope.net/accountright/';
+
 	var $api_key;
 	var $api_secret;
 	var $company_id;
