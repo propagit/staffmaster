@@ -574,7 +574,7 @@ class Myob extends MX_Controller {
 		);
 		$params = json_encode($updated_employee);
 		// echo '<pre>';
-		echo $updated_employee;
+		var_dump($updated_employee);
 		// echo '</pre>';
 		die();
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
