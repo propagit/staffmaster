@@ -886,7 +886,7 @@ class Myob extends MX_Controller {
 			);
 		}
 
-		$current_payroll = json_encode($payroll, true);
+		$current_payroll = json_decode(json_encode($payroll, true));
 		var_dump($current_payroll); die();
 
 		$payroll_details = array(
