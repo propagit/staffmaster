@@ -721,29 +721,30 @@ class Myob extends MX_Controller {
 		{
 			$bank_statement_text = substr($bank_statement_text, 0, 18);
 		}
-		$payment_details = array(
-			'UID' => $payment->UID,
-			'Employee' => array(
-				'UID' => $payment->Employee->UID
-			),
-			'PaymentMethod' => 'Electronic',
-			'BankStatementText' => strtoupper('wages ' . $staff['first_name'] . ' ' . $staff['last_name']),
-			'BankAccounts' => array(
-				array(
-					'BSBNumber' => $bsb,
-					'BankAccountNumber' => $staff['f_acc_number'],
-					'BankAccountName' => $staff['f_acc_name'],
-					'Value' => '100',
-					'Unit' => 'Percent'
-				)
-			),
-			'RowVersion' => $payment->RowVersion
-		);
+		// $payment_details = array(
+		// 	'UID' => $payment->UID,
+		// 	'Employee' => array(
+		// 		'UID' => $payment->Employee->UID
+		// 	),
+		// 	'PaymentMethod' => 'Electronic',
+		// 	'BankStatementText' => strtoupper('wages ' . $staff['first_name'] . ' ' . $staff['last_name']),
+		// 	'BankAccounts' => array(
+		// 		array(
+		// 			'BSBNumber' => $bsb,
+		// 			'BankAccountNumber' => $staff['f_acc_number'],
+		// 			'BankAccountName' => $staff['f_acc_name'],
+		// 			'Value' => '100',
+		// 			'Unit' => 'Percent'
+		// 		)
+		// 	),
+		// 	'RowVersion' => $payment->RowVersion
+		// );
+		// $params = json_encode($payment_details);
 
 		if ($bsb) {
 			$payment->PaymentMethod = 'Electronic';
 			$payment->BankStatementText = $bank_statement_text;
-			$payment->BankAccounts = json_decode(json_encode(array(
+			$payment->BankAccounts = array(
 				array(
 					'BSBNumber' => $bsb,
 					'BankAccountNumber' => $staff['f_acc_number'],
@@ -751,11 +752,12 @@ class Myob extends MX_Controller {
 					'Value' => '100',
 					'Unit' => 'Percent'
 				)
-			), FALSE));
+			);
 		}
+
+		$params = json_encode($payment);
 		var_dump($payment); die();
 
-		$params = json_encode($payment_details);
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
