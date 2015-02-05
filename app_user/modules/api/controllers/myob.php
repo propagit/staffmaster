@@ -615,6 +615,12 @@ class Myob extends MX_Controller {
 		return true;
 	}
 
+	function test_read_employee_payment($external_id)
+	{
+		$payment = $this->read_employee_payment($external_id);
+		var_dump($payment);
+	}
+
 	/**
 	*	@desc: get employee payment details from MYOB
 	*	@params: $external_id (DisplayID in MYOB)
