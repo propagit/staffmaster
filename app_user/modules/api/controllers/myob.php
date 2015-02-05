@@ -739,6 +739,14 @@ class Myob extends MX_Controller {
 			),
 			'RowVersion' => $payment->RowVersion
 		);
+
+		if ($bsb) {
+			$payment->PaymentMethod = 'Electronic';
+			$payment->BankStatementText = $bank_statement_text;
+			//$payment->BankAccounts = array
+		}
+		var_dump($payment); die();
+
 		$params = json_encode($payment_details);
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
