@@ -471,31 +471,53 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
-		$updated_employee = array(
-			'UID' => $employee->UID,
-			'LastName' => $staff['last_name'],
-			'FirstName' => $staff['first_name'],
-			'IsIndividual' => 'True',
-			'DisplayID' => $staff['external_staff_id'],
-			'IsActive' => 'True',
-			'Addresses' => array(
-				array(
-					'Location' => 1,
-					'Street' => $staff['address'],
-					'City' => trim($staff['city']) ? $staff['city'] : $staff['suburb'],
-					'State' => $staff['state'],
-					'PostCode' => $staff['postcode'],
-					'Country' => $staff['country'],
-					'Phone1' => $staff['phone'],
-					'Phone2' => $staff['mobile'],
-					'Email' => $staff['email_address'],
-					'Salutation' => $staff['title']
-				)
-			),
-			'LastModified' => $staff['modified_on'],
-			'RowVersion' => $employee->RowVersion
-		);
-		$params = json_encode($updated_employee);
+		// $updated_employee = array(
+		// 	'UID' => $employee->UID,
+		// 	'LastName' => $staff['last_name'],
+		// 	'FirstName' => $staff['first_name'],
+		// 	'IsIndividual' => 'True',
+		// 	'DisplayID' => $staff['external_staff_id'],
+		// 	'IsActive' => 'True',
+		// 	'Addresses' => array(
+		// 		array(
+		// 			'Location' => 1,
+		// 			'Street' => $staff['address'],
+		// 			'City' => trim($staff['city']) ? $staff['city'] : $staff['suburb'],
+		// 			'State' => $staff['state'],
+		// 			'PostCode' => $staff['postcode'],
+		// 			'Country' => $staff['country'],
+		// 			'Phone1' => $staff['phone'],
+		// 			'Phone2' => $staff['mobile'],
+		// 			'Email' => $staff['email_address'],
+		// 			'Salutation' => $staff['title']
+		// 		)
+		// 	),
+		// 	'LastModified' => $staff['modified_on'],
+		// 	'RowVersion' => $employee->RowVersion
+		// );
+		// $params = json_encode($updated_employee);
+		$employee->LastName = $staff['last_name'];
+		$employee->FirstName = $staff['first_name'];
+		$employee->DisplayID = $staff['external_staff_id'];
+		$employee->Addresses = json_decode(json_encode(array(
+			array(
+				'Location' => 1,
+				'Street' => $staff['address'],
+				'City' => trim($staff['city']) ? $staff['city'] : $staff['suburb'],
+				'State' => $staff['state'],
+				'PostCode' => $staff['postcode'],
+				'Country' => $staff['country'],
+				'Phone1' => $staff['phone'],
+				'Phone2' => $staff['mobile'],
+				'Email' => $staff['email_address'],
+				'Salutation' => $staff['title']
+			)
+		), FALSE));
+
+		$params = json_encode($employee);
+
+
+
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
