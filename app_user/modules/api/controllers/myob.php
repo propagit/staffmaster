@@ -744,7 +744,7 @@ class Myob extends MX_Controller {
 		if ($bsb) {
 			$payment->PaymentMethod = 'Electronic';
 			$payment->BankStatementText = $bank_statement_text;
-			$payment->BankAccounts = array(
+			$bank_account = json_decode(json_encode(array(
 				array(
 					'BSBNumber' => $bsb,
 					'BankAccountNumber' => $staff['f_acc_number'],
@@ -752,7 +752,8 @@ class Myob extends MX_Controller {
 					'Value' => '100',
 					'Unit' => 'Percent'
 				)
-			);
+			), FALSE));
+			$payment->BankAccounts = json_decode(json_encode($bank_account), FALSE);
 		}
 
 		$params = json_encode($payment);
