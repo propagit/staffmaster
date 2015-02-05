@@ -40,7 +40,7 @@ define('USER_ASSETS_PATH', 'user_assets');
 define('USER_PREFIX_DB', 'user_db_');
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'root');
+define('DB_PASSWORD', 'password');
 define('MASTER_DB', 'smcloud');
 
 define('SITE_NAME', 'StaffBooks');
