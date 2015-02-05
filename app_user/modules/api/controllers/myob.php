@@ -890,25 +890,27 @@ class Myob extends MX_Controller {
 		$payroll->Gender = $gender;
 		$payroll->Superannuation = $super;
 		$payroll->Tax->TaxFileNumber = $staff['f_tfn'];
-		var_dump($payroll); die();
 
-		$payroll_details = array(
-			'UID' => $payroll->UID,
-			'Employee' => array(
-				'UID' => $payroll->Employee->UID
-			),
-			'DateOfBirth' => $staff['dob'] . ' 00:00:00',
-			'Gender' => $gender,
-			'Wage' => json_decode(json_encode($payroll->Wage), true),
-			'Superannuation' => $super,
-			'Tax' => array(
-				'TaxFileNumber' => $staff['f_tfn'],
-				'TaxTable' => json_decode(json_encode($payroll->Tax->TaxTable), true)
-			),
-			'RowVersion' => $payroll->RowVersion
-		);
+		// var_dump($payroll); die();
+
+		// $payroll_details = array(
+		// 	'UID' => $payroll->UID,
+		// 	'Employee' => array(
+		// 		'UID' => $payroll->Employee->UID
+		// 	),
+		// 	'DateOfBirth' => $staff['dob'] . ' 00:00:00',
+		// 	'Gender' => $gender,
+		// 	'Wage' => json_decode(json_encode($payroll->Wage), true),
+		// 	'Superannuation' => $super,
+		// 	'Tax' => array(
+		// 		'TaxFileNumber' => $staff['f_tfn'],
+		// 		'TaxTable' => json_decode(json_encode($payroll->Tax->TaxTable), true)
+		// 	),
+		// 	'RowVersion' => $payroll->RowVersion
+		// );
 		#var_dump($payroll_details); die();
-		$params = json_encode($payroll_details);
+
+		$params = json_encode($payroll_details); var_dump($params); die();
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
