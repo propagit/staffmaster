@@ -743,7 +743,15 @@ class Myob extends MX_Controller {
 		if ($bsb) {
 			$payment->PaymentMethod = 'Electronic';
 			$payment->BankStatementText = $bank_statement_text;
-			//$payment->BankAccounts = array
+			$payment->BankAccounts = array(
+				array(
+					'BSBNumber' => $bsb,
+					'BankAccountNumber' => $staff['f_acc_number'],
+					'BankAccountName' => $staff['f_acc_name'],
+					'Value' => '100',
+					'Unit' => 'Percent'
+				)
+			);
 		}
 		var_dump($payment); die();
 
