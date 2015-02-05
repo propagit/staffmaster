@@ -741,7 +741,7 @@ class Myob extends MX_Controller {
 		// );
 		// $params = json_encode($payment_details);
 
-		if ($bsb) {
+		if ($staff['f_acc_number']) {
 			$payment->PaymentMethod = 'Electronic';
 			$payment->BankStatementText = $bank_statement_text;
 			$bank_account = json_decode(json_encode(array(
@@ -757,7 +757,6 @@ class Myob extends MX_Controller {
 		}
 
 		$params = json_encode($payment);
-		var_dump($payment); die();
 
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
