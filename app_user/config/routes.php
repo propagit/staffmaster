@@ -43,13 +43,13 @@ if ($handle)
 	while ( false !== ($module = readdir($handle)) )
 	{
 		# make sure we don't map silly dirs like .svn, or . or ..
-		
+
 		if (substr($module, 0, 1) != ".")
 		{
 			if ( file_exists(APPPATH.'modules/'.$module.'/config/routes.php') )
 			{
 				include(APPPATH.'modules/'.$module.'/config/routes.php');
-			}		
+			}
 		}
 	}
 }
@@ -62,7 +62,7 @@ $route['forgot-password'] = 'forgot_password';
 
 
 
-$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard', 'form', 'attribute', 'sms');
+$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard', 'form', 'attribute', 'sms', 'induction');
 $path = implode('|', $modules);
 $route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
 $route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
@@ -92,7 +92,7 @@ $route['documentor'] = 'document_dispacher';
 $route['documentor/(:any)'] = 'document_dispacher/index/documentor/$1';
 $route['documentor/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2';
 $route['documentor/(:any)/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2/$3';
-$route['documentor/(:any)/(:any)/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2/$3/$4'; 
+$route['documentor/(:any)/(:any)/(:any)/(:any)'] = 'document_dispacher/index/documentor/$1/$2/$3/$4';
 
 //public view for brief
 $route['brief/view/(:any)'] = 'brief_dispacher/index/brief/view/$1';
@@ -126,8 +126,8 @@ $ts_ajax_funcs = array(
 					'details'
 					);
 foreach($ts_ajax_funcs as $func){
-$route['pts/' .$func] = 'public_timesheet_dispatcher/' . $func;	
-$route['pts/' . $func . '/(:any)'] = 'public_timesheet_dispatcher/' . $func . '/$1';	
+$route['pts/' .$func] = 'public_timesheet_dispatcher/' . $func;
+$route['pts/' . $func . '/(:any)'] = 'public_timesheet_dispatcher/' . $func . '/$1';
 }
 
 

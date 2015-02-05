@@ -272,7 +272,7 @@ a.default {
 	float: right;
 	position: absolute;
 	right: 20px;
-	margin-top: 34px;	
+	margin-top: 34px;
 }
 .dash-btn-box span{
 	display:inline-block;
@@ -609,7 +609,7 @@ span.dash-invoice-value{
 }
 .dash-ts-btn{
 	margin-right: 10px;
-	margin-bottom: 3px;	
+	margin-bottom: 3px;
 }
 /* begin responsive */
 @media(max-width:1200px){
@@ -814,4 +814,32 @@ span.dash-invoice-value{
 }
 .c1.done {
 	background: green;
+}
+.box-step {
+	margin-top: 10px;
+	overflow: hidden;
+}
+.box-step a {
+}
+.step_induction {
+	font-size: 24px;
+	text-align: center;
+	line-height: 40px;
+	color: #fff;
+	width: 60px;
+	height: 60px;
+	padding: 10px;
+	border-radius: 50%;
+	background: #ececec;
+}
+.step_induction div {
+	border-radius: 50%;
+	height: 40px;
+	background: #000;
+}
+.step-menu {
+	margin-top: -60px;
+}
+.step-menu a {
+	display: block;
 }

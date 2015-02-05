@@ -712,7 +712,15 @@ class Myob extends MX_Controller {
 		$bsb = str_replace(' ', '', $staff['f_bsb']);
 		$bsb = trim($bsb);
 		$bsb = substr($bsb,0,3) . '-' . substr($bsb, 3);
-
+		$bank_statement_text = strtoupper('wages ' . $staff['first_name'] . ' ' . $staff['last_name']);
+		if (strlen($bank_statement_text) > 18)
+		{
+			$bank_statement_text = strtoupper('wages ' . substr($staff['first_name'], 0, 1) . '. ' . $staff['last_name']);
+		}
+		if (strlen($bank_statement_text) > 18)
+		{
+			$bank_statement_text = substr($bank_statement_text, 0, 18);
+		}
 		$payment_details = array(
 			'UID' => $payment->UID,
 			'Employee' => array(
@@ -877,6 +885,9 @@ class Myob extends MX_Controller {
 				'EmployeeMembershipNumber' => $staff['s_employee_id']
 			);
 		}
+
+		$current_payroll = json_encode($payroll, true);
+		var_dump($current_payroll); die();
 
 		$payroll_details = array(
 			'UID' => $payroll->UID,

@@ -53,6 +53,7 @@ $menu = array(
         array('path' => 'setting/integration', 'icon' => 'icon-accountIntergration', 'title' => 'Accounts Integration'),
         array('path' => 'export', 'icon' => 'icon-exportTemplates', 'title' => 'Export Templates'),
 		array('path' => 'form', 'icon' => 'icon-formBuilder', 'title' => 'Form Builder'),
+        // array('path' => 'induction', 'icon' => 'fa fa-dot-circle-o', 'title' => 'Inductions'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
 		array('path' => 'sms', 'icon' => 'fa-mobile', 'title' => 'SMS Settings'),
 		#array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),
