@@ -910,7 +910,7 @@ class Myob extends MX_Controller {
 		// );
 		#var_dump($payroll_details); die();
 
-		$params = json_encode($payroll_details); var_dump($params); die();
+		$params = json_encode($payroll); var_dump($params); die();
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
