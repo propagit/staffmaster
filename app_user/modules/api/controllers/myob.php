@@ -886,8 +886,11 @@ class Myob extends MX_Controller {
 			);
 		}
 
-		$current_payroll = json_decode(json_encode($payroll, true));
-		var_dump($current_payroll); die();
+		$payroll->DateOfBirth = $staff['dob'] . ' 00:00:00';
+		$payroll->Gender = $gender;
+		$payroll->Superannuation = $super;
+		$payroll->Tax->TaxFileNumber = $staff['f_tfn'];
+		var_dump($payroll); die();
 
 		$payroll_details = array(
 			'UID' => $payroll->UID,
