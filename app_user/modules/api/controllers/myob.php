@@ -871,7 +871,6 @@ class Myob extends MX_Controller {
 		// $params = json_encode($payroll_details);
 		$payroll->DateOfBirth = $staff['dob'] . ' 00:00:00';
 		$payroll->Gender = $gender;
-		$payroll->Superannuation = $super;
 		$payroll->Tax->TaxFileNumber = $staff['f_tfn'];
 		$params = json_encode($payroll);
 
