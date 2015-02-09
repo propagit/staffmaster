@@ -710,7 +710,34 @@ ol.example li.placeholder:before {
 	margin-bottom:-1px;
 }
 
-
+/* app download*/
+.app-box{
+	float: right;
+	background-color: #fff;
+	border-radius: 6px;
+	width: 205px;
+	position: absolute;
+	right: 46px;
+	bottom: 60px;
+	padding:10px 20px;
+}
+.app-box .fa{
+	font-size:40px;	
+	float:left;
+	min-width:50px;
+	margin-top:8px;
+}
+.app-box span{
+	float:left;
+	text-align:left;
+	display:inline-block;
+	font-size:15px;
+	font-weight:100;
+}
+.app-box .header{
+	font-size:24px;
+	font-weight:700;	
+}
 
 /* conversation */
 .messages{
@@ -988,6 +1015,12 @@ ol.example li.placeholder:before {
 	}
 	.footer-go-to-top-btn{
 		right:15px;
+	}
+	.app-box{
+		position:relative;
+		right:auto;
+		bottom:auto;
+		float:left;	
 	}
 }
 
