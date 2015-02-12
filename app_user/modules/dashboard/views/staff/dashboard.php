@@ -1,7 +1,3 @@
-<?php
-	$company = modules::run('setting/company_profile');
-?>
-
 <div class="col-md-12">
 	<div class="box top-box">
 		<h2>Your Dashboard</h2>
@@ -12,7 +8,7 @@
                 <i class="fa fa-apple"></i>
                 <span class="header">Download</span>
                 <span class="sub-header">In The App Store</span>
-                <!--<span class="company-code">Company Code - <?=$company['company_name'];?></span>-->
+                <span class="company-code">Company Code - <?=SUBDOMAIN;?></span>
             </div>
         </a>
 	</div>
