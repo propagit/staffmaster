@@ -715,17 +715,17 @@ ol.example li.placeholder:before {
 	float: right;
 	background-color: #fff;
 	border-radius: 6px;
-	width: 205px;
+	width: 210px;
 	position: absolute;
 	right: 46px;
 	bottom: 60px;
-	padding:10px 20px;
+	padding:5px 20px 10px 20px;
 }
 .app-box .fa{
 	font-size:40px;	
 	float:left;
 	min-width:50px;
-	margin-top:8px;
+	margin-top:14px;
 }
 .app-box span{
 	float:left;
@@ -737,6 +737,12 @@ ol.example li.placeholder:before {
 .app-box .header{
 	font-size:24px;
 	font-weight:700;	
+}
+.app-box .sub-header{
+	line-height:15px;
+}
+.app-box .company-code{
+	font-size:12px;	
 }
 
 /* conversation */
