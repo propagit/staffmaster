@@ -12,7 +12,7 @@
                 <i class="fa fa-apple"></i>
                 <span class="header">Download</span>
                 <span class="sub-header">In The App Store</span>
-                <span class="company-code">Company Code - <?=$company['company_name'];?></span>
+                <!--<span class="company-code">Company Code - <?=$company['company_name'];?></span>-->
             </div>
         </a>
 	</div>
