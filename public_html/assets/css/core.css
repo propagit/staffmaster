@@ -715,7 +715,8 @@ ol.example li.placeholder:before {
 	float: right;
 	background-color: #fff;
 	border-radius: 6px;
-	width: 210px;
+	max-width: 260px;
+	min-width:210px;
 	position: absolute;
 	right: 46px;
 	bottom: 60px;
@@ -743,6 +744,8 @@ ol.example li.placeholder:before {
 }
 .app-box .company-code{
 	font-size:12px;	
+	line-height: 12px;
+	margin-top: 5px;
 }
 
 /* conversation */
