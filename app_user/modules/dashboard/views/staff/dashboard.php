@@ -12,7 +12,7 @@
                 	<span class="header">Download</span>
                 	<span class="sub-header">In The App Store</span>
                 </div>
-                <span class="company-code">Company Code - <?php #echo SUBDOMAIN;?>labourking</span>
+                <span class="company-code">Company Code - <?php echo SUBDOMAIN;?></span>
             </div>
         </a>
 	</div>
