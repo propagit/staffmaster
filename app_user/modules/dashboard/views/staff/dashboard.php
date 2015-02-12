@@ -5,10 +5,14 @@
         
         <a href="https://itunes.apple.com/us/app/staffbooks/id944842219" target="_blank" class="prim-color-to-txt-color">
             <div class="app-box">
-                <i class="fa fa-apple"></i>
-                <span class="header">Download</span>
-                <span class="sub-header">In The App Store</span>
-                <span class="company-code">Company Code - <?=SUBDOMAIN;?></span>
+            	<div class="app-logo">
+                	<i class="fa fa-apple"></i>
+                </div>
+                <div class="app-info">
+                	<span class="header">Download</span>
+                	<span class="sub-header">In The App Store</span>
+                </div>
+                <span class="company-code">Company Code - <?php #echo SUBDOMAIN;?>labourking</span>
             </div>
         </a>
 	</div>
