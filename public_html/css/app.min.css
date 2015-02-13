@@ -42,12 +42,13 @@
   outline: none; }
 
 #induction {
-  margin-top: 20px; }
+  margin-top: 20px;
+  /*step-content*/ }
   #induction .list-step {
     width: 240px;
     float: left;
     margin-top: 50px;
-    position: fixed; }
+    /*position: fixed;*/ }
     #induction .list-step .list-group-item {
       margin-bottom: 3px;
       background: #fff;
@@ -83,7 +84,9 @@
           display: inline-block;
           vertical-align: middle; }
       #induction .list-step .list-group-item.current {
-        z-index: 30; }
+        z-index: 30;
+        box-shadow: -10px 2px 10px 2px #ccc;
+        margin-right: -2px; }
         #induction .list-step .list-group-item.current .step-number {
           background: #bbf5af; }
           #induction .list-step .list-group-item.current .step-number div {
@@ -97,14 +100,29 @@
       #induction .list-step .list-group-item:last-child {
         border-bottom-right-radius: 0; }
   #induction .step-content {
-    background: #fff;
-    box-shadow: 1px 2px 6px 5px #ccc;
+    /*background: #fff;*/
+    background-image: url(../assets/img/induction/PageTop.png), url(../assets/img/induction/PageBot.png);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 100% 153px, 100% 94px;
+    background-position: top center, bottom center;
     position: relative;
     z-index: 20;
-    margin-left: 240px;
-    border: 1px solid #ccc;
+    /*margin-left: 240px;*/
+    margin-left: 228px;
+    /*border: 1px solid #ccc;*/
     padding: 20px;
     min-height: 500px; }
+    #induction .step-content::after {
+      content: " ";
+      position: absolute;
+      top: 153px;
+      left: 0;
+      bottom: 94px;
+      background-image: url(../assets/img/induction/page-MID-Tile.png);
+      background-repeat: repeat-y;
+      background-size: contain;
+      background-position: top center;
+      width: 100%; }
     #induction .step-content .sec {
       padding: 15px 0; }
     #induction .step-content .step-number {
@@ -125,9 +143,12 @@
     #induction .step-content h3 {
       margin: 0;
       padding: 5px 0; }
-    #induction .step-content .row .col {
-      float: left;
-      margin-right: 20px; }
+    #induction .step-content .row {
+      position: relative;
+      z-index: 25; }
+      #induction .step-content .row .col {
+        float: left;
+        margin-right: 20px; }
 
 .col {
   float: left;
@@ -135,5 +156,3 @@
   padding-right: 10px; }
   .col label {
     font-weight: normal; }
-
-/*# sourceMappingURL=app.min.css.map */

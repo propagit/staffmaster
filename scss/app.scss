@@ -54,7 +54,7 @@
         width: 240px;
         float: left;
         margin-top: 50px;
-        position: fixed;
+        /*position: fixed;*/
         .list-group-item {
             margin-bottom: 3px;
             background: #fff;
@@ -95,6 +95,10 @@
             }
             &.current {
                 z-index: 30;
+				box-shadow: -10px 2px 10px 2px #ccc;
+				margin-right: -2px;
+				
+				
                 .step-number {
                     background: #bbf5af;
                     div {
@@ -104,6 +108,7 @@
                 .step-title {
                     color: #2cad12;
                 }
+				
             }
             &:hover {
             }
@@ -119,14 +124,33 @@
         }
     }
     .step-content {
-        background: #fff;
-        box-shadow: 1px 2px 6px 5px #ccc;
+        /*background: #fff;*/
+		background-image:url(../assets/img/induction/PageTop.png),url(../assets/img/induction/PageBot.png);
+		background-repeat:no-repeat, no-repeat;
+		background-size:100% 153px, 100% 94px;
+		background-position:top center, bottom center;
         position: relative;
         z-index: 20;
-        margin-left: 240px;
-        border: 1px solid #ccc;
+        /*margin-left: 240px;*/
+		margin-left:228px;
+        /*border: 1px solid #ccc;*/
         padding: 20px;
         min-height: 500px;
+		
+		&::after{
+			content: " ";
+			position: absolute;
+			top: 153px;
+			left: 0;
+			bottom:94px;
+			background-image: url(../assets/img/induction/page-MID-Tile.png);
+			background-repeat: repeat-y;
+			background-size: contain;
+			background-position: top center;
+			width: 100%;
+			
+		}
+		
         .sec {
             padding: 15px 0;
         }
@@ -152,12 +176,17 @@
             padding: 5px 0;
         }
         .row {
+			position:relative;
+			z-index:25;
+			
             .col {
                 float: left;
                 margin-right: 20px;
             }
         }
-    }
+	
+		
+    } /*step-content*/
 }
 
 .col {
