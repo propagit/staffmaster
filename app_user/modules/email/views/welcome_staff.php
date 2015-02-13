@@ -3,8 +3,8 @@
     <div class="col-md-6">
     	<form id="edit-welcome-email-template-form" role="form">
         <h2 class="email-template-title"> Welcome Staff </h2>
-        <p> The welcome staff email can be sent to staff to inform them of their accounts </p> 
-        <br>               
+        <p> The welcome staff email can be sent to staff to inform them of their accounts </p>
+        <br>
         <div class="row">
             <div class="form-group">
                 <label for="email_from" class="col-md-2 control-label">Email From</label>
@@ -27,14 +27,14 @@
         </div>
         <div class="row">
             <div class="form-group">
-        		<textarea class="email-template-text-area" id="welcome_email" name="welcome_email"><?=$template->template_content;?></textarea>   
+        		<textarea class="email-template-text-area" id="welcome_email" name="welcome_email"><?=$template->template_content;?></textarea>
         	</div>
         </div>
-        <br>     
+        <br>
         <button type="button" class="btn btn-info" onclick="update_template('edit-welcome-email-template-form')"><i class="fa fa-check-square"></i> Save</button> <br />
         <input name="template_update_id" type="hidden" value="<?=$template->email_template_id;?>"  />
         <input name="form_name_prefix" type="hidden" value="welcome_"  />
-        </form> 
+        </form>
         <div class="alert alert-success add-top-margin-20 email-template-updated hide"><i class="fa fa-check"></i> &nbsp; Email Template Successfully Updated</div>
     </div>
     <div class="col-md-1"></div>
@@ -54,11 +54,11 @@ CKEDITOR.config.toolbar = [
 ] ;
 
 $(function(){
-		
+
 	//add template items on click
 	$('.template-item').on('click',function(){
 		var text_area_id = $(this).attr('data');
 		CKEDITOR.instances['welcome_email'].insertText($(this).html());
-	});	
+	});
 });
 </script>

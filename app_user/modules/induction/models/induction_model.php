@@ -7,13 +7,21 @@ class Induction_model extends CI_Model {
         return $this->db->insert_id();
     }
 
+    function update($id, $data) {
+        $this->db->where('id', $id);
+        return $this->db->update('inductions', $data);
+    }
+
     function get($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('inductions');
         return $query->first_row('array');
     }
 
-    function all() {
+    function all($active=null) {
+        if ($active) {
+            $this->db->where('status', 1);
+        }
         $query = $this->db->get('inductions');
         return $query->result_array();
     }
@@ -22,32 +30,98 @@ class Induction_model extends CI_Model {
         # First get number of the largest step
         $number = 0;
         $this->db->where('induction_id', $data['induction_id']);
-        $this->db->order_by('number', 'desc');
+        $this->db->order_by('step_order', 'desc');
         $query = $this->db->get('induction_steps');
         $step = $query->first_row('array');
-        if (isset($step['number'])) { $number = $step['number']; }
+        if (isset($step['step_order'])) { $number = $step['step_order']; }
 
         # Increase number by 1
         $number++;
 
-        $data['number'] = $number;
+        $data['step_order'] = $number;
+        $data['title'] = ucwords($data['type']);
+        if ($data['type'] == 'content') {
+            $data['title'] = 'Content';
+            $data['description'] = 'Click to add description';
+        } else if ($data['type'] == 'personal') {
+            $data['title'] = 'Personal Details';
+            $data['description'] = 'Please update your personal information below and proceed to next step';
+        } else if ($data['type'] == 'financial') {
+            $data['title'] = 'Financial Details';
+            $data['description'] = 'Please update your financial information below and proceed to next step';
+        } else if ($data['type'] == 'super') {
+            $data['title'] = 'Superannuation Details';
+            $data['description'] = 'Please update your superannuation information below and proceed to next step';
+        }
+        $this->db->insert('induction_steps', $data);
+        $data['id'] = $this->db->insert_id();
+        return $data;
+    }
 
-        $a = $this->db->insert('induction_steps', $data);
-        return $a;
-        return $this->db->insert_id();
+    function get_step($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('induction_steps');
+        return $query->first_row('array');
     }
 
     function get_steps($induction_id)
     {
         $this->db->where('induction_id', $induction_id);
-        $this->db->order_by('number', 'asc');
+        $this->db->order_by('step_order', 'asc');
         $query = $this->db->get('induction_steps');
         return $query->result_array();
     }
 
-    function delete_step($id)
+    function update_step($id, $data)
     {
         $this->db->where('id', $id);
+        return $this->db->update('induction_steps', $data);
+    }
+
+    function delete_step($id)
+    {
+        $this->db->where('step_id', $id);
+        $this->db->delete('induction_contents');
+
+        $this->db->where('id', $id);
         return $this->db->delete('induction_steps');
+    }
+
+    function add_content($data) {
+        $number = 0;
+        $this->db->where('step_id', $data['step_id']);
+        $this->db->order_by('content_order', 'desc');
+        $query = $this->db->get('induction_contents');
+        $content = $query->first_row('array');
+        if (isset($content['content_order'])) { $number = $content['content_order']; }
+
+        $number++;
+
+        $data['content_order'] = $number;
+        $this->db->insert('induction_contents', $data);
+        $data['id'] = $this->db->insert_id();
+        return $data;
+    }
+
+    function get_contents($step_id)
+    {
+        $this->db->where('step_id', $step_id);
+        $this->db->order_by('content_order', 'asc');
+        $query = $this->db->get('induction_contents');
+        return $query->result_array();
+    }
+
+    function update_content($id, $data)
+    {
+        if (isset($data['html'])) { unset($data['html']); }
+        $this->db->where('id', $id);
+        return $this->db->update('induction_contents', $data);
+    }
+
+    function delete_content($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('induction_contents');
     }
 }

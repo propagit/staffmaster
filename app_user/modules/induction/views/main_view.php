@@ -27,7 +27,7 @@
                     <td class="left"><?=$induction['name'];?></td>
                     <td class="center"><a href="<?=base_url();?>induction/build/<?=$induction['id'];?>"><i class="fa fa-pencil"></i></a></td>
                     <td class="center"><a href="<?=base_url();?>induction/setting/<?=$induction['id'];?>"><i class="fa fa-gear"></i></a></td>
-                    <td class="center"><a><i class="fa fa-eye"></i></a></td>
+                    <td class="center"><a href="<?=base_url();?>induction/preview/<?=$induction['id'];?>" target="_blank"><i class="fa fa-eye"></i></a></td>
                     <td class="center"><a><i class="fa fa-trash-o"></i></a></td>
                 </tr>
             <? } ?>

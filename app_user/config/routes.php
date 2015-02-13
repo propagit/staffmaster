@@ -75,7 +75,6 @@ $route['public/form/(:any)'] = 'public_dispatcher/form/$1';
 $route['public/form/(:any)/(:any)'] = 'public_dispatcher/form/$1/$2';
 
 
-
 $route['admin'] = 'dispatcher/admin_dispatcher';
 
 $route['admin/login'] = 'auth/login_admin';

@@ -11,7 +11,7 @@ class Custom extends MX_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	public function index($method='', $param='')
 	{
 		switch($method)
@@ -21,10 +21,10 @@ class Custom extends MX_Controller {
 				break;
 		}
 	}
-	
+
 	function main_view()
 	{
 		$this->load->view('custom/main_view', isset($data) ? $data : NULL);
 	}
-	
+
 }

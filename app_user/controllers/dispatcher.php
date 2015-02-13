@@ -12,13 +12,13 @@ class Dispatcher extends MX_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	public function index()
 	{
-		
+
 		$this->user_dispatcher();
 	}
-	
+
 	/**
 	*	@name: user_dispatcher
 	*	@desc: general user dispacher, drive to different portal based on user level
@@ -33,9 +33,9 @@ class Dispatcher extends MX_Controller {
 		  {
 			  redirect('login');
 		  }
-		  
+
 		  $user_data = $this->session->userdata('user_data');
-		  
+
 		  # If user is admin, login to admin portal
 		  if ($user_data['is_admin'] && !$this->session->userdata('force_staff'))
 		  {
@@ -61,22 +61,34 @@ class Dispatcher extends MX_Controller {
 				  $method = 'calendar';
 			  }
 			  $this->client_dispatcher($controller, $method, $param1, $param2, $param3, $param4);
-		  }	
+		  }
 	}
-	
+
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
-	{	
+	{
+		// $induction_required = modules::run('induction/check_staff_induction');
+		// print_r($induction_required); die();
+		// if ($controller != 'induction')
+		// {
+		// 	redirect('induction/preview/1');
+		// }
+
 		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();
 		}
-		
-		
+
+
 		if($controller == 'brief' && (($method == 'view_brief' || $method == 'view_information_sheet')))
 		{
 			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
 			$title = ucwords($controller);
-			$this->template->set_template('brief');	
+			$this->template->set_template('brief');
+		}
+		elseif($controller == 'induction' && $method == 'preview') {
+			$title = ucwords($controller);
+			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
+			$this->template->set_template('induction');
 		}
 		else
 		{
@@ -90,7 +102,7 @@ class Dispatcher extends MX_Controller {
 		$this->template->write('content', $content);
 		$this->template->render();
 	}
-	
+
 	function admin_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{
 		if (modules::run('account/get_credits') < 0 && $controller != 'account')
@@ -99,21 +111,24 @@ class Dispatcher extends MX_Controller {
 		}
 		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
+			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();
 		}
-		
+
 		$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
 		$title = ucwords($controller);
-		
+
 		if ($controller == 'invoice' && (($method == 'edit') || ($method == 'view')))
 		{
 			$this->template->set_template('invoice');
 		}
 		elseif($controller == 'brief' && (($method == 'view_brief' || $method == 'view_information_sheet')))
 		{
-			$this->template->set_template('brief');	
+			$this->template->set_template('brief');
 		}
-		else 
+		elseif($controller == 'induction' && $method == 'preview') {
+			$this->template->set_template('induction');
+		}
+		else
 		{
 			$this->template->set_template('admin');
 		}
@@ -123,7 +138,7 @@ class Dispatcher extends MX_Controller {
 		$this->template->write('content', $content);
 		$this->template->render();
 	}
-	
+
 	/**
 	*	@name: client_dispatcher
 	*	@desc: call this dispatcher if the user is logged in as a client
@@ -132,17 +147,17 @@ class Dispatcher extends MX_Controller {
 	*	@return: (void)
 	*/
 	function client_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
-	{		
+	{
 		if ( strpos($method, 'ajax') !== false)
 		{
-			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();	
-		}	
-		
+			echo modules::run($controller . '/' . $method . '/' . $param1, $param2, $param3, $param4); exit();
+		}
+
 		if ($controller == 'invoice' && $method == 'view')
 		{
 			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
 			$title = ucwords($controller);
-			$this->template->set_template('invoice');	
+			$this->template->set_template('invoice');
 		}
 		else
 		{
@@ -150,15 +165,15 @@ class Dispatcher extends MX_Controller {
 			$title = ucwords($controller);
 			$this->template->set_template('client');
 		}
-		
-		
-		$this->template->add_css('custom_styles');		
+
+
+		$this->template->add_css('custom_styles');
 		$this->template->write('title', $title);
 		$this->template->write_view('menu', 'client/menu');
 		$this->template->write('content', $content);
 		$this->template->render();
 	}
-	
+
 	function documentor_dispacher($controller='documentor', $method='', $param1='',$param2='',$param3='',$param4='')
 	{
 		$this->template->set_template('documents');

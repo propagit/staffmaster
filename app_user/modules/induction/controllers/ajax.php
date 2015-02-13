@@ -8,6 +8,71 @@ class Ajax extends MX_Controller {
         $this->load->model('induction_model');
     }
 
+    function get($id) {
+        $induction = $this->induction_model->get($id);
+        if ($induction['work_from']) {
+            $induction['work_from'] = date('d-m-Y', strtotime($induction['work_from']));
+        }
+        if ($induction['work_to']) {
+            $induction['work_to'] = date('d-m-Y', strtotime($induction['work_to']));
+        }
+
+
+        # State filter
+        $induction_states = ($induction['state']) ? json_decode($induction['state']) : array();
+        $states = array();
+        foreach(modules::run('common/get_states') as $state) {
+            if (in_array($state['code'], $induction_states)) {
+                $state['ticked'] = true;
+            }
+            $states[] = $state;
+        }
+
+        # Group filter
+        $induction_groups = ($induction['group']) ? json_decode($induction['group']) : array();
+        $groups = array();
+        foreach(modules::run('attribute/group/get_groups') as $group) {
+            if (in_array($group['group_id'], $induction_groups)) {
+                $group['ticked'] = true;
+            }
+            $groups[] = $group;
+        }
+
+        # Role filter
+        $induction_roles = ($induction['role']) ? json_decode($induction['role']) : array();
+        $roles = array();
+        foreach(modules::run('attribute/role/get_roles') as $role) {
+            if (in_array($role['role_id'], $induction_roles)) {
+                $role['ticked'] = true;
+            }
+            $roles[] = $role;
+        }
+
+        # Age filter
+        $ages_values = array(
+            array('value' => '0-17', 'name' => 'Under 18 Years Old'),
+            array('value' => '18-25', 'name' => '18 -25 Years Old'),
+            array('value' => '26-35', 'name' => '26 - 35 Years Old'),
+            array('value' => '36-100', 'name' => '35+ Years Old')
+        );
+        $induction_ages = ($induction['age']) ? json_decode($induction['age']) : array();
+        $ages = array();
+        foreach($ages_values as $age) {
+            if (in_array($age['value'], $induction_ages)) {
+                $age['ticked'] = true;
+            }
+            $ages[] = $age;
+        }
+
+        echo json_encode(array(
+            'induction' => $induction,
+            'states' => $states,
+            'groups' => $groups,
+            'roles' => $roles,
+            'ages' => $ages
+        ));
+    }
+
     function add() {
         $input = $this->input->post();
         if (!$input['name']) {
@@ -18,25 +83,49 @@ class Ajax extends MX_Controller {
         echo json_encode(array('ok' => true, 'id' => $id));
     }
 
+    function update($id) {
+        $input = file_get_contents("php://input");
+        $input = json_decode($input,true);
+        if (!isset($input['status'])) { $input['status'] = 0; }
+        foreach($input as $key => $value) {
+            if (is_array($value)) {
+                $input[$key] = json_encode($value);
+            }
+            if ($key == 'work_from' || $key == 'work_to') {
+                $values = explode('-', $value);
+                $input[$key] = NULL;
+                if (count($values) == 3) {
+                    $input[$key] = $values[2] . '-' . $values[1] . '-' . $values[0];
+                }
+            }
+        }
+        $this->induction_model->update($id, $input);
+    }
+
     function add_step() {
-        $input = $this->input->post();
-        if (!$input['induction_id'] || !$input['type']) {
+        $input = file_get_contents("php://input");
+        $input = json_decode($input,true);
+        if (!isset($input['induction_id']) || !isset($input['type'])) {
             return;
         }
-        $id = $this->induction_model->add_step($input);
-        echo json_encode(array('ok' => true));
+        $step = $this->induction_model->add_step($input);
+        echo json_encode($step);
+    }
+
+    function update_step($id) {
+        $input = file_get_contents("php://input");
+        $input = json_decode($input,true);
+        if ($input['fields']) {
+            $input['fields'] = json_encode($input['fields']);
+        }
+        $this->induction_model->update_step($id, $input);
+        echo json_encode($input);
     }
 
     function get_steps($induction_id)
     {
         $steps = $this->induction_model->get_steps($induction_id);
-        $number = 1;
-        foreach($steps as $step) {
-            $this->load->view('step/' . $step['type'], array(
-                'step' => $step,
-                'number' => $number++
-            ));
-        }
+        echo json_encode($steps);
     }
 
     function delete_step($id)
@@ -44,6 +133,119 @@ class Ajax extends MX_Controller {
         $this->induction_model->delete_step($id);
     }
 
+    function add_content() {
+        $input = file_get_contents("php://input");
+        $input = json_decode($input,true);
+        if (!isset($input['induction_id'])
+            || !isset($input['step_id'])
+            || !isset($input['type'])) {
+            return;
+        }
+        $content = $this->induction_model->add_content($input);
+        echo json_encode($content);
+    }
+
+    function get_contents($step_id) {
+        $contents = $this->induction_model->get_contents($step_id);
+        echo json_encode($contents);
+    }
+
+    function update_content($id) {
+        $input = file_get_contents("php://input");
+        $input = json_decode($input,true);
+        $this->induction_model->update_content($id, $input);
+        echo json_encode($input);
+    }
+
+    function delete_content($id) {
+        $this->induction_model->delete_content($id);
+    }
+
+    function upload_image($id) {
+        $config['upload_path'] = UPLOADS_PATH . '/tmp/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = '2000';
+        $config['max_width'] = '1024';
+        $config['max_height'] = '768';
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('image'))
+        {
+            echo json_encode($this->upload->display_errors());
+        }
+        else
+        {
+            echo json_encode($this->upload->data());
+        }
+    }
+
+    function upload_file($id) {
+        $config['upload_path'] = UPLOADS_PATH . '/tmp/';
+        $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi';
+        $config['max_size'] = '10000';
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('file'))
+        {
+            echo json_encode($this->upload->display_errors());
+        }
+        else
+        {
+            echo json_encode($this->upload->data());
+        }
+    }
+
+    function profile_fields($step_id = '', $category = '') {
+        switch($category) {
+            case 'personal':
+                    $fields = array(
+                        array('key' => 'title', 'label' => 'Title'),
+                        array('key' => 'gender', 'label' => 'Gender'),
+                        array('key' => 'first_name', 'label' => 'First Name'),
+                        array('key' => 'last_name', 'label' => 'Last Name'),
+                        array('key' => 'dob', 'label' => 'Date Of Birth'),
+                        array('key' => 'address', 'label' => 'Address'),
+                        array('key' => 'suburb', 'label' => 'Suburb'),
+                        array('key' => 'postcode', 'label' => 'Postcode'),
+                        array('key' => 'state', 'label' => 'State'),
+                        array('key' => 'country', 'label' => 'Country'),
+                        array('key' => 'phone', 'label' => 'Telephone'),
+                        array('key' => 'mobile', 'label' => 'Mobile Phone'),
+                        array('key' => 'email', 'label' => 'Email'),
+                        array('key' => 'password', 'label' => 'Password'),
+                        array('key' => 'emergency_contact', 'label' => 'Emergency Contact'),
+                        array('key' => 'emergency_phone', 'label' => 'Emergency Phone')
+                    );
+                break;
+            case 'financial':
+                    $fields = array(
+                        array('key' => 'f_acc_name', 'label' => 'Account Name'),
+                        array('key' => 'f_acc_number', 'label' => 'Account Number'),
+                        array('key' => 'f_bsb', 'label' => 'BSB')
+                    );
+                break;
+            case 'super':
+                    $fields = array(
+                        array('key' => 's_fund_name', 'label' => 'Super Fund Name'),
+                        array('key' => 's_membership', 'label' => 'Membership Number')
+                    );
+                break;
+            default: $fields = array();
+                break;
+        }
 
 
+        $step = $this->induction_model->get_step($step_id);
+        if ($step && $step['fields']) {
+            $result = array();
+            $step_fields = json_decode($step['fields']);
+            foreach($fields as $field) {
+                $f = $field;
+                if (in_array($field['key'], $step_fields)) {
+                    $f['ticked'] = true;
+                }
+                $result[] = $f;
+            }
+            $fields = $result;
+        }
+        echo json_encode($fields);
+    }
 }

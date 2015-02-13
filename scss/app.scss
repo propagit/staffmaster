@@ -1,0 +1,170 @@
+.box-step {
+    margin-top: 10px;
+    a {
+
+    }
+}
+.step_induction {
+    font-size: 24px;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 50%;
+    background: #ececec;
+    div {
+        border-radius: 50%;
+        height: 40px;
+        background: #000;
+    }
+}
+.step-menu {
+    margin-top: -60px;
+    a {
+        display: block;
+    }
+}
+.menu_induction .fa-stack {
+    opacity: .5;
+}
+.menu_induction .fa-stack:hover {
+    opacity: 1;
+}
+.content_induction {
+    margin: 10px 0;
+}
+.content_induction .btn-toolbar > .btn + .btn, .btn-toolbar > .btn-group + .btn, .btn-toolbar > .btn + .btn-group, .btn-toolbar > .btn-group + .btn-group {
+    margin-left: 0;
+    margin-bottom: 10px;
+}
+.ta-scroll-window > .ta-bind {
+    border: 1px solid #eee;
+}
+.ta-scroll-window > .ta-bind:focus {
+      border: 1px solid #aaa;
+      outline: none;
+}
+
+
+#induction {
+    margin-top: 20px;
+    .list-step {
+        width: 240px;
+        float: left;
+        margin-top: 50px;
+        position: fixed;
+        .list-group-item {
+            margin-bottom: 3px;
+            background: #fff;
+            height: 60px;
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            border-color: transparent;
+            box-shadow: 2px 2px 10px 5px #ccc;
+            padding: 5px;
+            .step-number {
+                font-size: 20px;
+                position: absolute;
+                text-align: center;
+                line-height: 34px;
+                color: #fff;
+                width: 50px;
+                height: 50px;
+                padding: 7px;
+                border-radius: 50%;
+                background: #eff0ef;
+                float: left;
+                div {
+                    border-radius: 50%;
+                    height: 36px;
+                    background: #9c9c9c;
+                }
+            }
+            .step-title {
+                height: 60px;
+                overflow: hidden;
+                width: 180px;
+                margin-left: 60px;
+                display: inline-block;
+                span {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+            &.current {
+                z-index: 30;
+                .step-number {
+                    background: #bbf5af;
+                    div {
+                        background: #2cad12;
+                    }
+                }
+                .step-title {
+                    color: #2cad12;
+                }
+            }
+            &:hover {
+            }
+            &.disabled {
+                cursor: not-allowed;
+            }
+            &:first-child {
+                border-top-right-radius: 0;
+            }
+            &:last-child {
+                border-bottom-right-radius: 0;
+            }
+        }
+    }
+    .step-content {
+        background: #fff;
+        box-shadow: 1px 2px 6px 5px #ccc;
+        position: relative;
+        z-index: 20;
+        margin-left: 240px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        min-height: 500px;
+        .sec {
+            padding: 15px 0;
+        }
+        .step-number {
+            font-size: 24px;
+            text-align: center;
+            line-height: 40px;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+                margin: 0 0 0 20px;
+            padding: 10px;
+            border-radius: 50%;
+            background: #bbf5af;
+            div {
+                border-radius: 50%;
+                height: 40px;
+                background: #2cad12;
+            }
+        }
+        h3 {
+            margin: 0;
+            padding: 5px 0;
+        }
+        .row {
+            .col {
+                float: left;
+                margin-right: 20px;
+            }
+        }
+    }
+}
+
+.col {
+    float: left;
+    overflow: hidden;
+    padding-right: 10px;
+    label {
+        font-weight: normal;
+    }
+}
