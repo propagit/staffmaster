@@ -176,7 +176,9 @@
 
 .induction-form-group {
   position: relative;
-  z-index: 100; }
+  z-index: 100;
+  display: table;
+  width: 100%; }
 
 .induction-row::after {
   display: inline-table; }
