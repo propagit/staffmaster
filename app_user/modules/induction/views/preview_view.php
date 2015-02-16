@@ -16,9 +16,10 @@
     <div class="step-content">
         <div class="row">
             <div class="col-md-12">
-                <br />
-                <?=modules::run('setting/company_logo');?>
-                <h1 class="induction-title"><?=$induction['name'];?></h1>
+                <div class="logo-wrap">
+                	<?=modules::run('setting/company_logo');?>
+                </div>
+                <h2 class="induction-title"><?=$induction['name'];?></h2>
                 <p>Please proceed through each step of the induction process</p>
                 <hr />
                 <? if (isset($current_step)) { ?>
@@ -83,16 +84,14 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="pull-right">
                 <? if (isset($current_step)) {
                     if ($step_number == count($steps)) { ?>
-                    <a class="btn btn-core">Complete</a>
+                    <a class="btn btn-core btn-respond">Complete</a>
                     <? } else { ?>
-                    <a class="btn btn-default">Save For Later <i class="fa fa-save"></i></a> &nbsp;
-                    <a class="btn btn-core" href="<?=base_url();?>induction/preview/<?=$induction['id'];?>/<?=$step_number;?>">Proceed To Next Step <i class="fa fa-chevron-right"></i></a>
+                    <a class="btn btn-default btn-respond">Save For Later <i class="fa fa-save"></i></a> &nbsp;
+                    <a class="btn btn-core btn-respond" href="<?=base_url();?>induction/preview/<?=$induction['id'];?>/<?=$step_number;?>">Proceed To Next Step <i class="fa fa-chevron-right"></i></a>
                     <? }
                 } ?>
-                </div>
             </div>
         </div>
         <div class="clearfix"></div>

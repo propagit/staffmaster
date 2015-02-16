@@ -44,6 +44,15 @@
 #induction {
   margin-top: 20px;
   /*step-content*/ }
+  #induction .logo-wrap {
+    margin-top: 30px;
+    margin-bottom: 73px; }
+  #induction h2.induction-title {
+    font-size: 40px;
+    font-weight: 900;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: -1px;
+    color: #3d3d3d; }
   #induction .list-step {
     width: 240px;
     float: left;
@@ -56,7 +65,7 @@
       border-top-left-radius: 30px;
       border-bottom-left-radius: 30px;
       border-color: transparent;
-      box-shadow: 2px 2px 10px 5px #ccc;
+      box-shadow: 2px 2px 3px 1px #e1e1e1;
       padding: 5px; }
       #induction .list-step .list-group-item .step-number {
         font-size: 20px;
@@ -88,8 +97,8 @@
           vertical-align: middle; }
       #induction .list-step .list-group-item.current {
         z-index: 30;
-        box-shadow: -10px 2px 10px 2px #ccc;
-        margin-right: -2px; }
+        box-shadow: -4px 2px 2px 1px #e1e1e1;
+        margin-right: -4px; }
         #induction .list-step .list-group-item.current .step-number {
           background: #bbf5af; }
           #induction .list-step .list-group-item.current .step-number div {
@@ -111,9 +120,9 @@
     position: relative;
     z-index: 20;
     /*margin-left: 240px;*/
-    margin-left: 228px;
+    margin-left: 230px;
     /*border: 1px solid #ccc;*/
-    padding: 20px;
+    padding: 20px 60px 60px 60px;
     min-height: 500px; }
     #induction .step-content::after {
       content: " ";
@@ -135,7 +144,7 @@
       color: #fff;
       width: 60px;
       height: 60px;
-      margin: 0 0 0 20px;
+      /*    margin: 0 0 0 20px;*/
       padding: 10px;
       border-radius: 50%;
       background: #bbf5af; }
@@ -159,3 +168,27 @@
   padding-right: 10px; }
   .col label {
     font-weight: normal; }
+
+#sys-fixed-btns {
+  z-index: 100; }
+
+@media (max-width: 992px) {
+  #induction .list-step {
+    width: 60px; }
+    #induction .list-step .list-group-item .step-title {
+      display: none; }
+  #induction .step-content {
+    margin-left: 54px; }
+
+  #sys-fixed-btns {
+    display: none; } }
+@media (max-width: 448px) {
+  .logo-wrap {
+    max-width: 448px; }
+    .logo-wrap img {
+      width: 100%; }
+
+  #induction .step-content {
+    padding: 10px 10px 48px; }
+  #induction .btn-respond {
+    width: 100%; } }
