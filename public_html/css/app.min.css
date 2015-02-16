@@ -75,11 +75,14 @@
           height: 36px;
           background: #9c9c9c; }
       #induction .list-step .list-group-item .step-title {
-        height: 60px;
+        height: 48px;
         overflow: hidden;
         width: 180px;
-        margin-left: 60px;
-        display: inline-block; }
+        padding-left: 60px;
+        /*display: inline-block;*/
+        display: table-cell;
+        vertical-align: middle;
+        line-height: 16px; }
         #induction .list-step .list-group-item .step-title span {
           display: inline-block;
           vertical-align: middle; }
