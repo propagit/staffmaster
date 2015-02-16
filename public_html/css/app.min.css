@@ -47,6 +47,8 @@
   #induction .logo-wrap {
     margin-top: 30px;
     margin-bottom: 73px; }
+    #induction .logo-wrap img {
+      max-width: 350px; }
   #induction h2.induction-title {
     font-size: 40px;
     font-weight: 900;
@@ -170,6 +172,10 @@
     font-weight: normal; }
 
 #sys-fixed-btns {
+  z-index: 100; }
+
+.induction-form-group {
+  position: relative;
   z-index: 100; }
 
 @media (max-width: 992px) {

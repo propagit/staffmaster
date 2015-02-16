@@ -53,6 +53,10 @@
 	.logo-wrap{
 		margin-top:30px;	
 		margin-bottom:73px;
+		
+		img{
+			max-width:350px;	
+		}
 	}
 	
 	h2.induction-title{
@@ -219,6 +223,11 @@
 #sys-fixed-btns{
 	z-index:100;
 }
+.induction-form-group{
+	position:relative;
+	z-index:100;
+}
+
 
 @media (max-width:992px){
 	#induction{

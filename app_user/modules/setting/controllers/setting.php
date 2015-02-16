@@ -145,9 +145,10 @@ class Setting extends MX_Controller {
 	*
 	*
 	*/
-	function company_logo()
+	function company_logo($full_image = false)
 	{
 		$data['company'] = $this->setting_model->get_profile();
+		$data['full_image'] = $full_image;
 		$this->load->view('company_logo', isset($data) ? $data : NULL);
 	}
 

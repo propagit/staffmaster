@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="logo-wrap">
-                	<?=modules::run('setting/company_logo');?>
+                	<?=modules::run('setting/company_logo',true); # gets full image and not the reized image?>
                 </div>
                 <h2 class="induction-title"><?=$induction['name'];?></h2>
                 <p>Please proceed through each step of the induction process</p>
@@ -59,7 +59,7 @@
 
         <? if(isset($fields)) {
             foreach($fields as $field) { ?>
-            <div class="form-group">
+            <div class="form-group induction-form-group">
                 <label class="col-md-3 control-label"><?=$field->label;?></label>
                 <div class="col-md-9">
                     <? if($field->key == 'title') { ?>
