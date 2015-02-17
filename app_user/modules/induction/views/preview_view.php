@@ -14,7 +14,7 @@
     </div>
     <div class="step-connect"></div>
     <div class="step-content">
-        <div class="row induction-row">
+        <div class="row">
             <div class="col-md-12">
                 <div class="logo-wrap">
                 	<?=modules::run('setting/company_logo',true); # gets full image and not the reized image?>

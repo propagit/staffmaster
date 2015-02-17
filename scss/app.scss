@@ -205,10 +205,17 @@
             padding: 5px 0;
         }
         .row {
+			position:relative;
+			z-index:1;
+			
             .col {
                 float: left;
                 margin-right: 20px;
             }
+			
+			&::after{
+				display:inline-table;
+			}
         }
         form {
             position: relative;
@@ -235,13 +242,6 @@
 	z-index:100;
 	display:table;
 	width:100%;
-}
-.induction-row{
-	position:relative;
-	z-index:1;
-	&::after{
-		display:inline-table;
-	}
 }
 
 @media (max-width:992px){
