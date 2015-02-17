@@ -237,6 +237,8 @@
 	width:100%;
 }
 .induction-row{
+	position:relative;
+	z-index:1;
 	&::after{
 		display:inline-table;
 	}
