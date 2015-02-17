@@ -209,8 +209,6 @@ class Ajax extends MX_Controller {
                         array('key' => 'country', 'label' => 'Country'),
                         array('key' => 'phone', 'label' => 'Telephone'),
                         array('key' => 'mobile', 'label' => 'Mobile Phone'),
-                        array('key' => 'email', 'label' => 'Email'),
-                        array('key' => 'password', 'label' => 'Password'),
                         array('key' => 'emergency_contact', 'label' => 'Emergency Contact'),
                         array('key' => 'emergency_phone', 'label' => 'Emergency Phone')
                     );

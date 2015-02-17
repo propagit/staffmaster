@@ -123,7 +123,6 @@
 
 
                 .step-number {
-                    background: #bbf5af;
                     div {
                         background: #2cad12;
                     }
@@ -131,7 +130,14 @@
                 .step-title {
                     color: #2cad12;
                 }
-
+            }
+            &.done {
+                .step-number {
+                    background: #bbf5af;
+                    div {
+                        background: #2cad12;
+                    }
+                }
             }
             &:hover {
             }

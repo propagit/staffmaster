@@ -101,12 +101,14 @@
         z-index: 30;
         box-shadow: -4px 2px 2px 1px #e1e1e1;
         margin-right: -4px; }
-        #induction .list-step .list-group-item.current .step-number {
-          background: #bbf5af; }
-          #induction .list-step .list-group-item.current .step-number div {
-            background: #2cad12; }
+        #induction .list-step .list-group-item.current .step-number div {
+          background: #2cad12; }
         #induction .list-step .list-group-item.current .step-title {
           color: #2cad12; }
+      #induction .list-step .list-group-item.done .step-number {
+        background: #bbf5af; }
+        #induction .list-step .list-group-item.done .step-number div {
+          background: #2cad12; }
       #induction .list-step .list-group-item.disabled {
         cursor: not-allowed; }
       #induction .list-step .list-group-item:first-child {

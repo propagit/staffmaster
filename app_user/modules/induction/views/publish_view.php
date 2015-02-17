@@ -4,7 +4,7 @@
         <? if (count($steps) > 0) {
             $n = 1; foreach($steps as $step) { ?>
 
-        <a href="<?=base_url();?>induction/publish/<?=$induction['id'];?>/<?=$n-1;?>" class="list-group-item<?=($step['id'] == $current_step['id']) ? ' current' : '';?>">
+        <a href="<?=base_url();?>induction/publish/<?=$induction['id'];?>/<?=$n-1;?>" class="list-group-item<?=($step['id'] == $current_step['id']) ? ' current' : '';?><?=($user_induction['status'] > $n - 1) ? ' done' : '';?>">
             <div class="step-number">
                 <div><?=$n++;?></div>
             </div>
@@ -16,7 +16,7 @@
     <div class="step-connect"></div>
     <div class="step-content">
     <form method="post" action="<?=current_url();?>" />
-        <input type="hidden" name="id" value="<?=$induction['id'];?>" />
+        <input type="hidden" name="user_id" value="<?=$user_induction['user_id'];?>" />
         <div class="row induction-row">
             <div class="col-md-12">
                 <div class="logo-wrap">
@@ -71,19 +71,31 @@
                 <label class="col-md-3 control-label"><?=$field->label;?></label>
                 <div class="col-md-9">
                     <? if($field->key == 'title') { ?>
-                    <?=modules::run('common/field_select_title', 'title', set_value($field->key));?>
+                    <?=modules::run('common/field_select_title', 'title',
+                        (set_value($field->key) ? set_value($field->key) : $field->value)
+                        );?>
                     <? } else if ($field->key == 'gender') { ?>
-                    <?=modules::run('common/field_select_genders', 'gender', set_value($field->key));?>
+                    <?=modules::run('common/field_select_genders', 'gender',
+                        (set_value($field->key) ? set_value($field->key) : $field->value)
+                        );?>
                     <? } else if ($field->key == 'dob') { ?>
-                    <?=modules::run('common/field_dob', 'dob', set_value('dob[day]'), set_value('dob[month]'), set_value('dob[year]'));?>
+                    <?=modules::run('common/field_dob', 'dob',
+                        (set_value('dob[day]') ? set_value('dob[day]') : date('d', strtotime($field->value))),
+                        (set_value('dob[month]') ? set_value('dob[month]') : date('m', strtotime($field->value))),
+                        (set_value('dob[year]') ? set_value('dob[year]') : date('Y', strtotime($field->value)))
+                        );?>
                     <? } else if ($field->key == 'state') { ?>
-                    <?=modules::run('common/field_select_states', 'state', set_value($field->key));?>
+                    <?=modules::run('common/field_select_states', 'state',
+                        (set_value($field->key) ? set_value($field->key) : $field->value)
+                        );?>
                     <? } else if ($field->key == 'country') { ?>
-                    <?=modules::run('common/field_select_countries', 'country', set_value($field->key));?>
+                    <?=modules::run('common/field_select_countries', 'country',
+                        (set_value($field->key) ? set_value($field->key) : $field->value)
+                        );?>
                     <? } else if ($field->key == 'password') { ?>
                     <input type="password" class="form-control" name="password" />
                     <? } else { ?>
-                    <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=set_value($field->key) ;?>" />
+                    <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=(set_value($field->key) ? set_value($field->key) : $field->value);?>" />
                     <? } ?>
                 </div>
             </div>

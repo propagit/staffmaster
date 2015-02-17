@@ -8,6 +8,8 @@ class Induction extends MX_Controller {
     {
         parent::__construct();
         $this->load->model('induction_model');
+        $this->load->model('user/user_model');
+        $this->load->model('staff/staff_model');
 
         $this->user = $this->session->userdata('user_data');
     }
@@ -102,6 +104,7 @@ class Induction extends MX_Controller {
         if (isset($steps[$step_number])) {
             # Form validation libray
             $this->load->library('form_validation');
+            $this->form_validation->set_rules('user_id', 'ID', 'required');
 
             # Get current step
             $current_step = $steps[$step_number];
@@ -111,14 +114,23 @@ class Induction extends MX_Controller {
             $contents = $this->induction_model->get_contents($current_step['id']);
             $data['contents'] = $contents;
 
-            $validated = true;
             if ($current_step['fields']) {
                 $fields = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type']));
                 $active_fields = array();
                 $step_fields = json_decode($current_step['fields']);
 
+                $user_data = array();
+                if (in_array($current_step['type'], array('personal','financial','super')))
+                {
+                    $user_data = modules::run('staff/get_staff', $this->user['user_id']);
+                }
+
                 foreach($fields as $field) {
                     if (in_array($field->key, $step_fields)) {
+                        $field->value = '';
+                        if (isset($user_data[$field->key])) {
+                            $field->value = $user_data[$field->key];
+                        }
                         $active_fields[] = $field;
                     }
                 }
@@ -134,21 +146,27 @@ class Induction extends MX_Controller {
                     }
                 }
 
-                if ($this->form_validation->run() == FALSE) {
-                    $validated = false;
-                } else {
-
-                }
             }
 
-            if ($validated) {
+            if ($this->form_validation->run() == FALSE) {
+
+            } else {
+                # Update
+                if (in_array($current_step['type'], array('personal','financial','super')))
+                {
+                    modules::run('staff/update_staff', $this->user['user_id'], $this->input->post());
+                }
+
                 $status = $step_number + 1;
                 $user_induction['status'] = $status;
 
-                $this->induction_model->update_user($user_induction['id'], $user_induction);
                 if ($status == count($steps)) {
+                    $user_induction['finished_on'] = date('Y-m-d H:i:s');
+                    $this->induction_model->update_user($user_induction['id'], $user_induction);
                     redirect('');
                 }
+
+                $this->induction_model->update_user($user_induction['id'], $user_induction);
                 redirect('induction/publish/' . $id . '/' . $status);
             }
 

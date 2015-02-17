@@ -155,6 +155,53 @@ class Staff extends MX_Controller {
 		return $this->staff_model->get_staff($user_id);
 	}
 
+	function update_staff($user_id, $data)
+	{
+		$user_fields = array(
+			'title',
+			'first_name',
+			'last_name',
+			'address',
+			'suburb',
+			'postcode',
+			'state',
+			'country',
+			'phone',
+			'mobile'
+		);
+		$staff_fields = array(
+			'gender',
+			'dob',
+			'emergency_contact',
+			'emergency_phone',
+			'f_acc_name',
+			'f_acc_number',
+			'f_bsb',
+			's_fund_name',
+			's_membership'
+		);
+		$user_data = array();
+		$staff_data = array();
+		foreach($data as $key => $value) {
+			if (in_array($key, $staff_fields)) {
+				if ($key == 'dob') {
+					$staff_data[$key] = date('Y-m-d',strtotime($value['year'].'-'.$value['month']. '-'.$value['day']));
+				} else {
+					$staff_data[$key] = $value;
+				}
+			}
+			if (in_array($key, $user_fields)) {
+				$user_data[$key] = $value;
+			}
+		}
+		if (count($user_data) > 0) {
+			$this->user_model->update_user($user_id, $user_data);
+		}
+		if (count($staff_data) > 0) {
+			$this->staff_model->update_staff($user_id, $staff_data, true);
+		}
+	}
+
 	function get_age($user_id)
 	{
 		$staff = $this->get_staff($user_id);
