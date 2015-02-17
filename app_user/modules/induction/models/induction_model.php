@@ -54,6 +54,9 @@ class Induction_model extends CI_Model {
         } else if ($data['type'] == 'super') {
             $data['title'] = 'Superannuation Details';
             $data['description'] = 'Please update your superannuation information below and proceed to next step';
+        } else if ($data['type'] == 'picture') {
+            $data['title'] = 'Picture';
+            $data['description'] = 'Please upload photos of yourself so we have a visual reference of you';
         }
         $this->db->insert('induction_steps', $data);
         $data['id'] = $this->db->insert_id();

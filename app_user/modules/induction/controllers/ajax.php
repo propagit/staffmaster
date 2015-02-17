@@ -6,6 +6,8 @@ class Ajax extends MX_Controller {
     {
         parent::__construct();
         $this->load->model('induction_model');
+        $this->load->model('user/user_model');
+        $this->load->model('staff/staff_model');
     }
 
     function get($id) {
@@ -190,6 +192,54 @@ class Ajax extends MX_Controller {
         else
         {
             echo json_encode($this->upload->data());
+        }
+    }
+
+    function upload_staff_picture($user_id) {
+        $targetDir = UPLOADS_PATH . '/staff/' . $user_id;
+        // Create target dir
+        if (!file_exists($targetDir)) {
+            @mkdir($targetDir);
+        }
+        $dir_thumb = $targetDir . '/thumb';
+        if(!is_dir($dir_thumb))
+        {
+          mkdir($dir_thumb);
+          chmod($dir_thumb,0777);
+          $fp = fopen($dir_thumb.'/index.html', 'w');
+          fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+          fclose($fp);
+        }
+
+        $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = '2000';
+        $config['max_width'] = '1024';
+        $config['max_height'] = '768';
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('image'))
+        {
+            echo json_encode($this->upload->display_errors());
+        }
+        else
+        {
+            $data = $this->upload->data();
+            $photo = array(
+                'user_id' => $user_id,
+                'name' => $data['file_name'],
+                'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)
+            );
+
+            $a = $this->staff_model->add_picture($photo);
+
+            $target = $dir_thumb . '/' . $data['file_name'];
+
+            copy($targetDir . '/' . $data['file_name'], $target);
+            $this->load->helper('image');
+            scale_image($target, $target, IMG_THUMB_SIZE, IMG_THUMB_SIZE);
+
+            echo json_encode($data);
+
         }
     }
 

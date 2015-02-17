@@ -7,12 +7,12 @@
 	<!-- Bootstrap -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
-	
+
 	<!--[if IE 7]>
 	<link rel="stylesheet" href="assets/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
-	
-	
+
+
     <link href="assets/css/error.css" rel="stylesheet" media="screen">
 
 </head>
@@ -24,11 +24,11 @@
 		    	<div class="col-md-12">
 		        </div>
 		    </div>
-		</div>  
+		</div>
     </div>
 </header>
 
-	
+
 <!-- Begin page content -->
 <div class="container-fluid">
     <div class="row">
@@ -36,6 +36,7 @@
 			<div class="box">
 				<h2><i class="fa fa-frown-o"></i> &nbsp; Oh no!<br />There appears to have been a malfunction</h2>
 				<br />
+                <h1><?php echo $heading; ?></h1>
 				<?=$message;?>
 				<br />
 				<a class="btn btn-core btn-lg" href="/"><i class="fa fa-dashboard"></i> Go To Dashboard</a>

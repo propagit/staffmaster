@@ -39,6 +39,8 @@
     <script src="<?=base_url();?>bower_components/text-angular/dist/textAngular-rangy.min.js"></script>
     <script src="<?=base_url();?>bower_components/text-angular/dist/textAngular-sanitize.min.js"></script>
 
+    <script src="<?=base_url();?>bower_components/angular-multi-select/angular-multi-select.js"></script>
+
 
     <script src="<?=base_url();?>js/app.js"></script>
     <script src="<?=base_url();?>js/induction.js"></script>

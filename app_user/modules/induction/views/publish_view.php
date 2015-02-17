@@ -1,5 +1,5 @@
 
-<div id="induction" class="col-md-12">
+<div id="induction" class="col-md-12" ng-controller="InductionStaff">
     <div class="list-group list-step">
         <? if (count($steps) > 0) {
             $n = 1; foreach($steps as $step) { ?>
@@ -40,6 +40,12 @@
             </div>
         </div><div class="clearfix"></div>
 
+        <?php if(validation_errors()) { ?>
+        <div class="col-md-12">
+        <div class="alert alert-danger"><?=validation_errors();?></div>
+        </div>
+        <? } ?>
+
         <? if (isset($contents) && count($contents) > 0) {
             foreach($contents as $content) {
             echo '<div class="row"><div class="col-md-12"><div class="sec">';
@@ -53,17 +59,13 @@
                     echo '<a href="' . base_url() . UPLOADS_URL . '/tmp/' . $content['value'] . '">' . $content['value'] . '</a>';
                     break;
                 case 'compliance': echo $content['value'];
-                    echo '<div class="checkbox"><label><input type="checkbox"> Yes</label></div>';
+                    $checked = (in_array($content['id'], $user_contents)) ? ' checked' : '';
+                    echo '<div class="checkbox"><label><input type="checkbox" name="contents[' . $content['id'] . ']" value="' . $content['id'] . '" ' . $checked . '> Yes</label></div>';
                     break;
             }
             echo '</div></div></div>';
             }
         } ?>
-        <?php if(validation_errors()) { ?>
-        <div class="col-md-12">
-        <div class="alert alert-danger"><?=validation_errors();?></div>
-        </div>
-        <? } ?>
 
         <? if(isset($fields)) {
             foreach($fields as $field) { ?>
@@ -101,6 +103,75 @@
             </div>
         <? }
         } ?>
+
+        <? if ($current_step['type'] == 'picture') { ?>
+        <? if (isset($pictures)) foreach($pictures as $picture) {
+            $thumb_src = base_url() . UPLOADS_URL.'/staff/' . $user_induction['user_id'] . '/thumb/' . $picture['name'];
+            ?>
+            <div><img style="width:auto!important; height:216px;" src="<?=$thumb_src;?>" /></div><br />
+        <? } ?>
+        <div
+              class="btn btn-core btn-upload"
+              upload-button
+              param="image"
+              url="<?=base_url();?>induction/ajax/upload_staff_picture/<?=$user_induction['user_id'];?>"
+              on-success="onSuccess(response)"
+            >Upload</div>
+        <? } ?>
+
+        <? if ($current_step['type'] == 'role') { ?>
+        <div class="row">
+        <? foreach($roles as $role) {
+            $checked = (modules::run('staff/check_staff_has_role',$user_induction['user_id'],$role['role_id'])) ? ' checked' : '';
+            ?>
+            <div class="col-md-4">
+            <div class="checkbox checkbox_role">
+                <label>
+                    <input type="checkbox" name="roles[]" value="<?=$role['role_id'];?>" <?=$checked;?> /> <?=$role['name'];?>
+                </label>
+            </div>
+            </div>
+            <? } ?>
+        </div>
+        <? } ?>
+
+        <? if ($current_step['type'] == 'group') { ?>
+        <div class="row">
+        <? foreach($groups as $group) {
+            $checked = (modules::run('staff/check_staff_has_group',$user_induction['user_id'],$group['group_id'])) ? ' checked' : '';
+            ?>
+            <div class="col-md-4">
+            <div class="checkbox checkbox_role">
+                <label>
+                    <input type="checkbox" name="groups[]" value="<?=$group['group_id'];?>" <?=$checked;?> /> <?=$group['name'];?>
+                </label>
+            </div>
+            </div>
+            <? } ?>
+        </div>
+        <? } ?>
+
+        <? if ($current_step['type'] == 'availability') { ?>
+        <div class="row">
+        <? foreach($days as $day_no => $day_label) { ?>
+            <div class="col-md-12">
+            <div class="checkbox checkbox_role">
+                <label>
+                    <input type="checkbox" name="days[]" value="<?=$day_no;?>" /> <?=$day_label;?>
+                </label>
+            </div>
+            </div>
+            <? } ?>
+        </div>
+        <? } ?>
+
+        <? if ($current_step['type'] == 'location') { ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?=modules::run('attribute/location/field_input', 'location');?>
+            </div>
+        </div>
+        <? } ?>
 
         <div class="row">
             <div class="col-md-12">

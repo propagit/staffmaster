@@ -218,3 +218,11 @@ angular.module('sb.induction', [])
         });
     };
 })
+
+.controller('InductionStaff', function($scope, $http) {
+    $scope.onSuccess = function(response) {
+        console.log(response);
+        // $scope.contents[index].value = response.data.file_name;
+        // $scope.updateContent(index);
+    };
+})

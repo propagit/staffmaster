@@ -13,12 +13,12 @@
         <div class="inner-box">
             <ul class="nav nav-tabs tab-respond">
                 <li class="active"><a>Build Induction</a></li>
-                <li><a href="<?=base_url();?>induction/setting/<?=$induction['id'];?>">Induction Settings</a></li>
+                <li><a href="<?=base_url();?>induction/setting/<?=$induction['id'];?>">Settings</a></li>
                 <li class="pull-right active"><a href="<?=base_url();?>induction/preview/<?=$induction['id'];?>" target="_blank">Preview</a></li>
             </ul>
             <br />
-            <h2>Create Step</h2>
-            <p>Your induction is built with steps that you would like the employee to perform when they login to their account the first time. At the end of completing a step the employee will be asked to proceed to the next step.</p><br />
+            <h2>Build Induction</h2>
+            <p>Build an induction process for your staff to go through when they first or next log into their account.<br />Build your induction by adding steps, employees will be required to complete the first step before moving to the next step. When employees complete all the steps in the induction they will gain access to their staff account.</p><br />
 
             <form class="form-horizontal" role="form" id="form_add_step">
                 <div class="row">

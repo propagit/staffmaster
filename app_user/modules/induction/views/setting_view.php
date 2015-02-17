@@ -12,13 +12,13 @@
         <div class="inner-box">
             <ul class="nav nav-tabs tab-respond">
                 <li><a href="<?=base_url();?>induction/build/<?=$induction['id'];?>">Build Induction</a></li>
-                <li class="active"><a>Induction Settings</a></li>
+                <li class="active"><a>Settings</a></li>
                 <li class="pull-right active"><a href="<?=base_url();?>induction/preview/<?=$induction['id'];?>" target="_blank">Preview</a></li>
             </ul>
 
             <br />
-            <h2>Induction Settings</h2>
-            <p>Your induction can be set to automatically initiate base on the settings you put in below.</p><br />
+            <h2>Settings</h2>
+            <p>Inductions you build can be set to trigger for all staff that meet the filter settings or only new staff that meet the filter settings. You can target staff required to complete the induction by a range of filters, only staff that meet that filter settings will be required to do the induction. To make your induction live change the status to "Activated".</p><br />
 
             <form class="form-horizontal" role="form" id="form_induction_setting">
                 <div class="form-group">

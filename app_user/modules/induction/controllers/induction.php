@@ -94,6 +94,11 @@ class Induction extends MX_Controller {
             redirect('induction/publish/' . $id . '/' . $user_induction['status']);
         }
         $data['user_induction'] = $user_induction;
+        $user_contents = array();
+        if ($user_induction['contents']) {
+            $user_contents = json_decode($user_induction['contents']);
+        }
+        $data['user_contents'] = $user_contents;
 
         # Second get list of steps
         $steps = $this->induction_model->get_steps($id);
@@ -110,8 +115,28 @@ class Induction extends MX_Controller {
             $current_step = $steps[$step_number];
             $data['current_step'] = $current_step;
 
+            if ($current_step['type'] == 'picture') {
+                $data['pictures'] = $this->staff_model->get_all_photos($user_induction['user_id']);
+            } else if ($current_step['type'] == 'role') {
+                $data['roles'] = modules::run('attribute/role/get_roles');
+                $this->form_validation->set_rules('roles', 'Role', 'required');
+            } else if ($current_step['type'] == 'group') {
+                $data['groups'] = modules::run('attribute/group/get_groups');
+                $this->form_validation->set_rules('groups', 'Group', 'required');
+            } else if ($current_step['type'] == 'availability') {
+                $data['days'] = modules::run('common/array_day');
+                $this->form_validation->set_rules('days', 'Day', 'required');
+            } else if ($current_step['type'] == 'location') {
+                $this->form_validation->set_rules('location', 'Location', 'required');
+            }
+
             # Get contents of the step
             $contents = $this->induction_model->get_contents($current_step['id']);
+            foreach($contents as $content) {
+                if ($content['type'] == 'compliance') {
+                    $this->form_validation->set_rules('contents[' . $content['id'] . ']', 'Compliance', 'required');
+                }
+            }
             $data['contents'] = $contents;
 
             if ($current_step['fields']) {
@@ -145,20 +170,76 @@ class Induction extends MX_Controller {
                         $this->form_validation->set_rules($field->key, $field->label, 'required');
                     }
                 }
-
             }
 
             if ($this->form_validation->run() == FALSE) {
 
             } else {
+
+                $status = $step_number + 1;
+                if ($status > $user_induction['status']) {
+                    $user_induction['status'] = $status;
+                }
+
+
+
                 # Update
                 if (in_array($current_step['type'], array('personal','financial','super')))
                 {
                     modules::run('staff/update_staff', $this->user['user_id'], $this->input->post());
                 }
+                else if($current_step['type'] == 'role') {
+                    $roles = $this->input->post('roles');
+                    $this->staff_model->delete_staff_roles($this->user['user_id']);
+                    foreach($roles as $role_id) {
+                        $this->staff_model->add_staff_role($this->user['user_id'],$role_id);
+                    }
+                }
+                else if($current_step['type'] == 'group') {
+                    $groups = $this->input->post('groups');
+                    $this->staff_model->delete_staff_groups($this->user['user_id']);
+                    foreach($groups as $group_id) {
+                        $this->staff_model->add_staff_group($this->user['user_id'], $group_id);
+                    }
 
-                $status = $step_number + 1;
-                $user_induction['status'] = $status;
+                }
+                else if($current_step['type'] == 'availability') {
+                    $days = $this->input->post('days');
+                    $values = '';
+                    for($day=1; $day <=7; $day++) {
+                        for($hour=0; $hour <=23; $hour++) {
+                            $ok = in_array($day, $days) ? '1' : '0';
+                            $values .= '('.$this->user['user_id'].','.$day.','.$hour.','.$ok.'),';
+                        }
+                    }
+                    $values = rtrim($values,',');
+                    $sql = "INSERT INTO `user_staff_availability` (`user_id`, `day`, `hour`, `value`) VALUES ".$values;
+                    $this->db->query($sql);
+                }
+                else if($current_step['type'] == 'location') {
+                    $parent_id = $this->input->post('location');
+                    $data = array();
+                    $location = array();
+                    $all = modules::run('attribute/location/get_locations', $parent_id);
+                    foreach($all as $a) {
+                        $location[] = $a['location_id'];
+                    }
+                    // $data[$parent_id] = $location;
+                    // $staff_data['locations'] = json_encode($data);
+                }
+                else if($current_step['type'] == 'content')
+                {
+                    $input = $this->input->post();
+                    if (isset($input['contents'])) {
+                        $input_contents = $input['contents'];
+                        foreach($input_contents as $input_content) {
+                            if (!in_array($input_content, $user_contents)) {
+                                $user_contents[] = $input_content;
+                            }
+                        }
+                        $user_induction['contents'] = json_encode($user_contents);
+                    }
+                }
 
                 if ($status == count($steps)) {
                     $user_induction['finished_on'] = date('Y-m-d H:i:s');
