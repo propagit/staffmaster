@@ -18,7 +18,14 @@
     <script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
     <script src="<?=base_url();?>assets/js/moment.js"></script>
 
+    <!-- select2 -->
+    <link href="<?=base_url();?>assets/css/select2/select2.css" rel="stylesheet">
+    <script src="<?=base_url();?>assets/js/select2.min.js"></script>
+
+
     <link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
+    <script> var base_url = '<?=base_url();?>'; </script>
+    <script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
     <?=$_styles;?>
 
     <!-- New stuff: SASS -->

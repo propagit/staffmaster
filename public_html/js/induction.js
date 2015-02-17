@@ -205,10 +205,9 @@ angular.module('sb.induction', [])
                 }
             });
         }
-        if (!induction.gender_filter) {
+        if (!$scope.gender_filter) {
             induction.gender = null;
         }
-        console.log(induction);
         $http.post('/induction/ajax/update/' + $scope.id, induction).success(function(response){
             $scope.updated = true;
             $timeout(function(){

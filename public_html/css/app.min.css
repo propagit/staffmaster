@@ -157,12 +157,12 @@
     #induction .step-content h3 {
       margin: 0;
       padding: 5px 0; }
-    #induction .step-content .row {
+    #induction .step-content .row .col {
+      float: left;
+      margin-right: 20px; }
+    #induction .step-content form {
       position: relative;
-      z-index: 25; }
-      #induction .step-content .row .col {
-        float: left;
-        margin-right: 20px; }
+      z-index: 1; }
 
 .col {
   float: left;
@@ -203,3 +203,5 @@
     padding: 10px 10px 48px; }
   #induction .btn-respond {
     width: 100%; } }
+
+/*# sourceMappingURL=app.min.css.map */

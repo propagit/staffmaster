@@ -66,12 +66,12 @@ class Dispatcher extends MX_Controller {
 
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{
-		// $induction_required = modules::run('induction/check_staff_induction');
+		$induction_required = modules::run('induction/check_staff_induction');
 		// print_r($induction_required); die();
-		// if ($controller != 'induction')
-		// {
-		// 	redirect('induction/preview/1');
-		// }
+		if ($induction_required && $controller != 'induction')
+		{
+			redirect('induction/publish/' . $induction_required);
+		}
 
 		if ( strpos($method, 'ajax') !== false)
 		{
@@ -85,7 +85,7 @@ class Dispatcher extends MX_Controller {
 			$title = ucwords($controller);
 			$this->template->set_template('brief');
 		}
-		elseif($controller == 'induction' && $method == 'preview') {
+		elseif($controller == 'induction' && ($method == 'preview' || $method == 'publish')) {
 			$title = ucwords($controller);
 			$content = modules::run($controller, $method, $param1, $param2, $param3, $param4);
 			$this->template->set_template('induction');

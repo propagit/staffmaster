@@ -22,9 +22,9 @@ class Staff extends MX_Controller {
 			$this->user = $this->session->userdata('user_data');
 			$this->is_client = modules::run('auth/is_client');
 		}
-		
+
 	}
-	
+
 	public function index($method='', $param='')
 	{
 		switch($method)
@@ -43,16 +43,16 @@ class Staff extends MX_Controller {
 				break;
 			case 'edit':
 					$this->edit_staff($param);
-				break;	
+				break;
 			case 'upload_custom_document':
 					$this->upload_custom_document();
-				break;	
+				break;
 			case 'delete_custom_document':
 					$this->delete_custom_document($param);
-				break;	
+				break;
 			case 'import_rsa':
 				$this->import_rsa();
-			break;	
+			break;
 			case 'rename_folders':
 				$this->rename_folders();
 			break;
@@ -76,12 +76,12 @@ class Staff extends MX_Controller {
 				break;
 		}
 	}
-	
+
 	function add_staff()
 	{
 		$this->load->view('add_form', isset($data) ? $data : NULL);
 	}
-	
+
 	function send_welcome_email($user_id,$email,$password = '')
 	{
 		$this->load->model('setting/setting_model');
@@ -96,7 +96,7 @@ class Staff extends MX_Controller {
 									'user_id' => $user_id,
 									'company' => $company,
 									'password' => $password
-								);	
+								);
 			$obj = modules::run('email/get_email_obj',$email_obj_params);
 			$email_data = array(
 								'to' => $email,
@@ -110,7 +110,7 @@ class Staff extends MX_Controller {
 			$this->staff_model->update_staff($user_id,array('welcome_email_sent' => 'yes'));
 		}
 	}
-	
+
 	/**
 	*	@name: search_staffs
 	*	@desc: function to load search staffs form
@@ -138,40 +138,49 @@ class Staff extends MX_Controller {
 		$data['is_client'] = $this->is_client;
 		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
-	
+
 	function check_staff_time_collision($staff_id, $shift)
 	{
 		return $this->staff_model->check_staff_time_collision($staff_id, $shift);
 	}
-	
+
 	function edit_staff($user_id)
 	{
 		$data['staff'] = $this->staff_model->get_staff($user_id);
 		$this->load->view('edit_form', isset($data) ? $data :NULL);
-	}	
-	
+	}
+
 	function get_staff($user_id)
 	{
 		return $this->staff_model->get_staff($user_id);
 	}
-	
+
+	function get_age($user_id)
+	{
+		$staff = $this->get_staff($user_id);
+		if (!$staff['dob']) { return 0; }
+		$from = new DateTime($staff['dob']);
+		$to   = new DateTime('today');
+		return $from->diff($to)->y;
+	}
+
 	function get_staff_by_external_id($external_id)
 	{
 		return $this->staff_model->get_staff_by_external_id($external_id);
 	}
-	
+
 	function get_staff_working_hours($user_id)
 	{
-		
+
 	}
-	
+
 	function delete_client($user_id)
 	{
 		$this->client_model->delete_client($user_id);
 		$this->user_model->delete_user($user_id);
 		redirect('client/search');
 	}
-	
+
 	/**
 	*	@name: field_select_status
 	*	@desc: custom select staff status field
@@ -188,10 +197,10 @@ class Staff extends MX_Controller {
 			array('value' => STAFF_PENDING, 'label' => 'Pending'),
 			array('value' => STAFF_INACTIVE, 'label' => 'Inactive')
 		);
-		
+
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size, false);
 	}
-	
+
 	function menu_dropdown_tfn($id, $label) {
 		$array = array(
 			array('value' => '', 'label' => 'Any'),
@@ -206,8 +215,8 @@ class Staff extends MX_Controller {
 	*   @name check_staff_has_role
 	*	@access public
 	*	@param null
-	*	@return Returns is based on the return_bool value. If it is true or empty it return true or false, if it is false it 
-	*	
+	*	@return Returns is based on the return_bool value. If it is true or empty it return true or false, if it is false it
+	*
 	*/
 	function check_staff_has_role($staff_user_id,$role_id)
 	{
@@ -217,15 +226,15 @@ class Staff extends MX_Controller {
 		}else{
 			return false;
 		}
-	}	
+	}
 	/**
 	*	@desc Checks if a staff has been assigned this role.
 	*
 	*   @name check_staff_has_role
 	*	@access public
 	*	@param null
-	*	@return Returns is based on the return_bool value. If it is true or empty it return true or false, if it is false it 
-	*	
+	*	@return Returns is based on the return_bool value. If it is true or empty it return true or false, if it is false it
+	*
 	*/
 	function check_staff_has_group($staff_user_id,$group_id)
 	{
@@ -235,7 +244,8 @@ class Staff extends MX_Controller {
 		}else{
 			return false;
 		}
-	}	
+	}
+
 	/**
 	*	@name: get_availability_data
 	*	@desc: function to return value of availability of user based on day and time
@@ -258,7 +268,7 @@ class Staff extends MX_Controller {
 	{
 		return $this->staff_model->get_total_staffs_count($status);
 	}
-	
+
 	/**
 	*	@name: get_staff_custom_attribute
 	*	@desc: Get custom attribute of a staff member if it has been set
@@ -278,24 +288,24 @@ class Staff extends MX_Controller {
 				$data['staff_custom_attribute_id'] = $staff_attribute->staff_custom_attribute_id;
 				$data['has_multi'] = true;
 			}else{
-				$data['attributes'] = $staff_attribute->attributes;	
+				$data['attributes'] = $staff_attribute->attributes;
 				$data['staff_custom_attribute_id'] = $staff_attribute->staff_custom_attribute_id;
 			}
 		}else{
 			$data['attributes'] = '';
-			$data['staff_custom_attribute_id'] = '';	
+			$data['staff_custom_attribute_id'] = '';
 		}
 		return $data;
 	}
-	
-	
-	
+
+
+
 	/**
 	*	@name: upload_custom_document
 	*	@desc: Uploads document that has been created using the custom attributes.
 	*	@access: public
-	*	@param: (file) data is posted 
-	*	@return: redirect to staff profile 
+	*	@param: (file) data is posted
+	*	@return: redirect to staff profile
 	*/
 	function upload_custom_document()
 	{
@@ -310,14 +320,14 @@ class Staff extends MX_Controller {
 		foreach($_FILES as $key => $val){
 			if ($_FILES[$key]['name']){
 			//image upload
-			$config['upload_path'] = $file_path."/".$folder_name;	
+			$config['upload_path'] = $file_path."/".$folder_name;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg|doc|docx|pdf';
 			$config['max_size']	= '4096'; // 4 MB
 			$config['max_width']  = '4000';
 			$config['max_height']  = '4000';
 			$config['overwrite'] = FALSE;
 			$config['remove_space'] = TRUE;
-			
+
 			$this->upload->initialize($config);
 			if (!$this->upload->do_upload($key)) {
 					//image upload filed abort file upload
@@ -328,14 +338,14 @@ class Staff extends MX_Controller {
 				{
 					$data = array('upload_data' => $this->upload->data());
 					$file_name = $data['upload_data']['file_name'];
-	
+
 					//update database
 					$custom_file = array(
 										'user_id' => $user_staff_id,
 										'attribute_name' => $key,
 										'attributes' => $file_name,
 										'file_upload' => 'yes'
-									);										
+									);
 					$this->staff_model->insert_staff_custom_attributes($custom_file);
 				}
 			}
@@ -343,18 +353,18 @@ class Staff extends MX_Controller {
 		$this->session->set_flashdata('load_document_tab',true);
 		redirect('staff/edit/'.$user_staff_id);
 	}
-	
+
 	/**
 	*	@name: delete_custom_document
 	*	@desc: Delete custom documents
 	*	@access: public
 	*	@param: int(staff custom attribute id)
-	*	@return: redirect to staff profile 
+	*	@return: redirect to staff profile
 	*/
 	function delete_custom_document($staff_custom_attribute_id)
 	{
 		$file_details = $this->staff_model->get_staff_custom_attribute_by_id($staff_custom_attribute_id);
-		$file_name = $file_details->attributes;	
+		$file_name = $file_details->attributes;
 		$staff_user_id = $file_details->user_id;
 		$folder =  md5('custom_files'.$staff_user_id);
 		$this->_delete_document($folder,$file_name);
@@ -370,7 +380,7 @@ class Staff extends MX_Controller {
 	*	@return: returns the folder name to the control that called this function
 	*/
 	function _create_folders($path,$salt,$subfolders = null)
-	{	
+	{
 		//create staff specific folders
 		if($path && $salt){
 			$newfolder = md5($salt);
@@ -383,11 +393,11 @@ class Staff extends MX_Controller {
 			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 			  fclose($fp);
 			}
-			
+
 			$sub_dir = '';
 			if($subfolders){
 				foreach($subfolders as $folder){
-					$sub_dir = $dir.'/'.$folder;	
+					$sub_dir = $dir.'/'.$folder;
 					if(!is_dir($sub_dir))
 					{
 					  mkdir($sub_dir);
@@ -395,12 +405,12 @@ class Staff extends MX_Controller {
 					  $fp = fopen($sub_dir.'/index.html', 'w');
 					  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 					  fclose($fp);
-					}		
+					}
 				}
 			}
 			return $newfolder;
 		}
-		
+
 	}
 	/**
 	*	@name: _delete_document
@@ -419,20 +429,20 @@ class Staff extends MX_Controller {
 			}
 		}
 	}
-	
+
 	/**
 	*	@name:get_staff_gender
 	*	@desc: Returns the gender of the staff
 	*	@access: public
 	*	@param: (int) user id
 	*	@returns (string) m or f
-	*		
+	*
 	*/
 	function get_staff_gender($user_id)
 	{
-		$staff = $this->staff_model->get_staff($user_id);	
+		$staff = $this->staff_model->get_staff($user_id);
 		if($staff){
-			return $staff['gender'];	
+			return $staff['gender'];
 		}
 	}
 	/**
@@ -451,11 +461,11 @@ class Staff extends MX_Controller {
 			foreach($sub_folders as $folder){
 				if(file_exists($path.'/'.$folder.'/'.$file_name)){
 					unlink($path.'/'.$folder.'/'.$file_name);
-				}	
+				}
 			}
 		}
 	}
-	
+
 	/**
 	*	@desc Shows the existing form for custom attributes in staff profile.
 	*
@@ -468,9 +478,9 @@ class Staff extends MX_Controller {
 	{
 		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(true);
 		$data['user_id'] = $staff_user_id;
-		$this->load->view('custom_attributes_for_staff_profile',isset($data) ? $data : NULL);	
+		$this->load->view('custom_attributes_for_staff_profile',isset($data) ? $data : NULL);
 	}
-	
+
 	function custom_attributes_form($user_id)
 	{
 		$fields = $this->staff_model->get_custom_fields($user_id);
@@ -480,10 +490,10 @@ class Staff extends MX_Controller {
 				$data['user_id'] = $user_id;
 				$this->load->view('custom_field/' . $field['type'], isset($data) ? $data : NULL);
 			}
-		}		
+		}
 	}
-	
-	
+
+
 	/**
 	*	@desc Shows the existing form for custom attributes in staff profile.
 	*
@@ -496,9 +506,9 @@ class Staff extends MX_Controller {
 	{
 		$data['existing_elements'] = $this->formbuilder_model->get_form_elements(false);
 		$data['user_id'] = $staff_user_id;
-		$this->load->view('custom_upload_fields_for_staff_profile',isset($data) ? $data : NULL);	
+		$this->load->view('custom_upload_fields_for_staff_profile',isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@desc Shows the existing form for custom attributes.
 	*
@@ -510,9 +520,9 @@ class Staff extends MX_Controller {
 	function custom_attributes()
 	{
 		#$data['existing_elements'] = $this->formbuilder_model->get_form_elements();
-		#$this->load->view('custom_attributes_search_form',isset($data) ? $data : NULL);	
+		#$this->load->view('custom_attributes_search_form',isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@desc Shows the existing form for custom attributes.
 	*
@@ -527,11 +537,11 @@ class Staff extends MX_Controller {
 		if (count($fields) == 0) {
 			//$this->load->view('search_custom_fields/no_field');
 		} else {
-			foreach($fields as $field) { 
+			foreach($fields as $field) {
 				$data['field'] = $field;
 				$this->load->view('search_custom_fields/' . $field['type'], isset($data) ? $data : NULL);
 			}
-		}	
+		}
 	}
 	/**
 	*	@desc This function gets all the posted value from the search staff page then filters and returns only the custom attributes search parameters to the calling method.
@@ -539,7 +549,7 @@ class Staff extends MX_Controller {
 	*   @name get_search_custom_attrs
 	*	@access public
 	*	@param (via POST) gets posted data from the search staff page
-	*	@return Returns the custom attributes only values from all the posted data 
+	*	@return Returns the custom attributes only values from all the posted data
 	*/
 	function get_search_custom_attrs($search_params)
 	{
@@ -551,27 +561,27 @@ class Staff extends MX_Controller {
 				if($val){
 					if(substr($key,0,strlen($normal_prefix)) == $normal_prefix){
 						$new_key = trim($key, $normal_prefix);
-						$custom_attrs['normal_elements'][$new_key] = $val;	
+						$custom_attrs['normal_elements'][$new_key] = $val;
 					}
 					if(substr($key,0,strlen($file_prefix)) == $file_prefix){
 						$new_key = trim($key, $file_prefix);
-						$custom_attrs['file_uploads'][$new_key] = $val;	
+						$custom_attrs['file_uploads'][$new_key] = $val;
 					}
 				}
-			}	
+			}
 		}
 		return $custom_attrs;
 	}
-	
-	
-	
+
+
+
 	/**
 	*	@desc This function gets all the posted value from the search staff page then filters and returns only the custom attributes search parameters to the calling method.
 	*
 	*   @name get_custom_attrs
 	*	@access public
 	*	@param (via POST) gets posted data from the search staff page
-	*	@return Returns the custom attributes only values from all the posted data 
+	*	@return Returns the custom attributes only values from all the posted data
 	*/
 	function _old_func_get_custom_attrs($search_params)
 	{
@@ -583,30 +593,30 @@ class Staff extends MX_Controller {
 				if($val){
 					if(substr($key,0,strlen($normal_prefix)) == $normal_prefix){
 						$new_key = substr($key, strlen($normal_prefix));
-						$custom_attrs['normal_elements'][$new_key] = $val;	
+						$custom_attrs['normal_elements'][$new_key] = $val;
 					}
 					if(substr($key,0,strlen($file_prefix)) == $file_prefix){
 						$new_key = substr($key, strlen($file_prefix));
-						$custom_attrs['file_uploads'][$new_key] = $val;	
+						$custom_attrs['file_uploads'][$new_key] = $val;
 					}
 				}
-			}	
+			}
 		}
 		return $custom_attrs;
-	
+
 	}
-	
+
 	function get_staff_by_name($name) {
 		return $this->staff_model->get_staff_by_name($name);
 	}
-	
+
 	function field_input($field_name, $field_value=null) {
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$data['staffs'] = $this->staff_model->search_staff_by_name();
 		$this->load->view('field_input', isset($data) ? $data : NULL);
 	}
-	
+
 	function field_select($field_name, $field_value=null)
 	{
 		$staffs = $this->staff_model->search_staff_by_name();
@@ -620,7 +630,7 @@ class Staff extends MX_Controller {
 		}
 		return modules::run('common/field_select', $array, $field_name, $field_value);
 	}
-	
+
 	/**
 	*	@desc this functio to get single image of staff with url on the image
 	*   @name profile_image
@@ -629,8 +639,8 @@ class Staff extends MX_Controller {
 	*	@return Returns the image of staff profile with url (a tag)
 	*/
 	function get_profile_picture($user_id=NULL)
-	{		
-		
+	{
+
 		$staff = $this->staff_model->get_staff($user_id);
 		$photo = $this->staff_model->get_hero($user_id);
 		$data['staff'] = $staff;
@@ -646,8 +656,8 @@ class Staff extends MX_Controller {
 	*	@return Returns the image of staff profile
 	*/
 	function profile_image($user_id=NULL)
-	{		
-		
+	{
+
 		$staff = $this->staff_model->get_staff($user_id);
 		$photo = $this->staff_model->get_hero($user_id);
 		$data['staff'] = $staff;
@@ -655,13 +665,13 @@ class Staff extends MX_Controller {
 
 		$this->load->view('staff_picture', isset($data) ? $data : NULL);
 	}
-	
+
 	function profile_hero_image($user_id)
 	{
 		$data['hero'] = $this->staff_model->get_hero($user_id);
 		$this->load->view('profile_hero_image', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@desc Returns group id that an staff has been assigned to
 	*
@@ -669,28 +679,28 @@ class Staff extends MX_Controller {
 	*	@access public
 	*	@param ([int] user id)
 	*	@return Returns an array with group id if a staff member has been assigned to a group or false if the staff has not been assigned to any group
-	*	
+	*
 	*/
 	function get_staff_groups($user_id)
 	{
 		return $this->staff_model->get_staff_groups($user_id);
 	}
-	
+
 	function import_view()
 	{
 		$this->load->view('import_view', isset($data) ? $data : NULL);
 	}
-	
-	function field_select_export_templates($field_name, $field_value = null) 
+
+	function field_select_export_templates($field_name, $field_value = null)
 	{
 		$data['templates'] = $this->export_model->get_templates('staff');
 		$data['field_name'] = $field_name;
 		$data['field_value'] = $field_value;
 		$this->load->view('field_select_export_templates', isset($data) ? $data : NULL);
 	}
-	
+
 	function field_select_fields($field_name, $field_value = null)
-	{		
+	{
 		$export_fields = array(
 			array('value' => 'title','label' => 'Title'),
 			array('value' => 'rating','label' => 'Rating'),
@@ -726,27 +736,27 @@ class Staff extends MX_Controller {
 		);
 		return modules::run('common/field_select', $export_fields, $field_name, $field_value);
 	}
-	
+
 	function get_staff_user_ids_by_group_id($group_id)
 	{
-		return $this->staff_model->get_staff_user_ids_by_group_id($group_id);	
+		return $this->staff_model->get_staff_user_ids_by_group_id($group_id);
 	}
-	
+
 	function get_active_staff_user_ids()
 	{
-		return $this->staff_model->get_active_staff_user_ids();	
+		return $this->staff_model->get_active_staff_user_ids();
 	}
-	
-	 
-	
+
+
+
 	function _resize_old_images()
 	{
-		$staff_arr = $this->db->where('status',1)->get('users')->result_array();	
+		$staff_arr = $this->db->where('status',1)->get('users')->result_array();
 		#md5('staff' . $id);
 		foreach($staff_arr as $staff){
 			$user_id = $staff['user_id'];
 			$folder = md5($user_id);
-			$path = UPLOADS_PATH.'/staff/profile/'.$folder;	
+			$path = UPLOADS_PATH.'/staff/profile/'.$folder;
 			if($user_id == 824){
 				$hero = $this->staff_model->get_hero($user_id);
 				$file_name = '';
@@ -758,13 +768,13 @@ class Staff extends MX_Controller {
 				if($file_name != ''){
 					if(file_exists($path.'/'.$file_name)){
 						#resize thumbnail2
-						$new_width=216;		
+						$new_width=216;
 						$new_height=216;
 						copy($path.'/'.$file_name, $path."/thumbnail2/".$file_name);
 						$target = $path."/thumbnail2/".$file_name;
-						modules::run('staff/ajax/scale_image',$target,$target,$new_width,$new_height);	
-					
-						//create thumbnail 
+						modules::run('staff/ajax/scale_image',$target,$target,$new_width,$new_height);
+
+						//create thumbnail
 						$thumb2_width = 72;
 						$thumb2_height = 72;
 						copy($path.'/'.$file_name, $path."/thumbnail/".$file_name);
@@ -773,9 +783,9 @@ class Staff extends MX_Controller {
 					}
 				}
 			}
-		}	
+		}
 	}
-	
+
 	function copy_files() {
 		$staffs = $this->staff_model->search_staffs();
 		$this->load->helper('directory');
@@ -790,9 +800,9 @@ class Staff extends MX_Controller {
 				fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 				fclose($fp);
 			}
-			
+
 			$dir_thumb = $dir . '/thumb';
-			if(!is_dir($dir_thumb)) 
+			if(!is_dir($dir_thumb))
 			{
 				mkdir($dir_thumb);
 				chmod($dir_thumb,0777);
@@ -800,23 +810,23 @@ class Staff extends MX_Controller {
 				fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 				fclose($fp);
 			}
-					
+
 			# Copy profile images
 			$dir_profile = UPLOADS_PATH . '/staff/profile/' . md5($user_id);
-			
+
 			if (is_dir($dir_profile)) {
 				$map = directory_map($dir_profile, 1);
 				foreach($map as $file) {
 					# Copy file
 					if (!is_dir($dir_profile . '/' . $file)) {
 						copy($dir_profile . '/' . $file, $dir . '/' . $file);
-					}					
+					}
 				}
 				$thumb_map = directory_map($dir_profile . '/thumbnail', 1);
 				foreach($thumb_map as $thumb) {
 					if (!is_dir($dir_profile . '/thumbnail/' . $thumb)) {
 						copy($dir_profile . '/thumbnail/' . $thumb, $dir_thumb . '/' . $thumb);
-					}					
+					}
 				}
 			}
 		}
@@ -826,11 +836,11 @@ class Staff extends MX_Controller {
 	{
 		$this->load->view('sync_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function btn_api($user_id='', $external_id='')
 	{
 		$platform = $this->config_model->get('accounting_platform');
-		
+
 		if (!$platform)
 		{
 			return;
@@ -847,12 +857,12 @@ class Staff extends MX_Controller {
 			if (!$this->config_model->get('myob_company_id'))
 			{
 				return;
-			}			
+			}
 			if ($external_id)
 			{
 				$external_id = modules::run('api/myob/connect', 'read_employee~' . $external_id);
 			}
-			
+
 			$platform = 'MYOB';
 		}
 		$data['user_id'] = $user_id;
@@ -860,6 +870,6 @@ class Staff extends MX_Controller {
 		$data['platform'] = $platform;
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
-	
-	
+
+
 }

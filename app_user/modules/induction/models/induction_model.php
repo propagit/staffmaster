@@ -3,6 +3,8 @@
 class Induction_model extends CI_Model {
 
     function add($data) {
+        $data['status'] = 0;
+        $data['target_all'] = 1;
         $this->db->insert('inductions', $data);
         return $this->db->insert_id();
     }
@@ -123,5 +125,34 @@ class Induction_model extends CI_Model {
     {
         $this->db->where('id', $id);
         return $this->db->delete('induction_contents');
+    }
+
+    function check_user($induction_id, $user_id)
+    {
+        $row = $this->get_user($induction_id, $user_id);
+        if (!$row) {
+            $row = array(
+                'induction_id' => $induction_id,
+                'user_id' => $user_id,
+                'status' => 0
+            );
+            $this->db->insert('inductions_users', $row);
+            $row['id'] = $this->db->insert_id();
+        }
+        return $row;
+    }
+
+    function get_user($induction_id, $user_id)
+    {
+        $this->db->where('induction_id', $induction_id);
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get('inductions_users');
+        return $query->first_row('array');
+    }
+
+    function update_user($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('inductions_users', $data);
     }
 }

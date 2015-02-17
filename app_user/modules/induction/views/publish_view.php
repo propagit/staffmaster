@@ -3,7 +3,8 @@
     <div class="list-group list-step">
         <? if (count($steps) > 0) {
             $n = 1; foreach($steps as $step) { ?>
-        <a href="<?=base_url();?>induction/preview/<?=$induction['id'];?>/<?=$n-1;?>" class="list-group-item<?=($step['id'] == $current_step['id']) ? ' current' : '';?>">
+
+        <a href="<?=base_url();?>induction/publish/<?=$induction['id'];?>/<?=$n-1;?>" class="list-group-item<?=($step['id'] == $current_step['id']) ? ' current' : '';?>">
             <div class="step-number">
                 <div><?=$n++;?></div>
             </div>
@@ -14,10 +15,12 @@
     </div>
     <div class="step-connect"></div>
     <div class="step-content">
+    <form method="post" action="<?=current_url();?>" />
+        <input type="hidden" name="id" value="<?=$induction['id'];?>" />
         <div class="row induction-row">
             <div class="col-md-12">
                 <div class="logo-wrap">
-                	<?=modules::run('setting/company_logo',true); # gets full image and not the reized image?>
+                    <?=modules::run('setting/company_logo',true); # gets full image and not the reized image?>
                 </div>
                 <h2 class="induction-title"><?=$induction['name'];?></h2>
                 <p>Please proceed through each step of the induction process</p>
@@ -35,7 +38,7 @@
                 <hr />
                 <? } ?>
             </div>
-        </div>
+        </div><div class="clearfix"></div>
 
         <? if (isset($contents) && count($contents) > 0) {
             foreach($contents as $content) {
@@ -56,6 +59,11 @@
             echo '</div></div></div>';
             }
         } ?>
+        <?php if(validation_errors()) { ?>
+        <div class="col-md-12">
+        <div class="alert alert-danger"><?=validation_errors();?></div>
+        </div>
+        <? } ?>
 
         <? if(isset($fields)) {
             foreach($fields as $field) { ?>
@@ -63,19 +71,19 @@
                 <label class="col-md-3 control-label"><?=$field->label;?></label>
                 <div class="col-md-9">
                     <? if($field->key == 'title') { ?>
-                    <?=modules::run('common/field_select_title', 'title');?>
+                    <?=modules::run('common/field_select_title', 'title', set_value($field->key));?>
                     <? } else if ($field->key == 'gender') { ?>
-                    <?=modules::run('common/field_select_genders', 'gender');?>
+                    <?=modules::run('common/field_select_genders', 'gender', set_value($field->key));?>
                     <? } else if ($field->key == 'dob') { ?>
-                    <?=modules::run('common/field_dob', 'dob');?>
+                    <?=modules::run('common/field_dob', 'dob', set_value('dob[day]'), set_value('dob[month]'), set_value('dob[year]'));?>
                     <? } else if ($field->key == 'state') { ?>
-                    <?=modules::run('common/field_select_states', 'state');?>
+                    <?=modules::run('common/field_select_states', 'state', set_value($field->key));?>
                     <? } else if ($field->key == 'country') { ?>
-                    <?=modules::run('common/field_select_countries', 'country');?>
+                    <?=modules::run('common/field_select_countries', 'country', set_value($field->key));?>
                     <? } else if ($field->key == 'password') { ?>
                     <input type="password" class="form-control" name="password" />
                     <? } else { ?>
-                    <input type="text" class="form-control" name="<?=$field->key;?>" />
+                    <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=set_value($field->key) ;?>" />
                     <? } ?>
                 </div>
             </div>
@@ -84,19 +92,20 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class=" pull-right">
+                <div class=" pull-right"><br />
                 <? if (isset($current_step)) {
                     if ($step_number == count($steps)) { ?>
-                    <a class="btn btn-core btn-respond">Complete</a>
+                    <button class="btn btn-core btn-respond" type="submit">Complete</button>
                     <? } else { ?>
                     <a class="btn btn-default btn-respond">Save For Later <i class="fa fa-save"></i></a> &nbsp;
-                    <a class="btn btn-core btn-respond" href="<?=base_url();?>induction/preview/<?=$induction['id'];?>/<?=$step_number;?>">Proceed To Next Step <i class="fa fa-chevron-right"></i></a>
+                    <button class="btn btn-core btn-respond" type="submit">Proceed To Next Step <i class="fa fa-chevron-right"></i></button>
                     <? }
                 } ?>
                 </div>
             </div>
         </div>
         <div class="clearfix"></div>
+    </form>
     </div>
 </div>
 
