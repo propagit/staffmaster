@@ -459,6 +459,18 @@ class Staff_model extends CI_Model {
 		return $query->result_array();
 	}
 
+	function get_available_days($user_id)
+	{
+		$sql = "SELECT DISTINCT day FROM user_staff_availability WHERE user_id = $user_id
+					AND value = 1";
+		$query = $this->db->query($sql);
+		$days = array();
+		foreach($query->result_array() as $row) {
+			$days[] = $row['day'];
+		}
+		return $days;
+	}
+
 	function get_availability_data($user_id,$day,$hour)
 	{
 		$this->db->where('user_id', $user_id);

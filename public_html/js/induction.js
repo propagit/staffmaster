@@ -47,7 +47,8 @@ angular.module('sb.induction', [])
         $scope.current_step = $scope.steps[index];
         if ($scope.current_step.type == 'personal'
             || $scope.current_step.type == 'financial'
-            || $scope.current_step.type == 'super') {
+            || $scope.current_step.type == 'super'
+            || $scope.current_step.type == 'custom') {
             $http.get('/induction/ajax/profile_fields/' + $scope.current_step.id + '/' + $scope.current_step.type).success(function(response){
                 $scope.fields = response;
             }).error(function(error){

@@ -8,6 +8,7 @@ class Ajax extends MX_Controller {
         $this->load->model('induction_model');
         $this->load->model('user/user_model');
         $this->load->model('staff/staff_model');
+        $this->load->model('attribute/custom_field_model');
     }
 
     function get($id) {
@@ -244,6 +245,7 @@ class Ajax extends MX_Controller {
     }
 
     function profile_fields($step_id = '', $category = '') {
+        $fields = array();
         switch($category) {
             case 'personal':
                     $fields = array(
@@ -275,6 +277,13 @@ class Ajax extends MX_Controller {
                         array('key' => 's_fund_name', 'label' => 'Super Fund Name'),
                         array('key' => 's_membership', 'label' => 'Membership Number')
                     );
+                break;
+            case 'custom':
+                    $custom_fields = $this->custom_field_model->get_fields();
+                    foreach($custom_fields as $field) {
+                        $field['key'] = $field['field_id'];
+                        $fields[] = $field;
+                    }
                 break;
             default: $fields = array();
                 break;

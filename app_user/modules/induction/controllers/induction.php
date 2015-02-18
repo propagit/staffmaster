@@ -125,6 +125,7 @@ class Induction extends MX_Controller {
                 $this->form_validation->set_rules('groups', 'Group', 'required');
             } else if ($current_step['type'] == 'availability') {
                 $data['days'] = modules::run('common/array_day');
+                $data['staff_days'] = $this->staff_model->get_available_days($this->user['user_id']);
                 $this->form_validation->set_rules('days', 'Day', 'required');
             } else if ($current_step['type'] == 'location') {
                 $this->form_validation->set_rules('location', 'Location', 'required');

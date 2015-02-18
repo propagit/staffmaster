@@ -1552,6 +1552,7 @@ CREATE TABLE IF NOT EXISTS `inductions_users` (
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL,
   `finished_on` datetime DEFAULT NULL,
+  `contents` TEXT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

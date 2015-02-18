@@ -207,12 +207,12 @@
         .row {
 			position:relative;
 			z-index:1;
-			
+
             .col {
                 float: left;
                 margin-right: 20px;
             }
-			
+
 			&::after{
 				display:inline-table;
 			}

@@ -38,7 +38,7 @@
                 <hr />
                 <? } ?>
             </div>
-        </div><div class="clearfix"></div>
+        </div>
 
         <?php if(validation_errors()) { ?>
         <div class="col-md-12">
@@ -97,7 +97,40 @@
                     <? } else if ($field->key == 'password') { ?>
                     <input type="password" class="form-control" name="password" />
                     <? } else { ?>
-                    <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=(set_value($field->key) ? set_value($field->key) : $field->value);?>" />
+                        <? if (isset($field->type)) { ?>
+
+                            <? if($field->type == 'text') { ?>
+                            <input type="text" class="form-control" name="<?=$field->key;?>" />
+                            <? } else if ($field->type == 'textarea') { ?>
+                            <textarea class="form-control" name="<?=$field->key;?>"></textarea>
+                            <? } else if ($field->type == 'file') { ?>
+                            <div
+                                  class="btn btn-core btn-upload"
+                                  upload-button
+                                  param="file"
+                                  url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>"
+                                  on-success="onSuccess(response)"
+                                >Upload</div>
+                            <? } else if ($field->type == 'radio') { ?>
+                            <?php
+                                $attrs = json_decode($field->attributes);
+                                if($attrs){
+                                    foreach($attrs as $attr){ ?>
+                                    <label class="<?=($field->inline == 'true' ? 'radio-inline' : 'radio' );?>">
+                                        <input type="radio" name="<?=$field->key;?>" value="<?=$attr;?>" /> <?=$attr;?>
+                                    </label>
+                            <?php   }
+                            } ?>
+
+
+
+
+                            <? } ?>
+
+
+                        <? } else { ?>
+                        <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=(set_value($field->key) ? set_value($field->key) : $field->value);?>" />
+                        <? } ?>
                     <? } ?>
                 </div>
             </div>
@@ -105,12 +138,13 @@
         } ?>
 
         <? if ($current_step['type'] == 'picture') { ?>
-        <? if (isset($pictures)) foreach($pictures as $picture) {
-            $thumb_src = base_url() . UPLOADS_URL.'/staff/' . $user_induction['user_id'] . '/thumb/' . $picture['name'];
-            ?>
-            <div><img style="width:auto!important; height:216px;" src="<?=$thumb_src;?>" /></div><br />
-        <? } ?>
-        <div
+            <? if (isset($pictures)) foreach($pictures as $picture) {
+                $thumb_src = base_url() . UPLOADS_URL.'/staff/' . $user_induction['user_id'] . '/thumb/' . $picture['name'];
+                ?>
+                <div><img style="width:auto!important; height:216px;" src="<?=$thumb_src;?>" /></div><br />
+            <? } ?>
+
+            <div
               class="btn btn-core btn-upload"
               upload-button
               param="image"
@@ -138,8 +172,7 @@
         <? if ($current_step['type'] == 'group') { ?>
         <div class="row">
         <? foreach($groups as $group) {
-            $checked = (modules::run('staff/check_staff_has_group',$user_induction['user_id'],$group['group_id'])) ? ' checked' : '';
-            ?>
+            $checked = (modules::run('staff/check_staff_has_group',$user_induction['user_id'],$group['group_id'])) ? ' checked' : ''; ?>
             <div class="col-md-4">
             <div class="checkbox checkbox_role">
                 <label>
@@ -153,11 +186,12 @@
 
         <? if ($current_step['type'] == 'availability') { ?>
         <div class="row">
-        <? foreach($days as $day_no => $day_label) { ?>
+        <? foreach($days as $day_no => $day_label) {
+            $checked = (in_array($day_no, $staff_days)) ? ' checked' : ''; ?>
             <div class="col-md-12">
             <div class="checkbox checkbox_role">
                 <label>
-                    <input type="checkbox" name="days[]" value="<?=$day_no;?>" /> <?=$day_label;?>
+                    <input type="checkbox" name="days[]" value="<?=$day_no;?>" <?=$checked;?>/> <?=$day_label;?>
                 </label>
             </div>
             </div>

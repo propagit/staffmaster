@@ -94,7 +94,7 @@
 
                     <div ng-if="step.id == current_step.id">
                         <div ng-if="step.type == 'personal' || step.type == 'financial'
-                            || step.type == 'super'">
+                            || step.type == 'super' || step.type == 'custom'">
                             <p>
                             <div
                                 multi-select
