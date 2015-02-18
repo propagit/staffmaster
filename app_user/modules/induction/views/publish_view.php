@@ -113,7 +113,7 @@
                                   upload-button
                                   param="file-<?=$field->key;?>"
                                   url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>/<?=$field->key;?>"
-                                  on-success="onUploadFileSuccess(response, <?=$field->key;?>)"
+                                  on-success="onSuccess(response)"
                                 >Upload</div>
                             <? } else if ($field->type == 'radio') { ?>
                             <?php

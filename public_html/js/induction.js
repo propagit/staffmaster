@@ -256,11 +256,4 @@ angular.module('sb.induction', [])
         // $scope.contents[index].value = response.data.file_name;
         // $scope.updateContent(index);
     };
-
-    $scope.fields = [];
-
-    $scope.onUploadFileSuccess = function(response, key) {
-        $scope.fields[key] = response.data.file_name;
-        console.log(key, $scope.fields);
-    };
 })
