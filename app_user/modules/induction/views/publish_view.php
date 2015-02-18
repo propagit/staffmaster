@@ -100,24 +100,27 @@
                         <? if (isset($field->type)) { ?>
 
                             <? if($field->type == 'text') { ?>
-                            <input type="text" class="form-control" name="<?=$field->key;?>" />
+                            <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=$field->value;?>" />
                             <? } else if ($field->type == 'textarea') { ?>
-                            <textarea class="form-control" name="<?=$field->key;?>"></textarea>
+                            <textarea class="form-control" name="<?=$field->key;?>"><?=$field->value;?></textarea>
                             <? } else if ($field->type == 'file') { ?>
                             <div
                                   class="btn btn-core btn-upload"
                                   upload-button
-                                  param="file"
-                                  url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>"
-                                  on-success="onSuccess(response)"
+                                  param="file-<?=$field->key;?>"
+                                  url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>/<?=$field->key;?>"
+                                  on-success="onUploadFileSuccess(response, <?=$field->key;?>)"
                                 >Upload</div>
+                                <input type="hidden" name="<?=$field->key;?>" ng-model="fields[<?=$field->key;?>]" />
                             <? } else if ($field->type == 'radio') { ?>
                             <?php
                                 $attrs = json_decode($field->attributes);
                                 if($attrs){
-                                    foreach($attrs as $attr){ ?>
+                                    foreach($attrs as $attr){
+                                        $checked = ($field->value == $attr) ? 'checked' : '';
+                                        ?>
                                     <label class="<?=($field->inline == 'true' ? 'radio-inline' : 'radio' );?>">
-                                        <input type="radio" name="<?=$field->key;?>" value="<?=$attr;?>" /> <?=$attr;?>
+                                        <input type="radio" name="<?=$field->key;?>" value="<?=$attr;?>" <?=$checked;?>/> <?=$attr;?>
                                     </label>
                             <?php   }
                             } ?>
@@ -202,7 +205,7 @@
         <? if ($current_step['type'] == 'location') { ?>
         <div class="row">
             <div class="col-md-12">
-                <?=modules::run('attribute/location/field_input', 'location');?>
+                <?=modules::run('attribute/location/field_input', 'location', $location);?>
             </div>
         </div>
         <? } ?>

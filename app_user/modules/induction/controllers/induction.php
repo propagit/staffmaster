@@ -128,6 +128,12 @@ class Induction extends MX_Controller {
                 $data['staff_days'] = $this->staff_model->get_available_days($this->user['user_id']);
                 $this->form_validation->set_rules('days', 'Day', 'required');
             } else if ($current_step['type'] == 'location') {
+                $user_data = modules::run('staff/get_staff', $this->user['user_id']);
+                $a = json_decode($user_data['locations']);
+                foreach($a as $key => $value) {
+                    $location = $key; break;
+                }
+                $data['location'] = $location;
                 $this->form_validation->set_rules('location', 'Location', 'required');
             }
 
@@ -157,6 +163,12 @@ class Induction extends MX_Controller {
                         if (isset($user_data[$field->key])) {
                             $field->value = $user_data[$field->key];
                         }
+                        else {
+                            $custom_field = $this->staff_model->get_custom_field($this->user['user_id'], $field->key);
+                            if ($custom_field) {
+                                $field->value = $custom_field['staff_value'];
+                            }
+                        }
                         $active_fields[] = $field;
                     }
                 }
@@ -167,6 +179,8 @@ class Induction extends MX_Controller {
                         $this->form_validation->set_rules($field->key . '[day]', 'Day', 'required');
                         $this->form_validation->set_rules($field->key . '[month]', 'Month', 'required');
                         $this->form_validation->set_rules($field->key . '[year]', 'Year', 'required');
+                    } else if (isset($field->type) && $field->type == 'file') {
+
                     } else {
                         $this->form_validation->set_rules($field->key, $field->label, 'required');
                     }
@@ -219,14 +233,23 @@ class Induction extends MX_Controller {
                 }
                 else if($current_step['type'] == 'location') {
                     $parent_id = $this->input->post('location');
-                    $data = array();
+                    $locations = array();
                     $location = array();
                     $all = modules::run('attribute/location/get_locations', $parent_id);
                     foreach($all as $a) {
                         $location[] = $a['location_id'];
                     }
-                    // $data[$parent_id] = $location;
-                    // $staff_data['locations'] = json_encode($data);
+                    $locations[$parent_id] = $location;
+                    modules::run('staff/update_staff', $this->user['user_id'], array(
+                        'locations' => json_encode($locations)
+                    ));
+                }
+                else if ($current_step['type'] == 'custom') {
+                    $input = $this->input->post();
+                    unset($input['user_id']);
+                    foreach($input as $field_id => $value) {
+                        $this->staff_model->update_custom_field($this->user['user_id'], $field_id, $value);
+                    }
                 }
                 else if($current_step['type'] == 'content')
                 {

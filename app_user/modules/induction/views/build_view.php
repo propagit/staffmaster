@@ -53,7 +53,9 @@
             </form>
         </div>
 
-        <div class="inner-box box-step" ng-repeat="step in steps" id="step{{ step.id }}">
+
+        <div data-as-sortable="dragControlListeners" data-ng-model="steps">
+        <div class="inner-box box-step" data-ng-repeat="step in steps" id="step{{ step.id }}" data-as-sortable-item>
             <div class="row">
                 <div class="col-md-2">
                     <div class="step_induction">
@@ -65,7 +67,7 @@
                     <div class="pull-right btn-group">
                         <button ng-if="current_step.id != step.id" ng-click="editStep($index)" type="button" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i> Edit</button>
                         <button ng-if="current_step.id != step.id" type="button" class="btn btn-sm btn-default" ng-click="deleteStep($index)"><i class="fa fa-times"></i> Delete</button>
-                        <button ng-if="current_step.id != step.id" type="button" class="btn btn-sm btn-default"><i class="fa fa-arrows-v"></i> Change Order</button>
+                        <div data-as-sortable-item-handle ng-if="current_step.id != step.id" type="button" class="btn btn-sm btn-default"><i class="fa fa-arrows-v"></i> Change Order</div>
                         <button ng-if="current_step.id == step.id" ng-click="closeStep($index)" class="btn btn-sm btn-default"><i class="fa fa-minus-square-o"></i> Collapse</button>
                     </div>
 
@@ -95,7 +97,6 @@
                     <div ng-if="step.id == current_step.id">
                         <div ng-if="step.type == 'personal' || step.type == 'financial'
                             || step.type == 'super' || step.type == 'custom'">
-                            <p>
                             <div
                                 multi-select
                                 input-model="fields"
@@ -233,6 +234,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>
