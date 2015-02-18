@@ -105,7 +105,9 @@
                             <textarea class="form-control" name="<?=$field->key;?>"><?=$field->value;?></textarea>
                             <? } else if ($field->type == 'file') { ?>
                             <? if ($field->value) { ?>
-                                <p><a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_induction['user_id'];?>/<?=$field->value;?>"><?=$field->value;?></a></p>
+                                <p><a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_induction['user_id'];?>/<?=$field->value;?>"><?=$field->value;?></a>
+                                <i title="Delete File" class="fa fa-times custom-file-delete" ng-click="deleteFile(<?=$user_induction['user_id'];?>, <?=$field->key;?>)"></i><br />
+                                </p>
 
                             <? } ?>
                             <div
@@ -156,7 +158,10 @@
             <? if (isset($pictures)) foreach($pictures as $picture) {
                 $thumb_src = base_url() . UPLOADS_URL.'/staff/' . $user_induction['user_id'] . '/thumb/' . $picture['name'];
                 ?>
-                <div><img style="width:auto!important; height:216px;" src="<?=$thumb_src;?>" /></div><br />
+                <div>
+                    <img style="width:auto!important; height:216px;" src="<?=$thumb_src;?>" />
+                    <i title="Delete Picture" class="fa fa-times custom-file-delete" ng-click="deletePicture(<?=$picture['id'];?>)"></i>
+                </div><br />
             <? } ?>
 
             <div

@@ -244,6 +244,10 @@ class Ajax extends MX_Controller {
         }
     }
 
+    function delete_picture($id) {
+        $this->staff_model->delete_photo($id);
+    }
+
     function upload_custom_file($user_id, $field_id) {
         $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
         $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi|jpg|gif|png';
@@ -260,6 +264,10 @@ class Ajax extends MX_Controller {
 
             echo json_encode($data);
         }
+    }
+
+    function delete_file($user_id, $field_id) {
+        $this->staff_model->update_custom_field($user_id, $field_id, '');
     }
 
     function profile_fields($step_id = '', $category = '') {
