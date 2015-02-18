@@ -139,11 +139,14 @@ class Induction extends MX_Controller {
 
             # Get contents of the step
             $contents = $this->induction_model->get_contents($current_step['id']);
-            foreach($contents as $content) {
-                if ($content['type'] == 'compliance') {
-                    $this->form_validation->set_rules('contents[' . $content['id'] . ']', 'Compliance', 'required');
+            if (count($contents) > 0) {
+                foreach($contents as $content) {
+                    if ($content['type'] == 'compliance') {
+                        $this->form_validation->set_rules('contents[' . $content['id'] . ']', 'Compliance', 'required');
+                    }
                 }
             }
+
             $data['contents'] = $contents;
 
             if ($current_step['fields']) {
