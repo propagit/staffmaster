@@ -246,8 +246,7 @@ class Ajax extends MX_Controller {
 
     function upload_custom_file($user_id, $field_id) {
         $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
-        $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi
-        jpg|gif|png';
+        $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi|jpg|gif|png';
         $config['max_size'] = '10000';
         $this->load->library('upload', $config);
         if ( ! $this->upload->do_upload('file-' . $field_id))
