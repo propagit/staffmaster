@@ -36,7 +36,6 @@
 			<div class="box">
 				<h2><i class="fa fa-frown-o"></i> &nbsp; Oh no!<br />There appears to have been a malfunction</h2>
 				<br />
-                <h1><?php echo $heading; ?></h1>
 				<?=$message;?>
 				<br />
 				<a class="btn btn-core btn-lg" href="/"><i class="fa fa-dashboard"></i> Go To Dashboard</a>

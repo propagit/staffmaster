@@ -104,6 +104,10 @@
                             <? } else if ($field->type == 'textarea') { ?>
                             <textarea class="form-control" name="<?=$field->key;?>"><?=$field->value;?></textarea>
                             <? } else if ($field->type == 'file') { ?>
+                            <? if ($field->value) { ?>
+                                <p><a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_induction['user_id'];?>/<?=$field->value;?>"><?=$field->value;?></a></p>
+
+                            <? } ?>
                             <div
                                   class="btn btn-core btn-upload"
                                   upload-button
@@ -111,7 +115,6 @@
                                   url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>/<?=$field->key;?>"
                                   on-success="onUploadFileSuccess(response, <?=$field->key;?>)"
                                 >Upload</div>
-                                <input type="hidden" name="<?=$field->key;?>" ng-model="fields[<?=$field->key;?>]" />
                             <? } else if ($field->type == 'radio') { ?>
                             <?php
                                 $attrs = json_decode($field->attributes);
@@ -125,9 +128,18 @@
                             <?php   }
                             } ?>
 
-
-
-
+                            <? } else if ($field->type == 'checkbox') { ?>
+                            <?php
+                                $attrs = json_decode($field->attributes);
+                                if($attrs){
+                                    foreach($attrs as $attr){
+                                        $checked = ($field->value == $attr) ? 'checked' : '';
+                                        ?>
+                                    <label class="<?=($field->inline == 'true' ? 'checkbox-inline' : 'checkbox' );?>">
+                                        <input type="checkbox" name="<?=$field->key;?>[]" value="<?=$attr;?>" <?=$checked;?>/> <?=$attr;?>
+                                    </label>
+                            <?php   }
+                            } ?>
                             <? } ?>
 
 

@@ -249,8 +249,9 @@ angular.module('sb.induction', [])
     };
 })
 
-.controller('InductionStaff', function($scope, $http) {
+.controller('InductionStaff', function($scope, $http, $window) {
     $scope.onSuccess = function(response) {
+        $window.location.reload();
         console.log(response);
         // $scope.contents[index].value = response.data.file_name;
         // $scope.updateContent(index);
