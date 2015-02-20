@@ -20,6 +20,20 @@ class Induction_model extends CI_Model {
         return $query->first_row('array');
     }
 
+    function delete($id) {
+        $this->db->where('induction_id', $id);
+        $this->db->delete('inductions_users');
+
+        $this->db->where('induction_id', $id);
+        $this->db->delete('induction_contents');
+
+        $this->db->where('induction_id', $id);
+        $this->db->delete('induction_steps');
+
+        $this->db->where('id', $id);
+        $this->db->delete('inductions');
+    }
+
     function all($active=null) {
         if ($active) {
             $this->db->where('status', 1);

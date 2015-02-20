@@ -105,6 +105,10 @@ class Ajax extends MX_Controller {
         $this->induction_model->update($id, $input);
     }
 
+    function delete($id) {
+        $this->induction_model->delete($id);
+    }
+
     function add_step() {
         $input = file_get_contents("php://input");
         $input = json_decode($input,true);
