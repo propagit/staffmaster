@@ -96,6 +96,8 @@
     <script src="<?=base_url();?>bower_components/angular-multi-select/angular-multi-select.js"></script>
     <script src="<?=base_url();?>bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
 
+    <script src="<?=base_url();?>bower_components/angular-initial-value/dist/angular-initial-value.min.js"></script>
+
 
     <script src="<?=base_url();?>js/app.js"></script>
     <script src="<?=base_url();?>js/induction.js"></script>

@@ -65,10 +65,13 @@
 
                 <div class="col-md-10">
                     <div class="pull-right btn-group">
-                        <button ng-if="current_step.id != step.id" ng-click="editStep($index)" type="button" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i> Edit</button>
+                        <button ng-if="current_step.id != step.id && (step.type == 'personal' || step.type == 'custom')" ng-click="editStep($index)" type="button" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i> Edit</button>
+
                         <button ng-if="current_step.id != step.id" type="button" class="btn btn-sm btn-default" ng-click="deleteStep($index)"><i class="fa fa-times"></i> Delete</button>
+
                         <div data-as-sortable-item-handle ng-if="current_step.id != step.id" type="button" class="btn btn-sm btn-default"><i class="fa fa-arrows-v"></i> Change Order</div>
-                        <button ng-if="current_step.id == step.id" ng-click="closeStep($index)" class="btn btn-sm btn-default"><i class="fa fa-minus-square-o"></i> Collapse</button>
+
+                        <button ng-if="current_step.id == step.id" ng-click="closeStep($index)" class="btn btn-sm btn-default"><i class="fa fa-check"></i> Done</button>
                     </div>
 
                     <div class="row">
@@ -95,8 +98,7 @@
 
 
                     <div ng-if="step.id == current_step.id">
-                        <div ng-if="step.type == 'personal' || step.type == 'financial'
-                            || step.type == 'super' || step.type == 'custom'">
+                        <div ng-if="step.type == 'personal' || step.type == 'custom'">
                             <div
                                 multi-select
                                 input-model="fields"

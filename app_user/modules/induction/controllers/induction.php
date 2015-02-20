@@ -114,8 +114,26 @@ class Induction extends MX_Controller {
             # Get current step
             $current_step = $steps[$step_number];
             $data['current_step'] = $current_step;
+            $data['staff'] = modules::run('staff/get_staff', $this->user['user_id']);
+            if ($current_step['type'] == 'financial') {
 
-            if ($current_step['type'] == 'picture') {
+                $this->form_validation->set_rules('f_acc_name', 'Account Name', 'required');
+                $this->form_validation->set_rules('f_bsb', 'BSB', 'required');
+                $this->form_validation->set_rules('f_acc_number', 'Account Number', 'required');
+                $this->form_validation->set_rules('f_employed', 'Employed As', 'required');
+                if ($this->input->post('f_employed') == 1) {
+                    $this->form_validation->set_rules('f_tfn', 'TFN Number', 'required');
+
+                } else if ($this->input->post('f_employed') == 2) {
+                    $this->form_validation->set_rules('f_abn', 'ABN Number', 'required');
+                }
+
+            } else if ($current_step['type'] == 'super') {
+
+                $this->form_validation->set_rules('s_external_id', 'Super Fund', 'required');
+                $this->form_validation->set_rules('s_employee_id', 'Membership Number', 'required');
+
+            } else if ($current_step['type'] == 'picture') {
                 $data['pictures'] = $this->staff_model->get_all_photos($user_induction['user_id']);
             } else if ($current_step['type'] == 'role') {
                 $data['roles'] = modules::run('attribute/role/get_roles');
@@ -202,7 +220,7 @@ class Induction extends MX_Controller {
 
 
                 # Update
-                if (in_array($current_step['type'], array('personal','financial','super')))
+                if (in_array($current_step['type'], array('personal', 'financial', 'super')))
                 {
                     modules::run('staff/update_staff', $this->user['user_id'], $this->input->post());
                 }
