@@ -152,28 +152,17 @@ angular.module('sb.induction', [])
     };
 
     $scope.dragControlListeners = {
-        orderChanged: function(event) {
-            // console.log($scope.steps[event.source.index]);
-            // console.log($scope.steps[event.dest.index]);
-            var source = $scope.steps[event.source.index];
-            var temp = source.step_order;
-            var dest = $scope.steps[event.dest.index];
-            source.step_order = dest.step_order;
-            dest.step_order = temp;
-            // console.log(source);
-            // console.log(dest);
-            $http.post('/induction/ajax/update_step/' + source.id, source)
-            .success(function(response){
-                $http.post('/induction/ajax/update_step/' + dest.id, dest)
+        dragEnd: function(event) {
+            for(var i=0; i < $scope.steps.length; i++) {
+                $scope.steps[i].step_order = i;
+                $http.post('/induction/ajax/update_step/' + $scope.steps[i].id, $scope.steps[i])
                 .success(function(response){
 
                 }).error(function(error){
                     console.log("ERROR: ", error);
                 });
-            }).error(function(error){
-                console.log("ERROR: ", error);
-            });
-        }
+            }
+        },
     };
     // $scope.dragControlListeners = {
     //     accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.

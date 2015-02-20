@@ -383,7 +383,14 @@ class Induction extends MX_Controller {
 
                 }
                 if ($induction['work_from']) {
-
+                    if (!$this->staff_model->check_staff_work_from($this->user['user_id'], $induction['work_from'])) {
+                        continue;
+                    }
+                }
+                if ($induction['work_to']) {
+                    if (!$this->staff_model->check_staff_work_to($this->user['user_id'], $induction['work_to'])) {
+                        continue;
+                    }
                 }
             }
 

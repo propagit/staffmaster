@@ -215,6 +215,22 @@ class Staff_model extends CI_Model {
 		return false;
 	}
 
+	function check_staff_work_from($user_id, $work_from)
+	{
+		$sql = "SELECT * FROM job_shifts
+						WHERE staff_id = $user_id AND job_date >= '$work_from'";
+		$query = $this->db->query($sql);
+		return $query->num_rows();
+	}
+
+	function check_staff_work_to($user_id, $work_to)
+	{
+		$sql = "SELECT * FROM job_shifts
+						WHERE staff_id = $user_id AND job_date <= '$work_to'";
+		$query = $this->db->query($sql);
+		return $query->num_rows();
+	}
+
 	/**
 	*	@name: check_staff_time_availability
 	*	@desc: check if staff available to work for a particular shift
