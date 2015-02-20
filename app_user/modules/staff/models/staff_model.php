@@ -215,6 +215,37 @@ class Staff_model extends CI_Model {
 		return false;
 	}
 
+	function add_induction($data)
+	{
+		$data['status'] = 0;
+		$this->db->insert('inductions_users', $data);
+		return $this->db->insert_id();
+	}
+
+	function delete_induction($id)
+	{
+		$this->db->where('id', $id);
+		return $this->db->delete('inductions_users');
+	}
+
+	function get_inductions($user_id)
+	{
+		$sql = "SELECT u.*, i.name
+					FROM inductions_users u
+					LEFT JOIN inductions i ON i.id = u.induction_id
+					WHERE u.user_id = $user_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	function get_available_inductions($user_id)
+	{
+		$sql = "SELECT * FROM inductions WHERE id NOT IN
+				(SELECT DISTINCT induction_id FROM inductions_users WHERE user_id = $user_id)";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	function check_staff_work_from($user_id, $work_from)
 	{
 		$sql = "SELECT * FROM job_shifts
