@@ -15,7 +15,7 @@
     </div>
     <div class="step-connect"></div>
     <div class="step-content">
-    <form method="post" action="<?=current_url();?>" />
+    <form method="post" action="<?=current_url();?>" id="form-induction" />
         <input type="hidden" name="user_id" value="<?=$user_induction['user_id'];?>" />
         <div class="row induction-row">
             <div class="col-md-12">
@@ -339,6 +339,7 @@
         <? } ?>
 
         <? if ($current_step['type'] == 'picture') { ?>
+            <div class="row"><div class="col-md-12">
             <? if (isset($pictures)) foreach($pictures as $picture) {
                 $thumb_src = base_url() . UPLOADS_URL.'/staff/' . $user_induction['user_id'] . '/thumb/' . $picture['name'];
                 ?>
@@ -355,6 +356,7 @@
               url="<?=base_url();?>induction/ajax/upload_staff_picture/<?=$user_induction['user_id'];?>"
               on-success="onSuccess(response)"
             >Upload</div>
+            </div></div>
         <? } ?>
 
         <? if ($current_step['type'] == 'role') { ?>
@@ -418,8 +420,9 @@
                     if ($step_number == count($steps)) { ?>
                     <button class="btn btn-core btn-respond" type="submit">Complete</button>
                     <? } else { ?>
-                    <a class="btn btn-default btn-respond">Save For Later <i class="fa fa-save"></i></a> &nbsp;
-                    <button class="btn btn-core btn-respond" type="submit">Proceed To Next Step <i class="fa fa-chevron-right"></i></button>
+                    <button class="btn btn-default btn-respond" id="btn-save" type="button">Save For Later <i class="fa fa-save"></i></button> &nbsp;
+                    <input type="hidden" name="continue" value="1" id="continue" />
+                    <button class="btn btn-core btn-respond" id="btn-continue">Proceed To Next Step <i class="fa fa-chevron-right"></i></button>
                     <? }
                 } ?>
                 </div>
@@ -430,6 +433,20 @@
     </div>
 </div>
 
+
 <div class="clearfix"></div>
 <br />
 </div>
+
+<script>
+$(function(){
+    $('#btn-save').click(function(){
+        $('#continue').val(0);
+        $('#form-induction').submit();
+    });
+    $('#btn-continue').click(function(){
+        $('#continue').val(1);
+        $('#form-induction').submit();
+    });
+});
+</script>

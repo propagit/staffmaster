@@ -170,6 +170,11 @@
     #induction .step-content form {
       position: relative;
       z-index: 1; }
+    #induction .step-content .form-group {
+      position: relative;
+      z-index: 100;
+      display: table;
+      width: 100%; }
 
 .col {
   float: left;
@@ -207,3 +212,5 @@
     padding: 10px 10px 48px; }
   #induction .btn-respond {
     width: 100%; } }
+
+/*# sourceMappingURL=app.min.css.map */

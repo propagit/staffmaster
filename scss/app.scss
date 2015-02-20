@@ -221,6 +221,12 @@
             position: relative;
             z-index: 1;
         }
+        .form-group{
+            position:relative;
+            z-index:100;
+            display:table;
+            width:100%;
+        }
 
 
     } /*step-content*/

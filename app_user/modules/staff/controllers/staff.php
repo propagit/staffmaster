@@ -177,8 +177,18 @@ class Staff extends MX_Controller {
 			'f_acc_name',
 			'f_acc_number',
 			'f_bsb',
+			'f_tfn',
+			'f_abn',
+			'f_require_gst',
+			'f_aus_resident',
+			'f_tax_free_threshold',
+			'f_tax_offset',
+			'f_senior_status',
+			'f_help_debt',
+			'f_help_variation',
+			's_external_id',
 			's_fund_name',
-			's_membership'
+			's_employee_id'
 		);
 		$user_data = array();
 		$staff_data = array();

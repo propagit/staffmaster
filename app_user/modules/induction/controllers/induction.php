@@ -54,6 +54,7 @@ class Induction extends MX_Controller {
         # First get the induction itself
         $data['induction'] = $this->induction_model->get($id);
 
+
         # Second get list of steps
         $steps = $this->induction_model->get_steps($id);
 
@@ -61,17 +62,29 @@ class Induction extends MX_Controller {
         if (!$step_number) { $step_number = 0; }
 
         if (isset($steps[$step_number])) {
+
             # Get current step
             $current_step = $steps[$step_number];
             $data['current_step'] = $current_step;
+
+            if ($current_step['type'] == 'role') {
+                $data['roles'] = modules::run('attribute/role/get_roles');
+            } else if ($current_step['type'] == 'group') {
+                $data['groups'] = modules::run('attribute/group/get_groups');
+            } else if ($current_step['type'] == 'availability') {
+                $data['days'] = modules::run('common/array_day');
+            }
 
             # Get contents of the step
             $contents = $this->induction_model->get_contents($current_step['id']);
             $data['contents'] = $contents;
 
             if ($current_step['fields']) {
-                $data['fields'] = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type']));
+                $fields = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type']));
+                $data['fields'] = $fields;
+
             }
+
         }
 
         $data['steps'] = $steps;
@@ -211,7 +224,6 @@ class Induction extends MX_Controller {
             if ($this->form_validation->run() == FALSE) {
 
             } else {
-
                 $status = $step_number + 1;
                 if ($status > $user_induction['status']) {
                     $user_induction['status'] = $status;
@@ -286,14 +298,17 @@ class Induction extends MX_Controller {
                     }
                 }
 
-                if ($status == count($steps)) {
-                    $user_induction['finished_on'] = date('Y-m-d H:i:s');
+                if ($this->input->post('continue') == 1) {
+                    if ($status == count($steps)) {
+                        $user_induction['finished_on'] = date('Y-m-d H:i:s');
+                        $this->induction_model->update_user($user_induction['id'], $user_induction);
+                        redirect('');
+                    }
+
                     $this->induction_model->update_user($user_induction['id'], $user_induction);
-                    redirect('');
+                    redirect('induction/publish/' . $id . '/' . $status);
                 }
 
-                $this->induction_model->update_user($user_induction['id'], $user_induction);
-                redirect('induction/publish/' . $id . '/' . $status);
             }
 
         }
@@ -378,7 +393,7 @@ class Induction extends MX_Controller {
             $user_induction = $this->induction_model->check_user($induction['id'], $this->user['user_id']);
             $steps = $this->induction_model->get_steps($induction['id']);
             if ($user_induction['status'] < count($steps)) {
-                return $induction['id'];
+                return $induction['id'] . '/' . $user_induction['status'];
             }
         }
         return false;
