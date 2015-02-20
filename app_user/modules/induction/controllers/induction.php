@@ -229,7 +229,7 @@ class Induction extends MX_Controller {
                     $user_induction['status'] = $status;
                 }
 
-
+                $continue = $this->input->post('continue');
 
                 # Update
                 if (in_array($current_step['type'], array('personal', 'financial', 'super')))
@@ -280,6 +280,7 @@ class Induction extends MX_Controller {
                 else if ($current_step['type'] == 'custom') {
                     $input = $this->input->post();
                     unset($input['user_id']);
+                    unset($input['continue']);
                     foreach($input as $field_id => $value) {
                         $this->staff_model->update_custom_field($this->user['user_id'], $field_id, $value);
                     }
@@ -298,7 +299,7 @@ class Induction extends MX_Controller {
                     }
                 }
 
-                if ($this->input->post('continue') == 1) {
+                if ($continue == 1) {
                     if ($status == count($steps)) {
                         $user_induction['finished_on'] = date('Y-m-d H:i:s');
                         $this->induction_model->update_user($user_induction['id'], $user_induction);

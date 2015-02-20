@@ -413,15 +413,15 @@
         </div>
         <? } ?>
 
+        <input type="hidden" name="continue" value="1" id="continue" />
         <div class="row">
             <div class="col-md-12">
                 <div class=" pull-right"><br />
                 <? if (isset($current_step)) {
                     if ($step_number == count($steps)) { ?>
-                    <button class="btn btn-core btn-respond" type="submit">Complete</button>
+                    <button class="btn btn-core btn-respond" id="btn-continue">Complete</button>
                     <? } else { ?>
                     <button class="btn btn-default btn-respond" id="btn-save" type="button">Save For Later <i class="fa fa-save"></i></button> &nbsp;
-                    <input type="hidden" name="continue" value="1" id="continue" />
                     <button class="btn btn-core btn-respond" id="btn-continue">Proceed To Next Step <i class="fa fa-chevron-right"></i></button>
                     <? }
                 } ?>

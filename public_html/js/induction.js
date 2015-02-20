@@ -154,8 +154,9 @@ angular.module('sb.induction', [])
     $scope.dragControlListeners = {
         dragEnd: function(event) {
             for(var i=0; i < $scope.steps.length; i++) {
-                $scope.steps[i].step_order = i;
-                $http.post('/induction/ajax/update_step/' + $scope.steps[i].id, $scope.steps[i])
+                $http.post('/induction/ajax/update_step/' + $scope.steps[i].id, {
+                    step_order: i
+                })
                 .success(function(response){
 
                 }).error(function(error){
