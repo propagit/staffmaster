@@ -345,6 +345,7 @@
 
         <? if ($current_step['type'] == 'picture') { ?>
             <div class="row"><div class="col-md-12">
+            <input type="hidden" name="pictures" value="<?=(count($pictures) > 0) ? json_encode($pictures) : '';?>" />
             <? if (isset($pictures)) foreach($pictures as $picture) {
                 $thumb_src = base_url() . UPLOADS_URL.'/staff/' . $user_induction['user_id'] . '/thumb/' . $picture['name'];
                 ?>
