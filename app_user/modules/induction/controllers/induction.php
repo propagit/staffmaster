@@ -399,7 +399,7 @@ class Induction extends MX_Controller {
                 }
             }
 
-
+            print_r($induction); die();
             # Now check if the induction has been finished yet
 
             $user_induction = $this->induction_model->check_user($induction['id'], $this->user['user_id']);
