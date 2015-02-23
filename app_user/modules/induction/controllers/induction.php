@@ -147,8 +147,11 @@ class Induction extends MX_Controller {
                 $this->form_validation->set_rules('s_employee_id', 'Membership Number', 'required');
 
             } else if ($current_step['type'] == 'picture') {
-                $data['pictures'] = $this->staff_model->get_all_photos($user_induction['user_id']);
-                $this->form_validation->set_rules('pictures', 'Picture', 'required');
+                $pictures = $this->staff_model->get_all_photos($user_induction['user_id']);
+                if (count($pictures) == 0) {
+                    $this->form_validation->set_rules('pictures', 'Picture', 'required');
+                }
+                $data['pictures'] = $pictures;
             } else if ($current_step['type'] == 'role') {
                 $data['roles'] = modules::run('attribute/role/get_roles');
                 $this->form_validation->set_rules('roles', 'Role', 'required');
