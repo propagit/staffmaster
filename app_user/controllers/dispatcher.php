@@ -67,9 +67,10 @@ class Dispatcher extends MX_Controller {
 	function staff_dispatcher($controller, $method, $param1, $param2, $param3, $param4)
 	{
 		$induction_required = modules::run('induction/check_staff_induction');
-		// print_r($induction_required); die();
+
 		if ($induction_required && $controller != 'induction')
 		{
+			print_r($induction_required); die();
 			redirect('induction/publish/' . $induction_required);
 		}
 
