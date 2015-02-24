@@ -286,6 +286,9 @@ class Induction extends MX_Controller {
                     unset($input['user_id']);
                     unset($input['continue']);
                     foreach($input as $field_id => $value) {
+                        if (is_array($value)) {
+                            $value = json_encode($value);
+                        }
                         $this->staff_model->update_custom_field($this->user['user_id'], $field_id, $value);
                     }
                 }
