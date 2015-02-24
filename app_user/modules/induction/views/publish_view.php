@@ -133,9 +133,10 @@
                             <? } else if ($field->type == 'checkbox') { ?>
                             <?php
                                 $attrs = json_decode($field->attributes);
+                                $values = json_decode($field->value);
                                 if($attrs){
                                     foreach($attrs as $attr){
-                                        $checked = ($field->value == $attr) ? 'checked' : '';
+                                        $checked = (in_array($attr, $values)) ? 'checked' : '';
                                         ?>
                                     <label class="<?=($field->inline == 'true' ? 'checkbox-inline' : 'checkbox' );?>">
                                         <input type="checkbox" name="<?=$field->key;?>[]" value="<?=$attr;?>" <?=$checked;?>/> <?=$attr;?>
