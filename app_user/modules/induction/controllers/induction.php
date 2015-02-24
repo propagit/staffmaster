@@ -329,6 +329,7 @@ class Induction extends MX_Controller {
     function check_staff_induction()
     {
         # Check if any induction is active and meet staff parameter
+        return 'test';
         $inductions = $this->induction_model->all(true);
         return $inductions;
         foreach($inductions as $induction)
