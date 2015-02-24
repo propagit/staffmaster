@@ -286,7 +286,11 @@ class Induction extends MX_Controller {
                     unset($input['user_id']);
                     unset($input['continue']);
                     foreach($input as $field_id => $value) {
-                        $this->staff_model->update_custom_field($this->user['user_id'], $field_id, $value);
+                        $accel = false;
+                        if (is_array($value)) {
+                            $accel = true;
+                        }
+                        $this->staff_model->update_custom_field($this->user['user_id'], $field_id, $value, $accel);
                     }
                 }
                 else if($current_step['type'] == 'content')
