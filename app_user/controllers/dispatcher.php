@@ -70,7 +70,7 @@ class Dispatcher extends MX_Controller {
 
 		if ($induction_required && $controller != 'induction')
 		{
-			print_r($induction_required); die();
+			// print_r($induction_required); die();
 			redirect('induction/publish/' . $induction_required);
 		}
 
