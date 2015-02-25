@@ -65,7 +65,7 @@
 
                 <div class="col-md-10">
                     <div class="pull-right btn-group">
-                        <button ng-if="current_step.id != step.id && (step.type == 'personal' || step.type == 'custom')" ng-click="editStep($index)" type="button" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i> Edit</button>
+                        <button ng-if="current_step.id != step.id && (step.type == 'personal' || step.type == 'custom' || step.type == 'content')" ng-click="editStep($index)" type="button" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i> Edit</button>
 
                         <button ng-if="current_step.id != step.id" type="button" class="btn btn-sm btn-default" ng-click="deleteStep($index)"><i class="fa fa-times"></i> Delete</button>
 
