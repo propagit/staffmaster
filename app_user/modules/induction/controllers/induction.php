@@ -108,7 +108,7 @@ class Induction extends MX_Controller {
         }
         $data['user_induction'] = $user_induction;
         $user_contents = array();
-        if ($user_induction['contents']) {
+        if ($user_induction['contents'] != NULL && $user_induction['contents'] != '') {
             $user_contents = json_decode($user_induction['contents']);
         }
         $data['user_contents'] = $user_contents;
