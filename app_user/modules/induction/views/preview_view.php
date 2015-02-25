@@ -51,8 +51,7 @@
                     echo '<a href="' . base_url() . UPLOADS_URL . '/tmp/' . $content['value'] . '">' . $content['value'] . '</a>';
                     break;
                 case 'compliance': echo $content['value'];
-                    $checked = (in_array($content['id'], $user_contents)) ? ' checked' : '';
-                    echo '<div class="checkbox"><label><input type="checkbox" name="contents[' . $content['id'] . ']" value="' . $content['id'] . '" ' . $checked . '> Yes</label></div>';
+                    echo '<div class="checkbox"><label><input type="checkbox" name="contents[' . $content['id'] . ']" value="' . $content['id'] . '"> Yes</label></div>';
                     break;
             }
             echo '</div></div></div>';
