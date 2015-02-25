@@ -1,4 +1,4 @@
-<table>
+<table cellpadding="5">
 <? foreach($inductions as $induction) { ?>
 <tr>
     <td width="200"><?=$induction['name'];?></td>
