@@ -528,6 +528,12 @@ class Staff_model extends CI_Model {
 		return $result['value'];
 	}
 
+	function delete_availability_data($user_id)
+	{
+		$this->db->where('user_id', $user_id);
+		return $this->db->delete('user_staff_availability');
+	}
+
 	function update_available_data($user_id,$day,$hour,$value)
 	{
 		$this->db->where('user_id', $user_id);

@@ -256,6 +256,7 @@ class Induction extends MX_Controller {
 
                 }
                 else if($current_step['type'] == 'availability') {
+                    $this->staff_model->delete_availability_data($this->user['user_id']);
                     $days = $this->input->post('days');
                     $values = '';
                     for($day=1; $day <=7; $day++) {
