@@ -136,6 +136,7 @@
         <? }
         } ?>
 
+    <? if (isset($current_step)) { ?>
         <? if ($current_step['type'] == 'financial') { ?>
             <div class="form-group induction-form-group">
                 <label for="f_acc_name" class="col-md-4 control-label">Account Name</label>
@@ -381,6 +382,7 @@
             </div>
         </div>
         <div class="clearfix"></div>
+    <? } ?>
     </div>
 </div>
 

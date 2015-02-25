@@ -26,7 +26,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="title" class="col-md-2 control-label">Induction Completed</label>
+		<label for="title" class="col-md-2 control-label">Induction</label>
 		<div class="col-md-10" id="list-inductions">
 
 		</div>

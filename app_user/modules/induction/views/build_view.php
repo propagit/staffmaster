@@ -53,6 +53,7 @@
             </form>
         </div>
 
+        <div ng-if="steps.length == 0"><br /><br /><br /></div>
 
         <div data-as-sortable="dragControlListeners" data-ng-model="steps">
         <div class="inner-box box-step" data-ng-repeat="step in steps" id="step{{ step.id }}" data-as-sortable-item>
