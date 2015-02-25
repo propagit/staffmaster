@@ -165,6 +165,22 @@ angular.module('sb.induction', [])
             }
         },
     };
+
+    $scope.subDragControlListeners = {
+        dragEnd: function(event) {
+            for(var i=0; i < $scope.contents.length; i++) {
+                $http.post('/induction/ajax/update_content/' + $scope.contents[i].id, {
+                    content_order: i
+                })
+                .success(function(response){
+
+                }).error(function(error){
+                    console.log("ERROR: ", error);
+                });
+            }
+        },
+    };
+
     // $scope.dragControlListeners = {
     //     accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
     //     itemMoved: function (event) {//Do what you want},

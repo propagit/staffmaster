@@ -111,13 +111,14 @@
                             </div>
                         </div>
 
-                        <div ng-if="step.type == 'content'" ng-repeat="content in contents" class="panel panel-default content_induction">
+                        <div data-as-sortable="subDragControlListeners" data-ng-model="contents">
+                        <div ng-if="step.type == 'content'" ng-repeat="content in contents" class="panel panel-default content_induction" data-as-sortable-item>
 
                             <div class="panel-heading">
                                 <div class="pull-right btn-group">
                                     <button ng-click="editContent($index)" type="button" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></button>
                                     <button ng-click="deleteContent($index)" type="button" class="btn btn-xs btn-default"><i class="fa fa-times"></i></button>
-                                    <button type="button" class="btn btn-xs btn-default"><i class="fa fa-arrows-v"></i></button>
+                                    <div type="button" class="btn btn-xs btn-default"><i class="fa fa-arrows-v" data-as-sortable-item-handle></i></div>
                                 </div>
                                 {{ content.type | uppercase}}
                             </div>
