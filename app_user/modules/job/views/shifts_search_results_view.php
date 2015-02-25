@@ -55,14 +55,14 @@
 		<td class="noprint center"><?=modules::run('common/break_time', $shift['break_time']);?></td>
 		<td class="center"><?=date('H:i', $shift['start_time']);?> - <?=date('H:i', $shift['finish_time']);?><?=(date('d', $shift['finish_time']) != date('d', $shift['start_time'])) ? '<span class="text-red">*</span>': '';?></td>
 		<td>
-			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']); 
-				echo $staff['first_name'] . ' ' . $staff['last_name'];				
+			<? if($shift['staff_id']) { $staff = modules::run('staff/get_staff', $shift['staff_id']);
+				echo $staff['first_name'] . ' ' . $staff['last_name'];
 			?>
 			<? } else { ?>
 			No Staff Assigned
 			<? } ?>
 		</td>
-		<td class="noprint center" width="40"><a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/all/<?=$shift['status'];?>"><i class="fa fa-eye"></i></a></td>
+		<td class="noprint center" width="40"><a href="<?=base_url();?>job/details/<?=$shift['job_id'];?>/<?=$shift['job_date'];?>"><i class="fa fa-eye"></i></a></td>
 	</tr>
 	<? } ?>
 	</tbody>
@@ -96,8 +96,8 @@
 <script>
 $(function(){
 	$('#search_shift_select_all_shifts').click(function(){
-		$('input.search_shift_selected_shifts').prop('checked', this.checked);		
-	});	
+		$('input.search_shift_selected_shifts').prop('checked', this.checked);
+	});
 	//contact staff
 	$('#menu-search-shift-action ul li a[data-value="contact_staff"]').click(function(){
 		var shift_selected = false;
@@ -115,11 +115,11 @@ $(function(){
 			  data: $('#shift-reminder-contact-email-form').serialize(),
 			  success: function(html) {
 				  $('#ajax-email-shift-reminder-modal').html(html);
-				  $('#email-modal').modal('show');	
+				  $('#email-modal').modal('show');
 			  }
 		  });
 		}
-		
+
 	});
 	$('#btn-print-day-shifts').click(function(e){
 		e.preventDefault();
@@ -162,7 +162,7 @@ function email_shift_reminder(){
 				$('#email-modal').modal('hide');
 			}, 4000);
 		}
-	}); 
+	});
 }
 
 function email_sample_shift_reminder(){
@@ -180,6 +180,6 @@ function email_sample_shift_reminder(){
 				$('#msg-email-sent-successfully').addClass('hide');
 			}, 3000);
 		}
-	}); 
+	});
 }
 </script>

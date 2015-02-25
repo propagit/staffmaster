@@ -155,8 +155,8 @@ $(function(){
 
     <? if($job['type'] == 1 && $this->session->userdata('view_whole_week')) { ?>
     load_week_shifts(<?=$job['job_id'];?>,"<?=$job['start_date'];?>");
-    <? } else { ?>
-	load_job_shifts(<?=$job['job_id'];?>);
+    <? } else { $date = $this->uri->segment(4); ?>
+	load_job_shifts(<?=$job['job_id'];?>, '<?=$date;?>');
     <? } ?>
 
 	//email apply for shift
