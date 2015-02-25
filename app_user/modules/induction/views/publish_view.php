@@ -133,7 +133,10 @@
                             <? } else if ($field->type == 'checkbox') { ?>
                             <?php
                                 $attrs = json_decode($field->attributes);
-                                $values = json_decode($field->value);
+                                $values = array();
+                                if ($field->value) {
+                                    $values = json_decode($field->value);
+                                }
                                 if($attrs){
                                     foreach($attrs as $attr){
                                         $checked = (in_array($attr, $values)) ? 'checked' : '';
