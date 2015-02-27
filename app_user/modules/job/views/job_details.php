@@ -176,7 +176,12 @@ function sort_shifts(key) {
 		url: "<?=base_url();?>job/ajax/sort_shifts",
 		data: {key: key},
 		success: function(html) {
-			load_job_shifts(<?=$job['job_id'];?>);
+            <? if($this->session->userdata('view_whole_week')) { ?>
+                load_week_shifts(<?=$job['job_id'];?>,"<?=$job['start_date'];?>");
+            <? } else { ?>
+                load_job_shifts(<?=$job['job_id'];?>, '<?=$date;?>');
+			     // load_job_shifts(<?=$job['job_id'];?>);
+            <? } ?>
 		}
 	})
 }
