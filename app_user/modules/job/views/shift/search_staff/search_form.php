@@ -30,7 +30,7 @@
 			<div class="col-lg-4">
 				<?=modules::run('common/field_rating', 'rating', 0,'basic-search-form','wp-rating-0','no-user',false,false);?>
 			</div>
-			
+
 			<label class="col-lg-2 control-label">Gender</label>
 			<div class="col-lg-4">
 				<?=modules::run('common/field_select_genders', 'gender');?>
@@ -48,21 +48,39 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="custom-attr-search" class="custom-hidden">
+    	<?=modules::run('staff/custom_fields');?>
+    </div>
+
 	<div class="row">
 		<div class="form-group">
 			<div class="col-lg-3 col-lg-offset-2">
 				<button type="button" class="btn btn-core" id="btn-shift-search-staffs"><i class="fa fa-search"></i> Search</button>
 			</div>
 			<div class="col-lg-4 help-block">
-				<a><i class="fa fa-plus"></i></a> &nbsp; <a href="#"><b>More Options</b></a>
+				<a class="toggle-custom-attrs"><i id="toggle-custom-attrs-fa" class="fa fa-plus-square"></i> <b>More Options</b></a>
 			</div>
 		</div>
 	</div>
+
+
 </form>
 <script>
 $(function() {
 	$('#btn-shift-search-staffs').click(function(){
 		shift_search_staffs();
-	})
+	});
+
+	//toggle custom attr search
+	$('.toggle-custom-attrs').on('click',function(){
+		$('#custom-attr-search').toggle();
+		if($('#toggle-custom-attrs-fa').hasClass('fa-plus-square')){
+			$('#toggle-custom-attrs-fa').removeClass('fa-plus-square').addClass('fa-minus-square');
+		}else{
+			$('#toggle-custom-attrs-fa').removeClass('fa-minus-square').addClass('fa-plus-square');
+		}
+	});
+
 })
 </script>

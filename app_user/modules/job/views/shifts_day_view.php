@@ -11,6 +11,7 @@
 		$data[] = array('value' => 'attach_brief', 'label' => '<i class="fa fa-info-circle"></i> Attach Brief');
 		$data[] = array('value' => 'attach_note', 'label' => '<i class="fa fa-comment-o"></i> Add Note');
 		$data[] = array('value' => 'contact_staff', 'label' => '<i class="fa fa-envelope-o"></i> Contact Staff');
+		$data[] = array('value' => 'send_candidate', 'label' => '<i class="fa fa-users"></i> Send Candidates');
 	}
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 
@@ -296,6 +297,19 @@ $(function(){
 				  $('#email-modal').modal('show');
 			  }
 		  });
+		}
+	});
+
+	$('#menu-day-action ul li a[data-value="send_candidate"]').click(function(){
+		selected_shifts.length = 0;
+		$('.selected_shifts:checked').each(function(){
+			selected_shifts.push($(this).val());
+		});
+		if (selected_shifts.length > 0) {
+			$('.bs-modal-lg').modal({
+				remote: "<?=base_url();?>job/ajax/send_candiate/" + selected_shifts.join("~"),
+				show: true
+			});
 		}
 
 	});

@@ -6,11 +6,11 @@
 <script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <div class="col-md-12">
 	<div class="box top-box">
-		<div class="col-md-5">
+		<div class="col-md-4">
 	        <h2><?= $client['company_name']; ?></h2>
 	        <h2 class="s30"><?= $job['name']; ?> </h2>
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-8">
 			<div class="pull-right">
 				<div class="form-group label-search-job">
 					<label for="exampleInputEmail1">Search Job Campaigns</label>
@@ -66,7 +66,7 @@
         <div class="col-md-6 white-box">
             <div class="inner-box">
             	<h2>Weeks - Months Shifts</h2>
-            	<p>Below you can see a schedule of all the jobs you have on for the week - month for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green.</p>
+            	<p>Below you can see a schedule of all the jobs you have on for the week - month for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green.</p>
 
                 <div id="wrapper_calendar">
 				</div>

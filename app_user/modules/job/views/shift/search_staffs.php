@@ -4,7 +4,7 @@
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<h4 class="modal-title" id="myModalLabel">Find Staff</h4>
 		</div>
-		<div class="col-md-12">			
+		<div class="col-md-12">
 			<div class="modal-body" id="shift-search-staffs">
 				<div class="col-md-7">
 					<h4>Search Staff</h4>

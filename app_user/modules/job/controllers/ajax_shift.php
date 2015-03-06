@@ -2,7 +2,7 @@
 
 /**
  *	@desc: Ajax controller for job_shift
- *	
+ *
  */
 
 class Ajax_shift extends MX_Controller {
@@ -13,7 +13,7 @@ class Ajax_shift extends MX_Controller {
 		$this->load->model('job_shift_model');
 		$this->load->model('staff/staff_model');
 	}
-	
+
 	/**
 	*	@name: update_shift_staff
 	*	@desc: ajax function to update staff assign / status to the shift
@@ -32,7 +32,7 @@ class Ajax_shift extends MX_Controller {
 		if ($data['shift_staff'])
 		{
 			$staff = modules::run('staff/get_staff', $data['shift_staff_id']);
-			
+
 			if ($staff)
 			{
 				$update_shift_data = array(
@@ -45,7 +45,7 @@ class Ajax_shift extends MX_Controller {
 					echo json_encode(array('ok' => false, 'msg' => 'This staff has already booked for a shift on the same time'));
 					return;
 				}
-				
+
 			}
 			else {
 				echo json_encode(array('ok' => false, 'msg' => 'Staff not found'));
@@ -58,13 +58,13 @@ class Ajax_shift extends MX_Controller {
 				'status' => 0
 			);
 		}
-		
+
 		$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
-		
+
 		//$this->job_shift_model->update_job_shift($data['shift_id'], $update_shift_data);
 		//send work confirmation email if confirmed and auto send email is checked
 		if($update_shift_data['status'] == SHIFT_CONFIRMED){
-			//check if work confirmation is set as auto send	
+			//check if work confirmation is set as auto send
 			if(modules::run('email/is_email_set_as_autosend',WORK_CONFIRMATION_EMAIL_TEMPLATE_ID)){
 				//if marked as autosend, send work confirmation email
 				$params['user_id'] = $data['shift_staff_id'];
@@ -73,11 +73,11 @@ class Ajax_shift extends MX_Controller {
 			}
 		}
 		echo json_encode(array(
-			'ok' => true, 
+			'ok' => true,
 			'html' => modules::run('job/shift/row_view', $data['shift_id']),
 		));
 	}
-	
+
 	/**
 	*	@name: load_staff_hours
 	*	@desc: calculate total hours the staff is working in this week and this month
@@ -90,7 +90,7 @@ class Ajax_shift extends MX_Controller {
 		$staff_id = $this->input->post('staff_id');
 		$date = $this->input->post('date');
 		$date_ts = strtotime($date);
-		
+
 		$one_hour = 60 * 60;
 		$this_month = date('Y-m');
 		$params_month = array(
@@ -104,7 +104,7 @@ class Ajax_shift extends MX_Controller {
 		{
 			$month_hours += modules::run('job/shift/get_shift_second', $shift) / $one_hour;
 		}
-		
+
 		$today = date('Y-m-d', $date_ts);
 		$this_week = modules::run('common/the_week', $today);
 		$params_week = array(
@@ -124,21 +124,21 @@ class Ajax_shift extends MX_Controller {
 		$data['params_week'] = urlencode(implode(',', $params_week));
 		$this->load->view('shift/staff_hours_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function load_paid_shift($shift_id)
 	{
-		$timesheet = $this->job_shift_model->get_shift_timesheet($shift_id);		
+		$timesheet = $this->job_shift_model->get_shift_timesheet($shift_id);
 		$data['timesheet'] = $timesheet;
 		$this->load->view('shift/modal_paid_view', isset($data) ? $data : NULL);
 	}
-	
-	function search_staffs() 
+
+	function search_staffs()
 	{
 		$params = $this->input->post();
 		$params['sort_by'] = 'rating';
 		$params['sort_order'] = 'desc';
 		$staffs = $this->staff_model->search_staffs($params);
-		
+
 		$shift = $this->job_shift_model->get_job_shift($params['shift_id']);
 		$filter_staffs = array();
 		if (isset($params['is_available']) && $params['is_available'] == 1)
@@ -146,7 +146,7 @@ class Ajax_shift extends MX_Controller {
 			foreach($staffs as $staff)
 			{
 				if (!$this->staff_model->check_staff_time_collision($staff['user_id'], $shift)
-						&& $this->staff_model->check_staff_time_availability($staff['user_id'], $shift)) 
+						&& $this->staff_model->check_staff_time_availability($staff['user_id'], $shift))
 				{
 					$filter_staffs[] = $staff;
 				}
@@ -160,8 +160,19 @@ class Ajax_shift extends MX_Controller {
 		$data['shift'] = $shift;
 		$this->load->view('shift/search_staff/results_table_view', isset($data) ? $data : NULL);
 	}
-	
-	
+
+	function search_candidates()
+	{
+		$params = $this->input->post();
+		$params['sort_by'] = 'rating';
+		$params['sort_order'] = 'desc';
+		$staffs = $this->staff_model->search_staffs($params);
+
+		$data['staffs'] = $staffs;
+		$this->load->view('shift/search_staff/results_candidate_view', isset($data) ? $data : NULL);
+	}
+
+
 	function add_staff() {
 		$shift_id = $this->input->post('shift_id');
 		$staff_id = $this->input->post('user_id');
@@ -172,17 +183,17 @@ class Ajax_shift extends MX_Controller {
 		));
 		echo modules::run('job/shift/row_view', $shift_id);
 	}
-	
+
 	function set_status_filter() {
 		$this->session->set_userdata('shift_status_filter', $this->input->post('value'));
 	}
-	
-	
+
+
 	function load_expenses_modal($shift_id) {
 		$data['shift_id'] = $shift_id;
 		$this->load->view('shift/expense/modal_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function add_expense() {
 		$data = $this->input->post();
 		if ($data['description'] == '') {
@@ -217,7 +228,7 @@ class Ajax_shift extends MX_Controller {
 			echo json_encode(array('ok' => true));
 		}
 	}
-	
+
 	function list_expenses() {
 		$shift_id = $this->input->post('shift_id');
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
@@ -227,7 +238,7 @@ class Ajax_shift extends MX_Controller {
 		$data['shift_id'] = $shift_id;
 		$this->load->view('shift/expense/table_list_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function delete_expense() {
 		$shift_id = $this->input->post('shift_id');
 		$index = $this->input->post('i');
@@ -248,18 +259,18 @@ class Ajax_shift extends MX_Controller {
 		));
 	}
 
-	function load_update_modal($shift_ids) 
+	function load_update_modal($shift_ids)
 	{
 		$data['shift_ids'] = $shift_ids;
 		$this->load->view('shift/edit/modal_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function load_field_inputs()
 	{
 		$field_id = $this->input->post('field_id');
 		$this->load->view('shift/edit/field/' . $field_id . '_view');
 	}
-	
+
 	function update_shifts()
 	{
 		$input = $this->input->post();
@@ -267,11 +278,11 @@ class Ajax_shift extends MX_Controller {
 		$field_id = $input['field_id'];
 		$value = isset($input['value']) ? $input['value'] : '';
 		$shift_time_mode = 'start_time';
-		
+
 		#print_r($input);return;exit;
-		
+
 		$data = array();
-		
+
 		switch($field_id){
 			//venue
 			case 'venue_id':
@@ -288,37 +299,37 @@ class Ajax_shift extends MX_Controller {
 			break;
 			//expenses
 			case 'expenses':
-			
+
 			break;
 			//start time
 			case 'start_time':
 				$time_hour = $this->input->post('start_time_hour');
 				$time_minutes = $this->input->post('start_time_minutes');
 			break;
-			
+
 			//finish time
 			case 'finish_time':
 				$time_hour = $this->input->post('finish_time_hour');
 				$time_minutes = $this->input->post('finish_time_minutes');
 				$shift_time_mode = 'finish_time';
 			break;
-			
+
 			case 'supervisor_id':
 				$data['supervisor_id'] = $input['supervisor_id'];
 			break;
-			
+
 			default:
 				$data[$field_id] = $value;
 			break;
-				
+
 		}
-		
+
 		if($field_id == 'start_time' || $field_id == 'finish_time'){
 			$params_change_shift_time = array(
 											'shift_ids' => $shift_ids,
 											'time_hour' => $time_hour,
 											'time_minutes' => $time_minutes,
-											'shift_time_mode' => $shift_time_mode	
+											'shift_time_mode' => $shift_time_mode
 											);
 			modules::run('job/shift/update_shift_time',$params_change_shift_time);
 		}else{
@@ -330,9 +341,9 @@ class Ajax_shift extends MX_Controller {
 		$shift = $this->job_shift_model->get_job_shift($shift_ids[0]);
 		echo json_encode(array('ok' => true, 'job_id' => $shift['job_id']));
 	}
-	
+
 	#begin brief add to shift
-	
+
 	/**
 	*	@name: load_add_brief_single_shift
 	*	@desc: This loads the UI to add brief to a single shift
@@ -343,7 +354,7 @@ class Ajax_shift extends MX_Controller {
 	function load_add_brief_single_shift($shift_id)
 	{
 		$data['shift_id'] = $shift_id;
-		$this->load->view('shift/brief/add_brief_single_shift_modal', isset($data) ? $data : NULL);	
+		$this->load->view('shift/brief/add_brief_single_shift_modal', isset($data) ? $data : NULL);
 	}
 	/**
 	*	@name: load_add_brief_multi_shift
@@ -355,9 +366,9 @@ class Ajax_shift extends MX_Controller {
 	function load_add_brief_multi_shift($shift_ids)
 	{
 		$data['shift_ids'] = $shift_ids;
-		$this->load->view('shift/brief/add_brief_multi_shift_modal', isset($data) ? $data : NULL);	
+		$this->load->view('shift/brief/add_brief_multi_shift_modal', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: load_shift_briefs
 	*	@desc: Ajax function to load the shift's existing briefs
@@ -367,10 +378,10 @@ class Ajax_shift extends MX_Controller {
 	*/
 	function load_shift_briefs()
 	{
-		$shift_id = $this->input->post('shift_id');	
+		$shift_id = $this->input->post('shift_id');
 		$data['briefs'] = $this->job_shift_model->get_shift_briefs($shift_id);
 		$data['shift_info'] = $this->job_shift_model->get_job_shift($shift_id);
-		echo $this->load->view('shift/brief/ajax_existing_shift_brief_list', isset($data) ? $data : NULL);	
+		echo $this->load->view('shift/brief/ajax_existing_shift_brief_list', isset($data) ? $data : NULL);
 	}
 	/**
 	*	@name: load_shift_briefs
@@ -390,7 +401,7 @@ class Ajax_shift extends MX_Controller {
 					'status' => 1
 					);
 			modules::run('job/shift/toggle_shift_information_sheet_status',$params);
-			$msg = 'success';	
+			$msg = 'success';
 		}else{
 		$msg = '';
 			if($shift_id && $brief_id){
@@ -399,18 +410,18 @@ class Ajax_shift extends MX_Controller {
 					$data = array(
 								'shift_id' => $shift_id,
 								'brief_id' => $brief_id
-								);	
+								);
 					$this->job_shift_model->add_brief($data);
 					$msg = 'success';
 				}else{
-					$msg = 'duplicate';	
+					$msg = 'duplicate';
 				}
 			}else{
-				$msg = 'failed';	
+				$msg = 'failed';
 			}
 		}
 		echo $msg;
-		
+
 	}
 	/**
 	*	@name: add_brief_multi_shift
@@ -443,7 +454,7 @@ class Ajax_shift extends MX_Controller {
 							$data = array(
 										'shift_id' => $shift_id,
 										'brief_id' => $brief_id
-										);	
+										);
 							$this->job_shift_model->add_brief($data);
 						}
 					}
@@ -451,7 +462,7 @@ class Ajax_shift extends MX_Controller {
 			}
 		}
 		echo 'success';
-		
+
 	}
 	/**
 	*	@name: remove_brief_multi_shift
@@ -488,9 +499,9 @@ class Ajax_shift extends MX_Controller {
 			}
 		}
 		echo 'success';
-		
+
 	}
-	
+
 	/**
 	*	@name: delete_brief
 	*	@desc: Deletes brief and all its elements and documents.
@@ -521,7 +532,7 @@ class Ajax_shift extends MX_Controller {
 					);
 		modules::run('job/shift/toggle_shift_information_sheet_status',$params);
 	}
-	
+
 	function request_staff()
 	{
 		$data = $this->input->post();
@@ -529,7 +540,7 @@ class Ajax_shift extends MX_Controller {
 		if ($data['shift_staff'])
 		{
 			$staff = modules::run('staff/get_staff', $data['shift_staff_id']);
-			
+
 			if ($staff)
 			{
 				$request_staff_data = array(
@@ -542,7 +553,7 @@ class Ajax_shift extends MX_Controller {
 					return;
 				}
 			}
-			else 
+			else
 			{
 				echo json_encode(array('ok' => false, 'msg' => 'Staff not found'));
 				return;
@@ -553,7 +564,7 @@ class Ajax_shift extends MX_Controller {
 			'ok' => true
 		));
 	}
-	
+
 	function get_request_staffs()
 	{
 		$shift_id = $this->input->post('shift_id');
@@ -562,14 +573,14 @@ class Ajax_shift extends MX_Controller {
 		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
 		$this->load->view('client/shift/request_staff/list_requests', isset($data) ? $data : NULL);
 	}
-	
+
 	function remove_request()
 	{
 		$shift_id = $this->input->post('shift_id');
 		$staff_id = $this->input->post('staff_id');
 		$this->job_shift_model->remove_request($shift_id, $staff_id);
 	}
-	
+
 	/**
 	*	@name: load_add_shift_note_modal
 	*	@desc: This loads the UI to add note to a shift
@@ -580,9 +591,9 @@ class Ajax_shift extends MX_Controller {
 	function load_add_shift_note_modal($shift_id)
 	{
 		$data['shift_id'] = $shift_id;
-		$this->load->view('shift/notes/add_note_modal', isset($data) ? $data : NULL);	
+		$this->load->view('shift/notes/add_note_modal', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: add_note
 	*	@desc: Add note to a shift
@@ -602,7 +613,7 @@ class Ajax_shift extends MX_Controller {
 					);
 		echo $this->job_shift_model->add_note($data);
 	}
-	
+
 	/**
 	*	@name: load_shift_notes
 	*	@desc: Ajax function to load the shift's existing briefs
@@ -612,9 +623,9 @@ class Ajax_shift extends MX_Controller {
 	*/
 	function load_shift_notes()
 	{
-		$shift_id = $this->input->post('shift_id');	
+		$shift_id = $this->input->post('shift_id');
 		$data['shift_notes'] = $this->job_shift_model->get_job_shift_notes($shift_id);
-		echo $this->load->view('shift/notes/ajax_existing_shift_notes', isset($data) ? $data : NULL);	
+		echo $this->load->view('shift/notes/ajax_existing_shift_notes', isset($data) ? $data : NULL);
 	}
 	/**
 	*	@name: delete_shift_note
@@ -628,7 +639,7 @@ class Ajax_shift extends MX_Controller {
 		$job_shift_note_id = $this->input->post('job_shift_note_id');
 		echo $this->job_shift_model->delete_note($job_shift_note_id);
 	}
-	
+
 	/**
 	*	@name: load_add_note_multi_shift
 	*	@desc: This loads the UI to add note to a multiple shift
@@ -639,9 +650,9 @@ class Ajax_shift extends MX_Controller {
 	function load_add_note_multi_shift($shift_ids)
 	{
 		$data['shift_ids'] = $shift_ids;
-		$this->load->view('shift/notes/add_note_multi_shift_modal', isset($data) ? $data : NULL);	
+		$this->load->view('shift/notes/add_note_multi_shift_modal', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: add_note_multi_shift
 	*	@desc: Ajax function to add a note to a multiple shift
@@ -669,9 +680,9 @@ class Ajax_shift extends MX_Controller {
 			}
 		}
 		echo 'success';
-		
+
 	}
-	
+
 	/**
 	*	@name: email_brief
 	*	@desc: function to email staff to apply for  work
@@ -685,18 +696,18 @@ class Ajax_shift extends MX_Controller {
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
 		$this->load->model('roster/roster_model');
-		
-		//get post data 
+
+		//get post data
 		$shift_ids = $this->input->post('selected_module_ids');
 		$email_body = $this->input->post('email_body');
 		$selected_user_ids = $this->input->post('selected_user_ids');
 		$email_template_id = $this->input->post('email_template_select');
-		
-		
-		
-		$template_info = $this->email_template_model->get_template($email_template_id);	
-		
-		
+
+
+
+		$template_info = $this->email_template_model->get_template($email_template_id);
+
+
 		if($selected_user_ids){
 			$user_ids = json_decode($selected_user_ids);
 			$shift_ids = json_decode($shift_ids);
@@ -714,9 +725,9 @@ class Ajax_shift extends MX_Controller {
 					//get user
 					$user = $this->user_model->get_user($user_id);
 					//get template info
-					
+
 					$company = $this->setting_model->get_profile();
-					
+
 					//check if this is a roster email
 					if($template_info->email_template_id == ROSTER_UPDATE_EMAIL_TEMPLATE_ID){
 						$active_month = date('Y-m');
@@ -725,19 +736,19 @@ class Ajax_shift extends MX_Controller {
 							$send_email = false;
 						}
 					}
-					
-					
+
+
 					if($send_email){
 						//get receiver object
 						$email_obj_params = array(
 												'template_id' => $template_info->email_template_id,
 												'user_id' => $user_id,
 												'company' => $company
-											);	
+											);
 						if($template_info->email_template_id == APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID){
-							$email_obj_params['shift_ids'] = $shift_ids;	
+							$email_obj_params['shift_ids'] = $shift_ids;
 						}
-						
+
 						$obj = modules::run('email/get_email_obj',$email_obj_params);
 						$email_data = array(
 											'to' => $user['email_address'],
@@ -750,25 +761,25 @@ class Ajax_shift extends MX_Controller {
 					}
 				}
 			}
-			
+
 		}
 		echo 'sent';
 	}
-	
+
 	function email_sample_apply_for_shift()
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
 		$this->load->model('roster/roster_model');
-		
-		//get post data 
+
+		//get post data
 		$shift_ids = $this->input->post('selected_module_ids');
 		$email_body = $this->input->post('email_body');
 		$selected_user_ids = $this->input->post('selected_user_ids');
 		$email_template_id = $this->input->post('email_template_select');
 		$sample_email_address = $this->input->post('sample_email_to',true);
-		
+
 		if($selected_user_ids){
 			$user_ids = json_decode($selected_user_ids);
 			$shift_ids = json_decode($shift_ids);
@@ -776,7 +787,7 @@ class Ajax_shift extends MX_Controller {
 				//get user
 				$user = $this->user_model->get_user($user_id);
 				//get template info
-				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$template_info = $this->email_template_model->get_template($email_template_id);
 				$company = $this->setting_model->get_profile();
 
 				  //get receiver object
@@ -784,11 +795,11 @@ class Ajax_shift extends MX_Controller {
 										  'template_id' => $template_info->email_template_id,
 										  'user_id' => $user_id,
 										  'company' => $company
-									  );	
+									  );
 				  if($template_info->email_template_id == APPLY_FOR_SHIFT_EMAIL_TEMPLATE_ID){
-					  $email_obj_params['shift_ids'] = $shift_ids;	
+					  $email_obj_params['shift_ids'] = $shift_ids;
 				  }
-				  
+
 				  $obj = modules::run('email/get_email_obj',$email_obj_params);
 				  $email_data = array(
 									  'to' => $sample_email_address,
@@ -805,21 +816,21 @@ class Ajax_shift extends MX_Controller {
 		}
 		echo 'sent';
 	}
-	
+
 	/**
 	*	@name: email_shift_reminder
 	*	@desc: function to email shift reminder to staffs
 	*	@access: public
 	*	@param: ([via post]) email parameters such as body of email, user id, shift ids
-	*	
+	*
 	*/
 	function email_shift_reminder()
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
-		
-		//get post data 
+
+		//get post data
 		$shift_ids = $this->input->post('selected_module_ids');
 		$email_body = $this->input->post('email_body');
 		$selected_user_ids = $this->input->post('selected_user_ids');
@@ -831,7 +842,7 @@ class Ajax_shift extends MX_Controller {
 				//get user
 				$user = $this->user_model->get_user($user_id);
 				//get template info
-				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$template_info = $this->email_template_model->get_template($email_template_id);
 				$company = $this->setting_model->get_profile();
 				//get receiver object
 				$email_obj_params = array(
@@ -839,7 +850,7 @@ class Ajax_shift extends MX_Controller {
 										'user_id' => $user_id,
 										'company' => $company,
 										'shift_ids' => $shift_ids
-									);	
+									);
 				$obj = modules::run('email/get_email_obj',$email_obj_params);
 				$email_data = array(
 									'to' => $user['email_address'],
@@ -853,21 +864,21 @@ class Ajax_shift extends MX_Controller {
 		}
 		echo 'sent';
 	}
-	
+
 	function email_sample_shift_reminder()
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
-		
-		//get post data 
+
+		//get post data
 		$shift_ids = $this->input->post('selected_module_ids');
 		$email_body = $this->input->post('email_body');
 		$selected_user_ids = $this->input->post('selected_user_ids');
 		$email_template_id = $this->input->post('email_template_select');
 		$sample_email_address = $this->input->post('sample_email_to',true);
-		
-		
+
+
 		if($selected_user_ids){
 			$user_ids = json_decode($selected_user_ids);
 			$shift_ids = json_decode($shift_ids);
@@ -875,7 +886,7 @@ class Ajax_shift extends MX_Controller {
 				//get user
 				$user = $this->user_model->get_user($user_id);
 				//get template info
-				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$template_info = $this->email_template_model->get_template($email_template_id);
 				$company = $this->setting_model->get_profile();
 				//get receiver object
 				$email_obj_params = array(
@@ -883,7 +894,7 @@ class Ajax_shift extends MX_Controller {
 										'user_id' => $user_id,
 										'company' => $company,
 										'shift_ids' => $shift_ids
-									);	
+									);
 				$obj = modules::run('email/get_email_obj',$email_obj_params);
 				$email_data = array(
 									'to' => $sample_email_address,
@@ -899,7 +910,7 @@ class Ajax_shift extends MX_Controller {
 		}
 		echo 'sent';
 	}
-		
+
 	function print_day_shifts() {
 		$content = $this->input->post('content');
 		$date_from = $this->input->post('date_from');
@@ -908,17 +919,17 @@ class Ajax_shift extends MX_Controller {
 		$content = preg_replace("/<th class=\"noprint center\"(.*?)<\/th>/", "", $content);
 		$content = preg_replace("/<td class=\"noprint center\"(.*?)<\/td>/", "", $content);
 		$content = str_replace('class="center" ', '', $content);
-		
+
 		$content = str_replace('<th ', '<th style="border:1px solid #ccc;text-align:left;"', $content);
 		$content = str_replace('<th>', '<th style="border:1px solid #ccc;text-align:left;">', $content);
 		$content = str_replace('<td ', '<td style="border:1px solid #ccc;text-align:left;"', $content);
 		$content = str_replace('<td>', '<td style="border:1px solid #ccc;text-align:left;">', $content);
-		
+
 		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
 		$filename = "shifts_" . date('Y-m-d');
 		#if(!file_exists(UPLOADS_PATH.'/pdf/'.$filename.'.pdf')){
 			$pdfFilePath = UPLOADS_PATH."/pdf/$filename.pdf";
-			
+
 			$dir = UPLOADS_PATH.'/pdf/';
 			if(!is_dir($dir))
 			{
@@ -928,30 +939,30 @@ class Ajax_shift extends MX_Controller {
 			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 			  fclose($fp);
 			}
-			 
-			ini_set('memory_limit','128M'); # boost the memory limit if it's low 
-			
+
+			ini_set('memory_limit','128M'); # boost the memory limit if it's low
+
 			$data['content'] = $content;
 			$data['date_from'] = $date_from;
 			$data['date_to'] = $date_to;
 			$html = $this->load->view('shift/day_list_download_view', isset($data) ? $data : NULL, true);
-			
-					
+
+
 			$this->load->library('pdf');
-			$pdf = $this->pdf->load(); 			
+			$pdf = $this->pdf->load();
 			$stylesheet = file_get_contents('./assets/css/pdf.css');
 			$custom_styles = '<style>'.modules::run('custom_styles').'</style>';
 			//echo $custom_styles;exit();
 			$pdf->WriteHTML($stylesheet,1);
 			$pdf->WriteHTML($custom_styles,1);
 			$pdf->WriteHTML($html,2);
-			$pdf->Output($pdfFilePath, 'F'); // save to file 
+			$pdf->Output($pdfFilePath, 'F'); // save to file
 		#}
-		
+
 		echo $filename . ".pdf";
-		
+
 	}
-	
+
 	function load_shift_payrates() {
 		$shift_id = $this->input->post('pk');
 		$shift = $this->job_shift_model->get_job_shift($shift_id);
@@ -959,7 +970,7 @@ class Ajax_shift extends MX_Controller {
 		#$data['payrates'] = $this->staff_model->get_active_payrates($shift['staff_id']);
 		$this->load->view('shift/payrate_list', isset($data) ? $data : NULL);
 	}
-	
+
 	function filter_payrate() {
 		$user_id = $this->input->post('user_id');
 		$payrate_id = $this->input->post('payrate_id');
