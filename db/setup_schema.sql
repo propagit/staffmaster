@@ -1496,7 +1496,7 @@ CREATE TABLE IF NOT EXISTS `forum_topics` (
   `group_id` int(11) NOT NULL,
   `document_type` enum('image','file','null') NOT NULL DEFAULT 'null',
   `document_name` varchar(255) NOT NULL,
-  `type` enum('poll','conversation') NOT NULL DEFAULT 'conversation',
+  `type` enum('poll','conversation','support') NOT NULL DEFAULT 'conversation',
   `created_by` bigint(20) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_replied_by` bigint(20) NOT NULL,
