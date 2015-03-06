@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-*	@class_desc This model is performs the database operation regarding the forum module (Conversation module) 
-*	@class_comments 
-*	
+*	@class_desc This model is performs the database operation regarding the forum module (Conversation module)
+*	@class_comments
+*
 *
 */
 
@@ -30,7 +30,7 @@ class Forum_model extends CI_Model {
 	function update_topic($topic_id,$data)
 	{
 		$this->db->where('topic_id', $topic_id);
-		return $this->db->update('forum_topics', $data);	
+		return $this->db->update('forum_topics', $data);
 	}
 	/**
 	*	@name: add_poll_answer
@@ -46,7 +46,7 @@ class Forum_model extends CI_Model {
 	}
 	/**
 	*	@name: update_poll_answer
-	*	@desc: Update existing forum poll answers. 
+	*	@desc: Update existing forum poll answers.
 	*	@access: public
 	*	@param: ([int] poll_answer_id id, [array] update data)
 	*	@return: returns number of rows affected
@@ -54,7 +54,7 @@ class Forum_model extends CI_Model {
 	function update_poll_answers($poll_answer_id,$data)
 	{
 		$this->db->where('poll_answer_id', $poll_answer_id);
-		return $this->db->update('forum_poll_answers', $data);	
+		return $this->db->update('forum_poll_answers', $data);
 	}
 	/**
 	*	@name: get_poll_answers
@@ -65,7 +65,7 @@ class Forum_model extends CI_Model {
 	*/
 	function get_poll_answers($topic_id)
 	{
-		$sql = "SELECT * FROM forum_poll_answers 
+		$sql = "SELECT * FROM forum_poll_answers
 				WHERE topic_id = ".$topic_id;
 		$sql .= " ORDER BY poll_answer_id ASC";
 		return $this->db->query($sql)->result();
@@ -79,7 +79,7 @@ class Forum_model extends CI_Model {
 	*/
 	function get_poll_answer_by_id($poll_answer_id)
 	{
-		$sql = "SELECT * FROM forum_poll_answers 
+		$sql = "SELECT * FROM forum_poll_answers
 				WHERE poll_answer_id = ".$poll_answer_id;
 		return $this->db->query($sql)->row();
 	}
@@ -92,17 +92,17 @@ class Forum_model extends CI_Model {
 	*/
 	function get_poll_answer_total_count($topic_id)
 	{
-		$sql = "SELECT SUM(answer_count) as total_answer 
-				FROM forum_poll_answers 
+		$sql = "SELECT SUM(answer_count) as total_answer
+				FROM forum_poll_answers
 				WHERE topic_id = ".$topic_id;
 		$result = $this->db->query($sql)->row();
 		if($result){
-			return $result->total_answer;	
+			return $result->total_answer;
 		}else{
 			return 0;
-		}	
+		}
 	}
-	
+
 	/**
 	*	@name: get_replies
 	*	@desc: This performs database query to get the most recent replices for a conversation topic.
@@ -112,12 +112,12 @@ class Forum_model extends CI_Model {
 	*/
 	function has_user_taken_poll($user_id,$topic_id)
 	{
-		$sql = "SELECT * FROM forum_user_poll_answers 
-				WHERE topic_id = ".$topic_id." 
+		$sql = "SELECT * FROM forum_user_poll_answers
+				WHERE topic_id = ".$topic_id."
 				AND user_id = ".$user_id;
 		$result = $this->db->query($sql)->row();
 		if($result){
-			return $result;	
+			return $result;
 		}
 	}
 	/**
@@ -142,10 +142,10 @@ class Forum_model extends CI_Model {
 	function get_conversations($user,$params = array(),$total = false)
 	{
 		$records_per_page = CONVERSATION_PER_PAGE;
-		
+
 		$sql = "SELECT ft.*,
-					(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies, 
-				u.first_name, u.last_name 
+					(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies,
+				u.first_name, u.last_name
 				FROM forum_topics ft
 				LEFT JOIN users u ON ft.created_by = u.user_id";
 		//if user is not admin
@@ -153,15 +153,15 @@ class Forum_model extends CI_Model {
 			$staff_groups = "SELECT attribute_group_id
 							 FROM staff_groups
 							 WHERE user_id = ".$user['user_id'];
-			$sql .= " WHERE (ft.group_id IN (".$staff_groups.") OR ft.group_id = 0 AND ft.type != 'support')";
+			$sql .= " WHERE ((ft.group_id IN (".$staff_groups.") OR ft.group_id = 0) AND ft.type != 'support')";
 		}
 		$sql .= " GROUP BY ft.topic_id";
 		if($params){
-			$sort_param = json_decode($params);	
-			if(isset($sort_param->sort_by)){ $sql .= " ORDER BY ".$sort_param->sort_by." ".$sort_param->sort_order;}				
-			if(isset($sort_param->limit)){ 
+			$sort_param = json_decode($params);
+			if(isset($sort_param->sort_by)){ $sql .= " ORDER BY ".$sort_param->sort_by." ".$sort_param->sort_order;}
+			if(isset($sort_param->limit)){
 				//if limit is not set it will default start the pagination
-				$sql .= " LIMIT " . $sort_param->limit; 
+				$sql .= " LIMIT " . $sort_param->limit;
 			}else{
 				if(!$total && isset($sort_param->current_page)){
 					$sql .= " LIMIT ".(($sort_param->current_page-1)*$records_per_page)." ,".$records_per_page;
@@ -169,7 +169,7 @@ class Forum_model extends CI_Model {
 			}
 		}else{
 			if(!$params){
-				$sql .= " ORDER BY ft.created_on DESC";	
+				$sql .= " ORDER BY ft.created_on DESC";
 			}
 		}
 		return $this->db->query($sql)->result();
@@ -184,18 +184,18 @@ class Forum_model extends CI_Model {
 	function get_support($user)
 	{
 		$records_per_page = CONVERSATION_PER_PAGE;
-		
+
 		$sql = "SELECT ft.*,
-					(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies, 
-				u.first_name, u.last_name 
+					(select count(*) FROM forum_messages fm WHERE fm.topic_id = ft.topic_id) AS total_replies,
+				u.first_name, u.last_name
 				FROM forum_topics ft
-				LEFT JOIN users u ON ft.created_by = u.user_id 
-				WHERE type = 'support' 
+				LEFT JOIN users u ON ft.created_by = u.user_id
+				WHERE type = 'support'
 				GROUP BY ft.topic_id";
-				
-		$sql .= " ORDER BY ft.created_on DESC";	
+
+		$sql .= " ORDER BY ft.created_on DESC";
 		$sql .= " LIMIT ".$records_per_page;
-		
+
 
 		return $this->db->query($sql)->result();
 	}
@@ -226,43 +226,43 @@ class Forum_model extends CI_Model {
 			$total = $this->db->query($sql)->result();
 			return count($total);
 		}else{
-			//$sql .= ' limit 0,5';	
+			//$sql .= ' limit 0,5';
 		}
 		return $this->db->query($sql)->result();
 	}
-	
+
 	/**
 	*	@name: get_conversation_by_id
 	*	@desc: This performs database query to get conversation by id
 	*	@access: public
 	*	@param: ([int] topic id)
-	*	@return: Information for a single conversation 
+	*	@return: Information for a single conversation
 	*/
 	function get_conversation_by_id($topic_id)
 	{
 		$conversation = $this->db->where('topic_id',$topic_id)->get('forum_topics')->row();
-		return $conversation;	
+		return $conversation;
 	}
-	
+
 	/**
 	*	@name: delete_conversation_topic
-	*	@desc: Permanently removes a conversation topic from the system 
+	*	@desc: Permanently removes a conversation topic from the system
 	*	@access: public
 	*	@param: ([int] topic id)
-	*	@return: rows affected 
+	*	@return: rows affected
 	*/
 	function delete_conversation_topic($topic_id)
 	{
 		$this->db->where('topic_id', $topic_id);
 		return $this->db->delete('forum_topics');
 	}
-	
+
 	/**
 	*	@name: delete_conversation_replies
-	*	@desc: Permanently removes replies to a conversation topic from the system 
+	*	@desc: Permanently removes replies to a conversation topic from the system
 	*	@access: public
 	*	@param: ([int] topic id)
-	*	@return: rows affected 
+	*	@return: rows affected
 	*/
 	function delete_conversation_replies($topic_id)
 	{
@@ -271,10 +271,10 @@ class Forum_model extends CI_Model {
 	}
 	/**
 	*	@name: delete_conversation_reply
-	*	@desc: Permanently removes a single reply to a conversation topic from the system 
+	*	@desc: Permanently removes a single reply to a conversation topic from the system
 	*	@access: public
 	*	@param: ([int] message id)
-	*	@return: rows affected 
+	*	@return: rows affected
 	*/
 	function delete_conversation_reply($message_id)
 	{
@@ -286,7 +286,7 @@ class Forum_model extends CI_Model {
 	*	@desc: Delete all poll answers by topic id. This function is mostly called when a conversation is deleted
 	*	@access: public
 	*	@param: ([int] topic_id)
-	*	@return: rows affected 
+	*	@return: rows affected
 	*/
 	function delete_poll_answers_by_topic_id($topic_id)
 	{
@@ -298,15 +298,15 @@ class Forum_model extends CI_Model {
 	*	@desc: Delete all user poll answers by topic id. This function is mostly called when a conversation is deleted
 	*	@access: public
 	*	@param: ([int] topic_id)
-	*	@return: rows affected 
+	*	@return: rows affected
 	*/
 	function delete_user_poll_answers_by_topic_id($topic_id)
 	{
 		$this->db->where('topic_id', $topic_id);
 		return $this->db->delete('forum_user_poll_answers');
 	}
-	
-	
-	
-	
+
+
+
+
 }
