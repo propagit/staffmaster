@@ -9,14 +9,14 @@
         		<td colspan="3"><?=modules::run('setting/company_logo');?><br /><br /></td>
         	</tr>
             <tr valign="top">
-            	<td width="50%">            		
+            	<td width="50%">
             		<table>
                        <tr>
                         <td class="padding-top-15">
                             <?=($invoice['profile_company_name'] != '') ? $invoice['profile_company_name'] : $company_profile['company_name'];?><br />
                             ABN: <?=($invoice['profile_abn'] != '') ? $invoice['profile_abn'] : $company_profile['abn_acn'];?><br />
                             <br />
-                            
+
                             <b>
                             <?=($invoice['client_company_name'] != '') ? $invoice['client_company_name'] : $client['company_name'];?><br />
                             <?=($invoice['client_address'] != '') ? $invoice['client_address'] : $client['address'];?><br />
@@ -26,8 +26,8 @@
                             <br />
                     	</td>
                        </tr>
-                     </table> 
-                     
+                     </table>
+
             	</td>
                 <td width="5%"></td>
                 <td width="45%" class="bill-enquiries">
@@ -49,13 +49,13 @@
                     </table>
                 </td>
             </tr>
-            
-            
-            
-            
+
+
+
+
             <tr>
             	<td valign="top">
-                	<h2>Tax Invoice</h2>                    
+                	<h2>Tax Invoice</h2>
                     Issue Date: <?=date('dS M Y', strtotime($invoice['issued_date']));?><br />
                     <h1><?=$invoice['title'];?></h1>
                     <? if ($invoice['status'] == INVOICE_PAID) { ?>
@@ -78,35 +78,35 @@
                                     	<tr><td colspan="2">&nbsp;</td></tr>
                                         <tr><td colspan="2">&nbsp;</td></tr>
 										<tr class="dotted-border">
-											<td><h1 class="invoice-h1-margin-top">Total Due</h1></td>	
+											<td><h1 class="invoice-h1-margin-top">Total Due</h1></td>
 											<td align="right"><h1 class="invoice-h1-margin-top"><?=modules::run('common/format_money',$invoice['total_amount']);?></h1></td>
 										</tr>
                                         <tr><td colspan="2">&nbsp;</td></tr>
 										<tr>
-											<td><h2>Due Date</h2></td>	
+											<td><h2>Due Date</h2></td>
 											<td align="right"><h2><?=date('dS M Y', strtotime($invoice['due_date']));?></h2></td>
 										</tr>
                                         <tr><td colspan="2">&nbsp;</td></tr>
 										<tr>
-											<td class="padding-gst">GST</td>			
+											<td class="padding-gst">GST</td>
 											<td align="right" class="padding-gst"><?=modules::run('common/format_money',$invoice['gst']);?></td>
-										</tr> 
+										</tr>
 									</table>
                             	</div>
                             </td>
-                        </tr>                    
+                        </tr>
                     </table>
                 </td>
             </tr>
         </table>
         <br />
-        <hr />        
+        <hr />
         <div id="list-items">
         	<table width="100%" cellpadding="10">
 				<tr>
 				    <td colspan="3"><h2>Expense Break Down</h2></td>
 				</tr>
-				
+
 				<tr>
 				    <td width="50%">Description</td>
 				    <td align="right" width="15%">GST</td>
@@ -135,9 +135,9 @@
                         <? } ?>
 					</td>
 					<td align="right"><?=modules::run('common/format_money',$item['amount']);?></td>
-				</tr>            
+				</tr>
 				<? } } ?>
-				
+
 				<? foreach($items as $item) { if(!$item['job_id']) { ?>
 				<tr>
 					<td>
@@ -158,21 +158,21 @@
 						 <?=modules::run('common/format_money',$item['amount']);?>
 						<? } ?>
 					</td>
-				</tr> 
+				</tr>
 				<? } } ?>
 			</table>
         </div>
-        
-        
+
+
         <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     	<div class="checkbox">
-    		<input type="checkbox" id="full_breakdown" <?=($invoice['breakdown']) ? 'checked' : '';?> /> 
+    		<input type="checkbox" id="full_breakdown" <?=($invoice['breakdown']) ? 'checked' : '';?> />
     		For a full itemised breakdown of this invoice please refer to page 2
     	</div>
-        
+
         <b>Terms & Conditions of Payment</b><br />
         <?=(isset($company_profile['term_and_conditions'])) ? $company_profile['term_and_conditions'] : '' ?>
-        
+
         <br />
         <hr />
         <table>
@@ -207,9 +207,9 @@
 	                            <?=(isset($company_profile['address'])) ? $company_profile['address'] : '' ?><br />
 	                            <?=(isset($company_profile['suburb'])) ? $company_profile['suburb'] : '' ?><?=(isset($company_profile['state'])) ? $company_profile['state'] : '' ?><br />
 	                            <?=(isset($company_profile['country'])) ? $company_profile['country'] : '' ?> <?=(isset($company_profile['postcode'])) ? $company_profile['postcode'] : '' ?>
-                            </td> 
-                            <td width="20"></td> 
-                            <td> 
+                            </td>
+                            <td width="20"></td>
+                            <td>
                             	Telephone: <?=(isset($company_profile['telephone'])) ? $company_profile['telephone'] : '' ?><br />
 	                            Email: <?=(isset($company_profile['email'])) ? $company_profile['email'] : '' ?><br />
 	                            Website: <?=(isset($company_profile['website_account'])) ? $company_profile['website_account'] : '' ?>
@@ -222,7 +222,7 @@
             <tr>
             	<td colspan="3">
             	    <b>Credit Card</b>
-                    <br />      
+                    <br />
                     <table width="100%">
                         <tr>
                             <td valign="top"><img src="<?=base_url();?>assets/img/cc.png"></td>
@@ -251,7 +251,7 @@
 <script>
 $(function(){
 	$('#btn-generate-invoice').remove();
-	<? if ($invoice['status'] == INVOICE_PAID) { ?>
+	<? if ($invoice['status'] == INVOICE_PAID || $invoice['external_id']) { ?>
 	$('#btn-reset-invoice').html('<i class="fa fa-times"></i> Close');
 	$('#btn-reset-invoice').click(function(){
 		window.close();
@@ -262,32 +262,32 @@ $(function(){
 		edit_invoice();
 	});
 	<? } ?>
-	
+
 	$('#btn-download-invoice').click(function(){
 		$(this).prop('target', '_blank');
 		window.open('<?=base_url();?>invoice/download/<?=$invoice['invoice_id'];?>');
 	})
-	
-	
+
+
 	//email invoice
 	$(document).on('click','.send-email-from-modal',function(){
 		email_invoice();
 	});
-	
+
 	//sample email
 	$(document).on('click','#send-sample-email',function(){
 		email_sample_invoice();
 	});
-	
+
 	$('#btn-email-invoice').on('click',function(){
 		 get_email_model();
 	});
-	
+
 	load_breakdown();
 	$('#full_breakdown').click(function(){
 		load_breakdown();
 	});
-	
+
 });//ready
 
 function load_breakdown() {
@@ -308,10 +308,10 @@ function get_email_model(){
 		  data: $('#invoice-email-form').serialize(),
 		  success: function(html) {
 			  $('#ajax-email-invoice-modal').html(html);
-			  $('#email-modal').modal('show');	
+			  $('#email-modal').modal('show');
 		  }
 	  });
-		
+
 }
 
 function email_invoice(){
@@ -332,7 +332,7 @@ function email_invoice(){
 				$('#email-modal').modal('hide');
 			}, 4000);
 		}
-	}); 
+	});
 }
 
 
@@ -351,7 +351,7 @@ function email_sample_invoice(){
 				$('#msg-email-sent-successfully').addClass('hide');
 			}, 3000);
 		}
-	}); 	
+	});
 }
 
 <? if ($invoice['status'] != INVOICE_PAID) { ?>
