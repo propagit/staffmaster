@@ -73,7 +73,7 @@ class Xero extends MX_Controller {
         }
     }
 
-    function employees() {
+    function get_employees() {
         $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array());
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
@@ -190,14 +190,14 @@ class Xero extends MX_Controller {
                         </BankAccounts>
 
                         <SuperMemberships>
-                        <SuperMembership>
-                        <SuperMembershipID>4fd2a28e-ac86-4726-b8d9-f449457f9984</SuperMembershipID>
-                        <SuperFundID>9531b699-9265-4cfc-bb99-f768f7f11d30</SuperFundID>
-                        <EmployeeNumber>12345676</EmployeeNumber>
-                        </SuperMembership>
+                            <SuperMembership>
+                                <SuperMembershipID>" . $staff['s_external_id'] . "</SuperMembershipID>
+                                <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+                                <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+                            </SuperMembership>
                         </SuperMemberships>
-                        </Employee>
-                        </Employees>";
+                    </Employee>
+                </Employees>";
         var_dump($xml); die();
         $response = $this->XeroOAuth->request('PUT', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
 
@@ -207,21 +207,6 @@ class Xero extends MX_Controller {
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
             // var_dump($result['Employee']);
             return $result['Employee'];
-        }
-        return false;
-    }
-
-
-    function search_employees() {
-        return array();
-    }
-
-    function total_employees() {
-        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array());
-
-        if ($this->XeroOAuth->response['code'] == 200) {
-            $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
-            return count($employees->Employees[0]);
         }
         return false;
     }

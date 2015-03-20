@@ -37,7 +37,7 @@
                 </a>
             </td>
             <td class="center">
-                <span class="badge primary"><?=modules::run('api/xero/total_employees');?></span>
+                <span class="badge primary"><?=count(modules::run('api/xero/get_employees'));?></span>
             </td>
             <td class="center">
                 <a class="btn btn-core" id="btn-pull-staffbooks">

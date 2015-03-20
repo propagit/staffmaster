@@ -1570,7 +1570,7 @@ class Ajax extends MX_Controller {
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
 
-		$employees = modules::run('api/xero/employees');
+		$employees = modules::run('api/xero/get_employees');
 		$imported = 0;
 
 		foreach($employees as $e) {
