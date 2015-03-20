@@ -2451,7 +2451,7 @@ CREATE TABLE IF NOT EXISTS `user_staffs` (
   `staff_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
   `group_id` int(11) NOT NULL,
-  `external_staff_id` varchar(20) NOT NULL,
+  `external_staff_id` varchar(100) NOT NULL,
   `rating` decimal(10,2) NOT NULL,
   `gender` char(1) NOT NULL,
   `dob` date NOT NULL,
