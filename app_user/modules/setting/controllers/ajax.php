@@ -1530,10 +1530,115 @@ class Ajax extends MX_Controller {
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
-	
+
 	# Email timesheet to supervisor/staff etc setting
 	function edit_timesheet()
 	{
-		$this->load->view('system_settings/edit_timesheet', isset($data) ? $data : NULL);	
+		$this->load->view('system_settings/edit_timesheet', isset($data) ? $data : NULL);
+	}
+
+	function push_xero_employees() {
+		$this->load->model('staff/staff_model');
+		$staff = $this->staff_model->search_staffs();
+
+		$xml = "<Employees>
+					<Employee>
+						<FirstName></FirstName>
+						<LastName></LastName>
+						<DateOfBirth></DateOfBirth>
+						<HomeAddress>
+							<AddressLine1></AddressLine1>
+							<AddressLine2></AddressLine2>
+							<City></City>
+							<Region></Region>
+							<PostalCode></PostalCode>
+							<Country></Country>
+						</HomeAddress>
+						<StartDate></StartDate>
+						<TaxDeclaration>
+							<AustralianResidentForTaxPurposes>true</AustralianResidentForTaxPurposes>
+							<TaxFreeThresholdClaimed>true</TaxFreeThresholdClaimed>
+							<HasHELPDebt>false</HasHELPDebt>
+							<HasSFSSDebt>false</HasSFSSDebt>
+						</TaxDeclaration>
+					</Employee>
+				</Employees>";
+	}
+
+	function pull_xero_employees_to_staffbooks() {
+
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+
+		$employees = modules::run('api/xero/employees');
+		$imported = 0;
+		$found = 0;
+
+		foreach($employees as $e) {
+			$staff = modules::run('staff/get_staff_by_external_id', $e['EmployeeID']);
+			if (!$staff) {
+				$employee = modules::run('api/xero/read_employee', $e['EmployeeID']);
+				$user_data = array(
+					'status' => 1,
+					'is_admin' => 0,
+					'is_staff' => 1,
+					'is_client' => 0,
+					'email_address' => isset($employee['Email']) ? $employee['Email'] : '',
+					'username' => isset($employee['Email']) ? $employee['Email'] : '',
+					'password' => '',
+					'title' => isset($employee['Title']) ? $employee['Title'] : '',
+					'first_name' => $employee['FirstName'],
+					'last_name' => $employee['LastName'],
+					'address' => $employee['HomeAddress']['AddressLine1'],
+					'suburb' => isset($employee['HomeAddress']['AddressLine2']) ? $employee['HomeAddress']['AddressLine2'] : '',
+					'city' => $employee['HomeAddress']['City'],
+					'state' => $employee['HomeAddress']['Region'],
+					'postcode' => $employee['HomeAddress']['PostalCode'],
+					'country' => $employee['HomeAddress']['Country']
+				);
+				// echo '<hr />User: '; var_dump($user_data); echo '<br />';
+				// $user_id = 1;
+				$user_id = $this->user_model->insert_user($user_data);
+				if ($user_id)
+				{
+					$staff_data = array(
+						'user_id' => $user_id,
+						'external_staff_id' => $employee['EmployeeID'],
+						'gender' => strtolower($employee['Gender']),
+						'dob' => date('Y-m-d', strtotime($employee['DateOfBirth'])),
+						'emergency_contact' => '',
+						'emergency_phone' => '',
+						'f_aus_resident' => intval($employee['TaxDeclaration']['AustralianResidentForTaxPurposes']),
+						'f_tax_free_threshold' => intval($employee['TaxDeclaration']['TaxFreeThresholdClaimed']),
+						'f_help_debt' => intval($employee['TaxDeclaration']['HasHELPDebt']),
+						'f_tfn' => isset($employee['TaxDeclaration']['TaxFileNumber']) ? $employee['TaxDeclaration']['TaxFileNumber'] : ''
+					);
+					if (count($employee['BankAccounts']) > 0) {
+						foreach($employee['BankAccounts']['BankAccount'] as $account) {
+							if (isset($account['Remainder']) && $account['Remainder']) {
+								$staff_data['f_acc_name'] = $account['AccountName'];
+								$staff_data['f_bsb'] = $account['BSB'];
+								$staff_data['f_acc_number'] = $account['AccountNumber'];
+							}
+						}
+					}
+					// echo '<hr />Staff: '; var_dump($staff_data); echo '<br />';
+					$staff_id = $this->staff_model->insert_staff($staff_data, true);
+					$imported++;
+				}
+			}
+			else
+			{
+				$found++;
+			}
+		}
+		// echo $imported . '<br />' . $found; return;
+		$output = '';
+		if ($imported > 0) {
+			$output .= '<p>' . $imported . ' new staff has been imported successfully to StaffBooks</p>';
+		}
+		if ($found > 0) {
+			$output .= '<p>' . $found . ' staff already found in StaffBooks</p>';
+		}
 	}
 }

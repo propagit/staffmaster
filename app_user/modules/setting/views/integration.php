@@ -1,4 +1,3 @@
-<!--begin top box--->
 <div class="col-md-12">
 	<div class="box top-box">
    		 <h2><i class="icon-accountIntergration"></i> &nbsp; Accounts Integration</h2>
@@ -6,10 +5,11 @@
 			<option value="">Please select the accounting platform</option>
 			<option value="shoebooks">Shoebooks</option>
 			<option value="myob">MYOB</option>
+            <option value="xero">Xero</option>
 		</select>
     </div>
 </div>
-<!--end top box-->
+
 
 <!--begin bottom box -->
 <div class="col-md-12">

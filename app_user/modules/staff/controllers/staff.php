@@ -22,7 +22,6 @@ class Staff extends MX_Controller {
 			$this->user = $this->session->userdata('user_data');
 			$this->is_client = modules::run('auth/is_client');
 		}
-
 	}
 
 	public function index($method='', $param='')
