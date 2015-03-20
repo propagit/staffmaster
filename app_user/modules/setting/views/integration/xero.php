@@ -67,6 +67,9 @@ $(function(){
             url: "<?=base_url();?>setting/ajax/pull_xero_employees_to_staffbooks",
             success: function(html) {
                 $('#order-message').html(html);
+                setTimeout(function(){
+                    location.reload();
+                }, 5000);
             }
         })
     });
