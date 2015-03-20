@@ -167,6 +167,7 @@ class Common extends MX_Controller {
 				'label' => $fund['Name']
 			);
 		}
+		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 
 	function get_super_name($super_id)
