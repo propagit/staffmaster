@@ -61,6 +61,18 @@ class Xero extends MX_Controller {
         }
     }
 
+    function get_superfund($id)
+    {
+        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('SuperFunds/' . $id, 'payroll'), array());
+
+        if ($this->XeroOAuth->response['code'] == 200) {
+            $superfunds = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+            $result = json_decode(json_encode($superfunds->SuperFunds), TRUE);
+            var_dump($result['SuperFund']);
+            return $result['SuperFund'];
+        }
+    }
+
     function employees() {
         $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array());
         if ($this->XeroOAuth->response['code'] == 200) {
