@@ -156,6 +156,19 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 
+	function field_select_xero_super_fund($field_name, $field_value=null, $size=null)
+	{
+		$funds = modules::run('api/xero/get_superfunds');
+		$array = array();
+		foreach($funds as $fund)
+		{
+			$array[] = array(
+				'value' => $fund['SuperFundID'],
+				'label' => $fund['Name']
+			);
+		}
+	}
+
 	function get_super_name($super_id)
 	{
 		return $this->common_model->get_super_name($super_id);

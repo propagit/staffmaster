@@ -70,6 +70,10 @@ class Staff_model extends CI_Model {
 			modules::run('api/myob/connect', 'append_employee~' . $user_id);
 			modules::run('api/myob/connect', 'update_employee_payroll~' . $user_id);
 		}
+		else if ($platform == 'xero')
+		{
+			modules::run('api/xero/add_employee', $user_id);
+		}
 		$log_data = array(
 			'module' => $this->module,
 			'object' => $this->object,

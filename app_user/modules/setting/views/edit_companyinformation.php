@@ -113,7 +113,11 @@
             	<? $platform = $this->config_model->get('accounting_platform');
 	            if ($platform == 'myob') {
 		            echo modules::run('common/field_select_myob_super_fund', 'super_fund_external_id', $company['super_fund_external_id']);
-	            } else { ?>
+	            }
+                else if ($platform == 'xero') {
+                    echo modules::run('common/field_select_xero_super_fund', 'super_fund_external_id', $company['super_fund_external_id']);
+                }
+                else { ?>
 
                 <input type="text" class="form-control" id="super_fund_name" name="super_fund_name" value="<?=(isset($company['super_fund_name'])) ? $company['super_fund_name'] : '' ?>" tabindex="17" />
 
