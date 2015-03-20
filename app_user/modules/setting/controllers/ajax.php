@@ -1572,10 +1572,10 @@ class Ajax extends MX_Controller {
 
 		$employees = modules::run('api/xero/employees');
 		$imported = 0;
-		$found = 0;
 
 		foreach($employees as $e) {
 			$staff = modules::run('staff/get_staff_by_external_id', $e['EmployeeID']);
+			var_dump($staff); return;
 			if (!$staff) {
 				$employee = modules::run('api/xero/read_employee', $e['EmployeeID']);
 				$user_data = array(
@@ -1627,18 +1627,14 @@ class Ajax extends MX_Controller {
 					$imported++;
 				}
 			}
-			else
-			{
-				$found++;
-			}
 		}
 		// echo $imported . '<br />' . $found; return;
 		$output = '';
 		if ($imported > 0) {
 			$output .= '<p>' . $imported . ' new staff has been imported successfully to StaffBooks</p>';
 		}
-		if ($found > 0) {
-			$output .= '<p>' . $found . ' staff already found in StaffBooks</p>';
+		if (count($employees) > $imported) {
+			$output .= '<p>' . (count($employees) - $imported) . ' staff already found in StaffBooks</p>';
 		}
 		echo $output;
 	}
