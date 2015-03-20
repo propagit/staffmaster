@@ -1574,6 +1574,7 @@ class Ajax extends MX_Controller {
 		$imported = 0;
 
 		foreach($employees as $e) {
+			echo $e['EmployeeID'];
 			$staff = modules::run('staff/get_staff_by_external_id', $e['EmployeeID']);
 			if ($staff) {
 				echo 'Found'; return;
