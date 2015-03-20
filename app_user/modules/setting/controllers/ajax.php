@@ -1640,5 +1640,6 @@ class Ajax extends MX_Controller {
 		if ($found > 0) {
 			$output .= '<p>' . $found . ' staff already found in StaffBooks</p>';
 		}
+		echo $output;
 	}
 }
