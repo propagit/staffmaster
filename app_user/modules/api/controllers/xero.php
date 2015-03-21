@@ -180,6 +180,7 @@ class Xero extends MX_Controller {
         $bank_accounts = '';
         if (isset($employee['BankAccounts']) && count($employee['BankAccounts']) > 0)
         {
+            $bank_accounts .= "<BankAccounts>";
             foreach($employee['BankAccounts']['BankAccount'] as $account) {
                 if (isset($account['Remainder']) && $account['Remainder']) {
                     $bank_accounts .= "<BankAccount>
@@ -200,6 +201,7 @@ class Xero extends MX_Controller {
                         </BankAccount>";
                 }
             }
+            $bank_accounts .= "</BankAccounts>";
         }
 
         $xml = "<Employees>
