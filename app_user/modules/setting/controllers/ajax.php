@@ -1576,7 +1576,7 @@ class Ajax extends MX_Controller {
 		foreach($employees as $e) {
 			$staff = modules::run('staff/get_staff_by_external_id', $e['EmployeeID']);
 			if (!$staff) {
-				$employee = modules::run('api/xero/read_employee', $e['EmployeeID']);
+				$employee = modules::run('api/xero/get_employee', $e['EmployeeID']);
 				$user_data = array(
 					'status' => 1,
 					'is_admin' => 0,

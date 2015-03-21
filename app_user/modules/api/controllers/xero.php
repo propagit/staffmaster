@@ -80,13 +80,13 @@ class Xero extends MX_Controller {
             // echo "There are " . count($employees->Employees[0]). " employees in this Xero organisation, the first one is: </br>";
             // var_dump($employees->Employees[0]);
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
-            // var_dump($result['Employee']);
+            var_dump($result['Employee']);
             return $result['Employee'];
         }
         return null;
     }
 
-    function read_employee($id) {
+    function get_employee($id) {
         $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees/' . $id, 'payroll'), array());
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
@@ -156,7 +156,8 @@ class Xero extends MX_Controller {
         {
             return false;
         }
-
+        $employee = $this->get_employee($external_id);
+        // var_dump($employee);
         $dob = '';
         if ($staff['dob'] && $staff['dob'] != '0000-00-00') {
             $dob = $staff['dob'];
@@ -164,6 +165,42 @@ class Xero extends MX_Controller {
         $city = $staff['city'];
         if (!$city) { $city = $staff['suburb']; }
         if (!$city) { $city = 'Not Specified'; }
+
+        $super = '';
+        if (isset($employee['SuperMemberships']) && count($employee['SuperMemberships']) > 0)
+        {
+            $super = "<SuperMemberships>
+                        <SuperMembership>
+                            <SuperMembershipID>" . $employee['SuperMemberships']['SuperMembership']['SuperMembershipID'] . "</SuperMembershipID>
+                            <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+                            <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+                        </SuperMembership>
+                    </SuperMemberships>";
+        }
+        $bank_accounts = '';
+        if (isset($employee['BankAccounts']) && count($employee['BankAccounts']) > 0)
+        {
+            foreach($employee['BankAccounts']['BankAccount'] as $account) {
+                if (isset($account['Remainder']) && $account['Remainder']) {
+                    $bank_accounts .= "<BankAccount>
+                            <StatementText>" . $account['StatementText'] . "</StatementText>
+                            <AccountName>" . $staff['f_acc_name'] . "</AccountName>
+                            <BSB>" . $staff['f_bsb'] . "</BSB>
+                            <AccountNumber>" . $staff['f_acc_number'] . "</AccountNumber>
+                            <Remainder>true</Remainder>
+                        </BankAccount>";
+                } else {
+                    $bank_accounts .= "<BankAccount>
+                            <StatementText>" . $account['StatementText'] . "</StatementText>
+                            <AccountName>" . $account['AccountName'] . "</AccountName>
+                            <BSB>" . $account['BSB'] . "</BSB>
+                            <AccountNumber>" . $account['AccountNumber'] . "</AccountNumber>
+                            <Remainder>" . $account['Remainder'] . "</Remainder>
+                            <Percentage>" . $account['Percentage'] . "</Percentage>
+                        </BankAccount>";
+                }
+            }
+        }
 
         $xml = "<Employees>
                     <Employee>
@@ -186,16 +223,8 @@ class Xero extends MX_Controller {
                             <HasHELPDebt>" . ($staff['f_help_debt'] ? 'true' : 'false') . "</HasHELPDebt>
                             <TaxFileNumber>" . $staff['f_tfn'] . "</TaxFileNumber>
                         </TaxDeclaration>
-                        <BankAccounts>
-                        </BankAccounts>
-
-                        <SuperMemberships>
-                            <SuperMembership>
-                                <SuperMembershipID>" . $staff['s_external_id'] . "</SuperMembershipID>
-                                <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
-                                <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-                            </SuperMembership>
-                        </SuperMemberships>
+                        $bank_accounts
+                        $super
                     </Employee>
                 </Employees>";
         var_dump($xml); die();
