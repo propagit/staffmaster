@@ -56,7 +56,7 @@ class Xero extends MX_Controller {
         if ($this->XeroOAuth->response['code'] == 200) {
             $superfunds = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
             $result = json_decode(json_encode($superfunds->SuperFunds), TRUE);
-            // var_dump($result['SuperFund']);
+            var_dump($result['SuperFund']);
             return $result['SuperFund'];
         }
     }
@@ -229,7 +229,7 @@ class Xero extends MX_Controller {
                         $super
                     </Employee>
                 </Employees>";
-        // var_dump($xml); die();
+        var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
         var_dump($response);
         if ($this->XeroOAuth->response['code'] == 200) {
