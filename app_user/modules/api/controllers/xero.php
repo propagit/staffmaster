@@ -170,12 +170,12 @@ class Xero extends MX_Controller {
         if (isset($employee['SuperMemberships']) && count($employee['SuperMemberships']) > 0)
         {
             $super = "<SuperMemberships>
-                        <SuperMembership>
-                            <SuperMembershipID>" . $employee['SuperMemberships']['SuperMembership']['SuperMembershipID'] . "</SuperMembershipID>
-                            <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
-                            <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-                        </SuperMembership>
-                    </SuperMemberships>";
+                            <SuperMembership>
+                                <SuperMembershipID>" . $employee['SuperMemberships']['SuperMembership']['SuperMembershipID'] . "</SuperMembershipID>
+                                <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+                                <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+                            </SuperMembership>
+                        </SuperMemberships>";
         }
         $bank_accounts = '';
         if (isset($employee['BankAccounts']) && count($employee['BankAccounts']) > 0)
@@ -183,7 +183,8 @@ class Xero extends MX_Controller {
             $bank_accounts .= "<BankAccounts>";
             foreach($employee['BankAccounts']['BankAccount'] as $account) {
                 if (isset($account['Remainder']) && $account['Remainder']) {
-                    $bank_accounts .= "<BankAccount>
+                    $bank_accounts .= "
+                        <BankAccount>
                             <StatementText>" . $account['StatementText'] . "</StatementText>
                             <AccountName>" . $staff['f_acc_name'] . "</AccountName>
                             <BSB>" . $staff['f_bsb'] . "</BSB>
@@ -201,7 +202,8 @@ class Xero extends MX_Controller {
                         </BankAccount>";
                 }
             }
-            $bank_accounts .= "</BankAccounts>";
+            $bank_accounts .= "
+            </BankAccounts>";
         }
 
         $xml = "<Employees>
