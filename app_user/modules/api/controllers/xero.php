@@ -184,26 +184,27 @@ class Xero extends MX_Controller {
             foreach($employee['BankAccounts']['BankAccount'] as $account) {
                 if (isset($account['Remainder']) && $account['Remainder']) {
                     $bank_accounts .= "
-                        <BankAccount>
-                            <StatementText>" . $account['StatementText'] . "</StatementText>
-                            <AccountName>" . $staff['f_acc_name'] . "</AccountName>
-                            <BSB>" . $staff['f_bsb'] . "</BSB>
-                            <AccountNumber>" . $staff['f_acc_number'] . "</AccountNumber>
-                            <Remainder>true</Remainder>
-                        </BankAccount>";
+                            <BankAccount>
+                                <StatementText>" . $account['StatementText'] . "</StatementText>
+                                <AccountName>" . $staff['f_acc_name'] . "</AccountName>
+                                <BSB>" . $staff['f_bsb'] . "</BSB>
+                                <AccountNumber>" . $staff['f_acc_number'] . "</AccountNumber>
+                                <Remainder>true</Remainder>
+                            </BankAccount>";
                 } else {
-                    $bank_accounts .= "<BankAccount>
-                            <StatementText>" . $account['StatementText'] . "</StatementText>
-                            <AccountName>" . $account['AccountName'] . "</AccountName>
-                            <BSB>" . $account['BSB'] . "</BSB>
-                            <AccountNumber>" . $account['AccountNumber'] . "</AccountNumber>
-                            <Remainder>" . $account['Remainder'] . "</Remainder>
-                            <Percentage>" . $account['Percentage'] . "</Percentage>
-                        </BankAccount>";
+                    $bank_accounts .= "
+                            <BankAccount>
+                                <StatementText>" . $account['StatementText'] . "</StatementText>
+                                <AccountName>" . $account['AccountName'] . "</AccountName>
+                                <BSB>" . $account['BSB'] . "</BSB>
+                                <AccountNumber>" . $account['AccountNumber'] . "</AccountNumber>
+                                <Remainder>" . $account['Remainder'] . "</Remainder>
+                                <Percentage>" . $account['Percentage'] . "</Percentage>
+                            </BankAccount>";
                 }
             }
             $bank_accounts .= "
-            </BankAccounts>";
+                </BankAccounts>";
         }
 
         $xml = "<Employees>
