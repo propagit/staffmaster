@@ -232,7 +232,7 @@ class Xero extends MX_Controller {
                         $super
                     </Employee>
                 </Employees>";
-        var_dump($xml); die();
+        // var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
         var_dump($response);
         if ($this->XeroOAuth->response['code'] == 200) {
