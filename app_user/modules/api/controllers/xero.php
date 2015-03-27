@@ -237,12 +237,12 @@ class Xero extends MX_Controller {
                 </Employees>";
         // var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
-        var_dump($response);
+        // var_dump($response);
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
-            var_dump($result['Employee']);
+            // var_dump($result['Employee']);
             return $result['Employee'];
         }
         return false;
