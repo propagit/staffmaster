@@ -372,12 +372,14 @@ class Xero extends MX_Controller {
     {
         $timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
         $staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+        $errors = array();
         if ($staff['external_staff_id']) {
             $employee = $this->read_employee($staff['external_staff_id']);
             if ($employee) {
                 $pay_items = $this->get_payitems();
                 # Extract employee earning ids
                 $earnings = array();
+                # Convert employee earning ids -> names
                 foreach($employee['PayTemplate']['EarningsLines']['EarningsLine'] as $earning_line)
                 {
                     foreach($pay_items as $item)
@@ -389,7 +391,7 @@ class Xero extends MX_Controller {
                     }
                 }
 
-
+                # Check if time sheet pay rate is in employee earnings
 
                 $pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
                 foreach($pay_rates as $pay_rate)
@@ -400,24 +402,21 @@ class Xero extends MX_Controller {
                         $payrate = modules::run('attribute/payrate/get_payrate', $timesheet['payrate_id']);
                         $earningID = $payrate['name'];
                     }
-
+                    if (!in_array($earningID, $earnings))
+                    {
+                        $errors[] = "<p>$earningID has not been set up for employee " . $staff['first_name'] . " " . $staff['last_name'] . " on Xero</p>";
+                    }
                 }
-
-
-                # Check payitem for employee on Xero
-                $pay_items = array();
-                foreach($this->get_payitems() as $pay_item)
-                {
-                    $pay_items[] = $pay_item['EarningsRateID'];
-                }
-
+            }
+            else {
+                $errors[] = "<p>" . $staff['first_name'] . " " . $staff['last_name'] . " not found in Xero</p>";
             }
         }
+        else {
+            $errors[] = "<p>" . $staff['first_name'] . " " . $staff['last_name'] . " not found in Xero</p>";
+        }
 
-        return array(
-            'ok' => false,
-            'staff' => $staff['first_name'] . ' ' . $staff['last_name']
-        );
+        return $errors;
 
     }
 

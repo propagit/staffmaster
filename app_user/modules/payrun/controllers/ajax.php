@@ -277,6 +277,9 @@ class Ajax extends MX_Controller {
 				$not_found = modules::run('api/xero/validate_timesheet_payitems', $timesheet['timesheet_id']);
 				$not_found_pay_items = array_merge($not_found, $not_found_pay_items);
 			}
+
+			$not_found_pay_items = array_unique($not_found_pay_items);
+
 			if (count($not_found_pay_items) > 0)
 			{
 				echo json_encode(array(
@@ -284,6 +287,24 @@ class Ajax extends MX_Controller {
 					'export' => false,
 					'pushed_ok' => false,
 					'pushed_msg' => "<div class='list'><p>Cannot find following Pay Item(s) in Xero:</p><ul><li>" . implode("</li><li>", $not_found_pay_items) . "</li></ul><p>Please login to your Xero account and add Pay Item(s) with above name(s)</p></div>"
+				));
+				return;
+			}
+
+			$employee_pay_items = array();
+			foreach($timesheets as $timesheet)
+			{
+				$errors = modules::run('api/xero/validate_timesheet_employee_payitems', $timesheet['timesheet_id']);
+				$employee_pay_items = array_merge($errors, $employee_pay_items);
+			}
+			$employee_pay_items = array_unique($employee_pay_items);
+			if (count($employee_pay_items) > 0)
+			{
+				echo json_encode(array(
+					'ok' => true,
+					'export' => false,
+					'pushed_ok' => false,
+					'pushed_msg' => "<div class='list'>" . implode("", $employee_pay_items) . "</div>"
 				));
 				return;
 			}
