@@ -904,7 +904,7 @@ class Myob extends MX_Controller {
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		var_dump($response);
+		// var_dump($response);
 		$response = json_decode($response);
 		if (isset($response->Errors))
 		{
