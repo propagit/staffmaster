@@ -170,6 +170,20 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 
+	function field_select_xero_payruns($field_name, $field_value=null, $size=null)
+	{
+		$payruns = modules::run('api/xero/get_payruns');
+		$array = array();
+		foreach($payruns as $payrun)
+		{
+			$array[] = array(
+				'value' => $payrun['PayRunID'],
+				'label' => 'From ' . date('d M Y', strtotime($payrun['PayRunPeriodStartDate'])) . ' to ' . date('d M Y', strtotime($payrun['PayRunPeriodEndDate']))
+			);
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+
 	function get_super_name($super_id)
 	{
 		return $this->common_model->get_super_name($super_id);

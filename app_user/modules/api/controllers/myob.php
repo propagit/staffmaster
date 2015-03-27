@@ -681,6 +681,11 @@ class Myob extends MX_Controller {
 		return $response;
 	}
 
+	function print_employee_payroll($external_id)
+	{
+		var_dump($this->read_employee_payroll($external_id));
+	}
+
 	function read_employee_payroll($external_id)
 	{
 		$employee = $this->read_employee($external_id);
