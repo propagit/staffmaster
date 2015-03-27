@@ -229,6 +229,7 @@ class Xero extends MX_Controller {
                             <TaxFreeThresholdClaimed>" . ($staff['f_tax_free_threshold'] ? 'true' : 'false') . "</TaxFreeThresholdClaimed>
                             <HasHELPDebt>" . ($staff['f_help_debt'] ? 'true' : 'false') . "</HasHELPDebt>
                             <TaxFileNumber>" . $staff['f_tfn'] . "</TaxFileNumber>
+                            <EmploymentBasis>" . $employee['TaxDeclaration']['EmploymentBasis'] . "</EmploymentBasis>
                         </TaxDeclaration>
                         $bank_accounts
                         $super
