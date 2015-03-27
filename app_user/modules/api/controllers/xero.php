@@ -272,6 +272,12 @@ class Xero extends MX_Controller {
                             <EarningsRateID>c1ddda05-7318-4ca5-9d50-5f380d887130</EarningsRateID>
                             <NumberOfUnits>
                                 <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>0.00</NumberOfUnit>
+                                <NumberOfUnit>0.00</NumberOfUnit>
                             </NumberOfUnits>
                         </TimesheetLine>
                     </TimesheetLines>
