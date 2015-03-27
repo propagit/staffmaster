@@ -921,6 +921,14 @@ class Staff extends MX_Controller {
 
 			$platform = 'MYOB';
 		}
+		if ($platform == 'xero')
+		{
+			if ($external_id)
+			{
+				$external_id = modules::run('api/xero/get_employee', $external_id);
+			}
+			$platform = 'Xero';
+		}
 		$data['user_id'] = $user_id;
 		$data['external_id'] = $external_id;
 		$data['platform'] = $platform;
