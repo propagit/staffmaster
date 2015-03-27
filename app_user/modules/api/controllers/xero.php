@@ -90,13 +90,15 @@ class Xero extends MX_Controller {
         $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees/' . $id, 'payroll'), array());
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
-            // echo "There are " . count($employees->Employees[0]). " employees in this Xero organisation, the first one is: </br>";
-            // var_dump($employees->Employees[0]);
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
-            // var_dump($result['Employee']);
             return $result['Employee'];
         }
         return null;
+    }
+
+    function read_employee($id) {
+        $e = $this->get_employee($id);
+        var_dump($e);
     }
 
     function add_employee($user_id) {
