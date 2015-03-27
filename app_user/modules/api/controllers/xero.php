@@ -56,9 +56,13 @@ class Xero extends MX_Controller {
         if ($this->XeroOAuth->response['code'] == 200) {
             $superfunds = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
             $result = json_decode(json_encode($superfunds->SuperFunds), TRUE);
-            var_dump($result['SuperFund']);
             return $result['SuperFund'];
         }
+    }
+
+    function read_superfunds()
+    {
+        var_dump($this->get_superfunds());
     }
 
     function get_superfund($id)
@@ -68,22 +72,28 @@ class Xero extends MX_Controller {
         if ($this->XeroOAuth->response['code'] == 200) {
             $superfunds = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
             $result = json_decode(json_encode($superfunds->SuperFunds), TRUE);
-            var_dump($result['SuperFund']);
             return $result['SuperFund'];
         }
+    }
+
+    function read_superfund($id)
+    {
+        $s = $this->get_superfund($id);
+        var_dump($s);
     }
 
     function get_employees() {
         $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array());
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
-            // echo "There are " . count($employees->Employees[0]). " employees in this Xero organisation, the first one is: </br>";
-            // var_dump($employees->Employees[0]);
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
-            var_dump($result['Employee']);
             return $result['Employee'];
         }
         return null;
+    }
+
+    function read_employees() {
+        var_dump($this->get_employees());
     }
 
     function get_employee($id) {
@@ -246,5 +256,32 @@ class Xero extends MX_Controller {
             return $result['Employee'];
         }
         return false;
+    }
+
+    function add_timesheet()
+    {
+        $xml = "
+            <Timesheets>
+                <Timesheet>
+                    <EmployeeID>eeca7d30-73af-47b9-a1fb-affb8f7a5c7b</EmployeeID>
+                    <StartDate>2015-03-03</StartDate>
+                    <EndDate>2015-03-10</EndDate>
+                    <Status>Draft</Status>
+                    <TimesheetLines>
+                        <TimesheetLine>
+                            <EarningsRateID>c1ddda05-7318-4ca5-9d50-5f380d887130</EarningsRateID>
+                            <NumberOfUnits>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                            </NumberOfUnits>
+                        </TimesheetLine>
+                    </TimesheetLines>
+                </Timesheet>
+            </Timesheets>";
+        var_dump($xml); die();
+        $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $xml);
+        var_dump($response);
+        if ($this->XeroOAuth->response['code'] == 200) {
+
+        }
     }
 }
