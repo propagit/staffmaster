@@ -1062,6 +1062,13 @@ class Staff_model extends CI_Model {
 		return false;
 	}
 
-
+	function get_default_payrate_id($user_id)
+	{
+		$staff = $this->db->select('default_payrate_id')
+						 ->where('user_id',$user_id)
+						 ->get('user_staffs')
+						 ->row_array();
+		return $staff['default_payrate_id'];
+	}
 
 }

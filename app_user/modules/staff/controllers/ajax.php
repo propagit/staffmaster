@@ -1474,6 +1474,12 @@ class Ajax extends MX_Controller {
 			$this->staff_model->delete_payrates($user_id);
 		}
 	}
+	
+	function set_default_payrate() {
+		$default_payrate_id = $this->input->post('default_payrate_id');
+		$user_id = $this->input->post('user_id');
+		$this->staff_model->update_staff($user_id,array('default_payrate_id' => $default_payrate_id),true);
+	}
 
 
 

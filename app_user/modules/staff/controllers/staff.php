@@ -926,6 +926,11 @@ class Staff extends MX_Controller {
 		$data['platform'] = $platform;
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
+	
+	function get_default_payrate_id($user_id)
+	{
+		return $this->staff_model->get_default_payrate_id($user_id);
+	}
 
 
 }

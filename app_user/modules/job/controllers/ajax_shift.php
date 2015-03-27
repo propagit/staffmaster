@@ -39,11 +39,20 @@ class Ajax_shift extends MX_Controller {
 					'staff_id' => $data['shift_staff_id'],
 					'status' => $data['status']
 				);
+				
+				
 				$shift = modules::run('job/shift/get_shift', $data['shift_id']);
 				if ($this->staff_model->check_staff_time_collision($data['shift_staff_id'], $shift))
 				{
 					echo json_encode(array('ok' => false, 'msg' => 'This staff has already booked for a shift on the same time'));
 					return;
+				}
+				
+				# check staff default payrate
+				# by default it is zero or not set so if it is not zero then change to user default payrate
+				$staff_default_payrate_id = modules::run('staff/get_default_payrate_id',$data['shift_staff_id']);
+				if($staff_default_payrate_id){
+					$update_shift_data['payrate_id'] = $staff_default_payrate_id;	
 				}
 
 			}
