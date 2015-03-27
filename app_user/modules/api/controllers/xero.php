@@ -184,7 +184,7 @@ class Xero extends MX_Controller {
         {
             $bank_accounts .= "<BankAccounts>";
             foreach($employee['BankAccounts']['BankAccount'] as $account) {
-                if (isset($account['Remainder']) && $account['Remainder']) {
+                if (isset($account['Remainder']) && $account['Remainder'] == "true") {
                     $bank_accounts .= "
                             <BankAccount>
                                 <StatementText>" . $account['StatementText'] . "</StatementText>
@@ -201,7 +201,7 @@ class Xero extends MX_Controller {
                                 <BSB>" . $account['BSB'] . "</BSB>
                                 <AccountNumber>" . $account['AccountNumber'] . "</AccountNumber>
                                 <Remainder>" . $account['Remainder'] . "</Remainder>
-                                <Percentage>" . $account['Percentage'] . "</Percentage>
+                                <Amount>" . $account['Amount'] . "</Amount>
                             </BankAccount>";
                 }
             }
