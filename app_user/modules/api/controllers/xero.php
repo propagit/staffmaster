@@ -277,7 +277,7 @@ class Xero extends MX_Controller {
                     </TimesheetLines>
                 </Timesheet>
             </Timesheets>";
-        var_dump($xml); die();
+        // var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $xml);
         var_dump($response);
         if ($this->XeroOAuth->response['code'] == 200) {
