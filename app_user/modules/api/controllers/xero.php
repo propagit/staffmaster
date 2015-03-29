@@ -258,19 +258,203 @@ class Xero extends MX_Controller {
         return false;
     }
 
+    function get_payruns()
+    {
+        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('PayRuns', 'payroll'), array('Where' => 'PayRunStatus=="DRAFT"'));
+        if ($this->XeroOAuth->response['code'] == 200) {
+            $payruns = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+            $result = json_decode(json_encode($payruns->PayRuns), TRUE);
+            return $result['PayRun'];
+        }
+    }
+
+    function read_payruns()
+    {
+        var_dump($this->get_payruns());
+    }
+
+    function get_payrun($id)
+    {
+        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('PayRuns/' . $id, 'payroll'), array());
+        if ($this->XeroOAuth->response['code'] == 200) {
+            $payruns = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+            $result = json_decode(json_encode($payruns->PayRuns), TRUE);
+            return $result['PayRun'];
+        }
+    }
+
+    function get_payitems()
+    {
+        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('PayItems', 'payroll'), array());
+        if ($this->XeroOAuth->response['code'] == 200) {
+            $payitems = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+            $result = json_decode(json_encode($payitems->PayItems), TRUE);
+            return $result['EarningsRates']['EarningsRate'];
+        }
+    }
+
+    function read_payitems()
+    {
+        var_dump($this->get_payitems());
+    }
+
+    function get_timesheets()
+    {
+        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Timesheets', 'payroll'), array());
+        if ($this->XeroOAuth->response['code'] == 200) {
+            $timesheets = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+            $result = json_decode(json_encode($timesheets->Timesheets), TRUE);
+            return $result['Timesheet'];
+        }
+    }
+
+    function read_timesheets()
+    {
+        var_dump($this->get_timesheets());
+    }
+
+    function get_timesheet($id)
+    {
+        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Timesheets/' . $id, 'payroll'), array());
+        if ($this->XeroOAuth->response['code'] == 200) {
+            $timesheet = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+            $result = json_decode(json_encode($timesheet), TRUE);
+            return $result['Timesheet'];
+        }
+    }
+
+    function read_timesheet($id)
+    {
+        $t = $this->get_timesheet($id);
+        var_dump($t);
+    }
+
+    function validate_timesheet_payitems($timesheet_id)
+    {
+        $timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
+
+        # Check payitem for employee on Xero
+        $pay_items = array();
+        foreach($this->get_payitems() as $pay_item)
+        {
+            $pay_items[] = $pay_item['Name'];
+        }
+
+        $pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+        $not_found = array();
+        foreach($pay_rates as $pay_rate)
+        {
+            $earningID = $pay_rate['group'];
+            if (!$earningID)
+            {
+                $payrate = modules::run('attribute/payrate/get_payrate', $timesheet['payrate_id']);
+                $earningID = $payrate['name'];
+            }
+
+            # Make sure all the payroll categories are set up on MYOB
+            if (!in_array($earningID, $pay_items))
+            {
+                $not_found[] = $earningID;
+            }
+        }
+        return $not_found;
+
+        if (count($not_found) > 0) {
+            $result = array(
+                'ok' => false,
+                'msg' => "<p>Pay Item <b>" . implode(", ", $not_found) . "</b> is not found in XERO</p>"
+            );
+            return $result;
+        }
+    }
+
+    function validate_timesheet_employee_payitems($timesheet_id)
+    {
+        $timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
+        $staff = modules::run('staff/get_staff', $timesheet['staff_id']);
+        $errors = array();
+        if ($staff['external_staff_id']) {
+            $employee = $this->read_employee($staff['external_staff_id']);
+            if ($employee) {
+                $pay_items = $this->get_payitems();
+                # Extract employee earning ids
+                $earnings = array();
+                # Convert employee earning ids -> names
+                foreach($employee['PayTemplate']['EarningsLines']['EarningsLine'] as $earning_line)
+                {
+                    foreach($pay_items as $item)
+                    {
+                        if ($item['EarningsRateID'] == $earning_line['EarningsRateID'])
+                        {
+                            $earnings[] = $item['Name'];
+                        }
+                    }
+                }
+
+                # Check if time sheet pay rate is in employee earnings
+
+                $pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+                foreach($pay_rates as $pay_rate)
+                {
+                    $earningID = $pay_rate['group'];
+                    if (!$earningID)
+                    {
+                        $payrate = modules::run('attribute/payrate/get_payrate', $timesheet['payrate_id']);
+                        $earningID = $payrate['name'];
+                    }
+                    if (!in_array($earningID, $earnings))
+                    {
+                        $errors[] = "<p>$earningID has not been set up for employee " . $staff['first_name'] . " " . $staff['last_name'] . " on Xero</p>";
+                    }
+                }
+            }
+            else {
+                $errors[] = "<p>" . $staff['first_name'] . " " . $staff['last_name'] . " not found in Xero</p>";
+            }
+        }
+        else {
+            $errors[] = "<p>" . $staff['first_name'] . " " . $staff['last_name'] . " not found in Xero</p>";
+        }
+
+        return $errors;
+
+    }
+
+    function create_timesheets($payrun_id)
+    {
+        $this->load->model('payrun/payrun_model');
+        $timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+        usort($timesheets, function($a, $b) { // anonymous function
+            // compare numbers only
+            if (isset($a['external_staff_id'])) {
+                return $a['external_staff_id'] - $b['external_staff_id'];
+            }
+        });
+        foreach($timesheets as $timesheet) {
+
+        }
+    }
+
     function add_timesheet()
     {
-        $xml = "
-            <Timesheets>
+        $xml =
+            "<Timesheets>
                 <Timesheet>
-                    <EmployeeID>eeca7d30-73af-47b9-a1fb-affb8f7a5c7b</EmployeeID>
-                    <StartDate>2015-03-03</StartDate>
-                    <EndDate>2015-03-10</EndDate>
+                    <EmployeeID>b85e47b3-a7d5-4d52-9382-e7f027132fa1</EmployeeID>
+                    <StartDate>2015-03-15</StartDate>
+                    <EndDate>2015-03-28</EndDate>
                     <Status>Draft</Status>
                     <TimesheetLines>
                         <TimesheetLine>
-                            <EarningsRateID>c1ddda05-7318-4ca5-9d50-5f380d887130</EarningsRateID>
+                            <EarningsRateID>845779c7-bf3c-4ebe-a1cc-89bc3eb50345</EarningsRateID>
                             <NumberOfUnits>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>0.00</NumberOfUnit>
+                                <NumberOfUnit>0.00</NumberOfUnit>
                                 <NumberOfUnit>8.00</NumberOfUnit>
                                 <NumberOfUnit>8.00</NumberOfUnit>
                                 <NumberOfUnit>8.00</NumberOfUnit>

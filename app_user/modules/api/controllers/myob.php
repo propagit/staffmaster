@@ -681,6 +681,11 @@ class Myob extends MX_Controller {
 		return $response;
 	}
 
+	function print_employee_payroll($external_id)
+	{
+		var_dump($this->read_employee_payroll($external_id));
+	}
+
 	function read_employee_payroll($external_id)
 	{
 		$employee = $this->read_employee($external_id);
@@ -899,7 +904,7 @@ class Myob extends MX_Controller {
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		#var_dump($response);
+		// var_dump($response);
 		$response = json_decode($response);
 		if (isset($response->Errors))
 		{
@@ -989,11 +994,11 @@ class Myob extends MX_Controller {
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		var_dump($ch); die();
+		// var_dump($ch); die();
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		#var_dump($response);
+		var_dump($response);
 		$response = json_decode($response);
 		if (isset($response->Errors))
 		{

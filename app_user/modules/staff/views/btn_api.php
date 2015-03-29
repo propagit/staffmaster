@@ -4,7 +4,7 @@
 	    <label>
 	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_update_staff')) ? 'checked' : '';?>> Auto update to <?=ucwords($platform);?>
 	    </label>
-	</div> 
+	</div>
 </div>
 <script>
 $('#auto-sync').click(function(){
@@ -20,13 +20,13 @@ $('#auto-sync').click(function(){
 	})
 })
 </script>
-<? } else if($user_id) { 
+<? } else if($user_id) {
 	if (strtolower($platform) == 'shoebooks') { # Add to shoebooks ?>
 	<button class="pull-right btn btn-lg btn-primary" id="btn-shoebooks" data-loading-text="Adding to Shoebooks...">
-		Add to Shoebooks &nbsp;  
-		<i class="fa fa-arrow-right"></i> 
+		Add to Shoebooks &nbsp;
+		<i class="fa fa-arrow-right"></i>
 	</button>
-	
+
 	<script>
 	$('#btn-shoebooks').click(function(){
 		var btn = $(this);
@@ -42,10 +42,10 @@ $('#auto-sync').click(function(){
 	</script>
 	<? } else if (strtolower($platform) == 'myob') { ?>
 	<button class="pull-right btn btn-lg btn-myob" id="btn-myob" data-loading-text="Adding to MYOB...">
-		Add to MYOB &nbsp;  
-		<i class="fa fa-arrow-right"></i> 
+		Add to MYOB &nbsp;
+		<i class="fa fa-arrow-right"></i>
 	</button>
-	
+
 	<script>
 	$('#btn-myob').click(function(){
 		var btn = $(this);
@@ -59,7 +59,26 @@ $('#auto-sync').click(function(){
 		})
 	})
 	</script>
-	
+
+	<? } else if (strtolower($platform) == 'xero') { ?>
+	<button class="pull-right btn btn-lg btn-core" id="btn-xero" data-loading-text="Adding to Xero...">
+		Add to Xero &nbsp;
+		<i class="fa fa-arrow-right"></i>
+	</button>
+
+	<script>
+	$('#btn-xero').click(function(){
+		var btn = $(this);
+		btn.button('loading');
+		$.ajax({
+			type: "POST",
+			url: "<?=base_url();?>api/xero/add_employee/<?=$user_id;?>",
+			success: function(html) {
+				location.reload();
+			}
+		})
+	})
+	</script>
 	<? } ?>
 
 <? } else { # Auto add to shoebooks ?>
@@ -68,7 +87,7 @@ $('#auto-sync').click(function(){
 	    <label>
 	      <input type="checkbox" id="auto-sync" <?=($this->config_model->get('auto_add_staff')) ? 'checked' : '';?>> Auto add to <?=ucwords($platform);?>
 	    </label>
-	</div> 
+	</div>
 </div>
 <script>
 $('#auto-sync').click(function(){
