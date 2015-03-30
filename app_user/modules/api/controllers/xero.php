@@ -17,11 +17,14 @@ class Xero extends MX_Controller {
         require_once(APPPATH . 'libraries/xero/lib/XeroOAuth.php');
         parent::__construct();
         $this->app_type = 'Private'; # Partner
-        $this->oauth_callback = 'oob';
+        $this->c = 'oob';
         $this->user_agent = 'StaffBookks_Private';
         $this->signatures = array(
             'consumer_key' => 'U8PV3ETRIVPW7F6NVCP7BICHBIT4QS',
             'shared_secret' => '6CHG5QVKWGREAYMCW23BHC6KDBZZW3',
+			# kaushtuv demo
+			#'consumer_key' => 'JZEYYEKAQTL0YH0RFNPBAEQSX3U47E',
+			#'shared_secret' => 'XBZYMW0AKVVIQ1Z2PRXSHK0LVXBERE',
             // API versions
             'core_version' => '2.0',
             'payroll_version' => '1.0',
@@ -169,7 +172,7 @@ class Xero extends MX_Controller {
             return false;
         }
         $employee = $this->get_employee($external_id);
-        // var_dump($employee);
+		#echo '<pre>'.print_r($employee,true).'</pre>';exit;
         $dob = '';
         if ($staff['dob'] && $staff['dob'] != '0000-00-00') {
             $dob = $staff['dob'];
@@ -179,21 +182,51 @@ class Xero extends MX_Controller {
         if (!$city) { $city = 'Not Specified'; }
 
         $super = '';
-        if (isset($employee['SuperMemberships']) && count($employee['SuperMemberships']) > 0)
+        if (isset($employee['SuperMemberships']['SuperMembership']))
         {
-            $super = "<SuperMemberships>
-                            <SuperMembership>
-                                <SuperMembershipID>" . $employee['SuperMemberships']['SuperMembership']['SuperMembershipID'] . "</SuperMembershipID>
-                                <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
-                                <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-                            </SuperMembership>
-                        </SuperMemberships>";
+			
+			# check for multiple super in xero
+			$xero_super_accounts = $employee['SuperMemberships'];
+			if(isset($employee['SuperMemberships']['SuperMembership'][0])){
+				$xero_super_accounts = $employee['SuperMemberships']['SuperMembership'];
+			}
+			$super .= "<SuperMemberships>";
+			$super_set = false; # to check while looping if a super fund has been set
+			foreach($xero_super_accounts as $sup_account) {
+				# since staffbooks do not support multiple super and hence no primary key to use, we have to make lemonade with what we have
+				if($sup_account['SuperFundID'] == $staff['s_external_id'] && !$super_set){
+					# found a matching super fund provider, and we are going to update it
+					$super_set = true;
+					$super .= "<SuperMembership>
+									<SuperMembershipID>" . $sup_account['SuperMembershipID'] . "</SuperMembershipID>
+									<SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+									<EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+								</SuperMembership>";
+				}else{
+					$super .= "<SuperMembership>
+									<SuperMembershipID>" . $sup_account['SuperMembershipID'] . "</SuperMembershipID>
+									<SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+									<EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+								</SuperMembership>";
+				}
+						
+			 }
+			 $super .= "</SuperMemberships>";
         }
         $bank_accounts = '';
-        if (isset($employee['BankAccounts']) && count($employee['BankAccounts']) > 0)
+	
+        if (isset($employee['BankAccounts']['BankAccount']))
         {
             $bank_accounts .= "<BankAccounts>";
-            foreach($employee['BankAccounts']['BankAccount'] as $account) {
+			
+			# check if staff has more than one bank accoun in xero
+			$emp_bank_accounts = $employee['BankAccounts'];
+			if(isset($employee['BankAccounts']['BankAccount'][0])){
+				$emp_bank_accounts = $employee['BankAccounts']['BankAccount'];
+			}
+			
+            foreach($emp_bank_accounts as $account) {
+				
                 if (isset($account['Remainder']) && $account['Remainder'] == "true") {
                     $bank_accounts .= "
                             <BankAccount>
@@ -217,13 +250,44 @@ class Xero extends MX_Controller {
             }
             $bank_accounts .= "
                 </BankAccounts>";
-        }
+
+				
+		}else{
+			# if no bank account has been set
+			$bank_accounts = "<BankAccounts>
+								<BankAccount>
+									<StatementText>Saving</StatementText>
+									<AccountName>" . $staff['f_acc_name'] . "</AccountName>
+									<BSB>" . $staff['f_bsb'] . "</BSB>
+									<AccountNumber>" . $staff['f_acc_number'] . "</AccountNumber>
+									<Remainder>true</Remainder>
+								</BankAccount>
+							</BankAccounts>";	
+		}
+	
+		
+		# staff tfn - it looks like xero validates TFN - when i added my real TFN it worked but any garbage TFN was not added
+		$tax = '';
+		if($staff['f_tfn']){		
+			$tax = "
+				<TaxDeclaration>
+					<TFNPendingOrExemptionHeld>false</TFNPendingOrExemptionHeld>
+					<AustralianResidentForTaxPurposes>" . ($staff['f_aus_resident'] ? 'true' : 'false') . "</AustralianResidentForTaxPurposes>
+					<TaxFreeThresholdClaimed>" . ($staff['f_tax_free_threshold'] ? 'true' : 'false') . "</TaxFreeThresholdClaimed>
+					<HasHELPDebt>" . ($staff['f_help_debt'] ? 'true' : 'false') . "</HasHELPDebt>
+					<TaxFileNumber>" . $staff['f_tfn'] . "</TaxFileNumber>
+					<EmploymentBasis>" . (isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'LABOURHIRE') . "</EmploymentBasis>
+				</TaxDeclaration>
+				";
+		}	
+		
 
         $xml = "<Employees>
                     <Employee>
                         <EmployeeID>$external_id</EmployeeID>
                         <FirstName>" . $staff['first_name'] . "</FirstName>
                         <LastName>" . $staff['last_name'] . "</LastName>
+						<Email>" . $staff['email_address'] . "</Email>
                         <DateOfBirth>$dob</DateOfBirth>
                         <Status>ACTIVE</Status>
                         <HomeAddress>
@@ -233,28 +297,32 @@ class Xero extends MX_Controller {
                             <PostalCode>" . $staff['postcode'] . "</PostalCode>
                             <Country>" . $staff['country'] . "</Country>
                         </HomeAddress>
-
-                        <TaxDeclaration>
-                            <AustralianResidentForTaxPurposes>" . ($staff['f_aus_resident'] ? 'true' : 'false') . "</AustralianResidentForTaxPurposes>
-                            <TaxFreeThresholdClaimed>" . ($staff['f_tax_free_threshold'] ? 'true' : 'false') . "</TaxFreeThresholdClaimed>
-                            <HasHELPDebt>" . ($staff['f_help_debt'] ? 'true' : 'false') . "</HasHELPDebt>
-                            <TaxFileNumber>" . $staff['f_tfn'] . "</TaxFileNumber>
-                            <EmploymentBasis>" . $employee['TaxDeclaration']['EmploymentBasis'] . "</EmploymentBasis>
-                        </TaxDeclaration>
+						$tax	
                         $bank_accounts
                         $super
                     </Employee>
                 </Employees>";
-        // var_dump($xml); die();
+        #var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
-        // var_dump($response);
+        #var_dump($response);
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
-            // var_dump($result['Employee']);
+            #var_dump($result['Employee']);exit;
             return $result['Employee'];
         }
+		
+		# validation error 
+		if ($this->XeroOAuth->response['code'] == 400){
+			# We have only check on TFN for now, later we need to parse into each array to get all errors
+			
+			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
+			var_dump($result['Employee']);exit;return;
+			#echo json_encode(array('ok' => false, 'error_id' => 'tfn_number', 'msg' => 'Invalid Tax File Number (TFN)'));
+			#exit;return;
+		}
         return false;
     }
 

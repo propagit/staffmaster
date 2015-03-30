@@ -2492,6 +2492,7 @@ CREATE TABLE IF NOT EXISTS `user_staffs` (
   `last_worked_date` datetime NOT NULL COMMENT 'the last date the staff worked on a job',
   `time_sheets_in_payrun` int(11) NOT NULL COMMENT 'number of unpaid time sheet in the payrun',
   `welcome_email_sent` enum('yes','no') NOT NULL DEFAULT 'no',
+  `default_payrate_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`staff_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
