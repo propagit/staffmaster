@@ -252,6 +252,7 @@ class Ajax extends MX_Controller {
 
 
 		$timesheets = $this->payrun_model->get_payrun_timesheets($type);
+
 		if ($platform == 'myob')
 		{
 			foreach($timesheets as $timesheet)
@@ -322,6 +323,7 @@ class Ajax extends MX_Controller {
 			'total_staffs' => $total_staffs,
 			'total_timesheets' => count($timesheets)
 		);
+	
 		$payrun_id = $this->payrun_model->create_payrun($data);
 		foreach($timesheets as $timesheet) {
 			$this->payrun_model->add_timesheet_to_payrun($timesheet['timesheet_id'], $payrun_id);
@@ -361,10 +363,10 @@ class Ajax extends MX_Controller {
 			}
 			else if ($platform == 'xero')
 			{
-				// $result = modules::run('api/xero/create_timesheets', $payrun_id);
-				// if ($result) {
-				// 	$pushed_msg = '<p>' . count($timesheets) . ' time sheets have been pushed to Xero successfully!</p>';
-				// }
+				 $result = modules::run('api/xero/create_timesheets', $payrun_id);
+				 if ($result) {
+				 	$pushed_msg = '<p>' . count($timesheets) . ' time sheets have been pushed to Xero successfully!</p>';
+				 }
 			}
 
 			echo json_encode(array(
