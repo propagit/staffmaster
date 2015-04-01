@@ -20,11 +20,13 @@ class Xero extends MX_Controller {
         $this->c = 'oob';
         $this->user_agent = 'StaffBookks_Private';
         $this->signatures = array(
-            'consumer_key' => 'U8PV3ETRIVPW7F6NVCP7BICHBIT4QS',
-            'shared_secret' => '6CHG5QVKWGREAYMCW23BHC6KDBZZW3',
-			# kaushtuv demo
-			#'consumer_key' => 'JZEYYEKAQTL0YH0RFNPBAEQSX3U47E',
-			#'shared_secret' => 'XBZYMW0AKVVIQ1Z2PRXSHK0LVXBERE',
+			'consumer_key' => $this->config_model->get('xero_consumer_key'),
+            'shared_secret' => $this->config_model->get('xero_shared_secret'),
+			# demo
+            #'consumer_key' => 'U8PV3ETRIVPW7F6NVCP7BICHBIT4QS',
+            #'shared_secret' => '6CHG5QVKWGREAYMCW23BHC6KDBZZW3',
+			#$this->api_key = $this->config_model->get('myob_api_key');
+			#$this->api_secret = $this->config_model->get('myob_api_secret');
             // API versions
             'core_version' => '2.0',
             'payroll_version' => '1.0',
@@ -531,6 +533,9 @@ class Xero extends MX_Controller {
         $timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		$payrun = $this->payrun_model->get_payrun($payrun_id);
 		
+		# get payrates from zero
+		$xero_payrates = $this->get_payitems_by_name();
+		
 		# number of days in payrun
 		$date_diff = (strtotime($payrun['date_to']) - strtotime($payrun['date_from'])) / (60*60*24);
 		
@@ -546,94 +551,160 @@ class Xero extends MX_Controller {
 						<EndDate>" . $payrun['date_to']. "</EndDate>
 						<Status>Draft</Status>
 						<TimesheetLines>
-						 	<TimesheetLine>";
-						
+					";
+			
+			 # this returns an array for each staff's timesheet grouped by payrate			
 			 $line_arr = $this->sort_array($val,'payrate');	
-			 # echo '<pre>' . print_r($line_arr,true) . '</pre>';
+			 
+			 # the key for this array is the payrate, which we will use to get the payrate id or EarningsRateID in xero
 			 foreach($line_arr as $k => $v){
-				foreach($v as $line){
-					$xml .= "
-							<EarningsRateID>" . $xero_payrates[$k] . "</EarningsRateID>
-								<NumberOfUnits>";	
-								for($i = 0; $i < $date_diff; $i++){
-									if($line['job_date'] == date('Y-m-d',strtotime($payrun['date_from'] . "+$i days"))){
-											$xml .= "<NumberOfUnit>" . ( $line['total_minutes']/60 ) . " </NumberOfUnit>";		
-										}else{
-											$xml .= "<NumberOfUnit>0.00</NumberOfUnit>";	
-										}
-								} 	
-					$xml .= 		"</NumberOfUnits>";
-				} #foreach ($v as ..
-			} #foreach ($line_arr...)
+				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k]);
+			} #foreaeach ($line_arr...)
 				
-			 $xml .= "			
-			 				 </TimesheetLine>
-						</TimesheetLines>
-                	</Timesheet>
+			 $xml .= "	</TimesheetLines>
+                	  </Timesheet>
 					";
 			
 		}
+		
 		$final_xml = " <Timesheets>$xml</Timesheets>";
 		$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $final_xml);
-        var_dump($response);
+		#return var_dump($response);
+		if ($this->XeroOAuth->response['code'] == 200) {
+			$timesheet = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+			$result = json_decode(json_encode($timesheet->Timesheets), TRUE);
+
+			
+			$result_arr = $result;
+			if(isset($result['Timesheet'][0])){
+				$result_arr = $result['Timesheet'];
+			}
+			
+			
+			
+			$msg = array(
+							'msg' => 'Xero Push Successful',
+							'pay_period_to' => $payrun['date_to'],
+							'pay_period_from' => $payrun['date_from'] 
+						);
+			
+			foreach($result_arr as $t){
+				#echo $t['EmployeeID']."<br>".$t['TimesheetID'];
+				foreach($xero_arr as $key => $val){
+					if($t['EmployeeID'] == $key){
+						foreach($val as $v){
+							$this->payrun_model->update_synced($v['timesheet_id'], array(
+								'external_id' => $t['TimesheetID'],
+								'external_msg' => json_encode($msg)
+							));	
+						}
+					}
+				}
+			}
+		}
     }
 	
-	function xero_ts()
+	# for testing the payrun xml output
+	function _xero_ts()
 	{
-		$payrun_id = 3;
+		$payrun_id = 1;
 		$this->load->model('payrun/payrun_model');
         $timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		$payrun = $this->payrun_model->get_payrun($payrun_id);
 		
+		# get payrates from zero
+		$xero_payrates = $this->get_payitems_by_name();
 		
 		# number of days in payrun
 		$date_diff = (strtotime($payrun['date_to']) - strtotime($payrun['date_from'])) / (60*60*24);
 		
 		$xero_arr = $this->sort_array($timesheets,'external_staff_id');
-		
 		#echo '<pre>' . print_r($xero_arr,true) . '</pre>';exit;
 		$xml = "";
 		foreach($xero_arr as $key => $val){
-			$xml .= "
+			$xml = "
 					<Timesheet>
 						<EmployeeID>" . $key . "</EmployeeID>
 						<StartDate>" . $payrun['date_from'] . "</StartDate>
 						<EndDate>" . $payrun['date_to']. "</EndDate>
 						<Status>Draft</Status>
 						<TimesheetLines>
-						 	<TimesheetLine>";
-						
+				    ";
+			
+			 # this returns an array for each staff's timesheet grouped by payrate			
 			 $line_arr = $this->sort_array($val,'payrate');	
-			 # echo '<pre>' . print_r($line_arr,true) . '</pre>';
+			 
+			 # the key for this array is the payrate, which we will use to get the payrate id or EarningsRateID in xero
 			 foreach($line_arr as $k => $v){
-				foreach($v as $line){
-					$xml .= "
-							<EarningsRateID>" . $xero_payrates[$k] . "</EarningsRateID>
-								<NumberOfUnits>";
-									
-								for($i = 0; $i < $date_diff; $i++){
-									if($line['job_date'] == date('Y-m-d',strtotime($payrun['date_from'] . "+$i days"))){
-											$xml .= "
-											<NumberOfUnit>" . ( $line['total_minutes']/60 ) . " </NumberOfUnit>";		
-										}else{
-											$xml .= "
-											<NumberOfUnit>0.00</NumberOfUnit>";	
-										}
-								} 	
-					$xml .= 		"</NumberOfUnits>";
-				}
-			} #foreaeach ($line_arr...)
+				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k] );
+			 } #foreaeach ($line_arr...)
 				
-			 $xml .= "			
-			 				 </TimesheetLine>
+			 $xml .= "	 
 						</TimesheetLines>
                 	</Timesheet>
 					";
 			
 		}
-		echo $xml;
-		#echo '<pre>' . print_r($xml,true) . '</pre>';
-		# var_dump($timesheets);
+		
+		$final_xml = " <Timesheets>$xml</Timesheets>";
+		$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $final_xml);
+		#return var_dump($response);
+		if ($this->XeroOAuth->response['code'] == 200) {
+			$timesheet = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+			$result = json_decode(json_encode($timesheet->Timesheets), TRUE);
+			
+			
+			$result_arr = $result;
+			if(isset($result['Timesheet'][0])){
+				$result_arr = $result['Timesheet'];
+			}
+			
+			$msg = "Payrun Period - " . $payrun['date_from'] . "-" . $payrun['date_to'];
+			
+			foreach($result_arr as $t){
+				#echo $t['EmployeeID']."<br>".$t['TimesheetID'];
+				foreach($xero_arr as $key => $val){
+					if($t['EmployeeID'] == $key){
+						foreach($val as $v){
+							$this->payrun_model->update_synced($v['timesheet_id'], array(
+								'external_id' => $msg . ". Ext ID: " . $t['TimesheetID'],
+								'external_msg' => 'OK'
+							));	
+						}
+					}
+				}
+			}
+			
+		}
+		/*if ($this->XeroOAuth->response['code'] == 400) {
+			$result = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+			$error = json_decode(json_encode($result), TRUE);
+			
+		}*/
+	
+		
+	}
+	
+	function create_number_of_units($timesheet,$no_of_days,$payrun_start_date,$xero_earning_rate_id)
+	{
+		
+		$no_of_units = array();
+		for($i = 0; $i <= $no_of_days; $i++){
+			$no_of_units[$i] = "<NumberOfUnit>0.00</NumberOfUnit>";	
+			foreach($timesheet as $line){
+				if($line['job_date'] == date('Y-m-d',strtotime($payrun_start_date . "+$i days"))){
+					$no_of_units[$i] = "<NumberOfUnit>" . ( $line['total_minutes']/60 ) . "</NumberOfUnit>";		
+				}
+			} 					
+		}
+		$units = implode("",$no_of_units);
+		$xml = "<TimesheetLine>
+					<EarningsRateID>" . $xero_earning_rate_id . "</EarningsRateID>
+						<NumberOfUnits>
+							$units
+						</NumberOfUnits>
+				</TimesheetLine>";
+		return $xml;
 	}
 	
 	# sorts timesheet by key
@@ -647,6 +718,70 @@ class Xero extends MX_Controller {
 		
 	}
 	
+	function test_ts()
+	{
+	
+				
+				#$xero_payrates = $this->get_payitems_by_name();
+				#print_r($xero_payrates);exit;
+		/*$xml = "<Timesheets>
+					<Timesheet>
+						<EmployeeID>83252810-507e-477c-953e-6fe5da932d0c</EmployeeID>
+						<StartDate>2015-03-15</StartDate>
+						<EndDate>2015-03-21</EndDate>
+						<Status>Draft</Status>
+						<TimesheetLines>
+							<TimesheetLine>
+								<EarningsRateID>845779c7-bf3c-4ebe-a1cc-89bc3eb50345</EarningsRateID>
+									<NumberOfUnits>
+										<NumberOfUnit>8.00</NumberOfUnit>
+										<NumberOfUnit>0.00</NumberOfUnit>
+										<NumberOfUnit>0.00</NumberOfUnit>
+										<NumberOfUnit>0.00</NumberOfUnit>
+										<NumberOfUnit>0.00</NumberOfUnit>
+										<NumberOfUnit>7.00</NumberOfUnit>
+										<NumberOfUnit>0.00</NumberOfUnit>
+									</NumberofUnits>
+							</TimesheetLine>	
+						</TimesheetLines>
+                	  </Timesheet>
+					</Timesheets>";*/
+		$xml = "<Timesheets>
+                <Timesheet>
+                    <EmployeeID>83252810-507e-477c-953e-6fe5da932d0c</EmployeeID>
+                    <StartDate>2015-03-15</StartDate>
+                    <EndDate>2015-03-21</EndDate>
+                    <Status>Draft</Status>
+                    <TimesheetLines>
+                        <TimesheetLine>
+                            <EarningsRateID>845779c7-bf3c-4ebe-a1cc-89bc3eb50345</EarningsRateID>
+                            <NumberOfUnits>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>8.00</NumberOfUnit>
+                                <NumberOfUnit>0.00</NumberOfUnit>
+                                <NumberOfUnit>0.00</NumberOfUnit>
+                            </NumberofUnits>
+                        </TimesheetLine>
+                    </TimesheetLines>
+                </Timesheet>
+            </Timesheets>";
+		$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $xml);
+
+			
+			if ($this->XeroOAuth->response['code'] == 400) {
+				$result = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+				$error = json_decode(json_encode($result), TRUE);
+				$this->payrun_model->update_synced($timesheet['timesheet_id'], array(
+					'external_id' => '',
+					'external_msg' => $error['Message']
+				));
+			}
+	}
+	
+	# not in current use
     function _add_timesheet($timesheet)
     {
         $xml =

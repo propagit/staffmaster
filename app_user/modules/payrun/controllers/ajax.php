@@ -272,6 +272,24 @@ class Ajax extends MX_Controller {
 		}
 		if ($platform == 'xero')
 		{
+			
+			# check if all timesheet jobdate falls on the payrun period
+			foreach($timesheets as $timesheet)
+			{
+				if($timesheet['job_date'] > $date_to || $timesheet['job_date'] < $date_from){
+
+					echo json_encode(array(
+						'ok' => true,
+						'export' => false,
+						'pushed_ok' => false,
+						'pushed_msg' => "<div class='list'><p>One or more job dates is out of range for <br>This pay period (" . $date_from. " - " . $date_to. "). <br>Please remove these timesheets to proceed.</p></div>"
+					));
+					return;	
+				}
+				
+			}
+
+			
 			$not_found_pay_items = array();
 			foreach($timesheets as $timesheet)
 			{
