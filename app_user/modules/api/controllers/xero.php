@@ -25,8 +25,6 @@ class Xero extends MX_Controller {
 			# demo
             #'consumer_key' => 'U8PV3ETRIVPW7F6NVCP7BICHBIT4QS',
             #'shared_secret' => '6CHG5QVKWGREAYMCW23BHC6KDBZZW3',
-			#$this->api_key = $this->config_model->get('myob_api_key');
-			#$this->api_secret = $this->config_model->get('myob_api_secret');
             // API versions
             'core_version' => '2.0',
             'payroll_version' => '1.0',
@@ -718,107 +716,36 @@ class Xero extends MX_Controller {
 		
 	}
 	
-	function test_ts()
+	function _get_staff_csv()
 	{
-	
-				
-				#$xero_payrates = $this->get_payitems_by_name();
-				#print_r($xero_payrates);exit;
-		/*$xml = "<Timesheets>
-					<Timesheet>
-						<EmployeeID>83252810-507e-477c-953e-6fe5da932d0c</EmployeeID>
-						<StartDate>2015-03-15</StartDate>
-						<EndDate>2015-03-21</EndDate>
-						<Status>Draft</Status>
-						<TimesheetLines>
-							<TimesheetLine>
-								<EarningsRateID>845779c7-bf3c-4ebe-a1cc-89bc3eb50345</EarningsRateID>
-									<NumberOfUnits>
-										<NumberOfUnit>8.00</NumberOfUnit>
-										<NumberOfUnit>0.00</NumberOfUnit>
-										<NumberOfUnit>0.00</NumberOfUnit>
-										<NumberOfUnit>0.00</NumberOfUnit>
-										<NumberOfUnit>0.00</NumberOfUnit>
-										<NumberOfUnit>7.00</NumberOfUnit>
-										<NumberOfUnit>0.00</NumberOfUnit>
-									</NumberofUnits>
-							</TimesheetLine>	
-						</TimesheetLines>
-                	  </Timesheet>
-					</Timesheets>";*/
-		$xml = "<Timesheets>
-                <Timesheet>
-                    <EmployeeID>83252810-507e-477c-953e-6fe5da932d0c</EmployeeID>
-                    <StartDate>2015-03-15</StartDate>
-                    <EndDate>2015-03-21</EndDate>
-                    <Status>Draft</Status>
-                    <TimesheetLines>
-                        <TimesheetLine>
-                            <EarningsRateID>845779c7-bf3c-4ebe-a1cc-89bc3eb50345</EarningsRateID>
-                            <NumberOfUnits>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>0.00</NumberOfUnit>
-                                <NumberOfUnit>0.00</NumberOfUnit>
-                            </NumberofUnits>
-                        </TimesheetLine>
-                    </TimesheetLines>
-                </Timesheet>
-            </Timesheets>";
-		$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $xml);
+		$staff = $this->get_employees();
 
-			
-			if ($this->XeroOAuth->response['code'] == 400) {
-				$result = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
-				$error = json_decode(json_encode($result), TRUE);
-				$this->payrun_model->update_synced($timesheet['timesheet_id'], array(
-					'external_id' => '',
-					'external_msg' => $error['Message']
-				));
-			}
+		$csvname = 'anderson_staff.csv';
+		
+		header('Content-type: application/csv; charset=utf-8;');
+        header("Content-Disposition: attachment; filename=$csvname");
+		
+		$fp = fopen("php://output", 'w');
+		
+		$headings = array(
+								'EmployeeID',
+								'FirstName',
+								'LastName',
+								'Email'
+							);
+		
+		fputcsv($fp,$headings);
+		
+		foreach($staff as $s){
+			fputcsv($fp,
+						array(
+							isset($s['EmployeeID']) ? $s['EmployeeID'] : 'NA',
+							isset($s['FirstName']) ? $s['FirstName'] : 'NA',
+							isset($s['LastName']) ? $s['LastName'] : 'NA',
+							isset($s['Email']) ? $s['Email'] : 'NA'
+							)
+					);	
+		}
+		fclose($fp);
 	}
-	
-	# not in current use
-    function _add_timesheet($timesheet)
-    {
-        $xml =
-            "<Timesheets>
-                <Timesheet>
-                    <EmployeeID>b85e47b3-a7d5-4d52-9382-e7f027132fa1</EmployeeID>
-                    <StartDate>2015-03-15</StartDate>
-                    <EndDate>2015-03-28</EndDate>
-                    <Status>Draft</Status>
-                    <TimesheetLines>
-                        <TimesheetLine>
-                            <EarningsRateID>845779c7-bf3c-4ebe-a1cc-89bc3eb50345</EarningsRateID>
-                            <NumberOfUnits>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>0.00</NumberOfUnit>
-                                <NumberOfUnit>0.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>8.00</NumberOfUnit>
-                                <NumberOfUnit>0.00</NumberOfUnit>
-                                <NumberOfUnit>0.00</NumberOfUnit>
-                            </NumberOfUnits>
-                        </TimesheetLine>
-                    </TimesheetLines>
-                </Timesheet>
-            </Timesheets>";
-        // var_dump($xml); die();
-        $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $xml);
-        var_dump($response);
-        if ($this->XeroOAuth->response['code'] == 200) {
-
-        }
-    }
 }

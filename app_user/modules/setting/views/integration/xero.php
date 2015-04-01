@@ -1,4 +1,12 @@
+<? # First check if consumer key and shared secret key has been set
+if (!$this->config_model->get('xero_consumer_key') || !$this->config_model->get('xero_shared_secret')) 
+{ ?>
+	
+	<div class="alert alert-warning">
+		Please contact system administrator to set up XERO Integration
+	</div>
 
+<? } else{ ?> 
 <div class="alert alert-success">
     Your Xero Account is connected successfully!
 </div>
@@ -111,3 +119,5 @@ $(function(){
     })
 })
 </script>
+
+<?php } ?>
