@@ -341,7 +341,7 @@ class Xero extends MX_Controller {
 			#$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
 			#var_dump($result['Employee']);exit;return;
 			echo json_encode(array('ok' => false, 'error_id' => 'tfn_number', 'msg' => 'Invalid Tax File Number (TFN)'));
-			exit;return;
+			return;
 		}
         return false;
     }
