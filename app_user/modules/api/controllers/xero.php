@@ -127,8 +127,9 @@ class Xero extends MX_Controller {
         }
         $city = $staff['city'];
         if (!$city) { $city = $staff['suburb']; }
-        if (!$city) { $city = 'Not Specified'; }
-        $xml = "<Employees>
+        if (!$city) { $city = 'Not Specified'; }	
+	
+		$xml = "<Employees>
                     <Employee>
                         <FirstName>" . $staff['first_name'] . "</FirstName>
                         <LastName>" . $staff['last_name'] . "</LastName>
@@ -136,20 +137,20 @@ class Xero extends MX_Controller {
                         <Title>" . $staff['title'] . "</Title>
                         <DateOfBirth>$dob</DateOfBirth>
                         <Gender>" . ucwords($staff['gender']) . "</Gender>
-                        <Phone>" . $staff['phone'] . "</Phone>
-                        <Mobile>" . $staff['mobile'] . "</Mobile>
+                        <Phone>" . ($staff['phone'] ? $staff['phone'] : "Not Specified" ) . "</Phone>
+                        <Mobile>" . ($staff['mobile'] ? $staff['mobile'] : "Not Specified" ) . "</Mobile>
                         <HomeAddress>
-                            <AddressLine1>" . $staff['address'] . "</AddressLine1>
+                            <AddressLine1>" . ($staff['address'] ? $staff['address'] : "Not Specified") . "</AddressLine1>
                             <City>$city</City>
-                            <Region>" . $staff['state'] . "</Region>
-                            <PostalCode>" . $staff['postcode'] . "</PostalCode>
-                            <Country>" . $staff['country'] . "</Country>
+                            <Region>" . ($staff['state'] ? $staff['state'] : "VIC") . "</Region>
+                            <PostalCode>" . ($staff['postcode'] ? $staff['postcode'] : "0000") . "</PostalCode>
+                            <Country>" . ($staff['country'] ? $staff['country'] : "Not Specified") . "</Country>
                         </HomeAddress>
                     </Employee>
                 </Employees>";
-
+				
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
-
+		
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 
@@ -157,9 +158,9 @@ class Xero extends MX_Controller {
             // var_dump($result['Employee']);
 
             $this->load->model('staff/staff_model');
-            return $this->staff_model->update_staff($user_id, array('external_staff_id' => $result['Employee']['EmployeeID']));
+            return $this->staff_model->update_staff($user_id, array('external_staff_id' => $result['Employee']['EmployeeID']),true);
 
-            return $result['Employee'];
+            #return $result['Employee'];
         }
         return false;
     }
@@ -309,11 +310,11 @@ class Xero extends MX_Controller {
                         <DateOfBirth>$dob</DateOfBirth>
                         <Status>ACTIVE</Status>
                         <HomeAddress>
-                            <AddressLine1>" . $staff['address'] . "</AddressLine1>
+                            <AddressLine1>" . ($staff['address'] ? $staff['address'] : "Not Specified") . "</AddressLine1>
                             <City>$city</City>
-                            <Region>" . $staff['state'] . "</Region>
-                            <PostalCode>" . $staff['postcode'] . "</PostalCode>
-                            <Country>" . $staff['country'] . "</Country>
+                            <Region>" . ($staff['state'] ? $staff['state'] : "VIC") . "</Region>
+                            <PostalCode>" . ($staff['postcode'] ? $staff['postcode'] : "0000") . "</PostalCode>
+                            <Country>" . ($staff['country'] ? $staff['country'] : "Not Specified") . "</Country>
                         </HomeAddress>
 						$tax	
                         $bank_accounts
@@ -322,7 +323,7 @@ class Xero extends MX_Controller {
                 </Employees>";
         # var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
-        #var_dump($response);
+        #var_dump($response);exit();
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 
@@ -339,7 +340,7 @@ class Xero extends MX_Controller {
 			#$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
 			#var_dump($result['Employee']);exit;return;
 			echo json_encode(array('ok' => false, 'error_id' => 'tfn_number', 'msg' => 'Invalid Tax File Number (TFN)'));
-			return;
+			exit;return;
 		}
         return false;
     }
