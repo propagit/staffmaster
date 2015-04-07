@@ -1614,7 +1614,44 @@ class Ajax extends MX_Controller {
 						'f_help_debt' => intval($employee['TaxDeclaration']['HasHELPDebt']),
 						'f_tfn' => isset($employee['TaxDeclaration']['TaxFileNumber']) ? $employee['TaxDeclaration']['TaxFileNumber'] : ''
 					);
-					if (count($employee['BankAccounts']) > 0) {
+					
+					if (isset($employee['BankAccounts']['BankAccount'])){
+						# check if staff has more than one bank accoun in xero
+						$emp_bank_accounts = $employee['BankAccounts'];
+						if(isset($employee['BankAccounts']['BankAccount'][0])){
+							$emp_bank_accounts = $employee['BankAccounts']['BankAccount'];
+						}
+						
+						foreach($emp_bank_accounts as $account) {
+							if (isset($account['Remainder']) && $account['Remainder']) {
+								$staff_data['f_acc_name'] = $account['AccountName'];
+								$staff_data['f_bsb'] = $account['BSB'];
+								$staff_data['f_acc_number'] = $account['AccountNumber'];
+							}
+						}
+						
+					}
+					
+					
+					if (isset($employee['SuperMemberships']['SuperMembership'])){
+						# check for multiple super in xero
+						$xero_super_accounts = $employee['SuperMemberships'];
+						if(isset($employee['SuperMemberships']['SuperMembership'][0])){
+							$xero_super_accounts = $employee['SuperMemberships']['SuperMembership'];
+							# check the employeer super
+							foreach($xero_super_accounts as $sup_account) {
+								# get first of the list and break
+								#$staff_data['s_choice'] = '';
+								$staff_data['s_external_id'] = $sup_account['SuperFundID'];
+								$staff_data['s_employee_id'] = $sup_account['EmployeeNumber'];
+								break;
+							}
+						}
+						
+						
+					}
+					
+					/*if (count($employee['BankAccounts']) > 0) {
 						foreach($employee['BankAccounts']['BankAccount'] as $account) {
 							if (isset($account['Remainder']) && $account['Remainder']) {
 								$staff_data['f_acc_name'] = $account['AccountName'];
@@ -1622,7 +1659,7 @@ class Ajax extends MX_Controller {
 								$staff_data['f_acc_number'] = $account['AccountNumber'];
 							}
 						}
-					}
+					}*/
 					// echo '<hr />Staff: '; var_dump($staff_data); echo '<br />';
 					$staff_id = $this->staff_model->insert_staff($staff_data, true);
 					$imported++;

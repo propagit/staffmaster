@@ -197,10 +197,10 @@ class Xero extends MX_Controller {
 		if($staff['gender']){
 			$staff_gender = "<Gender>" . strtoupper($staff['gender']) . "</Gender>";
 		}
-
+		
         $super = '';
-        if (isset($employee['SuperMemberships']['SuperMembership']))
-        {
+		# if super account is set on xero
+        if (isset($employee['SuperMemberships']['SuperMembership'])){
 			
 			# check for multiple super in xero
 			$xero_super_accounts = $employee['SuperMemberships'];
@@ -229,7 +229,18 @@ class Xero extends MX_Controller {
 						
 			 }
 			 $super .= "</SuperMemberships>";
-        }
+        }else{
+			# if super details is set on staffbooks push this details to xero
+			if($staff['s_external_id'] && $staff['s_employee_id']){
+				$super .= "<SuperMemberships>
+							<SuperMembership>
+							  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+							  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+							</SuperMembership>
+						  </SuperMemberships>";	
+			}
+		}
+		
         $bank_accounts = '';
 	
         if (isset($employee['BankAccounts']['BankAccount']))
@@ -321,7 +332,7 @@ class Xero extends MX_Controller {
                         $super
                     </Employee>
                 </Employees>";
-        # var_dump($xml); die();
+       	#var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
         #var_dump($response);exit();
         if ($this->XeroOAuth->response['code'] == 200) {
@@ -336,10 +347,18 @@ class Xero extends MX_Controller {
 		if ($this->XeroOAuth->response['code'] == 400){
 			# We have only check on TFN for now, later we need to parse into each array to get all errors
 			
-			#$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
-			#$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
+			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
+			
+			$xml = $this->XeroOAuth->response['response'];
+			#var_dump($xml);
+			$regex = "#<ValidationErrors><ValidationError><Message>(.*?)</Message></ValidationError></ValidationErrors>#";
+			$message = preg_match($regex, $xml, $errors);
+			#print_r($errors);
+			#var_dump($xml);
+			#var_dump($errors);exit;
 			#var_dump($result['Employee']);exit;return;
-			echo json_encode(array('ok' => false, 'error_id' => 'tfn_number', 'msg' => 'Invalid Tax File Number (TFN)'));
+			echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => $errors[1]));
 			exit;return;
 		}
         return false;
