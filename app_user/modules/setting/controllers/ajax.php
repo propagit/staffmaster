@@ -1587,15 +1587,15 @@ class Ajax extends MX_Controller {
 					'email_address' => isset($employee['Email']) ? $employee['Email'] : '',
 					'username' => isset($employee['Email']) ? $employee['Email'] : '',
 					'password' => '',
-					'title' => isset($employee['Title']) ? $employee['Title'] : '',
+					#'title' => isset($employee['Title']) ? $employee['Title'] : '',
 					'first_name' => $employee['FirstName'],
 					'last_name' => $employee['LastName'],
-					'address' => $employee['HomeAddress']['AddressLine1'],
+					'address' => isset($employee['HomeAddress']['AddressLine1']) ? $employee['HomeAddress']['AddressLine1'] : '',
 					'suburb' => isset($employee['HomeAddress']['AddressLine2']) ? $employee['HomeAddress']['AddressLine2'] : '',
-					'city' => $employee['HomeAddress']['City'],
-					'state' => $employee['HomeAddress']['Region'],
-					'postcode' => $employee['HomeAddress']['PostalCode'],
-					'country' => $employee['HomeAddress']['Country']
+					'city' => isset($employee['HomeAddress']['City']) ? $employee['HomeAddress']['City'] : '',
+					'state' => isset($employee['HomeAddress']['Region']) ? $employee['HomeAddress']['Region'] : '',
+					'postcode' => isset($employee['HomeAddress']['PostalCode']) ? $employee['HomeAddress']['PostalCode'] : '',
+					'country' => isset($employee['HomeAddress']['Country']) ? $employee['HomeAddress']['Country'] : ''
 				);
 				// echo '<hr />User: '; var_dump($user_data); echo '<br />';
 				// $user_id = 1;
@@ -1605,13 +1605,13 @@ class Ajax extends MX_Controller {
 					$staff_data = array(
 						'user_id' => $user_id,
 						'external_staff_id' => $employee['EmployeeID'],
-						'gender' => strtolower($employee['Gender']),
-						'dob' => date('Y-m-d', strtotime($employee['DateOfBirth'])),
+						'gender' => isset($employee['Gender']) ? strtolower($employee['Gender']) : '',
+						'dob' => isset($employee['DateOfBirth']) ? date('Y-m-d', strtotime($employee['DateOfBirth'])) : '',
 						'emergency_contact' => '',
 						'emergency_phone' => '',
-						'f_aus_resident' => intval($employee['TaxDeclaration']['AustralianResidentForTaxPurposes']),
-						'f_tax_free_threshold' => intval($employee['TaxDeclaration']['TaxFreeThresholdClaimed']),
-						'f_help_debt' => intval($employee['TaxDeclaration']['HasHELPDebt']),
+						'f_aus_resident' => (isset($employee['TaxDeclaration']['AustralianResidentForTaxPurposes']) && $employee['TaxDeclaration']['AustralianResidentForTaxPurposes'] == 'true') ? 1 : 0,
+						'f_tax_free_threshold' => (isset($employee['TaxDeclaration']['TaxFreeThresholdClaimed']) && $employee['TaxDeclaration']['TaxFreeThresholdClaimed'] == 'true') ? 1 : 0,
+						'f_help_debt' => (isset($employee['TaxDeclaration']['HasHELPDebt']) && $employee['TaxDeclaration']['HasHELPDebt'] == 'true') ? 1 : 0,
 						'f_tfn' => isset($employee['TaxDeclaration']['TaxFileNumber']) ? $employee['TaxDeclaration']['TaxFileNumber'] : ''
 					);
 					
@@ -1635,19 +1635,23 @@ class Ajax extends MX_Controller {
 					
 					if (isset($employee['SuperMemberships']['SuperMembership'])){
 						# check for multiple super in xero
-						$xero_super_accounts = $employee['SuperMemberships'];
+						$xero_super_account = $employee['SuperMemberships']['SuperMembership'];
 						if(isset($employee['SuperMemberships']['SuperMembership'][0])){
-							$xero_super_accounts = $employee['SuperMemberships']['SuperMembership'];
-							# check the employeer super
-							foreach($xero_super_accounts as $sup_account) {
-								# get first of the list and break
-								#$staff_data['s_choice'] = '';
-								$staff_data['s_external_id'] = $sup_account['SuperFundID'];
-								$staff_data['s_employee_id'] = $sup_account['EmployeeNumber'];
-								break;
-							}
+							$xero_super_account = $employee['SuperMemberships']['SuperMembership'][0];
 						}
 						
+						# check if company has set a default super account
+						$id = modules::run('setting/superinformasi', 'super_fund_external_id');
+						
+						
+						if(isset($xero_super_account['SuperFundID'])){
+							$staff_data['s_external_id'] = isset($xero_super_account['SuperFundID']) ? $xero_super_account['SuperFundID'] : '';
+							$staff_data['s_employee_id'] = isset($xero_super_account['EmployeeNumber']) ? $xero_super_account['EmployeeNumber'] : '';
+							$staff_data['s_choice'] = 'own';
+							if($id && ($xero_super_account['SuperFundID'] == $id)){
+								$staff_data['s_choice'] = 'employer';
+							}
+						}
 						
 					}
 					

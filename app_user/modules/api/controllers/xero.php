@@ -25,6 +25,7 @@ class Xero extends MX_Controller {
 			# demo
             #'consumer_key' => 'U8PV3ETRIVPW7F6NVCP7BICHBIT4QS',
             #'shared_secret' => '6CHG5QVKWGREAYMCW23BHC6KDBZZW3',
+			
             // API versions
             'core_version' => '2.0',
             'payroll_version' => '1.0',
@@ -86,13 +87,31 @@ class Xero extends MX_Controller {
     }
 
     function get_employees() {
-        $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array());
+       /* $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array());
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
             return $result['Employee'];
         }
-        return null;
+        return null;*/
+		$count = 1;
+		$staff = array();
+		$more_staff = true;
+		
+		while($more_staff){
+			$response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array('page' => $count));
+			if ($this->XeroOAuth->response['code'] == 200) {
+				$employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+				$result = json_decode(json_encode($employees->Employees[0]), TRUE);
+				if(isset($result['Employee'])){
+					$staff = array_merge($staff,$result['Employee']);
+				}else{
+					$more_staff = false;	
+				}
+			}
+			$count++;
+		}
+		return $staff;
     }
 
     function read_employees() {
@@ -105,6 +124,7 @@ class Xero extends MX_Controller {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
             return $result['Employee'];
+			#var_dump($result['Employee']);
         }
         return null;
     }
@@ -501,8 +521,6 @@ class Xero extends MX_Controller {
         }
     }
 	
-	# add a check so that any jobs that does not falls on the pay period is not added here
-	# still to do
 	
     function validate_timesheet_employee_payitems($timesheet_id)
     {
@@ -763,10 +781,10 @@ class Xero extends MX_Controller {
 		
 	}
 	
-	function _get_staff_csv()
+	function get_staff_csv()
 	{
 		$staff = $this->get_employees();
-
+		
 		$csvname = 'anderson_staff.csv';
 		
 		header('Content-type: application/csv; charset=utf-8;');
