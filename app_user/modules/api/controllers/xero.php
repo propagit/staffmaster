@@ -199,47 +199,75 @@ class Xero extends MX_Controller {
 		}
 		
         $super = '';
-		# if super account is set on xero
-        if (isset($employee['SuperMemberships']['SuperMembership'])){
-			
+		
+		# check if staff has super set up in xero
+		$super_membership_id = '';
+		if (isset($employee['SuperMemberships']['SuperMembership'])){
+					
 			# check for multiple super in xero
 			$xero_super_accounts = $employee['SuperMemberships'];
 			if(isset($employee['SuperMemberships']['SuperMembership'][0])){
 				$xero_super_accounts = $employee['SuperMemberships']['SuperMembership'];
 			}
-			$super .= "<SuperMemberships>";
-			$super_set = false; # to check while looping if a super fund has been set
 			foreach($xero_super_accounts as $sup_account) {
-				# since staffbooks do not support multiple super and hence no primary key to use, we have to make lemonade with what we have
-				if($sup_account['SuperFundID'] == $staff['s_external_id'] && !$super_set){
-					# found a matching super fund provider, and we are going to update it
-					$super_set = true;
-					$super .= "<SuperMembership>
-									<SuperMembershipID>" . $sup_account['SuperMembershipID'] . "</SuperMembershipID>
-									<SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
-									<EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-								</SuperMembership>";
-				}else{
-					$super .= "<SuperMembership>
-									<SuperMembershipID>" . $sup_account['SuperMembershipID'] . "</SuperMembershipID>
-									<SuperFundID>" . $sup_account['SuperFundID'] . "</SuperFundID>
-									<EmployeeNumber>" . $sup_account['EmployeeNumber'] . "</EmployeeNumber>
-								</SuperMembership>";
-				}
-						
+				# get super membership id of the first one
+				$super_membership_id = $sup_account['SuperMembershipID'];
+				break; 	
 			 }
-			 $super .= "</SuperMemberships>";
-        }else{
-			# if super details is set on staffbooks push this details to xero
+		}	
+			
+		 # check if staff has chosen his own super fund
+		 if($staff['s_choice'] == 'own'){
 			if($staff['s_external_id'] && $staff['s_employee_id']){
-				$super .= "<SuperMemberships>
-							<SuperMembership>
-							  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
-							  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-							</SuperMembership>
-						  </SuperMemberships>";	
+				
+				# if super account is set on xero
+				if ($super_membership_id){
+					$super .= "<SuperMemberships>
+								<SuperMembership>
+								  <SuperMembershipID>" . $super_membership_id . "</SuperMembershipID>
+								  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+								  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+								</SuperMembership>
+							  </SuperMemberships>";
+	
+				}else{ 
+					# create new super on xero
+					$super .= "<SuperMemberships>
+								<SuperMembership>
+								  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+								  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+								</SuperMembership>
+							  </SuperMemberships>";	
+				}
 			}
-		}
+		  }else{
+				# if staff has chosen employer super fund i.e. s_choice == employer
+			  	$id = modules::run('setting/superinformasi', 'super_fund_external_id');
+				if ($id) {
+					if ($super_membership_id){
+					$super .= "<SuperMemberships>
+								<SuperMembership>
+									<SuperMembershipID>" . $super_membership_id . "</SuperMembershipID>
+									<SuperFundID>" . $id. "</SuperFundID>
+									<EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+								</SuperMembership>
+							  </SuperMemberships>";
+	
+					}else{ 
+						# create new super on xero
+						$super .= "<SuperMemberships>
+									<SuperMembership>
+									  <SuperFundID>" . $id . "</SuperFundID>
+									  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+									</SuperMembership>
+								  </SuperMemberships>";	
+					}
+				}else{
+					echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => 'Your employer has not set any default Super Funds. Please select your own super.'));
+					exit;return;	
+				}
+		  }
+	
 		
         $bank_accounts = '';
 	
@@ -294,9 +322,9 @@ class Xero extends MX_Controller {
 		}
 	
 		
-		# staff tfn - it looks like xero validates TFN - when i added my real TFN it worked but any garbage TFN was not added
+		# staff tfn - xero validates valid tfn
 		$tax = '';
-		if($staff['f_tfn']){		
+		if(trim($staff['f_tfn'])){		
 			$tax = "
 				<TaxDeclaration>
 					<TFNPendingOrExemptionHeld>false</TFNPendingOrExemptionHeld>
@@ -345,8 +373,7 @@ class Xero extends MX_Controller {
 		
 		# validation error 
 		if ($this->XeroOAuth->response['code'] == 400){
-			# We have only check on TFN for now, later we need to parse into each array to get all errors
-			
+						
 			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
 			
