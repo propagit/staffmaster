@@ -31,7 +31,7 @@ if ($platform == 'xero') {
 		<label class="col-md-2 control-label">Super Fund</label>
 		<label class="col-md-4 control-label">
 			<?=$super_fund['Name'];?>
-			<? if ($super_fund['EmployerNumber']) { ?>
+			<? if (isset($super_fund['EmployerNumber'])) { ?>
 			<br />Employer Membership Number: <?=$super_fund['EmployerNumber'];?>
 			<? } ?>
 		</label>
