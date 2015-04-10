@@ -178,6 +178,7 @@ class Ajax extends MX_Controller {
 		$data['payrun'] = $payrun;
 		$this->load->view('search_payrun/export_view', isset($data) ? $data : NULL);
 	}
+	
 	function exporting() {
 		$payrun_id = $this->input->post('payrun_id');
 		$export_id = $this->input->post('export_id');
@@ -313,7 +314,7 @@ class Ajax extends MX_Controller {
 			$employee_pay_items = array();
 			foreach($timesheets as $timesheet)
 			{
-				$errors = modules::run('api/xero/validate_timesheet_employee_payitems', $timesheet['timesheet_id']);
+				$errors = modules::run('api/xero/validate_timesheet_employee_payitems', $timesheet['timesheet_id'],$input['xero_payrun_id']);
 				$employee_pay_items = array_merge($errors, $employee_pay_items);
 			}
 			$employee_pay_items = array_unique($employee_pay_items);

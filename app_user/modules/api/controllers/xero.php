@@ -417,7 +417,7 @@ class Xero extends MX_Controller {
         if ($this->XeroOAuth->response['code'] == 200) {
             $payruns = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
             $result = json_decode(json_encode($payruns->PayRuns), TRUE);
-            return $result['PayRun'];
+            return isset($result['PayRun']) ? $result['PayRun'] : false;
         }
     }
 
@@ -435,6 +435,11 @@ class Xero extends MX_Controller {
             return $result['PayRun'];
         }
     }
+	
+	function read_payrun($id)
+	{
+		var_dump($this->get_payrun($id));	
+	}
 
     function get_payitems()
     {
@@ -522,7 +527,7 @@ class Xero extends MX_Controller {
     }
 	
 	
-    function validate_timesheet_employee_payitems($timesheet_id)
+    function validate_timesheet_employee_payitems($timesheet_id,$xero_payrun_id = '')
     {
         $timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
         $staff = modules::run('staff/get_staff', $timesheet['staff_id']);
@@ -532,22 +537,55 @@ class Xero extends MX_Controller {
             #$employee = $this->read_employee($staff['external_staff_id']);
 			$employee = $this->get_employee($staff['external_staff_id']);
 			
-            if ($employee) {
+			#echo '<pre>'.print_r($employee,true).'</pre>';exit;
+			
+            if ($employee) {				
+				# Check if employee has Pay calendar & OrdinaryEarningsRateID 
+				if(!isset($employee['PayrollCalendarID'])){
+					$errors[] = "<p>Payroll calender not set for " . $staff['first_name'] . " " . $staff['last_name'] . " on XERO</p>";
+				}else{
+					# Check if Pay Period falls under 
+					$cur_payrun = $this->get_payrun($xero_payrun_id);
+					if($cur_payrun['PayrollCalendarID'] != $employee['PayrollCalendarID']){
+						$errors[] = "<p>Payrun calender do not match the current Payroll for " . $staff['first_name'] . " " . $staff['last_name'] . " on XERO</p>";
+					}
+				}
+				
+				if(!isset($employee['OrdinaryEarningsRateID'])){
+					$errors[] = "<p>Ordinary Earning Rate not set for " . $staff['first_name'] . " " . $staff['last_name'] . " on XERO</p>";
+				}
+				
+				
                 $pay_items = $this->get_payitems();
-
-                # Extract employee earning ids
-                $earnings = array();
-                # Convert employee earning ids -> names
-                foreach($employee['PayTemplate']['EarningsLines']['EarningsLine'] as $earning_line)
-                {
-                    foreach($pay_items as $item)
-                    {
-                        if ($item['EarningsRateID'] == $earning_line['EarningsRateID'])
-                        {
-                            $earnings[] = $item['Name'];
-                        }
-                    }
-                }
+				# Extract employee earning ids
+				$earnings = array();
+				
+				# Check if any payrates has been set for this employee
+				if(isset($employee['PayTemplate']['EarningsLines']['EarningsLine'])){
+					
+					# Convert employee earning ids -> names
+					# Check if multiple payrates has been set for this employee in xero
+					if(isset($employee['PayTemplate']['EarningsLines']['EarningsLine'][0])){		
+						foreach($employee['PayTemplate']['EarningsLines']['EarningsLine'] as $earning_line)
+						{
+							foreach($pay_items as $item)
+							{
+								if ($item['EarningsRateID'] == $earning_line['EarningsRateID'])
+								{
+									$earnings[] = $item['Name'];
+								}
+							}
+						}
+					}else{
+						foreach($pay_items as $item)
+							{
+								if ($item['EarningsRateID'] == $employee['PayTemplate']['EarningsLines']['EarningsLine']['EarningsRateID'])
+								{
+									$earnings[] = $item['Name'];
+								}
+							}
+					}
+				}
 				
                 # Check if time sheet pay rate is in employee earnings
 
@@ -670,7 +708,7 @@ class Xero extends MX_Controller {
 	# for testing the payrun xml output
 	function _xero_ts()
 	{
-		$payrun_id = 1;
+		$payrun_id = 3;
 		$this->load->model('payrun/payrun_model');
         $timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		$payrun = $this->payrun_model->get_payrun($payrun_id);
@@ -715,14 +753,20 @@ class Xero extends MX_Controller {
 		if ($this->XeroOAuth->response['code'] == 200) {
 			$timesheet = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($timesheet->Timesheets), TRUE);
-			
+
 			
 			$result_arr = $result;
 			if(isset($result['Timesheet'][0])){
 				$result_arr = $result['Timesheet'];
 			}
 			
-			$msg = "Payrun Period - " . $payrun['date_from'] . "-" . $payrun['date_to'];
+			
+			
+			$msg = array(
+							'msg' => 'Xero Push Successful',
+							'pay_period_to' => $payrun['date_to'],
+							'pay_period_from' => $payrun['date_from'] 
+						);
 			
 			foreach($result_arr as $t){
 				#echo $t['EmployeeID']."<br>".$t['TimesheetID'];
@@ -730,14 +774,13 @@ class Xero extends MX_Controller {
 					if($t['EmployeeID'] == $key){
 						foreach($val as $v){
 							$this->payrun_model->update_synced($v['timesheet_id'], array(
-								'external_id' => $msg . ". Ext ID: " . $t['TimesheetID'],
-								'external_msg' => 'OK'
+								'external_id' => $t['TimesheetID'],
+								'external_msg' => json_encode($msg)
 							));	
 						}
 					}
 				}
 			}
-			
 		}
 		/*if ($this->XeroOAuth->response['code'] == 400) {
 			$result = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);

@@ -174,6 +174,9 @@ class Common extends MX_Controller {
 	{
 		$payruns = modules::run('api/xero/get_payruns');
 		$array = array();
+		if(!$payruns){
+			echo '<span class="text-danger">No payrun set on xero. Set a payrun(s) on xero to proceed.</span>';return;
+		}
 		foreach($payruns as $payrun)
 		{
 			$array[] = array(
