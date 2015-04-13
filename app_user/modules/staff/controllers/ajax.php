@@ -290,7 +290,7 @@ class Ajax extends MX_Controller {
 
 		# if user choose their own superannuation, then super fund name is mandatory
 		if(!$data['s_employee_id']){
-			echo json_encode(array('ok' => false, 'error_id' => 's_employee_id', 'msg' => 'Staff Membership Number'));
+			echo json_encode(array('ok' => false, 'error_id' => 's_employee_id', 'msg' => 'Staff Membership Number is required'));
 			return;
 		}
 		
