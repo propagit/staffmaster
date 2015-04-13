@@ -1,0 +1,2 @@
+INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`, `status`) VALUES (NULL, 'xero', 'payrun_abn', 'shift', 'XERO - ABN Export', '1');
+INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`, `status`) VALUES (NULL, 'xero', 'staff', '', 'XERO ABN - Suppliers', '1');

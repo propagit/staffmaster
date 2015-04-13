@@ -237,55 +237,57 @@ class Xero extends MX_Controller {
 		}	
 			
 		 # check if staff has chosen his own super fund
-		 if($staff['s_choice'] == 'own'){
-			if($staff['s_external_id'] && $staff['s_employee_id']){
-				
-				# if super account is set on xero
-				if ($super_membership_id){
-					$super .= "<SuperMemberships>
-								<SuperMembership>
-								  <SuperMembershipID>" . $super_membership_id . "</SuperMembershipID>
-								  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
-								  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-								</SuperMembership>
-							  </SuperMemberships>";
-	
-				}else{ 
-					# create new super on xero
-					$super .= "<SuperMemberships>
-								<SuperMembership>
-								  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
-								  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-								</SuperMembership>
-							  </SuperMemberships>";	
-				}
-			}
-		  }else{
-				# if staff has chosen employer super fund i.e. s_choice == employer
-			  	$id = modules::run('setting/superinformasi', 'super_fund_external_id');
-				if ($id) {
+		 if(trim($staff['s_employee_id'])){	
+			 if($staff['s_choice'] == 'own'){
+				if($staff['s_external_id'] && $staff['s_employee_id']){
+					
+					# if super account is set on xero
 					if ($super_membership_id){
-					$super .= "<SuperMemberships>
-								<SuperMembership>
-									<SuperMembershipID>" . $super_membership_id . "</SuperMembershipID>
-									<SuperFundID>" . $id. "</SuperFundID>
-									<EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
-								</SuperMembership>
-							  </SuperMemberships>";
-	
+						$super .= "<SuperMemberships>
+									<SuperMembership>
+									  <SuperMembershipID>" . $super_membership_id . "</SuperMembershipID>
+									  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
+									  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+									</SuperMembership>
+								  </SuperMemberships>";
+		
 					}else{ 
 						# create new super on xero
 						$super .= "<SuperMemberships>
 									<SuperMembership>
-									  <SuperFundID>" . $id . "</SuperFundID>
+									  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
 									  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
 									</SuperMembership>
 								  </SuperMemberships>";	
 					}
-				}else{
-					echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => 'Your employer has not set any default Super Funds. Please select your own super.'));
-					exit;return;	
 				}
+			  }else{
+					# if staff has chosen employer super fund i.e. s_choice == employer
+					$id = modules::run('setting/superinformasi', 'super_fund_external_id');
+					if ($id) {
+						if ($super_membership_id){
+						$super .= "<SuperMemberships>
+									<SuperMembership>
+										<SuperMembershipID>" . $super_membership_id . "</SuperMembershipID>
+										<SuperFundID>" . $id. "</SuperFundID>
+										<EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+									</SuperMembership>
+								  </SuperMemberships>";
+		
+						}else{ 
+							# create new super on xero
+							$super .= "<SuperMemberships>
+										<SuperMembership>
+										  <SuperFundID>" . $id . "</SuperFundID>
+										  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
+										</SuperMembership>
+									  </SuperMemberships>";	
+						}
+					}else{
+						echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => 'Your employer has not set any default Super Funds. Please select your own super.'));
+						exit;return;	
+					}
+			  }
 		  }
 	
 		
