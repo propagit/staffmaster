@@ -424,6 +424,7 @@ class Ajax extends MX_Controller {
 
 		$template = modules::run('export/get_template', $export_id);
 		$fields = modules::run('export/get_fields', $export_id);
+
 		if ($template['level'] == 'staff') {
 			$timesheets = $this->payrun_model->get_export_timesheets_by_staff($payrun_id);
 		}
@@ -551,6 +552,17 @@ class Ajax extends MX_Controller {
 
 					$value = str_replace('{hours}', $timesheet['total_minutes'] / 60, $value);
 					$value = str_replace('{job_date}', date($date_format, $timesheet['start_time']), $value);
+					
+					# check {taxable}
+					if($value == '{taxable}'){
+						# check if staff requires gst or not
+						$cur_staff = modules::run('staff/staff/get_staff',$timesheet['staff_id']);
+						if($cur_staff['f_require_gst']){
+							$value = str_replace('{taxable}', 'GST on Expenses', $value);	
+						}else{
+							$value = str_replace('{taxable}', 'GST Free Expenses', $value);	
+						}
+					}
 
 					$breaks = json_decode($timesheet['break_time']);
 					$total = 0;
@@ -604,6 +616,8 @@ class Ajax extends MX_Controller {
 					$value = str_replace('{payable_date}', date($date_format, strtotime($timesheet['payable_date'])), $value);
 					$value = str_replace('{hours}', $timesheet['total_minutes'] / 60, $value);
 					$value = str_replace('{total_amount}', $timesheet['total_amount'], $value);
+					$value = str_replace('{taxable}', 'EXEMPTEXPENSES', $value);	
+					
 
 					#$objPHPExcel->getActiveSheet()->SetCellValue(chr(97 + $i) . $row, $value);
 					if ($template['target'] == 'myob') {
