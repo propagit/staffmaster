@@ -319,11 +319,9 @@ class Ajax extends MX_Controller {
 										<p>
 										<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span><br>
 										(No data has been pushed)<br><br>
-										Xero returned the response<br><br>
-										</p>
-										
-										<p><i>Xero can't find following Pay Item(s):</i></p>
-										<ul><li>" . implode("</li><li>", $not_found_pay_items) . "</li></ul>
+										Xero returned the response<br>
+										<i>Xero can't find following Pay Item(s):</i></p>
+										<ul style='list-style:none;'><li>" . implode("</li><li>", $not_found_pay_items) . "</li></ul>
 										<p>
 										<strong>To proceed login to your Xero account and create the above pay items and try again <i class='fa fa-smile-o'></i></strong>
 										</p>
