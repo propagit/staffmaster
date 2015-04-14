@@ -289,7 +289,7 @@ class Ajax extends MX_Controller {
 								XERO returned the response<br>
 								<i>Time sheets in this payrun fall outside of the pay period <br>
 								(" . date('d M, Y',strtotime($date_from)) . " - " . date('d M, Y',strtotime($date_to)) . ")</i><br><br> 
-								Please remove these timesheets to proceed :).
+								Please remove these timesheets to proceed : )
 								</p>
 							</div>"
 					));
