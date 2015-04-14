@@ -2303,3 +2303,7 @@ label.radio {
 	    width: 263px;
     }
 }
+.xero-payrun-error{
+	font-size:20px;
+	font-weight:700;	
+}
