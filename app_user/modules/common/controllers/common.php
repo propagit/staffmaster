@@ -177,7 +177,14 @@ class Common extends MX_Controller {
 		if(!$payruns){
 			echo '<span class="text-danger">No payrun set on xero. Set a payrun(s) on xero to proceed.</span>';
 			return;
-			exit;
+		}
+		# if there is only single payrun in xero
+		if(!$payruns[0]){
+			$array[] = array(
+				'value' => $payrun['PayRunID'],
+				'label' => 'From ' . date('d M Y', strtotime($payrun['PayRunPeriodStartDate'])) . ' to ' . date('d M Y', strtotime($payrun['PayRunPeriodEndDate']))
+			);	
+			return $this->field_select($array, $field_name, $field_value, $size);
 		}
 		foreach($payruns as $payrun)
 		{
