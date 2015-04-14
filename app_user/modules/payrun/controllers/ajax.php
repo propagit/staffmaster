@@ -321,7 +321,7 @@ class Ajax extends MX_Controller {
 										(No data has been pushed)<br><br>
 										Xero returned the response<br>
 										<i>Xero can't find following Pay Item(s):</i></p>
-										<ul style='list-style:none;'><li>" . implode("</li><li>", $not_found_pay_items) . "</li></ul>
+										<ul style='list-style:none; padding:0;'><li>" . implode("</li><li>", $not_found_pay_items) . "</li></ul>
 										<p>
 										<strong>To proceed login to your Xero account and create the above pay items and try again <i class='fa fa-smile-o'></i></strong>
 										</p>
