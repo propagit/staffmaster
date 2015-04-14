@@ -285,11 +285,11 @@ class Ajax extends MX_Controller {
 						'pushed_ok' => false,
 						'pushed_msg' => "<div class='text-center'>
 								<p>
-								<span class='text-danger'>Error - Don't Panic!</span> (No data has been pushed)<br><br>
+								<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span> (No data has been pushed)<br><br>
 								XERO returned the response<br>
 								<i>Time sheets in this payrun fall outside of the pay period <br>
 								(" . date('d M, Y',strtotime($date_from)) . " - " . date('d M, Y',strtotime($date_to)) . ")</i><br><br> 
-								Please remove these timesheets to proceed : )
+								<strong>Please remove these timesheets to proceed <i class='fa fa-smile-o'></i></strong>
 								</p>
 							</div>"
 					));

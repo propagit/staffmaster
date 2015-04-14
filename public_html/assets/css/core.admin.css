@@ -813,4 +813,7 @@ span.dash-invoice-value{
 .c1.done {
 	background: green;
 }
-
+.xero-payrun-error{
+	font-size:20px;
+	font-weight:700;	
+}
