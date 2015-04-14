@@ -175,7 +175,7 @@ class Common extends MX_Controller {
 		$payruns = modules::run('api/xero/get_payruns');
 		$array = array();
 		if(!$payruns){
-			echo '<span class="text-danger">No payrun set on xero. Set a payrun(s) on xero to proceed.</span>';
+			echo '<span class="text-danger">No payrun created in Xero. Create a payrun(s) in Xero to proceed.</span>';
 			return;
 		}
 		# if there is only single payrun in xero
