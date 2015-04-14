@@ -284,15 +284,15 @@ class Ajax extends MX_Controller {
 						'export' => false,
 						'pushed_ok' => false,
 						'pushed_msg' => "<div class='text-center'>
-								<p>
-								<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span><br>
-								(No data has been pushed)<br><br>
-								Xero returned the response<br>
-								<i>Time sheets in this payrun fall outside of the pay period <br>
-								(" . date('d M, Y',strtotime($date_from)) . " - " . date('d M, Y',strtotime($date_to)) . ")</i><br><br> 
-								<strong>Please remove these timesheets to proceed <i class='fa fa-smile-o'></i></strong>
-								</p>
-							</div>"
+											<p>
+											<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span><br>
+											(No data has been pushed)<br><br>
+											Xero returned the response<br>
+											<i>Time sheets in this payrun fall outside of the pay period <br>
+											(" . date('d M, Y',strtotime($date_from)) . " - " . date('d M, Y',strtotime($date_to)) . ")</i><br><br> 
+											<strong>Please remove these timesheets to proceed <i class='fa fa-smile-o'></i></strong>
+											</p>
+										</div>"
 					));
 					return;	
 				}
@@ -315,7 +315,19 @@ class Ajax extends MX_Controller {
 					'ok' => true,
 					'export' => false,
 					'pushed_ok' => false,
-					'pushed_msg' => "<div class='list'><p>Cannot find following Pay Item(s) in Xero:</p><ul><li>" . implode("</li><li>", $not_found_pay_items) . "</li></ul><p>Please login to your Xero account and add Pay Item(s) with above name(s)</p></div>"
+					'pushed_msg' => "<div class='text-center'>
+										<p>
+										<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span><br>
+										(No data has been pushed)<br><br>
+										Xero returned the response<br><br>
+										</p>
+										
+										<p><i>Xero can't find following Pay Item(s):</i></p>
+										<ul><li>" . implode("</li><li>", $not_found_pay_items) . "</li></ul>
+										<p>
+										<strong>To proceed login to your Xero account and create the above pay items and try again <i class='fa fa-smile-o'></i></strong>
+										</p>
+									</div>"
 				));
 				return;
 			}
