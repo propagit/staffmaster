@@ -332,15 +332,18 @@ class Xero extends MX_Controller {
 				
 		}else{
 			# if no bank account has been set
-			$bank_accounts = "<BankAccounts>
-								<BankAccount>
-									<StatementText>Saving</StatementText>
-									<AccountName>" . $staff['f_acc_name'] . "</AccountName>
-									<BSB>" . $staff['f_bsb'] . "</BSB>
-									<AccountNumber>" . $staff['f_acc_number'] . "</AccountNumber>
-									<Remainder>true</Remainder>
-								</BankAccount>
-							</BankAccounts>";	
+			if($staff['f_acc_name'] && $staff['f_bsb'] && $staff['f_acc_number']){
+				$bank_accounts = "<BankAccounts>
+									<BankAccount>
+										<StatementText>Saving</StatementText>
+										<AccountName>" . $staff['f_acc_name'] . "</AccountName>
+										<BSB>" . $staff['f_bsb'] . "</BSB>
+										<AccountNumber>" . $staff['f_acc_number'] . "</AccountNumber>
+										<Remainder>true</Remainder>
+									</BankAccount>
+								</BankAccounts>";	
+							
+			}
 		}
 	
 		
