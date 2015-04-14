@@ -283,7 +283,14 @@ class Ajax extends MX_Controller {
 						'ok' => true,
 						'export' => false,
 						'pushed_ok' => false,
-						'pushed_msg' => "<div class='list'><p>One or more job dates is out of range for <br>This pay period (" . $date_from. " - " . $date_to. "). <br>Please remove these timesheets to proceed.</p></div>"
+						'pushed_msg' => "<div class='text-center'>
+								<p>
+								<span class='text-danger'>Error - Don't Panic!</span> (No data has been pushed)<br><br>
+								XERO returned the response<br>
+								<i>Time sheets in this payrun fall outside fo the pay period (" . date('d M, Y',strtotime($date_from)) . "-" . date('d M, Y',strtotime($date_to)) . ")</i><br><br> 
+								Please remove these timesheets to proceed.
+								</p>
+							</div>"
 					));
 					return;	
 				}
