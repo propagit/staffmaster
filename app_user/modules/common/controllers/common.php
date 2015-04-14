@@ -179,10 +179,10 @@ class Common extends MX_Controller {
 			return;
 		}
 		# if there is only single payrun in xero
-		if(!$payruns[0]){
+		if(!isset($payruns[0])){
 			$array[] = array(
-				'value' => $payrun['PayRunID'],
-				'label' => 'From ' . date('d M Y', strtotime($payrun['PayRunPeriodStartDate'])) . ' to ' . date('d M Y', strtotime($payrun['PayRunPeriodEndDate']))
+				'value' => $payruns['PayRunID'],
+				'label' => 'From ' . date('d M Y', strtotime($payruns['PayRunPeriodStartDate'])) . ' to ' . date('d M Y', strtotime($payruns['PayRunPeriodEndDate']))
 			);	
 			return $this->field_select($array, $field_name, $field_value, $size);
 		}
