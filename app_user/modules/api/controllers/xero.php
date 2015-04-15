@@ -605,7 +605,7 @@ class Xero extends MX_Controller {
                     }
                     if (!in_array($earningID, $earnings))
                     {
-                        $errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " is missing the pay template $earningID<br>";
+                        $errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - is missing the pay template [$earningID]<br>";
                     }
                 }
             }
