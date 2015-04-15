@@ -547,17 +547,17 @@ class Xero extends MX_Controller {
             if ($employee) {				
 				# Check if employee has Pay calendar & OrdinaryEarningsRateID 
 				if(!isset($employee['PayrollCalendarID'])){
-					$errors[] = "<p>Payroll calender not set for " . $staff['first_name'] . " " . $staff['last_name'] . " on XERO</p>";
+					$errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - has no payroll calendar<br>";
 				}else{
 					# Check if Pay Period falls under 
 					$cur_payrun = $this->get_payrun($xero_payrun_id);
 					if($cur_payrun['PayrollCalendarID'] != $employee['PayrollCalendarID']){
-						$errors[] = "<p>Payrun calender do not match the current Payroll for " . $staff['first_name'] . " " . $staff['last_name'] . " on XERO</p>";
+						$errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - payrun calender do not match the selected payrun calender<br>";
 					}
 				}
 				
 				if(!isset($employee['OrdinaryEarningsRateID'])){
-					$errors[] = "<p>Ordinary Earning Rate not set for " . $staff['first_name'] . " " . $staff['last_name'] . " on XERO</p>";
+					$errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - has no ordinary earning rate<br>";
 				}
 				
 				
@@ -605,16 +605,16 @@ class Xero extends MX_Controller {
                     }
                     if (!in_array($earningID, $earnings))
                     {
-                        $errors[] = "<p>$earningID has not been set up for employee " . $staff['first_name'] . " " . $staff['last_name'] . " on Xero</p>";
+                        $errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " is missing the pay template $earningID<br>";
                     }
                 }
             }
             else {
-                $errors[] = "<p>" . $staff['first_name'] . " " . $staff['last_name'] . " not found in Xero</p>";
+                $errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - was found<br>";
             }
         }
         else {
-            $errors[] = "<p>" . $staff['first_name'] . " " . $staff['last_name'] . " not found in Xero</p>";
+            $errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - was not found<br>";
         }
 		#var_dump($errors);die();
         return $errors;

@@ -343,7 +343,17 @@ class Ajax extends MX_Controller {
 					'ok' => true,
 					'export' => false,
 					'pushed_ok' => false,
-					'pushed_msg' => "<div class='list'>" . implode("", $employee_pay_items) . "</div>"
+					'pushed_msg' => "<div class='text-center'>
+										<p>
+										<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span><br>
+										(No data has been pushed)<br><br>
+										Xero returned the response<br>"
+										 . implode("", $employee_pay_items) . 
+									 	"
+										<br>
+										<strong>To proceed login to your Xero account and correct the employee records mentioned above and try again <i class='fa fa-smile-o'></i></strong>
+										</p>
+									 </div>"
 				));
 				return;
 			}
