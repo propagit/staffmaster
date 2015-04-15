@@ -347,7 +347,7 @@ class Ajax extends MX_Controller {
 										<p>
 										<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span><br>
 										(No data has been pushed)<br><br>
-										Xero returned the response<br>"
+										Xero returned the response(s)<br>"
 										 . implode("", $employee_pay_items) . 
 									 	"
 										<br>
