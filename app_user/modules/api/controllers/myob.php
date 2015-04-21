@@ -62,6 +62,7 @@ class Myob extends MX_Controller {
 			$api_access_code = $_GET['code'];
 			$oauth = new myob_api_oauth();
 			$oauth_tokens = $oauth->getAccessToken($this->api_key, $this->api_secret, $redirect_url, $api_access_code, $api_scope);
+			#var_dump($oauth_tokens);die();
 			if ($oauth_tokens)
 			{
 				$function = '';
@@ -72,7 +73,7 @@ class Myob extends MX_Controller {
 				$this->config_model->add(array('key' => 'myob_access_token', 'value' => $oauth_tokens->access_token));
 				$this->config_model->add(array('key' => 'myob_access_token_expires', 'value' => time() + $oauth_tokens->expires_in));
 				$this->config_model->add(array('key' => 'myob_refresh_token', 'value' => $oauth_tokens->refresh_token));
-
+				
 				header("Location: " . base_url() . 'api/myob/connect/' . $function);
 			}
 			else
@@ -187,7 +188,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$url = $this->cloud_api_url;
+		$url = $this->cloud_api_url; 
+		
 		$ch = curl_init($url);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -199,7 +201,7 @@ class Myob extends MX_Controller {
 		$response = curl_exec($ch);
 		curl_close($ch);
 		$company = json_decode($response);
-		#var_dump($company); die();
+		# var_dump($response); die();
 		if (isset($company[0]))
 		{
 			$this->config_model->add(array('key' => 'myob_company_id', 'value' => $company[0]->Id));
