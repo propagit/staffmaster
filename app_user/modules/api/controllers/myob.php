@@ -452,7 +452,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-version: v2'
 		);
 		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
-		$filter = "filter=UID%20eq%20'". $uid ."'";
+		#$filter = "filter=UID%20eq%20'". $uid ."'";
+		$filter = "UID%20eq%20'". $uid ."'";
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter;
 
 		$ch = curl_init($url);
