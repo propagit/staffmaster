@@ -650,11 +650,11 @@ class Myob extends MX_Controller {
 	*	@return: true if success
 	*				or false if failed
 	*/
-	function update_employee_displayID_onetime($uid)
+	function update_employee_displayID_onetime($employee)
 	{
-		$employee = $this->read_employee_by_UID($uid);
+		#$employee = $this->read_employee_by_UID($uid);
 	
-		$employee->DisplayID = $uid;
+		$employee->DisplayID = $employee->UID;
 		
 		$params = json_encode($employee);
 
