@@ -170,6 +170,10 @@ class Ajax extends MX_Controller {
 
     function upload_image($id) {
         $config['upload_path'] = UPLOADS_PATH . '/tmp/';
+		# Create target dir
+        if (!file_exists($config['upload_path'])) {
+            @mkdir($config['upload_path']);
+        }
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '2000';
         $config['max_width'] = '1024';
@@ -187,6 +191,10 @@ class Ajax extends MX_Controller {
 
     function upload_file($id) {
         $config['upload_path'] = UPLOADS_PATH . '/tmp/';
+		# Create target dir
+        if (!file_exists($config['upload_path'])) {
+            @mkdir($config['upload_path']);
+        }
         $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi';
         $config['max_size'] = '10000';
         $this->load->library('upload', $config);
