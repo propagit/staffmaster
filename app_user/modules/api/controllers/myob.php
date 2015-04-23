@@ -658,6 +658,7 @@ class Myob extends MX_Controller {
 		$employee->DisplayID = $uid;
 		
 		$params = json_encode($employee);
+		echo '<script>console.log('.$employee->DisplayID.')</script>';
 
 		#var_dump($employee);die();
 
