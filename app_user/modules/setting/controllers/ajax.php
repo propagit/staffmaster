@@ -1184,7 +1184,7 @@ class Ajax extends MX_Controller {
 			to work around this what we will be doing is check if display id exists in myob if not then we push the UID back to myob as Display ID before the sync begins
 		*/
 
-		/*foreach($employee as $e)
+		foreach($employee as $e)
 		{
 			# Note: if employee doesnot have external id on MYOB (DisplayID), push the UID back to myob as DisplayID
 			if (!$e->DisplayID || $e->DisplayID == '*None')
@@ -1193,7 +1193,7 @@ class Ajax extends MX_Controller {
 				modules::run('api/myob/connect/update_employee_displayID_onetime~' . $e->UID);
 			}
 			
-		}*/
+		}
 		
 
 		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
