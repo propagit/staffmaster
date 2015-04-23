@@ -100,6 +100,9 @@ class Myob extends MX_Controller {
 			case 'search_employee':
 					$result = $this->search_employee();
 				break;
+			case 'test_search_employee':
+					$result = $this->test_search_employee();
+				break;
 			case 'read_employee_payment':
 					$result = $this->read_employee_payment($param);
 				break;
