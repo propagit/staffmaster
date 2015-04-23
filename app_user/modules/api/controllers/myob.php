@@ -86,6 +86,10 @@ class Myob extends MX_Controller {
 		$result = '';
 		$params = explode('~', $function);
 		$param = isset($params[1]) ? urlencode($params[1]) : '';
+		
+		if($params[0] == 'update_employee_displayID_onetime'){
+			$param = $params[1];	
+		}
 		switch($params[0])
 		{
 			case 'read_employee':
@@ -654,7 +658,7 @@ class Myob extends MX_Controller {
 		
 		$params = json_encode($employee);
 
-
+		#var_dump($employee);die();
 
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
