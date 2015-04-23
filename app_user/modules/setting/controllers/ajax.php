@@ -1187,7 +1187,7 @@ class Ajax extends MX_Controller {
 		foreach($employee as $e)
 		{
 			# Note: if employee doesnot have external id on MYOB (DisplayID), push the UID back to myob as DisplayID
-			if (!$e->DisplayID || $e->DisplayID == '*None')
+			if ($e->DisplayID == '*None')
 			{
 				# Update DisplayID with UID one time only
 				modules::run('api/myob/connect/update_employee_displayID_onetime~' . $e->UID);
