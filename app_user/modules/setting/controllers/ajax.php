@@ -1175,6 +1175,26 @@ class Ajax extends MX_Controller {
 
 		# Get all staff from StaffBooks
 		$staffs = $this->staff_model->search_staffs();
+		
+		/**
+			Initially the Sync was build using Display ID instead of UID [yeah i konw, don't ask why, i did not build this], 
+			which does not work if the MYOB account doesnot have a display id
+			since few of our account is already synced we cannot simply starting using UID update without doing some  
+			heavy maintenance work other wise the existing accounts will be out of sync
+			to work around this what we will be doing is check if display id exists in myob if not then we push the UID back to myob as Display ID before the sync begins
+		*/
+
+		/*foreach($employee as $e)
+		{
+			# Note: if employee doesnot have external id on MYOB (DisplayID), push the UID back to myob as DisplayID
+			if (!$e->DisplayID || $e->DisplayID == '*None')
+			{
+				# Update DisplayID with UID one time only
+				modules::run('api/myob/connect/update_employee_displayID_onetime~' . $e->UID);
+			}
+			
+		}*/
+		
 
 		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
 		foreach($employee as $e)

@@ -345,7 +345,41 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
+	
+	function test_search_employee()
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
 
+		$filter = "filter=IsActive%20eq%20true";
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter . '&$top=5000';
+
+		$ch = curl_init($url);
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response = json_decode($response);
+		var_dump($response); die();
+		if (isset($response->Items))
+		{
+			return $response->Items;
+		}
+		return null;
+	}
+
+	
+		
 	function test_read_employee($external_id)
 	{
 		$e = $this->read_employee($external_id);
@@ -389,6 +423,45 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
+	
+	/**
+	*	@desc: get employee from MYOB
+	*	@params: $external_id (UID in MYOB)
+	*	@return: object (vector) of employee data from MYOB
+	*				or null if not found
+	*/
+	function read_employee_by_UID($uid)
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
+		$filter = "filter=UID%20eq%20'". $uid ."'";
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter;
+
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		$response = json_decode($response);
+		#var_dump($response); die();
+		if (isset($response->Items[0]))
+		{
+			return $response->Items[0];
+		}
+		return null;
+	}
+
 
 	/**
 	*	@desc: add new employee to MYOB
@@ -516,6 +589,59 @@ class Myob extends MX_Controller {
 			)
 		), FALSE));
 
+		$params = json_encode($employee);
+
+
+
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/' . $employee->UID;
+
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		$response = json_decode($response);
+
+		if (isset($response->Errors))
+		{
+			return false;
+		}
+
+		return true;
+	}
+	
+	
+	/**
+	*	@desc: updates the display ID [Card ID] with UID in myob in an event the employee do not have a display id and we need to sync the employee anyway
+	*	@params: $external_id
+	*	@return: true if success
+	*				or false if failed
+	*/
+	function update_employee_displayID_onetime($uid)
+	{
+		$employee = $this->read_employee_by_UID($uid);
+	
+		$employee->DisplayID = $uid;
+		
 		$params = json_encode($employee);
 
 
