@@ -477,8 +477,30 @@ class Myob extends MX_Controller {
 	
 	function test_read_employee_by_UID($uid)
 	{
-		$e = $this->read_employee_by_UID($uid);
-		var_dump($e);
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		#$filter = "filter=substringof('". $external_id ."',%20DisplayID)%20eq%20true";
+		#$filter = "filter=UID%20eq%20'". $uid ."'";
+		$filter = "UID%20eq%20'". $uid ."'";
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$' . $filter;
+
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		$response = json_decode($response);
+		var_dump($response); die();
 	}
 
 	/**
