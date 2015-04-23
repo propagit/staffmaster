@@ -91,11 +91,20 @@ class Myob extends MX_Controller {
 			case 'read_employee':
 					$result = $this->read_employee($param);
 				break;
+			case 'read_employee_by_UID':
+					$result = $this->read_employee_by_UID($param);
+				break;
+			case 'test_read_employee_by_UID':
+					$result = $this->test_read_employee_by_UID($param);
+				break;
 			case 'append_employee':
 					$result = $this->append_employee($param);
 				break;
 			case 'update_employee':
 					$result = $this->update_employee($param);
+				break;
+			case 'update_employee_displayID_onetime':
+					$result = $this->update_employee_displayID_onetime($param);
 				break;
 			case 'search_employee':
 					$result = $this->search_employee();
@@ -464,7 +473,12 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-
+	
+	function test_read_employee_by_UID($uid)
+	{
+		$e = $this->read_employee_by_UID($uid);
+		var_dump($e);
+	}
 
 	/**
 	*	@desc: add new employee to MYOB
