@@ -1190,7 +1190,7 @@ class Ajax extends MX_Controller {
 			if ($e->DisplayID == '*None')
 			{
 				# Update DisplayID with UID one time only
-				modules::run('api/myob/connect/update_employee_displayID_onetime~' . $e->UID);
+				modules::run('api/myob/update_employee_displayID_onetime',$e->UID);
 			}
 			
 		}
