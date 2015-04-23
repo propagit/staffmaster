@@ -1175,31 +1175,6 @@ class Ajax extends MX_Controller {
 
 		# Get all staff from StaffBooks
 		$staffs = $this->staff_model->search_staffs();
-		
-		/**
-			Initially the Sync was build using Display ID instead of UID [yeah i konw, don't ask why, i did not build this], 
-			which does not work if the MYOB account doesnot have a display id
-			since few of our account is already synced we cannot simply starting using UID update without doing some  
-			heavy maintenance work other wise the existing accounts will be out of sync
-			to work around this what we will be doing is check if display id exists in myob if not then we push the UID back to myob as Display ID before the sync begins
-		*/
-		$empty_card_id = false;
-		foreach($employee as $e)
-		{
-			# Note: if employee doesnot have external id on MYOB (DisplayID), push the UID back to myob as DisplayID
-			if ($e->DisplayID == '*None')
-			{
-				# Update DisplayID with UID one time only
-				modules::run('api/myob/update_employee_displayID_onetime',$e->UID);
-				$empty_card_id = true;
-			}
-			
-		}
-		
-		if($empty_card_id){
-			# get all employee from MYOB - they should now have a display id
-			$employee = modules::run('api/myob/connect/search_employee');
-		}
 
 		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
 		foreach($employee as $e)
@@ -1214,50 +1189,47 @@ class Ajax extends MX_Controller {
 				}
 				else
 				{
-					$user_data = array(
-						'status' => 1,
-						'is_admin' => 0,
-						'is_staff' => 1,
-						'is_client' => 0,
-						'email_address' => '',
-						'username' => '',
-						'password' => '',
-						'title' => ($e->Addresses[0]->Salutation) ? $e->Addresses[0]->Salutation : '',
-						'first_name' => $e->FirstName,
-						'last_name' => $e->LastName,
-						'address' => ($e->Addresses[0]->Street) ? $e->Addresses[0]->Street : '',
-						'suburb' => '',
-						'city' => ($e->Addresses[0]->City) ? $e->Addresses[0]->City : '',
-						'state' => ($e->Addresses[0]->State) ? $e->Addresses[0]->State : '',
-						'postcode' => ($e->Addresses[0]->PostCode) ? $e->Addresses[0]->PostCode : '',
-						'country' => ($e->Addresses[0]->Country) ? $e->Addresses[0]->Country : '',
-						'phone' => ($e->Addresses[0]->Phone1) ? $e->Addresses[0]->Phone1 : '',
-						'mobile' => ($e->Addresses[0]->Phone2) ? $e->Addresses[0]->Phone2 : ''
-					);
-					$user_id = $this->user_model->insert_user($user_data);
+					$user_id = $this->insert_myob_user($e);
 					if ($user_id)
 					{
-						$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $e->DisplayID);
-						$staff_data = array(
-							'user_id' => $user_id,
-							'external_staff_id' => $e->DisplayID,
-							#'gender' => $input['Gender'],
-							#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
-							#'emergency_contact' => $input['EmergencyContact'],
-							#'emergency_phone' => $input['EmergencyPhone'],
-							#'f_tfn' => $input['SocialSecurity'],
-							'f_acc_name'=> isset($payment_details->BankAccounts[0]->BankAccountName) ? $payment_details->BankAccounts[0]->BankAccountName : '',
-							'f_bsb' => isset($payment_details->BankAccounts[0]->BSBNumber) ? $payment_details->BankAccounts[0]->BSBNumber : '',
-							'f_acc_number' => isset($payment_details->BankAccounts[0]->BankAccountNumber) ? $payment_details->BankAccounts[0]->BankAccountNumber : ''
-						);
-						#var_dump($staff_data); die();
-						$staff_id = $this->staff_model->insert_staff($staff_data, true);
+						$staff_id = $this->insert_myob_user_staff($user_id,$e->DisplayID);
 						if ($staff_id)
 						{
 							$imported++;
 						}
 					}
 				}
+			}
+			else
+			{
+				/**
+					Initially the Sync was build using Display ID instead of UID [yeah i konw, don't ask why, i did not build this], 
+					which does not work if the MYOB account doesnot have a display id
+					since few of our account is already synced we cannot simply starting using UID without doing some  
+					heavy maintenance work other wise the existing accounts will be out of sync
+					to work around this what we will be doing is check if display id exists in myob 
+					if not then we push the create a DisplayID and puch back to myob
+				*/
+				
+				$user_id = $this->insert_myob_user($e);
+				if ($user_id)
+				{
+					# set Display ID in MYOB
+					$display_id = STAFF_PREFIX . $user_id;
+					if(modules::run('api/myob/update_employee_displayID_onetime',$e,$display_id)){
+						#var_dump($staff_data); die();
+						$staff_id = $this->insert_myob_user_staff($user_id,$display_id);
+						if ($staff_id)
+						{
+							$imported++;
+						}
+					}
+				}
+				else
+				{
+					$errors++;
+				}	
+				
 			}
 		}
 
@@ -1297,6 +1269,56 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'Staff';
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
+	}
+	
+	function insert_myob_user($employee)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+		
+		$user_data = array(
+						'status' => 1,
+						'is_admin' => 0,
+						'is_staff' => 1,
+						'is_client' => 0,
+						'email_address' => '',
+						'username' => '',
+						'password' => '',
+						'title' => ($employee->Addresses[0]->Salutation) ? $employee->Addresses[0]->Salutation : '',
+						'first_name' => $employee->FirstName,
+						'last_name' => $employee->LastName,
+						'address' => ($employee->Addresses[0]->Street) ? $employee->Addresses[0]->Street : '',
+						'suburb' => '',
+						'city' => ($employee->Addresses[0]->City) ? $employee->Addresses[0]->City : '',
+						'state' => ($employee->Addresses[0]->State) ? $employee->Addresses[0]->State : '',
+						'postcode' => ($employee->Addresses[0]->PostCode) ? $employee->Addresses[0]->PostCode : '',
+						'country' => ($employee->Addresses[0]->Country) ? $employee->Addresses[0]->Country : '',
+						'phone' => ($employee->Addresses[0]->Phone1) ? $employee->Addresses[0]->Phone1 : '',
+						'mobile' => ($employee->Addresses[0]->Phone2) ? $employee->Addresses[0]->Phone2 : ''
+					);
+		return $this->user_model->insert_user($user_data);
+		
+	}
+	
+	function insert_myob_user_staff($user_id,$display_id)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+		
+		$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $display_id);
+		$staff_data = array(
+			'user_id' => $user_id,
+			'external_staff_id' => $display_id,
+			#'gender' => $input['Gender'],
+			#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
+			#'emergency_contact' => $input['EmergencyContact'],
+			#'emergency_phone' => $input['EmergencyPhone'],
+			#'f_tfn' => $input['SocialSecurity'],
+			'f_acc_name'=> isset($payment_details->BankAccounts[0]->BankAccountName) ? $payment_details->BankAccounts[0]->BankAccountName : '',
+			'f_bsb' => isset($payment_details->BankAccounts[0]->BSBNumber) ? $payment_details->BankAccounts[0]->BSBNumber : '',
+			'f_acc_number' => isset($payment_details->BankAccounts[0]->BankAccountNumber) ? $payment_details->BankAccounts[0]->BankAccountNumber : ''
+		);
+		return $this->staff_model->insert_staff($staff_data, true);
 	}
 
 	function check_myob_client()
