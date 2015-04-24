@@ -87,9 +87,6 @@ class Myob extends MX_Controller {
 		$params = explode('~', $function);
 		$param = isset($params[1]) ? urlencode($params[1]) : '';
 		
-		/*if($params[0] == 'update_employee_displayID_onetime'){
-			$param = $params[1];	
-		}*/
 		
 		switch($params[0])
 		{
@@ -108,9 +105,6 @@ class Myob extends MX_Controller {
 			case 'update_employee':
 					$result = $this->update_employee($param);
 				break;
-			/*case 'update_employee_displayID_onetime':
-					$result = $this->update_employee_displayID_onetime($param);
-				break;*/
 			case 'search_employee':
 					$result = $this->search_employee();
 				break;
@@ -651,6 +645,28 @@ class Myob extends MX_Controller {
 	*/
 	function update_employee_displayID_onetime($employee,$display_id)
 	{
+		
+		$access_token = $this->config_model->get('myob_access_token');
+		if ($access_token)
+		{
+			$expiry_time = time() + 600; # Add 600 second (10 minutes) before it expires
+			if ($expiry_time > $this->config_model->get('myob_access_token_expires'))
+			{
+				$oauth = new myob_api_oauth();
+				$oauth_tokens = $oauth->refreshAccessToken($this->api_key, $this->api_secret, $this->config_model->get('myob_refresh_token'));
+				if ($oauth_tokens)
+				{
+					$this->config_model->add(array('key' => 'myob_access_token', 'value' => $oauth_tokens->access_token));
+					$this->config_model->add(array('key' => 'myob_access_token_expires', 'value' => time() + $oauth_tokens->expires_in));
+					$this->config_model->add(array('key' => 'myob_refresh_token', 'value' => $oauth_tokens->refresh_token));
+				}
+				else
+				{
+					die("Error #1.");
+				}
+			}
+		}
+		
 		#$employee = $this->read_employee_by_UID($uid);
 		#var_dump($employee);
 		$employee->DisplayID = $display_id;
@@ -1491,6 +1507,68 @@ class Myob extends MX_Controller {
 			return false;
 		}
 		return true;
+	}
+	
+	function update_customer_displayID_onetime($customer,$display_id)
+	{
+		
+		$access_token = $this->config_model->get('myob_access_token');
+		if ($access_token)
+		{
+			$expiry_time = time() + 600; # Add 600 second (10 minutes) before it expires
+			if ($expiry_time > $this->config_model->get('myob_access_token_expires'))
+			{
+				$oauth = new myob_api_oauth();
+				$oauth_tokens = $oauth->refreshAccessToken($this->api_key, $this->api_secret, $this->config_model->get('myob_refresh_token'));
+				if ($oauth_tokens)
+				{
+					$this->config_model->add(array('key' => 'myob_access_token', 'value' => $oauth_tokens->access_token));
+					$this->config_model->add(array('key' => 'myob_access_token_expires', 'value' => time() + $oauth_tokens->expires_in));
+					$this->config_model->add(array('key' => 'myob_refresh_token', 'value' => $oauth_tokens->refresh_token));
+				}
+				else
+				{
+					die("Error #1.");
+				}
+			}
+		}
+	
+		$customer->DisplayID = $display_id;
+		
+		$params = json_encode($customer);
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2',
+	        'Content-Type: application/json',
+	        'Content-Length: ' . strlen($params)
+		);
+
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Customer/' . $customer->UID;
+
+		$ch = curl_init($url);
+
+
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response = json_decode($response);
+
+		if (isset($response->Errors))
+		{
+			return false;
+		}
+		return true;
+		
 	}
 
 	function delete_customer($external_id)

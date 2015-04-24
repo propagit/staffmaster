@@ -1509,38 +1509,37 @@ class Ajax extends MX_Controller {
 				}
 				else
 				{
-					$user_data = array(
-						'status' => CLIENT_ACTIVE,
-						'is_admin' => 0,
-						'is_staff' => 0,
-						'is_client' => 1,
-						'email_address' => isset($c->Addresses[0]->Email) ? $c->Addresses[0]->Email : '',
-						'username' => isset($c->Addresses[0]->Email) ? $c->Addresses[0]->Email : '',
-						'full_name' => ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName,
-						'address' => ($c->Addresses[0]->Street) ? $c->Addresses[0]->Street : '',
-						'suburb' => '',
-						'city' => ($c->Addresses[0]->City) ? $c->Addresses[0]->City : '',
-						'state' => ($c->Addresses[0]->State) ? $c->Addresses[0]->State : '',
-						'postcode' => ($c->Addresses[0]->PostCode) ? $c->Addresses[0]->PostCode : '',
-						'country' => ($c->Addresses[0]->Country) ? $c->Addresses[0]->Country : '',
-						'phone' => ($c->Addresses[0]->Phone1) ? $c->Addresses[0]->Phone1 : ''
-					);
-					$user_id = $this->user_model->insert_user($user_data);
+					$user_id = $this->insert_myob_client_userdata($c);
 					if ($user_id)
 					{
-						$client_data = array(
-							'user_id' => $user_id,
-							'external_client_id' => $c->DisplayID,
-							'company_name' => ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName,
-							'abn' => isset($c->SellingDetails->ABN) ? $c->SellingDetails->ABN : ''
-						);
-						$client_id = $this->client_model->insert_client($client_data, true);
+						$client_id = $this->insert_myob_user_client($c,$user_id,$c->DisplayID);
 						if ($client_id)
 						{
 							$imported++;
 						}
 					}
 				}
+			}
+			else
+			{
+				$user_id = $this->insert_myob_client_userdata($c);
+				if ($user_id)
+				{
+					# set Display ID in MYOB
+					$display_id = CLIENT_PREFIX . $user_id;
+					if(modules::run('api/myob/update_customer_displayID_onetime',$c,$display_id)){
+						$client_id = $this->insert_myob_user_client($c,$user_id,$display_id);
+						if ($client_id)
+						{
+							$imported++;
+						}
+					}
+				}
+				else
+				{
+					$errors++;
+				}	
+					
 			}
 		}
 
@@ -1576,6 +1575,44 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'Clients';
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
+	}
+	
+	function insert_myob_client_userdata($client)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('client/client_model');
+		
+		$user_data = array(
+						'status' => CLIENT_ACTIVE,
+						'is_admin' => 0,
+						'is_staff' => 0,
+						'is_client' => 1,
+						'email_address' => isset($client->Addresses[0]->Email) ? $client->Addresses[0]->Email : '',
+						'username' => isset($client->Addresses[0]->Email) ? $client->Addresses[0]->Email : '',
+						'full_name' => ($client->IsIndividual) ? $client->FirstName . ' ' . $client->LastName : $client->CompanyName,
+						'address' => ($client->Addresses[0]->Street) ? $client->Addresses[0]->Street : '',
+						'suburb' => '',
+						'city' => ($client->Addresses[0]->City) ? $client->Addresses[0]->City : '',
+						'state' => ($client->Addresses[0]->State) ? $client->Addresses[0]->State : '',
+						'postcode' => ($client->Addresses[0]->PostCode) ? $client->Addresses[0]->PostCode : '',
+						'country' => ($client->Addresses[0]->Country) ? $client->Addresses[0]->Country : '',
+						'phone' => ($client->Addresses[0]->Phone1) ? $client->Addresses[0]->Phone1 : ''
+					);
+		return $this->user_model->insert_user($user_data);	
+	}
+	
+	function insert_myob_user_client($client,$user_id,$display_id)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('client/client_model');
+		
+		$client_data = array(
+							'user_id' => $user_id,
+							'external_client_id' => $display_id,
+							'company_name' => ($client->IsIndividual) ? $client->FirstName . ' ' . $client->LastName : $client->CompanyName,
+							'abn' => isset($client->SellingDetails->ABN) ? $client->SellingDetails->ABN : ''
+						);
+		return $this->client_model->insert_client($client_data, true);
 	}
 
 	# Email timesheet to supervisor/staff etc setting
