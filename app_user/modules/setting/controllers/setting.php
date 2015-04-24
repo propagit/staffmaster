@@ -38,16 +38,16 @@ class Setting extends MX_Controller {
 			case 'integration':
 					$this->integration();
 				break;
-			case 'sync_myob_email':
+			/*case 'sync_myob_email':
 					$this->sync_myob_email();
-				break;
+				break;*/
 			default:
 					$this->company();
 			break;
 		}
 	}
 	
-	function sync_myob_email()
+	/*function sync_myob_email()
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
@@ -76,7 +76,7 @@ class Setting extends MX_Controller {
 			
 		}
 		
-	}
+	}*/
 	
 	/**
 	*	@name: company
