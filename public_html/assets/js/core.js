@@ -325,7 +325,12 @@ var help = {
 	//inline - x-editable
 	make_x_editable_inline:function(){
 		if($(window).width() <= 768){
-			$.fn.editable.defaults.mode = 'inline';
+			var isFunc = $.isFunction($.fn.editable);
+			if(isFunc){
+				$.fn.editable.defaults.mode = 'inline';
+				//console.log('worked');
+			}
+			
 		}
 	},
 
