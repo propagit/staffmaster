@@ -29,6 +29,11 @@
                 	<?=modules::run('forum/load_conversation');?>
                 </div>
             </div>
+            
+
+        	<div class="inner-box add-top-margin">
+                <?=modules::run('user_notes/main_view');?>
+            </div>
         </div>
         
         <div class="col-md-6 white-box">

@@ -2289,6 +2289,12 @@ label.radio {
 .records-per-page-btn{
 
 }
+.div-opacity{
+	opacity:0.5;	
+}
+.user-notes-row{
+	margin-bottom:10px;	
+}
 
 /**
  * This hack targets the Webkit browser engine
