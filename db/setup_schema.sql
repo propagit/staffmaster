@@ -2642,6 +2642,8 @@ CREATE TABLE IF NOT EXISTS `information_sheet_config` (
   PRIMARY KEY (`information_sheet_config_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
+-- --------------------------------------------------------
+
 --
 -- Dumping data for table `information_sheet_config`
 --
@@ -2661,3 +2663,19 @@ INSERT INTO `information_sheet_config` (`information_sheet_config_id`, `element_
 (12, 'Notes', 'notes', 'yes', '0000-00-00 00:00:00'),
 (13, 'Expenses', 'expenses', 'yes', '0000-00-00 00:00:00'),
 (14, 'Other Staff Working', 'other_staff_working', 'yes', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_notes`
+--
+
+CREATE TABLE IF NOT EXISTS `user_notes` (
+  `user_note_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `added_by` bigint(20) NOT NULL COMMENT 'user id of the admin who added the note',
+  `note` text NOT NULL,
+  `created_date` date NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_note_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
