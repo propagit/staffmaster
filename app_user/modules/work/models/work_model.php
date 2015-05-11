@@ -94,13 +94,33 @@ class Work_model extends CI_Model {
 	*	@return: list of date with total count of available shifts
 	*/
 	function get_work_days($active_month) {
+		
+		# First get availability
+		$sql = "SELECT day, count(*) as `hours`
+                FROM `user_staff_availability`
+                WHERE user_id = " . $this->user_id. " AND value = 1
+                GROUP BY day
+                HAVING hours > 0";
+        $query = $this->db->query($sql);
+        $days = array();
+        foreach($query->result_array() as $r)
+        {
+            $days[] = ($r['day'] + 1) % 7; # Convert to mysql week day
+        }
+        $days_sql = '';
+        if (count($days) > 0) {
+            $days = implode(',', $days);
+            $days_sql = "AND DAYOFWEEK(`job_date`) IN ($days)";
+        }
+		
 		$sql = "SELECT `job_date`, count(*) as `shifts_count` FROM `job_shifts`
 				WHERE `job_date` LIKE '" . $active_month . "%'
 				AND (role_id = 0 OR (role_id != 0 AND role_id IN (
 						SELECT attribute_role_id FROM staff_roles WHERE user_id = " . $this->user_id . "
 						)))
-				AND `status` IN (" . SHIFT_REJECTED . "," . SHIFT_UNASSIGNED . "," . SHIFT_UNCONFIRMED . ")
+				AND `status` IN (" . SHIFT_REJECTED . "," . SHIFT_UNASSIGNED . "," . SHIFT_UNCONFIRMED . ") 
 				AND `job_date` >= '" . date('Y-m-d') . "'
+				$days_sql 
 				GROUP BY `job_date`";
 		$query = $this->db->query($sql);
 		return $query->result_array();

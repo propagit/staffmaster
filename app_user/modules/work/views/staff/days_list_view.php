@@ -1,5 +1,11 @@
 <? if (count($work_days) == 0) { ?>
-<div class="alert alert-warning">Sorry! There is no opening job/shift for you at the moment.</div>
+<div class="alert alert-warning">
+	<strong>Currently there is no work available for you to apply for.</strong><br><br>
+
+	Jobs not relevant to you may be getting filtered out, check your “availability” and “role” settings are correct in your staff profile. <br>
+
+	If you cant edit your role or availability settings in your staff profile contact the system administrator.
+</div>
 <? } else { ?>
 <? foreach($work_days as $day) { ?>
 <div id="wp-<?=$day['job_date'];?>">
