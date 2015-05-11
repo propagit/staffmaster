@@ -4,7 +4,7 @@
 
 	Jobs not relevant to you may be getting filtered out, check your “availability” and “role” settings are correct in your staff profile. <br>
 
-	If you cant edit your role or availability settings in your staff profile contact the system administrator.
+	If you can't edit your role or availability settings in your staff profile <a href="<?=base_url();?>support">contact the system administrator</a>.
 </div>
 <? } else { ?>
 <? foreach($work_days as $day) { ?>
