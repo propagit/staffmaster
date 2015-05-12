@@ -2,7 +2,7 @@
 <p>Quick notes you add below will display under the notes tab in the staff or client profile. 
 Notes will be date marked and list the user who added the note</p>        
 <div id="load-notes-users" style="margin-top:25px;"></div>
-<div class="alert alert-success hide" id="msg-add-user-note"><i class="fa fa-check"></i> &nbsp; note added successfully!</div>
+<div class="alert alert-success hide push" style="width:100%;" id="msg-add-user-note"><i class="fa fa-check"></i> &nbsp; note added successfully!</div>
   
 
 

@@ -11,7 +11,7 @@
             <textarea id="user-note" class="form-control" name="note"></textarea>
         </div>
     </div>
-    <div class="form-group" style="padding-top:20px;">
+    <div class="form-group pull" style="padding-top:20px;">
         <label class="col-lg-2 control-label remove-gutters">&nbsp;</label>
         <div class="col-lg-10">
             <button id="add-user-note" type="button" class="btn btn btn-core pull"><i class="fa fa-comment-o"></i>Add Note</button>
