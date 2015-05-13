@@ -192,5 +192,26 @@ function remove_timesheet_from_invoice(timesheet_id, job_id) {
 		}
 	})
 }
+function perform_multi_update(action){
+	switch(action){
+		case 'generate':
+			generate_multi_invoice();
+		break;
+		case 'email_invoice':
+			
+		break;
+	}
+}
 
+function generate_multi_invoice(){
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>invoice/ajax/generate_multi_invoice",
+		  data: $('#invoice-bulk-action-form').serialize(),
+		  success: function(html) {
+			  list_temp_invoices();
+			  list_clients();
+		  }
+	  });	
+}
 </script>

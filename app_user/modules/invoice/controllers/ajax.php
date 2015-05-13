@@ -1368,4 +1368,22 @@ class Ajax extends MX_Controller {
 			return;
 		}
 	}
+	
+	function generate_multi_invoice()
+	{
+		$user_ids = $this->input->post('selected_user_ids');	
+		foreach($user_ids as $user_id){
+			$invoice_id = $this->invoice_model->check_client_invoice($user_id);
+			if ($invoice_id) {
+				modules::run('invoice/generate_invoice',$invoice_id);
+				$count++;
+			}else{
+				$invoice_id = modules::run('invoice/create_invoice',$user_id);
+				modules::run('invoice/generate_invoice',$invoice_id);
+				$count++;
+			}
+		}
+		echo $count;
+	}
+
 }
