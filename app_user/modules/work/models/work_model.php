@@ -103,15 +103,18 @@ class Work_model extends CI_Model {
                 HAVING hours > 0";
         $query = $this->db->query($sql);
         $days = array();
+		#echo $sql;exit;
         foreach($query->result_array() as $r)
         {
-            $days[] = ($r['day'] + 1) % 7; # Convert to mysql week day
+           # $days[] = ($r['day'] + 1) % 7; # Convert to mysql week day
+		   $days[] = $r['day'];
         }
         $days_sql = '';
         if (count($days) > 0) {
             $days = implode(',', $days);
             $days_sql = "AND DAYOFWEEK(`job_date`) IN ($days)";
         }
+		#echo $days_sql;exit;
 		
 		$sql = "SELECT `job_date`, count(*) as `shifts_count` FROM `job_shifts`
 				WHERE `job_date` LIKE '" . $active_month . "%'
