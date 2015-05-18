@@ -1,0 +1,42 @@
+/* CSS Document */
+/* grey */
+/* white*/
+.lookbook {
+  background: #f367c0;
+  width: 100%;
+  float: left; }
+
+/* lb = lookbook */
+.lb-box {
+  /*min-width:245px;*/
+  border: 1px solid #cccccc;
+  float: left;
+  background: rgba(255, 255, 255, 0.5); }
+  .lb-box .h4,
+  .lb-box h4 {
+    font-size: 23px;
+    font-weight: 600; }
+  .lb-box .avatar {
+    padding: 11px 12px; }
+    .lb-box .avatar img {
+      box-shadow: none;
+      border-radius: 0;
+      width: 100%; }
+  .lb-box .info {
+    text-align: center;
+    padding: 11px 12px;
+    background: white; }
+    .lb-box .info dl {
+      float: left;
+      width: 100%;
+      text-align: left;
+      margin-left: 10%;
+      font-size: 16px; }
+      .lb-box .info dl dt {
+        float: left;
+        width: 30%; }
+      .lb-box .info dl dd {
+        float: left;
+        width: 60%; }
+  .lb-box .btn-lookbook {
+    width: 100%; }

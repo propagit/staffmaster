@@ -336,8 +336,9 @@ class Ajax extends MX_Controller {
                 $f = $field;
                 if (in_array($field['key'], $step_fields)) {
                     $f['ticked'] = true;
+					$result[] = $f;
                 }
-                $result[] = $f;
+                #$result[] = $f;
             }
             $fields = $result;
         }

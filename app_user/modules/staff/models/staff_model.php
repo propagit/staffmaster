@@ -1070,5 +1070,21 @@ class Staff_model extends CI_Model {
 						 ->row_array();
 		return $staff['default_payrate_id'];
 	}
+	
+	function get_staff_with_age_group($user_id)
+	{
+		$sql = "SELECT s.*, u.*,
+					 CASE
+						WHEN datediff(now(), dob) / 365.25 > 50 THEN '51 & over'
+						WHEN datediff(now(), dob) / 365.25 > 35 THEN '36 - 50'
+						WHEN datediff(now(), dob) / 365.25 > 25 THEN '26 - 35'
+						WHEN datediff(now(), dob) / 365.25 > 17 THEN '18 - 25'
+						ELSE 'under 18'
+					  END as age_group
+				FROM user_staffs s
+				LEFT JOIN users u ON s.user_id = u.user_id WHERE s.user_id = '" . $user_id . "'";
+		$query = $this->db->query($sql);
+		return $query->first_row('array');	
+	}
 
 }

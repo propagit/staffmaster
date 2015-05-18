@@ -82,7 +82,7 @@ class Induction extends MX_Controller {
             if ($current_step['fields']) {
                 $fields = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type']));
                 $data['fields'] = $fields;
-
+					
             }
 
         }
@@ -164,10 +164,13 @@ class Induction extends MX_Controller {
                 $this->form_validation->set_rules('days', 'Day', 'required');
             } else if ($current_step['type'] == 'location') {
                 $user_data = modules::run('staff/get_staff', $this->user['user_id']);
-                $a = json_decode($user_data['locations']);
-                foreach($a as $key => $value) {
-                    $location = $key; break;
-                }
+				$location = array();
+				if($user_data['locations']){
+					$a = json_decode($user_data['locations']);
+					foreach($a as $key => $value) {
+						$location = $key; break;
+					}
+				}
                 $data['location'] = $location;
                 $this->form_validation->set_rules('location', 'Location', 'required');
             }

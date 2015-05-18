@@ -10,7 +10,8 @@ class Lookbook extends MX_Controller {
 
 	function __construct() {
 		parent::__construct();
-	
+		$this->load->model('staff/staff_model');
+		$this->load->model('usr/user_model');
 		$this->user = $this->session->userdata('user_data');
 	}
 	
@@ -28,5 +29,12 @@ class Lookbook extends MX_Controller {
 	function main_view()
 	{
 		$this->load->view('main_view', isset($data) ? $data : NULL);	
+	}
+	
+	function get_staff_card($user_id)
+	{
+		$data['staff'] = $this->staff_model->get_staff_with_age_group($user_id);
+		$data['photo'] = $this->staff_model->get_hero($user_id);
+		$this->load->view('staff/card_view', isset($data) ? $data : NULL);	
 	}
 }

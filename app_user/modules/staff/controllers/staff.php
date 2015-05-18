@@ -939,6 +939,11 @@ class Staff extends MX_Controller {
 	{
 		return $this->staff_model->get_default_payrate_id($user_id);
 	}
+	
+	function get_staff_with_age_group($user_id)
+	{
+		return $this->staff_model->get_staff_with_age_group($user_id);
+	}
 
 
 }

@@ -1,2 +1,58 @@
 /* CSS Document */
+$color1:#cccccc; /* grey */
+$white:#fff; /* white*/
 
+.lookbook{
+	background:#f367c0;
+	width:100%;
+	float:left;
+}
+
+/* lb = lookbook */
+.lb-box{
+	/*min-width:245px;*/
+	border:1px solid $color1;
+	float:left;
+	background:rgba(255,255,255,0.5);
+	
+	.h4,
+	h4{
+		font-size:23px;
+		font-weight:600;
+	}
+	
+	.avatar{
+		padding:11px 12px;
+		img{
+			box-shadow:none;
+			border-radius:0;	
+			width:100%;
+		}
+	}
+	
+	.info{
+		text-align:center;
+		padding:11px 12px;
+		background:$white;	
+		
+		dl{
+			float:left;
+			width:100%;
+			text-align:left;
+			margin-left:10%;
+			font-size:16px;
+			
+			dt{
+				float:left;
+				width:30%;
+			}
+			dd{
+				float:left;
+				width:60%;
+			}
+		}
+	}
+	.btn-lookbook{
+		width:100%;	
+	}
+}
