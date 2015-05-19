@@ -48,10 +48,14 @@
 $active_group = 'default';
 $active_record = TRUE;
 $sub_domain = array_shift(explode(".",$_SERVER['HTTP_HOST']));
-$db['default']['hostname'] = DB_HOSTNAME;
+/*$db['default']['hostname'] = DB_HOSTNAME;
 $db['default']['username'] = DB_USERNAME;
 $db['default']['password'] = DB_PASSWORD;
-$db['default']['database'] = USER_PREFIX_DB . $sub_domain; #'staff_master';
+$db['default']['database'] = USER_PREFIX_DB . $sub_domain; #'staff_master';*/
+$db['default']['hostname'] = 'localhost';
+$db['default']['username'] = 'root';
+$db['default']['password'] = 'root';
+$db['default']['database'] = 'user_db_kaushtuv'; #'staff_master';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

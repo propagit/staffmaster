@@ -11,7 +11,8 @@ class Lookbook extends MX_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('staff/staff_model');
-		$this->load->model('usr/user_model');
+		$this->load->model('user/user_model');
+		$this->load->model('lookbook_model');
 		$this->user = $this->session->userdata('user_data');
 	}
 	
@@ -31,10 +32,26 @@ class Lookbook extends MX_Controller {
 		$this->load->view('main_view', isset($data) ? $data : NULL);	
 	}
 	
-	function get_staff_card($user_id)
+	function get_lookbook($key)
 	{
+		return $this->lookbook_model->get_lookbook($key);	
+	}
+	
+	function get_staff_card_preview($user_id)
+	{
+		$data['config_personal'] = $this->lookbook_model->get_lookbook_config(LB_PERSONAL);
+		$data['config_custom'] = $this->lookbook_model->get_lookbook_config(LB_CUSTOM);
 		$data['staff'] = $this->staff_model->get_staff_with_age_group($user_id);
 		$data['photo'] = $this->staff_model->get_hero($user_id);
 		$this->load->view('staff/card_view', isset($data) ? $data : NULL);	
+	}
+	
+	function get_staff_card_publish_view($user_id,$config_personal,$config_custom)
+	{
+		$data['config_personal'] = $config_personal;
+		$data['config_custom'] = $config_custom;
+		$data['staff'] = $this->staff_model->get_staff_with_age_group($user_id);
+		$data['photo'] = $this->staff_model->get_hero($user_id);
+		$this->load->view('staff/card_view', isset($data) ? $data : NULL);
 	}
 }

@@ -149,5 +149,10 @@ define('CLIENT_INVOICE_EMAIL_TEMPLATE_ID',7);
 define('CLIENT_QUOTE_EMAIL_TEMPLATE_ID',8);
 define('BRIEF_EMAIL_TEMPLATE_ID',9);
 define('TIMESHEET_EMAIL_TEMPLATE_ID',10);
+
+# lookbook config type
+define('LB_PERSONAL','personal');
+define('LB_CUSTOM','custom');
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
