@@ -15,7 +15,7 @@
 	}
 	
 	/*foreach($staff as $s){	
-		echo modules::run('lookbook/get_staff_card_publish_view',$s,$config_personal,$config_custom); 
+		echo modules::run('lookbook/get_staff_card',$s,$config_personal,$config_custom); 
 	}*/
 	
 	?>

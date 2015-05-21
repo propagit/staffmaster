@@ -37,16 +37,11 @@ class Lookbook extends MX_Controller {
 		return $this->lookbook_model->get_lookbook($key);	
 	}
 	
-	function get_staff_card_preview($user_id)
+	function get_staff_card_config_view($user_id)
 	{
 		$config_personal = $this->lookbook_model->get_lookbook_config(LB_PERSONAL);
 		$config_custom = $this->lookbook_model->get_lookbook_config(LB_CUSTOM);
 		$this->get_staff_card($user_id,$config_personal,$config_custom);	
-	}
-	
-	function get_staff_card_publish_view($user_id,$config_personal,$config_custom)
-	{
-		$this->get_staff_card($user_id,$config_personal,$config_custom);
 	}
 	
 	function get_staff_card($user_id,$config_personal,$config_custom)

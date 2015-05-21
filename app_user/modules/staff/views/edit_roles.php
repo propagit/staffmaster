@@ -8,7 +8,7 @@ var sort_data = {
 	'sort_by':'name',
 	'sort_order':'asc',
 	'user_staff_id':<?=$staff['user_id'];?>,
-	'total_active_staffs':<?=modules::run('staff/get_total_staff');?>
+	'total_active_staffs':<?=modules::run('staff/get_total_staff',STAFF_ACTIVE);?>
 };
 
 var params = {

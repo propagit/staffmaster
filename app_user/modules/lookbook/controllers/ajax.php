@@ -11,7 +11,7 @@ class Ajax extends MX_Controller {
 		$this->load->model('lookbook_model');
     }
 
-    function profile_fields($step_id = '', $category = '') {
+    function profile_fields($category) {
         $fields = array();
         switch($category) {
             case 'personal':
@@ -27,9 +27,7 @@ class Ajax extends MX_Controller {
                         array('key' => 'state', 'label' => 'State'),
                         array('key' => 'country', 'label' => 'Country'),
                         array('key' => 'phone', 'label' => 'Telephone'),
-                        array('key' => 'mobile', 'label' => 'Mobile Phone'),
-                        array('key' => 'emergency_contact', 'label' => 'Emergency Contact'),
-                        array('key' => 'emergency_phone', 'label' => 'Emergency Phone')
+                        array('key' => 'mobile', 'label' => 'Mobile Phone')
                     );
                 break;
             case 'custom':
@@ -44,20 +42,7 @@ class Ajax extends MX_Controller {
         }
 
 
-        $step = $this->induction_model->get_step($step_id);
-        if ($step && $step['fields']) {
-            $result = array();
-            $step_fields = json_decode($step['fields']);
-            foreach($fields as $field) {
-                $f = $field;
-                if (in_array($field['key'], $step_fields)) {
-                    $f['ticked'] = true;
-					$result[] = $f;
-                }
-                #$result[] = $f;
-            }
-            $fields = $result;
-        }
+        
         echo json_encode($fields);
     }
 }

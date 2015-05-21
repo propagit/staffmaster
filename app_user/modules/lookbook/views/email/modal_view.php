@@ -20,12 +20,13 @@
                         </div>
                         <div class="lb-config-box">
                         	<p><i class="fa fa-cog fa-lb"></i> <strong>Configure visible attributes</strong></p>
-                            <div class="col-md-8">
+                            <p><strong>Add Personal Details To View</strong></p>
+                            <div class="col-sm-6 remove-gutters">
                                 <div
                                     multi-select
-                                    input-model="states"
-                                    button-label="code"
-                                    item-label="code name"
+                                    input-model="personal"
+                                    button-label="key"
+                                    item-label="label"
                                     tick-property="ticked"
                                 >
                                 </div>
@@ -44,7 +45,7 @@
                     </div>
                     <div class="col-md-4 lbm-card remove-gutters">
                     	<div class="lb-row">
-                    		<?php echo modules::run('lookbook/get_staff_card_preview',11);?>
+                    		<?php echo modules::run('lookbook/get_staff_card_config_view',11);?>
                         </div>
                         
                         <div class="lb-row">
