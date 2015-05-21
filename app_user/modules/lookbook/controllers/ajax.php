@@ -29,6 +29,16 @@ class Ajax extends MX_Controller {
                         array('key' => 'phone', 'label' => 'Telephone'),
                         array('key' => 'mobile', 'label' => 'Mobile Phone')
                     );
+					$configed_personal_fields = $this->lookbook_model->get_lookbook_config(LB_PERSONAL);
+					if($configed_personal_fields){
+						$cpf_temp_arr = json_decode($configed_personal_fields);
+						foreach($fields as $key => $val){
+							if(in_array($val['key'],$cpf_temp_arr)){
+								array_push($fields,$fields[$key]['ticked'] = true);
+							}
+						}
+					}
+					
                 break;
             case 'custom':
                     $custom_fields = $this->custom_field_model->get_fields();
@@ -36,6 +46,16 @@ class Ajax extends MX_Controller {
                         $field['key'] = $field['field_id'];
                         $fields[] = $field;
                     }
+					
+					$configed_custom_fields = $this->lookbook_model->get_lookbook_config(LB_CUSTOM);
+					if($configed_custom_fields){
+						$ccf_temp_arr = json_decode($configed_custom_fields);
+						foreach($fields as $key => $val){
+							if(in_array($val['field_id'],$ccf_temp_arr)){
+								array_push($fields,$fields[$key]['ticked'] = true);
+							}
+						}
+					}
                 break;
             default: $fields = array();
                 break;
@@ -45,4 +65,16 @@ class Ajax extends MX_Controller {
         
         echo json_encode($fields);
     }
+	
+	function get_staff_card_config_view($user_id)
+	{
+		echo modules::run('lookbook/get_staff_card_config_view',$user_id);	
+	}
+	
+	function update_lookbook_config($data)
+	{
+		#$this->lookbook_model->update_lookbook_config($type,$data);	
+		#echo $type;
+		#print_r($data);
+	}
 }

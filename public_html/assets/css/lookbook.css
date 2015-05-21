@@ -67,7 +67,8 @@
     border-left: 1px solid #cccccc;
     text-align: center;
     background: url("../img/bg-title.jpg");
-    border-radius: 0 6px 0 0; }
+    border-radius: 0 6px 0 0;
+    min-height: 640px; }
   .lb-modal .lb-modal-body .lbm-body-footer {
     padding-top: 20px;
     padding-bottom: 5px;

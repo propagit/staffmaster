@@ -13,6 +13,7 @@ class Lookbook extends MX_Controller {
 		$this->load->model('staff/staff_model');
 		$this->load->model('user/user_model');
 		$this->load->model('lookbook_model');
+		$this->load->model('attribute/custom_field_model');
 		$this->user = $this->session->userdata('user_data');
 	}
 	

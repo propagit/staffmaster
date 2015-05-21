@@ -20,17 +20,32 @@
                         </div>
                         <div class="lb-config-box">
                         	<p><i class="fa fa-cog fa-lb"></i> <strong>Configure visible attributes</strong></p>
+                            
+                            <div class="col-sm-6 remove-left-gutter">
                             <p><strong>Add Personal Details To View</strong></p>
-                            <div class="col-sm-6 remove-gutters">
                                 <div
                                     multi-select
                                     input-model="personal"
-                                    button-label="key"
+                                    button-label="label"
+                                    item-label="label"
+                                    tick-property="ticked"
+                                    on-item-click="personal.fClick(data)"
+                                >
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-6 remove-left-gutter">
+                            <p><strong>Add Custom Attributes To View</strong></p>
+                                <div
+                                    multi-select
+                                    input-model="custom"
+                                    button-label="label"
                                     item-label="label"
                                     tick-property="ticked"
                                 >
                                 </div>
                             </div>
+   
                             
                         </div>
                         <div class="lb-config-box">
@@ -44,7 +59,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 lbm-card remove-gutters">
-                    	<div class="lb-row">
+                    	<div class="lb-row" id="staff-card-preview">
                     		<?php echo modules::run('lookbook/get_staff_card_config_view',11);?>
                         </div>
                         
