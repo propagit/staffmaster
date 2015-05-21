@@ -11,7 +11,7 @@
 		$data[] = array('value' => 'attach_brief', 'label' => '<i class="fa fa-info-circle"></i> Attach Brief');
 		$data[] = array('value' => 'attach_note', 'label' => '<i class="fa fa-comment-o"></i> Add Note');
 		$data[] = array('value' => 'contact_staff', 'label' => '<i class="fa fa-envelope-o"></i> Contact Staff');
-		// $data[] = array('value' => 'send_candidate', 'label' => '<i class="fa fa-users"></i> Send Candidates');
+		//$data[] = array('value' => 'send_candidate', 'label' => '<i class="fa fa-users"></i> Send Candidates');
 	}
 	echo modules::run('common/menu_dropdown', $data, 'day-action', 'Actions');
 

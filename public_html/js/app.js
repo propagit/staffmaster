@@ -4,5 +4,6 @@ angular.module('sb', [
     'textAngular',
     'initialValue',
     'multi-select',
-    'sb.induction'
+    'sb.induction',
+	'sb.lookbook'
 ])

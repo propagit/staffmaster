@@ -153,6 +153,7 @@ define('TIMESHEET_EMAIL_TEMPLATE_ID',10);
 # lookbook config type
 define('LB_PERSONAL','personal');
 define('LB_CUSTOM','custom');
+define('LB_MESSAGE','message');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
