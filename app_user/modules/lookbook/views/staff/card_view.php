@@ -111,7 +111,16 @@
         	<?php echo $personal_details; ?>
             <?php echo $custom_attrs; ?>
         </table>
+        <?php 
+			$liked_class = '';
+			if(isset($client_user_id) && $client_user_id){ 
+				$is_liked = modules::run('lookbook/is_liked_by_client',$client_user_id,$staff['user_id']); 
+				$liked_class = $is_liked ? 'btn-core' : '';
+		?>
+		<button class="btn btn-lookbook like-this-staff <?=$liked_class;?>" id="btn-like-<?=$staff['user_id'];?>" data-staff-user-id=<?=$staff['user_id'];?> data-client-user-id=<?=$client_user_id;?>><i class="fa fa-thumbs-o-<?=$is_liked ? 'down' : 'up';?>"></i> <?=$is_liked ? 'Un-' : ''?>Like This Staff</button>	
+		<?php }else{ ?>
         <button class="btn btn-lookbook"><i class="fa fa-thumbs-o-up"></i> Like This Staff</button>
+        <?php } ?>
     </div>
     
 </div>

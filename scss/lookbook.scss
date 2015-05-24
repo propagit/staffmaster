@@ -3,6 +3,7 @@ $color1:#cccccc; /* grey */
 $white:#fff; /* white*/
 $border_radius:6px; /* border radius*/
 $lb_max_width:240px; 
+$avatar_height:240px;
 
 .lookbook{
 	/*background:#f367c0;*/
@@ -10,12 +11,45 @@ $lb_max_width:240px;
 	float:left;*/
 }
 
+html,
+body{
+	background:#fff;	
+}
+
+#sm-head-wrap{
+	.logo{
+		float:none;
+		display:inline-block;
+		margin:auto;
+	}
+}
+
+
+.lookbook-nav{
+	text-align:center;
+	margin-bottom:25px;
+	ul{
+		list-style:none;
+		li{
+			display:inline-block;
+			padding:0 5px;
+			font-size:12px;
+			
+			.fa{
+				margin-right:5px;	
+			}
+		}
+	}
+}
+
 /* lb = lookbook */
 .lb-box{
 	max-width:$lb_max_width;
-	border:1px solid $color1;
+	width:$lb_max_width;
+	/*border:1px solid $color1;*/
 	display:inline-block;
 	background:rgba(255,255,255,0.5);
+	margin:10px 7.5px;
 	
 	.h4,
 	h4{
@@ -24,7 +58,20 @@ $lb_max_width:240px;
 	}
 	
 	.avatar{
-		padding:11px 12px;
+		min-height:$avatar_height;
+		.default-avatar-photo{
+			margin: auto;
+		  	height: $lb_max_width;
+		  	width: $lb_max_width;
+		  	box-shadow: none;
+		  	border-radius: 0;
+			background-color:#f4f4f4;
+			
+			.fa{
+				font-size:100px;
+				line-height:216px;	
+			}
+		}
 		img{
 			box-shadow:none;
 			border-radius:0;	
@@ -34,7 +81,7 @@ $lb_max_width:240px;
 	
 	.info{
 		text-align:center;
-		padding:11px 12px;
+		padding:10px 0;
 		background:$white;	
 		
 		table{
@@ -65,7 +112,9 @@ $lb_max_width:240px;
 }
 .btn-lookbook{
 	width:100%;
+	border-radius:0;
 }
+
 
 .lb-modal{
 	.padding20{
@@ -137,4 +186,10 @@ $lb_max_width:240px;
 }
 .pull-text{
 	text-align:right;	
+}
+.text-center{
+	text-align:center;	
+}
+.clearfix{
+	clear:both;	
 }

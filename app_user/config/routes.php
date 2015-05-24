@@ -130,6 +130,11 @@ $route['pts/' . $func . '/(:any)'] = 'public_timesheet_dispatcher/' . $func . '/
 }
 
 
+# lookbook
+#$route['plb'] = 'public_lookbook_dispatcher/list_lookbook';
+$route['plb/staffbook/(:any)'] = 'public_lookbook_dispatcher/list_lookbook/$1';
+$route['plb/preview/(:any)'] = 'public_lookbook_dispatcher/preview/$1';
+$route['plb/update_like_status'] = 'public_lookbook_dispatcher/update_like_status';
 $route['404_override'] = '';
 
 

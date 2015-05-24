@@ -59,6 +59,7 @@
 	<script> var base_url = '<?=base_url();?>'; </script>
 	<script src="<?=base_url();?>assets/js/core.js" type="text/javascript" charset="utf-8"></script>
     <link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
+    <link href="<?=base_url();?>assets/css/lookbook.css" rel="stylesheet">
     <?=$_styles;?>
 	<script src="<?=base_url();?>assets/js/core.admin.js" type="text/javascript" charset="utf-8"></script>
 

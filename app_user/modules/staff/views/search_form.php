@@ -228,6 +228,9 @@
 
 <div id="ajax-contact-staff-modal"></div>
 
+<div id="ajax-lookbook-config-modal">
+	<?php echo modules::run('lookbook/email_modal');?></div>
+
 <!-- Modal -->
 <div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -318,6 +321,11 @@ $(function(){
 	$(document).on('click','#send-sample-email',function(){
 		send_sample_email();
 	});
+	
+	//send lookbook
+	$(document).on('click','#send-lookbook',function(){
+		send_lookbook();
+	});
 
 })
 
@@ -370,6 +378,9 @@ function perform_multi_update(action){
 		break;
 		case 'export':
 			export_staff();
+		break;
+		case 'get-lookbook-config-modal':
+			get_lookbook_modal();
 		break;
 	}
 }
@@ -486,6 +497,44 @@ function send_sample_email()
 			$('#msg-email-sent-successfully').removeClass('hide');
 			setTimeout(function(){
 				$('#msg-email-sent-successfully').addClass('hide');
+			}, 3000);
+		  }
+	  });
+}
+
+function get_lookbook_modal()
+{
+	//$('#lookbook-config-modal').modal('show');
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>lookbook/ajax/get_lookbook_config_data",
+		  data: $('#staff-search-results-form').serialize(),
+		  dataType:"JSON",
+		  success: function(data) {
+			  // populate selected user data
+			  $('#lookbook_selected_user_ids').val(data.selected_user_ids);
+			  $('#lookbook_preview_user_id').val(data.preview_user_id);
+			  $('#selected_staff_count').html(data.total_selected_user);
+			  $('#lookbook-preview-url').attr('href',data.preview_url);
+			  // get preview card
+			  get_card_preview();
+			  $('#lookbook-config-modal').modal('show');
+		  }
+	  });	
+}
+
+function send_lookbook(){
+	//preloading($('#lookbook-config-modal'));
+	update_lookbook_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>lookbook/ajax/send_lookbook",
+		  data: $('#lookbook-modal-form').serialize(),
+		  success: function(html) {
+		    //$('#wrapper_loading').remove();
+			$('#msg-lookbook-email-sent-successfully').removeClass('hide');
+			setTimeout(function(){
+				$('#msg-lookbook-email-sent-successfully').addClass('hide');
 			}, 3000);
 		  }
 	  });

@@ -2,11 +2,11 @@
 
 class Lookbook_model extends CI_Model {
 	
-	function get_lookbook($key)
+	function get_lookbook_by_key($key)
 	{
 		$lookbook = $this->db->where('key',$key)
 							->get('lookbook')
-							->row_array();
+							->first_row('array');
 		return $lookbook;
 	}
 	
@@ -27,7 +27,15 @@ class Lookbook_model extends CI_Model {
 	function insert_lookbook($data)
 	{
 		$this->db->insert('lookbook',$data);
-		return $this->insert_id();	
+		return $this->db->insert_id();	
+	}
+	
+	function get_lookbook_by_id($lookbook_id)
+	{
+		$lookbook = $this->db->where('lookbook_id',$lookbook_id)
+							->get('lookbook')
+							->row_array();
+		return $lookbook;
 	}
 	
 	

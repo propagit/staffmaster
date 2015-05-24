@@ -66,15 +66,166 @@ class Ajax extends MX_Controller {
         echo json_encode($fields);
     }
 	
-	function get_staff_card_config_view($user_id)
+	function get_staff_card_config_view($staff_user_id)
 	{
-		echo modules::run('lookbook/get_staff_card_config_view',$user_id);	
+		echo modules::run('lookbook/get_staff_card_config_view',$staff_user_id);	
 	}
 	
-	function update_lookbook_config($data)
+	function update_lookbook_personal_config()
 	{
-		#$this->lookbook_model->update_lookbook_config($type,$data);	
-		#echo $type;
-		#print_r($data);
+		$input = file_get_contents("php://input");
+		$configed_fields = $this->lookbook_model->get_lookbook_config(LB_PERSONAL);
+		$config_arr = array();
+		if($configed_fields){
+			$config_arr = json_decode($configed_fields);
+		}
+		$new_config = array();
+		
+		$postdata = json_decode($input);
+		if($postdata->ticked){
+			# add new field	
+			array_push($config_arr,$postdata->key);
+			$new_config = $config_arr;
+		}else{
+			# remove existing field
+			foreach($config_arr as $key => $val){
+				if($val == $postdata->key){
+					unset($config_arr[$key]);
+				}
+			}
+			# re index array otherwise it will give an object when json encoded 
+			$new_config = array_values($config_arr);
+		}
+		$this->lookbook_model->update_lookbook_config('personal',json_encode($new_config));
+		
 	}
+	
+	function update_lookbook_custom_config()
+	{
+		$input = file_get_contents("php://input");
+		$configed_fields = $this->lookbook_model->get_lookbook_config(LB_CUSTOM);
+		$config_arr = array();
+		if($configed_fields){
+			$config_arr = json_decode($configed_fields);
+		}
+		$new_config = array();
+		
+		$postdata = json_decode($input);
+		if($postdata->ticked){
+			# add new field	
+			array_push($config_arr,$postdata->field_id);
+			$new_config = $config_arr;
+		}else{
+			# remove existing field
+			foreach($config_arr as $key => $val){
+				if($val == $postdata->field_id){
+					unset($config_arr[$key]);
+				}
+			}
+			# re index array otherwise it will give an object when json encoded 
+			$new_config = array_values($config_arr);
+		}
+		$this->lookbook_model->update_lookbook_config('custom',json_encode($new_config));	
+	}
+	
+	function get_client_email($client_user_id)
+	{
+		$user = modules::run('user/get_user',$client_user_id);
+		if($user){
+			echo $user['email_address'];	
+		}
+	}
+	
+	function get_lookbook_config_data()
+	{
+		$input = $this->input->post();
+		$selected_users = $input['user_staff_selected_user_id'];
+		if($selected_users){
+			$data['selected_user_ids'] = $selected_users;
+			$data['preview_user_id'] = $selected_users[0];
+			$data['total_selected_user'] = count($selected_users);
+			$data['preview_url'] = base_url() . 'plb/preview/' . implode('-',$selected_users);
+		}	
+		echo json_encode($data);
+	}
+	
+	function send_lookbook()
+	{
+		$input = $this->input->post();
+		if(!$input['lookbook_email_to']){
+			return;	
+		}
+	
+		$config_personal = $this->lookbook_model->get_lookbook_config(LB_PERSONAL);
+		$config_custom = $this->lookbook_model->get_lookbook_config(LB_CUSTOM);
+		
+		# update lookbook config message 
+		$this->lookbook_model->update_lookbook_config('message',$input['lb_email_body']);
+		
+		$time = time();
+		$key = md5($time.$input['lookbook_email_to']);
+		
+		$selected_users = explode(',',$input['selected_user_ids']);
+		
+		
+		$data = array(
+						'key' => $key,
+						'included_user_ids' => json_encode($selected_users),
+						'receiver_user_id' => $input['loobook_client_id'] ? $input['loobook_client_id'] : 0,
+						'receiver_email' => $input['lookbook_email_to'],
+						'personal_fields' => $config_personal,
+						'custom_fields' => $config_custom
+					);
+		
+		$lookbook_id = $this->lookbook_model->insert_lookbook($data);
+		if($lookbook_id){
+			echo $this->send_email($lookbook_id);
+		}
+		
+	}
+	
+	function send_email($lookbook_id)
+	{
+		$this->load->model('setting/setting_model');
+		$lookbook = $this->lookbook_model->get_lookbook_by_id($lookbook_id);
+		
+		# get company profile
+		$company = $this->setting_model->get_profile();	
+	
+		
+		$data['email_body'] = $this->lookbook_model->get_lookbook_config(LB_MESSAGE);
+		$company_email = $company['email'] ? $company['email'] : $company['email_c_email'];
+		$data['styles'] = array(
+							'primary_colour' => COLOUR_PRIM,
+							'rollover_colour' => COLOUR_ROLL,
+							'secondary_colour' => COLOUR_SECO,
+							'text_colour' => TEXT_COLOUR
+							);
+		$current_styles = $this->setting_model->get_system_styles(1);
+		if($current_styles){
+			$data['styles'] = $current_styles;	
+		}
+		$data['url'] = base_url() .'plb/staffbook/' . $lookbook['key'];
+		$lookbook_email = $this->load->view('email/email_template', isset($data) ? $data : NULL, true);
+
+
+		$email_signature = modules::run('setting/get_email_footer');
+		$message = $lookbook_email . $email_signature;
+	
+		
+		$email_data = array(
+								'to' => $lookbook['receiver_email'],
+								'from' => $company_email ? $company_email : 'noreply@staffbook.com',
+								'from_text' => 'StaffBook',
+								'subject' => $company['company_name'] . ' - StaffBooks',
+								'message' => $message,
+								'overwrite' => true
+							);
+		
+	
+		modules::run('email/send_email_localhost',$email_data);		
+	}
+	
+	
+	
 }

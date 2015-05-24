@@ -154,6 +154,7 @@ define('TIMESHEET_EMAIL_TEMPLATE_ID',10);
 define('LB_PERSONAL','personal');
 define('LB_CUSTOM','custom');
 define('LB_MESSAGE','message');
+define('STAFF_LIKED',1);
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

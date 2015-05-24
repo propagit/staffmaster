@@ -1,6 +1,6 @@
-
+<form id="lookbook-modal-form">
 <!-- Contact Staff Modal-->
-<div class="modal fade lb-modal" id="lookbook-email-modal" tabindex="-1" role="dialog" aria-labelledby="contact-staff-label" aria-hidden="true">
+<div class="modal fade lb-modal" id="lookbook-config-modal" tabindex="-1" role="dialog" aria-labelledby="contact-staff-label" aria-hidden="true">
 	<div class="modal-dialog contact-modal">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -30,6 +30,7 @@
                                     item-label="label"
                                     tick-property="ticked"
                                     on-item-click="personal.fClick(data)"
+                                    helper-elements=""
                                 >
                                 </div>
                             </div>
@@ -42,6 +43,8 @@
                                     button-label="label"
                                     item-label="label"
                                     tick-property="ticked"
+                                    on-item-click="custom.fClick(data)"
+                                    helper-elements=""
                                 >
                                 </div>
                             </div>
@@ -60,14 +63,14 @@
                     </div>
                     <div class="col-md-4 lbm-card remove-gutters">
                     	<div class="lb-row" id="staff-card-preview">
-                    		<?php echo modules::run('lookbook/get_staff_card_config_view',11);?>
+
                         </div>
                         
                         <div class="lb-row">
-                        	<span id="selected-staff-count">22</span> staff selected in staff book
+                        	<span id="selected_staff_count"></span> staff selected in staff book
                         </div>
                         <div class="lb-row">
-                        	<button class="btn btn-core lb-max-width"><i class="fa fa-eye"></i> Preview Staff Book</button>
+                        	<a id="lookbook-preview-url" target="_blank" class="btn btn-core lb-max-width" href="#"><i class="fa fa-eye"></i> Preview Staff Book</a>
                         </div>
                     </div>
                     
@@ -81,17 +84,70 @@
                              <label for="add-button" class="col-sm-2 control-label pull-text" style="margin-top:5px;">Send Sample Email</label>
                               <div class="col-sm-5 remove-right-gutter">
                                   <div class="input-group">
-                                      <input type="text" class="form-control" id="sample_email_to" name="sample_email_to">
+                                      <input type="text" class="form-control" id="lookbook_email_to" name="lookbook_email_to">
                                       <span class="input-group-btn">
-                                        <button id="send-sample-email" class="btn btn-default sample-email-btn" type="button"><i class="fa fa-envelope-o"></i></button>
+                                        <button id="send-lookbook" class="btn btn-default sample-email-btn" type="button"><i class="fa fa-envelope-o"></i></button>
                                       </span>
                                     </div><!-- /input-group -->
                               </div>
                      	</div>
+                         <div class="form-group">
+                            <div class="col-sm-12 alert alert-success add-top-margin-20 hide" id="msg-lookbook-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; StaffBook Successfully Sent</div>
+                         </div>
                     </div>     
 
                 </div><!-- /.modal-body -->
-            </div><!-- /.col-sm-12
+            </div><!-- /.col-sm-12 -->
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+	<input type="hidden" name="selected_user_ids" id="lookbook_selected_user_ids" value="">
+    <input type="hidden" id="lookbook_preview_user_id" value="0">
+</form>
+<script>
+
+
+var lb_email_body = CKEDITOR.replace('lb_email_body',{
+  height:100
+});
+
+CKEDITOR.config.toolbar = [
+    <?=TRUE ? LIVE_CK_TOOLS : DEV_CK_TOOLS;?>
+] ;
+
+function update_lookbook_ckeditor()
+{
+	for ( instance in CKEDITOR.instances ) {
+            CKEDITOR.instances[instance].updateElement();
+    }	
+}
+
+$(function(){
+	get_card_preview();
+	
+	$('#loobook_client_id').change(function(){
+		get_client_email($('#loobook_client_id').val());
+	});
+	
+});
+function get_card_preview(){
+	var user_id = $('#lookbook_preview_user_id').val();
+	$.ajax({
+	   method: "GET",
+	   url: "<?=base_url();?>lookbook/ajax/get_staff_card_config_view/"+user_id,
+	}).done(function(html) {
+	  	$('#staff-card-preview').html(html);
+	});	
+}
+function get_client_email(user_id){
+	$.ajax({
+	   method: "GET",
+	   url: "<?=base_url();?>lookbook/ajax/get_client_email/"+user_id,
+	}).done(function(data) {
+	  	$('#lookbook_email_to').val(data);
+	});	
+}
+
+
+</script>
