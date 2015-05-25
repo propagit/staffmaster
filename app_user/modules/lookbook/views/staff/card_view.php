@@ -70,12 +70,12 @@
 			if($custom_fields){
 				foreach($custom_fields as $field){ 
 					$key = array_search($field, array_column($staff_custom, 'field_id'));
-					if($key){
+					#if($key){
 						switch($staff_custom[$key]['type']){
 							case 'checkbox':
 								$temp_arr = json_decode($staff_custom[$key]['staff_value']);
 								$custom_attrs .= '<tr>
-													<td> ' .  $staff_custom[$key]['label']  . '</td>
+													<td> ' . $staff_custom[$key]['label']  . '</td>
 													<td> ' . implode(',',$temp_arr). '</td>
 												  <tr>';
 							break;
@@ -89,20 +89,20 @@
 									}
 								}
 								$custom_attrs .= '<tr>
-													<td> ' .  $staff_custom[$key]['label']  . '</td>
+													<td> ' . $staff_custom[$key]['label'] . '</td>
 													<td> ' . $file_list. '</td>
 												  <tr>';
 							break;
 							
 							default:
 								$custom_attrs .= '<tr>
-													<td> ' .  $staff_custom[$key]['label']  . '</td>
+													<td> ' . $staff_custom[$key]['label'] . '</td>
 													<td> ' . $staff_custom[$key]['staff_value'] . '</td>
 												  <tr>';
 							break;	
 						} # end switch
 						
-					} # end - if key
+					#} # end - if key
               	} # end - foreach custom fields
 			} # end - if custom fields
           ?>  

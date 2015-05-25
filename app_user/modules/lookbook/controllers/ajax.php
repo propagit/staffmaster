@@ -152,10 +152,38 @@ class Ajax extends MX_Controller {
 	function send_lookbook()
 	{
 		$input = $this->input->post();
-		if(!$input['lookbook_email_to']){
+		if(!$input['loobook_client_id']){
+			echo json_encode(
+							array(
+									'ok' => false,
+									'msg' => 'Please select a client'
+								)
+							);
 			return;	
 		}
-	
+		
+		if(!$input['lookbook_email_to']){
+			echo json_encode(
+							array(
+									'ok' => false,
+									'msg' => 'Please enter an email address'
+								)
+							);
+			return;	
+		}
+		
+		if($input['lookbook_email_to']){
+			if (!filter_var($input['lookbook_email_to'], FILTER_VALIDATE_EMAIL)) {
+				echo json_encode(
+							array(
+									'ok' => false,
+									'msg' => 'Invalid email address'
+								)
+							);
+				return;	
+			}
+		}
+		
 		$config_personal = $this->lookbook_model->get_lookbook_config(LB_PERSONAL);
 		$config_custom = $this->lookbook_model->get_lookbook_config(LB_CUSTOM);
 		
@@ -171,7 +199,7 @@ class Ajax extends MX_Controller {
 		$data = array(
 						'key' => $key,
 						'included_user_ids' => json_encode($selected_users),
-						'receiver_user_id' => $input['loobook_client_id'] ? $input['loobook_client_id'] : 0,
+						'receiver_user_id' => $input['loobook_client_id'],
 						'receiver_email' => $input['lookbook_email_to'],
 						'personal_fields' => $config_personal,
 						'custom_fields' => $config_custom
@@ -179,7 +207,13 @@ class Ajax extends MX_Controller {
 		
 		$lookbook_id = $this->lookbook_model->insert_lookbook($data);
 		if($lookbook_id){
-			echo $this->send_email($lookbook_id);
+			$this->send_email($lookbook_id);
+			echo json_encode(
+							array(
+									'ok' => true,
+									'msg' => ''
+								)
+							);
 		}
 		
 	}
@@ -223,7 +257,7 @@ class Ajax extends MX_Controller {
 							);
 		
 	
-		modules::run('email/send_email_localhost',$email_data);		
+		modules::run('email/send_email',$email_data);		
 	}
 	
 	

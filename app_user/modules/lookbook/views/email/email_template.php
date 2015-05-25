@@ -1,4 +1,4 @@
-<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
    	 	<td height="150" align="center" valign="middle"><?=modules::run('setting/company_logo');?></td>
     </tr>

@@ -525,17 +525,27 @@ function get_lookbook_modal()
 
 function send_lookbook(){
 	//preloading($('#lookbook-config-modal'));
+	$('#msg-lookbook-email-error').addClass('hide');
+	var default_icon = '<i class="fa fa-envelope-o"></i>';
+	$('#send-lookbook').html('<i class="fa fa-cog fa-spin"></i>');
 	update_lookbook_ckeditor();
 	$.ajax({
 		  type: "POST",
 		  url: "<?=base_url();?>lookbook/ajax/send_lookbook",
 		  data: $('#lookbook-modal-form').serialize(),
-		  success: function(html) {
-		    //$('#wrapper_loading').remove();
-			$('#msg-lookbook-email-sent-successfully').removeClass('hide');
-			setTimeout(function(){
-				$('#msg-lookbook-email-sent-successfully').addClass('hide');
-			}, 3000);
+		  dataType:"JSON",
+		  success: function(data) {
+		    $('#send-lookbook').html(default_icon);
+			if(data.ok){
+				$('#msg-lookbook-email-sent-successfully').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-lookbook-email-sent-successfully').addClass('hide');
+				}, 3000);
+			}else{
+				$('#msg-lookbook-email-error').removeClass('hide');
+				$('#lookbook-email-err-msg').html(data.msg);
+				
+			}
 		  }
 	  });
 }

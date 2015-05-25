@@ -109,7 +109,7 @@
 </header>
 
 	<div class="container-fluid" id="sm-body-wrap">
-        <div class="row">
+        <div class="row lookbook-wrap">
         	<?=$menu;?>
             <?=$content;?>
         </div>

@@ -2,11 +2,6 @@
 /* grey */
 /* white*/
 /* border radius*/
-.lookbook {
-  /*background:#f367c0;*/
-  /*width:100%;
-  float:left;*/ }
-
 html,
 body {
   background: #fff; }
@@ -15,6 +10,9 @@ body {
   float: none;
   display: inline-block;
   margin: auto; }
+
+.lookbook-wrap {
+  text-align: center; }
 
 .lookbook-nav {
   text-align: center;
@@ -41,6 +39,7 @@ body {
     font-size: 23px;
     font-weight: 600; }
   .lb-box .avatar {
+    position: relative !important;
     min-height: 240px; }
     .lb-box .avatar .default-avatar-photo {
       margin: auto;

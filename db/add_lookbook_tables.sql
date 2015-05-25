@@ -18,7 +18,7 @@ CREATE TABLE `lookbook_config` (
 INSERT INTO `lookbook_config` (`id`, `type`, `fields`) VALUES
 (1, 'personal', '["first_name","last_name","dob","gender","state"]'),
 (2, 'custom', ''),
-(3, 'message', 'We have a chosen aa range of staff we think may suit your requirments');
+(3, 'message', 'We have a chosen a range of staff we think may suit your requirments');
 
 --
 -- Indexes for dumped tables

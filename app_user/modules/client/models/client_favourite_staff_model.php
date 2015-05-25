@@ -38,4 +38,13 @@ class Client_favourite_staff_model extends CI_Model {
 		}
 		return false;
 	}
+	
+	function get_client_fav_staff($client_user_id)
+	{
+		$result = $this->db->where('client_user_id',$client_user_id)
+						   ->where('status',STAFF_LIKED)
+						   ->get('client_favourite_staff')
+						   ->result_array();
+		return $result;
+	}
 }

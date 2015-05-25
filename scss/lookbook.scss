@@ -5,11 +5,6 @@ $border_radius:6px; /* border radius*/
 $lb_max_width:240px; 
 $avatar_height:240px;
 
-.lookbook{
-	/*background:#f367c0;*/
-	/*width:100%;
-	float:left;*/
-}
 
 html,
 body{
@@ -24,6 +19,9 @@ body{
 	}
 }
 
+.lookbook-wrap{
+	text-align:center;	
+}
 
 .lookbook-nav{
 	text-align:center;
@@ -58,6 +56,7 @@ body{
 	}
 	
 	.avatar{
+		position:relative !important;
 		min-height:$avatar_height;
 		.default-avatar-photo{
 			margin: auto;

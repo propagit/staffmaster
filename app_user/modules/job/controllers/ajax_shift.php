@@ -12,6 +12,7 @@ class Ajax_shift extends MX_Controller {
 		parent::__construct();
 		$this->load->model('job_shift_model');
 		$this->load->model('staff/staff_model');
+		$this->load->model('client/client_favourite_staff_model');
 	}
 
 	/**
@@ -580,6 +581,15 @@ class Ajax_shift extends MX_Controller {
 		$data['staffs'] = $this->job_shift_model->get_request_staffs($shift_id);
 		$data['shift_id'] = $this->job_shift_model->get_job_shift($shift_id);
 		$data['shift'] = $this->job_shift_model->get_job_shift($shift_id);
+		
+		# get client_id, and then get client fav staff
+		$job = $this->job_shift_model->get_job_by_shift_id($shift_id);
+		$data['liked_staff'] = array();
+		if($job){
+			$client_id = $job['client_id'];	
+			$data['liked_staff'] = $this->client_favourite_staff_model->get_client_fav_staff($client_id);
+		}
+		
 		$this->load->view('client/shift/request_staff/list_requests', isset($data) ? $data : NULL);
 	}
 

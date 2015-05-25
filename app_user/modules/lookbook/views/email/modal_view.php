@@ -86,14 +86,15 @@
                                   <div class="input-group">
                                       <input type="text" class="form-control" id="lookbook_email_to" name="lookbook_email_to">
                                       <span class="input-group-btn">
-                                        <button id="send-lookbook" class="btn btn-default sample-email-btn" type="button"><i class="fa fa-envelope-o"></i></button>
+                                        <button id="send-lookbook" class="btn btn-core btn-default sample-email-btn" type="button"><i class="fa fa-envelope-o"></i></button>
                                       </span>
                                     </div><!-- /input-group -->
                               </div>
                      	</div>
-                         <div class="form-group">
-                            <div class="col-sm-12 alert alert-success add-top-margin-20 hide" id="msg-lookbook-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; StaffBook Successfully Sent</div>
-                         </div>
+
+                        <div class="col-sm-12 alert alert-success add-top-margin-20 hide" id="msg-lookbook-email-sent-successfully"><i class="fa fa-check"></i> &nbsp; StaffBook Successfully Sent</div>
+                        <div class="col-sm-12 alert alert-danger add-top-margin-20 hide" id="msg-lookbook-email-error"><i class="fa fa-times"></i> &nbsp; <span id="lookbook-email-err-msg"></span></div>
+                 
                     </div>     
 
                 </div><!-- /.modal-body -->
