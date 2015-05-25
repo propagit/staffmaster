@@ -54,6 +54,7 @@
 
     <script src="<?=base_url();?>js/app.js"></script>
     <script src="<?=base_url();?>js/induction.js"></script>
+    <script src="<?=base_url();?>js/lookbook.js"></script>
 
 </head>
 <body ng-app="sb">
