@@ -95,6 +95,11 @@
 .table i{
 	margin-left:0;	
 }
+html,
+body{
+	background:#fff;	
+}
+
 </style>
 <header>
     <div class="container-fluid" id="sm-head-wrap">
