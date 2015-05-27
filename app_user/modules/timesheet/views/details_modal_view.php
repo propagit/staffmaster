@@ -110,10 +110,55 @@
 						<td><?=$timesheet['reject_note'];?></td>
 					</tr>
 					<?php } ?>
+                    
+                    <!--split timesheet-->
+                    <?php if(isset($child_timesheet)){ ?>
+                    	<tr>
+                        	<td colspan="2">&nbsp;</td>
+                        </tr>
+                    	<tr class="ts-split-detail-view">
+                        	<td colspan="2" class="ts-split-link">&nbsp;</td>
+                        </tr>
+                    	<tr>
+                            <td>Start Time</td>
+                            <td><?=date('H:i \o\n jS F, Y', $child_timesheet['start_time']);?></td>
+                        </tr>
+                        <tr>
+                            <td>Finish Time</td>
+                            <td><?=date('H:i \o\n jS F, Y', $child_timesheet['finish_time']);?></td>
+                        </tr>
+                        <tr class="active">
+                            <th>Breaks</th>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <? $breaks = json_decode($child_timesheet['break_time']);
+                        if ($breaks) foreach($breaks as $break) { ?>
+                        <tr>
+                            <td></td>
+                            <td> <?=$break->length/60;?> minutes <i>start at</i> <?=date('H:i', $break->start_at);?></td>
+                        </tr>
+                        <? } ?>
+                        <tr class="active">
+                            <th>Pay Rate</th>
+                            <td><?=modules::run('attribute/payrate/display_payrate', $child_timesheet['payrate_id']);?></td>
+                        </tr>
+                        <?
+                            $hours = modules::run('attribute/payrate/extract_payrate', $timesheet);
+                            if ($hours) {
+                            foreach($hours as $rate=>$length) { ?>
+                        <tr>
+                            <td></td>
+                            <td><b><?=$length/60;?></b> hours at $<?=$rate;?></td>
+                        </tr>
+                        <? } } ?>
+                    <?php } ?>
+                    <!--split timesheet-->
 				</table>
 				<button type="button" class="btn btn-core" id="btn-print-timesheet"><i class="fa fa-print"></i> Print</button>
+                <?php if(0){ ?>
 				&nbsp;
 				<button type="button" class="btn btn-core"><i class="fa fa-envelope-o"></i> Email</button>
+                <?php } ?>
 			</div>
 		</div>
 	</div><!-- /.modal-content -->

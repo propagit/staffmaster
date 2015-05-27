@@ -1,5 +1,25 @@
-<tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status'],$timesheet['timesheet_id']);?>" id="timesheet_<?=$timesheet['timesheet_id'];?>">
-	<td><input type="checkbox" class="select_timesheet" value="<?=$timesheet['timesheet_id'];?>" /></td>
+<?php
+	# this check was done on view as this was added later on and adding on the controller required changing on two files
+	$has_child = false;
+	$remove_red_text_flag = false;
+	if($timesheet['child_timesheet_id']){
+		$has_child = true;
+		$remove_red_text_flag = true;
+	}
+		
+	$has_parent = false;
+	if($timesheet['parent_timesheet_id']){
+		$has_parent = true;
+		$remove_red_text_flag = true;
+	}
+?>
+<tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status'],$timesheet['timesheet_id']);?> 
+	<?=$has_child ? 'has-child-ts' : '';?> <?=$has_parent ? 'has-parent-ts' : '';?>" 
+    id="timesheet_<?=$timesheet['timesheet_id'];?>"
+	data-child-id="<?=$timesheet['child_timesheet_id'];?>"
+    data-parent-id="<?=$timesheet['parent_timesheet_id'];?>"
+    >
+	<td class="ts-split-link"><? if(!$has_parent) { ?><input type="checkbox" class="select_timesheet" value="<?=$timesheet['timesheet_id'];?>" /><?php } ?></td>
 	<td class="wp-date" width="80">
 		<span class="wk_day"><?=date('D', strtotime($timesheet['job_date']));?></span>
 		<span class="wk_date"><?=date('d', strtotime($timesheet['job_date']));?></span>
@@ -16,7 +36,7 @@
 	<td><?=$job['name'];?></td>
 	<td class="center">
 		<a href="#" class="ts_start_time prim-color-to-txt-color" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('Y-m-d H:i', $timesheet['start_time']);?>" data-title="Time sheet start date/time">
-			<? if ($timesheet['start_time'] != $shift['start_time']) { ?>
+			<? if (	($timesheet['start_time'] != $shift['start_time']) && !$remove_red_text_flag) { ?>
 			<span class="text-red"><?=date('H:i', $timesheet['start_time']);?></span>
 			<? } else { ?>
 			<?=date('H:i', $timesheet['start_time']);?>
@@ -24,7 +44,7 @@
 		</a>
 		- 
 		<a href="#" class="ts_finish_time prim-color-to-txt-color" data-type="combodate" data-template="DD- MM- YYYY HH: mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('Y-m-d H:i', $timesheet['finish_time']);?>" title="Time sheet finish date/time">
-			<? if ($timesheet['finish_time'] != $shift['finish_time']) { ?>
+			<? if ( ($timesheet['finish_time'] != $shift['finish_time']) && !$remove_red_text_flag) { ?>
 			<span class="text-red"><?=date('H:i', $timesheet['finish_time']);?></span>
 			<? } else { ?>
 			<?=date('H:i', $timesheet['finish_time']);?>
@@ -32,6 +52,16 @@
 		</a> 
 		<?=(date('d', $timesheet['finish_time']) != date('d', $timesheet['start_time'])) ? '<span class="text-red">*</span>': '';?> 
 		(<?=($timesheet['finish_time'] - $timesheet['start_time']) / 3600;?>h)
+
+        
+        <!-- split timesheet -->
+        <?php if(!$timesheet['parent_timesheet_id'] && !$timesheet['child_timesheet_id']){ ?>
+        <a class="ts_split x-decoration" data-pk="<?=$timesheet['timesheet_id'];?>" onclick="load_split_timesheet_modal(this)"  data-toggle="popover">
+			&nbsp; <i class="fa fa-scissors"></i>
+		</a> 
+        <?php } ?>
+        <!-- end split timesheet-->
+        
 	</td>
 	<td class="center">
 		<a id="ts_break_<?=$timesheet['timesheet_id'];?>" onclick="load_ts_breaks(this)" class="ts_breaks prim-color-to-txt-color prim-color-to-txt-color" data-pk="<?=$timesheet['timesheet_id'];?>">
@@ -81,7 +111,8 @@
 			<? } ?>
 		</a>
 	</td>
-	<td class="center"><a class="prim-color-to-txt-color prim-color-to-txt-color" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/details/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a></td>
-	<td class="center"><a class="prim-color-to-txt-color" onclick="batch_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-share-square-o"></i></a></td>
+	<td class="center"><a class="prim-color-to-txt-color prim-color-to-txt-color <?=$has_parent ? 'hide' : '';?>" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/details/<?=$timesheet['timesheet_id'];?>"><i class="fa fa-eye"></i></a></td>
+	<td class="center"><? if(!$has_parent) { ?><a class="prim-color-to-txt-color" onclick="batch_timesheet(<?=$timesheet['timesheet_id'];?>)"><i class="fa fa-share-square-o"></i></a><?php } ?></td>
 	<td class="center"><a onclick="delete_timesheet(<?=$timesheet['timesheet_id'];?>)" class="prim-color-to-txt-color"><i class="fa fa-times"></i></a></td>
+  
 </tr>

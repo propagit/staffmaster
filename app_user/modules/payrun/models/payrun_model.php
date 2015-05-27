@@ -290,6 +290,14 @@ class Payrun_model extends CI_Model {
 	*/
 	function process_payrun($timesheet_id)
 	{
+		# process split payrun 
+		$timesheet = $this->get_timesheet($timesheet_id);
+		if($timesheet['child_timesheet_id']){
+			$child_ts_id = $timesheet['child_timesheet_id'];
+			$this->db->where('timesheet_id', $child_ts_id);
+			$this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_READY));	
+		}
+		
 		$this->db->where('timesheet_id', $timesheet_id);
 		return $this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_READY));
 	}
@@ -317,6 +325,13 @@ class Payrun_model extends CI_Model {
 	*/
 	function unprocess_payrun($timesheet_id)
 	{
+		$timesheet = $this->get_timesheet($timesheet_id);
+		if($timesheet['child_timesheet_id']){
+			$child_ts_id = $timesheet['child_timesheet_id'];
+			$this->db->where('timesheet_id', $child_ts_id);
+			$this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_PENDING));	
+		}
+		
 		$this->db->where('timesheet_id', $timesheet_id);
 		return $this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_PENDING));
 	}

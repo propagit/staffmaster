@@ -2295,7 +2295,51 @@ label.radio {
 .user-notes-row{
 	margin-bottom:10px;	
 }
-
+.x-decoration{
+	text-decoration:none !important;	
+}
+.has-child-ts{
+	background-color:#e9f6fb;	
+}
+.has-parent-ts{
+	background-color:#d7f0f9;	
+}
+.has-child-ts td{
+	border-bottom:1px dashed #ccc !important;	
+}
+.has-parent-ts .ts-split-link:before{
+	content: "\f0c4";
+    font-family: "FontAwesome";
+    position: absolute;
+    /*left: 53px;
+    right: 0;*/
+    margin-top: -35px;
+    width:auto;
+	color:#00b1eb;
+}
+.ts-split-detail-view .ts-split-link{
+	border-top:1px dashed #ccc;
+}
+.ts-split-detail-view .ts-split-link:after{
+	content: "\f0c4";
+    font-family: "FontAwesome";
+    position: absolute;
+    margin-top: -16px;
+    width: 25px;
+	color:#00b1eb;
+}
+.has-parent-ts td{
+	border-top:1px dashed #ccc !important;
+	padding-top:2px !important;
+	padding-bottom:0 !important;	
+	/*opacity:0.6;*/
+}
+.has-parent-ts td:last-child{
+	opacity:1;	
+}
+.has-parent-ts .wk_date{
+	font-size:1.2em;	
+}
 /**
  * This hack targets the Webkit browser engine
  * which includes Safari and Chrome.

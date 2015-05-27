@@ -87,7 +87,9 @@ class Timesheet_model extends CI_Model {
 					LEFT JOIN `attribute_venues` v ON v.venue_id = t.venue_id
 					LEFT JOIN `attribute_roles` r ON r.role_id = t.role_id
 					JOIN `jobs` j ON j.job_id = t.job_id AND j.status > " . JOB_DELETED . "
-				WHERE t.status < " . TIMESHEET_BATCHED;
+				WHERE t.status < " . TIMESHEET_BATCHED . " 
+				AND parent_timesheet_id = " . TIMESHEET_NO_PARENT;
+				
 		if (isset($params['client_id']) && $params['client_id'] != '') {
 			$sql .= " AND j.client_id = " . $params['client_id'];
 		}
@@ -109,6 +111,10 @@ class Timesheet_model extends CI_Model {
 		if (isset($params['payrate_id']) && $params['payrate_id'] != '') {
 			$sql .= " AND t.payrate_id = " . $params['payrate_id'];
 		}
+		if (isset($params['shift_duration']) && $params['shift_duration'] != ''){
+			$sql .= " AND ((t.finish_time - t.start_time) / 3600 >= " . $params['shift_duration'] . ")";	
+		}
+		
 		if (isset($params['sort_data'])) {
 			$sort_params = json_decode($params['sort_data']);
 			if (isset($sort_params->sort_by) && isset($sort_params->sort_order)) {

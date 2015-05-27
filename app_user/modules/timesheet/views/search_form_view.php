@@ -57,6 +57,14 @@
 </div>
 <div class="row">
 	<div class="form-group">
+		<label class="col-md-2 control-label">Shift Duration</label>
+		<div class="col-md-4">
+			<?=modules::run('common/field_select_shift_duration', 'shift_duration');?>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="form-group">
 		<div class="col-md-offset-2 col-md-8">
 			<button type="button" class="btn btn-core" id="btn_search_timesheets"><i class="fa fa-search"></i> Search</button> &nbsp; 
 			<button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Reset</button>

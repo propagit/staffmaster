@@ -630,4 +630,14 @@ class Common extends MX_Controller {
 		}
 		return $out;
 	}
+	
+	function field_select_shift_duration($field_name, $field_value=null, $size=null) {
+		for($i = SHIFT_MIN_DURATION; $i <= SHIFT_MAX_DURATION; $i++ ){
+			$array[] = array(
+							'value' => $i,
+							'label' => $i . ' Hour' . ($i > 1 ? 's' : '' ). ' +'
+						);	
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
 }

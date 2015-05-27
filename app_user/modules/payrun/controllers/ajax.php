@@ -164,6 +164,14 @@ class Ajax extends MX_Controller {
 	private function _revert_payrun($timesheet_id) {
 		$this->payrun_model->revert_payrun($timesheet_id);
 		$this->expense_model->delete_timesheet_expenses($timesheet_id);
+		# revert any split timesheet
+		$timesheet = modules::run('timesheet/get_timesheet',$timesheet_id);
+		if($timesheet['child_timesheet_id']){
+			$child_timesheet_id = $timesheet['child_timesheet_id'];
+			$this->payrun_model->revert_payrun($child_timesheet_id);
+			$this->expense_model->delete_timesheet_expenses($child_timesheet_id);		
+		}
+		
 	}
 
 	function load_export($type, $mode = '') {
