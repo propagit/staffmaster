@@ -446,25 +446,54 @@ class Ajax extends MX_Controller {
 	function split_timesheet() {
 		$input = $this->input->post();
 		$timesheet_id = $input['timesheet_id'];
-		#print_r($input);exit;return;
 		
 		$hour = $input['hour'];
 		$min = $input['minute'];
 		
-		
 		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
-		$shift_date = date('Y-m-d',$timesheet['finish_time']);
 		
-		$post_finish_time = $shift_date . ' ' . $hour . ':' . $min . ':00';
+		$new_finish_time = $hour + ($min * 60);
 		
-		$new_finish_time = strtotime($post_finish_time);
+		# Check where the break falls
+		$parent_new_break = array();
+		$child_new_break = array();
+		
+		$current_break_arr = json_decode($timesheet['break_time']);
+		
+		
+		foreach($current_break_arr as $key => $break){
+			if($break->start_at >= $new_finish_time){
+				# break falls on the newly cut timesheet
+				$child_new_break[$key] = $break;
+			}else{
+				# break can fall on the first half, or can be split betwen the two halves 
+				if(($break->start_at + $break->length) < $new_finish_time){
+					# break stays in the parent half of the timesheet	
+					$parent_new_break[$key] = $break;
+				}else{
+					# break is split
+					
+					# parent break
+					$parent_new_break[$key]['length'] = $new_finish_time - $break->start_at;
+					$parent_new_break[$key]['start_at'] = $break->start_at;
+					
+					# child break
+					$child_new_break[$key]['length'] = ($break->start_at + $break->length) - $new_finish_time;
+					$child_new_break[$key]['start_at'] = $new_finish_time;
+				}	
+			}
+		}
+		
+		
+	
 		if ($new_finish_time <= $timesheet['start_time']) {
 			$this->output->set_status_header('400');
 			#echo json_encode('Finish time cannot be less than start time';
 			echo json_encode(array('ok' => false, 'msg' => 'Finish time cannot be less than start time', 'timesheet_id' => $timesheet_id));
 		} else {
-			$this->timesheet_model->update_timesheet($timesheet_id, array('finish_time' => $new_finish_time));
-			#echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
+			$data_update['finish_time'] = $new_finish_time;
+			$data_update['break_time'] = json_encode((object)$parent_new_break);
+			$this->timesheet_model->update_timesheet($timesheet_id, $data_update);
 		}
 		
 		# add new timesheet
@@ -476,6 +505,7 @@ class Ajax extends MX_Controller {
 		if(isset($input['client_payrate_id'])){
 			$data['client_payrate_id'] = $input['client_payrate_id'];	
 		}
+		$data['break_time'] = json_encode((object)$child_new_break);
 		
 		$insert_id = $this->timesheet_model->insert_timesheet($data);
 		if($insert_id){

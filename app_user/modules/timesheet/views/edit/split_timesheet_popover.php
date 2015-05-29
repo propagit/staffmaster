@@ -1,6 +1,8 @@
 <?php
 	$start_hour = date('H',$timesheet['start_time']);
 	$end_hour = date('H',$timesheet['finish_time']);
+	$difference = ($timesheet['finish_time'] - $timesheet['start_time']) / 3600;
+	
 ?>
 <form id="split_timesheet_form">
 <input type="hidden" name="timesheet_id" value="<?=$timesheet['timesheet_id'];?>">
@@ -8,8 +10,14 @@
 	<div class="ts-split-time-wrap col-xs-6 remove-gutters">
     	<div class="col-xs-6 remove-left-gutter"><b>Hour </b>
     	<select name="hour" class="form-control">
-        <?php for($i = $start_hour; $i <= $end_hour ; $i++){ ?>
-        	<option><?=$i;?></option>
+        <?php 
+			$hour = 0;
+			$time = 0;
+			for($i = 0; $i <= $difference ; $i++){ 
+				$time = ($i * 3600) + $timesheet['start_time'];
+				$hour = date('H',$time);
+		?>
+			<option value="<?=$time;?>"><?=$hour;?></option>
         <?php } ?>
         </select>
         </div>
