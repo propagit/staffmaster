@@ -26,5 +26,4 @@ class Custom extends MX_Controller {
 	{
 		$this->load->view('custom/main_view', isset($data) ? $data : NULL);
 	}
-
 }

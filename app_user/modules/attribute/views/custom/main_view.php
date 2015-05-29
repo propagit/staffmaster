@@ -168,6 +168,25 @@
 									</div>
 								</div>
 							</div>
+                            
+                            <!-- File Button With expiry -->
+							<div class="component" data-type="fileDate"> 
+                            	<div class="control-group">
+									<label class="control-label">File Button With Date</label>
+									<div class="controls">
+										<input class="input-file" type="file" />
+									</div>
+								</div>
+								<div class="control-group push">
+                                	<label class="control-label">Date</label>
+									<div class="form-group col-sm-6 remove-gutters">
+                                        <div class="input-group">
+                                          <input type="text" class="form-control" placeholder="Date">
+                                          <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                      </div>
+								</div>
+							</div>
 						</div>
 						<!--end button-->
 			        </div><!--end tab-content-->
