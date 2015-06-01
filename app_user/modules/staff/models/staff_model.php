@@ -929,10 +929,13 @@ class Staff_model extends CI_Model {
 		$this->db->where('field_id', $field_id);
 		$query = $this->db->get('staff_custom_fields');
 		$field = $query->first_row('array');
+		
+		$custom_field_info = modules::run('attribute/custom/get_custom_field',$field_id);
+		
 		if ($field) { # Update
 			if ($accel) { # Combine new value to old values
 				# if this is a new fileDate field
-				if($field['type'] == 'fileDate'){
+				if($custom_field_info['type'] == 'fileDate'){
 					$old_value = json_decode($field['value']);
 					$old_value->files[] = $value;
 					$value = json_encode($old_value);
@@ -949,7 +952,7 @@ class Staff_model extends CI_Model {
 		} else { # Add
 			if ($accel) {
 				# if this is a new fileDate field
-				if($field['type'] == 'fileDate'){
+				if($custom_field_info['type'] == 'fileDate'){
 					$value = json_encode(array('files' => array($value),'date' => ''));
 				}else{
 					$value = json_encode(array($value));

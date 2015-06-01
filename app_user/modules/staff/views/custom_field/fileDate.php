@@ -5,7 +5,10 @@
 <div class="form-group" id="field_fileDate_file_<?=$user_id;?>_<?=$field['field_id'];?>">
 	<label class="col-md-2 control-label"><?=$label->file_label;?></label>
 	<div class="col-md-6">
-		<? $files = json_decode($field['staff_value']);
+		<? $field_value = json_decode($field['staff_value']);
+			$files = $field_value->files;
+			#print_r($files);
+			#exit;
 		if (count($files) > 0) {
 			foreach($files as $file) { ?>
 				<?=modules::run('common/mime_to_icon', UPLOADS_PATH . '/staff/ ' . $user_id . '/' . $file);?>  &nbsp; <a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_id;?>/<?=$file;?>">Download</a>
@@ -31,7 +34,7 @@
     <label class="col-md-2 control-label"><?=$label->date_label;?></label>
    <div class="col-md-4">
         <div class="input-group date" id="file_date_<?=$field['field_id'];?>">
-            <input type="text" class="form-control" name="file_date_<?=$field['field_id'];?>" readonly />
+            <input type="text" class="form-control" name="fields[<?=$field['field_id'];?>]" readonly />
             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>

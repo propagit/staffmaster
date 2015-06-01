@@ -10,6 +10,7 @@ class Custom extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('custom_field_model');
 	}
 
 	public function index($method='', $param='')
@@ -25,5 +26,10 @@ class Custom extends MX_Controller {
 	function main_view()
 	{
 		$this->load->view('custom/main_view', isset($data) ? $data : NULL);
+	}
+	
+	function get_custom_field($field_id)
+	{
+		return $this->custom_field_model->get_field($field_id);		
 	}
 }
