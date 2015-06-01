@@ -2,6 +2,7 @@
 	<h2> Personal Details </h2>
 	<p>Please note <span class="text-danger">**</span> denotes a required field</p>
 </div>
+
 <form class="form-horizontal" role="form" id="form_update_staff_personal">
 <input type="hidden" name="user_id" value="<?=$staff['user_id'];?>" />
 <div class="row">

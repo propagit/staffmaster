@@ -17,10 +17,19 @@
     </div>
     
     <div class="form-group">
-        <label class="col-md-2 control-label"><?=$label->date_label;?></label>
+       <label class="col-md-2 control-label"><?=$label->date_label;?> From</label>
        <div class="col-md-4">
-            <div class="input-group date" id="search_file_date_<?=$field['field_id'];?>">
-                <input type="text" class="form-control" name="search_file_date_<?=$field['field_id'];?>" readonly />
+            <div class="input-group date" id="search_file_date_from_<?=$field['field_id'];?>">
+                <input type="text" class="form-control" name="search_file_date_from_<?=$field['field_id'];?>" readonly />
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+        </div>
+        
+       <label class="col-md-2 control-label"><?=$label->date_label;?> To</label>
+       <div class="col-md-4">
+            <div class="input-group date" id="search_file_date_to_<?=$field['field_id'];?>">
+                <input type="text" class="form-control" name="search_file_date_to_<?=$field['field_id'];?>" readonly />
                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>
@@ -30,7 +39,8 @@
 
 <script>
 $(function(){
-	$('#search_file_date_<?=$field['field_id'];?>').datetimepicker({
+	
+	$('#search_file_date_from_<?=$field['field_id'];?>').datetimepicker({
         weekStart: 1,
         todayBtn:  1,
 		autoclose: 1,
@@ -39,6 +49,23 @@ $(function(){
         minView: 2,
 		forceParse: 1,
         format: 'dd-mm-yyyy',
+    }).on('changeDate', function(e) {
+    	var date_from = moment(e.date.valueOf() - 11*60*60*1000);
+    	$('#search_file_date_to_<?=$field['field_id'];?>').datetimepicker('setStartDate', date_from.format("DD-MM-YYYY"));
+    });
+    $('#search_file_date_to_<?=$field['field_id'];?>').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+        minView: 2,
+		forceParse: 1,
+        format: 'dd-mm-yyyy',
+        pickerPosition: 'bottom-left'
+    }).on('changeDate', function(e) {
+    	var date_to = moment(e.date.valueOf() - 11*60*60*1000);
+    	$('#search_file_date_from_<?=$field['field_id'];?>').datetimepicker('setEndDate', date_to.format("DD-MM-YYYY"));
     });
 	
 });

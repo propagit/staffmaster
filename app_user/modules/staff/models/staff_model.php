@@ -846,16 +846,29 @@ class Staff_model extends CI_Model {
 		$field = $query->first_row('array');
 		if ($field) { # Update 
 			if ($accel) { # Combine new value to old values
-				$old_value = json_decode($field['value']);
-				$old_value[] = $value;
-				$value = json_encode($old_value);
+				# if this is a new fileDate field
+				if($field['type'] == 'fileDate'){
+					$old_value = json_decode($field['value']);
+					$old_value->files[] = $value;
+					$value = json_encode($old_value);
+					
+				}else{
+					$old_value = json_decode($field['value']);
+					$old_value[] = $value;
+					$value = json_encode($old_value);
+				}
 			}
 			$this->db->where('user_id', $user_id);
 			$this->db->where('field_id', $field_id);
 			return $this->db->update('staff_custom_fields', array('value' => $value));
 		} else { # Add
 			if ($accel) {
-				$value = json_encode(array($value));
+				# if this is a new fileDate field
+				if($field['type'] == 'fileDate'){
+					$value = json_encode(array('files' => array($value),'date' => ''));
+				}else{
+					$value = json_encode(array($value));
+				}
 			}
 			$this->db->insert('staff_custom_fields', array(
 				'user_id' => $user_id,
