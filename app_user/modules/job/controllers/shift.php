@@ -61,6 +61,11 @@ class Shift extends MX_Controller {
 		$this->load->view('shift/search_staff/search_form', isset($data) ? $data : NULL);
 	}
 
+	function search_candidate_form($shift_ids) {
+		$data['shift_ids'] = $shift_ids;
+		$this->load->view('shift/search_staff/search_candidate_form', isset($data) ? $data : NULL);
+	}
+
 	function add_expense_form($shift_id) {
 		$data['shift_id'] = $shift_id;
 		$this->load->view('shift/expense/add_form', isset($data) ? $data : NULL);

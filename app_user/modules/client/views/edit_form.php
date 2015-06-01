@@ -24,6 +24,7 @@
                 <li><a href="#departments" data-toggle="tab">Departments</a></li>
                 <? if (!modules::run('auth/is_client')) { ?>
                 <li><a href="#venues" data-toggle="tab">Venues</a></li>
+                <li><a href="#quicknotes" data-toggle="tab">Notes</a></li>
                 <? } ?>                   
 			</ul>
 			
@@ -32,6 +33,7 @@
                 <div class="tab-pane" id="departments"></div>
                 <? if (!modules::run('auth/is_client')) { ?>
 				<div class="tab-pane" id="venues"></div>
+                <div class="tab-pane" id="quicknotes"></div>
 				<? } ?>
 			</div>
 		 </div>

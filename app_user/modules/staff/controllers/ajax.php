@@ -139,6 +139,24 @@ class Ajax extends MX_Controller {
 		$this->load->view('edit_' . $tab, isset($data) ? $data : NULL);
 	}
 
+	function get_inductions($user_id)
+	{
+		$data['inductions'] = $this->staff_model->get_inductions($user_id);
+		$data['more_inductions'] = $this->staff_model->get_available_inductions($user_id);
+		$data['user_id'] = $user_id;
+		$this->load->view('induction', isset($data) ? $data : NULL);
+	}
+
+	function add_induction()
+	{
+		$this->staff_model->add_induction($this->input->post());
+	}
+
+	function delete_induction($id)
+	{
+		$this->staff_model->delete_induction($id);
+	}
+
 	function update_personal()
 	{
 		$input = $this->input->post();
@@ -271,6 +289,11 @@ class Ajax extends MX_Controller {
 		$data = $this->input->post();
 
 		# if user choose their own superannuation, then super fund name is mandatory
+		if(!$data['s_employee_id']){
+			echo json_encode(array('ok' => false, 'error_id' => 's_employee_id', 'msg' => 'Staff Membership Number is required'));
+			return;
+		}
+		
 		if ($data['s_choice'] == 'own') {
 			if(!$data['s_external_id']){
 				echo json_encode(array('ok' => false, 'error_id' => 's_external_id', 'msg' => 'Super Fund is required'));
@@ -1455,6 +1478,12 @@ class Ajax extends MX_Controller {
 		} else { # Unrestrict all venues / Delete all venues from restrict list
 			$this->staff_model->delete_payrates($user_id);
 		}
+	}
+	
+	function set_default_payrate() {
+		$default_payrate_id = $this->input->post('default_payrate_id');
+		$user_id = $this->input->post('user_id');
+		$this->staff_model->update_staff($user_id,array('default_payrate_id' => $default_payrate_id),true);
 	}
 
 

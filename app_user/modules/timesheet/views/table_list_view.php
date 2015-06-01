@@ -28,7 +28,13 @@
 	</thead>
 	<tbody>
 		<? foreach($timesheets as $timesheet) { 
-			echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); 
+			if(!$timesheet['parent_timesheet_id']){
+				echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); 
+			}
+			if($timesheet['child_timesheet_id']){
+				echo modules::run('timesheet/row_timesheet', $timesheet['child_timesheet_id']);	
+			}
+			
 		} ?>
 	</tbody>
 	</table>
@@ -36,6 +42,7 @@
 	<div id="wrapper_ts_break" class="hide"></div>
 	<div id="wrapper_ts_payrate" class="hide"></div>
 	<div id="wrapper_ts_staff" class="hide"></div>
+    <div id="wrapper_ts_split" class="hide"></div>
 </div>
 <script>
 $(function(){
@@ -91,6 +98,7 @@ function init_edit() {
 			}
         }
     });
+	
     /*
 $('.ts_payrate').editable({
 		url: '<?=base_url();?>timesheet/ajax/update_timesheet_payrate',
@@ -152,6 +160,18 @@ $('.ts_payrate').editable({
 			return $('#wrapper_ts_staff').html();
 		}
 	})
+	
+	$('.ts_split').popover({
+		html: true,
+		placement: 'bottom',
+		trigger: 'manual',
+		selector: false,
+		title: 'Split Timesheet',
+		template: '<div class="popover popover-break"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>',
+		content: function(){
+			return $('#wrapper_ts_split').html();
+		}
+	})
 }
 function refrest_timesheet(timesheet_id) {
 	$.ajax({
@@ -165,18 +185,32 @@ function refrest_timesheet(timesheet_id) {
 	})
 }
 function batch_timesheet(timesheet_id) {
+	var $container = $('#timesheet_' + timesheet_id);
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>timesheet/ajax/batch_timesheet",
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
-			$('#timesheet_' + timesheet_id).remove();
+			if($container.hasClass('has-child-ts')){
+				$container.next().remove();
+			}
+			$container.remove();
 		}
 	})
 }
 function delete_timesheet(timesheet_id) {
 	var title = 'Delete Timesheet';
-	var message ='This action will delete the timesheet and unlock the shift.<br />Are you sure you want to do so?';
+	var message = '';
+	var $this_row = $('#timesheet_' + timesheet_id);
+	var child_id = $this_row.attr('data-child-id');
+	var parent_id = $this_row.attr('data-parent-id');
+	if(parent_id > 0){
+		message = 'This action will delete the timesheet.<br /> Are you sure you want to do so?';	
+		$('#modal-delete-msg').html(message);
+	}else{
+		var message = 'This action will delete the timesheet and unlock the shift.<br /> Are you sure you want to do so?';
+		$('#modal-delete-msg').html(message);
+	}
 	help.confirm_delete(title,message,function(confirmed){
 		 if(confirmed){
 			 $.ajax({
@@ -185,6 +219,12 @@ function delete_timesheet(timesheet_id) {
 				 data: {timesheet_id: timesheet_id},
 				 success: function(html) {
 					 $('#timesheet_' + timesheet_id).remove();
+					 if(child_id){
+						 $('#timesheet_' + child_id).remove();
+					 }
+					 if(parent_id){
+						 refrest_timesheet(parent_id);
+					 }
 				 }
 			 })
 		 }
@@ -305,6 +345,26 @@ function load_ts_staff(obj) {
 		})
 	})
 	
+}
+
+function load_split_timesheet_modal(obj) {
+	$('#wrapper_ts_split').html('');
+	$('#wrapper_js').find('.popover-break').hide();
+	var pk = $(obj).attr('data-pk');
+	$.ajax({
+		type: "POST",
+		url: '<?=base_url();?>timesheet/ajax/load_split_timesheet_modal',
+		data: {pk: pk},
+		success: function(html){
+			$('#wrapper_ts_split').html(html);
+		}
+	}).done(function(){
+		$(obj).popover('show');
+		
+		$('.ts-split-cancel').click(function(){
+			$('.ts_split').popover('hide');
+		});
+	})
 }
 </script>
 <? } ?>

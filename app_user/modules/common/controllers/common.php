@@ -156,6 +156,46 @@ class Common extends MX_Controller {
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 
+	function field_select_xero_super_fund($field_name, $field_value=null, $size=null)
+	{
+		$funds = modules::run('api/xero/get_superfunds');
+		$array = array();
+		foreach($funds as $fund)
+		{
+			$array[] = array(
+				'value' => $fund['SuperFundID'],
+				'label' => $fund['Name']
+			);
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+
+	function field_select_xero_payruns($field_name, $field_value=null, $size=null)
+	{
+		$payruns = modules::run('api/xero/get_payruns');
+		$array = array();
+		if(!$payruns){
+			echo '<span class="text-danger">No payrun created in Xero. Create a payrun(s) in Xero to proceed.</span>';
+			return;
+		}
+		# if there is only single payrun in xero
+		if(!isset($payruns[0])){
+			$array[] = array(
+				'value' => $payruns['PayRunID'],
+				'label' => 'From ' . date('d M Y', strtotime($payruns['PayRunPeriodStartDate'])) . ' to ' . date('d M Y', strtotime($payruns['PayRunPeriodEndDate']))
+			);	
+			return $this->field_select($array, $field_name, $field_value, $size);
+		}
+		foreach($payruns as $payrun)
+		{
+			$array[] = array(
+				'value' => $payrun['PayRunID'],
+				'label' => 'From ' . date('d M Y', strtotime($payrun['PayRunPeriodStartDate'])) . ' to ' . date('d M Y', strtotime($payrun['PayRunPeriodEndDate']))
+			);
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
+	}
+
 	function get_super_name($super_id)
 	{
 		return $this->common_model->get_super_name($super_id);
@@ -589,5 +629,15 @@ class Common extends MX_Controller {
 			$out = strrev($out); // reverse
 		}
 		return $out;
+	}
+	
+	function field_select_shift_duration($field_name, $field_value=null, $size=null) {
+		for($i = SHIFT_MIN_DURATION; $i <= SHIFT_MAX_DURATION; $i++ ){
+			$array[] = array(
+							'value' => $i,
+							'label' => $i . ' Hour' . ($i > 1 ? 's' : '' ). ' +'
+						);	
+		}
+		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 }

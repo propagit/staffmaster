@@ -64,12 +64,23 @@ class Ajax extends MX_Controller {
 	*/
 	function batch_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
 		modules::run('timesheet/update_timesheet_hour_rate', $timesheet_id);
 		$this->timesheet_model->update_timesheet($timesheet_id, array(
 			'status' => TIMESHEET_BATCHED,
 			'status_payrun_staff' => PAYRUN_PENDING,
 			'status_invoice_client' => INVOICE_PENDING
 		));
+		# if this is a split timesheet
+		if($timesheet['child_timesheet_id']){
+			$child_timesheet_id = $timesheet['child_timesheet_id'];
+			modules::run('timesheet/update_timesheet_hour_rate', $child_timesheet_id);
+			$this->timesheet_model->update_timesheet($child_timesheet_id, array(
+				'status' => TIMESHEET_BATCHED,
+				'status_payrun_staff' => PAYRUN_PENDING,
+				'status_invoice_client' => INVOICE_PENDING
+			));	
+		}
 	}
 	
 	/**
@@ -82,6 +93,10 @@ class Ajax extends MX_Controller {
 	function details($timesheet_id) {
 		$data['timesheet'] = $this->timesheet_model->get_timesheet($timesheet_id);
 		$data['paid_expenses'] = $this->expense_model->get_timesheet_expenses($timesheet_id);
+		if($data['timesheet']['child_timesheet_id']){
+			$data['child_timesheet'] = $this->timesheet_model->get_timesheet($data['timesheet']['child_timesheet_id']);	
+		}
+		
 		$this->load->view('details_modal_view', isset($data) ? $data : NULL);
 	}
 	
@@ -100,9 +115,21 @@ class Ajax extends MX_Controller {
 		# Delete the timesheet
 		$this->timesheet_model->delete_timesheet($timesheet_id);
 		
-		# Unlock the shift
-		$this->load->model('job/job_shift_model');
-		$this->job_shift_model->update_job_shift($timesheet['shift_id'], array('status' => SHIFT_CONFIRMED));
+		if($timesheet['parent_timesheet_id'] == TIMESHEET_NO_PARENT){
+			# Unlock the shift
+			$this->load->model('job/job_shift_model');
+			$this->job_shift_model->update_job_shift($timesheet['shift_id'], array('status' => SHIFT_CONFIRMED));
+		}
+		
+		if($timesheet['child_timesheet_id']){
+			# Delete child timesheet
+			$this->timesheet_model->delete_timesheet($timesheet['child_timesheet_id']);	
+		}
+		
+		# If it is a split timesheet update parent timesheet to remove the foreign key [child_timesheet_id]
+		if($timesheet['parent_timesheet_id']){
+			$this->timesheet_model->update_timesheet($timesheet['parent_timesheet_id'],array('child_timesheet_id' => 0));
+		}
 	}
 	
 	/**
@@ -398,5 +425,98 @@ class Ajax extends MX_Controller {
 		$this->timesheet_model->update_timesheet($timesheet_id, array(
 			'expenses' => serialize($array)
 		));
+	}
+	
+	function load_split_timesheet_modal()
+	{
+		$timesheet_id = $this->input->post('pk');
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$data['timesheet'] = $timesheet;
+		$this->load->view('edit/split_timesheet_popover', isset($data) ? $data : NULL);
+	}
+	
+
+	/**
+	*	@name: split_timesheet
+	*	@desc: ajax function to split timesheet (inline edit)
+	*	@access: public
+	*	@param: (POST) pk, value
+	*	@return: (JSON) 
+	*/
+	function split_timesheet() {
+		$input = $this->input->post();
+		$timesheet_id = $input['timesheet_id'];
+		
+		$hour = $input['hour'];
+		$min = $input['minute'];
+		
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		
+		$new_finish_time = $hour + ($min * 60);
+		
+		# Check where the break falls
+		$parent_new_break = array();
+		$child_new_break = array();
+		
+		$current_break_arr = json_decode($timesheet['break_time']);
+		
+		
+		foreach($current_break_arr as $key => $break){
+			if($break->start_at >= $new_finish_time){
+				# break falls on the newly cut timesheet
+				$child_new_break[$key] = $break;
+			}else{
+				# break can fall on the first half, or can be split betwen the two halves 
+				if(($break->start_at + $break->length) < $new_finish_time){
+					# break stays in the parent half of the timesheet	
+					$parent_new_break[$key] = $break;
+				}else{
+					# break is split
+					
+					# parent break
+					$parent_new_break[$key]['length'] = $new_finish_time - $break->start_at;
+					$parent_new_break[$key]['start_at'] = $break->start_at;
+					
+					# child break
+					$child_new_break[$key]['length'] = ($break->start_at + $break->length) - $new_finish_time;
+					$child_new_break[$key]['start_at'] = $new_finish_time;
+				}	
+			}
+		}
+		
+		
+	
+		if ($new_finish_time <= $timesheet['start_time']) {
+			$this->output->set_status_header('400');
+			#echo json_encode('Finish time cannot be less than start time';
+			echo json_encode(array('ok' => false, 'msg' => 'Finish time cannot be less than start time', 'timesheet_id' => $timesheet_id));
+		} else {
+			$data_update['finish_time'] = $new_finish_time;
+			$data_update['break_time'] = json_encode((object)$parent_new_break);
+			$this->timesheet_model->update_timesheet($timesheet_id, $data_update);
+		}
+		
+		# add new timesheet
+		$data = $timesheet;
+		$data['timesheet_id'] = '';
+		$data['start_time'] = $new_finish_time;
+		$data['parent_timesheet_id'] = $timesheet_id;
+		$data['payrate_id'] = $input['payrate_id'];
+		if(isset($input['client_payrate_id'])){
+			$data['client_payrate_id'] = $input['client_payrate_id'];	
+		}
+		$data['break_time'] = json_encode((object)$child_new_break);
+		
+		$insert_id = $this->timesheet_model->insert_timesheet($data);
+		if($insert_id){
+			$this->timesheet_model->update_timesheet($timesheet_id, array('child_timesheet_id' => $insert_id));
+			echo json_encode(array('ok' => true, 'msg' => '', 'timesheet_id' => $insert_id));
+		}
+	}
+	
+	function load_ts_row_view()
+	{
+		$timesheet_id = $this->input->post('timesheet_id');
+		echo modules::run('timesheet/row_timesheet', $timesheet_id);		
 	}
 }

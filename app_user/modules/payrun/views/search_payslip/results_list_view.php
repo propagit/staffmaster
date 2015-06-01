@@ -36,10 +36,23 @@
 	</tr>
 </thead>
 <tbody>
-<? foreach($payslips as $payslip) { ?>
+<? 
+$accounting_platform = $this->config_model->get('accounting_platform');
+foreach($payslips as $payslip) { 
+	$external_id = $payslip['external_id'];
+	
+	if($accounting_platform == 'xero'){
+		if($payslip['external_msg']){
+			$msg_arr = json_decode($payslip['external_msg']);
+			#print_r($msg_arr);
+			$external_id = "<span>" . $msg_arr->msg . "</span><br>
+							<span style='font-size:11px;'>Pay period: &nbsp;&nbsp;" . $msg_arr->pay_period_from . " - " . $msg_arr->pay_period_to . "</span>"; 	
+		}
+}
+?>
 	<tr>
 		<td><input type="checkbox" class="selected_payslip" value="<?=$payslip['timesheet_id'];?>" /></td>
-		<td><?=$payslip['external_id'];?></td>
+		<td><?=$external_id;?></td>
 		<td class="wp-date" width="80">
 			<span class="wk_day"><?=date('D', $payslip['start_time']);?></span>
 			<span class="wk_date"><?=date('d', $payslip['start_time']);?></span>

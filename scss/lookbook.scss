@@ -1,0 +1,194 @@
+/* CSS Document */
+$color1:#cccccc; /* grey */
+$white:#fff; /* white*/
+$border_radius:6px; /* border radius*/
+$lb_max_width:240px; 
+$avatar_height:240px;
+
+
+html,
+body{
+	/*background:#fff;	*/
+}
+
+#sm-head-wrap{
+	.logo{
+		float:none;
+		display:inline-block;
+		margin:auto;
+	}
+}
+
+.lookbook-wrap{
+	text-align:center;	
+}
+
+.lookbook-nav{
+	text-align:center;
+	margin-bottom:25px;
+	ul{
+		list-style:none;
+		li{
+			display:inline-block;
+			padding:0 5px;
+			font-size:12px;
+			
+			.fa{
+				margin-right:5px;	
+			}
+		}
+	}
+}
+
+/* lb = lookbook */
+.lb-box{
+	max-width:$lb_max_width;
+	width:$lb_max_width;
+	/*border:1px solid $color1;*/
+	display:inline-block;
+	background:rgba(255,255,255,0.5);
+	margin:10px 7.5px;
+	
+	.h4,
+	h4{
+		font-size:23px;
+		font-weight:600;
+	}
+	
+	.avatar{
+		position:relative !important;
+		min-height:$avatar_height;
+		.default-avatar-photo{
+			margin: auto;
+		  	height: $lb_max_width;
+		  	width: $lb_max_width;
+		  	box-shadow: none;
+		  	border-radius: 0;
+			background-color:#f4f4f4;
+			
+			.fa{
+				font-size:100px;
+				line-height:216px;	
+			}
+		}
+		img{
+			box-shadow:none;
+			border-radius:0;	
+			width:100%;
+		}
+	}
+	
+	.info{
+		text-align:center;
+		padding:10px 0;
+		background:$white;	
+		
+		table{
+			width:100%;
+			text-align:left;
+			font-size:12px;
+			margin-bottom:20px;
+			
+			tr{
+				td{
+					float:left;
+					&:first-child{
+						width:40%;
+						margin-left:5%;
+						text-align:right; 
+						font-weight:700;
+					 }
+					 &:last-child{
+						width:50%;
+						margin-left:5%;	 
+					 }
+				}
+			}
+	
+		}
+	}
+	
+}
+.btn-lookbook{
+	width:100%;
+	border-radius:0;
+}
+
+
+.lb-modal{
+	.padding20{
+		padding:20px;	
+	}
+	
+	
+	
+	.lb-modal-body{
+		padding:0;
+		background-color:rgba(255,255,255,0.8);
+		
+		.lbm-config{
+			
+			border-radius:$border_radius 0 0;
+			
+			.lb-config-box{
+				display:inline-block;
+				width:100%;
+				padding-left:20px;
+				padding-top:20px;
+				padding-right:20px;
+				padding-bottom:20px;
+				border-bottom:1px solid $color1;	
+				
+				&:last-child{
+					border-bottom:none;	
+				}
+			}
+		}
+		
+		
+		.lbm-card{
+			border-left:1px solid $color1;
+			text-align:center;
+			background: url('../img/bg-title.jpg');
+			border-radius:0 $border_radius 0 0;
+			min-height:640px;
+			  
+		}
+		
+		.lbm-body-footer{
+			padding-top:20px;
+			padding-bottom:5px;
+			border-radius:0 0 $border_radius $border_radius;
+			background-color:rgba(255,255,255,0.8);
+			border-top:1px solid $color1;
+		}
+	}
+	
+	.fa-lb{
+		font-size:20px;
+		padding-right:10px;	
+	}
+	
+	
+	
+} /*lookbook modal*/
+
+.lb-row{
+	margin:20px 0;
+	display:block;	
+}
+.lb-max-width{
+	width:$lb_max_width;	
+}
+.bg-white{
+	background-color:$white;	
+}
+.pull-text{
+	text-align:right;	
+}
+.text-center{
+	text-align:center;	
+}
+.clearfix{
+	clear:both;	
+}

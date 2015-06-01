@@ -861,6 +861,12 @@ class Ajax extends MX_Controller {
 		$this->load->view('shifts_copy', isset($data) ? $data : NULL);
 	}
 
+	function send_candiate($shift_ids = '')
+	{
+		$data['shift_ids'] = $shift_ids;
+		$this->load->view('send_candidate', isset($data) ? $data : NULL);
+	}
+
 	function load_roster_copy($job_id, $date='')
 	{
 		$data['job_id'] = $job_id;

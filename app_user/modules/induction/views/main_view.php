@@ -28,7 +28,7 @@
                     <td class="center"><a href="<?=base_url();?>induction/build/<?=$induction['id'];?>"><i class="fa fa-pencil"></i></a></td>
                     <td class="center"><a href="<?=base_url();?>induction/setting/<?=$induction['id'];?>"><i class="fa fa-gear"></i></a></td>
                     <td class="center"><a href="<?=base_url();?>induction/preview/<?=$induction['id'];?>" target="_blank"><i class="fa fa-eye"></i></a></td>
-                    <td class="center"><a><i class="fa fa-trash-o"></i></a></td>
+                    <td class="center"><a class="delete-induction" delete-data-id="<?=$induction['id'];?>"><i class="fa fa-trash-o"></i></a></td>
                 </tr>
             <? } ?>
             </tbody>
@@ -85,6 +85,22 @@ $(function(){
                 }
             }
         })
-    })
+    });
+    $('.delete-induction').on('click',function(){
+        var title = 'Delete Induction';
+        var message ='Are you sure you would like to delete this "Induction"';
+        var induction_id = $(this).attr('delete-data-id');
+        help.confirm_delete(title,message,function(confirmed){
+             if(confirmed){
+                 $.ajax({
+                    type: "POST",
+                    url: "<?=base_url();?>induction/ajax/delete/" + induction_id,
+                    success: function(html) {
+                        location.reload();
+                    }
+                 })
+             }
+        });
+    });
 });
 </script>

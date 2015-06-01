@@ -19,7 +19,57 @@
 	</div>
 </div>
 <? $platform = $this->config_model->get('accounting_platform');
-if ($platform == 'myob') {
+if ($platform == 'xero') {
+	$id = modules::run('setting/superinformasi', 'super_fund_external_id');
+	if ($id) {
+		$super_fund = modules::run('api/xero/get_superfund', $id);
+	}
+?>
+<div class="row" id="employer_choice">
+	<? if (isset($super_fund)) { ?>
+	<div class="form-group">
+		<label class="col-md-2 control-label">Super Fund</label>
+		<label class="col-md-4 control-label">
+			<?=isset($super_fund['Name']) ? $super_fund['Name'] : '';?>
+			<? if (isset($super_fund['EmployerNumber'])) { ?>
+			<br />Employer Membership Number: <?=$super_fund['EmployerNumber'];?>
+			<? } ?>
+		</label>
+	</div>
+	<? } else { ?>
+	<div class="form-group">
+		<div class="col-md-10 col-md-offset-2">
+			No company super fund is currently set up.
+			<? if(!modules::run('auth/is_staff')){ ?>
+			<br />To set up a default company super fund go to "System Settings" > "Company Profile"
+			<? } ?>
+		</div>
+	</div>
+	<? } ?>
+</div>
+<div class="row" id="own_choice">
+	<div class="form-group">
+		<label class="col-md-2 control-label">Super Fund</label>
+		<div class="col-md-4">
+			<?=modules::run('common/field_select_xero_super_fund', 's_external_id', $staff['s_external_id']);?>
+		</div>
+		<div class="col-md-6">
+			<span class="help-block">If you cant find your super fund in the list please <a href="<?=base_url();?>support">contact us</a></span>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="form-group">
+		<label for="s_employee_id" class="col-md-2 control-label">Staff Membership Number</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
+		</div>
+	</div>
+</div>
+
+
+<? } else if ($platform == 'myob') {
 	$id = modules::run('setting/superinformasi', 'super_fund_external_id');
 	if ($id) {
 		$super_fund = modules::run('api/myob/connect', 'read_super_fund~' . $id);

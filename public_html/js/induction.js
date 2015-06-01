@@ -47,7 +47,8 @@ angular.module('sb.induction', [])
         $scope.current_step = $scope.steps[index];
         if ($scope.current_step.type == 'personal'
             || $scope.current_step.type == 'financial'
-            || $scope.current_step.type == 'super') {
+            || $scope.current_step.type == 'super'
+            || $scope.current_step.type == 'custom') {
             $http.get('/induction/ajax/profile_fields/' + $scope.current_step.id + '/' + $scope.current_step.type).success(function(response){
                 $scope.fields = response;
             }).error(function(error){
@@ -150,7 +151,42 @@ angular.module('sb.induction', [])
         $scope.updateContent(index);
     };
 
+    $scope.dragControlListeners = {
+        dragEnd: function(event) {
+            for(var i=0; i < $scope.steps.length; i++) {
+                $http.post('/induction/ajax/update_step/' + $scope.steps[i].id, {
+                    step_order: i
+                })
+                .success(function(response){
 
+                }).error(function(error){
+                    console.log("ERROR: ", error);
+                });
+            }
+        },
+    };
+
+    $scope.subDragControlListeners = {
+        dragEnd: function(event) {
+            for(var i=0; i < $scope.contents.length; i++) {
+                $http.post('/induction/ajax/update_content/' + $scope.contents[i].id, {
+                    content_order: i
+                })
+                .success(function(response){
+
+                }).error(function(error){
+                    console.log("ERROR: ", error);
+                });
+            }
+        },
+    };
+
+    // $scope.dragControlListeners = {
+    //     accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
+    //     itemMoved: function (event) {//Do what you want},
+    //     orderChanged: function(event) {//Do what you want},
+    //     containment: '#board'//optional param.
+    // };
 })
 
 .controller('InductionSetting', function($scope, $http, $timeout) {
@@ -213,6 +249,33 @@ angular.module('sb.induction', [])
             $timeout(function(){
                 $scope.updated = false;
             }, 2000);
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        });
+    };
+})
+
+.controller('InductionStaff', function($scope, $http, $window) {
+    $scope.onSuccess = function(response) {
+        $window.location.reload();
+        console.log(response);
+        // $scope.contents[index].value = response.data.file_name;
+        // $scope.updateContent(index);
+    };
+
+    $scope.deleteFile = function(user_id, field_id) {
+        $http.post('/induction/ajax/delete_file/' + user_id + '/' + field_id)
+        .success(function(response){
+            $window.location.reload();
+        }).error(function(error){
+            console.log("ERROR: ", error);
+        });
+    };
+
+    $scope.deletePicture = function(id) {
+        $http.post('/induction/ajax/delete_picture/' + id)
+        .success(function(response){
+            $window.location.reload();
         }).error(function(error){
             console.log("ERROR: ", error);
         });

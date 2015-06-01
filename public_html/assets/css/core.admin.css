@@ -691,8 +691,6 @@ span.dash-invoice-value{
 	padding-right: 0;
 }
 #shift-search-staff-results {
-	max-height: 400px;
-	overflow-y: auto;
 }
 .font-weight-600{
 	font-weight:600;
@@ -815,4 +813,3 @@ span.dash-invoice-value{
 .c1.done {
 	background: green;
 }
-

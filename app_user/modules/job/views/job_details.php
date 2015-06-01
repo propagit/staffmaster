@@ -6,11 +6,11 @@
 <script src="<?=base_url()?>assets/ckeditor/styles.js"></script>
 <div class="col-md-12">
 	<div class="box top-box">
-		<div class="col-md-5">
+		<div class="col-md-4">
 	        <h2><?= $client['company_name']; ?></h2>
 	        <h2 class="s30"><?= $job['name']; ?> </h2>
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-8">
 			<div class="pull-right">
 				<div class="form-group label-search-job">
 					<label for="exampleInputEmail1">Search Job Campaigns</label>
@@ -66,7 +66,7 @@
         <div class="col-md-6 white-box">
             <div class="inner-box">
             	<h2>Weeks - Months Shifts</h2>
-            	<p>Below you can see a schedule of all the jobs you have on for the week - month for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green.</p>
+            	<p>Below you can see a schedule of all the jobs you have on for the week - month for this job campaign. You can duplicate the weeks shifts to another week. Unconfirmed and confirmed shifts are indicated by red or green.</p>
 
                 <div id="wrapper_calendar">
 				</div>
@@ -155,8 +155,8 @@ $(function(){
 
     <? if($job['type'] == 1 && $this->session->userdata('view_whole_week')) { ?>
     load_week_shifts(<?=$job['job_id'];?>,"<?=$job['start_date'];?>");
-    <? } else { ?>
-	load_job_shifts(<?=$job['job_id'];?>);
+    <? } else { $date = $this->uri->segment(4); ?>
+	load_job_shifts(<?=$job['job_id'];?>, '<?=$date;?>');
     <? } ?>
 
 	//email apply for shift
@@ -176,7 +176,11 @@ function sort_shifts(key) {
 		url: "<?=base_url();?>job/ajax/sort_shifts",
 		data: {key: key},
 		success: function(html) {
-			load_job_shifts(<?=$job['job_id'];?>);
+            <? if($job['type'] == 1 && $this->session->userdata('view_whole_week')) { ?>
+            load_week_shifts(<?=$job['job_id'];?>,"<?=$job['start_date'];?>");
+            <? } else { $date = $this->uri->segment(4); ?>
+            load_job_shifts(<?=$job['job_id'];?>, '<?=$date;?>');
+            <? } ?>
 		}
 	})
 }

@@ -1,5 +1,5 @@
 <div class="box">
-    <h2>Activity Log</h2>
+	<h2>Activity Log</h2>
     <p>Your activity log will inform you of information updates</p>        
     <div id="activity_lists" class="clear">        
         <div id="wrapper-outer">

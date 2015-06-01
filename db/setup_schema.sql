@@ -812,7 +812,9 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (20, 'xero', 'invoice', 'shift', 'Xero (Shift Per Line)', 0),
 (21, '', 'client', '', 'Default', 0),
 (22, 'myob', 'client', '', 'MYOB', 0),
-(23, 'shoebooks', 'invoice', 'pay_rate', 'Shoebooks (Pay Rate Per Line)', 1);
+(23, 'shoebooks', 'invoice', 'pay_rate', 'Shoebooks (Pay Rate Per Line)', 1),
+(24, 'xero', 'payrun_abn', 'shift', 'XERO - ABN Export', 1),
+(25, 'xero', 'staff', '', 'XERO ABN - Suppliers', 1);
 
 -- --------------------------------------------------------
 
@@ -1142,7 +1144,79 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (466, 23, 8, 'JobID', ''),
 (467, 23, 9, 'DivID', ''),
 (468, 23, 10, 'CustomerPO', '{po_number}'),
-(469, 23, 7, 'Amount', '{pay_rate_amount}');
+(469, 23, 7, 'Amount', '{pay_rate_amount}'),
+(472, 25, 1, 'EmailAddress', '{email}'),
+(473, 25, 2, 'First Name', '{first_name}'),
+(474, 25, 3, 'Last Name', '{last_name}'),
+(480, 25, 14, 'SAAddressLine1', '{address}'),
+(482, 25, 18, 'SACity', '{suburb}'),
+(483, 25, 19, 'SARegion', '{state}'),
+(484, 25, 20, 'SAPostalCode', '{postcode}'),
+(485, 25, 21, 'SACountry', '{country}'),
+(486, 25, 22, 'PhoneNumber', '{phone}'),
+(487, 25, 24, 'MobileNumber', '{mobile}'),
+(488, 25, 27, 'BankAccountName', '{account_name}'),
+(492, 25, 28, 'Bank Account Number', ' {bsb}-{account_number}'),
+(493, 25, 30, 'TaxNumber', '{abn_number}'),
+(494, 25, 0, '*Name', '{first_name}- {email}'),
+(495, 25, 4, 'POAttentionTo', ''),
+(496, 25, 5, 'POAddressLine1', ''),
+(497, 25, 7, 'POAddressLine2', ''),
+(498, 25, 6, 'POAddressLine3', ''),
+(499, 25, 8, 'POAddressLine4', ''),
+(500, 25, 9, 'POCity', ''),
+(501, 25, 10, 'PORegion', ''),
+(502, 25, 11, 'POPostalCode', ''),
+(503, 25, 12, 'POCountry', ''),
+(504, 25, 13, 'SAAttentionTo', ''),
+(506, 25, 15, 'SAAddressLine2', ''),
+(507, 25, 16, 'SAAddressLine3', ''),
+(508, 25, 17, 'SAAddressLine4', ''),
+(509, 25, 23, 'FaxNumber', ''),
+(510, 25, 25, 'DDINumber', ''),
+(511, 25, 26, 'SkypeName', ''),
+(512, 25, 29, 'BankAccountParticulars', ''),
+(513, 25, 31, 'AccountsReceivableTaxCodeName', ''),
+(514, 25, 32, 'AccountsPayableTaxCodeName', ''),
+(515, 25, 33, 'Website', ''),
+(516, 25, 34, 'Discount', ''),
+(517, 25, 35, 'DueDateBillDay', ''),
+(518, 25, 36, 'DueDateBillTerm', ''),
+(519, 25, 37, 'DueDateSalesDay', ''),
+(520, 25, 38, 'DueDateSalesTerm', ''),
+(521, 25, 39, 'SalesAccount', ''),
+(522, 25, 40, 'PurchasesAccount', ''),
+(523, 25, 41, 'TrackingName1', ''),
+(524, 25, 42, 'SalesTrackingOption1', ''),
+(525, 25, 43, 'PurchasesTrackingOption1', ''),
+(526, 25, 44, 'TrackingName2', ''),
+(527, 25, 45, 'SalesTrackingOption2', ''),
+(528, 25, 46, 'PurchasesTrackingOption2', ''),
+(529, 25, 47, 'BrandingTheme', ''),
+(530, 24, 0, '*ContactName', '{staff_name} -{internal_staff_id}'),
+(531, 24, 1, 'EmailAddress', ''),
+(532, 24, 2, 'POAddressLine1', ''),
+(533, 24, 3, 'POAddressLine2', ''),
+(534, 24, 4, 'POAddressLine3', ''),
+(535, 24, 5, 'POAddressLine4', ''),
+(536, 24, 6, 'POCity', ''),
+(537, 24, 7, 'PORegion', ''),
+(538, 24, 8, 'POPostalCode', ''),
+(539, 24, 9, 'POCountry', ''),
+(540, 24, 10, '*InvoiceNumber', '{internal_staff_id}- {start_time}'),
+(541, 24, 11, '*InvoiceDate', '{pay_run_date}'),
+(542, 24, 12, '*DueDate', '{pay_run_date}'),
+(543, 24, 13, 'InventoryItemCode', ''),
+(550, 24, 19, 'TrackingName1', ''),
+(551, 24, 20, 'TrackingOption1', ''),
+(552, 24, 21, 'TrackingName2', ''),
+(553, 24, 22, 'TrackingOption2', ''),
+(554, 24, 23, 'Currency', ''),
+(557, 24, 14, '*Description', '{job_name} {start_time}- {finish_time} {break}'),
+(560, 24, 15, '*Quantity', '1'),
+(563, 24, 16, '*UnitAmount', '{ex_tax_amount}'),
+(564, 24, 17, '*TaxType', '{taxable}'),
+(566, 24, 18, '*AccountCode', '477');
 
 -- --------------------------------------------------------
 
@@ -1496,7 +1570,7 @@ CREATE TABLE IF NOT EXISTS `forum_topics` (
   `group_id` int(11) NOT NULL,
   `document_type` enum('image','file','null') NOT NULL DEFAULT 'null',
   `document_name` varchar(255) NOT NULL,
-  `type` enum('poll','conversation') NOT NULL DEFAULT 'conversation',
+  `type` enum('poll','conversation','support') NOT NULL DEFAULT 'conversation',
   `created_by` bigint(20) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_replied_by` bigint(20) NOT NULL,
@@ -1552,6 +1626,7 @@ CREATE TABLE IF NOT EXISTS `inductions_users` (
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL,
   `finished_on` datetime DEFAULT NULL,
+  `contents` TEXT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1771,7 +1846,7 @@ CREATE TABLE IF NOT EXISTS `job_shift_staff_apply` (
 
 CREATE TABLE IF NOT EXISTS `job_shift_timesheets` (
   `timesheet_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `external_id` VARCHAR(20) NOT NULL,
+  `external_id` VARCHAR(255) NOT NULL,
   `external_msg` VARCHAR(1000) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0: pending, 1: submitted, 2: approved, 3: batched, 4: processing, 5: paid',
   `status_payrun_staff` tinyint(4) NOT NULL COMMENT '0: processing, 1: ready, 3: paid',
@@ -2450,7 +2525,7 @@ CREATE TABLE IF NOT EXISTS `user_staffs` (
   `staff_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
   `group_id` int(11) NOT NULL,
-  `external_staff_id` varchar(20) NOT NULL,
+  `external_staff_id` varchar(100) NOT NULL,
   `rating` decimal(10,2) NOT NULL,
   `gender` char(1) NOT NULL,
   `dob` date NOT NULL,
@@ -2491,6 +2566,7 @@ CREATE TABLE IF NOT EXISTS `user_staffs` (
   `last_worked_date` datetime NOT NULL COMMENT 'the last date the staff worked on a job',
   `time_sheets_in_payrun` int(11) NOT NULL COMMENT 'number of unpaid time sheet in the payrun',
   `welcome_email_sent` enum('yes','no') NOT NULL DEFAULT 'no',
+  `default_payrate_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`staff_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -2566,6 +2642,8 @@ CREATE TABLE IF NOT EXISTS `information_sheet_config` (
   PRIMARY KEY (`information_sheet_config_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
+-- --------------------------------------------------------
+
 --
 -- Dumping data for table `information_sheet_config`
 --
@@ -2585,3 +2663,134 @@ INSERT INTO `information_sheet_config` (`information_sheet_config_id`, `element_
 (12, 'Notes', 'notes', 'yes', '0000-00-00 00:00:00'),
 (13, 'Expenses', 'expenses', 'yes', '0000-00-00 00:00:00'),
 (14, 'Other Staff Working', 'other_staff_working', 'yes', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_notes`
+--
+
+CREATE TABLE IF NOT EXISTS `user_notes` (
+  `user_note_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `added_by` bigint(20) NOT NULL COMMENT 'user id of the admin who added the note',
+  `note` text NOT NULL,
+  `created_date` date NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_note_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lookbook_config`
+--
+
+CREATE TABLE `lookbook_config` (
+`id` int(10) unsigned NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `fields` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `lookbook_config`
+--
+
+INSERT INTO `lookbook_config` (`id`, `type`, `fields`) VALUES
+(1, 'personal', '["first_name","last_name","dob","gender","state"]'),
+(2, 'custom', ''),
+(3, 'message', 'We have a chosen a range of staff we think may suit your requirments');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `lookbook_config`
+--
+ALTER TABLE `lookbook_config`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `lookbook_config`
+--
+ALTER TABLE `lookbook_config`
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lookbook`
+--
+
+CREATE TABLE `lookbook` (
+`lookbook_id` bigint(20) NOT NULL,
+  `key` varchar(255) NOT NULL COMMENT 'public key to view the lookbook without logging into the system',
+  `included_user_ids` text NOT NULL COMMENT 'staff user id in json format',
+  `receiver_user_id` bigint(20) NOT NULL COMMENT 'client user id',
+  `receiver_email` varchar(255) NOT NULL COMMENT 'client email',
+  `personal_fields` text NOT NULL COMMENT 'staff personal details',
+  `custom_fields` text NOT NULL COMMENT 'staff custom attributes ',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `lookbook`
+--
+ALTER TABLE `lookbook`
+ ADD PRIMARY KEY (`lookbook_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `lookbook`
+--
+ALTER TABLE `lookbook`
+MODIFY `lookbook_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_favourite_staff`
+--
+
+CREATE TABLE `client_favourite_staff` (
+`id` bigint(20) NOT NULL,
+  `client_user_id` bigint(20) NOT NULL,
+  `staff_user_id` bigint(20) NOT NULL,
+  `status` tinyint(4) NOT NULL COMMENT '0 not set, 1 Liked',
+  `updated` datetime NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `client_favourite_staff`
+--
+ALTER TABLE `client_favourite_staff`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `client_favourite_staff`
+--
+ALTER TABLE `client_favourite_staff`
+MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;

@@ -719,5 +719,17 @@ class Job_shift_model extends CI_Model {
 				ORDER BY job_date ASC";
 		return $this->db->query($sql)->result_array();
 	}
+	
+	function get_job_by_shift_id($shift_id)
+	{
+		$shift = $this->get_job_shift($shift_id);	
+		if($shift){
+			$job = $this->db->where('job_id',$shift['job_id'])
+							->get('jobs')
+							->first_row('array');
+			return $job;	
+		}
+		return false;
+	}
 
 }

@@ -1,0 +1,1 @@
+ALTER TABLE  `user_notes` CHANGE  `user_note_id`  `user_note_id` BIGINT( 20 ) UNSIGNED NOT NULL AUTO_INCREMENT ;

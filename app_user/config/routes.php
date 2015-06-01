@@ -62,7 +62,7 @@ $route['forgot-password'] = 'forgot_password';
 
 
 
-$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard', 'form', 'attribute', 'sms', 'induction');
+$modules = array('job', 'staff', 'client', 'roster', 'work', 'timesheet', 'invoice', 'payrun', 'expense', 'setting', 'export', 'email', 'report', 'forum', 'log','account','support','user_guide', 'wizard', 'form', 'attribute', 'sms', 'induction','user_notes','lookbook');
 $path = implode('|', $modules);
 $route['(' . $path . ')'] = 'dispatcher/user_dispatcher/$1';
 $route['(' . $path . ')/(:any)'] = 'dispatcher/user_dispatcher/$1/$2';
@@ -130,6 +130,11 @@ $route['pts/' . $func . '/(:any)'] = 'public_timesheet_dispatcher/' . $func . '/
 }
 
 
+# lookbook
+#$route['plb'] = 'public_lookbook_dispatcher/list_lookbook';
+$route['plb/staffbook/(:any)'] = 'public_lookbook_dispatcher/list_lookbook/$1';
+$route['plb/preview/(:any)'] = 'public_lookbook_dispatcher/preview/$1';
+$route['plb/update_like_status'] = 'public_lookbook_dispatcher/update_like_status';
 $route['404_override'] = '';
 
 

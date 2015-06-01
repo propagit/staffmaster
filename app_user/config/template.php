@@ -155,6 +155,14 @@ $template['public_timesheet'] = array(
 		'content'
 	)
 );
+$template['public_lookbook'] = array(
+	'template' => 'public/lookbook/default_template',
+	'regions' => array(
+		'title',
+		'menu',
+		'content'
+	)
+);
 
 /* End of file template.php */
 /* Location: ./system/application/config/template.php */

@@ -149,5 +149,20 @@ define('CLIENT_INVOICE_EMAIL_TEMPLATE_ID',7);
 define('CLIENT_QUOTE_EMAIL_TEMPLATE_ID',8);
 define('BRIEF_EMAIL_TEMPLATE_ID',9);
 define('TIMESHEET_EMAIL_TEMPLATE_ID',10);
+
+# lookbook config type
+define('LB_PERSONAL','personal');
+define('LB_CUSTOM','custom');
+define('LB_MESSAGE','message');
+define('STAFF_LIKED',1);
+
+# timesheet split 
+define('TIMESHEET_NO_CHILD',0);
+define('TIMESHEET_NO_PARENT',0);
+
+# shift duration
+define('SHIFT_MIN_DURATION',1);
+define('SHIFT_MAX_DURATION',12);
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

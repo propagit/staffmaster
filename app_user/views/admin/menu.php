@@ -36,6 +36,7 @@ $menu = array(
 	)),
 	array('path' => '#', 'icon' => 'fa-lightbulb-o', 'title' => 'Training Centre', 'sub' => array(
 		array('path' => 'forum', 'icon' => 'fa-comments-o', 'title' => 'Conversations'),
+        array('path' => 'induction', 'icon' => 'fa fa-dot-circle-o', 'title' => 'Inductions'),
 		array('path' => 'brief', 'icon' => 'icon-trainingBrief', 'title' => 'Brief Builder'),
 		array('path' => 'http://resources.staffbooks.com', 'icon' => 'fa-question', 'title' => 'User Guide'),
 		#array('path' => '#', 'icon' => 'fa-video-camera', 'title' => 'Training Video'),
@@ -53,7 +54,6 @@ $menu = array(
         array('path' => 'setting/integration', 'icon' => 'icon-accountIntergration', 'title' => 'Accounts Integration'),
         array('path' => 'export', 'icon' => 'icon-exportTemplates', 'title' => 'Export Templates'),
 		array('path' => 'form', 'icon' => 'icon-formBuilder', 'title' => 'Form Builder'),
-        // array('path' => 'induction', 'icon' => 'fa fa-dot-circle-o', 'title' => 'Inductions'),
 		array('path' => 'email', 'icon' => 'fa-envelope', 'title' => 'eMail Templates'),
 		array('path' => 'sms', 'icon' => 'fa-mobile', 'title' => 'SMS Settings'),
 		#array('path' => 'setting/system_styles', 'icon' => 'fa-tint', 'title' => 'System Styles'),

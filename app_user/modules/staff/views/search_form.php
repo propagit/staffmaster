@@ -16,7 +16,7 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
             <h2>Staff Attributes</h2>
-		 	<br />            
+		 	<br />
 			<form class="form-horizontal" id="form_search_staffs" role="form">
 			<div class="row">
 				<div class="form-group">
@@ -32,7 +32,7 @@
 					<? } ?>
 				</div>
 			</div>
-						
+
 			<? if (!$is_client) { ?>
 			<div class="row">
 				<div class="form-group">
@@ -69,7 +69,7 @@
 					<div class="col-md-4">
 						<?=modules::run('common/field_select',$age_groups, 'age_groups');?>
 					</div>
-				</div>				
+				</div>
 			</div>
 			<div class="row">
 				<div class="form-group">
@@ -81,9 +81,9 @@
 					<div class="col-md-4">
 						<?=modules::run('attribute/role/field_select', 'role_id');?>
 					</div>
-				</div>				
+				</div>
 			</div>
-            
+
 			<? if (!$is_client) { ?>
             <div class="row">
 				<div class="form-group">
@@ -106,7 +106,7 @@
 				</div>
 			</div>
             <? } ?>
-            
+
             <div class="row">
 				<div class="form-group">
 					<label for="location" class="col-md-2 control-label">Time Sheet in Payrun</label>
@@ -118,11 +118,11 @@
 						<div class="input-group">
 						  <span class="input-group-addon"><input type="checkbox" name="check_external_id" /></span>
 						  <input type="text" class="form-control" id="external_staff_id" name="external_staff_id" />
-						</div>						
+						</div>
 					</div>
 				</div>
 			</div>
-            
+
             <div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
@@ -130,11 +130,11 @@
 					</div>
 				</div>
 			</div>
-            
+
             <div id="custom-attr-search" class="custom-hidden">
             	<?=modules::run('staff/custom_fields');?>
             </div>
-            
+
 			<div class="row">
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-4">
@@ -144,16 +144,16 @@
 					</div>
 				</div>
 			</div>
-            
-          
-            
-            			
+
+
+
+
 			<input type="hidden" name="sort_by" id="sort-by" value="first_name" />
             <input type="hidden" name="sort_order" id="sort-order" value="asc" />
             <input type="hidden" name="current_page"  id="current_page" value="1"  />
             <input type="hidden" name="records_per_page"  id="records_per_page" value="<?=STAFF_PER_PAGE;?>"  />
 			</form>
-			
+
 			<div id="staffs_search_results"></div>
 		</div>
 	</div>
@@ -178,8 +178,8 @@
                             <?=modules::run('common/field_rating', 'rating_multiple', 5,'basic-staff-multi-rating','wp-rating-multi','no-user',false,false);?>
                         </div>
                     </div>
-                    
-                   
+
+
                      <div class="form-group">
                                <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
                           <div class="col-sm-10">
@@ -211,8 +211,8 @@
                             <?=modules::run('staff/field_select_status', 'multi_status_update');?>
                         </div>
                     </div>
-                    
-                   
+
+
                      <div class="form-group">
                                <label for="add-button" class="col-sm-2 control-label">&nbsp;</label>
                           <div class="col-sm-10">
@@ -227,6 +227,9 @@
 </div><!-- /.modal -->
 
 <div id="ajax-contact-staff-modal"></div>
+
+<div id="ajax-lookbook-config-modal">
+	<?php echo modules::run('lookbook/email_modal');?></div>
 
 <!-- Modal -->
 <div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -270,53 +273,58 @@ $(function(){
     	var date_to = moment(e.date.valueOf() - 11*60*60*1000);
     	$('#date_from').datetimepicker('setEndDate', date_to.format("DD-MM-YYYY"));
     });
-    
+
 	//reset ratings
 	$('#reset').click(function(){
 		reset_page();
 	});
-	
-	
+
+
 	<? if(isset($_GET['external_id'])) { ?>
 	$('input[name="check_external_id"]').prop('checked', true);
 	search_staffs();
 	<? } ?>
-	
+
 	$('#btn_search_staffs').click(function(){
 		//reset_page();
 		search_staffs();
 		scroll_to_form = true;
 	})
-	
+
 	//prevent form sumbit on enter and instead do ajax search
 	$('#form_search_staffs').bind("keyup keypress", function(e) {
-		  var code = e.keyCode || e.which; 
-		  if (code  == 13) {               
+		  var code = e.keyCode || e.which;
+		  if (code  == 13) {
 			e.preventDefault();
 			//reset_page();
 			search_staffs();
 		  }
 	});
-	
+
 	//toggle custom attr search
 	$('.toggle-custom-attrs').on('click',function(){
 		$('#custom-attr-search').toggle();
 		if($('#toggle-custom-attrs-fa').hasClass('fa-plus-square')){
-			$('#toggle-custom-attrs-fa').removeClass('fa-plus-square').addClass('fa-minus-square');	
+			$('#toggle-custom-attrs-fa').removeClass('fa-plus-square').addClass('fa-minus-square');
 		}else{
-			$('#toggle-custom-attrs-fa').removeClass('fa-minus-square').addClass('fa-plus-square');	
+			$('#toggle-custom-attrs-fa').removeClass('fa-minus-square').addClass('fa-plus-square');
 		}
 	});
-	
+
 	//send email
 	$(document).on('click','.send-email-from-modal',function(){
 		send_email();
 	});
-	
+
 	//send sample email
 	//sample email
 	$(document).on('click','#send-sample-email',function(){
 		send_sample_email();
+	});
+	
+	//send lookbook
+	$(document).on('click','#send-lookbook',function(){
+		send_lookbook();
 	});
 
 })
@@ -340,7 +348,7 @@ function search_staffs() {
 				setTimeout(function(){
 					$('body').scrollTo('#form_search_staffs', 800 );
 				},200);
-			} 
+			}
 		}
 	})
 }
@@ -357,7 +365,7 @@ function delete_staff(user_id){
 function perform_multi_update(action){
 	switch(action){
 		case 'contact-multi-staff':
-			contact_multi_staff();	
+			contact_multi_staff();
 		break;
 		case 'delete-multi-staff':
 			delete_multi_staff();
@@ -370,7 +378,10 @@ function perform_multi_update(action){
 		break;
 		case 'export':
 			export_staff();
-		break;	
+		break;
+		case 'get-lookbook-config-modal':
+			get_lookbook_modal();
+		break;
 	}
 }
 
@@ -406,14 +417,14 @@ function update_multiple_selected_rating()
 			  reset_page();
 			  search_staffs();
 		  }
-	  }); 
+	  });
 }
 
 
 function update_multiple_selected_status()
 {
 	var new_status = $('#multi_status_update').val();
-	$('#staff-search-results-form').append('<input type="hidden" name="new_multi_status" value="'+new_status+'" />');	
+	$('#staff-search-results-form').append('<input type="hidden" name="new_multi_status" value="'+new_status+'" />');
 	$.ajax({
 		  type: "POST",
 		  url: "<?=base_url();?>staff/ajax/update_status_multi_staffs",
@@ -433,10 +444,10 @@ function contact_multi_staff(){
 		  data: $('#staff-search-results-form').serialize(),
 		  success: function(html) {
 			  $('#ajax-contact-staff-modal').html(html);
-			  $('#email-modal').modal('show');	
+			  $('#email-modal').modal('show');
 		  }
 	  });
-		
+
 }
 
 function export_staff() {
@@ -464,12 +475,12 @@ function send_email()
 			$('#msg-email-sent-successfully').removeClass('hide');
 			setTimeout(function(){
 				$('#msg-email-sent-successfully').addClass('hide');
-			}, 3000);	
+			}, 3000);
 			setTimeout(function(){
 				$('#email-modal').modal('hide');
-			}, 4000);	
+			}, 4000);
 		  }
-	  });	
+	  });
 }
 
 function send_sample_email()
@@ -486,9 +497,57 @@ function send_sample_email()
 			$('#msg-email-sent-successfully').removeClass('hide');
 			setTimeout(function(){
 				$('#msg-email-sent-successfully').addClass('hide');
-			}, 3000);	
+			}, 3000);
+		  }
+	  });
+}
+
+function get_lookbook_modal()
+{
+	//$('#lookbook-config-modal').modal('show');
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>lookbook/ajax/get_lookbook_config_data",
+		  data: $('#staff-search-results-form').serialize(),
+		  dataType:"JSON",
+		  success: function(data) {
+			  // populate selected user data
+			  $('#lookbook_selected_user_ids').val(data.selected_user_ids);
+			  $('#lookbook_preview_user_id').val(data.preview_user_id);
+			  $('#selected_staff_count').html(data.total_selected_user);
+			  $('#lookbook-preview-url').attr('href',data.preview_url);
+			  // get preview card
+			  get_card_preview();
+			  $('#lookbook-config-modal').modal('show');
 		  }
 	  });	
+}
+
+function send_lookbook(){
+	//preloading($('#lookbook-config-modal'));
+	$('#msg-lookbook-email-error').addClass('hide');
+	var default_icon = '<i class="fa fa-envelope-o"></i>';
+	$('#send-lookbook').html('<i class="fa fa-cog fa-spin"></i>');
+	update_lookbook_ckeditor();
+	$.ajax({
+		  type: "POST",
+		  url: "<?=base_url();?>lookbook/ajax/send_lookbook",
+		  data: $('#lookbook-modal-form').serialize(),
+		  dataType:"JSON",
+		  success: function(data) {
+		    $('#send-lookbook').html(default_icon);
+			if(data.ok){
+				$('#msg-lookbook-email-sent-successfully').removeClass('hide');
+				setTimeout(function(){
+					$('#msg-lookbook-email-sent-successfully').addClass('hide');
+				}, 3000);
+			}else{
+				$('#msg-lookbook-email-error').removeClass('hide');
+				$('#lookbook-email-err-msg').html(data.msg);
+				
+			}
+		  }
+	  });
 }
 
 </script>

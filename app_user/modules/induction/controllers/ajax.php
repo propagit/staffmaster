@@ -6,6 +6,9 @@ class Ajax extends MX_Controller {
     {
         parent::__construct();
         $this->load->model('induction_model');
+        $this->load->model('user/user_model');
+        $this->load->model('staff/staff_model');
+        $this->load->model('attribute/custom_field_model');
     }
 
     function get($id) {
@@ -102,6 +105,10 @@ class Ajax extends MX_Controller {
         $this->induction_model->update($id, $input);
     }
 
+    function delete($id) {
+        $this->induction_model->delete($id);
+    }
+
     function add_step() {
         $input = file_get_contents("php://input");
         $input = json_decode($input,true);
@@ -163,6 +170,10 @@ class Ajax extends MX_Controller {
 
     function upload_image($id) {
         $config['upload_path'] = UPLOADS_PATH . '/tmp/';
+		# Create target dir
+        if (!file_exists($config['upload_path'])) {
+            @mkdir($config['upload_path']);
+        }
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '2000';
         $config['max_width'] = '1024';
@@ -180,6 +191,10 @@ class Ajax extends MX_Controller {
 
     function upload_file($id) {
         $config['upload_path'] = UPLOADS_PATH . '/tmp/';
+		# Create target dir
+        if (!file_exists($config['upload_path'])) {
+            @mkdir($config['upload_path']);
+        }
         $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi';
         $config['max_size'] = '10000';
         $this->load->library('upload', $config);
@@ -193,7 +208,82 @@ class Ajax extends MX_Controller {
         }
     }
 
+    function upload_staff_picture($user_id) {
+        $targetDir = UPLOADS_PATH . '/staff/' . $user_id;
+        // Create target dir
+        if (!file_exists($targetDir)) {
+            @mkdir($targetDir);
+        }
+        $dir_thumb = $targetDir . '/thumb';
+        if(!is_dir($dir_thumb))
+        {
+          mkdir($dir_thumb);
+          chmod($dir_thumb,0777);
+          $fp = fopen($dir_thumb.'/index.html', 'w');
+          fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+          fclose($fp);
+        }
+
+        $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = '2000';
+        $config['max_width'] = '1024';
+        $config['max_height'] = '768';
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('image'))
+        {
+            echo json_encode($this->upload->display_errors());
+        }
+        else
+        {
+            $data = $this->upload->data();
+            $photo = array(
+                'user_id' => $user_id,
+                'name' => $data['file_name'],
+                'hero' => ($this->staff_model->has_hero_image($user_id) ? 0 : 1)
+            );
+
+            $a = $this->staff_model->add_picture($photo);
+
+            $target = $dir_thumb . '/' . $data['file_name'];
+
+            copy($targetDir . '/' . $data['file_name'], $target);
+            $this->load->helper('image');
+            scale_image($target, $target, IMG_THUMB_SIZE, IMG_THUMB_SIZE);
+
+            echo json_encode($data);
+
+        }
+    }
+
+    function delete_picture($id) {
+        $this->staff_model->delete_photo($id);
+    }
+
+    function upload_custom_file($user_id, $field_id) {
+        $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
+        $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi|jpg|gif|png';
+        $config['max_size'] = '10000';
+        $this->load->library('upload', $config);
+        if ( ! $this->upload->do_upload('file-' . $field_id))
+        {
+            echo json_encode($this->upload->display_errors());
+        }
+        else
+        {
+            $data = $this->upload->data();
+            $this->staff_model->update_custom_field($user_id, $field_id, $data['file_name']);
+
+            echo json_encode($data);
+        }
+    }
+
+    function delete_file($user_id, $field_id) {
+        $this->staff_model->update_custom_field($user_id, $field_id, '');
+    }
+
     function profile_fields($step_id = '', $category = '') {
+        $fields = array();
         switch($category) {
             case 'personal':
                     $fields = array(
@@ -226,6 +316,13 @@ class Ajax extends MX_Controller {
                         array('key' => 's_membership', 'label' => 'Membership Number')
                     );
                 break;
+            case 'custom':
+                    $custom_fields = $this->custom_field_model->get_fields();
+                    foreach($custom_fields as $field) {
+                        $field['key'] = $field['field_id'];
+                        $fields[] = $field;
+                    }
+                break;
             default: $fields = array();
                 break;
         }
@@ -239,8 +336,9 @@ class Ajax extends MX_Controller {
                 $f = $field;
                 if (in_array($field['key'], $step_fields)) {
                     $f['ticked'] = true;
+					$result[] = $f;
                 }
-                $result[] = $f;
+                #$result[] = $f;
             }
             $fields = $result;
         }

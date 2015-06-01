@@ -154,6 +154,7 @@
 	<div class="form-group">
 		<div class="col-lg-8 col-lg-offset-4">
 			<div class="alert alert-success hide" id="msg-update-financial"><i class="fa fa-check"></i> &nbsp; Staff financial details has been updated successfully!</div>
+            <div class="alert alert-danger hide" id="msg-update-financial-error"><i class="fa fa-times"></i> &nbsp; <span id="financial-update-error-msg"></span></div>
 			<button type="button" class="btn btn-core" id="btn_update_financial" data-loading-text="Updating financial details..."><i class="fa fa-save"></i> Update Financial Details</button>
 		</div>
 	</div>
@@ -186,6 +187,8 @@ $(function(){
 				btn.button('reset');
 				data = $.parseJSON(data);
 				if (!data.ok) {
+					$('#financial-update-error-msg').html(data.msg);
+					$('#msg-update-financial-error').removeClass('hide');
 					$('#f_' + data.error_id).addClass('has-error');
 					$('input[name="' + data.error_id + '"]').tooltip({
 						title: data.msg,
@@ -193,6 +196,7 @@ $(function(){
 					});
 					$('input[name="' + data.error_id + '"]').focus();
 				} else {
+					$('#msg-update-financial-error').addClass('hide');
 					$('#msg-update-financial').removeClass('hide');
 					setTimeout(function(){
 						$('#msg-update-financial').addClass('hide');

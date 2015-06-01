@@ -15,6 +15,7 @@ class Job extends MX_Controller {
 		$this->load->model('job_model');
 		$this->load->model('job_shift_model');
 		$this->load->model('client/client_model');
+		$this->load->model('client/client_favourite_staff_model');
 		$this->user = $this->session->userdata('user_data');
 		$this->is_client = modules::run('auth/is_client');
 	}

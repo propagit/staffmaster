@@ -25,42 +25,12 @@
 			<div class="alert alert-success">Staff Level Access has been updated!</div>
 		</div>
 	</div>
-	<? /*
 	<div class="form-group">
-		<label for="title" class="col-md-2 control-label">Conversations</label>
-		<div class="col-md-4">
-			<?
-				$array = array(
-					array('value' => 'Invited Conversations Only', 'label' => 'Invited Conversations Only')
-				);
-				echo modules::run('common/field_select', $array, 'conversation');
-			?>
+		<label for="title" class="col-md-2 control-label">Induction</label>
+		<div class="col-md-10" id="list-inductions">
+
 		</div>
 	</div>
-	
-	<div class="form-group">
-		<label for="title" class="col-md-2 control-label">Induction Status</label>
-		<div class="col-md-10">
-			<div class="alert alert-success media">
-				<div class="pull-left">
-					<i class="fa fa-check"></i>
-				</div>
-				<div class="pull-right">
-					<?
-						$array = array(
-							array('value' => 'Induction Completed', 'label' => 'Induction Completed')
-						);
-						echo modules::run('common/field_select', $array, 'induction');
-					?>
-				</div>
-				<div class="media-body">
-					<h4>Induction Completed</h4>
-					<h6>Induction completed on 24/03/2013</h6>
-				</div>
-			</div>
-		</div>
-	</div>
-	*/ ?>
 </div>
 
 <script>
@@ -80,6 +50,17 @@ $(function(){
 				}, 2000);
 			}
 		})
-	})
+	});
+	get_induction(<?=$staff['user_id']?>);
 })
+function get_induction(user_id) {
+	preloading($('#list-inductions'));
+	$.ajax({
+		type: "GET",
+		url: "<?=base_url();?>staff/ajax/get_inductions/" + user_id,
+		success: function(html) {
+			loaded($('#list-inductions'), html);
+		}
+	})
+}
 </script>

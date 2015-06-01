@@ -1189,50 +1189,47 @@ class Ajax extends MX_Controller {
 				}
 				else
 				{
-					$user_data = array(
-						'status' => 1,
-						'is_admin' => 0,
-						'is_staff' => 1,
-						'is_client' => 0,
-						'email_address' => '',
-						'username' => '',
-						'password' => '',
-						'title' => ($e->Addresses[0]->Salutation) ? $e->Addresses[0]->Salutation : '',
-						'first_name' => $e->FirstName,
-						'last_name' => $e->LastName,
-						'address' => ($e->Addresses[0]->Street) ? $e->Addresses[0]->Street : '',
-						'suburb' => '',
-						'city' => ($e->Addresses[0]->City) ? $e->Addresses[0]->City : '',
-						'state' => ($e->Addresses[0]->State) ? $e->Addresses[0]->State : '',
-						'postcode' => ($e->Addresses[0]->PostCode) ? $e->Addresses[0]->PostCode : '',
-						'country' => ($e->Addresses[0]->Country) ? $e->Addresses[0]->Country : '',
-						'phone' => ($e->Addresses[0]->Phone1) ? $e->Addresses[0]->Phone1 : '',
-						'mobile' => ($e->Addresses[0]->Phone2) ? $e->Addresses[0]->Phone2 : ''
-					);
-					$user_id = $this->user_model->insert_user($user_data);
+					$user_id = $this->insert_myob_user($e);
 					if ($user_id)
 					{
-						$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $e->DisplayID);
-						$staff_data = array(
-							'user_id' => $user_id,
-							'external_staff_id' => $e->DisplayID,
-							#'gender' => $input['Gender'],
-							#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
-							#'emergency_contact' => $input['EmergencyContact'],
-							#'emergency_phone' => $input['EmergencyPhone'],
-							#'f_tfn' => $input['SocialSecurity'],
-							'f_acc_name'=> isset($payment_details->BankAccounts[0]->BankAccountName) ? $payment_details->BankAccounts[0]->BankAccountName : '',
-							'f_bsb' => isset($payment_details->BankAccounts[0]->BSBNumber) ? $payment_details->BankAccounts[0]->BSBNumber : '',
-							'f_acc_number' => isset($payment_details->BankAccounts[0]->BankAccountNumber) ? $payment_details->BankAccounts[0]->BankAccountNumber : ''
-						);
-						#var_dump($staff_data); die();
-						$staff_id = $this->staff_model->insert_staff($staff_data, true);
+						$staff_id = $this->insert_myob_user_staff($user_id,$e->DisplayID);
 						if ($staff_id)
 						{
 							$imported++;
 						}
 					}
 				}
+			}
+			else
+			{
+				/**
+					Initially the Sync was build using Display ID instead of UID [yeah i konw, don't ask why, i did not build this], 
+					which does not work if the MYOB account doesnot have a display id
+					since few of our account is already synced we cannot simply starting using UID without doing some  
+					heavy maintenance work other wise the existing accounts will be out of sync
+					to work around this what we will be doing is check if display id exists in myob 
+					if not then we push the create a DisplayID and puch back to myob
+				*/
+				
+				$user_id = $this->insert_myob_user($e);
+				if ($user_id)
+				{
+					# set Display ID in MYOB
+					$display_id = STAFF_PREFIX . $user_id;
+					if(modules::run('api/myob/update_employee_displayID_onetime',$e,$display_id)){
+						#var_dump($staff_data); die();
+						$staff_id = $this->insert_myob_user_staff($user_id,$display_id);
+						if ($staff_id)
+						{
+							$imported++;
+						}
+					}
+				}
+				else
+				{
+					$errors++;
+				}	
+				
 			}
 		}
 
@@ -1272,6 +1269,56 @@ class Ajax extends MX_Controller {
 		$data['type'] = 'Staff';
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
+	}
+	
+	function insert_myob_user($employee)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+		
+		$user_data = array(
+						'status' => 1,
+						'is_admin' => 0,
+						'is_staff' => 1,
+						'is_client' => 0,
+						'email_address' => isset($employee->Addresses[0]->Email) ? $employee->Addresses[0]->Email : '',
+						'username' => isset($employee->Addresses[0]->Email) ? $employee->Addresses[0]->Email : '',
+						'password' => '',
+						'title' => ($employee->Addresses[0]->Salutation) ? $employee->Addresses[0]->Salutation : '',
+						'first_name' => $employee->FirstName,
+						'last_name' => $employee->LastName,
+						'address' => ($employee->Addresses[0]->Street) ? $employee->Addresses[0]->Street : '',
+						'suburb' => '',
+						'city' => ($employee->Addresses[0]->City) ? $employee->Addresses[0]->City : '',
+						'state' => ($employee->Addresses[0]->State) ? $employee->Addresses[0]->State : '',
+						'postcode' => ($employee->Addresses[0]->PostCode) ? $employee->Addresses[0]->PostCode : '',
+						'country' => ($employee->Addresses[0]->Country) ? $employee->Addresses[0]->Country : '',
+						'phone' => ($employee->Addresses[0]->Phone1) ? $employee->Addresses[0]->Phone1 : '',
+						'mobile' => ($employee->Addresses[0]->Phone2) ? $employee->Addresses[0]->Phone2 : ''
+					);
+		return $this->user_model->insert_user($user_data);
+		
+	}
+	
+	function insert_myob_user_staff($user_id,$display_id)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+		
+		$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $display_id);
+		$staff_data = array(
+			'user_id' => $user_id,
+			'external_staff_id' => $display_id,
+			#'gender' => $input['Gender'],
+			#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
+			#'emergency_contact' => $input['EmergencyContact'],
+			#'emergency_phone' => $input['EmergencyPhone'],
+			#'f_tfn' => $input['SocialSecurity'],
+			'f_acc_name'=> isset($payment_details->BankAccounts[0]->BankAccountName) ? $payment_details->BankAccounts[0]->BankAccountName : '',
+			'f_bsb' => isset($payment_details->BankAccounts[0]->BSBNumber) ? $payment_details->BankAccounts[0]->BSBNumber : '',
+			'f_acc_number' => isset($payment_details->BankAccounts[0]->BankAccountNumber) ? $payment_details->BankAccounts[0]->BankAccountNumber : ''
+		);
+		return $this->staff_model->insert_staff($staff_data, true);
 	}
 
 	function check_myob_client()
@@ -1462,38 +1509,37 @@ class Ajax extends MX_Controller {
 				}
 				else
 				{
-					$user_data = array(
-						'status' => CLIENT_ACTIVE,
-						'is_admin' => 0,
-						'is_staff' => 0,
-						'is_client' => 1,
-						'email_address' => isset($c->Addresses[0]->Email) ? $c->Addresses[0]->Email : '',
-						'username' => isset($c->Addresses[0]->Email) ? $c->Addresses[0]->Email : '',
-						'full_name' => ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName,
-						'address' => ($c->Addresses[0]->Street) ? $c->Addresses[0]->Street : '',
-						'suburb' => '',
-						'city' => ($c->Addresses[0]->City) ? $c->Addresses[0]->City : '',
-						'state' => ($c->Addresses[0]->State) ? $c->Addresses[0]->State : '',
-						'postcode' => ($c->Addresses[0]->PostCode) ? $c->Addresses[0]->PostCode : '',
-						'country' => ($c->Addresses[0]->Country) ? $c->Addresses[0]->Country : '',
-						'phone' => ($c->Addresses[0]->Phone1) ? $c->Addresses[0]->Phone1 : ''
-					);
-					$user_id = $this->user_model->insert_user($user_data);
+					$user_id = $this->insert_myob_client_userdata($c);
 					if ($user_id)
 					{
-						$client_data = array(
-							'user_id' => $user_id,
-							'external_client_id' => $c->DisplayID,
-							'company_name' => ($c->IsIndividual) ? $c->FirstName . ' ' . $c->LastName : $c->CompanyName,
-							'abn' => isset($c->SellingDetails->ABN) ? $c->SellingDetails->ABN : ''
-						);
-						$client_id = $this->client_model->insert_client($client_data, true);
+						$client_id = $this->insert_myob_user_client($c,$user_id,$c->DisplayID);
 						if ($client_id)
 						{
 							$imported++;
 						}
 					}
 				}
+			}
+			else
+			{
+				$user_id = $this->insert_myob_client_userdata($c);
+				if ($user_id)
+				{
+					# set Display ID in MYOB
+					$display_id = CLIENT_PREFIX . $user_id;
+					if(modules::run('api/myob/update_customer_displayID_onetime',$c,$display_id)){
+						$client_id = $this->insert_myob_user_client($c,$user_id,$display_id);
+						if ($client_id)
+						{
+							$imported++;
+						}
+					}
+				}
+				else
+				{
+					$errors++;
+				}	
+					
 			}
 		}
 
@@ -1531,9 +1577,191 @@ class Ajax extends MX_Controller {
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
 	
+	function insert_myob_client_userdata($client)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('client/client_model');
+		
+		$user_data = array(
+						'status' => CLIENT_ACTIVE,
+						'is_admin' => 0,
+						'is_staff' => 0,
+						'is_client' => 1,
+						'email_address' => isset($client->Addresses[0]->Email) ? $client->Addresses[0]->Email : '',
+						'username' => isset($client->Addresses[0]->Email) ? $client->Addresses[0]->Email : '',
+						'full_name' => ($client->IsIndividual) ? $client->FirstName . ' ' . $client->LastName : $client->CompanyName,
+						'address' => ($client->Addresses[0]->Street) ? $client->Addresses[0]->Street : '',
+						'suburb' => '',
+						'city' => ($client->Addresses[0]->City) ? $client->Addresses[0]->City : '',
+						'state' => ($client->Addresses[0]->State) ? $client->Addresses[0]->State : '',
+						'postcode' => ($client->Addresses[0]->PostCode) ? $client->Addresses[0]->PostCode : '',
+						'country' => ($client->Addresses[0]->Country) ? $client->Addresses[0]->Country : '',
+						'phone' => ($client->Addresses[0]->Phone1) ? $client->Addresses[0]->Phone1 : ''
+					);
+		return $this->user_model->insert_user($user_data);	
+	}
+	
+	function insert_myob_user_client($client,$user_id,$display_id)
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('client/client_model');
+		
+		$client_data = array(
+							'user_id' => $user_id,
+							'external_client_id' => $display_id,
+							'company_name' => ($client->IsIndividual) ? $client->FirstName . ' ' . $client->LastName : $client->CompanyName,
+							'abn' => isset($client->SellingDetails->ABN) ? $client->SellingDetails->ABN : ''
+						);
+		return $this->client_model->insert_client($client_data, true);
+	}
+
 	# Email timesheet to supervisor/staff etc setting
 	function edit_timesheet()
 	{
-		$this->load->view('system_settings/edit_timesheet', isset($data) ? $data : NULL);	
+		$this->load->view('system_settings/edit_timesheet', isset($data) ? $data : NULL);
+	}
+
+	function push_xero_employees() {
+		$this->load->model('staff/staff_model');
+		$staff = $this->staff_model->search_staffs();
+
+		$xml = "<Employees>
+					<Employee>
+						<FirstName></FirstName>
+						<LastName></LastName>
+						<DateOfBirth></DateOfBirth>
+						<HomeAddress>
+							<AddressLine1></AddressLine1>
+							<AddressLine2></AddressLine2>
+							<City></City>
+							<Region></Region>
+							<PostalCode></PostalCode>
+							<Country></Country>
+						</HomeAddress>
+						<StartDate></StartDate>
+						<TaxDeclaration>
+							<AustralianResidentForTaxPurposes>true</AustralianResidentForTaxPurposes>
+							<TaxFreeThresholdClaimed>true</TaxFreeThresholdClaimed>
+							<HasHELPDebt>false</HasHELPDebt>
+							<HasSFSSDebt>false</HasSFSSDebt>
+						</TaxDeclaration>
+					</Employee>
+				</Employees>";
+	}
+
+	function pull_xero_employees_to_staffbooks() {
+
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+
+		$employees = modules::run('api/xero/get_employees');
+		
+		#print_r($employees);return;exit;
+		$imported = 0;
+
+		foreach($employees as $e) {
+			$staff = modules::run('staff/get_staff_by_external_id', $e['EmployeeID']);
+			if (!$staff) {
+				$employee = modules::run('api/xero/get_employee', $e['EmployeeID']);
+				$user_data = array(
+					'status' => 1,
+					'is_admin' => 0,
+					'is_staff' => 1,
+					'is_client' => 0,
+					'email_address' => isset($employee['Email']) ? $employee['Email'] : '',
+					'username' => isset($employee['Email']) ? $employee['Email'] : '',
+					'password' => '',
+					#'title' => isset($employee['Title']) ? $employee['Title'] : '',
+					'first_name' => $employee['FirstName'],
+					'last_name' => $employee['LastName'],
+					'address' => isset($employee['HomeAddress']['AddressLine1']) ? $employee['HomeAddress']['AddressLine1'] : '',
+					'suburb' => isset($employee['HomeAddress']['AddressLine2']) ? $employee['HomeAddress']['AddressLine2'] : '',
+					'city' => isset($employee['HomeAddress']['City']) ? $employee['HomeAddress']['City'] : '',
+					'state' => isset($employee['HomeAddress']['Region']) ? $employee['HomeAddress']['Region'] : '',
+					'postcode' => isset($employee['HomeAddress']['PostalCode']) ? $employee['HomeAddress']['PostalCode'] : '',
+					'country' => isset($employee['HomeAddress']['Country']) ? $employee['HomeAddress']['Country'] : ''
+				);
+				// echo '<hr />User: '; var_dump($user_data); echo '<br />';
+				// $user_id = 1;
+				$user_id = $this->user_model->insert_user($user_data);
+				if ($user_id)
+				{
+					$staff_data = array(
+						'user_id' => $user_id,
+						'external_staff_id' => $employee['EmployeeID'],
+						'gender' => isset($employee['Gender']) ? strtolower($employee['Gender']) : '',
+						'dob' => isset($employee['DateOfBirth']) ? date('Y-m-d', strtotime($employee['DateOfBirth'])) : '',
+						'emergency_contact' => '',
+						'emergency_phone' => '',
+						'f_aus_resident' => (isset($employee['TaxDeclaration']['AustralianResidentForTaxPurposes']) && $employee['TaxDeclaration']['AustralianResidentForTaxPurposes'] == 'true') ? 1 : 0,
+						'f_tax_free_threshold' => (isset($employee['TaxDeclaration']['TaxFreeThresholdClaimed']) && $employee['TaxDeclaration']['TaxFreeThresholdClaimed'] == 'true') ? 1 : 0,
+						'f_help_debt' => (isset($employee['TaxDeclaration']['HasHELPDebt']) && $employee['TaxDeclaration']['HasHELPDebt'] == 'true') ? 1 : 0,
+						'f_tfn' => isset($employee['TaxDeclaration']['TaxFileNumber']) ? $employee['TaxDeclaration']['TaxFileNumber'] : ''
+					);
+					
+					if (isset($employee['BankAccounts']['BankAccount'])){
+						# check if staff has more than one bank accoun in xero
+						$emp_bank_accounts = $employee['BankAccounts'];
+						if(isset($employee['BankAccounts']['BankAccount'][0])){
+							$emp_bank_accounts = $employee['BankAccounts']['BankAccount'];
+						}
+						
+						foreach($emp_bank_accounts as $account) {
+							if (isset($account['Remainder']) && $account['Remainder']) {
+								$staff_data['f_acc_name'] = $account['AccountName'];
+								$staff_data['f_bsb'] = $account['BSB'];
+								$staff_data['f_acc_number'] = $account['AccountNumber'];
+							}
+						}
+						
+					}
+					
+					
+					if (isset($employee['SuperMemberships']['SuperMembership'])){
+						# check for multiple super in xero
+						$xero_super_account = $employee['SuperMemberships']['SuperMembership'];
+						if(isset($employee['SuperMemberships']['SuperMembership'][0])){
+							$xero_super_account = $employee['SuperMemberships']['SuperMembership'][0];
+						}
+						
+						# check if company has set a default super account
+						$id = modules::run('setting/superinformasi', 'super_fund_external_id');
+						
+						
+						if(isset($xero_super_account['SuperFundID'])){
+							$staff_data['s_external_id'] = isset($xero_super_account['SuperFundID']) ? $xero_super_account['SuperFundID'] : '';
+							$staff_data['s_employee_id'] = isset($xero_super_account['EmployeeNumber']) ? $xero_super_account['EmployeeNumber'] : '';
+							$staff_data['s_choice'] = 'own';
+							if($id && ($xero_super_account['SuperFundID'] == $id)){
+								$staff_data['s_choice'] = 'employer';
+							}
+						}
+						
+					}
+					
+					/*if (count($employee['BankAccounts']) > 0) {
+						foreach($employee['BankAccounts']['BankAccount'] as $account) {
+							if (isset($account['Remainder']) && $account['Remainder']) {
+								$staff_data['f_acc_name'] = $account['AccountName'];
+								$staff_data['f_bsb'] = $account['BSB'];
+								$staff_data['f_acc_number'] = $account['AccountNumber'];
+							}
+						}
+					}*/
+					// echo '<hr />Staff: '; var_dump($staff_data); echo '<br />';
+					$staff_id = $this->staff_model->insert_staff($staff_data, true);
+					$imported++;
+				}
+			}
+		}
+		// echo $imported . '<br />' . $found; return;
+		$output = '';
+		if ($imported > 0) {
+			$output .= '<p>' . $imported . ' new staff has been imported successfully to StaffBooks</p>';
+		}
+		if (count($employees) > $imported) {
+			$output .= '<p>' . (count($employees) - $imported) . ' staff already found in StaffBooks</p>';
+		}
+		echo $output;
 	}
 }

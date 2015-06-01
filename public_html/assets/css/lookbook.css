@@ -1,0 +1,133 @@
+/* CSS Document */
+/* grey */
+/* white*/
+/* border radius*/
+html,
+body {
+  /*background:#fff;	*/ }
+
+#sm-head-wrap .logo {
+  float: none;
+  display: inline-block;
+  margin: auto; }
+
+.lookbook-wrap {
+  text-align: center; }
+
+.lookbook-nav {
+  text-align: center;
+  margin-bottom: 25px; }
+  .lookbook-nav ul {
+    list-style: none; }
+    .lookbook-nav ul li {
+      display: inline-block;
+      padding: 0 5px;
+      font-size: 12px; }
+      .lookbook-nav ul li .fa {
+        margin-right: 5px; }
+
+/* lb = lookbook */
+.lb-box {
+  max-width: 240px;
+  width: 240px;
+  /*border:1px solid $color1;*/
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.5);
+  margin: 10px 7.5px; }
+  .lb-box .h4,
+  .lb-box h4 {
+    font-size: 23px;
+    font-weight: 600; }
+  .lb-box .avatar {
+    position: relative !important;
+    min-height: 240px; }
+    .lb-box .avatar .default-avatar-photo {
+      margin: auto;
+      height: 240px;
+      width: 240px;
+      box-shadow: none;
+      border-radius: 0;
+      background-color: #f4f4f4; }
+      .lb-box .avatar .default-avatar-photo .fa {
+        font-size: 100px;
+        line-height: 216px; }
+    .lb-box .avatar img {
+      box-shadow: none;
+      border-radius: 0;
+      width: 100%; }
+  .lb-box .info {
+    text-align: center;
+    padding: 10px 0;
+    background: white; }
+    .lb-box .info table {
+      width: 100%;
+      text-align: left;
+      font-size: 12px;
+      margin-bottom: 20px; }
+      .lb-box .info table tr td {
+        float: left; }
+        .lb-box .info table tr td:first-child {
+          width: 40%;
+          margin-left: 5%;
+          text-align: right;
+          font-weight: 700; }
+        .lb-box .info table tr td:last-child {
+          width: 50%;
+          margin-left: 5%; }
+
+.btn-lookbook {
+  width: 100%;
+  border-radius: 0; }
+
+.lb-modal .padding20 {
+  padding: 20px; }
+.lb-modal .lb-modal-body {
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0.8); }
+  .lb-modal .lb-modal-body .lbm-config {
+    border-radius: 6px 0 0; }
+    .lb-modal .lb-modal-body .lbm-config .lb-config-box {
+      display: inline-block;
+      width: 100%;
+      padding-left: 20px;
+      padding-top: 20px;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #cccccc; }
+      .lb-modal .lb-modal-body .lbm-config .lb-config-box:last-child {
+        border-bottom: none; }
+  .lb-modal .lb-modal-body .lbm-card {
+    border-left: 1px solid #cccccc;
+    text-align: center;
+    background: url("../img/bg-title.jpg");
+    border-radius: 0 6px 0 0;
+    min-height: 640px; }
+  .lb-modal .lb-modal-body .lbm-body-footer {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-radius: 0 0 6px 6px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid #cccccc; }
+.lb-modal .fa-lb {
+  font-size: 20px;
+  padding-right: 10px; }
+
+/*lookbook modal*/
+.lb-row {
+  margin: 20px 0;
+  display: block; }
+
+.lb-max-width {
+  width: 240px; }
+
+.bg-white {
+  background-color: white; }
+
+.pull-text {
+  text-align: right; }
+
+.text-center {
+  text-align: center; }
+
+.clearfix {
+  clear: both; }

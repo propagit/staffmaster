@@ -27,7 +27,7 @@
     <div class="row" style="text-align:center">
 		<p><i class="text-success fa fa-check fa-5x"></i></p>
         <p class="text-success">Thank you for submitting your application!<br />
-        Your details have be processed successfully.</p>
+        Your details have been processed successfully.</p>
     </div>
 </div>
 </body>

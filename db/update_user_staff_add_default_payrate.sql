@@ -1,0 +1,1 @@
+ALTER TABLE `user_staffs`  ADD `default_payrate_id` INT NOT NULL DEFAULT '0'  AFTER `welcome_email_sent`;

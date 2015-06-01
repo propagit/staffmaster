@@ -1,0 +1,1 @@
+ALTER TABLE `job_shift_timesheets` CHANGE `external_id` `external_id` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

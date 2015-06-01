@@ -14,6 +14,7 @@
 			array('value' => 'export', 'label' => 'Export Selected'),
 			array('value' => 'mark_unpaid', 'label' => 'Mark Selected as Unpaid'),
 			array('value' => 'mark_paid', 'label' => 'Mark Selected as Paid'),
+			#array('value' => 'email', 'label' => 'Email Invoice to Client')
 			#array('value' => 'mark_deleted', 'label' => 'Mark Selected as Deleted')
 		);
 		echo modules::run('common/menu_dropdown', $data, 'invoice-action', 'Actions');
@@ -55,7 +56,7 @@
 ?>
 	<tr>
 		<? if (!$is_client) { ?>
-		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" /></td>
+		<td><input type="checkbox" class="selected_invoice" value="<?=$invoice['invoice_id'];?>" data-id="<?=$invoice['invoice_id'];?>" /></td>
 			<? if ($accounting_platform == 'shoebooks') { ?>
 			<td class="center">
 				<? if ($invoice['external_id']) { echo $invoice['external_id']; }
@@ -116,8 +117,10 @@
 $(function(){
 	var selected_invoices = new Array();
 	$('#selected_all_invoices').click(function(){
-		$('input.selected_invoice').prop('checked', this.checked);		
+		$('input.selected_invoice').prop('checked', this.checked);	
+		$('input.selected_users').prop('checked', this.checked);	
 	});
+	
 	$('#menu-invoice-action ul li a[data-value="export"]').click(function(){
 		selected_invoices.length = 0;
 		$('.selected_invoice:checked').each(function(){

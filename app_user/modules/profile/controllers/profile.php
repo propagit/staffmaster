@@ -13,8 +13,10 @@ class Profile extends MX_Controller {
 		parent::__construct();		
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
-		$user = $this->session->userdata('user_data');
-		$this->user_id = $user['user_id'];
+		if($this->session->userdata('user_data')){
+			$user = $this->session->userdata('user_data');
+			$this->user_id = $user['user_id'];
+		}
 	}
 	
 	public function index($method='', $param='')

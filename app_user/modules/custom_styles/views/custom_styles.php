@@ -51,6 +51,8 @@ a:hover,
 	background-color:<?=$primary_colour?> !important;
     color:<?=$secondary_colour?>;
 }
+.btn-core:active,
+.btn-core:focus,
 .btn-info:hover,
 .btn-core:hover{
 	background-color:<?=$primary_colour?> !important;

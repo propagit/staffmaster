@@ -20,6 +20,20 @@ class Induction_model extends CI_Model {
         return $query->first_row('array');
     }
 
+    function delete($id) {
+        $this->db->where('induction_id', $id);
+        $this->db->delete('inductions_users');
+
+        $this->db->where('induction_id', $id);
+        $this->db->delete('induction_contents');
+
+        $this->db->where('induction_id', $id);
+        $this->db->delete('induction_steps');
+
+        $this->db->where('id', $id);
+        $this->db->delete('inductions');
+    }
+
     function all($active=null) {
         if ($active) {
             $this->db->where('status', 1);
@@ -54,6 +68,24 @@ class Induction_model extends CI_Model {
         } else if ($data['type'] == 'super') {
             $data['title'] = 'Superannuation Details';
             $data['description'] = 'Please update your superannuation information below and proceed to next step';
+        } else if ($data['type'] == 'picture') {
+            $data['title'] = 'Picture';
+            $data['description'] = 'Please upload photos of yourself so we have a visual reference of you then proceed to the next step';
+        } else if ($data['type'] == 'role') {
+            $data['title'] = 'Roles';
+            $data['description'] = 'Please let us know what roles you feel you can perform then proceed to the next step';
+        } else if ($data['type'] == 'availability') {
+            $data['title'] = 'Availability';
+            $data['description'] = 'Please let us know what days of the week you are available for work then proceed to the next step';
+        } else if ($data['type'] == 'location') {
+            $data['title'] = 'Location';
+            $data['description'] = 'Please let us know your primary location you can work in and then proceed to the next step';
+        } else if ($data['type'] == 'group') {
+            $data['title'] = 'Groups';
+            $data['description'] = 'Please let us know if you would like to be part of any communication groups then proceed to the next step';
+        } else if ($data['type'] == 'custom') {
+            $data['title'] = 'Custom Attributes';
+            $data['description'] = 'Please let us know the following information then proceed to the next step';
         }
         $this->db->insert('induction_steps', $data);
         $data['id'] = $this->db->insert_id();

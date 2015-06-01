@@ -33,12 +33,17 @@ class Role_model extends CI_Model {
 
 	function get_roles($params = '')
 	{
-		$sql = "select attribute_roles.*, (select count(staff_roles_id) from staff_roles where attribute_roles.role_id = staff_roles.attribute_role_id) as frequency from attribute_roles";
+		$sql = "SELECT ar.*, 
+				(SELECT COUNT(staff_roles_id) FROM staff_roles sr, users u 
+					WHERE ar.role_id = sr.attribute_role_id
+					AND sr.user_id = u.user_id 
+					AND u.status = " . STAFF_ACTIVE . ") AS frequency 
+				FROM attribute_roles ar";
 		if($params){
 			$sort_param = json_decode($params);	
-			$sql .= " order by $sort_param->sort_by $sort_param->sort_order";
+			$sql .= " ORDER BY $sort_param->sort_by $sort_param->sort_order";
 		}else{
-			$sql .= " order by name asc";
+			$sql .= " ORDER BY name ASC";
 		}
 		$query = $this->db->query($sql);
 		return $query->result_array();

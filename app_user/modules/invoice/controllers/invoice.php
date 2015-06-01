@@ -97,78 +97,12 @@ class Invoice extends MX_Controller {
 		if ($invoice_id) {
 			redirect('invoice/edit/' . $invoice_id);
 		}
-		$client = modules::run('client/get_client', $user_id);
-		$profile = modules::run('setting/company_profile');
-		# Create invoice
-		$invoice_data = array(
-			'client_id' => $user_id,
-			'title' => 'Services Rended',
-			'issued_date' => date('Y-m-d H:i:s'),
-			'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60),
-			'client_company_name' => $client['company_name'],
-			'client_address' => $client['address'],
-			'client_suburb' => $client['suburb'],
-			'client_state' => $client['state'],
-			'client_postcode' => $client['postcode'],
-			'client_phone' => $client['phone'],
-			'client_email_address' => $client['email_address'],
-			'profile_company_name' => $profile['company_name'],
-			'profile_abn' => $profile['abn_acn'],
-			'profile_company_email' => $profile['email'],
-			'profile_company_phone' => $profile['telephone']
-		);
-		$invoice_id = $this->invoice_model->add_client_invoice($invoice_data);
-		$data_jobs = array();
-		$total = 0;
-		# Insert invoice items
-		$jobs = $this->invoice_model->get_client_invoice($user_id);
-		foreach($jobs as $job) {
-			$item_data = array(
-				'invoice_id' => $invoice_id,
-				'job_id' => $job['job_id'],
-				'include_timesheets' => 1,
-				'title' => $job['name'],
-				'tax' => GST_YES,
-				'amount' => $job['total_amount']
-			);
-			$data_jobs[] = array(
-				'value' => $job['job_id'],
-				'label' => $job['name']
-			);
-			$total += $job['total_amount'];
-			$this->invoice_model->add_invoice_item($item_data);
-			
-			
-			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
-			foreach($timesheets as $timesheet) {
-				$expenses = $this->expense_model->get_timesheet_expenses($timesheet['timesheet_id']);
-				# Update invoice_id to timesheets
-				$this->timesheet_model->update_timesheet($timesheet['timesheet_id'], array(
-					'invoice_id' => $invoice_id
-				));
-				if (count($expenses) > 0) {
-					foreach($expenses as $exp) {
-						$item_data = array(
-							'invoice_id' => $invoice_id,
-							'job_id' => $job['job_id'],
-							'expense_id' => $exp['expense_id'],
-							'title' => $exp['description'],
-							'tax' => $exp['tax'],
-							'amount' => $exp['client_cost']
-						);
-						$total += $exp['client_cost'];
-						$this->invoice_model->add_invoice_item($item_data);
-					}
-				}	
-			}
-		}
-		$this->invoice_model->update_invoice($invoice_id, array(
-			'jobs' => serialize($data_jobs),
-			'total_amount' => $total
-		));
+		
+		$invoice_id = $this->create_invoice($user_id);
 			
 		redirect('invoice/edit/' . $invoice_id);	
 	}
+	
 	
 	/**
 	*	@name: edit
@@ -200,14 +134,7 @@ class Invoice extends MX_Controller {
 	*	@return: (void) redirect to view invoice page
 	*/
 	function generate($invoice_id) {
-		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		# Update invoice status
-		$user = $this->session->userdata('user_data');
-		$this->invoice_model->update_invoice($invoice_id, array(
-			'status' => INVOICE_GENERATED,
-			'issued_by' => $user['user_id']
-		));
-		$this->invoice_model->generate_invoice_timesheets($invoice['client_id'], $invoice_id);
+		$this->generate_invoice($invoice_id);
 		redirect('invoice/view/' . $invoice_id);
 	}
 	
@@ -417,6 +344,93 @@ class Invoice extends MX_Controller {
 			}
 		}
 		echo 'sent';
+	}
+	
+	function create_invoice($user_id)
+	{
+		$client = modules::run('client/get_client', $user_id);
+		$profile = modules::run('setting/company_profile');
+		# Create invoice
+		$invoice_data = array(
+			'client_id' => $user_id,
+			'title' => 'Services Rended',
+			'issued_date' => date('Y-m-d H:i:s'),
+			'due_date' => date('Y-m-d H:i:s', time() + 30*24*60*60),
+			'client_company_name' => $client['company_name'],
+			'client_address' => $client['address'],
+			'client_suburb' => $client['suburb'],
+			'client_state' => $client['state'],
+			'client_postcode' => $client['postcode'],
+			'client_phone' => $client['phone'],
+			'client_email_address' => $client['email_address'],
+			'profile_company_name' => $profile['company_name'],
+			'profile_abn' => $profile['abn_acn'],
+			'profile_company_email' => $profile['email'],
+			'profile_company_phone' => $profile['telephone']
+		);
+		$invoice_id = $this->invoice_model->add_client_invoice($invoice_data);
+		$data_jobs = array();
+		$total = 0;
+		# Insert invoice items
+		$jobs = $this->invoice_model->get_client_invoice($user_id);
+		foreach($jobs as $job) {
+			$item_data = array(
+				'invoice_id' => $invoice_id,
+				'job_id' => $job['job_id'],
+				'include_timesheets' => 1,
+				'title' => $job['name'],
+				'tax' => GST_YES,
+				'amount' => $job['total_amount']
+			);
+			$data_jobs[] = array(
+				'value' => $job['job_id'],
+				'label' => $job['name']
+			);
+			$total += $job['total_amount'];
+			$this->invoice_model->add_invoice_item($item_data);
+			
+			
+			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
+			foreach($timesheets as $timesheet) {
+				$expenses = $this->expense_model->get_timesheet_expenses($timesheet['timesheet_id']);
+				# Update invoice_id to timesheets
+				$this->timesheet_model->update_timesheet($timesheet['timesheet_id'], array(
+					'invoice_id' => $invoice_id
+				));
+				if (count($expenses) > 0) {
+					foreach($expenses as $exp) {
+						$item_data = array(
+							'invoice_id' => $invoice_id,
+							'job_id' => $job['job_id'],
+							'expense_id' => $exp['expense_id'],
+							'title' => $exp['description'],
+							'tax' => $exp['tax'],
+							'amount' => $exp['client_cost']
+						);
+						$total += $exp['client_cost'];
+						$this->invoice_model->add_invoice_item($item_data);
+					}
+				}	
+			}
+		}
+		$this->invoice_model->update_invoice($invoice_id, array(
+			'jobs' => serialize($data_jobs),
+			'total_amount' => $total
+		));
+		
+		return $invoice_id;		
+	}
+	
+	function generate_invoice($invoice_id)
+	{
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		# Update invoice status
+		$user = $this->session->userdata('user_data');
+		$this->invoice_model->update_invoice($invoice_id, array(
+			'status' => INVOICE_GENERATED,
+			'issued_by' => $user['user_id']
+		));
+		$this->invoice_model->generate_invoice_timesheets($invoice['client_id'], $invoice_id);	
 	}
 	
 }

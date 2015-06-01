@@ -31,6 +31,13 @@
     <!-- New stuff: SASS -->
     <link href="<?=base_url();?>css/app.min.css" rel="stylesheet" media="screen">
 
+
+    <link href="<?=base_url();?>bower_components/angular-upload/src/directives/btnUpload.min.css" rel="stylesheet" media="screen">
+    <link href="<?=base_url();?>bower_components/text-angular/src/textAngular.css" rel="stylesheet" media="screen">
+
+    <link href="<?=base_url();?>bower_components/ng-sortable/dist/ng-sortable.min.css" rel="stylesheet" media="screen">
+
+
     <!-- New stuff: Angular -->
 
     <script src="<?=base_url();?>bower_components/angular/angular.min.js"></script>
@@ -39,12 +46,15 @@
     <script src="<?=base_url();?>bower_components/text-angular/dist/textAngular-rangy.min.js"></script>
     <script src="<?=base_url();?>bower_components/text-angular/dist/textAngular-sanitize.min.js"></script>
 
+    <script src="<?=base_url();?>bower_components/angular-multi-select/angular-multi-select.js"></script>
+    <script src="<?=base_url();?>bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <script src="<?=base_url();?>bower_components/angular-initial-value/dist/angular-initial-value.min.js"></script>
+
+
 
     <script src="<?=base_url();?>js/app.js"></script>
     <script src="<?=base_url();?>js/induction.js"></script>
-
-    <link href="<?=base_url();?>bower_components/angular-upload/src/directives/btnUpload.min.css" rel="stylesheet" media="screen">
-    <link href="<?=base_url();?>bower_components/text-angular/src/textAngular.css" rel="stylesheet" media="screen">
+    <script src="<?=base_url();?>js/lookbook.js"></script>
 
 </head>
 <body ng-app="sb">

@@ -3,8 +3,8 @@
 
 class Ajax extends MX_Controller {
 	/**
-	*	@class_desc Support Module Ajax Controller 
-	*	
+	*	@class_desc Support Module Ajax Controller
+	*
 	*
 	*/
 	function __construct()
@@ -12,8 +12,8 @@ class Ajax extends MX_Controller {
 		parent::__construct();
 		$this->load->model('support_model');
 	}
-	
-	
+
+
 	/**
 	*	@name: reload_supports
 	*	@desc: This function reloads support tickets. Mostly after a new support ticket has been lodged etc.
@@ -23,9 +23,9 @@ class Ajax extends MX_Controller {
 	*/
 	function reload_supports()
 	{
-		echo modules::run('support/load_support_tickets');	
+		echo modules::run('support/load_support_tickets');
 	}
-	
+
 	/**
 	*	@name: lodge_admin_support
 	*	@desc: Sends support ticket from admin to SM support staff
@@ -37,12 +37,12 @@ class Ajax extends MX_Controller {
 	{
 		$this->load->model('setting/setting_model');
 		$company = $this->setting_model->get_profile();
-		$ticket_title = $this->input->post('ticket_title');	
+		$ticket_title = $this->input->post('ticket_title');
 		$support_type = $this->input->post('support_type');
 		$support_message = $this->input->post('support_message');
 		$user = $this->session->userdata('user_data');
 
-		
+
 		$client_company = $company['company_name'];
 		$from = $user['email_address'];
 		$from_text = 'Support Ticket - '.$client_company;
@@ -52,17 +52,17 @@ class Ajax extends MX_Controller {
 					'client_name' => $client_company,
 					'lodged_by' => $user['first_name'].' '.$user['last_name'].' - '.date('d F, Y, h:i a'),
 					'support_type' => $support_type
-					);				 
-						 	
+					);
+
 		$email_data = array(
 						'to' => SMTEAM_EMAIL,
 						'from' => $from,
 						'from_text' => $from_text,
-						'subject' => $subject, 
+						'subject' => $subject,
 						'message' => modules::run('support/load_admin_support_email_body',$data)
 							);
 		echo modules::run('email/send_email',$email_data);
-		
+
 	}
-	
+
 }

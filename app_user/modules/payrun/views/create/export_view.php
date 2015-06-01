@@ -2,7 +2,7 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			
+
 			<h4 class="modal-title">
 				<? if($mode != '') { ?>
 					Push to <?=ucwords($mode);?>
@@ -16,21 +16,30 @@
 			<input type="hidden" name="type" value="<?=$type;?>" />
 			<div class="modal-body">
 				<? if($mode != '') { ?>
-				<input type="hidden" name="platform" value="<?=strtolower($mode);?>" />		
+				<input type="hidden" name="platform" value="<?=strtolower($mode);?>" />
 
 				<? } else { ?>
 				<div class="form-group alert alert-info clearfix">
 					<div class="checkbox no-margin">
 						<label><input type="checkbox" id="check_to_export" name="export_csv" checked /> &nbsp; Export to CSV</label>
 					</div>
-					
+
 					<div id="f_export_id" class="hide"><br />
 						<?=modules::run('payrun/field_select_export_templates', $type, 'export_id');?>
 					</div>
 				</div>
 				<? } ?>
-				
+
+				<? if ($mode == 'xero') { ?>
 				<div class="panel panel-default">
+					<!-- Default panel contents -->
+					<div class="panel-heading">Select Xero Payrun</div>
+					<div class="panel-body" id="xero-payruns">
+					</div>
+				</div>
+				<? } ?>
+
+				<div class="panel panel-default" id="payrun-period">
 					<!-- Default panel contents -->
 					<div class="panel-heading">Pay Run Period</div>
 					<div class="panel-body">
@@ -75,7 +84,11 @@ $(function(){
 		backdrop: 'static',
 		keyboard: true,
 		show: false
-	})
+	});
+
+	<? if($mode == 'xero') { ?>
+	load_xero_payruns();
+	<? } ?>
 
 	$('#add-save-payrun').click(function(){
 		var btn = $(this);
@@ -104,7 +117,7 @@ $(function(){
 					}
 					else
 					{
-						if (data.pushed_ok) 
+						if (data.pushed_ok)
 						{
 							$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a href="<?=base_url();?>payrun/search-payslip/' + data.payrun_id + '" class="btn btn-core">View Pay Run</a> &nbsp; <a class="btn btn-default" onclick="close_modal()">Run Another Pay Run</a></p>');
 							$('#waitingModal').modal('show');
@@ -114,7 +127,7 @@ $(function(){
 							$('#order-message').html('<h2>Push Results</h2>' + data.pushed_msg + '<br /><p><a class="btn btn-danger" onclick="close_modal()">Close</a></p>');
 							$('#waitingModal').modal('show');
 						}
-					}				
+					}
 				}
 			}
 		})
@@ -170,6 +183,17 @@ $(function(){
     });
 })
 
+function load_xero_payruns() {
+	preloading($('#xero-payruns'));
+	$.ajax({
+		type: "POST",
+		url: "<?=base_url();?>payrun/ajax/load_xero_payrun",
+		success: function(html) {
+			loaded($('#xero-payruns'), html);
+		}
+	})
+}
+
 function include_export() {
 	if ($('#check_to_export').is(':checked')) {
 		$('#add-save-payrun').html('Generate and Export Pay Run');
@@ -180,7 +204,7 @@ function include_export() {
 		<? } else { ?>
 			$('#add-save-payrun').html('Generate Pay Run');
 		<? } ?>
-		
+
 		$('#f_export_id').addClass('hide');
 	}
 }

@@ -38,11 +38,46 @@ class Setting extends MX_Controller {
 			case 'integration':
 					$this->integration();
 				break;
+			/*case 'sync_myob_email':
+					$this->sync_myob_email();
+				break;*/
 			default:
 					$this->company();
 			break;
 		}
 	}
+	
+	/*function sync_myob_email()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+
+		# First get all employee from MYOB
+		$employee = modules::run('api/myob/connect/search_employee');
+	
+		foreach($employee as $e){
+			if ($e->DisplayID && $e->DisplayID != '*None')
+			{
+				$user_data = array();
+				$staff = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
+				
+				#echo '<pre>'.print_r($staff,true).'</pre>';
+				#echo isset($e->Addresses[0]->Email) ? $e->Addresses[0]->Email : '';echo '<br>';
+				if ($staff)
+				{
+					$user_data = array(
+						'email_address' => isset($e->Addresses[0]->Email) ? $e->Addresses[0]->Email : '',
+						'username' => isset($e->Addresses[0]->Email) ? $e->Addresses[0]->Email : ''
+						);
+					$this->db->where('user_id',$staff['user_id'])
+							 ->update('users',$user_data);
+				}
+			}
+			
+		}
+		
+	}*/
+	
 	/**
 	*	@name: company
 	*	@desc: function to call the view of one of company profile

@@ -244,6 +244,8 @@ function revert_selected_timesheets(timesheet_ids) {
 function revert_payrun(user_id,timesheet_id) {
 	var title = 'Revert Pay Run';
 	var message ='Are you sure you want to revert this time sheet?';
+	var parent_row = $('#timesheet_' + timesheet_id);
+	var child_id = parent_row.attr('data-child-id');
 	help.confirm_delete(title,message,function(confirmed){
 		 if(confirmed){
 			 $.ajax({
@@ -251,6 +253,9 @@ function revert_payrun(user_id,timesheet_id) {
 				url: "<?=base_url();?>payrun/ajax/revert_payrun",
 				data: {timesheet_id: timesheet_id},
 				success: function(html) {
+					if(child_id){
+						$('#timesheet_' + child_id).remove();	
+					}
 					$('#timesheet_' + timesheet_id).remove();
 					if ($('.timesheets_staff_' + user_id).length > 0) {
 						refresh_row_timesheets_staff(user_id);

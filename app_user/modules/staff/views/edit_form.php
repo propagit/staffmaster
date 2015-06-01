@@ -69,6 +69,7 @@
                 <? if(!modules::run('auth/is_staff')){ ?>
                 <li class="mobile-tab"><a href="#payrate" data-toggle="tab">Pay Rates</a></li>
                 <li class="mobile-tab"><a href="#settings" data-toggle="tab">Settings</a></li>
+                <li class="mobile-tab"><a href="#quicknotes" data-toggle="tab">Notes</a></li>
                 <? } ?>
 			</ul>
 
@@ -85,6 +86,7 @@
 				<? if(!modules::run('auth/is_staff')){ ?>
 				<div class="tab-pane" id="payrate"></div>
                 <div class="tab-pane" id="settings"></div>
+                <div class="tab-pane" id="quicknotes"></div>
                 <? } ?>
 
 			</div>
