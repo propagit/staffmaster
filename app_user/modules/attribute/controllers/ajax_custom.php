@@ -62,4 +62,19 @@ class Ajax_custom extends MX_Controller {
 			echo 'false';
 		}
 	}
+	
+	function sort_order(){
+		$input = $this->input->post();
+		#echo '<pre>'.print_r($input,true).'</pre>';
+		$sort_order = $input['sort_data'];
+		if($sort_order){
+			foreach($sort_order as $key => $val){
+				$field = json_decode($val);
+				$field_id = $field->field_id;
+				#echo $field_id . '<br>';
+				$this->custom_field_model->update_field($field_id, array('field_order' => $key));	
+			}
+		}
+		echo 'ok';
+	}
 }
