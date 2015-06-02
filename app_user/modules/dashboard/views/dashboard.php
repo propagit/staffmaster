@@ -31,7 +31,7 @@
             </div>
             
 
-        	<div class="inner-box add-top-margin">
+        	<div class="inner-box add-top-margin push">
                 <?=modules::run('user_notes/main_view');?>
             </div>
         </div>
