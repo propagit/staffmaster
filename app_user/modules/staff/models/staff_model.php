@@ -951,6 +951,15 @@ class Staff_model extends CI_Model {
 			return $this->db->insert_id();
 		}
 	}
+	
+	function get_staff_custom_field($user_id,$field_id)
+	{
+		$this->db->where('user_id', $user_id);
+		$this->db->where('field_id', $field_id);
+		$query = $this->db->get('staff_custom_fields');
+		return $query->first_row('array');	
+		
+	}
 
 	function delete_file_field($user_id, $field_id, $file) {
 		$this->db->where('user_id', $user_id);

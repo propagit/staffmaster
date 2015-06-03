@@ -1,14 +1,18 @@
 <?php
 	$label = json_decode($field['label']);
+	$files = array();
+	$date = $field['placeholder'];
+	if($field['staff_value']){
+		$field_value = json_decode($field['staff_value']);
+		$files = isset($field_value->files) ? $field_value->files : NULL;
+		$date = isset($field_value->date) ? date('d-m-Y',strtotime($field_value->date)) : $field['placeholder'];
+	}
 ?>
 
 <div class="form-group" id="field_fileDate_file_<?=$user_id;?>_<?=$field['field_id'];?>">
 	<label class="col-md-2 control-label"><?=$label->file_label;?></label>
 	<div class="col-md-6">
-		<? $field_value = json_decode($field['staff_value']);
-			$files = isset($field_value->files) ? $field_value->files : NULL;
-			#print_r($files);
-			#exit;
+		<?php
 		if (count($files) > 0) {
 			foreach($files as $file) { ?>
 				<?=modules::run('common/mime_to_icon', UPLOADS_PATH . '/staff/ ' . $user_id . '/' . $file);?>  &nbsp; <a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_id;?>/<?=$file;?>">Download</a>
@@ -34,7 +38,7 @@
     <label class="col-md-2 control-label"><?=$label->date_label;?></label>
    <div class="col-md-4">
         <div class="input-group date" id="file_date_<?=$field['field_id'];?>">
-            <input type="text" class="form-control" name="fields[<?=$field['field_id'];?>]" readonly placeholder="<?=$field['placeholder'];?>" />
+            <input type="text" class="form-control" name="fields[<?=$field['field_id'];?>]" readonly placeholder="<?=$date;?>" />
             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
@@ -61,7 +65,7 @@ var uploader_<?=$field['field_id'];?> = new plupload.Uploader({
 	runtimes : 'html5,flash,silverlight,html4',
 	browse_button : 'pickfiles_<?=$field['field_id'];?>', // you can pass in id...
 	container: document.getElementById('upload_container_<?=$field['field_id'];?>'), // ... or DOM Element itself
-	url : '<?=base_url();?>staff/ajax/upload_custom_files/<?=$user_id;?>/<?=$field['field_id'];?>',
+	url : '<?=base_url();?>staff/ajax/upload_custom_files/<?=$user_id;?>/<?=$field['field_id'];?>/1',
 	chunk_size: '400kb',
     max_retries: 5,
 	flash_swf_url : '<?=base_url();?>assets/js/plupload/Moxie.swf',

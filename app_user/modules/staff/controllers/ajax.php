@@ -841,22 +841,6 @@ class Ajax extends MX_Controller {
 		$data['user_id'] = $user_id;
 		$this->load->view('staff/list_photo', isset($data) ? $data : NULL);
 	}
-	
-	function test()
-	{
-		if($custom_field_info['type'] == 'fileDate'){
-			$old_value = json_decode($field['value']);
-			$old_value->files[] = $value;
-			$value = json_encode($old_value);
-		}
-		
-		# if this is a new fileDate field
-		if($custom_field_info['type'] == 'fileDate'){
-			$value = json_encode(array('files' => array($value),'date' => ''));
-		}
-					
-		$custom_field_info = modules::run('attribute/custom/get_custom_field',$field_id);
-	}
 
 	function update_custom_fields()
 	{
@@ -865,6 +849,12 @@ class Ajax extends MX_Controller {
 		#print_r($fields);exit;
 		if (count($fields) > 0) {
 			foreach($fields as $field_id => $value) {
+				# check field type
+				$field_info = modules::run('attribute/custom/get_custom_field',$field_id);
+				if($field_info['type'] == 'fileDate'){
+					$value = $this->_format_fileDate_custom_field($user_id,$field_id,$value,'date');
+				}
+				
 				if (is_array($value)) {
 					$value = json_encode($value);
 				}
@@ -1462,12 +1452,46 @@ class Ajax extends MX_Controller {
 		if (!$chunks || $chunk == $chunks - 1) {
 			// Strip the temp .part suffix off
 			rename("{$filePath}.part", $filePath);
-			# Add to database
-			$this->staff_model->update_custom_field($user_id, $field_id, $fileName, true);
+			
+			# this is a file field with date
+			if($has_date){
+				$attribute = $this->_format_fileDate_custom_field($user_id,$field_id,$fileName,'file');
+				$this->staff_model->update_custom_field($user_id, $field_id, $attribute);	
+			}else{
+				# Add to database
+				$this->staff_model->update_custom_field($user_id, $field_id, $fileName, true);
+			}
 		}
 
 		// Return Success JSON-RPC response
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+	}
+	
+	# $field_type[file, date]
+	function _format_fileDate_custom_field($user_id,$field_id,$value,$field_type)
+	{
+		$field = $this->staff_model->get_staff_custom_field($user_id,$field_id);
+		
+		# update	
+		if($field){
+			# if file
+			$old_value = json_decode($field['value']);
+			if($field_type == 'file'){
+				$old_value->files[] = $value;
+			}else{
+				# if date
+				$old_value->date = date('Y-m-d',strtotime($value));
+			}
+			return json_encode($old_value);
+		}else{
+			# add
+			if($field_type == 'file'){
+				$value = json_encode(array('files' => array($value),'date' => ''));	
+			}else{
+				$value = json_encode(array('files' => array(),'date' => date('Y-m-d',strtotime($value))));	
+			}
+			return $value;
+		}
 	}
 
 	function get_payrates() {
