@@ -841,11 +841,28 @@ class Ajax extends MX_Controller {
 		$data['user_id'] = $user_id;
 		$this->load->view('staff/list_photo', isset($data) ? $data : NULL);
 	}
+	
+	function test()
+	{
+		if($custom_field_info['type'] == 'fileDate'){
+			$old_value = json_decode($field['value']);
+			$old_value->files[] = $value;
+			$value = json_encode($old_value);
+		}
+		
+		# if this is a new fileDate field
+		if($custom_field_info['type'] == 'fileDate'){
+			$value = json_encode(array('files' => array($value),'date' => ''));
+		}
+					
+		$custom_field_info = modules::run('attribute/custom/get_custom_field',$field_id);
+	}
 
 	function update_custom_fields()
 	{
 		$user_id = $this->input->post('user_id');
 		$fields = $this->input->post('fields');
+		#print_r($fields);exit;
 		if (count($fields) > 0) {
 			foreach($fields as $field_id => $value) {
 				if (is_array($value)) {

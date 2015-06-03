@@ -930,33 +930,18 @@ class Staff_model extends CI_Model {
 		$query = $this->db->get('staff_custom_fields');
 		$field = $query->first_row('array');
 		
-		$custom_field_info = modules::run('attribute/custom/get_custom_field',$field_id);
-		
 		if ($field) { # Update
-			if ($accel) { # Combine new value to old values
-				# if this is a new fileDate field
-				if($custom_field_info['type'] == 'fileDate'){
-					$old_value = json_decode($field['value']);
-					$old_value->files[] = $value;
-					$value = json_encode($old_value);
-					
-				}else{
-					$old_value = json_decode($field['value']);
-					$old_value[] = $value;
-					$value = json_encode($old_value);
-				}
+			if ($accel) { # Combine new value to old values			
+				$old_value = json_decode($field['value']);
+				$old_value[] = $value;
+				$value = json_encode($old_value);
 			}
 			$this->db->where('user_id', $user_id);
 			$this->db->where('field_id', $field_id);
 			return $this->db->update('staff_custom_fields', array('value' => $value));
 		} else { # Add
 			if ($accel) {
-				# if this is a new fileDate field
-				if($custom_field_info['type'] == 'fileDate'){
-					$value = json_encode(array('files' => array($value),'date' => ''));
-				}else{
-					$value = json_encode(array($value));
-				}
+				$value = json_encode(array($value));
 			}
 			$this->db->insert('staff_custom_fields', array(
 				'user_id' => $user_id,

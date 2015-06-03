@@ -20,7 +20,7 @@
        <label class="col-md-2 control-label"><?=$label->date_label;?> From</label>
        <div class="col-md-4">
             <div class="input-group date" id="search_file_date_from_<?=$field['field_id'];?>">
-                <input type="text" class="form-control" name="search_file_date_from_<?=$field['field_id'];?>" readonly />
+                <input type="text" class="form-control" name="search_file_date_from_<?=$field['field_id'];?>" readonly placeholder="<?=$field['placeholder'];?> From" />
                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>
@@ -29,7 +29,7 @@
        <label class="col-md-2 control-label"><?=$label->date_label;?> To</label>
        <div class="col-md-4">
             <div class="input-group date" id="search_file_date_to_<?=$field['field_id'];?>">
-                <input type="text" class="form-control" name="search_file_date_to_<?=$field['field_id'];?>" readonly />
+                <input type="text" class="form-control" name="search_file_date_to_<?=$field['field_id'];?>" readonly placeholder="<?=$field['placeholder'];?> To"/>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>

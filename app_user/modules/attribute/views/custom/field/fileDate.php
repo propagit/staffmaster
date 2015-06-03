@@ -18,7 +18,7 @@
           <label class="control-label" onclick="edit_field(<?=$field['field_id'];?>)"><?=$label->date_label;?></label>
           <div class="form-group col-sm-6 remove-gutters" onclick="edit_field(<?=$field['field_id'];?>)">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Date">
+                <input type="text" class="form-control" placeholder="<?=$field['placeholder'];?>">
                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
               </div>
           </div>

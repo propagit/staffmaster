@@ -6,7 +6,7 @@
 	<label class="col-md-2 control-label"><?=$label->file_label;?></label>
 	<div class="col-md-6">
 		<? $field_value = json_decode($field['staff_value']);
-			$files = $field_value->files;
+			$files = isset($field_value->files) ? $field_value->files : NULL;
 			#print_r($files);
 			#exit;
 		if (count($files) > 0) {
@@ -34,7 +34,7 @@
     <label class="col-md-2 control-label"><?=$label->date_label;?></label>
    <div class="col-md-4">
         <div class="input-group date" id="file_date_<?=$field['field_id'];?>">
-            <input type="text" class="form-control" name="fields[<?=$field['field_id'];?>]" readonly />
+            <input type="text" class="form-control" name="fields[<?=$field['field_id'];?>]" readonly placeholder="<?=$field['placeholder'];?>" />
             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
