@@ -1352,7 +1352,7 @@ class Ajax extends MX_Controller {
 		return $file_name;
 	}
 
-	function upload_custom_files($user_id, $field_id)
+	function upload_custom_files($user_id, $field_id, $has_date = false)
 	{
 		// Make sure file is not cached (as it happens for example on iOS devices)
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
