@@ -28,8 +28,15 @@
 			    	<div id="build">
 			        	
 			        </div><!-- build -->
-			        
+			       
 			        <div id="popover-field" class="popover fade right in"></div>
+                    <div class="col-md-9 col-sm-12 remove-gutters add-top-margin">
+                    	<p>Drag and drop to change order and then click Update Order button to save your changes.</p>
+                    </div>
+                    <div class="col-md-3 col-sm-12 remove-gutters add-top-margin">
+                    	<button class="btn btn-core pull" type="button" onClick="form_builder.sort_elements();">Update Order</button>
+                    </div>
+                    <div class="alert alert-success hide add-top-margin col-xs-12 push" id="msg-update-custom-fields-order"><i class="fa fa-check"></i> &nbsp; Your changes has been applied successfully!</div>
 				
 				</div>
 				<div class="col-md-6 custom-attributes">
@@ -310,7 +317,20 @@ var form_builder = {
 			sort_order_array[count] = JSON.stringify(sort_order);
 			count++;
 		});
-		$('#sort-order').val(sort_order_array);
+		//$('#sort-order').val(sort_order_array);
+		console.log(sort_order_array);
+		
+		$.ajax({
+			 type: "POST",
+			 url: "<?=base_url();?>attribute/ajax_custom/sort_order",
+			 data: {sort_data: sort_order_array},
+			 success: function(html) {
+				  $('#msg-update-custom-fields-order').removeClass('hide');
+				  setTimeout(function(){
+					  $('#msg-update-custom-fields-order').addClass('hide');
+				  }, 2000);			 
+			 }
+		 })
 		
 	}
 

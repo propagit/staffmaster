@@ -131,6 +131,11 @@ a.default {
 	background: #6548b5;
 	color: #fff;
 }
+.btn-xero,
+.btn-xero:hover {
+	background: #00b9e7;
+	color: #fff;
+}
 .btn-delete-field {
 	float: right;
 	height: 30px;
