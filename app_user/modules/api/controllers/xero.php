@@ -168,7 +168,7 @@ class Xero extends MX_Controller {
                         </HomeAddress>
                     </Employee>
                 </Employees>";
-				
+			
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
 		
         if ($this->XeroOAuth->response['code'] == 200) {
@@ -182,7 +182,14 @@ class Xero extends MX_Controller {
 
             #return $result['Employee'];
         }
-        return false;
+		
+		# Api exception
+		if ($this->XeroOAuth->response['code'] == 400){
+			# When this happens an Api Excetion has happened, as the code to add employee has been pre validated for all required fields.
+			# this exception can be because of bad data format such as year being over the current year such as 2092 etc			
+			echo 'api-exception';
+			return;
+		}
     }
 
     function update_employee($external_id)

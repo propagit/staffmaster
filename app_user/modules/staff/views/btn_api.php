@@ -61,7 +61,7 @@ $('#auto-sync').click(function(){
 	</script>
 
 	<? } else if (strtolower($platform) == 'xero') { ?>
-	<button class="pull-right btn btn-lg btn-core" id="btn-xero" data-loading-text="Adding to Xero...">
+	<button class="pull-right btn btn-lg btn-xero" id="btn-xero" data-loading-text="Adding to Xero...">
 		Add to Xero &nbsp;
 		<i class="fa fa-arrow-right"></i>
 	</button>
@@ -74,7 +74,11 @@ $('#auto-sync').click(function(){
 			type: "POST",
 			url: "<?=base_url();?>api/xero/add_employee/<?=$user_id;?>",
 			success: function(html) {
-				location.reload();
+				if(html == 'api-exception'){
+					$('#msg-xero-add-error').removeClass('hide');
+				}else{
+					location.reload();
+				}
 			}
 		})
 	})

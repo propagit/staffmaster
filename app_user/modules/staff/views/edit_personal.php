@@ -158,6 +158,19 @@
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">
 			<div class="alert alert-success hide" id="msg-update-personal"><i class="fa fa-check"></i> &nbsp; Staff personal details has been updated successfully!</div>
+            <div class="alert alert-danger hide" id="msg-xero-add-error">
+            Xero returned a bad request error! <br>
+            This is most likely caused by missing or incorrect data required by Xero. <br><br>
+            Please review the required fields for Xero: <br><br>
+            First Name<br>
+            Last Name<br>
+            Date of Birth<br>
+            Address<br>
+            City<br>
+            State<br>
+            Postcode<br>
+            Country<br><br>
+            </div>
 			<button type="button" class="btn btn-core" id="btn_update_personal" data-loading-text="Updating staff..."><i class="fa fa-save"></i> Update Personal Details</button>
 		</div>
 	</div>
