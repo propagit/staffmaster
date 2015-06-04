@@ -274,16 +274,17 @@ class Induction extends MX_Controller {
                 }
                 else if($current_step['type'] == 'location') {
                     $parent_id = $this->input->post('location');
-                    $locations = array();
+                    /*$locations = array();
                     $location = array();
                     $all = modules::run('attribute/location/get_locations', $parent_id);
                     foreach($all as $a) {
                         $location[] = $a['location_id'];
                     }
                     $locations[$parent_id] = $location;
-                    modules::run('staff/update_staff', $this->user['user_id'], array(
+					modules::run('staff/update_staff', $this->user['user_id'], array(
                         'locations' => json_encode($locations)
-                    ));
+                    ));*/
+					modules::run('staff/add_locations', $this->user['user_id'],$parent_id);
                 }
                 else if ($current_step['type'] == 'custom') {
                     $input = $this->input->post();
@@ -324,7 +325,9 @@ class Induction extends MX_Controller {
             }
 
         }
-
+		
+		$post = $this->input->post();
+		$data['posted_data'] = $post ? $post : NULL; 
         $data['steps'] = $steps;
         $data['step_number'] = $step_number;
         $this->load->view('publish_view', isset($data) ? $data : NULL);

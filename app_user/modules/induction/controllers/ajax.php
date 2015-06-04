@@ -225,14 +225,19 @@ class Ajax extends MX_Controller {
         }
 
         $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
-        $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size'] = '2000';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        $config['max_size'] = '2048';
         $config['max_width'] = '1024';
         $config['max_height'] = '768';
         $this->load->library('upload', $config);
         if ( ! $this->upload->do_upload('image'))
         {
-            echo json_encode($this->upload->display_errors());
+			$err_postfix = '<br>Permitted file types [gif, jpg, jpeg, png] 
+							<br>Max Size [2 MB] 
+							<br>Dimension [W 1024 px - H 768 px]';
+			$staff_pic_upload_error = $this->upload->display_errors();
+			$this->session->set_flashdata('staff_pic_upload_error',$staff_pic_upload_error . $err_postfix);
+            echo json_encode($staff_pic_upload_error);
         }
         else
         {
@@ -262,17 +267,22 @@ class Ajax extends MX_Controller {
 
     function upload_custom_file($user_id, $field_id) {
         $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
-        $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi|jpg|gif|png';
-        $config['max_size'] = '10000';
+        $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi|jpg|gif|png|jpeg';
+        $config['max_size'] = '10240';
         $this->load->library('upload', $config);
         if ( ! $this->upload->do_upload('file-' . $field_id))
         {
-            echo json_encode($this->upload->display_errors());
+            #echo json_encode($this->upload->display_errors());
+			$err_postfix = '<br>Permitted file types [pdf, csv, doc, ppt, docx, zip, mp3, mov, xl, xls, avi, jpg, jpeg, gif, png] 
+						    <br>Max Size [10 MB]';
+			$custom_file_upload_error = $this->upload->display_errors();
+			$this->session->set_flashdata('custom_file_upload_error_' . $field_id,$custom_file_upload_error . $err_postfix);
+            echo json_encode($custom_file_upload_error);
         }
         else
         {
             $data = $this->upload->data();
-            $this->staff_model->update_custom_field($user_id, $field_id, $data['file_name']);
+            $this->staff_model->update_custom_field($user_id, $field_id, $data['file_name'],true);
 
             echo json_encode($data);
         }
