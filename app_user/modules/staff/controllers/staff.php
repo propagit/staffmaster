@@ -187,7 +187,8 @@ class Staff extends MX_Controller {
 			'f_help_variation',
 			's_external_id',
 			's_fund_name',
-			's_employee_id'
+			's_employee_id',
+			's_choice'
 		);
 		$user_data = array();
 		$staff_data = array();
@@ -612,6 +613,7 @@ class Staff extends MX_Controller {
 		$custom_attrs = array();
 		$normal_prefix = 'custom_search_';
 		$file_prefix = 'search_file_';
+		$file_date_prefix = 'search_file_date_from_';
 		if($search_params){
 			foreach($search_params as $key => $val){
 				if($val){
@@ -622,6 +624,10 @@ class Staff extends MX_Controller {
 					if(substr($key,0,strlen($file_prefix)) == $file_prefix){
 						$new_key = trim($key, $file_prefix);
 						$custom_attrs['file_uploads'][$new_key] = $val;
+					}
+					if(substr($key,0,strlen($file_date_prefix)) == $file_date_prefix){
+						$new_key = trim($key, $file_date_prefix);
+						$custom_attrs['fileDate_elements'][$new_key] = $val;
 					}
 				}
 			}
@@ -943,6 +949,48 @@ class Staff extends MX_Controller {
 	function get_staff_with_age_group($user_id)
 	{
 		return $this->staff_model->get_staff_with_age_group($user_id);
+	}
+	
+	function add_locations($user_id,$parent_id) {
+		
+		$data = array();
+		$location = array();
+		$all = modules::run('attribute/location/get_locations', $parent_id);
+		foreach($all as $a) {
+			$location[] = $a['location_id'];
+		}
+		$data[$parent_id] = $location;
+
+
+		# Now merging with current locations data
+		$staff = $this->staff_model->get_staff($user_id);
+		$locations = array();
+		$locations = json_decode($staff['locations']);
+
+		if (count($locations) > 0) foreach($locations as $o_parent_id => $o_childrens)
+		{
+			if ($o_parent_id != $parent_id) # Adding old parent locations
+			{
+				$data[$o_parent_id] = $o_childrens;
+			}
+			else
+			{
+				if (!$location_id)
+				{
+					$data[$parent_id] = $location;
+				}
+				else if (!in_array($location_id, $o_childrens))
+				{
+					$data[$parent_id] = array_merge($o_childrens, $location);
+				}
+				else
+				{
+					$data[$parent_id] = $o_childrens;
+				}
+			}
+		}
+
+		$this->staff_model->update_staff($staff['user_id'], array('locations' => json_encode($data)));
 	}
 
 

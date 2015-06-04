@@ -51,7 +51,7 @@
             echo '<div class="row"><div class="col-md-12"><div class="sec">';
             switch($content['type']) {
                 case 'video':
-                case 'text': echo $content['value'];
+                case 'text': echo $content['value']; 
                     break;
                 case 'image': echo '<img src="' . base_url() . UPLOADS_URL . '/tmp/' . $content['value'] . '">';
                     break;
@@ -59,7 +59,12 @@
                     echo '<a href="' . base_url() . UPLOADS_URL . '/tmp/' . $content['value'] . '">' . $content['value'] . '</a>';
                     break;
                 case 'compliance': echo $content['value'];
-                    $checked = (in_array($content['id'], $user_contents)) ? ' checked' : '';
+                    $checked = (in_array($content['id'], $user_contents)) ? 'checked' : '';
+					if(!$checked){
+						if(isset($posted_data['contents'])){
+							$checked = (in_array($content['id'], $posted_data['contents'])) ? 'checked' : '';	
+						}
+					}
                     echo '<div class="checkbox"><label><input type="checkbox" name="contents[' . $content['id'] . ']" value="' . $content['id'] . '" ' . $checked . '> Yes</label></div>';
                     break;
             }
@@ -100,9 +105,9 @@
                         <? if (isset($field->type)) { ?>
 
                             <? if($field->type == 'text') { ?>
-                            <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=$field->value;?>" />
+                            <input type="text" class="form-control" name="<?=$field->key;?>" value="<?=$field->value ? $field->value : set_value($field->key);?>" />
                             <? } else if ($field->type == 'textarea') { ?>
-                            <textarea class="form-control" name="<?=$field->key;?>"><?=$field->value;?></textarea>
+                            <textarea class="form-control" name="<?=$field->key;?>"><?=$field->value ? $field->value : set_value($field->key);?></textarea>
                             <? } else if ($field->type == 'file') { ?>
                             <? if ($field->value) { ?>
                                 <p><a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_induction['user_id'];?>/<?=$field->value;?>"><?=$field->value;?></a>
@@ -117,12 +122,18 @@
                                   url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>/<?=$field->key;?>"
                                   on-success="onSuccess(response)"
                                 >Upload</div>
+                                 <?php if($this->session->flashdata('custom_file_upload_error_' . $field->key)){ ?>
+                                	<div class="alert alert-danger add-top-margin"><?=$this->session->flashdata('custom_file_upload_error_' . $field->key);?></div>
+                                 <?php } ?>
                             <? } else if ($field->type == 'radio') { ?>
                             <?php
                                 $attrs = json_decode($field->attributes);
                                 if($attrs){
                                     foreach($attrs as $attr){
                                         $checked = ($field->value == $attr) ? 'checked' : '';
+										if(!$checked){
+											$checked = (set_value($field->key) == $attr) ? 'checked' : '';	
+										}
                                         ?>
                                     <label class="<?=($field->inline == 'true' ? 'radio-inline' : 'radio' );?>">
                                         <input type="radio" name="<?=$field->key;?>" value="<?=$attr;?>" <?=$checked;?>/> <?=$attr;?>
@@ -140,6 +151,9 @@
                                 if($attrs){
                                     foreach($attrs as $attr){
                                         $checked = (in_array($attr, $values)) ? 'checked' : '';
+										if(!$checked){
+											$checked = (set_value($field->key) == $attr) ? 'checked' : '';	
+										}
                                         ?>
                                     <label class="<?=($field->inline == 'true' ? 'checkbox-inline' : 'checkbox' );?>">
                                         <input type="checkbox" name="<?=$field->key;?>[]" value="<?=$attr;?>" <?=$checked;?>/> <?=$attr;?>
@@ -155,6 +169,9 @@
                                 if($attrs) {
                                     foreach($attrs as $attr) {
                                         $selected = ($field->value == $attr) ? ' selected' : '';
+										if(!$selected){
+											$selected = (set_value($field->key) == $attr) ? 'selected' : '';	
+										}
                                         ?>
                                 <option value="<?=$attr;?>" <?=$selected;?>><?=$attr;?></option>
                                 <? }
@@ -176,20 +193,20 @@
             <div class="form-group induction-form-group">
                 <label for="f_acc_name" class="col-md-4 control-label">Account Name</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="f_acc_name" name="f_acc_name" value="<?=$staff['f_acc_name'];?>" />
+                    <input type="text" class="form-control" id="f_acc_name" name="f_acc_name" value="<?=$staff['f_acc_name'] ? $staff['f_acc_name'] : set_value('f_acc_name');?>" />
                 </div>
             </div>
             <div class="form-group">
                 <label for="f_bsb" class="col-md-4 control-label">BSB</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'];?>" onkeypress="return help.check_numeric(this, event,'n');" maxlength="6" />
+                    <input type="text" class="form-control" id="f_bsb" name="f_bsb" value="<?=$staff['f_bsb'] ? $staff['f_bsb'] : set_value('f_bsb');?>" onkeypress="return help.check_numeric(this, event,'n');" maxlength="6" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="f_acc_number" class="col-md-4 control-label">Account Number</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'];?>" onkeypress="return help.check_numeric(this, event,'n');" maxlength="14" />
+                    <input type="text" class="form-control" id="f_acc_number" name="f_acc_number" value="<?=$staff['f_acc_number'] ? $staff['f_acc_number'] : set_value('f_acc_number');?>" onkeypress="return help.check_numeric(this, event,'n');" maxlength="14" />
                 </div>
             </div>
 
@@ -212,7 +229,7 @@
                 <div class="form-group">
                     <label for="f_tfn" class="col-md-4 control-label">TFN Number</label>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="f_tfn" name="f_tfn" value="<?=$staff['f_tfn'];?>" />
+                        <input type="text" class="form-control" id="f_tfn" name="f_tfn" value="<?=$staff['f_tfn'] ? $staff['f_tfn'] : set_value('f_tfn');?>" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -328,9 +345,9 @@
                 <label class="col-md-4 control-label">Super Fund</label>
                 <div class="col-md-4">
                     <? if ($platform == 'myob') { ?>
-                    <?=modules::run('common/field_select_myob_super_fund', 's_external_id', $staff['s_external_id']);?>
+                    <?=modules::run('common/field_select_myob_super_fund', 's_external_id', $staff['s_external_id'] ? $staff['s_external_id'] : set_value('s_external_id'));?>
                     <? } else { ?>
-                    <?=modules::run('common/field_select_supers', 's_external_id', $staff['s_external_id']);?>
+                    <?=modules::run('common/field_select_supers', 's_external_id', $staff['s_external_id'] ? $staff['s_external_id'] : set_value('s_external_id'));?>
                     <? } ?>
                 </div>
             </div>
@@ -342,7 +359,8 @@
             <div class="form-group">
                 <label for="s_employee_id" class="col-md-4 control-label">Staff Membership Number</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'];?>" />
+                    <input type="text" class="form-control" id="s_employee_id" name="s_employee_id" value="<?=$staff['s_employee_id'] ? $staff['s_employee_id'] : set_value('s_employee_id');?>" />
+                    <input type="hidden" id="s_choice" name="s_choice" value="own">
                 </div>
             </div>
         <? } ?>
@@ -366,6 +384,9 @@
               url="<?=base_url();?>induction/ajax/upload_staff_picture/<?=$user_induction['user_id'];?>"
               on-success="onSuccess(response)"
             >Upload</div>
+            <?php if($this->session->flashdata('staff_pic_upload_error')){ ?>
+            <div class="alert alert-danger add-top-margin"><?=$this->session->flashdata('staff_pic_upload_error');?></div>
+            <?php } ?>
             </div></div>
         <? } ?>
 
