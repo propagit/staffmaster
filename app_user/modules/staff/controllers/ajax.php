@@ -95,6 +95,10 @@ class Ajax extends MX_Controller {
 
 
 		$user_id = $this->user_model->insert_user($user_data);
+		
+		if($user_id){
+			modules::run('staff/create_staff_dir',$user_id);
+		}
 
 		if ($input['group_id']) {
 			$this->staff_model->update_staff_group($user_id, $input['group_id']);
@@ -121,7 +125,7 @@ class Ajax extends MX_Controller {
 		modules::run('staff/send_welcome_email', $user_id, $input['email_address'], $input['password']);
 		echo json_encode(array('ok' => true, 'user_id' => $user_id));
 	}
-
+	
 	/**
 	*	@name: update_staff
 	*	@desc: abstract function to update staff profile

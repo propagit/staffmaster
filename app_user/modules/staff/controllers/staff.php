@@ -987,6 +987,28 @@ class Staff extends MX_Controller {
 
 		$this->staff_model->update_staff($staff['user_id'], array('locations' => json_encode($data)));
 	}
+	
+	function create_staff_dir($user_id)
+	{
+		$targetDir = UPLOADS_PATH . '/staff/' . $user_id;
+		if (!file_exists($targetDir)) {
+            @mkdir($targetDir);
+			chmod($targetDir,0777);
+			$fp = fopen($targetDir.'/index.html', 'w');
+			fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+			fclose($fp);
+        }
+		$dir_thumb = $targetDir . '/thumb';
+        if(!is_dir($dir_thumb))
+        {
+          mkdir($dir_thumb);
+          chmod($dir_thumb,0777);
+          $fp = fopen($dir_thumb.'/index.html', 'w');
+          fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
+          fclose($fp);
+        }	
+	}
+
 
 
 }

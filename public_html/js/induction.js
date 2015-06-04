@@ -262,6 +262,10 @@ angular.module('sb.induction', [])
         // $scope.contents[index].value = response.data.file_name;
         // $scope.updateContent(index);
     };
+	
+	$scope.onUpload = function(){
+		$('#waitingModal').modal('show');
+	};
 
     $scope.deleteFile = function(user_id, field_id) {
         $http.post('/induction/ajax/delete_file/' + user_id + '/' + field_id)

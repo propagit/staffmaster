@@ -212,17 +212,9 @@ class Ajax extends MX_Controller {
         $targetDir = UPLOADS_PATH . '/staff/' . $user_id;
         // Create target dir
         if (!file_exists($targetDir)) {
-            @mkdir($targetDir);
+            modules::run('staff/create_staff_dir',$user_id);
         }
         $dir_thumb = $targetDir . '/thumb';
-        if(!is_dir($dir_thumb))
-        {
-          mkdir($dir_thumb);
-          chmod($dir_thumb,0777);
-          $fp = fopen($dir_thumb.'/index.html', 'w');
-          fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
-          fclose($fp);
-        }
 
         $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
         $config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -266,15 +258,18 @@ class Ajax extends MX_Controller {
     }
 
     function upload_custom_file($user_id, $field_id) {
+		if (!file_exists($targetDir)) {
+            modules::run('staff/create_staff_dir',$user_id);
+        }
         $config['upload_path'] = UPLOADS_PATH . '/staff/' . $user_id;
         $config['allowed_types'] = 'pdf|csv|doc|ppt|docx|zip|mp3|mov|xl|xls|avi|jpg|gif|png|jpeg';
-        $config['max_size'] = '10240';
+        $config['max_size'] = '2048';
         $this->load->library('upload', $config);
         if ( ! $this->upload->do_upload('file-' . $field_id))
         {
             #echo json_encode($this->upload->display_errors());
 			$err_postfix = '<br>Permitted file types [pdf, csv, doc, ppt, docx, zip, mp3, mov, xl, xls, avi, jpg, jpeg, gif, png] 
-						    <br>Max Size [10 MB]';
+						    <br>Max Size [2 MB]';
 			$custom_file_upload_error = $this->upload->display_errors();
 			$this->session->set_flashdata('custom_file_upload_error_' . $field_id,$custom_file_upload_error . $err_postfix);
             echo json_encode($custom_file_upload_error);

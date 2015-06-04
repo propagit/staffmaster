@@ -120,6 +120,7 @@
                                   upload-button
                                   param="file-<?=$field->key;?>"
                                   url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>/<?=$field->key;?>"
+                                  on-upload="onUpload()" 
                                   on-success="onSuccess(response)"
                                 >Upload</div>
                                  <?php if($this->session->flashdata('custom_file_upload_error_' . $field->key)){ ?>
@@ -382,6 +383,7 @@
               upload-button
               param="image"
               url="<?=base_url();?>induction/ajax/upload_staff_picture/<?=$user_induction['user_id'];?>"
+              on-upload="onUpload()" 
               on-success="onSuccess(response)"
             >Upload</div>
             <?php if($this->session->flashdata('staff_pic_upload_error')){ ?>
@@ -467,6 +469,16 @@
 
 <div class="clearfix"></div>
 <br />
+</div>
+
+<div class="modal fade" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="order-message">
+            <img src="<?=base_url();?>assets/img/loading3.gif" />
+            <h2>Please wait!</h2>
+            <p>Please wait a moment while we are uploading your file ...</p>
+        </div>
+    </div>
 </div>
 
 <script>
