@@ -6,11 +6,11 @@
         <label class="col-md-2 control-label"><?=$label->file_label;?></label>
        <div class="col-md-10">
             <label class="radio custom-inline">
-                <input type="radio" name="search_file_<?=$field['field_id'];?>" value="yes" >
+                <input type="radio" name="search_dateFile_file_<?=$field['field_id'];?>" value="yes" >
                 Yes
             </label>
             <label class="radio custom-inline">
-                <input type="radio" name="search_file_<?=$field['field_id'];?>" value="no" >
+                <input type="radio" name="search_dateFile_file_<?=$field['field_id'];?>" value="no" >
                 No
             </label>
         </div>
@@ -20,7 +20,7 @@
        <label class="col-md-2 control-label"><?=$label->date_label;?> From</label>
        <div class="col-md-4">
             <div class="input-group date" id="search_file_date_from_<?=$field['field_id'];?>">
-                <input type="text" class="form-control" name="search_file_date_from_<?=$field['field_id'];?>" readonly placeholder="<?=$field['placeholder'];?> From" />
+                <input type="text" class="form-control" name="search_dateFile_date_from_<?=$field['field_id'];?>" readonly placeholder="<?=$field['placeholder'];?> From" />
                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>
@@ -29,7 +29,7 @@
        <label class="col-md-2 control-label"><?=$label->date_label;?> To</label>
        <div class="col-md-4">
             <div class="input-group date" id="search_file_date_to_<?=$field['field_id'];?>">
-                <input type="text" class="form-control" name="search_file_date_to_<?=$field['field_id'];?>" readonly placeholder="<?=$field['placeholder'];?> To"/>
+                <input type="text" class="form-control" name="search_dateFile_date_to_<?=$field['field_id'];?>" readonly placeholder="<?=$field['placeholder'];?> To"/>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>
