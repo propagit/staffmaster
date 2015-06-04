@@ -856,13 +856,15 @@ class Ajax extends MX_Controller {
 				# check field type
 				$field_info = modules::run('attribute/custom/get_custom_field',$field_id);
 				if($field_info['type'] == 'fileDate'){
-					$value = $this->_format_fileDate_custom_field($user_id,$field_id,$value,'date');
+					# as the file is uploded by ajax from different function - this is pretty much for the date only
+					$this->staff_model->update_custom_field_date($user_id, $field_id, $value);
 				}
 				
 				if (is_array($value)) {
 					$value = json_encode($value);
+					$this->staff_model->update_custom_field($user_id, $field_id, $value);
 				}
-				$this->staff_model->update_custom_field($user_id, $field_id, $value);
+				
 			}
 		}
 
@@ -1346,7 +1348,7 @@ class Ajax extends MX_Controller {
 		return $file_name;
 	}
 
-	function upload_custom_files($user_id, $field_id, $has_date = false)
+	function upload_custom_files($user_id, $field_id)
 	{
 		// Make sure file is not cached (as it happens for example on iOS devices)
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -1456,15 +1458,10 @@ class Ajax extends MX_Controller {
 		if (!$chunks || $chunk == $chunks - 1) {
 			// Strip the temp .part suffix off
 			rename("{$filePath}.part", $filePath);
-			
-			# this is a file field with date
-			if($has_date){
-				$attribute = $this->_format_fileDate_custom_field($user_id,$field_id,$fileName,'file');
-				$this->staff_model->update_custom_field($user_id, $field_id, $attribute);	
-			}else{
-				# Add to database
-				$this->staff_model->update_custom_field($user_id, $field_id, $fileName, true);
-			}
+	
+			# Add to database
+			$this->staff_model->update_custom_field($user_id, $field_id, $fileName, true);
+	
 		}
 
 		// Return Success JSON-RPC response
@@ -1472,6 +1469,7 @@ class Ajax extends MX_Controller {
 	}
 	
 	# $field_type[file, date]
+	# depreciated - not used anymore
 	function _format_fileDate_custom_field($user_id,$field_id,$value,$field_type)
 	{
 		$field = $this->staff_model->get_staff_custom_field($user_id,$field_id);

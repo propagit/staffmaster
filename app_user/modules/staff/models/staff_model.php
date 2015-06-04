@@ -453,6 +453,34 @@ class Staff_model extends CI_Model {
 					}
 				}
 			}
+			
+			if(isset($custom_attrs['fileDate_file']) && $custom_attrs['fileDate_file'] != ''){
+				foreach($custom_attrs['fileDate_file'] as $key => $val){
+					$match = ($val == 'yes' ? '!=' : '=');
+					if($val == 'yes'){
+						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
+					}
+				}
+			}
+			
+			/*if(isset($custom_attrs['fileDate_date_from']) && $custom_attrs['fileDate_date_from']){
+				#print_r($custom_attrs['fileDate_date_from']);
+				$sql .= " AND s.user_id IN 
+							(SELECT user_id from staff_custom_fields WHERE";
+				foreach($custom_attrs['fileDate_date_from'] as $key => $val){
+					if($val){
+						$sql .= "  (field_id = '".$key."' AND field_date != '')";
+						
+						$sql .= " AND u.modified_on >= '" . date('Y-m-d', strtotime($params['date_from'])) . "'";
+					}
+				}
+				$sql .= ")";
+				
+			}
+			
+			if(isset($custom_attrs['fileDate_date_to']) && $custom_attrs['fileDate_date_to']){
+				print_r($custom_attrs['fileDate_date_to']);
+			}*/
 		}
 
 
@@ -913,7 +941,7 @@ class Staff_model extends CI_Model {
 	}
 
 	function get_custom_fields($user_id) {
-		$sql = "SELECT c.*, s.value as `staff_value`
+		$sql = "SELECT c.*, s.value as `staff_value`, s.field_date as field_date 
 				FROM custom_fields c
 					LEFT JOIN staff_custom_fields s ON (s.field_id = c.field_id AND s.user_id = $user_id)";
 		if (modules::run('auth/is_staff')) {
@@ -947,6 +975,23 @@ class Staff_model extends CI_Model {
 				'user_id' => $user_id,
 				'field_id' => $field_id,
 				'value' => $value
+			));
+			return $this->db->insert_id();
+		}
+	}
+	
+	function update_custom_field_date($user_id, $field_id, $value)
+	{
+		$field = $this->get_custom_field($user_id,$field_id);
+		if ($field) { # Update
+			$this->db->where('user_id', $user_id);
+			$this->db->where('field_id', $field_id);
+			return $this->db->update('staff_custom_fields', array('field_date' => date('Y-m-d',strtotime($value))));
+		} else { # Add
+			$this->db->insert('staff_custom_fields', array(
+				'user_id' => $user_id,
+				'field_id' => $field_id,
+				'field_date' => date('Y-m-d',strtotime($value))
 			));
 			return $this->db->insert_id();
 		}

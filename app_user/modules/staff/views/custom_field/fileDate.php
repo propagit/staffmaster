@@ -3,10 +3,9 @@
 	$files = array();
 	$date = $field['placeholder'];
 	if($field['staff_value']){
-		$field_value = json_decode($field['staff_value']);
-		$files = isset($field_value->files) ? $field_value->files : NULL;
-		$date = isset($field_value->date) ? date('d-m-Y',strtotime($field_value->date)) : $field['placeholder'];
+		$files = json_decode($field['staff_value']);
 	}
+	$date = $field['field_date'] != '0000-00-00' ? date('d-m-Y',strtotime($field['field_date'])) : $field['placeholder'];	
 ?>
 
 <div class="form-group" id="field_fileDate_file_<?=$user_id;?>_<?=$field['field_id'];?>">
