@@ -1927,7 +1927,9 @@ label.radio {
 	padding-bottom: 18px;
 }
 /* popover */
-
+.note{
+	font-size:12px; margin-left:20px;	
+}
 
 @media(max-width:1500px){
 	.messages .message-img{

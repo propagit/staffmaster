@@ -263,8 +263,14 @@ angular.module('sb.induction', [])
         // $scope.updateContent(index);
     };
 	
-	$scope.onUpload = function(){
+	$scope.onUpload = function(files){
 		$('#waitingModal').modal('show');
+		console.log(files);
+		/*if(files[0]['size'] > (1024 * 1024 * 2)){
+			console.log('greater');
+		}else{
+			console.log('smaller');	
+		}*/
 	};
 
     $scope.deleteFile = function(user_id, field_id) {
