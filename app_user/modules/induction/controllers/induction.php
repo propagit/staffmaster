@@ -80,7 +80,7 @@ class Induction extends MX_Controller {
             $data['contents'] = $contents;
 
             if ($current_step['fields']) {
-                $fields = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type']));
+                $fields = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type'], true));
                 $data['fields'] = $fields;
 					
             }

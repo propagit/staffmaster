@@ -5,7 +5,7 @@
 	if($field['staff_value']){
 		$files = json_decode($field['staff_value']);
 	}
-	$date = $field['field_date'] != '0000-00-00' ? date('d-m-Y',strtotime($field['field_date'])) : $field['placeholder'];	
+	$date = $field['field_date'] ? date('d-m-Y',strtotime($field['field_date'])) : $field['placeholder'];	
 ?>
 
 <div class="form-group" id="field_fileDate_file_<?=$user_id;?>_<?=$field['field_id'];?>">

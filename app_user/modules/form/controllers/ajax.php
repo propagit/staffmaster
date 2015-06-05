@@ -95,6 +95,10 @@ class Ajax extends MX_Controller {
 		}
 		$user_id = $this->user_model->insert_user($user_data);
 		
+		if($user_id){
+			modules::run('staff/create_staff_dir',$user_id);
+		}
+		
 		$staff_data = array(
 			'user_id' => $user_id,
 			'gender' => '',
@@ -197,10 +201,11 @@ class Ajax extends MX_Controller {
 						$destination = $dir . '/' . $picture;
 						rename($source, $destination);
 						
-						# Create thumb
-						$thumb_size = 216; # Thumbnail size			
-						#copy($destination, $dir_thumb . '/' . $picture); # Copy to thumb directory
-						scale_image($destination, $dir_thumb . '/' . $picture, $thumb_size, $thumb_size);
+	
+						$target =  $dir . '/thumb/' . $picture;
+						copy($destination, $target);
+						$this->load->helper('image');
+						scale_image($target, $target, IMG_THUMB_SIZE, IMG_THUMB_SIZE);
 						
 						# Add to database 
 						$this->staff_model->add_picture(array(
@@ -221,12 +226,27 @@ class Ajax extends MX_Controller {
 		foreach($custom_fields as $custom_field) {
 			foreach($fields as $field) {
 				if ($field['name'] == $custom_field['field_id']) {
-					$array = false;
-					if ($custom_field['type'] == 'file') {
-						$array = true;
-						rename(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);
+					if($custom_field['type'] != 'fileDate'){
+						$array = false;
+						if ($custom_field['type'] == 'file') {
+							$array = true;
+							rename(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);
+						}
+						$this->staff_model->update_custom_field($user_id, $field['name'], $field['value'], $array);
+					}else{
+						# check if an extension exists in the string
+						$field_value = explode('.',$field['value']);
+						if(isset($field_value[1])){
+							# this is a file
+							rename(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);	
+							$this->staff_model->update_custom_field($user_id, $field['name'], $field['value'], true);
+						}else{
+							# it is a date	
+							$this->staff_model->update_custom_field_date($user_id, $field['name'], $field['value']);
+						}
+						
+						
 					}
-					$this->staff_model->update_custom_field($user_id, $field['name'], $field['value'], $array);
 				}
 			}
 		}

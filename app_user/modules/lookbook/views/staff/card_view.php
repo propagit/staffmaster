@@ -70,6 +70,7 @@
 			if($custom_fields){
 				foreach($custom_fields as $field){ 
 					$key = array_search($field, array_column($staff_custom, 'field_id'));
+					#if(!$staff_custom[$key]['admin_only']){
 					#if($key){
 						switch($staff_custom[$key]['type']){
 							case 'checkbox':
@@ -94,6 +95,30 @@
 												  <tr>';
 							break;
 							
+							case 'fileDate':
+								$file_list = '';
+								$labels = json_decode($staff_custom[$key]['label']);
+								$files = json_decode($staff_custom[$key]['staff_value']);
+								$date = '';
+								if($staff_custom[$key]['field_date']){
+									$date = date('d M, Y',strtotime($staff_custom[$key]['field_date'])); 	
+								}
+								if(count($files)>0){
+									foreach($files as $file){
+										$file_list .= modules::run('common/mime_to_icon', UPLOADS_PATH . '/staff/ ' . $staff['user_id'] . '/' . $file) . ' ' . '<a target="_blank" href="' . base_url().UPLOADS_URL . '/staff/' . $staff['user_id'] . '/' . $file . '">Download</a><br>';	
+									}
+								}
+								$custom_attrs .= '<tr>
+													<td> ' . $labels->file_label . '</td>
+													<td> ' . $file_list. '</td>
+												  <tr>
+												  <tr>
+													<td> ' . $labels->date_label . '</td>
+													<td> ' . $date . '</td>
+												  <tr>';
+							
+							break;
+							
 							default:
 								$custom_attrs .= '<tr>
 													<td> ' . $staff_custom[$key]['label'] . '</td>
@@ -101,8 +126,9 @@
 												  <tr>';
 							break;	
 						} # end switch
-						
 					#} # end - if key
+						
+					#} # end - if admin only
               	} # end - foreach custom fields
 			} # end - if custom fields
           ?>  

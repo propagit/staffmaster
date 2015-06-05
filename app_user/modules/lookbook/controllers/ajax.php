@@ -41,9 +41,13 @@ class Ajax extends MX_Controller {
 					
                 break;
             case 'custom':
-                    $custom_fields = $this->custom_field_model->get_fields();
+                    $custom_fields = $this->lookbook_model->get_fields();
                     foreach($custom_fields as $field) {
                         $field['key'] = $field['field_id'];
+						if($field['type'] == 'fileDate'){
+							$temp = json_decode($field['label']);
+							$field['label'] = $temp->file_label; 
+						}
                         $fields[] = $field;
                     }
 					
@@ -62,7 +66,6 @@ class Ajax extends MX_Controller {
         }
 
 
-        
         echo json_encode($fields);
     }
 	

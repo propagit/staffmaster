@@ -287,7 +287,7 @@ class Ajax extends MX_Controller {
         $this->staff_model->update_custom_field($user_id, $field_id, '');
     }
 
-    function profile_fields($step_id = '', $category = '') {
+    function profile_fields($step_id = '', $category = '', $preview = false) {
         $fields = array();
         switch($category) {
             case 'personal':
@@ -325,6 +325,10 @@ class Ajax extends MX_Controller {
                     $custom_fields = $this->custom_field_model->get_fields();
                     foreach($custom_fields as $field) {
                         $field['key'] = $field['field_id'];
+						if($field['type'] == 'fileDate'){
+							$temp = json_decode($field['label']);
+							$field['label'] = $temp->file_label; 
+						}
                         $fields[] = $field;
                     }
                 break;
@@ -338,12 +342,20 @@ class Ajax extends MX_Controller {
             $result = array();
             $step_fields = json_decode($step['fields']);
             foreach($fields as $field) {
-                $f = $field;
-                if (in_array($field['key'], $step_fields)) {
-                    $f['ticked'] = true;
+				if($preview){
+					$f = $field;
+					if (in_array($field['key'], $step_fields)) {
+						$f['ticked'] = true;
+						$result[] = $f;
+					}
+				}else{
+					$f = $field;
+					if (in_array($field['key'], $step_fields)) {
+						$f['ticked'] = true;
+					}
+					
 					$result[] = $f;
-                }
-                #$result[] = $f;
+				}
             }
             $fields = $result;
         }

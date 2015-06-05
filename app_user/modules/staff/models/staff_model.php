@@ -441,7 +441,7 @@ class Staff_model extends CI_Model {
 
 			if(isset($custom_attrs['normal_elements']) && $custom_attrs['normal_elements'] != ''){
 				foreach($custom_attrs['normal_elements'] as $key => $val){
-					$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value LIKE '%".$val."%'))";
+					$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND value LIKE '%".$val."%'))";
 				}
 			}
 			//file uploads
@@ -449,7 +449,7 @@ class Staff_model extends CI_Model {
 				foreach($custom_attrs['file_uploads'] as $key => $val){
 					$match = ($val == 'yes' ? '!=' : '=');
 					if($val == 'yes'){
-						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
 					}
 				}
 			}
@@ -458,29 +458,28 @@ class Staff_model extends CI_Model {
 				foreach($custom_attrs['fileDate_file'] as $key => $val){
 					$match = ($val == 'yes' ? '!=' : '=');
 					if($val == 'yes'){
-						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
 					}
 				}
 			}
 			
-			/*if(isset($custom_attrs['fileDate_date_from']) && $custom_attrs['fileDate_date_from']){
-				#print_r($custom_attrs['fileDate_date_from']);
-				$sql .= " AND s.user_id IN 
-							(SELECT user_id from staff_custom_fields WHERE";
+			if(isset($custom_attrs['fileDate_date_from']) && $custom_attrs['fileDate_date_from']){
 				foreach($custom_attrs['fileDate_date_from'] as $key => $val){
 					if($val){
-						$sql .= "  (field_id = '".$key."' AND field_date != '')";
-						
-						$sql .= " AND u.modified_on >= '" . date('Y-m-d', strtotime($params['date_from'])) . "'";
-					}
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND field_date >= '" . date('Y-m-d', strtotime($val)) . "'))";
+					} 
 				}
-				$sql .= ")";
 				
 			}
 			
 			if(isset($custom_attrs['fileDate_date_to']) && $custom_attrs['fileDate_date_to']){
-				print_r($custom_attrs['fileDate_date_to']);
-			}*/
+				foreach($custom_attrs['fileDate_date_to'] as $key => $val){
+					if($val){
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND field_date <= '" . date('Y-m-d', strtotime($val)) . "'))";
+					} 
+				}
+				
+			}
 		}
 
 

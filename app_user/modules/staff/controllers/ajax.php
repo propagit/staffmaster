@@ -857,7 +857,9 @@ class Ajax extends MX_Controller {
 				$field_info = modules::run('attribute/custom/get_custom_field',$field_id);
 				if($field_info['type'] == 'fileDate'){
 					# as the file is uploded by ajax from different function - this is pretty much for the date only
-					$this->staff_model->update_custom_field_date($user_id, $field_id, $value);
+					if($value){
+						$this->staff_model->update_custom_field_date($user_id, $field_id, $value);
+					}
 				}
 				
 				if (is_array($value)) {

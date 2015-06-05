@@ -58,6 +58,13 @@ class Public_dispatcher extends MX_Controller {
 		$errors = array();
 		$id_for_email = '';
 		foreach($fields as $field) {
+			# check if this is a file date
+			if(array_key_exists($field['form_field_id'] .'_'. $field['name'],$input)){
+				if ($field['required'] && (!isset($input[$field['form_field_id'] .'_'. $field['name']]) || !$input[$field['form_field_id'] .'_'. $field['name']])) {
+					$errors[] = $field['form_field_id'] .'_'. $field['name'];
+				}	
+			}
+			
 			if ($field['required'] && (!isset($input[$field['form_field_id']]) || !$input[$field['form_field_id']])) {
 				$errors[] = $field['form_field_id'];
 			}
@@ -93,7 +100,15 @@ class Public_dispatcher extends MX_Controller {
 		foreach($input as $form_field_id => $value) {
 			if (is_array($value)) {
 				$value = json_encode($value);
+			}else{
+				# this is for file date fix
+				$arr = array();
+				$arr = explode('_',$form_field_id);
+				if(isset($arr[1])){
+					$form_field_id = $arr[0];	
+				}
 			}
+			
 			$this->form_model->add_applicant_data(array(
 				'applicant_id' => $applicant_id,
 				'form_field_id' => $form_field_id,
