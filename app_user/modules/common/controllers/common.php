@@ -160,13 +160,16 @@ class Common extends MX_Controller {
 	{
 		$funds = modules::run('api/xero/get_superfunds');
 		$array = array();
-		foreach($funds as $fund)
-		{
-			$array[] = array(
-				'value' => $fund['SuperFundID'],
-				'label' => $fund['Name']
-			);
+		if($funds){
+			foreach($funds as $fund)
+			{
+				$array[] = array(
+					'value' => $fund['SuperFundID'],
+					'label' => $fund['Name']
+				);
+			}
 		}
+			
 		return $this->field_select($array, $field_name, $field_value, $size);
 	}
 
