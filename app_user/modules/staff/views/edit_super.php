@@ -51,7 +51,13 @@ if ($platform == 'xero') {
 	<div class="form-group">
 		<label class="col-md-2 control-label">Super Fund</label>
 		<div class="col-md-4">
+        	<?php $funds = modules::run('api/xero/get_superfunds'); 
+				if($funds){
+			?>
 			<?=modules::run('common/field_select_xero_super_fund', 's_external_id', $staff['s_external_id']);?>
+            <?php } else { ?>
+            No super fund(s) is currently set up in Xero.
+            <?php } ?>
 		</div>
 		<div class="col-md-6">
 			<span class="help-block">If you cant find your super fund in the list please <a href="<?=base_url();?>support">contact us</a></span>
