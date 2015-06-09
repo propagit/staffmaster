@@ -126,6 +126,14 @@
                                  <?php if($this->session->flashdata('custom_file_upload_error_' . $field->key)){ ?>
                                 	<div class="alert alert-danger add-top-margin"><?=$this->session->flashdata('custom_file_upload_error_' . $field->key);?></div>
                                  <?php } ?>
+                            
+                            <?php }else if ($field->type == 'fileDate') ?>
+                            
+                            <!-- file date-->
+                            
+                                 
+                            <!-- end file date -->     
+                                 
                             <? } else if ($field->type == 'radio') { ?>
                             <?php
                                 $attrs = json_decode($field->attributes);

@@ -328,6 +328,8 @@ class Ajax extends MX_Controller {
 						if($field['type'] == 'fileDate'){
 							$temp = json_decode($field['label']);
 							$field['label'] = $temp->file_label; 
+							$field['file_label'] = $temp->file_label; 
+							$field['date_label'] = $temp->date_label; 
 						}
                         $fields[] = $field;
                     }

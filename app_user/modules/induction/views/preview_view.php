@@ -92,7 +92,7 @@
                                   on-success="onSuccess(response)"
                                 >Upload</div>
                                 
-                            <?php }else if($field->type == 'fileDate'){ ?>
+                            <?php }else if($field->type == 'fileDate'){?>
                             
                             <div
                                   class="btn btn-core btn-upload"
@@ -101,8 +101,12 @@
                                   url="#"
                                   on-success="onSuccess(response)"
                                 >Upload</div>
+                                
+        				</div>
+                              <label class="col-md-3 control-label"><?=$field->date_label;?></label>
+                		<div class="col-md-9 add-top-margin">
                              <div class="input-group date" id="file_date_<?=$field->key;?>">
-                                <input type="text" class="form-control" readonly placeholder="" />
+                                <input type="text" class="form-control" readonly placeholder="<?=$field->placeholder;?>" />
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                              </div>    
