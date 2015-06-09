@@ -127,11 +127,56 @@
                                 	<div class="alert alert-danger add-top-margin"><?=$this->session->flashdata('custom_file_upload_error_' . $field->key);?></div>
                                  <?php } ?>
                             
-                            <?php }else if ($field->type == 'fileDate') ?>
-                            
+                            <?php }else if ($field->type == 'fileDate'){ ?>
+                            <?php 
+								$field_date = $field->date_value != '0000-00-00' ? date('d-m-Y',strtotime($field->date_value)) : set_value($field->key);
+								if(!$field_date){
+									$field_date = $field->placeholder;	
+								}
+							?>
                             <!-- file date-->
-                            
-                                 
+                            <? if ($field->value) { ?>
+                                <p><a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_induction['user_id'];?>/<?=$field->value;?>"><?=$field->value;?></a>
+                                <i title="Delete File" class="fa fa-times custom-file-delete" ng-click="deleteFile(<?=$user_induction['user_id'];?>, <?=$field->key;?>)"></i><br />
+                                </p>
+
+                            <? } ?>
+                            <div
+                                  class="btn btn-core btn-upload"
+                                  upload-button
+                                  param="file-<?=$field->key;?>"
+                                  url="<?=base_url();?>induction/ajax/upload_custom_file/<?=$user_induction['user_id'];?>/<?=$field->key;?>"
+                                  on-upload="onUpload(files)" 
+                                  on-success="onSuccess(response)"
+                                >Upload</div><span class="note"> max file size 2 MB</span>
+                                 <?php if($this->session->flashdata('custom_file_upload_error_' . $field->key)){ ?>
+                                	<div class="alert alert-danger add-top-margin"><?=$this->session->flashdata('custom_file_upload_error_' . $field->key);?></div>
+                                 <?php } ?>
+                                
+        				</div>
+                            <label class="col-md-3 control-label"><?=$field->date_label;?></label>
+                            <div class="col-md-3 add-top-margin">
+                                 <div class="input-group date" id="file_date_<?=$field->key;?>">
+                                    <input name="<?=$field->key;?>"  type="text" class="form-control" readonly placeholder="<?=$field_date;?>" />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                 </div>    
+                             <script>
+							 $(function(){
+								$('#file_date_<?=$field->key;?>').datetimepicker({
+									weekStart: 1,
+									todayBtn:  1,
+									autoclose: 1,
+									todayHighlight: 1,
+									startView: 2,
+									minView: 2,
+									forceParse: 1,
+									format: 'dd-mm-yyyy',
+								});
+								
+							});
+
+							 </script>    
                             <!-- end file date -->     
                                  
                             <? } else if ($field->type == 'radio') { ?>

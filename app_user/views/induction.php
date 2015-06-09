@@ -18,10 +18,15 @@
     <script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
     <script src="<?=base_url();?>assets/js/moment.js"></script>
 
+
+	<!-- datetimepicker (bootstrap 3)  -->
+	<link href="<?=base_url();?>assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    
     <!-- select2 -->
     <link href="<?=base_url();?>assets/css/select2/select2.css" rel="stylesheet">
     <script src="<?=base_url();?>assets/js/select2.min.js"></script>
-
+	
 
     <link href="<?=base_url();?>assets/css/core.admin.css" rel="stylesheet" media="screen">
     <script> var base_url = '<?=base_url();?>'; </script>

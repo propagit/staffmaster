@@ -930,7 +930,7 @@ class Staff_model extends CI_Model {
 
 	function get_custom_field($user_id, $field_id)
 	{
-		$sql = "SELECT c.*, s.value as `staff_value`
+		$sql = "SELECT c.*, s.value as `staff_value`, s.field_date as `staff_date_value`
 				FROM custom_fields c
 				LEFT JOIN staff_custom_fields s ON s.field_id = c.field_id
 				WHERE s.user_id = $user_id
