@@ -80,7 +80,7 @@ class Induction extends MX_Controller {
             $data['contents'] = $contents;
 
             if ($current_step['fields']) {
-                $fields = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type']));
+                $fields = json_decode(modules::run('induction/ajax/profile_fields', $current_step['id'], $current_step['type'], true));
                 $data['fields'] = $fields;
 					
             }
@@ -94,6 +94,7 @@ class Induction extends MX_Controller {
 
     function publish_view($id, $step_number)
     {
+		#print_r($_POST);exit;
         # First get the induction itself
         $data['induction'] = $this->induction_model->get($id);
 
@@ -203,11 +204,13 @@ class Induction extends MX_Controller {
                         $field->value = '';
                         if (isset($user_data[$field->key])) {
                             $field->value = $user_data[$field->key];
+							$field->date_value = $user_data[$field->key];
                         }
                         else {
                             $custom_field = $this->staff_model->get_custom_field($this->user['user_id'], $field->key);
                             if ($custom_field) {
                                 $field->value = $custom_field['staff_value'];
+								 $field->date_value = $custom_field['staff_date_value'];
                             }
                         }
                         $active_fields[] = $field;
@@ -221,9 +224,13 @@ class Induction extends MX_Controller {
                         $this->form_validation->set_rules($field->key . '[month]', 'Month', 'required');
                         $this->form_validation->set_rules($field->key . '[year]', 'Year', 'required');
                     } else if (isset($field->type) && $field->type == 'file') {
-
+					
                     } else {
-                        $this->form_validation->set_rules($field->key, $field->label, 'required');
+						if($field->type == 'fileDate'){
+							$this->form_validation->set_rules($field->key, $field->date_label, 'required');
+						}else{
+                        	$this->form_validation->set_rules($field->key, $field->label, 'required');
+						}
                     }
                 }
             }
@@ -291,10 +298,18 @@ class Induction extends MX_Controller {
                     unset($input['user_id']);
                     unset($input['continue']);
                     foreach($input as $field_id => $value) {
-                        if (is_array($value)) {
-                            $value = json_encode($value);
-                        }
-                        $this->staff_model->update_custom_field($this->user['user_id'], $field_id, $value);
+						$field_info = modules::run('attribute/custom/get_custom_field',$field_id);
+						if($field_info['type'] == 'fileDate'){
+							# as the file is uploded by ajax from different function - this is pretty much for the date only
+							if($value){
+								$this->staff_model->update_custom_field_date($this->user['user_id'], $field_id, $value);
+							}
+						}else{
+							if (is_array($value)) {
+								$value = json_encode($value);
+							}
+							$this->staff_model->update_custom_field($this->user['user_id'], $field_id, $value);
+						}
                     }
                 }
                 else if($current_step['type'] == 'content')

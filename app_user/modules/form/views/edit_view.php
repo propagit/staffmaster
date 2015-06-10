@@ -101,10 +101,16 @@
 						<a onclick="load_fields(this,'custom')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Custom Attributes</b>
 						<table class="table table-hover table-condensed table-fields hide" id="fields-custom">
-							<? foreach($custom_fields as $field) { ?>
+							<? foreach($custom_fields as $field) { 
+							   $label = $field['label'];
+							   if($field['type'] == 'fileDate'){ 
+							   		$labels = json_decode($field['label']);
+									$label = $labels->file_label;
+							   }
+							?>
 							<tr>
-								<td class="left"><?=$field['label'];?></td>
-								<td class="right" width="20"><span class="label label-<?=($field['required'] != NULL) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$field['label'];?>','<?=$field['field_id'];?>')">Active</span></td>
+								<td class="left"><?=$label;?></td>
+								<td class="right" width="20"><span class="label label-<?=($field['required'] != NULL) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$label;?>','<?=$field['field_id'];?>')">Active</span></td>
 								<td class="right" width="20"><span class="label label-<?=($field['required']) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$field['field_id'];?>')">Required</span></td>
 							</tr>
 							<? } ?>

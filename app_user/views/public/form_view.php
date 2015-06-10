@@ -21,6 +21,11 @@
 	<script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
 	<script src="<?=base_url();?>assets/js/bootstrap.confirm.js"></script>
 	<script src="<?=base_url();?>assets/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+    
+    <!-- datetimepicker (bootstrap 3)  -->
+	<link href="<?=base_url();?>assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	<script src="<?=base_url();?>assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    
 	<!-- select2 -->
 	<link href="<?=base_url();?>assets/css/select2/select2.css" rel="stylesheet">
 	<script src="<?=base_url();?>assets/js/select2.min.js"></script>
@@ -205,6 +210,8 @@
     	<h2>Additional Information</h2>
     	<p class="text-muted">Please provide us with the below information</p>
     	<? foreach($custom_fields as $field) { ?>
+        
+        	<?php if($field['type'] != 'fileDate'){ ?>
     		<div class="form-group" id="f_<?=$field['form_field_id'];?>">
 				<label for="<?=$name;?>" class="col-sm-2 control-label">
 					<?=$field['label'];?>
@@ -347,6 +354,145 @@ uploader_<?=$field['form_field_id'];?>.bind('FilesAdded', function(up, files) {
 					<? } ?>
 				</div>
     		</div>
+            <?php 
+			}else { 
+				# if custom field is file and date type
+				$label = json_decode($field['label']);
+			?>
+			<div class="form-group">
+            <div class="col-xs-12 remove-gutters" id="f_<?=$field['form_field_id'];?>">
+				<label for="<?=$name;?>" class="col-sm-2 control-label">
+					<?=$label->file_label;?>
+					<? if($field['required']) { ?>
+						<span class="text-red">**</span>
+					<? } ?>
+					<p class="text-muted" style="font-weight:100">Allowed formats:<br />jpg, gif, png, pdf,doc, ppt, xls.<br />Maximum size: 2MB</p>
+				</label>
+				<div class="col-sm-10">
+                <div id="filelist_<?=$field['form_field_id'];?>"><!-- Your browser doesn't have Flash, Silverlight or HTML5 support. --></div>
+					<div class="progress progress-striped active" style="visibility: hidden;">
+						<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="upload-progress_<?=$field['form_field_id'];?>">
+							0%
+						</div>
+					</div>
+					<div id="upload_container_<?=$field['form_field_id'];?>">
+					    <button type="button" id="pickfiles_<?=$field['form_field_id'];?>" href="javascript:;" class="btn btn-core">Select files</button>
+					    <button type="button" id="uploadfiles_<?=$field['form_field_id'];?>" href="javascript:;" class="btn btn-core">Upload files</button>
+			            <span id="console_<?=$field['form_field_id'];?>"></span>
+					</div>
+					<input type="hidden" name="<?=$field['form_field_id'];?>" />
+					<div class="up_file" id="uploaded_file_<?=$field['form_field_id'];?>"></div>
+					
+<script>
+var uploader_<?=$field['form_field_id'];?> = new plupload.Uploader({
+	runtimes : 'html5,flash,silverlight,html4',
+	browse_button : 'pickfiles_<?=$field['form_field_id'];?>', // you can pass in id...
+	multi_selection:false,  //disable multi-selection
+	container: document.getElementById('upload_container_<?=$field['form_field_id'];?>'), // ... or DOM Element itself
+	url : '<?=base_url();?>public/form/<?=$form['form_id'];?>/upload_files',
+	chunk_size: '400kb',
+    max_retries: 5,    
+    unique_names: true,
+	flash_swf_url : '<?=base_url();?>assets/js/plupload/Moxie.swf',
+	silverlight_xap_url : '<?=base_url();?>assets/js/plupload/Moxie.xap',
+
+	filters : {
+		max_file_size : '20mb',
+		mime_types: [
+			{title : "Image files", extensions : "jpg,gif,png"},
+			{title : "Document files", extensions : "pdf,doc,docx,ppt,xls"}
+		]
+	},
+
+	init: {
+		PostInit: function() {
+			$('#console_<?=$field['form_field_id'];?>').html('');
+			$('#filelist_<?=$field['form_field_id'];?>').html('');
+			$('#uploadfiles_<?=$field['form_field_id'];?>').click(function() {
+				uploader_<?=$field['form_field_id'];?>.start();
+				return false;
+			});
+		},
+
+		FilesAdded: function(up, files) {
+			if(uploader_<?=$field['form_field_id'];?>.files.length > 1)
+			{
+			    uploader_<?=$field['form_field_id'];?>.removeFile(uploader_<?=$field['form_field_id'];?>.files[0]);
+			    uploader_<?=$field['form_field_id'];?>.refresh();// must refresh for flash runtime
+			}
+			$('#upload-progress_<?=$field['form_field_id'];?>').parent().css("visibility", "visible");
+
+			plupload.each(files, function(file) {
+				document.getElementById('filelist_<?=$field['form_field_id'];?>').innerHTML = '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+			});
+		},
+
+		UploadProgress: function(up, file) {
+			document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+			$('#upload-progress_<?=$field['form_field_id'];?>').attr('aria-valuenow', 60);
+			$('#upload-progress_<?=$field['form_field_id'];?>').css("width", file.percent + "%");
+			$('#upload-progress_<?=$field['form_field_id'];?>').html(file.percent + '% completed');
+		},
+		UploadComplete: function(up, files) {
+			// On complete
+			$('#upload-progress_<?=$field['form_field_id'];?>').parent().css("visibility", "hidden");
+			$('#upload-progress_<?=$field['form_field_id'];?>').css("width", "0%");
+			$('#upload-progress_<?=$field['form_field_id'];?>').html('0%');
+			$('#console_<?=$field['form_field_id'];?>').html('');
+			$('#filelist_<?=$field['form_field_id'];?>').html('');
+			$('#uploaded_file_<?=$field['form_field_id'];?>').html('<span>' + files[0].name + ' <i class="fa fa-times" onClick="remove_custom_file(<?=$field['form_field_id'];?>)"></i></span>');
+			$('input[name="<?=$field['form_field_id'];?>"]').val(files[0].target_name);
+		},
+
+		Error: function(up, err) {
+			$('#console_<?=$field['form_field_id'];?>').html('\n&nbsp;<span class="text-danger">Error: ' + err.message + '</span>');
+		}
+	}
+});
+
+uploader_<?=$field['form_field_id'];?>.init();
+uploader_<?=$field['form_field_id'];?>.bind('FilesAdded', function(up, files) {
+    $.each(files, function(i, file) {
+        if(i){up.removeFile(file); return;}
+    });
+});
+</script>
+                </div>
+             </div>
+             <div class="col-xs-12 remove-gutters" id="f_<?=$field['form_field_id'];?>_<?=$field['field_id'];?>">	
+            	<label class="col-sm-2 control-label">
+				<?=$label->date_label;?>
+                <? if($field['required']) { ?>
+                    <span class="text-red">**</span>
+                <? } ?>
+                </label>  
+                <div class="col-sm-3">
+                	<div class="input-group date" id="file_date_<?=$field['field_id'];?>">
+                        <input type="text" class="form-control" name="<?=$field['form_field_id'];?>_<?=$field['field_id'];?>" readonly placeholder="<?=$field['placeholder'];?>" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <script>
+$(function(){
+	$('#file_date_<?=$field['field_id'];?>').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+        minView: 2,
+		forceParse: 1,
+        format: 'dd-mm-yyyy',
+    });
+	
+});
+
+</script>
+                </div>  
+            </div>	
+			</div>	
+			<?php }?>
+            
     	<? } ?>
     	<hr />
     	<? } ?>

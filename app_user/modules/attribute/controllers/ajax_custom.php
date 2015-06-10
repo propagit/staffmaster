@@ -18,6 +18,9 @@ class Ajax_custom extends MX_Controller {
 		if (in_array($input['type'], array('radio', 'checkbox', 'select'))) {
 			$input['attributes'] = json_encode(array('Option one', 'Option two'));
 		}
+		if($input['type'] = 'fileDate'){
+			$input['label'] = json_encode(array('file_label' => 'File Button With Date','date_label' => 'Date'));
+		}
 		$field_id = $this->custom_field_model->add_field($input);
 		echo $field_id;
 	}
@@ -51,6 +54,13 @@ class Ajax_custom extends MX_Controller {
 		} else {
 			$input['admin_only'] = 0;
 		}
+		if(isset($input['fileDate'])){
+			$input['label'] = json_encode(array('file_label' => $input['file_label'],'date_label' => $input['date_label']));
+			unset($input['file_label']);
+			unset($input['date_label']);
+			unset($input['fileDate']);
+		}
+		
 		$this->custom_field_model->update_field($input['field_id'], $input);
 	}
 	

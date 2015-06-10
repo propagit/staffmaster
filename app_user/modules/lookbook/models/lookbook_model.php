@@ -38,5 +38,12 @@ class Lookbook_model extends CI_Model {
 		return $lookbook;
 	}
 	
+	function get_fields() {
+		$this->db->where('admin_only',0);
+		$this->db->order_by('field_order', 'asc');
+		$query = $this->db->get('custom_fields');
+		return $query->result_array();
+	}
+	
 	
 }

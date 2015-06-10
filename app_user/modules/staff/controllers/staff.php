@@ -613,6 +613,10 @@ class Staff extends MX_Controller {
 		$custom_attrs = array();
 		$normal_prefix = 'custom_search_';
 		$file_prefix = 'search_file_';
+		$fileDate_file_prefix = 'search_dateFile_file_';
+		$fileDate_date_to_prefix = 'search_dateFile_date_to_';
+		$fileDate_date_from_prefix = 'search_dateFile_date_from_';
+		
 		if($search_params){
 			foreach($search_params as $key => $val){
 				if($val){
@@ -623,6 +627,18 @@ class Staff extends MX_Controller {
 					if(substr($key,0,strlen($file_prefix)) == $file_prefix){
 						$new_key = trim($key, $file_prefix);
 						$custom_attrs['file_uploads'][$new_key] = $val;
+					}
+					if(substr($key,0,strlen($fileDate_file_prefix)) == $fileDate_file_prefix){
+						$new_key = trim($key, $fileDate_file_prefix);
+						$custom_attrs['fileDate_file'][$new_key] = $val;
+					}
+					if(substr($key,0,strlen($fileDate_date_from_prefix)) == $fileDate_date_from_prefix){
+						$new_key = trim($key, $fileDate_date_from_prefix);
+						$custom_attrs['fileDate_date_from'][$new_key] = $val;
+					}
+					if(substr($key,0,strlen($fileDate_date_to_prefix)) == $fileDate_date_to_prefix){
+						$new_key = trim($key, $fileDate_date_to_prefix);
+						$custom_attrs['fileDate_date_to'][$new_key] = $val;
 					}
 				}
 			}

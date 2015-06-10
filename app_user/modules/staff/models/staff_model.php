@@ -441,7 +441,7 @@ class Staff_model extends CI_Model {
 
 			if(isset($custom_attrs['normal_elements']) && $custom_attrs['normal_elements'] != ''){
 				foreach($custom_attrs['normal_elements'] as $key => $val){
-					$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value LIKE '%".$val."%'))";
+					$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND value LIKE '%".$val."%'))";
 				}
 			}
 			//file uploads
@@ -449,9 +449,36 @@ class Staff_model extends CI_Model {
 				foreach($custom_attrs['file_uploads'] as $key => $val){
 					$match = ($val == 'yes' ? '!=' : '=');
 					if($val == 'yes'){
-						$sql .= " AND s.user_id IN (SELECT user_id from staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
 					}
 				}
+			}
+			
+			if(isset($custom_attrs['fileDate_file']) && $custom_attrs['fileDate_file'] != ''){
+				foreach($custom_attrs['fileDate_file'] as $key => $val){
+					$match = ($val == 'yes' ? '!=' : '=');
+					if($val == 'yes'){
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND value != ''))";
+					}
+				}
+			}
+			
+			if(isset($custom_attrs['fileDate_date_from']) && $custom_attrs['fileDate_date_from']){
+				foreach($custom_attrs['fileDate_date_from'] as $key => $val){
+					if($val){
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND field_date >= '" . date('Y-m-d', strtotime($val)) . "'))";
+					} 
+				}
+				
+			}
+			
+			if(isset($custom_attrs['fileDate_date_to']) && $custom_attrs['fileDate_date_to']){
+				foreach($custom_attrs['fileDate_date_to'] as $key => $val){
+					if($val){
+						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND field_date <= '" . date('Y-m-d', strtotime($val)) . "'))";
+					} 
+				}
+				
 			}
 		}
 
@@ -903,7 +930,7 @@ class Staff_model extends CI_Model {
 
 	function get_custom_field($user_id, $field_id)
 	{
-		$sql = "SELECT c.*, s.value as `staff_value`
+		$sql = "SELECT c.*, s.value as `staff_value`, s.field_date as `staff_date_value`
 				FROM custom_fields c
 				LEFT JOIN staff_custom_fields s ON s.field_id = c.field_id
 				WHERE s.user_id = $user_id
@@ -913,7 +940,7 @@ class Staff_model extends CI_Model {
 	}
 
 	function get_custom_fields($user_id) {
-		$sql = "SELECT c.*, s.value as `staff_value`
+		$sql = "SELECT c.*, s.value as `staff_value`, s.field_date as field_date 
 				FROM custom_fields c
 					LEFT JOIN staff_custom_fields s ON (s.field_id = c.field_id AND s.user_id = $user_id)";
 		if (modules::run('auth/is_staff')) {
@@ -929,8 +956,9 @@ class Staff_model extends CI_Model {
 		$this->db->where('field_id', $field_id);
 		$query = $this->db->get('staff_custom_fields');
 		$field = $query->first_row('array');
+		
 		if ($field) { # Update
-			if ($accel) { # Combine new value to old values
+			if ($accel) { # Combine new value to old values			
 				$old_value = json_decode($field['value']);
 				$old_value[] = $value;
 				$value = json_encode($old_value);
@@ -949,6 +977,32 @@ class Staff_model extends CI_Model {
 			));
 			return $this->db->insert_id();
 		}
+	}
+	
+	function update_custom_field_date($user_id, $field_id, $value)
+	{
+		$field = $this->get_custom_field($user_id,$field_id);
+		if ($field) { # Update
+			$this->db->where('user_id', $user_id);
+			$this->db->where('field_id', $field_id);
+			return $this->db->update('staff_custom_fields', array('field_date' => date('Y-m-d',strtotime($value))));
+		} else { # Add
+			$this->db->insert('staff_custom_fields', array(
+				'user_id' => $user_id,
+				'field_id' => $field_id,
+				'field_date' => date('Y-m-d',strtotime($value))
+			));
+			return $this->db->insert_id();
+		}
+	}
+	
+	function get_staff_custom_field($user_id,$field_id)
+	{
+		$this->db->where('user_id', $user_id);
+		$this->db->where('field_id', $field_id);
+		$query = $this->db->get('staff_custom_fields');
+		return $query->first_row('array');	
+		
 	}
 
 	function delete_file_field($user_id, $field_id, $file) {
