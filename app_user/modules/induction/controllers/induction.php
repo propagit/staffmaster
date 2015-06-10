@@ -224,9 +224,13 @@ class Induction extends MX_Controller {
                         $this->form_validation->set_rules($field->key . '[month]', 'Month', 'required');
                         $this->form_validation->set_rules($field->key . '[year]', 'Year', 'required');
                     } else if (isset($field->type) && $field->type == 'file') {
-
+					
                     } else {
-                        $this->form_validation->set_rules($field->key, $field->label, 'required');
+						if($field->type == 'fileDate'){
+							$this->form_validation->set_rules($field->key, $field->date_label, 'required');
+						}else{
+                        	$this->form_validation->set_rules($field->key, $field->label, 'required');
+						}
                     }
                 }
             }
