@@ -1,2 +1,1 @@
-ALTER TABLE `job_shift_timesheets` ADD `parent_timesheet_id` BIGINT NOT NULL DEFAULT '0' COMMENT 'when a timesheet is split, store the parent timesheet id here' AFTER `reject_note`;
-ALTER TABLE `job_shift_timesheets` ADD `child_timesheet_id` BIGINT NOT NULL COMMENT 'when a timesheet is split, update this record with the new timesheet id' AFTER `parent_timesheet_id`;
+ALTER TABLE `staff_custom_fields` ADD `field_date` DATE NOT NULL AFTER `value`;
