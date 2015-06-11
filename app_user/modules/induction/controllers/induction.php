@@ -226,7 +226,7 @@ class Induction extends MX_Controller {
                     } else if (isset($field->type) && $field->type == 'file') {
 					
                     } else {
-						if($field->type == 'fileDate'){
+						if(isset($field->type) && $field->type == 'fileDate'){
 							$this->form_validation->set_rules($field->key, $field->date_label, 'required');
 						}else{
                         	$this->form_validation->set_rules($field->key, $field->label, 'required');
