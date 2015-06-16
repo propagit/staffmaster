@@ -75,7 +75,7 @@ if (defined('ENVIRONMENT'))
 
 $temp_sub_domain = explode(".",$_SERVER['HTTP_HOST']);
 $sub_domain =  array_shift($temp_sub_domain);
-if($sub_domain == 'sm' || $sub_domain == 'www')
+if($sub_domain == 'sm' || $sub_domain == 'www' || $sub_domain == 'labourking')
 {
 	$application_folder = '../app_public';
 }
