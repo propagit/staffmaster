@@ -18,7 +18,7 @@ class Ajax_custom extends MX_Controller {
 		if (in_array($input['type'], array('radio', 'checkbox', 'select'))) {
 			$input['attributes'] = json_encode(array('Option one', 'Option two'));
 		}
-		if($input['type'] = 'fileDate'){
+		if($input['type'] == 'fileDate'){
 			$input['label'] = json_encode(array('file_label' => 'File Button With Date','date_label' => 'Date'));
 		}
 		$field_id = $this->custom_field_model->add_field($input);
