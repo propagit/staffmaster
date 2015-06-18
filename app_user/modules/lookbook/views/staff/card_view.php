@@ -69,6 +69,7 @@
 			#echo '<pre>'.print_r($staff_custom,true).'</pre>';
 			if($custom_fields){
 				foreach($custom_fields as $field){ 
+					$custom_attrs = '';
 					$key = array_search($field, array_column($staff_custom, 'field_id'));
 					#if(!$staff_custom[$key]['admin_only']){
 					#if($key){

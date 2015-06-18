@@ -1,28 +1,32 @@
-<div class="form-group" id="field_<?=$user_id;?>_<?=$field['field_id'];?>">
-	<label class="col-md-2 control-label"><?=$field['label'];?></label>
-	<div class="col-md-6">
-		<? $files = json_decode($field['staff_value']);
-		if (count($files) > 0) {
-			foreach($files as $file) { ?>
-				<?=modules::run('common/mime_to_icon', UPLOADS_PATH . '/staff/ ' . $user_id . '/' . $file);?>  &nbsp; <a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_id;?>/<?=$file;?>">Download</a>
-				<i title="Delete File" class="fa fa-times custom-file-delete" onclick="delete_file_field(<?=$user_id;?>,<?=$field['field_id'];?>,'<?=$file;?>')"></i><br />
-			<? }	
-		} ?>
-	
-		<div id="filelist_<?=$field['field_id'];?>"><!-- Your browser doesn't have Flash, Silverlight or HTML5 support. --></div>
-		<div class="progress progress-striped active" style="visibility: hidden;">
-			<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="upload-progress_<?=$field['field_id'];?>">
-				0%
-			</div>
-		</div>
-		<div id="upload_container_<?=$field['field_id'];?>">
-		    <button id="pickfiles_<?=$field['field_id'];?>" href="javascript:;" class="btn btn-core">Select files</button>
-		    <button id="uploadfiles_<?=$field['field_id'];?>" href="javascript:;" class="btn btn-core">Upload files</button>
-            <span id="console_<?=$field['field_id'];?>"></span>
-		</div>
-	</div>
+<div class="form-group custom-file">
+    <div id="field_<?=$user_id;?>_<?=$field['field_id'];?>">
+        <label class="col-md-2 control-label"><?=$field['label'];?></label>
+        <div class="col-md-6">
+            <div id="upload_container_<?=$field['field_id'];?>">
+                <button id="pickfiles_<?=$field['field_id'];?>" href="javascript:;" class="btn btn-core">Select files</button>
+                <button id="uploadfiles_<?=$field['field_id'];?>" href="javascript:;" class="btn btn-core">Upload files</button>
+                <span id="console_<?=$field['field_id'];?>"></span>
+            </div>
+            
+            <div class="custom-files-wrap">
+				 <? $files = json_decode($field['staff_value']);
+                if (count($files) > 0) {
+                    foreach($files as $file) { ?>
+                        <?=modules::run('common/mime_to_icon', UPLOADS_PATH . '/staff/ ' . $user_id . '/' . $file);?>  &nbsp; <a target="_blank" href="<?=base_url().UPLOADS_URL;?>/staff/<?=$user_id;?>/<?=$file;?>">Download</a>
+                        <i title="Delete File" class="fa fa-times custom-file-delete" onclick="delete_file_field(<?=$user_id;?>,<?=$field['field_id'];?>,'<?=$file;?>')"></i><br />
+                    <? }	
+                } ?>
+            
+                <div id="filelist_<?=$field['field_id'];?>"><!-- Your browser doesn't have Flash, Silverlight or HTML5 support. --></div>
+                <div class="progress progress-striped active" style="visibility: hidden;">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="upload-progress_<?=$field['field_id'];?>">
+                        0%
+                    </div>
+                </div>
+           	</div>
+        </div>
+    </div>
 </div>
-
 <script>
 var uploader_<?=$field['field_id'];?> = new plupload.Uploader({
 	runtimes : 'html5,flash,silverlight,html4',

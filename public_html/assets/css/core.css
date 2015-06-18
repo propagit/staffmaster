@@ -1026,6 +1026,28 @@ ol.example li.placeholder:before {
 }
 
 
+.custom-file .custom-file-box{
+	float:left;	
+}
+.custom-file .custom-date-box{
+	float:left;
+	width:72%;	
+}
+.custom-file .custom-date-box .date{
+	width:300px;	
+}
+.custom-file .custom-date-box label{
+	float:left;	
+	padding-left:15px;
+	padding-right:15px;
+	min-width:225px;
+	max-width:225px;
+}
+.custom-files-wrap{
+	margin-top:10px;	
+	float:left;
+	/*width:100%;*/
+}
 
 /* begin - responsive */
 
@@ -2100,6 +2122,10 @@ label.radio {
 	.company-calendar-nav-wrap{
 		margin-top: 10px;
 		width:auto;
+	}
+	.custom-file .custom-date-box label{
+		padding-left:0;
+		padding-right:0;	
 	}
 
 }
