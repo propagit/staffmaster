@@ -420,9 +420,46 @@ class Ajax extends MX_Controller {
 			else if ($platform == 'xero')
 			{
 				 $result = modules::run('api/xero/create_timesheets', $payrun_id);
+				 
 				 if ($result) {
-				 	$pushed_msg = '<p>' . count($timesheets) . ' time sheets have been pushed to Xero successfully!</p>';
+					$res = json_decode($result);
+					if($res->ok){
+						$pushed_msg = '<p>' . count($timesheets) . ' time sheets have been pushed to Xero successfully!</p>';
+						echo json_encode(array(
+							'ok' => true,
+							'export' => false,
+							'payrun_id' => $payrun_id,
+							'pushed_ok' => true,
+							'pushed_msg' => $pushed_msg
+						));	
+						return;
+					}else{
+						# error
+						# delete payroll
+						# revert timesheet to batched status
+						modules::run('payrun/revert_xero_payrun',$payrun_id);
+						echo json_encode(array(
+											'ok' => true,
+											'export' => false,
+											'pushed_ok' => false,
+											'pushed_msg' => "<div class='text-center'>
+																<p>
+																<span class='text-danger xero-payrun-error'>Error - Don't Panic!</span><br>
+																(No data has been pushed)<br><br>
+																<hr style='border-top:1px solid #ccc;'>
+																<strong>Important Note:</strong><br>
+																<span class='text-danger'>Xero has detected</span><br>
+																Timesheet(s) contained in this payrun already exists in Xero.<br>
+																(An employee can only contain 1 set of timesheet data<br> per pay period in Xero)
+																<br><br>
+																<strong><i>Login to Xero and review the pay period to determine which employees already have timesheet data </i> <i class='fa fa-smile-o'></i></strong>
+																</p>
+															 </div>"
+											));
+					}
+					
 				 }
+				 return;
 			}
 
 			echo json_encode(array(
@@ -434,6 +471,7 @@ class Ajax extends MX_Controller {
 			));
 		}
 	}
+	
 
 	/**
 	*	@name: _export_payrun
