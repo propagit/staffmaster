@@ -537,6 +537,13 @@ class Timesheet extends MX_Controller {
 	
 	function test()
 	{
+		$payrates = $this->extract_timesheet_payrate(33, $user_type = 0);	
+		echo count($payrates);
+		echo '<pre>' . print_r($payrates,true) . '</pre>';
+	}
+	
+	function __test()
+	{
 		$key_type = TIMESHEET_SUPERVISOR_KEY_TYPE;
 		$key = 'd85d8af65ae09072ff38797b5028a060';
 		

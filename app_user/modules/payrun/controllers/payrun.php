@@ -165,4 +165,19 @@ class Payrun extends MX_Controller {
 		$data['staff_count'] = $staff_count;
 		$this->load->view('btn_api', isset($data) ? $data : NULL);
 	}
+	
+	function revert_xero_payrun($payrun_id)
+	{
+		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		foreach($timesheets as $ts){
+			$this->payrun_model->update_synced($ts['timesheet_id'], array(
+								'payrun_id' => 0,
+								'external_id' => '',
+								'external_msg' => '',
+								'status_payrun_staff' => PAYRUN_READY,
+								'staff_paid_on' => '0000-00-00 00:00:00'
+							));		
+		}
+		$this->payrun_model->delete_payrun($payrun_id);
+	}
 }
