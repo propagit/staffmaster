@@ -73,13 +73,26 @@ class Ajax extends MX_Controller {
 		));
 		# if this is a split timesheet
 		if($timesheet['child_timesheet_id']){
-			$child_timesheet_id = $timesheet['child_timesheet_id'];
-			modules::run('timesheet/update_timesheet_hour_rate', $child_timesheet_id);
-			$this->timesheet_model->update_timesheet($child_timesheet_id, array(
-				'status' => TIMESHEET_BATCHED,
-				'status_payrun_staff' => PAYRUN_PENDING,
-				'status_invoice_client' => INVOICE_PENDING
-			));	
+			# keep doing this until the next timesheet no longer has child timesheet
+			$has_child = true;
+			$child_ts_id = $timesheet['child_timesheet_id'];
+			while($has_child){
+				# get child timesheet
+				$child_ts = modules::run('timesheet/get_timesheet',$child_ts_id);
+				modules::run('timesheet/update_timesheet_hour_rate', $child_ts_id);
+				$this->timesheet_model->update_timesheet($child_ts_id, array(
+					'status' => TIMESHEET_BATCHED,
+					'status_payrun_staff' => PAYRUN_PENDING,
+					'status_invoice_client' => INVOICE_PENDING
+				));	
+				
+				# check if this has another child 	
+				if($child_ts['child_timesheet_id']){
+					$child_ts_id = $child_ts['child_timesheet_id'];
+				}else{
+					$has_child = false;	
+				}
+			}
 		}
 	}
 	
@@ -93,9 +106,9 @@ class Ajax extends MX_Controller {
 	function details($timesheet_id) {
 		$data['timesheet'] = $this->timesheet_model->get_timesheet($timesheet_id);
 		$data['paid_expenses'] = $this->expense_model->get_timesheet_expenses($timesheet_id);
-		if($data['timesheet']['child_timesheet_id']){
+		/*if($data['timesheet']['child_timesheet_id']){
 			$data['child_timesheet'] = $this->timesheet_model->get_timesheet($data['timesheet']['child_timesheet_id']);	
-		}
+		}*/
 		
 		$this->load->view('details_modal_view', isset($data) ? $data : NULL);
 	}
@@ -107,7 +120,7 @@ class Ajax extends MX_Controller {
 	*	@param: (POST) timesheet_id
 	*	@return: (void)
 	*/
-	function delete_timesheet() {
+	function delete_timesheet() {		
 		$timesheet_id = $this->input->post('timesheet_id');
 		# First get the timesheet
 		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
@@ -122,8 +135,21 @@ class Ajax extends MX_Controller {
 		}
 		
 		if($timesheet['child_timesheet_id']){
-			# Delete child timesheet
-			$this->timesheet_model->delete_timesheet($timesheet['child_timesheet_id']);	
+			  # keep doing this until the next timesheet no longer has child timesheet
+			  $has_child = true;
+			  $child_ts_id = $timesheet['child_timesheet_id'];
+			  while($has_child){
+				  # get child timesheet
+				  $child_ts = modules::run('timesheet/get_timesheet',$child_ts_id);
+				  # Delete child timesheet
+				  $this->timesheet_model->delete_timesheet($child_ts_id);	
+		  		
+				  if($child_ts['child_timesheet_id']){
+					  $child_ts_id = $child_ts['child_timesheet_id'];
+				  }else{
+					  $has_child = false;	
+				  }	
+			  }
 		}
 		
 		# If it is a split timesheet update parent timesheet to remove the foreign key [child_timesheet_id]

@@ -79,6 +79,9 @@ class Timesheet extends MX_Controller {
 		$data['shift'] = $this->job_shift_model->get_job_shift($timesheet['shift_id']);
 		$data['job'] = modules::run('job/get_job', $timesheet['job_id']);
 		
+		# get top parent
+		$data['top_parent_id'] = $this->get_top_parent($timesheet_id);
+		
 		$total_expenses = 0;
 		$expenses = unserialize($timesheet['expenses']);
 		if (is_array($expenses)) {
@@ -104,6 +107,27 @@ class Timesheet extends MX_Controller {
 		$data['total_expenses'] = $total_expenses;
 		
 		$this->load->view('row_view', isset($data) ? $data : NULL);
+	}
+	
+	function get_top_parent($timesheet_id)
+	{
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		# get top parent
+		$parent_ts_id = $timesheet_id;
+		if($timesheet['parent_timesheet_id']){
+			$has_parent = true;
+			$parent_ts_id = $timesheet['parent_timesheet_id'];
+			while($has_parent){
+				$parent_ts = $this->timesheet_model->get_timesheet($parent_ts_id);
+				# check if this has another child 	
+				if($parent_ts['parent_timesheet_id']){
+					$parent_ts_id = $parent_ts['parent_timesheet_id'];
+				}else{
+					$has_parent = false;	
+				}
+			}
+		}
+		return $parent_ts_id;	
 	}
 	
 	
@@ -300,7 +324,7 @@ class Timesheet extends MX_Controller {
 	function menu_dropdown_actions($id, $label) {
 		$data = array(
 			array('value' => 'batch', 'label' => '<i class="fa fa-share-square-o"></i> Batch Selected'),
-			array('value' => 'revert', 'label' => '<i class="fa fa-times"></i> Delete Selected')
+			#array('value' => 'revert', 'label' => '<i class="fa fa-times"></i> Delete Selected')
 		);
 		return modules::run('common/menu_dropdown', $data, $id, $label);
 	}

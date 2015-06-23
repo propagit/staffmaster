@@ -45,7 +45,6 @@ class Payrun extends MX_Controller {
 		$data['staff_timesheets'] = $timesheets;
 		$data['staff'] = $this->staff_model->get_staff($user_id);
 		$data['expanded'] = $expanded;
-		
 		return $this->load->view('source/batched_staff_row', isset($data) ? $data : NULL, true);
 	}
 	
@@ -60,6 +59,9 @@ class Payrun extends MX_Controller {
 	function row_timesheet($timesheet_id, $user_id) {
 		$data['timesheet'] = $this->payrun_model->get_timesheet($timesheet_id);
 		$data['user_id'] = $user_id;
+		# get top parent
+		$data['top_parent_id'] = modules::run('timesheet/get_top_parent',$timesheet_id);
+		
 		$this->load->view('source/timesheet_row', isset($data) ? $data : NULL);
 	}
 	

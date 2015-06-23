@@ -28,11 +28,26 @@
 	</thead>
 	<tbody>
 		<? foreach($timesheets as $timesheet) { 
-			if(!$timesheet['parent_timesheet_id']){
-				echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); 
-			}
+			echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); 
+			
+			# if timesheet has child or cut timesheet
 			if($timesheet['child_timesheet_id']){
-				echo modules::run('timesheet/row_timesheet', $timesheet['child_timesheet_id']);	
+				# keep doing this until the next timesheet no longer has child timesheet
+				$has_child = true;
+				$child_ts_id = $timesheet['child_timesheet_id'];
+				while($has_child){
+					# get child timesheet
+					$child_ts = modules::run('timesheet/get_timesheet',$child_ts_id);
+					# display this child row
+					echo modules::run('timesheet/row_timesheet', $child_ts_id);
+					
+					# check if this has another child 	
+					if($child_ts['child_timesheet_id']){
+						$child_ts_id = $child_ts['child_timesheet_id'];
+					}else{
+						$has_child = false;	
+					}
+				}
 			}
 			
 		} ?>
@@ -185,15 +200,12 @@ function refrest_timesheet(timesheet_id) {
 	})
 }
 function batch_timesheet(timesheet_id) {
-	var $container = $('#timesheet_' + timesheet_id);
+	var $container = $('.main_parent_'+timesheet_id);
 	$.ajax({
 		type: "POST",
 		url: "<?=base_url();?>timesheet/ajax/batch_timesheet",
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
-			if($container.hasClass('has-child-ts')){
-				$container.next().remove();
-			}
 			$container.remove();
 		}
 	})
@@ -202,8 +214,9 @@ function delete_timesheet(timesheet_id) {
 	var title = 'Delete Timesheet';
 	var message = '';
 	var $this_row = $('#timesheet_' + timesheet_id);
-	var child_id = $this_row.attr('data-child-id');
 	var parent_id = $this_row.attr('data-parent-id');
+	var top_parent_id = $this_row.attr('data-top-parent-id');
+	
 	if(parent_id > 0){
 		message = 'This action will delete the timesheet.<br /> Are you sure you want to do so?';	
 		$('#modal-delete-msg').html(message);
@@ -218,13 +231,14 @@ function delete_timesheet(timesheet_id) {
 				 url: "<?=base_url();?>timesheet/ajax/delete_timesheet",
 				 data: {timesheet_id: timesheet_id},
 				 success: function(html) {
-					 $('#timesheet_' + timesheet_id).remove();
-					 if(child_id){
-						 $('#timesheet_' + child_id).remove();
-					 }
 					 if(parent_id){
 						 refrest_timesheet(parent_id);
 					 }
+					 while($this_row.next().hasClass('main_parent_' + top_parent_id)){
+						 $this_row.next().remove();
+					 }
+					 $this_row.remove();
+					
 				 }
 			 })
 		 }

@@ -167,9 +167,25 @@ class Ajax extends MX_Controller {
 		# revert any split timesheet
 		$timesheet = modules::run('timesheet/get_timesheet',$timesheet_id);
 		if($timesheet['child_timesheet_id']){
-			$child_timesheet_id = $timesheet['child_timesheet_id'];
-			$this->payrun_model->revert_payrun($child_timesheet_id);
-			$this->expense_model->delete_timesheet_expenses($child_timesheet_id);		
+			
+			$has_child = true;
+			$child_ts_id = $timesheet['child_timesheet_id'];
+			while($has_child){
+				# get child timesheet
+				$child_ts = modules::run('timesheet/get_timesheet',$child_ts_id);
+				
+				# revert
+				$this->payrun_model->revert_payrun($child_ts_id);
+				$this->expense_model->delete_timesheet_expenses($child_ts_id);
+				
+				# check if this has another child 	
+				if($child_ts['child_timesheet_id']){
+					$child_ts_id = $child_ts['child_timesheet_id'];
+				}else{
+					$has_child = false;	
+				}
+			}
+					
 		}
 		
 	}
