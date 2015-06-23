@@ -12,10 +12,11 @@
 ?>
 
 <tr class="success timesheets_staff_<?=$user_id;?> 
-	<?=$has_child ? 'has-child-ts' : '';?> <?=$has_parent ? 'has-parent-ts' : '';?>" 
+	<?=$has_child ? 'has-child-ts' : '';?> <?=$has_parent ? 'has-parent-ts' : '';?> <?php echo 'main_parent_' . $top_parent_id;?>" 
     id="timesheet_<?=$timesheet['timesheet_id'];?>" 
     data-child-id="<?=$timesheet['child_timesheet_id'];?>"
     data-parent-id="<?=$timesheet['parent_timesheet_id'];?>"
+    data-top-parent-id="<?=$top_parent_id;?>"
     >
 	<td class="ts-split-link">
 		<? if(!$has_parent) { ?><input type="checkbox" class="payrun_timesheet" name="payrun_timesheets[]" value="<?=$timesheet['timesheet_id'];?>" /><?php } ?>

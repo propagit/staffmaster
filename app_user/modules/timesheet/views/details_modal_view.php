@@ -112,7 +112,18 @@
 					<?php } ?>
                     
                     <!--split timesheet-->
-                    <?php if(isset($child_timesheet)){ ?>
+                    <?php 
+						if($timesheet['child_timesheet_id']){
+							# keep doing this until the next timesheet no longer has child timesheet
+							$has_child = true;
+							$child_ts_id = $timesheet['child_timesheet_id'];
+							while($has_child){
+								# get child timesheet
+								$child_timesheet = modules::run('timesheet/get_timesheet',$child_ts_id);
+								
+								
+					?>
+  
                     	<tr>
                         	<td colspan="2">&nbsp;</td>
                         </tr>
@@ -143,7 +154,7 @@
                             <td><?=modules::run('attribute/payrate/display_payrate', $child_timesheet['payrate_id']);?></td>
                         </tr>
                         <?
-                            $hours = modules::run('attribute/payrate/extract_payrate', $timesheet);
+                            $hours = modules::run('attribute/payrate/extract_payrate', $child_timesheet);
                             if ($hours) {
                             foreach($hours as $rate=>$length) { ?>
                         <tr>
@@ -151,8 +162,22 @@
                             <td><b><?=$length/60;?></b> hours at $<?=$rate;?></td>
                         </tr>
                         <? } } ?>
-                    <?php } ?>
+
+                    
+                    <?php
+						
+								# get child ts to check if this has another child 	
+								if($child_timesheet['child_timesheet_id']){
+									$child_ts_id = $child_timesheet['child_timesheet_id'];
+								}else{
+									$has_child = false;	
+								}
+							}
+						}
+					?>
+                    
                     <!--split timesheet-->
+                    
 				</table>
 				<button type="button" class="btn btn-core" id="btn-print-timesheet"><i class="fa fa-print"></i> Print</button>
                 <?php if(0){ ?>

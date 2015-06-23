@@ -14,10 +14,11 @@
 	}
 ?>
 <tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status'],$timesheet['timesheet_id']);?> 
-	<?=$has_child ? 'has-child-ts' : '';?> <?=$has_parent ? 'has-parent-ts' : '';?>" 
+	<?=$has_child ? 'has-child-ts' : '';?> <?=$has_parent ? 'has-parent-ts' : '';?> <?php echo 'main_parent_' . $top_parent_id;?>" 
     id="timesheet_<?=$timesheet['timesheet_id'];?>"
 	data-child-id="<?=$timesheet['child_timesheet_id'];?>"
     data-parent-id="<?=$timesheet['parent_timesheet_id'];?>"
+    data-top-parent-id="<?=$top_parent_id;?>"
     >
 	<td class="ts-split-link"><? if(!$has_parent) { ?><input type="checkbox" class="select_timesheet" value="<?=$timesheet['timesheet_id'];?>" /><?php } ?></td>
 	<td class="wp-date" width="80">
@@ -55,7 +56,7 @@
 
         
         <!-- split timesheet -->
-        <?php if(!$timesheet['parent_timesheet_id'] && !$timesheet['child_timesheet_id']){ ?>
+        <?php if(!$timesheet['child_timesheet_id']){ ?>
         <a class="ts_split x-decoration" data-pk="<?=$timesheet['timesheet_id'];?>" onclick="load_split_timesheet_modal(this)"  data-toggle="popover">
 			&nbsp; <i class="fa fa-scissors"></i>
 		</a> 

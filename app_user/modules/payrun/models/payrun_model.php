@@ -293,9 +293,24 @@ class Payrun_model extends CI_Model {
 		# process split payrun 
 		$timesheet = $this->get_timesheet($timesheet_id);
 		if($timesheet['child_timesheet_id']){
+			$has_child = true;
 			$child_ts_id = $timesheet['child_timesheet_id'];
-			$this->db->where('timesheet_id', $child_ts_id);
-			$this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_READY));	
+			while($has_child){
+				# get child timesheet
+				$child_ts = $this->get_timesheet($child_ts_id);
+				
+				# process all child timesheets
+				$this->db->where('timesheet_id', $child_ts_id);
+				$this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_READY));	
+				
+				# check if this has another child 	
+				if($child_ts['child_timesheet_id']){
+					$child_ts_id = $child_ts['child_timesheet_id'];
+				}else{
+					$has_child = false;	
+				}
+			}
+			
 		}
 		
 		$this->db->where('timesheet_id', $timesheet_id);
@@ -327,9 +342,25 @@ class Payrun_model extends CI_Model {
 	{
 		$timesheet = $this->get_timesheet($timesheet_id);
 		if($timesheet['child_timesheet_id']){
+			
+			$has_child = true;
 			$child_ts_id = $timesheet['child_timesheet_id'];
-			$this->db->where('timesheet_id', $child_ts_id);
-			$this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_PENDING));	
+			while($has_child){
+				# get child timesheet
+				$child_ts = $this->get_timesheet($child_ts_id);
+				
+				# un process all child timesheets
+				$this->db->where('timesheet_id', $child_ts_id);
+				$this->db->update('job_shift_timesheets', array('status_payrun_staff' => PAYRUN_PENDING));	
+				
+				# check if this has another child 	
+				if($child_ts['child_timesheet_id']){
+					$child_ts_id = $child_ts['child_timesheet_id'];
+				}else{
+					$has_child = false;	
+				}
+			}
+			
 		}
 		
 		$this->db->where('timesheet_id', $timesheet_id);
