@@ -29,7 +29,9 @@
 		<? if (!$is_client) { ?>
 		<th class="center" width="20"><input type="checkbox" id="selected_all_invoices" /></th>
 			<? if ($accounting_platform = $this->config_model->get('accounting_platform')) { ?>
+            <?php if($accounting_platform != 'xero'){ ?>
 			<th class="center">External ID</th>
+            <?php } ?>
 			<? } ?>
 		<? } ?>
 		<th class="center" width="80">Issued <i class="fa fa-sort sort-result" sort-by="issued_date"></i></th>
