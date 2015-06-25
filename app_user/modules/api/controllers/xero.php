@@ -672,7 +672,7 @@ class Xero extends MX_Controller {
 			 # the key for this array is the payrate, which we will use to get the payrate id or EarningsRateID in xero
 			 foreach($line_arr as $k => $v){
 				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k],$xero_payrates);	
-			} #foreaeach ($line_arr...)
+			 } #foreaeach ($line_arr...)
 				
 			 $xml .= "	</TimesheetLines>
                 	  </Timesheet>
@@ -734,11 +734,14 @@ class Xero extends MX_Controller {
     }
 	
 	# for testing the payrun xml output
-	function _xero_ts()
+	function xero_ts()
 	{
-		$payrun_id = -1;
+		die();
+		$payrun_id = 1;
 		$this->load->model('payrun/payrun_model');
         $timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		
+		
 		$payrun = $this->payrun_model->get_payrun($payrun_id);
 		
 		#print_r($timesheets);exit;
@@ -767,21 +770,20 @@ class Xero extends MX_Controller {
 			 
 			 # the key for this array is the payrate, which we will use to get the payrate id or EarningsRateID in xero
 			 foreach($line_arr as $k => $v){
-				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k],$xero_payrates);	
-			} #foreaeach ($line_arr...)
+				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k],$xero_payrates);
+			 } #foreaeach ($line_arr...)
 				
 			 $xml .= "	 
 						</TimesheetLines>
                 	</Timesheet>
 					";
-			
 		}
 		
 		$final_xml = " <Timesheets>$xml</Timesheets>";
 		
-		#echo $final_xml;exit;
+		echo $final_xml;exit;
 		
-		$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $final_xml);
+		#$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $final_xml);
 		#return var_dump($response);exit;
 		if ($this->XeroOAuth->response['code'] == 200) {
 			$timesheet = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
@@ -843,10 +845,12 @@ class Xero extends MX_Controller {
 		$no_of_units = array();
 		$cur_ts_id = '';
 		$get_diff_payrate = true;
+		$temp_no_of_units = array();
+
 		for($i = 0; $i <= $no_of_days; $i++){
 			#$no_of_units[$i] = "<NumberOfUnit>0.00</NumberOfUnit>";	
 			foreach($timesheet as $line){
-				$earning_rate_id = $xero_earning_rate_id;
+				#$earning_rate_id = $xero_earning_rate_id;
 				# check if timesheet has different payrates depending on the time of the day configured in StaffBooks payrate template
 				# not ideal but this was added later on to the system on a short notice - to be made more robust on future updates
 				
@@ -867,7 +871,8 @@ class Xero extends MX_Controller {
 				if($get_diff_payrate){
 					$diff_payrates = modules::run('timesheet/extract_timesheet_payrate',$line['timesheet_id'], $user_type = 0);
 				}
-				
+
+
 				foreach($diff_payrates as $dp){
 					$total_hour = $dp['hours'];
 					if($dp['group'] != ''){
@@ -877,14 +882,22 @@ class Xero extends MX_Controller {
 						$earning_rate_id = $xero_earning_rate_id;	
 					}
 					if($line['job_date'] == date('Y-m-d',strtotime($payrun_start_date . "+$i days"))){
-						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>" . ( $total_hour ) . "</NumberOfUnit>";		
+						if($temp_no_of_units[$earning_rate_id][$i]){
+							$total_hour += $temp_no_of_units[$earning_rate_id][$i];	
+						}
+						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>" . $total_hour . "</NumberOfUnit>";	
+						$temp_no_of_units[$earning_rate_id][$i] = $total_hour;	
+						
 					}else{
-						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>0.00</NumberOfUnit>";	
+						if($temp_no_of_units[$earning_rate_id][$i]){
+							$total_hour = $temp_no_of_units[$earning_rate_id][$i];	
+						}else{
+							$total_hour = '0.00';	
+						}
+						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>" . $total_hour . "</NumberOfUnit>";		
 					}
 				}
-				
-				
-			} 					
+			} 	 #foreach timesheet as line				
 		}
 	
 		#$units = implode("",$no_of_units);
