@@ -572,7 +572,7 @@ class Timesheet extends MX_Controller {
 		/*$staff_id = 721;
 		$payrun_id = 1;
 		$this->db->where('staff_id != ',$staff_id)->update('job_shift_timesheets',array('payrun_id' => 0));*/
-		modules::run('payrun/revert_xero_payrun',1);
+		#modules::run('payrun/revert_xero_payrun',1);
 		
 	}
 	
