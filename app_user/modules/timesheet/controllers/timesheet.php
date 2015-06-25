@@ -559,11 +559,21 @@ class Timesheet extends MX_Controller {
 		}	
 	}
 	
+	#create_number_of_units($timesheet,$no_of_days,$payrun_start_date,$xero_earning_rate_id,$xero_payrates)
 	function test()
 	{
-		$payrates = $this->extract_timesheet_payrate(33, $user_type = 0);	
+		#$this->load->model('payrun/payrun_model');
+		#$timesheets = $this->payrun_model->get_export_timesheets(1);
+		#print_r($timesheets);exit;
+		/*$payrates = $this->extract_timesheet_payrate(114, $user_type = 0);	
 		echo count($payrates);
-		echo '<pre>' . print_r($payrates,true) . '</pre>';
+		echo '<pre>' . print_r($payrates,true) . '</pre>';*/
+		#$timesheet = $this->get_timesheet(118);
+		/*$staff_id = 721;
+		$payrun_id = 1;
+		$this->db->where('staff_id != ',$staff_id)->update('job_shift_timesheets',array('payrun_id' => 0));*/
+		modules::run('payrun/revert_xero_payrun',1);
+		
 	}
 	
 	function __test()
