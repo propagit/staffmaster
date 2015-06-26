@@ -71,7 +71,7 @@ class Ajax_client extends MX_Controller {
 						. ' - ' . date('H:i', $timesheet['finish_time']);
 			}
 			$user = $this->session->userdata('user_data');
-			$note_update[] = modules::run('auth/get_name') . ' - ' .
+			$note_update[] = 'Client - ' .
 				date('H:i', $new_start_time) . ' - ' . date('H:i', $timesheet['finish_time']) .
 				' (' . date('jS M Y g:ia') . ')';
 
@@ -98,7 +98,7 @@ class Ajax_client extends MX_Controller {
 						. ' - ' . date('H:i', $timesheet['finish_time']);
 			}
 			$user = $this->session->userdata('user_data');
-			$note_update[] = modules::run('auth/get_name') . ' - ' .
+			$note_update[] = 'Client - ' .
 				date('H:i', $timesheet['start_time']) . ' - ' . date('H:i', $new_finish_time) .
 				' (' . date('jS M Y g:ia') . ')';
 
