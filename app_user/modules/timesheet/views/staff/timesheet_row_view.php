@@ -11,9 +11,17 @@
 	</td>
 	<td><?=$client['company_name'];?>
    		<?
-			if($timesheet['reject_note']){
+			if($timesheet['reject_note'] || $timesheet['note_update']){
+				$msg = "";
+				if ($timesheet['reject_note']) {
+					$msg .= $timesheet['reject_note'] . "<br />";
+				}
+				$note_update = json_decode($timesheet['note_update']);
+				foreach($note_update as $note) {
+					$msg .= $note . "<br />";
+				}
 		?>
-        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="<?=$timesheet['reject_note'];?>"><i class="fa fa-exclamation-circle text-danger"></i></a>
+        <a class="note_tooltip" href="javascript:void(0);" data-toggle="tooltip" data-html="true"  data-placement="bottom" title="<?=$msg;?>"><i class="fa fa-exclamation-circle text-danger"></i></a>
         <?php } ?>
     </td>
 	<td>
@@ -33,15 +41,15 @@
 			<?=date('H:i', $timesheet['start_time']);?>
 			<? } ?>
 		</a>
-		- 
+		-
 		<a href="#" class="ts_finish_time prim-color-to-txt-color" data-type="combodate" data-template="HH: mm" data-format="HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('H:i', $timesheet['finish_time']);?>" title="Time sheet finish date/time">
 			<? if ($timesheet['finish_time'] != $shift['finish_time']) { ?>
 			<span class="text-red"><?=date('H:i', $timesheet['finish_time']);?></span>
 			<? } else { ?>
 			<?=date('H:i', $timesheet['finish_time']);?>
 			<? } ?>
-		</a> 
-		
+		</a>
+
 		<? } else { ?>
 			<? if ($timesheet['start_time'] != $shift['start_time']) { ?>
 			<span class="text-red"><?=date('H:i', $timesheet['start_time']);?></span>

@@ -21,13 +21,15 @@ a:focus {
 	outline: none;
 }
 div.tooltip-inner {
-    text-align: center;
+    text-align: left;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
     margin-bottom: 6px;
     background-color: #505050;
     font-size: 14px;
+    white-space:pre;
+    max-width:none;
 }
 .uc {
 	text-transform: uppercase;
@@ -1027,24 +1029,24 @@ ol.example li.placeholder:before {
 
 
 .custom-file .custom-file-box{
-	float:left;	
+	float:left;
 }
 .custom-file .custom-date-box{
 	float:left;
-	width:72%;	
+	width:72%;
 }
 .custom-file .custom-date-box .date{
-	width:300px;	
+	width:300px;
 }
 .custom-file .custom-date-box label{
-	float:left;	
+	float:left;
 	padding-left:15px;
 	padding-right:15px;
 	min-width:225px;
 	max-width:225px;
 }
 .custom-files-wrap{
-	margin-top:10px;	
+	margin-top:10px;
 	float:left;
 	/*width:100%;*/
 }
@@ -1950,7 +1952,7 @@ label.radio {
 }
 /* popover */
 .note{
-	font-size:12px; margin-left:20px;	
+	font-size:12px; margin-left:20px;
 }
 
 @media(max-width:1500px){
@@ -2125,7 +2127,7 @@ label.radio {
 	}
 	.custom-file .custom-date-box label{
 		padding-left:0;
-		padding-right:0;	
+		padding-right:0;
 	}
 
 }
@@ -2318,22 +2320,22 @@ label.radio {
 
 }
 .div-opacity{
-	opacity:0.5;	
+	opacity:0.5;
 }
 .user-notes-row{
-	margin-bottom:10px;	
+	margin-bottom:10px;
 }
 .x-decoration{
-	text-decoration:none !important;	
+	text-decoration:none !important;
 }
 .has-child-ts{
-	background-color:#e9f6fb;	
+	background-color:#e9f6fb;
 }
 .has-parent-ts{
-	background-color:#d7f0f9;	
+	background-color:#d7f0f9;
 }
 .has-child-ts td{
-	border-bottom:1px dashed #ccc !important;	
+	border-bottom:1px dashed #ccc !important;
 }
 .has-parent-ts .ts-split-link:before{
 	content: "\f0c4";
@@ -2359,14 +2361,14 @@ label.radio {
 .has-parent-ts td{
 	border-top:1px dashed #ccc !important;
 	padding-top:2px !important;
-	padding-bottom:0 !important;	
+	padding-bottom:0 !important;
 	/*opacity:0.6;*/
 }
 .has-parent-ts td:last-child{
-	opacity:1;	
+	opacity:1;
 }
 .has-parent-ts .wk_date{
-	font-size:1.2em;	
+	font-size:1.2em;
 }
 /**
  * This hack targets the Webkit browser engine
@@ -2383,5 +2385,5 @@ label.radio {
 }
 .xero-payrun-error{
 	font-size:20px;
-	font-weight:700;	
+	font-weight:700;
 }

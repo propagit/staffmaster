@@ -21,8 +21,8 @@ There is no time sheet at the moment
 	</tr>
 </thead>
 <tbody>
-	<? foreach($timesheets as $timesheet) { 
-		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet['timesheet_id'], $is_supervised); 
+	<? foreach($timesheets as $timesheet) {
+		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet['timesheet_id'], $is_supervised);
 	} ?>
 </tbody>
 </table>
@@ -30,10 +30,10 @@ There is no time sheet at the moment
 <script>
 $(function() {
 	init_edit();
-	
+
 	//init tooltip for rejected timesheets
     $('[data-toggle="tooltip"]').tooltip();
-	
+
 	$('#menu-timesheet-action ul li a[data-value="submit"]').click(function(){
 		var selected_timesheets = new Array();
 		$('.selected_timesheet:checked').each(function(){
@@ -44,7 +44,7 @@ $(function() {
 });
 function init_edit() {
 	$('.selected_all_timesheets').click(function(){
-		$(this).parent().parent().parent().parent().find('input.selected_timesheet').prop('checked', this.checked);		
+		$(this).parent().parent().parent().parent().find('input.selected_timesheet').prop('checked', this.checked);
 	});
 	$('.ts_start_time').editable({
 		combodate: {
@@ -76,7 +76,7 @@ function init_edit() {
 			}
         }
     });
-    
+
     var tmp = $.fn.popover.Constructor.prototype.show;
 	$.fn.popover.Constructor.prototype.show = function () {
 	  tmp.call(this);
@@ -84,7 +84,7 @@ function init_edit() {
 	    this.options.callback();
 	  }
 	}
-	
+
 	$('.ts_breaks').popover({
 		html: true,
 		placement: 'bottom',
@@ -122,6 +122,7 @@ function refrest_timesheet(timesheet_id) {
 		data: {timesheet_id: timesheet_id, is_supervised: <?=$is_supervised;?>},
 		success: function(html) {
 			$('#timesheet_' + timesheet_id).replaceWith(html);
+			$('.note_tooltip').tooltip();
 			init_edit();
 		}
 	})
@@ -148,8 +149,8 @@ function load_ts_breaks(obj) {
 				success: function(html) {
 					$(list_breaks).append(html);
 				}
-			})			
-		});		
+			})
+		});
 		$('.break-submit').click(function(){
 			$.ajax({
 		    	type: "POST",
@@ -157,7 +158,7 @@ function load_ts_breaks(obj) {
 		    	data: $('#form_update_ts_breaks').serialize(),
 				success: function(data) {
 					data = $.parseJSON(data);
-					if (!data.ok) {	
+					if (!data.ok) {
 						$('.editable-breaks').each(function(i,obj) {
 							$(obj).removeClass('has-error');
 							if (i== data.number) {
@@ -169,8 +170,8 @@ function load_ts_breaks(obj) {
 						$('.ts_breaks').popover('hide');
 						refrest_timesheet(pk);
 					}
-					
-				}			
+
+				}
 			})
 		})
 		$('.break-cancel').click(function(){

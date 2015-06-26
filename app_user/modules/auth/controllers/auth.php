@@ -13,6 +13,20 @@ class Auth extends MX_Controller {
 		$this->load->model('auth_model');
 	}
 
+	function get_name() {
+		$user = $this->session->userdata('user_data');
+		$name = $user['first_name'];
+		if ($user['last_name']) {
+			$name .= ' ' . $user['last_name'];
+		}
+		if (!$name) {
+			$name = $user['full_name'];
+		}
+		if (!$name) {
+			$name = 'Client';
+		}
+		return $name;
+	}
 
 	function is_user_logged_in()
 	{

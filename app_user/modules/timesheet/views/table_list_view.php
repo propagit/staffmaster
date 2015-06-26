@@ -6,7 +6,7 @@
 <div id="wrapper_ts">
 	<!-- Filter Menus -->
 	<div id="nav_payruns">
-		<?=modules::run('timesheet/menu_dropdown_actions', 'ts-action', 'Actions');?>			
+		<?=modules::run('timesheet/menu_dropdown_actions', 'ts-action', 'Actions');?>
 	</div><!-- End Filter Menus -->
 	<div class="table-responsive">
 	<table class="table table-bordered table-hover table-middle" width="100%">
@@ -27,9 +27,9 @@
 		</tr>
 	</thead>
 	<tbody>
-		<? foreach($timesheets as $timesheet) { 
-			echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']); 
-			
+		<? foreach($timesheets as $timesheet) {
+			echo modules::run('timesheet/row_timesheet', $timesheet['timesheet_id']);
+
 			# if timesheet has child or cut timesheet
 			if($timesheet['child_timesheet_id']){
 				# keep doing this until the next timesheet no longer has child timesheet
@@ -40,16 +40,16 @@
 					$child_ts = modules::run('timesheet/get_timesheet',$child_ts_id);
 					# display this child row
 					echo modules::run('timesheet/row_timesheet', $child_ts_id);
-					
-					# check if this has another child 	
+
+					# check if this has another child
 					if($child_ts['child_timesheet_id']){
 						$child_ts_id = $child_ts['child_timesheet_id'];
 					}else{
-						$has_child = false;	
+						$has_child = false;
 					}
 				}
 			}
-			
+
 		} ?>
 	</tbody>
 	</table>
@@ -62,27 +62,27 @@
 <script>
 $(function(){
 	init_edit();
-	
+
 	//init tooltip for rejected timesheets
     $('[data-toggle="tooltip"]').tooltip();
-	
+
 	$('.sort-data').on('click',function(){
 		sort_data.sort_by = $(this).attr('sort-by');
 		//toggle sort order data for next sort
-		(sort_data.sort_order == 'asc' ? sort_data.sort_order = 'desc' : sort_data.sort_order = 'asc');	
+		(sort_data.sort_order == 'asc' ? sort_data.sort_order = 'desc' : sort_data.sort_order = 'asc');
 		search_timesheets();
 	});
 })
 function init_edit() {
 	$('#selected_all_timesheets').click(function(){
-		$('input.select_timesheet').prop('checked', this.checked);	
+		$('input.select_timesheet').prop('checked', this.checked);
 	});
 	$('#menu-ts-action ul li a[data-value="batch"]').click(function(){
 		$('.select_timesheet:checked').each(function(){
 			batch_timesheet($(this).val());
 		});
 	})
-	
+
 	$('.ts_start_time').editable({
 		combodate: {
             firstItem: '',
@@ -113,7 +113,7 @@ function init_edit() {
 			}
         }
     });
-	
+
     /*
 $('.ts_payrate').editable({
 		url: '<?=base_url();?>timesheet/ajax/update_timesheet_payrate',
@@ -125,7 +125,7 @@ $('.ts_payrate').editable({
         }
 	});
 */
-	
+
 	$('.ts_payrate').popover({
 		html: true,
 		placement: 'bottom',
@@ -137,7 +137,7 @@ $('.ts_payrate').editable({
 			return $('#wrapper_ts_payrate').html();
 		}
 	})
-	
+
 	$('body').on('click', function (e) {
 	    $('[data-toggle=popover]').each(function () {
 	        // hide any open popovers when the anywhere else in the body is clicked
@@ -175,7 +175,7 @@ $('.ts_payrate').editable({
 			return $('#wrapper_ts_staff').html();
 		}
 	})
-	
+
 	$('.ts_split').popover({
 		html: true,
 		placement: 'bottom',
@@ -195,6 +195,7 @@ function refrest_timesheet(timesheet_id) {
 		data: {timesheet_id: timesheet_id},
 		success: function(html) {
 			$('#timesheet_' + timesheet_id).replaceWith(html);
+			$('.note_tooltip').tooltip();
 			init_edit();
 		}
 	})
@@ -216,9 +217,9 @@ function delete_timesheet(timesheet_id) {
 	var $this_row = $('#timesheet_' + timesheet_id);
 	var parent_id = $this_row.attr('data-parent-id');
 	var top_parent_id = $this_row.attr('data-top-parent-id');
-	
+
 	if(parent_id > 0){
-		message = 'This action will delete the timesheet.<br /> Are you sure you want to do so?';	
+		message = 'This action will delete the timesheet.<br /> Are you sure you want to do so?';
 		$('#modal-delete-msg').html(message);
 	}else{
 		var message = 'This action will delete the timesheet and unlock the shift.<br /> Are you sure you want to do so?';
@@ -238,7 +239,7 @@ function delete_timesheet(timesheet_id) {
 						 $this_row.next().remove();
 					 }
 					 $this_row.remove();
-					
+
 				 }
 			 })
 		 }
@@ -266,8 +267,8 @@ function load_ts_breaks(obj) {
 				success: function(html) {
 					$(list_breaks).append(html);
 				}
-			})			
-		});		
+			})
+		});
 		$('.break-submit').click(function(){
 			$.ajax({
 		    	type: "POST",
@@ -275,7 +276,7 @@ function load_ts_breaks(obj) {
 		    	data: $('#form_update_ts_breaks').serialize(),
 				success: function(data) {
 					data = $.parseJSON(data);
-					if (!data.ok) {	
+					if (!data.ok) {
 						$('.editable-breaks').each(function(i,obj) {
 							$(obj).removeClass('has-error');
 							if (i== data.number) {
@@ -287,8 +288,8 @@ function load_ts_breaks(obj) {
 						$('.ts_breaks').popover('hide');
 						refrest_timesheet(pk);
 					}
-					
-				}			
+
+				}
 			})
 		})
 		$('.break-cancel').click(function(){
@@ -336,7 +337,7 @@ function load_ts_staff(obj) {
 				}
 			})
 		});
-	    	
+
 		$('.staff-cancel').click(function(){
 			$('.ts_staff').popover('hide');
 		});
@@ -347,7 +348,7 @@ function load_ts_staff(obj) {
 				data: $('#form_update_ts_staff').serialize(),
 				success: function(data) {
 					data = $.parseJSON(data);
-					if (!data.ok) {	
+					if (!data.ok) {
 						$('#f_shift_staff').addClass('has-error');
 					}
 					else
@@ -358,7 +359,7 @@ function load_ts_staff(obj) {
 			})
 		})
 	})
-	
+
 }
 
 function load_split_timesheet_modal(obj) {
@@ -374,7 +375,7 @@ function load_split_timesheet_modal(obj) {
 		}
 	}).done(function(){
 		$(obj).popover('show');
-		
+
 		$('.ts-split-cancel').click(function(){
 			$('.ts_split').popover('hide');
 		});

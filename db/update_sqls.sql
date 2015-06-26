@@ -1,1 +1,1 @@
-ALTER TABLE `staff_custom_fields` ADD `field_date` DATE NOT NULL AFTER `value`;
+ALTER TABLE `job_shift_timesheets`  ADD `note_update` TEXT NOT NULL  AFTER `staff_key`;

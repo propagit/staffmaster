@@ -14,7 +14,7 @@ class Ajax_staff extends MX_Controller {
 		$this->load->model('timesheet_model');
 		$this->load->model('expense/expense_model');
 	}
-	
+
 	function generate_timesheets()
 	{
 		$this->load->model('staff/staff_model');
@@ -26,11 +26,11 @@ class Ajax_staff extends MX_Controller {
 			# Update user_staffs table field - last_worked_date
 			$data_user_staff = array('last_worked_date' => $shift['job_date'].' 00:00:00');
 			$this->staff_model->update_staff($shift['staff_id'],$data_user_staff);
-			
+
 			$copy_fields = array('shift_id','job_id','staff_id','supervisor_id',
 					'job_date','start_time','finish_time','break_time',
 					'venue_id','role_id','uniform_id','payrate_id', 'client_payrate_id', 'expenses');
-					
+
 			$timesheet = array();
 			foreach($copy_fields as $field) {
 				$timesheet[$field] = $shift[$field];
@@ -41,31 +41,31 @@ class Ajax_staff extends MX_Controller {
 			#$this->update_timesheet_hour_rate($timesheet_id);
 		}
 	}
-	
+
 	function list_timesheets() {
 		$data['timesheets'] = $this->timesheet_staff_model->get_timesheets();
 		$data['is_supervised'] = 0;
 		$this->load->view('staff/timesheets_list', isset($data) ? $data : NULL);
 	}
-	
+
 	function load_supervised_timesheets() {
 		$data['timesheets'] = $this->timesheet_staff_model->get_supervised_timesheets();
 		$data['is_supervised'] = 1;
 		$this->load->view('staff/timesheets_list', isset($data) ? $data : NULL);
 	}
-	
+
 	function refresh_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
 		$is_supervised = $this->input->post('is_supervised');
 		echo modules::run('timesheet/timesheet_staff/row_timesheet', $timesheet_id, $is_supervised);
 	}
-	
+
 	function submit_timesheet() {
 		$timesheet_id = $this->input->post('timesheet_id');
 		$this->timesheet_staff_model->submit_timesheet($timesheet_id);
 	}
-	
-	
+
+
 	/**
 	*	@name: load_expenses_modal
 	*	@desc: ajax function to open modal of timesheet expenses
@@ -77,7 +77,7 @@ class Ajax_staff extends MX_Controller {
 		$data['timesheet_id'] = $timesheet_id;
 		$this->load->view('staff/edit/expense/modal_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: list_expenses
 	*	@desc: ajax function to list expenses of a timesheet
@@ -95,7 +95,7 @@ class Ajax_staff extends MX_Controller {
 		$data['paid_expenses'] = $this->expense_model->get_timesheet_expenses($timesheet_id);
 		$this->load->view('staff/edit/expense/table_list_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: add_expense
 	*	@desc: ajax function to add an expense item of a timesheet
@@ -133,7 +133,7 @@ class Ajax_staff extends MX_Controller {
 			echo json_encode(array('ok' => true));
 		}
 	}
-	
+
 	/**
 	*	@name: update_timesheet_start_time
 	*	@desc: ajax function to update timesheet start time (inline edit)
@@ -150,11 +150,25 @@ class Ajax_staff extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Start time cannot be greater than finish time';
 		} else {
-			$this->timesheet_staff_model->update_timesheet($timesheet_id, array('start_time' => $new_start_time));
+			$note_update = json_decode($timesheet['note_update']);
+			if (!is_array($note_update)) {
+				$note_update = array();
+				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
+						. ' - ' . date('H:i', $timesheet['finish_time']);
+			}
+			$user = $this->session->userdata('user_data');
+			$note_update[] = modules::run('auth/get_name') . ' - ' .
+				date('H:i', $new_start_time) . ' - ' . date('H:i', $timesheet['finish_time']) .
+				' (' . date('jS M Y g:ia') . ')';
+
+			$this->timesheet_staff_model->update_timesheet($timesheet_id, array(
+				'start_time' => $new_start_time,
+				'note_update' => json_encode($note_update)
+			));
 			echo json_encode(array('status' => 'success', 'value' => $new_start_time));
 		}
 	}
-	
+
 	/**
 	*	@name: update_timesheet_finish_time
 	*	@desc: ajax function to update timesheet finish time (inline edit)
@@ -171,7 +185,22 @@ class Ajax_staff extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Finish time cannot be less than start time';
 		} else {
-			$this->timesheet_staff_model->update_timesheet($timesheet_id, array('finish_time' => $new_finish_time));
+			$note_update = json_decode($timesheet['note_update']);
+			if (!is_array($note_update)) {
+				$note_update = array();
+				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
+						. ' - ' . date('H:i', $timesheet['finish_time']);
+			}
+			$user = $this->session->userdata('user_data');
+			$note_update[] = modules::run('auth/get_name') . ' - ' .
+				date('H:i', $timesheet['start_time']) . ' - ' . date('H:i', $new_finish_time) .
+				' (' . date('jS M Y g:ia') . ')';
+
+
+			$this->timesheet_staff_model->update_timesheet($timesheet_id, array(
+				'finish_time' => $new_finish_time,
+				'note_update' => json_encode($note_update)
+			));
 			echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
 		}
 	}
