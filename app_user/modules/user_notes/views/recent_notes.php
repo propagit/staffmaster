@@ -1,12 +1,15 @@
 <ul class="messages">
 <?php 
-	if($user_notes){
-		foreach($user_notes as $notes){
-			$admin_id = $notes['added_by'];
-			$date = $notes['created_date'];
+	if($notes){
+		foreach($notes as $note){
+			$admin_id = $note['added_by'];
+			$date = $note['created_date'];
 			# get_user_notes_by_admin_id($user_id,$admin_id)
-			$grouped_notes = modules::run('user_notes/get_user_notes_by_admin_id_and_date',$notes['user_id'],$admin_id,$date);
+			$grouped_notes = modules::run('user_notes/get_user_notes_by_admin_id_and_date',$note['user_id'],$admin_id,$date);
 			$creator = modules::run('user/get_user',$admin_id);
+			# user for which the note was created
+			$user_id = $note['user_id'];
+			$user = modules::run('user/get_user',$user_id);
 				
 ?>
 				 <li class="by-user">
@@ -21,8 +24,16 @@
                           <span class="wk_date display-inline"><?=date('d',strtotime($date));?></span>
                           <span class="wk_month display-inline"><?=date('M',strtotime($date));?></span>
                           <span class="wk_year display-inline">, <?=date('Y',strtotime($date));?></span>
+                          
+                          <span class="post-time"><?=date('H:i:s');?></span>
+                          <span class="post-author"><?=$creator['first_name'] . ' ' . $creator['last_name']?></span>
                       </div>
-                      <span class="title"><?=$creator['first_name'] . ' ' . $creator['last_name']?></span>
+                      <div class="notes-avatar">
+                            <a href="<?=base_url();?>staff/edit/<?=$user_id;?>">
+                                <?=modules::run('staff/profile_image',$user_id);?>
+                            </a>
+                      </div>
+                      <span class="title notes-title"><?=$user['first_name'] . ' ' . $user['last_name']?></span>
                   </div>     
 <?php
 				foreach($grouped_notes as $gn){

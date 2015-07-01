@@ -1,13 +1,13 @@
-<form id="user-note-form">
+<form id="user-note-form" class="app-form">
     <div id="n_user_id" class="form-group">
         <label for="job_type" class="col-lg-2 remove-gutters control-label">Add Note To</label>
-        <div class="col-lg-10">
+        <div class="col-lg-10 remove-left-gutter">
             <?=modules::run('user/field_select', 'user_id');?>
         </div>
     </div>
     <div id="n_note" class="form-group">
         <label class="col-lg-2 control-label remove-gutters">Note</label>
-        <div class="col-lg-10">
+        <div class="col-lg-10 remove-left-gutter">
             <textarea id="user-note" class="form-control" name="note"></textarea>
         </div>
     </div>

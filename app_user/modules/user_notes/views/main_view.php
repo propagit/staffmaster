@@ -2,7 +2,7 @@
 <p>Quick notes you add below will display under the notes tab in the staff or client profile. 
 Notes will be date marked and list the user who added the note</p>        
 <div id="load-notes-users" style="margin-top:25px;"></div>
-<div class="alert alert-success hide push" style="width:100%;" id="msg-add-user-note"><i class="fa fa-check"></i> &nbsp; note added successfully!</div>
+<div class="alert alert-success hide push full-width" id="msg-add-user-note"><i class="fa fa-check"></i> &nbsp; note added successfully!</div>
   
 
 
@@ -51,9 +51,20 @@ function add_user_note(){
 				setTimeout(function(){
 					$('#msg-add-user-note').addClass('hide');
 				}, 2000);
+				refresh_recent_users();
 			}
 		}
 	});
+}
+
+function refresh_recent_users(){
+	$.ajax({
+		url:'<?=base_url();?>user_notes/ajax/get_recent_notes',
+		success: function(html) {
+			$('#dash-recent-notes').html(html);
+			// #dash-recent-notes is on on modules/dashboard/views/dashboard.php
+		}
+	});	
 }
 
 </script>

@@ -40,6 +40,11 @@ class User_notes extends MX_Controller {
 	function get_user_notes_by_admin_id_and_date($user_id,$admin_id,$date){
 		return $this->user_notes_model->get_user_notes_by_admin_id_and_date($user_id,$admin_id,$date);	
 	}
+	
+	function get_recent_notes($limit = DEFAULT_PER_PAGE){
+		$data['notes'] = $this->user_notes_model->get_recent_notes($limit);
+		$this->load->view('recent_notes',isset($data) ? $data : NULL);	
+	}
 
 	
 }

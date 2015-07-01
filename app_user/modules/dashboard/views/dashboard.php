@@ -25,7 +25,7 @@
                     <p>Join the conversation and get involved!</p>
                     <button class="btn btn-core dash-start-conversation" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>forum/ajax/create_topic_form"><i class="fa fa-comments-o"></i> Start Conversation</button>
                 </div>
-                <div id="load-conversations">
+                <div id="load-conversations push">
                 	<?=modules::run('forum/load_conversation');?>
                 </div>
             </div>
@@ -34,13 +34,20 @@
         	<div class="inner-box add-top-margin push">
                 <?=modules::run('user_notes/main_view');?>
             </div>
+            
+            <div class="inner-box add-top-margin push full-width push">
+            	<h2>Recent Notes</h2>
+                <div id="dash-recent-notes">
+                <?=modules::run('user_notes/get_recent_notes');?>
+                </div>
+            </div>
         </div>
         
         <div class="col-md-6 white-box">
             <div class="inner-box desktop-visible-lg">
                 <?=modules::run('dashboard/load_daily_statistics');?>
             </div>
-            <div class="inner-box add-top-margin">
+            <div class="inner-box col-xs-12 add-top-margin">
             	<?=modules::run('dashboard/activity_log');?>
             </div>
             

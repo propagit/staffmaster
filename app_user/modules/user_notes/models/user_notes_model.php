@@ -31,4 +31,15 @@ class User_notes_model extends CI_Model {
 		return $notes;	
 	}
 	
+	function get_recent_notes($limit)
+	{
+		$sql = "SELECT * FROM user_notes un
+				GROUP BY un.created_date, un.added_by, un.user_id  
+				ORDER BY un.created_on DESC
+				LIMIT $limit";
+		$notes = $this->db->query($sql)
+				 		  ->result_array();
+		return $notes;
+	}
+	
 }

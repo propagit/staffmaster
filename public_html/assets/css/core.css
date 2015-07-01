@@ -1051,6 +1051,50 @@ ol.example li.placeholder:before {
 	/*width:100%;*/
 }
 
+
+/* user notes - quick notes*/
+.info-row .post-author,
+.info-row .post-time{
+	padding-left:20px;
+}
+.post-time:before{
+	content:"TIME";
+	font-weight: 700;
+  	padding-right: 4px;
+}
+.post-author:before{
+	content:"POSTED";	
+	font-weight: 700;
+  	padding-right: 4px;
+}
+.notes-avatar{
+	float: left;
+  	margin-top: 5px;
+  	margin-right: 10px;
+  	margin-bottom: 5px;
+}
+.notes-avatar .default-avatar-photo,
+.notes-avatar .profile_photo{
+	height:40px;
+	max-width:40px;
+	box-shadow:none;	
+}
+.notes-avatar .default-avatar-photo .fa{
+	line-height:40px;
+	font-size:48px;
+}
+.notes-avatar .default-avatar-photo .fa,
+.notes-avatar .profile_photo img{
+	/*border-radius:0;*/
+	box-shadow:none;	
+}
+.notes-title{
+	padding-top:15px !important;
+}
+.app-form .form-group{
+	width:100%;
+	float:left;
+}
 /* begin - responsive */
 
 /* *

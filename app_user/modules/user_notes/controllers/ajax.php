@@ -49,4 +49,9 @@ class Ajax extends MX_Controller {
 		}
 		
 	}
+	
+	function get_recent_notes()
+	{
+		echo modules::run('user_notes/get_recent_notes');	
+	}
 }
