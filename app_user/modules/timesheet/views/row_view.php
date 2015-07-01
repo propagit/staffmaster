@@ -12,6 +12,14 @@
 		$has_parent = true;
 		$remove_red_text_flag = true;
 	}
+	/*if($timesheet['timesheet_id'] == 83){
+	$note_update = json_decode($timesheet['note_update']);
+	foreach($note_update as $n_up){
+	  if (preg_match("/\bOriginal\sTime\b/i", $n_up)) {
+		  echo 'Has ori';
+	  }
+	}
+	}*/
 ?>
 <tr class="<?=modules::run('timesheet/status_to_class', $timesheet['status'],$timesheet['timesheet_id']);?>
 	<?=$has_child ? 'has-child-ts' : '';?> <?=$has_parent ? 'has-parent-ts' : '';?> <?php echo 'main_parent_' . $top_parent_id;?>"
@@ -110,6 +118,7 @@
 			<?=$staff['first_name'] . ' ' . $staff['last_name'];?>
 			<? } ?>
 		</a>
+        <a class="add-ts-note" data-type="textarea" data-pk="<?=$timesheet['timesheet_id'];?>"><i class="fa fa-pencil"></i></a>
 	</td>
 	<td class="center">
 		<a class="prim-color-to-txt-color prim-color-to-txt-color" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/load_expenses_modal/<?=$timesheet['timesheet_id'];?>">

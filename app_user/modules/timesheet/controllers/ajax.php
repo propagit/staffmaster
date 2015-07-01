@@ -178,7 +178,19 @@ class Ajax extends MX_Controller {
 				$note_update = array();
 				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
 						. ' - ' . date('H:i', $timesheet['finish_time']);
+			}else{
+				$has_ori_time = false;
+				foreach($note_update as $n_up){
+					if (preg_match("/\bOriginal\sTime\b/i", $n_up)) {
+						$has_ori_time = true;
+					}
+				}
+				if(!$has_ori_time){
+					$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
+						. ' - ' . date('H:i', $timesheet['finish_time']);	
+				}
 			}
+			
 			$user = $this->session->userdata('user_data');
 			$note_update[] = modules::run('auth/get_name') . ' - ' .
 				date('H:i', $new_start_time) . ' - ' . date('H:i', $timesheet['finish_time']) .
@@ -212,6 +224,17 @@ class Ajax extends MX_Controller {
 				$note_update = array();
 				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
 						. ' - ' . date('H:i', $timesheet['finish_time']);
+			}else{
+				$has_ori_time = false;
+				foreach($note_update as $n_up){
+					if (preg_match("/\bOriginal\sTime\b/i", $n_up)) {
+						$has_ori_time = true;
+					}
+				}
+				if(!$has_ori_time){
+					$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
+						. ' - ' . date('H:i', $timesheet['finish_time']);	
+				}
 			}
 			$user = $this->session->userdata('user_data');
 			$note_update[] = modules::run('auth/get_name') . ' - ' .
@@ -572,5 +595,23 @@ class Ajax extends MX_Controller {
 	{
 		$timesheet_id = $this->input->post('timesheet_id');
 		echo modules::run('timesheet/row_timesheet', $timesheet_id);
+	}
+	
+	function add_timesheet_note()
+	{
+		$timesheet_id = $this->input->post('pk');
+		$note = $this->input->post('value');
+		
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		
+		$note_update = json_decode($timesheet['note_update']);
+		
+		$user = $this->session->userdata('user_data');
+		$note_update[] = modules::run('auth/get_name') . ' - ' .
+			$note;
+
+		$this->timesheet_model->update_timesheet($timesheet_id, array(
+			'note_update' => json_encode($note_update)
+		));	
 	}
 }
