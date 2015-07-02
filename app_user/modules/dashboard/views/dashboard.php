@@ -14,43 +14,55 @@
 
 <div class="col-md-12">
 	<div class="box bottom-box">
-    	<div class="col-md-6 white-box">
+    	<div class="col-md-6 white-box col-xs-12">
 			
         	<div class="inner-box desktop-hidden-lg add-bottom-margin">
                 <?=modules::run('dashboard/load_daily_statistics');?>
             </div>
-            <div class="inner-box">
-            	<div class="msg-head-wrap">
-                    <h2>Conversations</h2>
-                    <p>Join the conversation and get involved!</p>
-                    <button class="btn btn-core dash-start-conversation" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>forum/ajax/create_topic_form"><i class="fa fa-comments-o"></i> Start Conversation</button>
-                </div>
-                <div id="load-conversations push">
-                	<?=modules::run('forum/load_conversation');?>
-                </div>
-            </div>
             
-
-        	<div class="inner-box add-top-margin push">
+            
+        	<div class="inner-box push">
                 <?=modules::run('user_notes/main_view');?>
             </div>
             
             <div class="inner-box add-top-margin push full-width push">
             	<h2>Recent Notes</h2>
-                <div id="dash-recent-notes">
+                <div id="dash-recent-notes" class="recent-notes-wrap">
                 <?=modules::run('user_notes/get_recent_notes');?>
                 </div>
             </div>
+            
+           
+            
+            
+
         </div>
         
-        <div class="col-md-6 white-box">
+        <div class="col-md-6 white-box col-xs-12">
             <div class="inner-box desktop-visible-lg">
                 <?=modules::run('dashboard/load_daily_statistics');?>
             </div>
-            <div class="inner-box col-xs-12 add-top-margin">
-            	<?=modules::run('dashboard/activity_log');?>
+            
+           <div class="inner-box add-top-margin">
+            	<div class="msg-head-wrap">
+                    <h2>Conversations</h2>
+                    <p>Join the conversation and get involved!</p>
+                    <button class="btn btn-core dash-start-conversation" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>forum/ajax/create_topic_form"><i class="fa fa-comments-o"></i> Start Conversation</button>
+                </div>
+                <div id="load-conversations">
+                	<?=modules::run('forum/load_conversation');?>
+                </div>
             </div>
             
+           
+            
+            
+        </div>
+        
+       	<div class="col-xs-12 white-box remove-gutters">
+          	<div class="inner-box col-xs-12 add-top-margin push">
+            	<?=modules::run('dashboard/activity_log');?>
+            </div>
         </div>
     </div>
 </div>
