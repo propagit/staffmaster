@@ -33,7 +33,8 @@ class Timesheet_client_model extends CI_Model {
 					LEFT JOIN `attribute_roles` r ON r.role_id = t.role_id
 					LEFT JOIN `jobs` j ON j.job_id = t.job_id
 				WHERE t.supervisor_id = " . $this->user_id . "
-				AND t.status < " . TIMESHEET_BATCHED;
+				AND t.status < " . TIMESHEET_BATCHED . 
+				" ORDER BY t.job_date DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
