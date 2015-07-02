@@ -72,6 +72,8 @@ $(function(){
 		(sort_data.sort_order == 'asc' ? sort_data.sort_order = 'desc' : sort_data.sort_order = 'asc');
 		search_timesheets();
 	});
+	
+	
 })
 function init_edit() {
 	$('#selected_all_timesheets').click(function(){
@@ -82,6 +84,14 @@ function init_edit() {
 			batch_timesheet($(this).val());
 		});
 	})
+	
+	$('.add-ts-note').editable({
+		display:false,
+		url: '<?=base_url();?>timesheet/ajax/add_timesheet_note',
+		success:function(){
+			refrest_timesheet($(this).attr('data-pk'));
+		}
+	});
 
 	$('.ts_start_time').editable({
 		combodate: {

@@ -559,6 +559,31 @@ class Timesheet extends MX_Controller {
 		}	
 	}
 	
+	/*
+		On timesheet time update - check if original time exist on the note update field and adds if it does not
+	*/
+	function add_original_time($timesheet)
+	{
+		$note_update = json_decode($timesheet['note_update']);
+		if (!is_array($note_update)) {
+			$note_update = array();
+			$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
+					. ' - ' . date('H:i', $timesheet['finish_time']);
+		}else{
+			$has_ori_time = false;
+			foreach($note_update as $n_up){
+				if (preg_match("/\b^Original\sTime\b/i", $n_up)) {
+					$has_ori_time = true;
+				}
+			}
+			if(!$has_ori_time){
+				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
+					. ' - ' . date('H:i', $timesheet['finish_time']);	
+			}
+		}
+		return $note_update;
+	}
+	
 	#create_number_of_units($timesheet,$no_of_days,$payrun_start_date,$xero_earning_rate_id,$xero_payrates)
 	function test()
 	{

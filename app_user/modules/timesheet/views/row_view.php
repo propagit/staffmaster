@@ -110,6 +110,9 @@
 			<?=$staff['first_name'] . ' ' . $staff['last_name'];?>
 			<? } ?>
 		</a>
+        <!-- add note to timehseet-->
+        <a class="add-ts-note" data-type="textarea" data-title="Note" data-placeholder="Enter your note here..." data-pk="<?=$timesheet['timesheet_id'];?>"><i class="fa fa-pencil"></i></a>
+        <!-- note to timesheet-->
 	</td>
 	<td class="center">
 		<a class="prim-color-to-txt-color prim-color-to-txt-color" data-toggle="modal" data-target=".bs-modal-lg" href="<?=base_url();?>timesheet/ajax/load_expenses_modal/<?=$timesheet['timesheet_id'];?>">
