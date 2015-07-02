@@ -774,6 +774,7 @@ ol.example li.placeholder:before {
 	max-height:500px;
 	min-height:500px;
 	overflow:auto;
+	overflow-x:hidden;
 }
 .messages li:first-child {
 	margin-top: 20px;
