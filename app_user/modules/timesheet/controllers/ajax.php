@@ -173,24 +173,7 @@ class Ajax extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Start time cannot be greater than finish time';
 		} else {
-			$note_update = json_decode($timesheet['note_update']);
-			if (!is_array($note_update)) {
-				$note_update = array();
-				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
-						. ' - ' . date('H:i', $timesheet['finish_time']);
-			}else{
-				$has_ori_time = false;
-				foreach($note_update as $n_up){
-					if (preg_match("/\bOriginal\sTime\b/i", $n_up)) {
-						$has_ori_time = true;
-					}
-				}
-				if(!$has_ori_time){
-					$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
-						. ' - ' . date('H:i', $timesheet['finish_time']);	
-				}
-			}
-			
+			$note_update = modules::run('timesheet/add_original_time',$timesheet);
 			$user = $this->session->userdata('user_data');
 			$note_update[] = modules::run('auth/get_name') . ' - ' .
 				date('H:i', $new_start_time) . ' - ' . date('H:i', $timesheet['finish_time']) .
@@ -203,6 +186,8 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('status' => 'success', 'value' => $new_start_time));
 		}
 	}
+	
+	
 
 	/**
 	*	@name: update_timesheet_finish_time
@@ -219,23 +204,7 @@ class Ajax extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Finish time cannot be less than start time';
 		} else {
-			$note_update = json_decode($timesheet['note_update']);
-			if (!is_array($note_update)) {
-				$note_update = array();
-				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
-						. ' - ' . date('H:i', $timesheet['finish_time']);
-			}else{
-				$has_ori_time = false;
-				foreach($note_update as $n_up){
-					if (preg_match("/\bOriginal\sTime\b/i", $n_up)) {
-						$has_ori_time = true;
-					}
-				}
-				if(!$has_ori_time){
-					$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
-						. ' - ' . date('H:i', $timesheet['finish_time']);	
-				}
-			}
+			$note_update = modules::run('timesheet/add_original_time',$timesheet);
 			$user = $this->session->userdata('user_data');
 			$note_update[] = modules::run('auth/get_name') . ' - ' .
 				date('H:i', $timesheet['start_time']) . ' - ' . date('H:i', $new_finish_time) .
@@ -248,6 +217,7 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('status' => 'success', 'value' => $new_finish_time));
 		}
 	}
+	
 
 	/**
 	*	@name: update_timesheet_payrate
@@ -607,8 +577,13 @@ class Ajax extends MX_Controller {
 		$note_update = json_decode($timesheet['note_update']);
 		
 		$user = $this->session->userdata('user_data');
-		$note_update[] = modules::run('auth/get_name') . ' - ' .
-			$note;
+		if($user['is_client']){
+			$note_update[] = 'Client - ' .
+				$note . ' (' . date('jS M Y g:ia') . ')';
+		}else{
+			$note_update[] = modules::run('auth/get_name') . ' - ' .
+				$note . ' (' . date('jS M Y g:ia') . ')';
+		}
 
 		$this->timesheet_model->update_timesheet($timesheet_id, array(
 			'note_update' => json_encode($note_update)

@@ -31,7 +31,12 @@
 		Not Specified
 		<? } ?>
 	</td>
-	<td><?=$staff['first_name'] . ' ' . $staff['last_name'];?></td>
+	<td>
+	<?=$staff['first_name'] . ' ' . $staff['last_name'];?>
+    <!-- add note to timehseet-->
+    <a class="add-ts-note" data-type="textarea" data-title="Note" data-placeholder="Enter your note here..." data-pk="<?=$timesheet['timesheet_id'];?>"><i class="fa fa-pencil"></i></a>
+    <!-- note to timesheet-->
+    </td>
 	<td class="center staff_timesheet_time">
 		<? if ($updatable) { ?>
 		<a href="#" class="ts_start_time" data-type="combodate" data-template="HH: mm" data-format="HH:mm" data-viewformat="HH:mm" data-pk="<?=$timesheet['timesheet_id'];?>" data-value="<?=date('H:i', $timesheet['start_time']);?>" data-title="Time sheet start date/time">

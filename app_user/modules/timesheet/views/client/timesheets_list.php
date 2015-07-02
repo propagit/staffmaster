@@ -40,6 +40,13 @@ $(function() {
 	});
 });
 function init_edit() {
+	$('.add-ts-note').editable({
+		display:false,
+		url: '<?=base_url();?>timesheet/ajax/add_timesheet_note',
+		success:function(){
+			refrest_timesheet($(this).attr('data-pk'));
+		}
+	});
 	$('.selected_all_timesheets').click(function(){
 		$(this).parent().parent().parent().parent().find('input.selected_timesheet').prop('checked', this.checked);
 	});

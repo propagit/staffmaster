@@ -150,12 +150,7 @@ class Ajax_staff extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Start time cannot be greater than finish time';
 		} else {
-			$note_update = json_decode($timesheet['note_update']);
-			if (!is_array($note_update)) {
-				$note_update = array();
-				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
-						. ' - ' . date('H:i', $timesheet['finish_time']);
-			}
+			$note_update = modules::run('timesheet/add_original_time',$timesheet);
 			$user = $this->session->userdata('user_data');
 			$note_update[] = modules::run('auth/get_name') . ' - ' .
 				date('H:i', $new_start_time) . ' - ' . date('H:i', $timesheet['finish_time']) .
@@ -185,12 +180,7 @@ class Ajax_staff extends MX_Controller {
 			$this->output->set_status_header('400');
 			echo 'Finish time cannot be less than start time';
 		} else {
-			$note_update = json_decode($timesheet['note_update']);
-			if (!is_array($note_update)) {
-				$note_update = array();
-				$note_update[] = 'Original Time: ' . date('H:i', $timesheet['start_time'])
-						. ' - ' . date('H:i', $timesheet['finish_time']);
-			}
+			$note_update = modules::run('timesheet/add_original_time',$timesheet);
 			$user = $this->session->userdata('user_data');
 			$note_update[] = modules::run('auth/get_name') . ' - ' .
 				date('H:i', $timesheet['start_time']) . ' - ' . date('H:i', $new_finish_time) .
