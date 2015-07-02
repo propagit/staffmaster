@@ -25,7 +25,7 @@
                           <span class="wk_month display-inline"><?=date('M',strtotime($date));?></span>
                           <span class="wk_year display-inline">, <?=date('Y',strtotime($date));?></span>
                           
-                          <span class="post-time"><?=date('H:i:s');?></span>
+                          <span class="post-time"><?=date('H:i:s',strtotime($note['created_on']));?></span>
                           <span class="post-author"><?=$creator['first_name'] . ' ' . $creator['last_name']?></span>
                       </div>
                       <div class="notes-avatar">
@@ -33,7 +33,7 @@
                                 <?=modules::run('staff/profile_image',$user_id);?>
                             </a>
                       </div>
-                      <span class="title notes-title"><?=$user['first_name'] . ' ' . $user['last_name']?></span>
+                      <span class="title notes-title"><a class="prim-color-to-txt-color" href="<?=base_url();?>staff/edit/<?=$user_id;?>"><?=$user['first_name'] . ' ' . $user['last_name']?></a></span>
                   </div>     
 <?php
 				foreach($grouped_notes as $gn){
