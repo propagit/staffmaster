@@ -84,8 +84,12 @@ class Lookbook extends MX_Controller {
 	}
 	
 	
-	function _test($lookbook_id)
+	function _test($lookbook_id = '')
 	{
+		
+		$this->get_staff_card_config_view(16);
+		exit;
+		
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
 		$lookbook = $this->lookbook_model->get_lookbook_by_id($lookbook_id);

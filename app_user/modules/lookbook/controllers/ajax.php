@@ -99,7 +99,7 @@ class Ajax extends MX_Controller {
 			# re index array otherwise it will give an object when json encoded 
 			$new_config = array_values($config_arr);
 		}
-		$this->lookbook_model->update_lookbook_config('personal',json_encode($new_config));
+		$this->lookbook_model->update_lookbook_config(LB_PERSONAL,json_encode($new_config));
 		
 	}
 	
@@ -128,7 +128,7 @@ class Ajax extends MX_Controller {
 			# re index array otherwise it will give an object when json encoded 
 			$new_config = array_values($config_arr);
 		}
-		$this->lookbook_model->update_lookbook_config('custom',json_encode($new_config));	
+		$this->lookbook_model->update_lookbook_config(LB_CUSTOM,json_encode($new_config));	
 	}
 	
 	function get_client_email($client_user_id)
