@@ -11,10 +11,29 @@ class Lookbook_model extends CI_Model {
 	}
 	
 	function get_lookbook_config($type)
-	{
+	{				  				  
+		# if type is custom fields - check if this custom field exist if not remove this from the config
+		if($type == LB_CUSTOM){
+			$config = $this->db->where('type',$type)
+						  ->get('lookbook_config')
+						  ->row_array();
+			if($config){
+				$custom = array();
+				$fields = json_decode($config['fields']);
+				if($fields){
+					foreach($fields as $f){
+						if(modules::run('attribute/custom/get_custom_field',$f)){
+							$custom[] = $f;	
+						}
+					}
+					$this->update_lookbook_config(LB_CUSTOM,json_encode($custom));
+				}
+			}
+		}
 		$config = $this->db->where('type',$type)
 						  ->get('lookbook_config')
 						  ->row_array();
+						  
 		return $config['fields'];	
 	}
 	
