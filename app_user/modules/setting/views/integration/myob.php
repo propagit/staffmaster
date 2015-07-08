@@ -137,8 +137,14 @@ else { ?>
 	
 	<br />
 	<p><b>Settings</b></p>
+    <p><span style="padding-right:15px;"><i>Disable Time Billing</i></span>
+    <label>
+        <input type="checkbox" id="myob-time-billing" <?=($this->config_model->get('myob_time_billing_disabled')) ? 'checked' : '';?>>
+    </label>
+    </p>
 	<p><i>Note:</i>
 	<ul>
+    	<li>Time Billing is enabled by default. To turn off this feature, check the <strong><i>Disable Time Billing</i></strong> above.</li>
 		<li>Client Invoice data that have shifts details attached to them will push to MYOB as "TimeBilling".</li>
 		<li>Client invoices that include manual line items can not be pushed as "Time Billing" and will be pushed as "Miscellaneous"</li>
 	</ul><br />
@@ -300,6 +306,18 @@ else { ?>
 					location.reload();
 				}
 			})
+		})
+		$('#myob-time-billing').click(function(){
+			var auto = '';
+			if ($(this).is(':checked')) {
+				auto = 1;
+			}
+			$.ajax({
+				type: "POST",
+				url: "<?=base_url();?>config/ajax/add",
+				data: {myob_time_billing_disabled: auto},
+				success: function(html) {}
+			})	
 		})
 	})
 	

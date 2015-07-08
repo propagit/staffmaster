@@ -20,6 +20,7 @@ class Myob extends MX_Controller {
 		$this->api_key = $this->config_model->get('myob_api_key');
 		$this->api_secret = $this->config_model->get('myob_api_secret');
 		$this->company_id = $this->config_model->get('myob_company_id');
+		$this->time_billing_disabled = $this->config_model->get('myob_time_billing_disabled');
 	}
 
 	function connect($function='')
@@ -899,7 +900,7 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
-		$bsb = str_replace(' ', '', $staff['f_bsb']);
+		$bsb = str_replace(array(' ','-'), '', $staff['f_bsb']);
 		$bsb = trim($bsb);
 		$bsb = substr($bsb,0,3) . '-' . substr($bsb, 3);
 		$bank_statement_text = strtoupper('wages ' . $staff['first_name'] . ' ' . $staff['last_name']);
@@ -1031,12 +1032,16 @@ class Myob extends MX_Controller {
 		// );
 		// #var_dump($payroll_details); die();
 		// $params = json_encode($payroll_details);
-		$payroll->DateOfBirth = $staff['dob'] . ' 00:00:00';
+		$payroll->DateOfBirth = $staff['dob'] != '0000-00-00' ? $staff['dob'] . ' 00:00:00' : $payroll->DateOfBirth;
 		$payroll->Gender = $gender;
-		$payroll->Tax->TaxFileNumber = $staff['f_tfn'];
+		
+		$tfn = str_replace(array(' ','-'), '', $staff['f_tfn']);
+		$tfn = trim($tfn);
+		$tfn = substr($tfn,0,3) . ' ' . substr($tfn, 3,3) . ' ' . substr($tfn,6);
+		
+		$payroll->Tax->TaxFileNumber = $tfn;
 		$params = json_encode($payroll);
-
-
+		
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1061,7 +1066,7 @@ class Myob extends MX_Controller {
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		// var_dump($response);
+		#var_dump($response);die();
 		$response = json_decode($response);
 		if (isset($response->Errors))
 		{
@@ -1161,6 +1166,7 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
+		
 		return true;
 	}
 
@@ -1660,7 +1666,7 @@ class Myob extends MX_Controller {
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
-	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-cftoken: ' . $cftoken,
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
@@ -1919,7 +1925,8 @@ class Myob extends MX_Controller {
 	function validate_append_timesheet($timesheet_id)
 	{
 		$timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
-
+		
+		
 		# Check payroll category for employee on MYOB
 		$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 		foreach($pay_rates as $pay_rate)
@@ -1942,30 +1949,42 @@ class Myob extends MX_Controller {
 				#var_dump($result);
 				return $result;
 			}
-
-			$activityID = $pay_rate['activity'];
-			if (!$activityID)
-			{
-				$payrate_id = $timesheet['payrate_id'];
-				if ($timesheet['client_payrate_id'] > 0)
+			
+			/**
+				ActivityID is required for time billing. 
+				This is however not required for timesheet
+				
+				Check config to see if the client is using MYOB time billing feature
+				If they are validate activityID, else skip this step
+			*/
+			
+			if(!$this->time_billing_disabled){
+				$activityID = $pay_rate['activity'];
+				if (!$activityID)
 				{
-					$payrate_id = $timesheet['client_payrate_id'];
+					$payrate_id = $timesheet['payrate_id'];
+					if ($timesheet['client_payrate_id'] > 0)
+					{
+						$payrate_id = $timesheet['client_payrate_id'];
+					}
+					$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
+					$activityID = $payrate['name'];
 				}
-				$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
-				$activityID = $payrate['name'];
-			}
-			$activity = $this->read_activity($activityID);
-			if (!$activity)
-			{
-				$result = array(
-					'ok' => false,
-					'msg' => '<p>Activity Name <b>' . $activityID . '</b> is not found in MYOB</p>'
-				);
-				#var_dump($result);
-				return $result;
+				$activity = $this->read_activity($activityID);
+				if (!$activity)
+				{
+					$result = array(
+						'ok' => false,
+						'msg' => '<p>Activity Name <b>' . $activityID . '</b> is not found in MYOB</p>'
+					);
+					#var_dump($result);
+					return $result;
+				}
 			}
 
 		}
+	
+		
 
 		# Make sure the staff is set up on MYOB
 		$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
@@ -2064,9 +2083,9 @@ class Myob extends MX_Controller {
 						'UID' => $payroll->UID
 					),
 					'Job' => null,
-					'Activity' => array(
+					'Activity' => !$this->time_billing_disabled ? array(
 						'UID' => $activity->UID
-					),
+					) : null,
 					'Customer' => ($customer) ? array(
 						'UID' => $customer->UID
 					) : null,
@@ -2130,7 +2149,7 @@ class Myob extends MX_Controller {
 
 			$response = curl_exec($ch);
 			curl_close($ch);
-			#var_dump($response);
+			var_dump($response);exit;
 			$response = json_decode($response);
 			if (isset($response->Errors))
 			{
@@ -2150,6 +2169,8 @@ class Myob extends MX_Controller {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
+	
+		
 		$errors = array();
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
@@ -2164,16 +2185,20 @@ class Myob extends MX_Controller {
 				{
 					$earningID = $timesheet['payrate'];
 				}
-				$activityID = $pay_rate['activity'];
-				if (!$activityID)
-				{
-					$payrate_id = $timesheet['payrate_id'];
-					if ($timesheet['client_payrate_id'] > 0)
+				
+				# if client has not disabled time billing
+				if(!$this->time_billing_disabled){
+					$activityID = $pay_rate['activity'];
+					if (!$activityID)
 					{
-						$payrate_id = $timesheet['client_payrate_id'];
+						$payrate_id = $timesheet['payrate_id'];
+						if ($timesheet['client_payrate_id'] > 0)
+						{
+							$payrate_id = $timesheet['client_payrate_id'];
+						}
+						$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
+						$activityID = $payrate['name'];
 					}
-					$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
-					$activityID = $payrate['name'];
 				}
 
 				$break = '';
@@ -2183,16 +2208,20 @@ class Myob extends MX_Controller {
 
 				$payroll = $this->read_payroll($earningID);
 				$customer = $this->read_customer($timesheet['external_client_id']);
-				$activity = $this->read_activity($activityID);
+				
+				# if client uses time billing feature
+				if($client_uses_timebilling){
+					$activity = $this->read_activity($activityID);
+				}
 
 				$lines[] = array(
 					'PayrollCategory' => array(
 						'UID' => $payroll->UID
 					),
 					'Job' => null,
-					'Activity' => array(
+					'Activity' => !$this->time_billing_disabled ? array(
 						'UID' => $activity->UID
-					),
+					) : null,
 					'Customer' => ($customer) ? array(
 						'UID' => $customer->UID
 					) : null,
