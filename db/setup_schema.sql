@@ -1844,10 +1844,11 @@ CREATE TABLE IF NOT EXISTS `job_shift_staff_apply` (
 -- Table structure for table `job_shift_timesheets`
 --
 
+
 CREATE TABLE IF NOT EXISTS `job_shift_timesheets` (
   `timesheet_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `external_id` VARCHAR(255) NOT NULL,
-  `external_msg` VARCHAR(1000) NOT NULL,
+  `external_id` varchar(255) NOT NULL,
+  `external_msg` varchar(1000) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0: pending, 1: submitted, 2: approved, 3: batched, 4: processing, 5: paid',
   `status_payrun_staff` tinyint(4) NOT NULL COMMENT '0: processing, 1: ready, 3: paid',
   `payrun_id` bigint(20) NOT NULL,
@@ -1876,14 +1877,17 @@ CREATE TABLE IF NOT EXISTS `job_shift_timesheets` (
   `total_amount_client` decimal(10,2) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_on` datetime NOT NULL,
-  `approved_on` datetime NULL,
+  `approved_on` datetime DEFAULT NULL,
   `batched_on` datetime NOT NULL,
   `staff_paid_on` datetime NOT NULL,
   `client_paid_on` datetime NOT NULL,
   `email_sent` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0: not sent, 1 : sent',
   `supervisor_key` varchar(255) NOT NULL,
   `staff_key` varchar(255) NOT NULL,
+  `note_update` text NOT NULL,
   `reject_note` text NOT NULL,
+  `parent_timesheet_id` bigint(20) NOT NULL DEFAULT '0' COMMENT 'when a timesheet is split, store the parent timesheet id here',
+  `child_timesheet_id` bigint(20) NOT NULL COMMENT 'when a timesheet is split, update this record with the new timesheet id',
   PRIMARY KEY (`timesheet_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
