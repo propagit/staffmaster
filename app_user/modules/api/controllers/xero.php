@@ -108,6 +108,8 @@ class Xero extends MX_Controller {
 				}else{
 					$more_staff = false;	
 				}
+			}else{
+				$more_staff = false;		
 			}
 			$count++;
 		}
