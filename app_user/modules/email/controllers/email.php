@@ -107,7 +107,7 @@ class Email extends MX_Controller {
 							'last_name' => $user['last_name'],
 							'system_url' => base_url(),
 							'company_name' => $company['company_name'],
-							'selected_shifts' => modules::run('job/shift/get_apply_for_shift_email',$params['shift_ids'])
+							'selected_shifts' => modules::run('job/shift/get_apply_for_shift_email',$params['shift_ids'], $user_id)
 							);
 				break;
 
@@ -179,7 +179,7 @@ class Email extends MX_Controller {
 							'brief_url' => base_url().'brief/view/'.$brief->encoded_url,
 							);
 				break;
-				
+
 				case TIMESHEET_EMAIL_TEMPLATE_ID:
 				$obj = array(
 							'first_name' => $user['first_name'],
@@ -192,7 +192,7 @@ class Email extends MX_Controller {
 		}
 		return $obj;
 	}
-	
+
 
 	/**
 	*	@name: email_templates_dropdown
