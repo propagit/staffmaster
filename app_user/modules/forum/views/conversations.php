@@ -58,7 +58,7 @@
                   <span class="msg-comments reply text-blue" data-reply="<?=$c->topic_id;?>">Post Reply <span id="reply-count-<?=$c->topic_id;?>"><?=($c->total_replies ? '('.$c->total_replies.' replies)' : '');?></span> <i class="fa fa-angle-down reply-arrow-down"></i></span> 
                   <?=($c->document_name ? ($c->document_type == 'file' ? '<span class="badge danger msg-badge">1</span>' : '') : '');?>
                   <span class="msg-comments download-docs text-blue">
-				  <?=($c->document_name ? ($c->document_type == 'file' ? '<a class="document-anchor" target="_blank" href="'.base_url().UPLOADS_URL.'/conversation/doc/'.md5('forum'.$c->topic_id).'/'.$c->document_name.'" download>Download Documents</a>' : '') : '');?>
+				  <?=($c->document_name ? ($c->document_type == 'file' ? '<a class="document-anchor" target="_blank" href="'.base_url().UPLOADS_URL.'/conversation/docs/'.md5('forum'.$c->topic_id).'/'.$c->document_name.'" download>Download Documents</a>' : '') : '');?>
                   </span>
               </div>
               <!--reply-->
