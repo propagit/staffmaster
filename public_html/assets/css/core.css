@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic);
+@import url(//fonts.googleapis.com/css?family=Lato:400,700,900,400italic);
 html,
 body {
 	height: 100%;
@@ -1065,7 +1065,7 @@ ol.example li.placeholder:before {
   	padding-right: 4px;
 }
 .post-author:before{
-	content:"POSTED";	
+	content:"POSTED";
 	font-weight: 700;
   	padding-right: 4px;
 }
@@ -1079,7 +1079,7 @@ ol.example li.placeholder:before {
 .notes-avatar .profile_photo{
 	height:40px;
 	max-width:40px;
-	box-shadow:none;	
+	box-shadow:none;
 }
 .notes-avatar .default-avatar-photo .fa{
 	line-height:40px;
@@ -1088,7 +1088,7 @@ ol.example li.placeholder:before {
 .notes-avatar .default-avatar-photo .fa,
 .notes-avatar .profile_photo img{
 	/*border-radius:0;*/
-	box-shadow:none;	
+	box-shadow:none;
 }
 .notes-title{
 	padding-top:15px !important;
@@ -1098,7 +1098,7 @@ ol.example li.placeholder:before {
 	float:left;
 }
 .recent-notes-wrap .messages{
-	min-height:530px;	
+	min-height:530px;
 }
 /* begin - responsive */
 
