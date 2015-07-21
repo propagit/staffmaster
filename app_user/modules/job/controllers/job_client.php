@@ -60,6 +60,19 @@ class Job_client extends MX_Controller {
 		$data['user_id'] = $this->user['user_id'];
 		$this->load->view('client/create_job_form', isset($data) ? $data : NULL);
 	}
+        function field_select($field_name, $field_value=null, $size=null, $title=true)
+	{
+		$jobs = $this->job_model->search_jobs(array('client_id' => $this->user['user_id']));
+		$array = array();
+		foreach($jobs as $job)
+		{
+			$array[] = array(
+				'value' => $job['job_id'],
+				'label' => $job['name']
+			);
+		}
+		return modules::run('common/field_select', $array, $field_name, $field_value, $size, $title);
+	}
 	
 	
 }

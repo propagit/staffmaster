@@ -264,6 +264,9 @@ class Job extends MX_Controller {
 	
 	function field_select($field_name, $field_value=null, $size=null, $title=true)
 	{
+            if($this->is_client){
+                return modules::run('job/job_client/field_select', $field_name);
+            }
 		$jobs = $this->job_model->search_jobs();
 		$array = array();
 		foreach($jobs as $job)
