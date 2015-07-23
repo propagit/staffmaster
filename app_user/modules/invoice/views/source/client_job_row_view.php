@@ -32,7 +32,7 @@ foreach($timesheets as $timesheet) {
 	<td class="center">
 		$<?=money_format('%i', $total_expenses);?>
 	</td>
-	<td class="center">$<?=money_format('%i', $total_amount);?></td>
+	<td class="center">$<?=money_format('%i', $total_amount ? $total_amount : $billable);?></td>
 	<td class="center">
 		<div class="btn-group">
 		<? if ($processing) { ?>

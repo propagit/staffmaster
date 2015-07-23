@@ -141,6 +141,10 @@ class Ajax extends MX_Controller {
 	*/
 	function add_job_to_invoice() {
 		$job_id = $this->input->post('job_id');
+		
+		# check and reset invoice 
+		$this->check_reset_invoice($job_id);
+		
 		$this->invoice_model->add_job_to_invoice($job_id);
 		if ($this->input->post('apply_all')) {
 			$timesheets = $this->invoice_model->get_timesheets($job_id);
@@ -150,6 +154,28 @@ class Ajax extends MX_Controller {
 			}
 			echo json_encode($output);
 		}		
+	}
+	
+	function check_reset_invoice($job_id)
+	{
+		# get client id from job_id
+		$job = $this->invoice_model->get_job($job_id);
+	
+		$client_user_id = $job['client_id'];	
+		# check if an invoice has been crated if so delete this invoice as this is no longer valid
+		$invoice_id = $this->invoice_model->check_client_invoice($client_user_id);
+		if ($invoice_id) {
+			$this->invoice_model->delete_invoice_items($invoice_id);
+			$this->invoice_model->delete_invoice($invoice_id);
+			
+			# remove invoice id from job_shift_timesheets
+			# remember we did not do this 'status_invoice_client' => INVOICE_PENDING on the update function
+			# this is because we want to preserve what the client had previously added while generating the invoice
+			$this->db->where('invoice_id', $invoice_id);
+			$this->db->update('job_shift_timesheets', array(
+				'invoice_id' => 0
+			));
+		}
 	}
 	
 	/**
@@ -174,6 +200,10 @@ class Ajax extends MX_Controller {
 	*/
 	function remove_job_from_invoice() {
 		$job_id = $this->input->post('job_id');
+		
+		# check and reset invoice 
+		$this->check_reset_invoice($job_id);
+		
 		$this->invoice_model->remove_job_from_invoice($job_id);
 		if ($this->input->post('apply_all')) {
 			$timesheets = $this->invoice_model->get_timesheets($job_id);
