@@ -1181,7 +1181,7 @@ class Ajax extends MX_Controller {
 		$n = 0;
 		foreach($employee as $e)
 		{
-			if ($n == 200) { break; } // More than 200 will cause duplication
+			if ($imported == 50) { break; } // More than 100 will cause duplication
 			# Note: if employee doesnot have external id on MYOB (DisplayID), it won't be imported to StaffBooks
 			if ($e->DisplayID && $e->DisplayID != '*None')
 			{
@@ -1229,11 +1229,10 @@ class Ajax extends MX_Controller {
 				}
 
 			}
-			$n++;
 		}
 
 		# Now transfer from Staffbooks to MYOB
-		foreach($staffs as $staff)
+		/*foreach($staffs as $staff)
 		{
 			if (in_array($staff['external_staff_id'], $e_ids))
 			{
@@ -1255,7 +1254,7 @@ class Ajax extends MX_Controller {
 					$errors++;
 				}
 			}
-		}
+		}*/
 
 		echo 'MYOB: ' . count($employee);
 		echo '<br />E_ids: ' . count($e_ids);
