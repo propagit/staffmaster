@@ -1189,6 +1189,113 @@ class Ajax extends MX_Controller {
 
 	}
 
+	function test_sync_myob_staff()
+	{
+		$imported = 0;
+		$exported = 0;
+		$updated = 0;
+		$errors = 0;
+
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+
+		# First get all employee from MYOB
+		$employee = modules::run('api/myob/connect/search_employee');
+		$e_ids = array();
+
+		# Get all actived staff from StaffBooks
+		$staffs = $this->staff_model->search_staffs(array('status' => STAFF_ACTIVE));
+
+		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
+		$n = 0;
+		foreach($employee as $e)
+		{
+			if ($n == 10) { break; }
+			# Note: if employee doesnot have external id on MYOB (DisplayID), it won't be imported to StaffBooks
+			if ($e->DisplayID && $e->DisplayID != '*None')
+			{
+				$staff = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
+				if ($staff)
+				{
+					$e_ids[] = $e->DisplayID;
+				}
+				else
+				{
+					$user_id = $this->insert_myob_user($e);
+					if ($user_id)
+					{
+						$staff_id = $this->insert_myob_user_staff($user_id,$e->DisplayID);
+						if ($staff_id)
+						{
+							$imported++;
+						}
+					}
+				}
+			}
+
+			# Employee does not have external id
+			else
+			{
+
+				$user_id = $this->insert_myob_user($e);
+				if ($user_id)
+				{
+					# set Display ID in MYOB
+					$display_id = STAFF_PREFIX . $user_id;
+
+					if(modules::run('api/myob/update_employee_displayID_onetime',$e,$display_id)){
+						#var_dump($staff_data); die();
+						$staff_id = $this->insert_myob_user_staff($user_id,$display_id);
+						if ($staff_id)
+						{
+							$imported++;
+						}
+					}
+				}
+				else
+				{
+					$errors++;
+				}
+
+			}
+			$n++;
+		}
+
+		# Now transfer from Staffbooks to MYOB
+		foreach($staffs as $staff)
+		{
+			if (in_array($staff['external_staff_id'], $e_ids))
+			{
+				# Update employee
+				if(modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id']))
+				{
+					$updated++;
+				}
+			}
+			else
+			{
+				# Add new employee
+				if (modules::run('api/myob/connect', 'append_employee~' . $staff['user_id']))
+				{
+					$exported++;
+				}
+				else
+				{
+					$errors++;
+				}
+			}
+		}
+
+		echo 'MYOB: ' . count($employee);
+		echo '<br />E_ids: ' . count($e_ids);
+		echo '<br />Staffbooks: ' . count($staffs);
+		echo '<br />Imported: ' . $imported;
+		echo '<br />Exported: ' . $exported;
+		echo '<br />Updated: ' . $updated;
+		echo '<br />Error: '; var_dump($errors);
+
+	}
+
 	function sync_myob_staff()
 	{
 		$imported = 0;
@@ -1339,14 +1446,15 @@ class Ajax extends MX_Controller {
 		$this->load->model('staff/staff_model');
 
 		$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $display_id);
+		$payroll_details = modules::run('api/myob/connect', 'read_employee_payroll~' . $display_id)
 		$staff_data = array(
 			'user_id' => $user_id,
 			'external_staff_id' => $display_id,
-			#'gender' => $input['Gender'],
-			#'dob' => date('Y-m-d', strtotime($input['BirthDate'])),
+			'gender' => $payroll_details->Gender,
+			'dob' => date('Y-m-d', strtotime($payroll_details->DateOfBirth)),
 			#'emergency_contact' => $input['EmergencyContact'],
 			#'emergency_phone' => $input['EmergencyPhone'],
-			#'f_tfn' => $input['SocialSecurity'],
+			'f_tfn' => $payroll_details->Tax->TaxFileNumber,
 			'f_acc_name'=> isset($payment_details->BankAccounts[0]->BankAccountName) ? $payment_details->BankAccounts[0]->BankAccountName : '',
 			'f_bsb' => isset($payment_details->BankAccounts[0]->BSBNumber) ? $payment_details->BankAccounts[0]->BSBNumber : '',
 			'f_acc_number' => isset($payment_details->BankAccounts[0]->BankAccountNumber) ? $payment_details->BankAccounts[0]->BankAccountNumber : ''
