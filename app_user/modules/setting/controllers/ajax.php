@@ -1181,7 +1181,7 @@ class Ajax extends MX_Controller {
 		$n = 0;
 		foreach($employee as $e)
 		{
-			if ($n == 10) { break; }
+			if ($n == 300) { break; }
 			# Note: if employee doesnot have external id on MYOB (DisplayID), it won't be imported to StaffBooks
 			if ($e->DisplayID && $e->DisplayID != '*None')
 			{
