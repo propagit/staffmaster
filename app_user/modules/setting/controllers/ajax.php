@@ -1158,6 +1158,36 @@ class Ajax extends MX_Controller {
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
+	
+	function update_staff_from_myob()
+	{
+		// 1. Get list of active staff on staffbooks
+		// $staffs = $this->staff_model->search_staffs();
+		// 2. Loop to check if the staff has external id (= on myob)
+		/*if(count($staffs) > 0){
+			foreach($staffs as $s){
+				if(trim($s['external_staff_id'])){
+					
+					// 3. Get the employee details from myob
+					
+					//$employee = modules::run('api/myob/connect/read_employee~'.$s['external_staff_id']);
+					$employee_payroll = modules::run('api/myob/connect/read_employee_payroll~', $s['external_staff_id']);
+					print_r($employee_payroll); exit;
+					
+				}
+			}
+		} *//* if staffs */
+		
+		
+		// a. Employee
+		// b. EmployeePayrollDetails
+		// c. EmployeePaymentDetails
+		
+		// 4. Overwrite staffbook data
+		
+		
+		
+	}
 
 	function sync_myob_staff()
 	{

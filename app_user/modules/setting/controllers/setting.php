@@ -41,10 +41,49 @@ class Setting extends MX_Controller {
 			/*case 'sync_myob_email':
 					$this->sync_myob_email();
 				break;*/
+			case 'test':
+					$this->test();
+				break;
 			default:
 					$this->company();
 			break;
 		}
+	}
+	
+	function test()
+	{
+		$this->load->model('user/user_model');
+		$this->load->model('staff/staff_model');
+		// 1. Get list of active staff on staffbooks
+		$staffs = $this->staff_model->search_staffs();
+		#print_r($staffs);exit;
+		// 2. Loop to check if the staff has external id (= on myob)
+		if(count($staffs) > 0){
+			foreach($staffs as $s){
+				if(trim($s['external_staff_id'])){
+					#echo $s['first_name'];
+					// 3. Get the employee details from myob
+					
+					//$employee = modules::run('api/myob/connect/read_employee~'.$s['external_staff_id']);
+					$employee_payroll = modules::run('api/myob/connect/read_employee_payroll~', $s['external_staff_id']);
+					
+					//$employee_payroll = modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id'])
+					print_r($employee_payroll); 
+					#die('a');
+					
+				}
+			}
+		} /* if staffs */
+		
+		
+		// a. Employee
+		// b. EmployeePayrollDetails
+		// c. EmployeePaymentDetails
+		
+		// 4. Overwrite staffbook data
+		
+		
+		
 	}
 	
 	/*function sync_myob_email()
