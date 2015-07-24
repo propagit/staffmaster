@@ -56,31 +56,37 @@ class Setting extends MX_Controller {
 		$this->load->model('staff/staff_model');
 		// 1. Get list of active staff on staffbooks
 		$staffs = $this->staff_model->search_staffs();
-		#print_r($staffs);exit;
+
 		// 2. Loop to check if the staff has external id (= on myob)
+
+		$count = 0;
 		if(count($staffs) > 0){
 			foreach($staffs as $s){
 				if(trim($s['external_staff_id'])){
-					#echo $s['first_name'];
+
 					// 3. Get the employee details from myob
 
-					//$employee = modules::run('api/myob/connect/read_employee~'.$s['external_staff_id']);
 					$employee_payroll = modules::run('api/myob/connect', 'read_employee_payroll~' . $s['external_staff_id']);
 
-					//$employee_payroll = modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id'])
-					print_r($employee_payroll);
-					die('a');
+					//print_r($employee_payroll);
 
+					if ($employee_payroll) {
+						$data = array();
+						if ($employee_payroll->DateOfBirth && $s['dob'] != '0000-00-00') {
+							$data['dob'] = date('Y-m-d', strtotime($employee_payroll->DateOfBirth));
+						}
+						if ($employee_payroll->Tax->TaxFileNumber) {
+							$data['f_tfn'] = $employee_payroll->Tax->TaxFileNumber;
+						}
+						if ($this->staff_model->update_staff($s['user_id'], $data, true)) {
+							$count++;
+						}
+					}
 				}
 			}
-		} /* if staffs */
+		}
 
-
-		// a. Employee
-		// b. EmployeePayrollDetails
-		// c. EmployeePaymentDetails
-
-		// 4. Overwrite staffbook data
+		echo $count ' staffs been updated';
 
 
 
