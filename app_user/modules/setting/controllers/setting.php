@@ -55,7 +55,9 @@ class Setting extends MX_Controller {
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
 		// 1. Get list of active staff on staffbooks
-		$staffs = $this->staff_model->search_staffs();
+		$staffs = $this->staff_model->search_staffs(array('status' => STAFF_ACTIVE));
+		echo count($staffs);
+		die();
 
 		// 2. Loop to check if the staff has external id (= on myob)
 
