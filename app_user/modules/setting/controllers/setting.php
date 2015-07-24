@@ -70,18 +70,18 @@ class Setting extends MX_Controller {
 
 					//print_r($employee_payroll);
 
-					if ($employee_payroll) {
-						$data = array();
-						if ($employee_payroll->DateOfBirth && $s['dob'] != '0000-00-00') {
-							$data['dob'] = date('Y-m-d', strtotime($employee_payroll->DateOfBirth));
-						}
-						if ($employee_payroll->Tax->TaxFileNumber) {
-							$data['f_tfn'] = $employee_payroll->Tax->TaxFileNumber;
-						}
-						if ($this->staff_model->update_staff($s['user_id'], $data, true)) {
-							$count++;
-						}
-					}
+					// if ($employee_payroll) {
+					// 	$data = array();
+					// 	if ($employee_payroll->DateOfBirth && $s['dob'] != '0000-00-00') {
+					// 		$data['dob'] = date('Y-m-d', strtotime($employee_payroll->DateOfBirth));
+					// 	}
+					// 	if ($employee_payroll->Tax->TaxFileNumber) {
+					// 		$data['f_tfn'] = $employee_payroll->Tax->TaxFileNumber;
+					// 	}
+					// 	if ($this->staff_model->update_staff($s['user_id'], $data, true)) {
+					// 		$count++;
+					// 	}
+					// }
 				}
 			}
 		}
