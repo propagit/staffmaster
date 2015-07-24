@@ -41,16 +41,16 @@ class Setting extends MX_Controller {
 			/*case 'sync_myob_email':
 					$this->sync_myob_email();
 				break;*/
-			case 'test':
-					$this->test();
+			case 'update_staff_from_myob':
+					$this->update_staff_from_myob();
 				break;
 			default:
 					$this->company();
 			break;
 		}
 	}
-	
-	function test()
+
+	function update_staff_from_myob()
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
@@ -63,29 +63,29 @@ class Setting extends MX_Controller {
 				if(trim($s['external_staff_id'])){
 					#echo $s['first_name'];
 					// 3. Get the employee details from myob
-					
+
 					//$employee = modules::run('api/myob/connect/read_employee~'.$s['external_staff_id']);
 					$employee_payroll = modules::run('api/myob/connect/read_employee_payroll~', $s['external_staff_id']);
-					
+
 					//$employee_payroll = modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id'])
-					print_r($employee_payroll); 
+					print_r($employee_payroll);
 					#die('a');
-					
+
 				}
 			}
 		} /* if staffs */
-		
-		
+
+
 		// a. Employee
 		// b. EmployeePayrollDetails
 		// c. EmployeePaymentDetails
-		
+
 		// 4. Overwrite staffbook data
-		
-		
-		
+
+
+
 	}
-	
+
 	/*function sync_myob_email()
 	{
 		$this->load->model('user/user_model');
@@ -93,13 +93,13 @@ class Setting extends MX_Controller {
 
 		# First get all employee from MYOB
 		$employee = modules::run('api/myob/connect/search_employee');
-	
+
 		foreach($employee as $e){
 			if ($e->DisplayID && $e->DisplayID != '*None')
 			{
 				$user_data = array();
 				$staff = modules::run('staff/get_staff_by_external_id', $e->DisplayID);
-				
+
 				#echo '<pre>'.print_r($staff,true).'</pre>';
 				#echo isset($e->Addresses[0]->Email) ? $e->Addresses[0]->Email : '';echo '<br>';
 				if ($staff)
@@ -112,11 +112,11 @@ class Setting extends MX_Controller {
 							 ->update('users',$user_data);
 				}
 			}
-			
+
 		}
-		
+
 	}*/
-	
+
 	/**
 	*	@name: company
 	*	@desc: function to call the view of one of company profile
