@@ -62,7 +62,9 @@ class Setting extends MX_Controller {
 		$count = 0;
 		if(count($staffs) > 0){
 			foreach($staffs as $s){
-				if(trim($s['external_staff_id'])){
+				if(trim($s['external_staff_id']) && (
+						$s['dob'] == '0000-00-00' || !$s['f_tfn']
+					)){
 
 					// 3. Get the employee details from myob
 
@@ -72,7 +74,7 @@ class Setting extends MX_Controller {
 
 					if ($employee_payroll) {
 						$data = array();
-						if ($employee_payroll->DateOfBirth && $s['dob'] != '0000-00-00') {
+						if ($employee_payroll->DateOfBirth) {
 							$data['dob'] = date('Y-m-d', strtotime($employee_payroll->DateOfBirth));
 						}
 						if ($employee_payroll->Tax->TaxFileNumber) {

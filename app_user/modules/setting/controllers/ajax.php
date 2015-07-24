@@ -1248,6 +1248,7 @@ class Ajax extends MX_Controller {
 				{
 					# set Display ID in MYOB
 					$display_id = STAFF_PREFIX . $user_id;
+
 					if(modules::run('api/myob/update_employee_displayID_onetime',$e,$display_id)){
 						#var_dump($staff_data); die();
 						$staff_id = $this->insert_myob_user_staff($user_id,$display_id);
