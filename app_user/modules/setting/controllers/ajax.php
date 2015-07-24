@@ -1417,14 +1417,15 @@ class Ajax extends MX_Controller {
 
 		$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $display_id);
 		$payroll_details = modules::run('api/myob/connect', 'read_employee_payroll~' . $display_id);
+
 		$staff_data = array(
 			'user_id' => $user_id,
 			'external_staff_id' => $display_id,
-			'gender' => $payroll_details->Gender,
-			'dob' => date('Y-m-d', strtotime($payroll_details->DateOfBirth)),
+			'gender' => isset($payroll_details->Gender) ? $payroll_details->Gender : '',
+			'dob' => isset($payroll_details->DateOfBirth) ? date('Y-m-d', strtotime($payroll_details->DateOfBirth)) : '0000-00-00',
 			#'emergency_contact' => $input['EmergencyContact'],
 			#'emergency_phone' => $input['EmergencyPhone'],
-			'f_tfn' => $payroll_details->Tax->TaxFileNumber,
+			'f_tfn' => isset($payroll_details->Tax->TaxFileNumber) ? $payroll_details->Tax->TaxFileNumber : '',
 			'f_acc_name'=> isset($payment_details->BankAccounts[0]->BankAccountName) ? $payment_details->BankAccounts[0]->BankAccountName : '',
 			'f_bsb' => isset($payment_details->BankAccounts[0]->BSBNumber) ? $payment_details->BankAccounts[0]->BSBNumber : '',
 			'f_acc_number' => isset($payment_details->BankAccounts[0]->BankAccountNumber) ? $payment_details->BankAccounts[0]->BankAccountNumber : ''
