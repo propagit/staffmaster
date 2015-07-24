@@ -65,7 +65,7 @@ class Setting extends MX_Controller {
 					// 3. Get the employee details from myob
 
 					//$employee = modules::run('api/myob/connect/read_employee~'.$s['external_staff_id']);
-					$employee_payroll = modules::run('api/myob/connect/read_employee_payroll~', $s['external_staff_id']);
+					$employee_payroll = modules::run('api/myob/connect', 'read_employee_payroll~' . $s['external_staff_id']);
 
 					//$employee_payroll = modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id'])
 					print_r($employee_payroll);
