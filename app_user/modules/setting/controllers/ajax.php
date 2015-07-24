@@ -1158,7 +1158,7 @@ class Ajax extends MX_Controller {
 		$objWriter->save(EXPORTS_PATH . "/error/" . $file_name);
 		echo $file_name;
 	}
-	
+
 	function update_staff_from_myob()
 	{
 		// 1. Get list of active staff on staffbooks
@@ -1167,26 +1167,26 @@ class Ajax extends MX_Controller {
 		/*if(count($staffs) > 0){
 			foreach($staffs as $s){
 				if(trim($s['external_staff_id'])){
-					
+
 					// 3. Get the employee details from myob
-					
+
 					//$employee = modules::run('api/myob/connect/read_employee~'.$s['external_staff_id']);
 					$employee_payroll = modules::run('api/myob/connect/read_employee_payroll~', $s['external_staff_id']);
 					print_r($employee_payroll); exit;
-					
+
 				}
 			}
 		} *//* if staffs */
-		
-		
+
+
 		// a. Employee
 		// b. EmployeePayrollDetails
 		// c. EmployeePaymentDetails
-		
+
 		// 4. Overwrite staffbook data
-		
-		
-		
+
+
+
 	}
 
 	function sync_myob_staff()
@@ -1203,8 +1203,8 @@ class Ajax extends MX_Controller {
 		$employee = modules::run('api/myob/connect/search_employee');
 		$e_ids = array();
 
-		# Get all staff from StaffBooks
-		$staffs = $this->staff_model->search_staffs();
+		# Get all actived staff from StaffBooks
+		$staffs = $this->staff_model->search_staffs(array('status' => STAFF_ACTIVE));
 
 		# Check if any employee is already in StaffBooks, otherwise add to StaffBooks
 		foreach($employee as $e)
@@ -1230,17 +1230,19 @@ class Ajax extends MX_Controller {
 					}
 				}
 			}
+
+			# Employee does not have external id
 			else
 			{
 				/**
-					Initially the Sync was build using Display ID instead of UID [yeah i konw, don't ask why, i did not build this], 
+					Initially the Sync was build using Display ID instead of UID [yeah i konw, don't ask why, i did not build this],
 					which does not work if the MYOB account doesnot have a display id
-					since few of our account is already synced we cannot simply starting using UID without doing some  
+					since few of our account is already synced we cannot simply starting using UID without doing some
 					heavy maintenance work other wise the existing accounts will be out of sync
-					to work around this what we will be doing is check if display id exists in myob 
+					to work around this what we will be doing is check if display id exists in myob
 					if not then we push the create a DisplayID and puch back to myob
 				*/
-				
+
 				$user_id = $this->insert_myob_user($e);
 				if ($user_id)
 				{
@@ -1258,8 +1260,8 @@ class Ajax extends MX_Controller {
 				else
 				{
 					$errors++;
-				}	
-				
+				}
+
 			}
 		}
 
@@ -1300,12 +1302,12 @@ class Ajax extends MX_Controller {
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
-	
+
 	function insert_myob_user($employee)
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
-		
+
 		$user_data = array(
 						'status' => 1,
 						'is_admin' => 0,
@@ -1327,14 +1329,14 @@ class Ajax extends MX_Controller {
 						'mobile' => ($employee->Addresses[0]->Phone2) ? $employee->Addresses[0]->Phone2 : ''
 					);
 		return $this->user_model->insert_user($user_data);
-		
+
 	}
-	
+
 	function insert_myob_user_staff($user_id,$display_id)
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
-		
+
 		$payment_details = modules::run('api/myob/connect' , 'read_employee_payment~' . $display_id);
 		$staff_data = array(
 			'user_id' => $user_id,
@@ -1568,8 +1570,8 @@ class Ajax extends MX_Controller {
 				else
 				{
 					$errors++;
-				}	
-					
+				}
+
 			}
 		}
 
@@ -1606,12 +1608,12 @@ class Ajax extends MX_Controller {
 		$data['platform'] = 'MYOB';
 		$this->load->view('integration/results', isset($data) ? $data : NULL);
 	}
-	
+
 	function insert_myob_client_userdata($client)
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('client/client_model');
-		
+
 		$user_data = array(
 						'status' => CLIENT_ACTIVE,
 						'is_admin' => 0,
@@ -1628,14 +1630,14 @@ class Ajax extends MX_Controller {
 						'country' => ($client->Addresses[0]->Country) ? $client->Addresses[0]->Country : '',
 						'phone' => ($client->Addresses[0]->Phone1) ? $client->Addresses[0]->Phone1 : ''
 					);
-		return $this->user_model->insert_user($user_data);	
+		return $this->user_model->insert_user($user_data);
 	}
-	
+
 	function insert_myob_user_client($client,$user_id,$display_id)
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('client/client_model');
-		
+
 		$client_data = array(
 							'user_id' => $user_id,
 							'external_client_id' => $display_id,
@@ -1685,7 +1687,7 @@ class Ajax extends MX_Controller {
 		$this->load->model('staff/staff_model');
 
 		$employees = modules::run('api/xero/get_employees');
-		
+
 		#print_r($employees);return;exit;
 		$imported = 0;
 
@@ -1728,14 +1730,14 @@ class Ajax extends MX_Controller {
 						'f_help_debt' => (isset($employee['TaxDeclaration']['HasHELPDebt']) && $employee['TaxDeclaration']['HasHELPDebt'] == 'true') ? 1 : 0,
 						'f_tfn' => isset($employee['TaxDeclaration']['TaxFileNumber']) ? $employee['TaxDeclaration']['TaxFileNumber'] : ''
 					);
-					
+
 					if (isset($employee['BankAccounts']['BankAccount'])){
 						# check if staff has more than one bank accoun in xero
 						$emp_bank_accounts = $employee['BankAccounts'];
 						if(isset($employee['BankAccounts']['BankAccount'][0])){
 							$emp_bank_accounts = $employee['BankAccounts']['BankAccount'];
 						}
-						
+
 						foreach($emp_bank_accounts as $account) {
 							if (isset($account['Remainder']) && $account['Remainder']) {
 								$staff_data['f_acc_name'] = $account['AccountName'];
@@ -1743,21 +1745,21 @@ class Ajax extends MX_Controller {
 								$staff_data['f_acc_number'] = $account['AccountNumber'];
 							}
 						}
-						
+
 					}
-					
-					
+
+
 					if (isset($employee['SuperMemberships']['SuperMembership'])){
 						# check for multiple super in xero
 						$xero_super_account = $employee['SuperMemberships']['SuperMembership'];
 						if(isset($employee['SuperMemberships']['SuperMembership'][0])){
 							$xero_super_account = $employee['SuperMemberships']['SuperMembership'][0];
 						}
-						
+
 						# check if company has set a default super account
 						$id = modules::run('setting/superinformasi', 'super_fund_external_id');
-						
-						
+
+
 						if(isset($xero_super_account['SuperFundID'])){
 							$staff_data['s_external_id'] = isset($xero_super_account['SuperFundID']) ? $xero_super_account['SuperFundID'] : '';
 							$staff_data['s_employee_id'] = isset($xero_super_account['EmployeeNumber']) ? $xero_super_account['EmployeeNumber'] : '';
@@ -1766,9 +1768,9 @@ class Ajax extends MX_Controller {
 								$staff_data['s_choice'] = 'employer';
 							}
 						}
-						
+
 					}
-					
+
 					/*if (count($employee['BankAccounts']) > 0) {
 						foreach($employee['BankAccounts']['BankAccount'] as $account) {
 							if (isset($account['Remainder']) && $account['Remainder']) {
