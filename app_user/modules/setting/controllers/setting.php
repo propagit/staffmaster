@@ -81,12 +81,15 @@ class Setting extends MX_Controller {
 						if (count($data) > 0) {
 							if ($this->staff_model->update_staff($s['user_id'], $data, true)) {
 								$count++;
+								echo $s['user_id'];
+								die();
 							}
 						}
 					}
 				}
 			}
 		}
+
 
 		echo $count . ' staffs been updated';
 
