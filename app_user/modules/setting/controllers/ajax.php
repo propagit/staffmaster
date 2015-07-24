@@ -1160,7 +1160,7 @@ class Ajax extends MX_Controller {
 	}
 
 
-	function test_sync_myob_staff()
+	function manual_sync_myob_staff()
 	{
 		$imported = 0;
 		$exported = 0;
@@ -1421,7 +1421,7 @@ class Ajax extends MX_Controller {
 		$staff_data = array(
 			'user_id' => $user_id,
 			'external_staff_id' => $display_id,
-			'gender' => isset($payroll_details->Gender) ? $payroll_details->Gender : '',
+			'gender' => isset($payroll_details->Gender) ? strtolower($payroll_details->Gender) : '',
 			'dob' => isset($payroll_details->DateOfBirth) ? date('Y-m-d', strtotime($payroll_details->DateOfBirth)) : '0000-00-00',
 			#'emergency_contact' => $input['EmergencyContact'],
 			#'emergency_phone' => $input['EmergencyPhone'],
