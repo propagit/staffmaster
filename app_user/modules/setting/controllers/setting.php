@@ -69,7 +69,7 @@ class Setting extends MX_Controller {
 
 					//$employee_payroll = modules::run('api/myob/connect/update_employee~' . $staff['external_staff_id'])
 					print_r($employee_payroll);
-					#die('a');
+					die('a');
 
 				}
 			}
