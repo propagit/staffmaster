@@ -78,8 +78,10 @@ class Setting extends MX_Controller {
 						if ($employee_payroll->Tax->TaxFileNumber) {
 							$data['f_tfn'] = $employee_payroll->Tax->TaxFileNumber;
 						}
-						if ($this->staff_model->update_staff($s['user_id'], $data, true)) {
-							$count++;
+						if (count($data) > 0) {
+							if ($this->staff_model->update_staff($s['user_id'], $data, true)) {
+								$count++;
+							}
 						}
 					}
 				}
