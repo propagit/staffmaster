@@ -1033,6 +1033,9 @@ class Staff extends MX_Controller {
 	{
 		#$staff = $this->staff_model->search_staffs(array('keyword' => 'Klarisse Fleming'));
 		$staff = $this->staff_model->search_staffs();
+		
+		/*$custom = $this->staff_model->get_custom_fields(2370);
+		print_r($custom);die();*/
 		#echo count($staff);
 		#print_r($staff);
 		/*foreach($staff as $s){
@@ -1067,14 +1070,7 @@ class Staff extends MX_Controller {
 			die();
 		}
 		die();*/
-		
-		
-		$csvdir = getcwd();		
-		$csvname = 'Sassy-Staff';
-		$csvname = $csvname.'.csv';
-		header('Content-type: application/csv; charset=utf-8;');
-        header("Content-Disposition: attachment; filename=$csvname");
-		$fp = fopen("php://output", 'w');
+
 		
 		$headings = array(
 					'Staff ID',
@@ -1123,16 +1119,31 @@ class Staff extends MX_Controller {
 					#'Avaliability',
 					'Payrates',
 					'Roles',
-					'Locations',
-					'Custom Attributes'
+					'Locations'
 				
 				);
+				
+		$custom_fields = $this->db->order_by('field_order', 'asc')
+								  ->get('custom_fields')
+								  ->result_array();
+		#print_r($custom_fields);die();
+		foreach($custom_fields as $cf){
+			array_push($headings, str_replace(',', '-', $cf['label']));
+		}
+	
+		$csvdir = getcwd();		
+		$csvname = 'Sassy-Staff';
+		$csvname = $csvname.'.csv';
+		header('Content-type: application/csv; charset=utf-8;');
+        header("Content-Disposition: attachment; filename=$csvname");
+		$fp = fopen("php://output", 'w');
+		
+		# set heading
 		fputcsv($fp,$headings);
+		
 		$s_csv = array();
+		
 		foreach($staff as $s){
-			
-			
-			
 			# payrates
 			$payrates = $this->staff_model->get_payrates($s['user_id']);
 			$s_rate = array();
@@ -1144,14 +1155,6 @@ class Staff extends MX_Controller {
 			
 			# custom attributes
 			$custom = $this->staff_model->get_custom_fields($s['user_id']);
-			$s_custom = array();
-			foreach($custom as $c){
-				if($c['type'] == 'fileDate'){
-					$s_custom[] = $c['label'] . ' -> ' . $c['field_date'];	
-				}else{
-					$s_custom[] = $c['label'] . ' -> ' . $c['staff_value'];	
-				}
-			}
 			
 			# roles
 			$roles = $this->staff_model->get_staff_roles($s['user_id']);	
@@ -1237,13 +1240,23 @@ class Staff extends MX_Controller {
 						#'avalilibility',
 						implode(': ', $s_rate),
 						implode(': ', $s_roles),
-						implode(': ', $s_location),
-						implode(': ', $s_custom)		
-			
+						implode(': ', $s_location)
 					);
+			# push custom attrs
+			foreach($custom as $c){
+				$cur_attr = '';
+				if($c['type'] == 'fileDate'){
+					 $cur_attr = $c['field_date'];	
+				}else{
+					$cur_attr = str_replace(',' , '-', $c['staff_value']);	
+				}
+				array_push($s_csv, $cur_attr);
+			}
+ 		
+					
 			fputcsv($fp,$s_csv);
 			
-	
+			#die();
 		}
 		die();
 	}
