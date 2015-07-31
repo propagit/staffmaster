@@ -1751,7 +1751,7 @@ class Ajax extends MX_Controller {
 			
 			if($s['s_choice'] == 'employer'){
 				if(!$id){
-					$valid = false;
+					#$valid = false;
 					$errors[] = 'One or more staff is using Company superfund which has not been set';	
 				}
 			}
