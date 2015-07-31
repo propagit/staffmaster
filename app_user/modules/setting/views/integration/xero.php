@@ -88,7 +88,7 @@ $(function(){
             type: "POST",
             url: "<?=base_url();?>setting/ajax/push_xero_employees",
             success: function(html) {
-
+				$('#order-message').html(html);
             }
         })
     })

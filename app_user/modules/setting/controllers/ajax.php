@@ -1734,32 +1734,50 @@ class Ajax extends MX_Controller {
 	}
 
 	function push_xero_employees() {
+		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
-		$staff = $this->staff_model->search_staffs();
-
-		$xml = "<Employees>
-					<Employee>
-						<FirstName></FirstName>
-						<LastName></LastName>
-						<DateOfBirth></DateOfBirth>
-						<HomeAddress>
-							<AddressLine1></AddressLine1>
-							<AddressLine2></AddressLine2>
-							<City></City>
-							<Region></Region>
-							<PostalCode></PostalCode>
-							<Country></Country>
-						</HomeAddress>
-						<StartDate></StartDate>
-						<TaxDeclaration>
-							<AustralianResidentForTaxPurposes>true</AustralianResidentForTaxPurposes>
-							<TaxFreeThresholdClaimed>true</TaxFreeThresholdClaimed>
-							<HasHELPDebt>false</HasHELPDebt>
-							<HasSFSSDebt>false</HasSFSSDebt>
-						</TaxDeclaration>
-					</Employee>
-				</Employees>";
+		
+		# Get all actived staff from StaffBooks that does not have a external id
+		$staff = $this->staff_model->get_active_staff_without_external_id();
+		
+		
+		$id = modules::run('setting/superinformasi', 'super_fund_external_id');
+		
+		$pushed_counter = 0;
+		$error_counter = 0;
+		$errors = array();
+		foreach($staff as $s){
+			$valid = true;
+			
+			if($s['s_choice'] == 'employer'){
+				if(!$id){
+					$valid = false;
+					$errors[] = 'One or more staff is using Company superfund which has not been set';	
+				}
+			}
+			
+			if($valid){
+				# push to xero	
+				$pushed_counter++;
+				# the true at the end is to by pass error message being outputted and instead returned to here 
+				$exception = modules::run('api/xero/add_employee',$s['user_id'],true);
+				if($exception['xero_exception_occured']){
+					$errors[] =  $s['first_name'] . ' ' . $s['last_name'] . ' (Xero Responce) - ' . $exception['xero_exception_occured'];	
+					$error_counter++;
+				}
+			}else{
+				$error_counter++;	
+			}
+		}
+		
+	
+		$data['pushed_counter'] = $pushed_counter;
+		$data['error_counter'] = $error_counter;
+		$data['errors'] = $errors;
+		$this->load->view('integration/xero_push_results', isset($data) ? $data : NULL);
 	}
+	
+
 
 	function pull_xero_employees_to_staffbooks() {
 

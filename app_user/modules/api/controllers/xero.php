@@ -136,7 +136,7 @@ class Xero extends MX_Controller {
         var_dump($e);
     }
 
-    function add_employee($user_id) {
+    function add_employee($user_id, $bypass_error = false) {
         $staff = modules::run('staff/get_staff', $user_id);
         if (!$staff)
         {
@@ -180,8 +180,11 @@ class Xero extends MX_Controller {
             // var_dump($result['Employee']);
 
             $this->load->model('staff/staff_model');
-            return $this->staff_model->update_staff($user_id, array('external_staff_id' => $result['Employee']['EmployeeID']),true);
-
+            $this->staff_model->update_staff($user_id, array('external_staff_id' => $result['Employee']['EmployeeID']),true);
+			
+			#update staff other informations
+			return $this->update_employee($result['Employee']['EmployeeID'], $bypass_error);
+			
             #return $result['Employee'];
         }
 		
@@ -194,7 +197,7 @@ class Xero extends MX_Controller {
 		}
     }
 
-    function update_employee($external_id)
+    function update_employee($external_id, $bypass_error = false)
     {
         $staff = modules::run('staff/get_staff_by_external_id', $external_id);
         if (!$staff)
@@ -358,9 +361,13 @@ class Xero extends MX_Controller {
 		
 		# staff tfn - xero validates valid tfn
 		$tax = '';
-		if(trim($staff['f_tfn'])){		
+		if(trim($staff['f_tfn'])){	
+			# Check EmploymentBasis
+			$employment_basis = isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'CASUAL';
+			
 			$tax = "
 				<TaxDeclaration>
+					<EmploymentBasis>" . $employment_basis . "</EmploymentBasis>
 					<TFNPendingOrExemptionHeld>false</TFNPendingOrExemptionHeld>
 					<AustralianResidentForTaxPurposes>" . ($staff['f_aus_resident'] ? 'true' : 'false') . "</AustralianResidentForTaxPurposes>
 					<TaxFreeThresholdClaimed>" . ($staff['f_tax_free_threshold'] ? 'true' : 'false') . "</TaxFreeThresholdClaimed>
@@ -402,7 +409,11 @@ class Xero extends MX_Controller {
 
             $result = json_decode(json_encode($employees->Employees[0]), TRUE);
             #var_dump($result['Employee']);exit;
-            return $result['Employee'];
+			if($bypass_error){
+				return array('xero_exception_occured' => false);
+			}else{
+            	return $result['Employee'];
+			}
         }
 		
 		# validation error 
@@ -419,8 +430,14 @@ class Xero extends MX_Controller {
 			#var_dump($xml);
 			#var_dump($errors);exit;
 			#var_dump($result['Employee']);exit;return;
-			echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => $errors[1]));
-			exit;return;
+			
+			if($bypass_error){
+				return array('xero_exception_occured' => $errors[1]);
+			}else{
+				# this is when individual staff is being updated.
+				echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => $errors[1]));
+				exit;return;
+			}
 		}
         return false;
     }

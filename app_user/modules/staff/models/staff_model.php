@@ -1150,4 +1150,15 @@ class Staff_model extends CI_Model {
 		$staff_roles = $this->db->query($sql)->result_array();
 		return $staff_roles;
 	}
+	
+	function get_active_staff_without_external_id()
+	{
+		$sql = "SELECT s.*, u.*
+				FROM user_staffs s
+				LEFT JOIN users u ON s.user_id = u.user_id WHERE u.status > " . USER_DELETED . "
+				AND u.status = " . STAFF_ACTIVE . "
+				AND s.external_staff_id = ''";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 }
