@@ -296,8 +296,10 @@ class Xero extends MX_Controller {
 									  </SuperMemberships>";	
 						}
 					}else{
-						echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => 'Your employer has not set any default Super Funds. Please select your own super.'));
-						exit;return;	
+						if(!$bypass_error){
+							echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => 'Your employer has not set any default Super Funds. Please select your own super.'));
+							exit;return;	
+						}
 					}
 			  }
 		  }
