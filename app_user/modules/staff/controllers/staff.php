@@ -70,6 +70,9 @@ class Staff extends MX_Controller {
 			case 'copy_files':
 					$this->copy_files();
 				break;
+			case 'custom_export_staff':
+					$this->custom_export_staff();
+				break;
 			default:
 					echo 'do nothing';
 				break;
@@ -1026,5 +1029,235 @@ class Staff extends MX_Controller {
 	}
 
 
+	function custom_export_staff()
+	{
+		#$staff = $this->staff_model->search_staffs(array('keyword' => 'Klarisse Fleming'));
+		$staff = $this->staff_model->search_staffs();
+		
+		/*$custom = $this->staff_model->get_custom_fields(2370);
+		print_r($custom);die();*/
+		#echo count($staff);
+		#print_r($staff);
+		/*foreach($staff as $s){
+			if($s['locations']){
+				$locations = json_decode($s['locations']);
+				$s_location = array();
+				foreach($locations as $key => $val){
+					# get the name denoted by key
+					$temp_loc = '';
+					if($key){
+						$loc = modules::run('attribute/location/get_location',$key);
+						if($loc){
+							$temp_loc = '[ ' . $loc['name'];
+						}
+					}
+					# loop throught val if this is an array 
+					if(is_array($val) && $val){
+						$temp_loc .= ' -> ';
+						$temp_loc_array = array();
+						foreach($val as $v){
+							$loc = modules::run('attribute/location/get_location',$v);
+							if($loc){
+								$temp_loc_array[] = str_replace(',', ' ', $loc['name']);
+							}	
+						}
+					}
+					
+					$s_location[] = $temp_loc . implode(' : ', $temp_loc_array) . ' ]';
+				}
+			}
+			echo implode(': ', $s_location);
+			die();
+		}
+		die();*/
 
+		
+		$headings = array(
+					'Staff ID',
+					'Staff External ID',
+					'Title',
+					'First Name',
+					'Last Name',
+					'Gender',
+					'DOB',
+					'Email',
+					'Address',
+					'Suburb',
+					'City',
+					'State',
+					'Postcode',
+					'Country',
+					'Emergency Contact Person',
+					'Emergency Contact Number',
+					'Australian Resident',
+					'Tax Free Threshold',
+					'Tax Offset',
+					'Senior Status',
+					'Help Debt',
+					'Help Variation',
+					'Bank Acc Name',
+					'Bank Acc No',
+					'Bank BSB',
+					'TFN or ABN',
+					'TFN',
+					'ABN',
+					'Require GST',
+					'Superfund Choice',
+					'Superfund Name',
+					'Supefund External ID',
+					'Superfund Employee ID',
+					#'Superfund TFN',
+					#'Superfund Name',
+					#'Superfund Website',
+					#'Superfund Product ID',
+					#'Superfund Phone',
+					#'Superfund Membership',
+					#'Superfund Address',
+					#'Superfund Suburb',
+					#'Superfund Postcode',
+					#'Superfund State',
+					#'Avaliability',
+					'Payrates',
+					'Roles',
+					'Locations'
+				
+				);
+				
+		$custom_fields = $this->db->order_by('field_order', 'asc')
+								  ->get('custom_fields')
+								  ->result_array();
+		#print_r($custom_fields);die();
+		foreach($custom_fields as $cf){
+			array_push($headings, str_replace(',', '-', $cf['label']));
+		}
+	
+		$csvdir = getcwd();		
+		$csvname = 'Sassy-Staff';
+		$csvname = $csvname.'.csv';
+		header('Content-type: application/csv; charset=utf-8;');
+        header("Content-Disposition: attachment; filename=$csvname");
+		$fp = fopen("php://output", 'w');
+		
+		# set heading
+		fputcsv($fp,$headings);
+		
+		$s_csv = array();
+		
+		foreach($staff as $s){
+			# payrates
+			$payrates = $this->staff_model->get_payrates($s['user_id']);
+			$s_rate = array();
+			foreach($payrates as $p){
+				if($p['is_restricted'] == NULL && $p['status'] > -1){
+					$s_rate[] = $p['name'];
+				}
+			}	
+			
+			# custom attributes
+			$custom = $this->staff_model->get_custom_fields($s['user_id']);
+			
+			# roles
+			$roles = $this->staff_model->get_staff_roles($s['user_id']);	
+			$s_roles = array();
+			foreach($roles as $r){
+				$s_roles[] = $r['name'];
+			}
+			
+			# locations
+			if($s['locations']){
+				$locations = json_decode($s['locations']);
+				$s_location = array();
+				foreach($locations as $key => $val){
+					# get the name denoted by key
+					$temp_loc = '';
+					if($key){
+						$loc = modules::run('attribute/location/get_location',$key);
+						if($loc){
+							$temp_loc = '[ ' . $loc['name'];
+						}
+					}
+					# loop throught val if this is an array 
+					if(is_array($val) && $val){
+						$temp_loc .= ' -> ';
+						$temp_loc_array = array();
+						foreach($val as $v){
+							$loc = modules::run('attribute/location/get_location',$v);
+							if($loc){
+								$temp_loc_array[] = str_replace(',', ' ', $loc['name']);
+							}	
+						}
+					}
+					
+					$s_location[] = $temp_loc . implode(' : ', $temp_loc_array) . ' ]';
+				}
+			}
+	
+						
+			$s_csv = array(
+						$s['user_id'],
+						$s['external_staff_id'],
+						$s['title'],
+						$s['first_name'],
+						$s['last_name'],
+						$s['gender'],
+						$s['dob'],
+						$s['email_address'],
+						$s['address'],
+						$s['suburb'],
+						$s['city'],
+						$s['state'],
+						$s['postcode'],
+						$s['country'],
+						$s['emergency_contact'],
+						$s['emergency_phone'],
+						$s['f_aus_resident'] ? 'Yes' : 'No',
+						$s['f_tax_free_threshold'] ? 'Yes' : 'No',
+						$s['f_tax_offset'] ? 'Yes' : 'No',
+						$s['f_senior_status'],
+						$s['f_help_debt'] ? 'Yes' : 'No',
+						$s['f_help_variation'],
+						$s['f_acc_name'],
+						$s['f_acc_number'],
+						$s['f_bsb'],
+						$s['f_employed'] == 1 ? 'TFN' : 'ABN',
+						$s['f_tfn'],
+						$s['f_abn'],
+						$s['f_require_gst'] ? 'Yes' : 'No',
+						$s['s_choice'],
+						$s['s_name'],
+						$s['s_external_id'],
+						$s['s_employee_id'],
+						#$s['s_tfn'],
+						#$s['s_fund_name'],
+						#$s['s_fund_website'],
+						#$s['s_product_id'],
+						#$s['s_fund_phone'],
+						#$s['s_membership'],
+						#$s['s_fund_address'],
+						#$s['s_fund_suburb'],
+						#$s['s_fund_postcode'],
+						#$s['s_fund_state'],
+						#'avalilibility',
+						implode(': ', $s_rate),
+						implode(': ', $s_roles),
+						implode(': ', $s_location)
+					);
+			# push custom attrs
+			foreach($custom as $c){
+				$cur_attr = '';
+				if($c['type'] == 'fileDate'){
+					 $cur_attr = $c['field_date'];	
+				}else{
+					$cur_attr = str_replace(',' , '-', $c['staff_value']);	
+				}
+				array_push($s_csv, $cur_attr);
+			}
+ 		
+					
+			fputcsv($fp,$s_csv);
+			
+			#die();
+		}
+		die();
+	}
 }

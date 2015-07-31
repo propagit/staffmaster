@@ -1140,5 +1140,14 @@ class Staff_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->first_row('array');	
 	}
-
+	
+	function get_staff_roles($user_id)
+	{
+		$sql = "SELECT * FROM attribute_roles ar
+					WHERE ar.role_id IN
+						(SELECT attribute_role_id FROM staff_roles sr 
+						WHERE sr.user_id = " . $user_id .")";
+		$staff_roles = $this->db->query($sql)->result_array();
+		return $staff_roles;
+	}
 }
