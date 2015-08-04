@@ -367,9 +367,19 @@ class Xero extends MX_Controller {
 			# Check EmploymentBasis
 			$employment_basis = isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'CASUAL';
 			
-			$tax = "
+			/*$tax = "
 				<TaxDeclaration>
 					<EmploymentBasis>" . $employment_basis . "</EmploymentBasis>
+					<TFNPendingOrExemptionHeld>false</TFNPendingOrExemptionHeld>
+					<AustralianResidentForTaxPurposes>" . ($staff['f_aus_resident'] ? 'true' : 'false') . "</AustralianResidentForTaxPurposes>
+					<TaxFreeThresholdClaimed>" . ($staff['f_tax_free_threshold'] ? 'true' : 'false') . "</TaxFreeThresholdClaimed>
+					<HasHELPDebt>" . ($staff['f_help_debt'] ? 'true' : 'false') . "</HasHELPDebt>
+					<TaxFileNumber>" . $staff['f_tfn'] . "</TaxFileNumber>
+					<EmploymentBasis>" . (isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'LABOURHIRE') . "</EmploymentBasis>
+				</TaxDeclaration>
+				";*/
+			$tax = "
+				<TaxDeclaration>
 					<TFNPendingOrExemptionHeld>false</TFNPendingOrExemptionHeld>
 					<AustralianResidentForTaxPurposes>" . ($staff['f_aus_resident'] ? 'true' : 'false') . "</AustralianResidentForTaxPurposes>
 					<TaxFreeThresholdClaimed>" . ($staff['f_tax_free_threshold'] ? 'true' : 'false') . "</TaxFreeThresholdClaimed>
