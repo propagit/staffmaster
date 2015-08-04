@@ -406,7 +406,8 @@ class Xero extends MX_Controller {
        	#var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
         #var_dump($response);exit();
-		var_dump($response);
+		var_dump($xml);
+		#var_dump($response);
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 
