@@ -365,17 +365,16 @@ class Xero extends MX_Controller {
 		$tax = '';
 		if(trim($staff['f_tfn'])){	
 			# Check EmploymentBasis
-			$employment_basis = isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'CASUAL';
+			#$employment_basis = isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'CASUAL';
 			
 			$tax = "
 				<TaxDeclaration>
-					<EmploymentBasis>" . $employment_basis . "</EmploymentBasis>
 					<TFNPendingOrExemptionHeld>false</TFNPendingOrExemptionHeld>
 					<AustralianResidentForTaxPurposes>" . ($staff['f_aus_resident'] ? 'true' : 'false') . "</AustralianResidentForTaxPurposes>
 					<TaxFreeThresholdClaimed>" . ($staff['f_tax_free_threshold'] ? 'true' : 'false') . "</TaxFreeThresholdClaimed>
 					<HasHELPDebt>" . ($staff['f_help_debt'] ? 'true' : 'false') . "</HasHELPDebt>
 					<TaxFileNumber>" . $staff['f_tfn'] . "</TaxFileNumber>
-					<EmploymentBasis>" . (isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'LABOURHIRE') . "</EmploymentBasis>
+					<EmploymentBasis>" . (isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'CASUAL') . "</EmploymentBasis>
 				</TaxDeclaration>
 				";
 		}	
@@ -406,8 +405,8 @@ class Xero extends MX_Controller {
        	#var_dump($xml); die();
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
         #var_dump($response);exit();
-		var_dump($xml);
-		#var_dump($response);
+		#var_dump($xml);
+		var_dump($response);
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 
