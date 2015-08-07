@@ -191,7 +191,11 @@ class Xero extends MX_Controller {
 		# Api exception
 		if ($this->XeroOAuth->response['code'] == 400){
 			# When this happens an Api Excetion has happened, as the code to add employee has been pre validated for all required fields.
-			# this exception can be because of bad data format such as year being over the current year such as 2092 etc			
+			# this exception can be because of bad data format such as year being over the current year such as 2092 etc	
+			
+			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
+			var_dump($result);		
 			echo 'api-exception';
 			return;
 		}
