@@ -195,8 +195,12 @@ class Xero extends MX_Controller {
 			
 			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
-			var_dump($result);		
-			echo 'api-exception';
+			$xml = $this->XeroOAuth->response['response'];
+			#var_dump($xml);
+			$regex = "#<ValidationErrors><ValidationError><Message>(.*?)</Message></ValidationError></ValidationErrors>#";
+			$message = preg_match($regex, $xml, $errors);	
+			#echo 'api-exception';
+			echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => $errors[1]));
 			return;
 		}
     }
