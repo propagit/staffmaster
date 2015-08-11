@@ -197,10 +197,14 @@ class Shift extends MX_Controller {
 	{
 		$comma_separate_shift_ids = implode(',',$shift_ids);
 		if ($user_id) {
-			$data['shifts'] = $this->job_shift_model->get_user_job_shifts_by_shift_ids($user_id, $comma_separate_shift_ids);
+			$data = $this->job_shift_model->get_user_job_shifts_by_shift_ids($user_id, $comma_separate_shift_ids);
+			if(count($data) <= 0){
+				$data = $this->job_shift_model->get_job_shifts_by_shift_ids($comma_separate_shift_ids);	
+			}
 		} else {
-			$data['shifts'] = $this->job_shift_model->get_job_shifts_by_shift_ids($comma_separate_shift_ids);
+			$data = $this->job_shift_model->get_job_shifts_by_shift_ids($comma_separate_shift_ids);
 		}
+		$data['shifts'] = $data;
 		$this->load->view('shift/email/apply_for_shift_template', isset($data) ? $data : NULL);
 	}
 	/**
