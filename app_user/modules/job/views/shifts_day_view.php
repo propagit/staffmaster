@@ -280,9 +280,9 @@ $(function(){
 		$('#selected-shift-email-info').html('');
 		$('.selected_shifts:checked').each(function(){
 			shift_selected = true;
+			$('#selected-shift-email-info').append('<input type="hidden" name="selected_module_ids[]" value="'+$(this).val()+'" />');
 			if ($(this).attr('data-staff-user-id') != '0')
 			{
-				$('#selected-shift-email-info').append('<input type="hidden" name="selected_module_ids[]" value="'+$(this).val()+'" />');
 				$('#selected-shift-email-info').append('<input type="hidden" name="user_staff_selected_user_id[]" value="'+$(this).attr('data-staff-user-id')+'" />');
 			}
 		});
