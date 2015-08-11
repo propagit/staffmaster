@@ -176,8 +176,8 @@ class Timesheet extends MX_Controller {
 					'hours' => $current_hours,
 					'rate' => $current_rate,
 					'break' => 0,
-					'group' => $rate['group'],
-					'activity' => $client_rate['group']
+					'group' => $current_group,
+					'activity' => $current_activity
 				);
 				
 				# Then clear to set up new rate
@@ -193,8 +193,8 @@ class Timesheet extends MX_Controller {
 			'hours' => $current_hours,
 			'rate' => $current_rate,
 			'break' => 0,
-			'group' => $current_group,
-			'activity' => $current_group
+			'group' => $rate['group'],
+			'activity' => $client_rate['group']
 		);
 		
 		
@@ -585,7 +585,7 @@ class Timesheet extends MX_Controller {
 	}
 	
 	#create_number_of_units($timesheet,$no_of_days,$payrun_start_date,$xero_earning_rate_id,$xero_payrates)
-	function test()
+	function _test()
 	{
 		#$this->load->model('payrun/payrun_model');
 		#$timesheets = $this->payrun_model->get_export_timesheets(1);
@@ -598,6 +598,120 @@ class Timesheet extends MX_Controller {
 		$payrun_id = 1;
 		$this->db->where('staff_id != ',$staff_id)->update('job_shift_timesheets',array('payrun_id' => 0));*/
 		#modules::run('payrun/revert_xero_payrun',1);
+		
+	}
+	
+	function ______test()
+	{
+		/*$diff_payrates = $this->extract_timesheet_payrate(355, $user_type = 0);	
+		echo '<pre>'.print_r($diff_payrates,true).'</pre>';
+		$diff_payrates = $this->extract_timesheet_payrate(368, $user_type = 0);	
+		echo '<pre>'.print_r($diff_payrates,true).'</pre>';*/
+		/*$payrate = $this->payrate_model->get_payrate(7);
+		echo '<pre>'.print_r($payrate,true).'</pre>';*/
+		$timesheet_id = 368;
+		$user_type = 0;
+		$timesheet = $this->timesheet_model->get_timesheet($timesheet_id);
+		$payrate_id = $timesheet['payrate_id'];
+		$client_payrate_id = $payrate_id;
+		if ($timesheet['client_payrate_id'] > 0)
+		{
+			$client_payrate_id = $timesheet['client_payrate_id'];
+		}
+		$start_time = $timesheet['start_time'];
+		$finish_time = $timesheet['finish_time'];
+		$pay_rates = array();
+		
+		$current_rate = null;
+		$payrate = $this->payrate_model->get_payrate($payrate_id);
+		$client_payrate = $this->payrate_model->get_payrate($client_payrate_id);
+		$current_group = $payrate['name'];
+		$current_activity = $client_payrate['name'];
+		$current_start = null;
+		$current_hours = 0;
+		$count = 0;
+		for($i = $start_time; $i < $finish_time; $i = $i + 60*15) { # Every 15 minutes
+			if($count == 1){
+				break;
+			}
+			$count++;
+			$day = date('N', $i); # Get day of the week (1: monday - 7: sunday)
+			$hour = date('G', $i); # Get hour of the day (0 - 23)
+			# Get the pay rate amount
+			#$rate = $this->payrate_model->get_payrate_data($payrate_id, $user_type, $day, $hour);
+			$rate = $this->payrate_model->get_payrate_full_data($payrate_id, $user_type, $day, $hour);
+			$client_rate = $this->payrate_model->get_payrate_full_data($client_payrate_id, 1, $day, $hour);
+			if ($current_rate == null) { # First rate
+				#$current_rate = $rate;
+				$current_rate = $rate['value'];
+				$current_group = $rate['group'];
+				$current_activity = $client_rate['group'];
+				$current_start = $start_time;
+			}
+			if ($rate['value'] == $current_rate) { # The same rate
+				$current_hours += 0.25;
+			}			
+			if ($rate['value'] != $current_rate) { # There is new rate
+				# First store current rate
+				$pay_rates[] = array(
+					'start' => $current_start,
+					'finish' => $current_start + $current_hours * 3600,
+					'hours' => $current_hours,
+					'rate' => $current_rate,
+					'break' => 0,
+					#'group' => $rate['group'],
+					#'activity' => $client_rate['group']
+					'group' => $current_group,
+					'activity' => $current_activity
+				);
+				
+				# Then clear to set up new rate
+				$current_rate = $rate['value'];
+				$current_start = $i;
+				$current_hours = 0.25;				
+			}	
+			
+			echo $rate['group'] . ' - ' . $current_hours . '<br>';
+		}
+		# Last pay rate
+		$pay_rates[] = array(
+			'start' => $current_start,
+			'finish' => $current_start + $current_hours * 3600,
+			'hours' => $current_hours,
+			'rate' => $current_rate,
+			'break' => 0,
+			#'group' => $current_group,
+			#'activity' => $current_group
+			'group' => $rate['group'],
+			'activity' => $client_rate['group']
+		);
+		
+		
+		$breaks = json_decode($timesheet['break_time']);
+		if (count($breaks) > 0) {
+			$final = array();
+			foreach($pay_rates as $pay_rate) {
+				foreach($breaks as $break) {
+					$length = $break->length;
+					$start_at = $break->start_at;
+					$finish_at = $start_at + $length;
+					if ($pay_rate['start'] <= $start_at && $pay_rate['finish'] >= $finish_at) {
+						$pay_rate['break'] = $length;
+					}
+					if ($pay_rate['start'] <= $start_at && $pay_rate['finish'] > $start_at && $pay_rate['finish'] < $finish_at) {
+						$pay_rate['break'] = $pay_rate['finish'] - $start_at;
+					}
+					if ($pay_rate['start'] > $start_at && $pay_rate['start'] < $finish_at && $pay_rate['finish'] > $finish_at) {
+						$pay_rate['break'] = $finish_at - $pay_rate['start'];	
+					}
+				}
+				$pay_rate['hours'] = $pay_rate['hours'] - $pay_rate['break'] / 3600;
+				$final[] = $pay_rate;
+			}
+			$pay_rates = $final;
+		}
+		#return $pay_rates;
+		echo '<pre>'.print_r($pay_rates,true).'</pre>';
 		
 	}
 	
