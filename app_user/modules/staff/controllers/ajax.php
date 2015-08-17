@@ -860,13 +860,12 @@ class Ajax extends MX_Controller {
 					if($value){
 						$this->staff_model->update_custom_field_date($user_id, $field_id, $value);
 					}
-				}
-				
-				if (is_array($value)) {
-					$value = json_encode($value);
+				}else{
+					if (is_array($value)) {
+						$value = json_encode($value);
+					}
 					$this->staff_model->update_custom_field($user_id, $field_id, $value);
 				}
-				
 			}
 		}
 
