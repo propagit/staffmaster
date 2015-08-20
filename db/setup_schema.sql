@@ -815,7 +815,7 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (23, 'shoebooks', 'invoice', 'pay_rate', 'Shoebooks (Pay Rate Per Line)', 1),
 (24, 'xero', 'payrun_abn', 'shift', 'XERO - ABN Export', 1),
 (25, 'xero', 'staff', '', 'XERO ABN - Suppliers', 1),
-(26, 'xero', 'invoice', 'pay_rate', 'Xero (Pay Rate Per Line)', 0);
+(26, 'xero', 'invoice', 'pay_rate', 'Xero (Pay Rate Per Line)', '0');
 
 -- --------------------------------------------------------
 
@@ -1218,7 +1218,7 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (563, 24, 16, '*UnitAmount', '{ex_tax_amount}'),
 (564, 24, 17, '*TaxType', '{taxable}'),
 (566, 24, 18, '*AccountCode', '477'),
-(567, 26, 1, 'EmailAddress', '{client_email}’),
+(567, 26, 1, 'EmailAddress', '{client_email}'),
 (568, 26, 2, 'POAddressLine1', '{client_address}'),
 (569, 26, 3, 'POAddressLine2', '{client_suburb}'),
 (570, 26, 4, 'POAddressLine3', ''),
@@ -2345,7 +2345,7 @@ INSERT INTO `supers` (`super_id`, `name`) VALUES
 (171, 'Oracle Superannuation Plan'),
 (172, 'Perpetual Super Wrap'),
 (173, 'Perpetual WealthFocus Superannuation Fund'),
-(174, 'Perpetual’s Select Superannuation Fund'),
+(174, 'Perpetual's Select Superannuation Fund'),
 (175, 'Personal Choice Private Fund'),
 (176, 'Pitcher Retirement Plan'),
 (177, 'Plan B Eligible Rollover Fund'),
@@ -2374,7 +2374,7 @@ INSERT INTO `supers` (`super_id`, `name`) VALUES
 (200, 'Salic Superannuation Fund'),
 (201, 'Scientific Testing & Applied Technical Services Superannuation Plan'),
 (202, 'Shell Australia Superannuation Fund'),
-(203, 'Smartsave ‘Member’s Choice’ Superannuation Master Plan'),
+(203, 'Smartsave ‘Member's Choice' Superannuation Master Plan'),
 (204, 'SMF Eligible Rollover Fund'),
 (205, 'Staedtler Executive Superannuation Fund'),
 (206, 'Star Portfolio Superannuation Fund (run by Colonial First State)'),
