@@ -18,8 +18,8 @@ class Invoice extends MX_Controller {
 		$this->user = $this->session->userdata('user_data');
 		$this->is_client = modules::run('auth/is_client');
 	}
-	
-	
+
+
 	function index($method='', $param='') {
 		switch($method)
 		{
@@ -45,9 +45,9 @@ class Invoice extends MX_Controller {
 					$this->main_view($method);
 				break;
 		}
-		
+
 	}
-	
+
 	/**
 	*	@name: main_view
 	*	@desc: load the main layout of the invoice page
@@ -59,7 +59,7 @@ class Invoice extends MX_Controller {
 		$data['tab'] = $tab;
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: create_view
 	*	@desc: view of create invoice tab
@@ -70,7 +70,7 @@ class Invoice extends MX_Controller {
 	function create_view() {
 		$this->load->view('create_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: search_form
 	*	@desc: view of search invoice tab
@@ -78,12 +78,12 @@ class Invoice extends MX_Controller {
 	*	@param: (void)
 	*	@return: (html) load search form of the search invoice tab
 	*/
-	function search_form() 
+	function search_form()
 	{
 		$data['is_client'] = $this->is_client;
 		$this->load->view('search_form', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: create
 	*	@desc: create the invoice record for a client
@@ -94,16 +94,18 @@ class Invoice extends MX_Controller {
 	function create($user_id) {
 		$invoice_id = $this->invoice_model->check_client_invoice($user_id);
 		# If found invoice, delete it
-		if ($invoice_id) {
+		/* Now we dont care about old crapy one
+		 * It should create a new invoice everytime
+ 		if ($invoice_id) {
 			redirect('invoice/edit/' . $invoice_id);
-		}
-		
+		}*/
+
 		$invoice_id = $this->create_invoice($user_id);
-			
-		redirect('invoice/edit/' . $invoice_id);	
+
+		redirect('invoice/edit/' . $invoice_id);
 	}
-	
-	
+
+
 	/**
 	*	@name: edit
 	*	@desc: edit invoice page
@@ -125,7 +127,7 @@ class Invoice extends MX_Controller {
 		}
 		$this->load->view('create/edit_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: generate
 	*	@desc: generate the invoice and link timesheets to the invoice
@@ -137,7 +139,7 @@ class Invoice extends MX_Controller {
 		$this->generate_invoice($invoice_id);
 		redirect('invoice/view/' . $invoice_id);
 	}
-	
+
 	/**
 	*	@name: download
 	*	@desc: generate and download the pdf
@@ -150,7 +152,7 @@ class Invoice extends MX_Controller {
 		$filename = "invoice_" . $invoice_id;
 		if(!file_exists(UPLOADS_PATH.'/pdf/'.$filename.'.pdf')){
 			$pdfFilePath = UPLOADS_PATH."/pdf/$filename.pdf";
-			
+
 			$dir = UPLOADS_PATH.'/pdf/';
 			if(!is_dir($dir))
 			{
@@ -160,39 +162,39 @@ class Invoice extends MX_Controller {
 			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 			  fclose($fp);
 			}
-			 
-			ini_set('memory_limit','128M'); # boost the memory limit if it's low 
-			
+
+			ini_set('memory_limit','128M'); # boost the memory limit if it's low
+
 			$invoice = $this->invoice_model->get_invoice($invoice_id);
 			$data['invoice'] = $invoice;
 			$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 			$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
 			$data['company_profile'] = modules::run('setting/company_profile');
-			$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true); 
-	
-			
-					
+			$html = $this->load->view('create/download_view', isset($data) ? $data : NULL, true);
+
+
+
 			$this->load->library('pdf');
-			$pdf = $this->pdf->load(); 			
+			$pdf = $this->pdf->load();
 			$stylesheet = file_get_contents('./assets/css/pdf.css');
 			$custom_styles = '<style>'.modules::run('custom_styles').'</style>';
 			//echo $custom_styles;exit();
 			$pdf->WriteHTML($stylesheet,1);
 			$pdf->WriteHTML($custom_styles,1);
 			$pdf->WriteHTML($html,2);
-			$pdf->Output($pdfFilePath, 'F'); // save to file 
+			$pdf->Output($pdfFilePath, 'F'); // save to file
 		}
-		if($redirect){ 
-			redirect(UPLOADS_PATH."/pdf/$filename.pdf"); 
+		if($redirect){
+			redirect(UPLOADS_PATH."/pdf/$filename.pdf");
 		}
 	}
-	
+
 	/**
 	*	@name: view
 	*	@desc: view of the single invoice
 	*	@access: public
 	*	@param: (int) $invoice_id
-	*	@return: (html) view invoice page 
+	*	@return: (html) view invoice page
 	*/
 	function view($invoice_id) {
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
@@ -200,16 +202,16 @@ class Invoice extends MX_Controller {
 		$data['client'] = modules::run('client/get_client', $invoice['client_id']);
 		$data['items'] = $this->invoice_model->get_invoice_items($invoice_id);
 		$data['company_profile'] = modules::run('setting/company_profile');
-		$this->load->view('create/generated_view', isset($data) ? $data : NULL); 
+		$this->load->view('create/generated_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function row_client_job($job_id) {
 		$data['job'] = $this->invoice_model->get_job($job_id);
 		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
 		$this->load->view('source/client_job_row_view', isset($data) ? $data : NULL);
 	}
-	
-	
+
+
 	/**
 	*	@name: row_job
 	*	@desc: view of row of a job
@@ -222,7 +224,7 @@ class Invoice extends MX_Controller {
 		$data['timesheets'] = $this->invoice_model->get_timesheets($job_id);
 		$this->load->view('source/job_row_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: row_timesheet
 	*	@desc: view of row of a timesheet
@@ -234,7 +236,7 @@ class Invoice extends MX_Controller {
 		$data['timesheet'] = $this->invoice_model->get_timesheet($timesheet_id);
 		$this->load->view('source/timesheet_row_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
 	*	@name: get_job_timesheets
 	*	@desc: get invoiced timesheets of an invoiced job
@@ -246,18 +248,18 @@ class Invoice extends MX_Controller {
 	function get_job_timesheets($job_id, $status) {
 		return $this->invoice_model->get_job_timesheets($job_id, $status);
 	}
-	
+
 	function get_invoice_timesheets($invoice_id, $job_id = '') {
 		return $this->invoice_model->get_invoice_timesheets($invoice_id, $job_id);
 	}
-	
+
 	/**
 	*	@name: field_select_status
 	*	@desc: custom field select status of invoice
 	*	@access: public
 	*	@param: - $field_name: string of field name
 	*			- $field_value (optional): selected value of field
-	*			- $size (optional): size 
+	*			- $size (optional): size
 	*	@return: custom select input field
 	*/
 	function field_select_status($field_name, $field_value=null, $size=null) {
@@ -267,7 +269,7 @@ class Invoice extends MX_Controller {
 		);
 		return modules::run('common/field_select', $array, $field_name, $field_value, $size);
 	}
-	
+
 	/**
 	*	@name: menu_dropdown_status
 	*	@desc: generate the dropdown menu of invoice status
@@ -280,11 +282,11 @@ class Invoice extends MX_Controller {
 		$data['is_client'] = $this->is_client;
 		$this->load->view('search/menu_dropdown_status', isset($data) ? $data : NULL);
 	}
-	
+
 	function field_select_export_templates($field_name, $field_value = null) {
 		$object = 'invoice';
 		$this->load->model('export/export_model');
-		#$data['single'] = $this->export_model->get_templates($object, 'single');		
+		#$data['single'] = $this->export_model->get_templates($object, 'single');
 		#$data['batched'] = $this->export_model->get_templates($object, 'batched');
 		$data['templates'] = $this->export_model->get_templates($object);
 		$data['field_name'] = $field_name;
@@ -296,14 +298,14 @@ class Invoice extends MX_Controller {
 	*	@desc: function to email invoice to client
 	*	@access: public
 	*	@param: ([array]) email parameters such as body of email, user id, invoice id
-	*	
+	*
 	*/
 	function email_invoice($params)
 	{
 		$this->load->model('user/user_model');
 		$this->load->model('setting/setting_model');
 		$this->load->model('email/email_template_model');
-		
+
 		//get post data from params
 		$selected_module_ids = $params['selected_module_ids'];
 		$email_body = $params['email_body'];
@@ -313,7 +315,7 @@ class Invoice extends MX_Controller {
 			$invoice_ids = json_decode($selected_module_ids);
 			foreach($invoice_ids as $invoice_id){
 				//get template info
-				$template_info = $this->email_template_model->get_template($email_template_id);	
+				$template_info = $this->email_template_model->get_template($email_template_id);
 				$company = $this->setting_model->get_profile();
 				//get invoice details
 				$invoice = $this->invoice_model->get_invoice($invoice_id);
@@ -325,11 +327,11 @@ class Invoice extends MX_Controller {
 										'user_id' => $invoice['client_id'],
 										'company' => $company,
 										'invoice_id' => $invoice_id
-									);	
+									);
 				$obj = modules::run('email/get_email_obj',$email_obj_params);
 				//check file for attachment
 				if(!file_exists(UPLOADS_PATH.'/pdf/invoice_'.$invoice_id.'.pdf')){
-					//create attachment	
+					//create attachment
 					modules::run('invoice/download',$invoice_id,false);
 				}
 				$email_data = array(
@@ -338,14 +340,14 @@ class Invoice extends MX_Controller {
 									'from_text' => $company['email_c_name'],
 									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
 									'message' => modules::run('email/format_template_body',$email_body,$obj),
-									'attachment' => realpath(__DIR__.'/../../../../public_html/user_assets/'.SUBDOMAIN.'/uploads/pdf/invoice_'.$invoice_id.'.pdf')	
+									'attachment' => realpath(__DIR__.'/../../../../public_html/user_assets/'.SUBDOMAIN.'/uploads/pdf/invoice_'.$invoice_id.'.pdf')
 								);
 				modules::run('email/send_email',$email_data);
 			}
 		}
 		echo 'sent';
 	}
-	
+
 	function create_invoice($user_id)
 	{
 		$client = modules::run('client/get_client', $user_id);
@@ -388,8 +390,8 @@ class Invoice extends MX_Controller {
 			);
 			$total += $job['total_amount'];
 			$this->invoice_model->add_invoice_item($item_data);
-			
-			
+
+
 			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
 			foreach($timesheets as $timesheet) {
 				$expenses = $this->expense_model->get_timesheet_expenses($timesheet['timesheet_id']);
@@ -410,17 +412,17 @@ class Invoice extends MX_Controller {
 						$total += $exp['client_cost'];
 						$this->invoice_model->add_invoice_item($item_data);
 					}
-				}	
+				}
 			}
 		}
 		$this->invoice_model->update_invoice($invoice_id, array(
 			'jobs' => serialize($data_jobs),
 			'total_amount' => $total
 		));
-		
-		return $invoice_id;		
+
+		return $invoice_id;
 	}
-	
+
 	function generate_invoice($invoice_id)
 	{
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
@@ -430,7 +432,7 @@ class Invoice extends MX_Controller {
 			'status' => INVOICE_GENERATED,
 			'issued_by' => $user['user_id']
 		));
-		$this->invoice_model->generate_invoice_timesheets($invoice['client_id'], $invoice_id);	
+		$this->invoice_model->generate_invoice_timesheets($invoice['client_id'], $invoice_id);
 	}
-	
+
 }
