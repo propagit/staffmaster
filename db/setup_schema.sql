@@ -786,7 +786,7 @@ CREATE TABLE IF NOT EXISTS `export_templates` (
   `name` varchar(200) NOT NULL,
   `status` tinyint(4) NOT NULL,
   PRIMARY KEY (`export_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `export_templates`
@@ -814,7 +814,8 @@ INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`
 (22, 'myob', 'client', '', 'MYOB', 0),
 (23, 'shoebooks', 'invoice', 'pay_rate', 'Shoebooks (Pay Rate Per Line)', 1),
 (24, 'xero', 'payrun_abn', 'shift', 'XERO - ABN Export', 1),
-(25, 'xero', 'staff', '', 'XERO ABN - Suppliers', 1);
+(25, 'xero', 'staff', '', 'XERO ABN - Suppliers', 1),
+(26, 'xero', 'invoice', 'pay_rate', 'Xero (Pay Rate Per Line)', 0);
 
 -- --------------------------------------------------------
 
@@ -830,7 +831,7 @@ CREATE TABLE IF NOT EXISTS `export_template_data` (
   `title` varchar(100) NOT NULL,
   `value` varchar(200) NOT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=470 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=594 ;
 
 --
 -- Dumping data for table `export_template_data`
@@ -1216,7 +1217,34 @@ INSERT INTO `export_template_data` (`field_id`, `export_id`, `order`, `title`, `
 (560, 24, 15, '*Quantity', '1'),
 (563, 24, 16, '*UnitAmount', '{ex_tax_amount}'),
 (564, 24, 17, '*TaxType', '{taxable}'),
-(566, 24, 18, '*AccountCode', '477');
+(566, 24, 18, '*AccountCode', '477'),
+(567, 26, 1, 'EmailAddress', '{client_email}’),
+(568, 26, 2, 'POAddressLine1', '{client_address}'),
+(569, 26, 3, 'POAddressLine2', '{client_suburb}'),
+(570, 26, 4, 'POAddressLine3', ''),
+(571, 26, 5, 'POAddressLine4', ''),
+(572, 26, 6, 'POCity', '{client_city}'),
+(573, 26, 7, 'PORegion', '{client_state}'),
+(574, 26, 8, 'POPostalCode', '{client_postcode}'),
+(575, 26, 9, 'POCountry', '{client_country}'),
+(576, 26, 10, 'InvoiceNumber', '{invoice_id}'),
+(577, 26, 11, 'Reference', '{po_number}'),
+(578, 26, 12, 'InvoiceDate', '{issued_date}'),
+(579, 26, 13, 'DueDate', '{due_date}'),
+(580, 26, 14, 'InventoryItemCode', ''),
+(581, 26, 16, 'Quantity', '{hours}'),
+(582, 26, 19, 'Discount', ''),
+(583, 26, 21, 'TaxAmount', '{tax_amount}'),
+(584, 26, 22, 'TrackingName1', ''),
+(585, 26, 24, 'TrackingName2', ''),
+(586, 26, 23, 'TrackingOption1', ''),
+(587, 26, 25, 'TrackingOption2', ''),
+(588, 26, 26, 'Currency', 'AUD'),
+(589, 26, 0, 'ContactName', '{client_company_name}'),
+(590, 26, 18, 'AccountCode', '200'),
+(591, 26, 20, 'TaxType', 'GST on Income'),
+(592, 26, 15, 'Description', '{venue}   {start_time}   {finish_time}'),
+(593, 26, 17, 'UnitAmount', '{pay_rate_amount}');
 
 -- --------------------------------------------------------
 
