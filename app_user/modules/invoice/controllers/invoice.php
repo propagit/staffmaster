@@ -92,11 +92,16 @@ class Invoice extends MX_Controller {
 	*	@return: (void) redirect to (html) invoice page
 	*/
 	function create($user_id) {
-		$invoice_id = $this->invoice_model->check_client_invoice($user_id);
+
+		/**
+		 * We dont want this anymore
+		 * Everytime, it should just create a fresh new invoice
+		 */
+		/*$invoice_id = $this->invoice_model->check_client_invoice($user_id);
 		# If found invoice, delete it
 		if ($invoice_id) {
 			redirect('invoice/edit/' . $invoice_id);
-		}
+		}*/
 
 		$invoice_id = $this->create_invoice($user_id);
 
@@ -372,7 +377,8 @@ class Invoice extends MX_Controller {
 		$data_jobs = array();
 		$total = 0;
 		# Insert invoice items
-		$jobs = $this->invoice_model->get_client_invoice($user_id);
+		// $jobs = $this->invoice_model->get_client_invoice($user_id);
+		$jobs = $this->invoice_model->get_client_invoice_v2($user_id);
 		foreach($jobs as $job) {
 			$item_data = array(
 				'invoice_id' => $invoice_id,
@@ -390,7 +396,9 @@ class Invoice extends MX_Controller {
 			$this->invoice_model->add_invoice_item($item_data);
 
 
-			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
+			#$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
+			$timesheets = $this->invoice_model->get_job_timesheets_v2($job['job_id']);
+
 			foreach($timesheets as $timesheet) {
 				$expenses = $this->expense_model->get_timesheet_expenses($timesheet['timesheet_id']);
 				# Update invoice_id to timesheets
