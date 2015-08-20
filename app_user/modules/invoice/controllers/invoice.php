@@ -94,11 +94,9 @@ class Invoice extends MX_Controller {
 	function create($user_id) {
 		$invoice_id = $this->invoice_model->check_client_invoice($user_id);
 		# If found invoice, delete it
-		/* Now we dont care about old crapy one
-		 * It should create a new invoice everytime
- 		if ($invoice_id) {
+		if ($invoice_id) {
 			redirect('invoice/edit/' . $invoice_id);
-		}*/
+		}
 
 		$invoice_id = $this->create_invoice($user_id);
 
@@ -392,10 +390,7 @@ class Invoice extends MX_Controller {
 			$this->invoice_model->add_invoice_item($item_data);
 
 
-			#$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
-			$timesheets = $this->invoice_model->get_job_ready_timesheets($job['job_id']);
-
-
+			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
 			foreach($timesheets as $timesheet) {
 				$expenses = $this->expense_model->get_timesheet_expenses($timesheet['timesheet_id']);
 				# Update invoice_id to timesheets
