@@ -392,7 +392,10 @@ class Invoice extends MX_Controller {
 			$this->invoice_model->add_invoice_item($item_data);
 
 
-			$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
+			#$timesheets = $this->invoice_model->get_job_timesheets($job['job_id'], INVOICE_READY);
+			$timesheets = $this->invoice_model->get_job_ready_timesheets($job['job_id']);
+
+
 			foreach($timesheets as $timesheet) {
 				$expenses = $this->expense_model->get_timesheet_expenses($timesheet['timesheet_id']);
 				# Update invoice_id to timesheets

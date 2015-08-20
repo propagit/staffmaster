@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Invoice_model extends CI_Model {
-	
+
 	function check_client_invoice($user_id) {
 		$this->db->where('client_id', $user_id);
 		$this->db->where('status', 0);
@@ -13,7 +13,7 @@ class Invoice_model extends CI_Model {
 			return $result['invoice_id'];
 		}
 	}
-	
+
 	/**
 	*	@name: add_client_invoice
 	*	@desc: create the client invoice
@@ -25,7 +25,7 @@ class Invoice_model extends CI_Model {
 		$this->db->insert('invoices', $data);
 		return $this->db->insert_id();
 	}
-	
+
 	/**
 	*	@name: add_invoice_item
 	*	@desc: add item to the invoice
@@ -43,12 +43,21 @@ class Invoice_model extends CI_Model {
 		$this->db->insert('invoice_items', $data);
 		return $this->db->insert_id();
 	}
-	
+
 	function update_invoice_item($item_id, $data) {
 		$this->db->where('item_id', $item_id);
 		return $this->db->update('invoice_items', $data);
 	}
-	
+
+	function get_job_ready_timesheets($job_id) {
+		$this->db->where('job_id', $job_id);
+		$this->db->where('status', TIMESHEET_BATCHED);
+		$this->db->where('status_invoice_client', INVOICE_READY);
+
+		$query = $this->db->get('job_shift_timesheets');
+		return $query->result_array();
+	}
+
 	/**
 	*	@name: get_job_timesheets
 	*	@desc: get invoiced time sheet of invoiced job
@@ -61,22 +70,22 @@ class Invoice_model extends CI_Model {
 		$this->db->where('job_id', $job_id);
 		$this->db->where('status', TIMESHEET_BATCHED);
 		$this->db->where('status_invoice_client >=', $invoice_status);
-		$this->db->where('invoice_id', 0);
-		
+		#$this->db->where('invoice_id', 0);
+
 		$query = $this->db->get('job_shift_timesheets');
 		return $query->result_array();
 	}
-	
+
 	function get_invoice_timesheets($invoice_id, $job_id = '') {
 		$this->db->where('invoice_id', $invoice_id);
 		if ($job_id) {
 			$this->db->where('job_id', $job_id);
 		}
-		
+
 		$query = $this->db->get('job_shift_timesheets');
 		return $query->result_array();
 	}
-	
+
 	function unlink_invoice_timesheets($invoice_id) {
 		$this->db->where('invoice_id', $invoice_id);
 		return $this->db->update('job_shift_timesheets', array(
@@ -84,7 +93,7 @@ class Invoice_model extends CI_Model {
 			'status_invoice_client' => INVOICE_PENDING
 		));
 	}
-	
+
 	/**
 	*	@name: delete_invoice_item
 	*	@desc: delete an item from the invoice
@@ -96,7 +105,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('item_id', $item_id);
 		return $this->db->delete('invoice_items');
 	}
-	
+
 	/**
 	*	@name: delete_invoice_items
 	*	@desc: delete all items of an invoice
@@ -108,7 +117,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('invoice_id', $invoice_id);
 		return $this->db->delete('invoice_items');
 	}
-	
+
 	/**
 	*	@name: delete_invoice
 	*	@desc: delete the invoice itselft
@@ -121,7 +130,7 @@ class Invoice_model extends CI_Model {
 		return $this->db->update('invoices', array('status' => INVOICE_DELETED));
 		#return $this->db->delete('invoices');
 	}
-	
+
 	/**
 	*	@name: get_invoice_items
 	*	@desc: get all items of an invoice
@@ -135,7 +144,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->get('invoice_items');
 		return $query->result_array();
 	}
-	
+
 	/**
 	*	@name: update_invoice
 	*	@desc: update invoice object
@@ -148,7 +157,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('invoice_id', $invoice_id);
 		return $this->db->update('invoices', $data);
 	}
-	
+
 	/**
 	*	@name: get_invoice
 	*	@desc: get invoice object by id
@@ -158,7 +167,7 @@ class Invoice_model extends CI_Model {
 	*/
 	function get_invoice($invoice_id) {
 		$sql = "SELECT i.*, c.external_client_id
-				FROM invoices i, user_clients c 
+				FROM invoices i, user_clients c
 				WHERE i.invoice_id = $invoice_id
 				AND i.client_id = c.user_id";
 		#$this->db->where('invoice_id', $invoice_id);
@@ -166,7 +175,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->first_row('array');
 	}
-	
+
 	/**
 	*	@name: get_client_invoice
 	*	@desc: get ready timesheet to be invoiced of a client
@@ -185,7 +194,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-	
+
 	/**
 	*	@name: get_invoiced_clients
 	*	@desc: get clients that has temporary invoices
@@ -196,13 +205,13 @@ class Invoice_model extends CI_Model {
 	function get_invoiced_clients() {
 		$sql = "SELECT uc.*, sum(j.expenses_client_cost) as `expenses`, sum(j.total_amount_client) as `total_amount`, count(*) as `total_timesheets` FROM `job_shift_timesheets` j
 					LEFT JOIN `user_clients` uc ON j.client_id = uc.user_id
-					WHERE j.status = " . TIMESHEET_BATCHED . " 
+					WHERE j.status = " . TIMESHEET_BATCHED . "
 					AND j.status_invoice_client = " . INVOICE_READY . "
 					GROUP BY j.client_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-	
+
 	/**
 	*	@name: get_clients
 	*	@desc: get list of clients that has timesheets can be billed
@@ -211,8 +220,8 @@ class Invoice_model extends CI_Model {
 	*	@return: (array) of client objects
 	*/
 	function get_clients() {
-		$sql_select_job_id = "SELECT job_id 
-								FROM `job_shift_timesheets` 
+		$sql_select_job_id = "SELECT job_id
+								FROM `job_shift_timesheets`
 								WHERE status = " . TIMESHEET_BATCHED . "
 								AND status_invoice_client <= " . INVOICE_READY . " AND status_invoice_client > " . INVOICE_DELETED . "
 								GROUP BY job_id";
@@ -222,7 +231,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-	
+
 	/**
 	*	@name: get_client_jobs
 	*	@desc: get list of jobs that has timesheets can be billed
@@ -231,8 +240,8 @@ class Invoice_model extends CI_Model {
 	*	@return: (array) of job objects
 	*/
 	function get_client_jobs($user_id) {
-		$sql_select_job_id = "SELECT job_id 
-								FROM `job_shift_timesheets` 
+		$sql_select_job_id = "SELECT job_id
+								FROM `job_shift_timesheets`
 								WHERE status = " . TIMESHEET_BATCHED . "
 								AND status_invoice_client <= " . INVOICE_READY . "
 								GROUP BY job_id";
@@ -240,7 +249,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-	
+
 	/**
 	*	@name: get_job
 	*	@desc: get a job object by id
@@ -253,7 +262,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->get('jobs');
 		return $query->first_row('array');
 	}
-	
+
 	/**
 	*	@name: get_timesheet
 	*	@desc: get a time sheet by id
@@ -267,7 +276,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->get('job_shift_timesheets');
 		return $query->first_row('array');
 	}
-	
+
 	/**
 	*	@name: get_timesheets
 	*	@desc: get list of ready time sheets oj a job
@@ -283,7 +292,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->get('job_shift_timesheets');
 		return $query->result_array();
 	}
-	
+
 	function get_export_timesheets($invoice_id, $job_id) {
 		$sql = "SELECT js.*,
 					CONCAT(s.first_name, ' ', s.last_name) as `staff_name`,
@@ -296,7 +305,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-	
+
 	function get_export_expenses($expense_id) {
 		$sql = "SELECT e.*,
 					CONCAT(s.first_name, ' ', s.last_name) as `staff_name`,
@@ -310,7 +319,7 @@ class Invoice_model extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-	
+
 	/**
 	*	@name: add_job_to_invoice
 	*	@desc: add all time sheets of the job to the invoice
@@ -323,7 +332,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('status_invoice_client', INVOICE_PENDING);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_READY));
 	}
-	
+
 	/**
 	*	@name: remove_job_from_invoice
 	*	@desc: remove all time sheets of the job from the invoice
@@ -336,7 +345,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('status_invoice_client', INVOICE_READY);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_PENDING));
 	}
-	
+
 	/**
 	*	@name: add_timesheet_to_invoice
 	*	@desc: update the timesheet invoice status to ready
@@ -347,9 +356,9 @@ class Invoice_model extends CI_Model {
 	function add_timesheet_to_invoice($timesheet_id) {
 		$this->db->where('timesheet_id', $timesheet_id);
 		$this->db->where('status_invoice_client', INVOICE_PENDING);
-		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_READY));		
+		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_READY));
 	}
-	
+
 	/**
 	*	@name: remove_timesheet_from_invoice
 	*	@desc: update the timesheet invoice status to pending
@@ -362,7 +371,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('status_invoice_client', INVOICE_READY);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_PENDING));
 	}
-	
+
 	/**
 	*	@name: generate_invoice_timesheets
 	*	@desc: linked all timesheets to the invoice and update time sheets status to invoice generated
@@ -378,10 +387,10 @@ class Invoice_model extends CI_Model {
 		);
 		$this->db->where('client_id', $client_id);
 		$this->db->where('status_invoice_client', INVOICE_READY);
-		#$this->db->where('invoice_id', 0);		
+		#$this->db->where('invoice_id', 0);
 		return $this->db->update('job_shift_timesheets', $data);
 	}
-	
+
 	function edit_invoice_timesheets($client_id, $invoice_id) {
 		$data = array(
 			'invoice_id' => $invoice_id,
@@ -389,10 +398,10 @@ class Invoice_model extends CI_Model {
 		);
 		$this->db->where('client_id', $client_id);
 		$this->db->where('status_invoice_client', INVOICE_GENERATED);
-		#$this->db->where('invoice_id', 0);		
+		#$this->db->where('invoice_id', 0);
 		return $this->db->update('job_shift_timesheets', $data);
 	}
-	
+
 	/**
 	*	@name: mark_paid_timesheets
 	*	@desc: update timesheets of an invoice to paid status
@@ -408,7 +417,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('invoice_id', $invoice_id);
 		return $this->db->update('job_shift_timesheets', $data);
 	}
-	
+
 	/**
 	*	@name: mark_unpaid_timesheets
 	*	@desc: update timesheets of an invoice to unpaid status
@@ -423,7 +432,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('invoice_id', $invoice_id);
 		return $this->db->update('job_shift_timesheets', $data);
 	}
-	
+
 	/**
 	*	@name: search_invoices
 	*	@desc: search invoices by parameters
@@ -459,7 +468,7 @@ class Invoice_model extends CI_Model {
 		$this->db->where('status > ', 0);
 		//sort
 		if(isset($params['sort_by']) && $params['sort_by'] != ''){
-			$this->db->order_by($params['sort_by'],$params['sort_order']);	
+			$this->db->order_by($params['sort_by'],$params['sort_order']);
 		}
 		if(!$total){
 			if(isset($params['current_page']) && $params['current_page'] != ''){
@@ -467,7 +476,7 @@ class Invoice_model extends CI_Model {
 				$this->db->limit($records_per_page,$offset);
 			}
 		}
-		
+
 		$query = $this->db->get('invoices');
 		return $query->result_array();
 	}
