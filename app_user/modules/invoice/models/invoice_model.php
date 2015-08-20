@@ -52,8 +52,7 @@ class Invoice_model extends CI_Model {
 	function get_job_timesheets_v2($job_id) {
 		$sql = "SELECT * FROM job_shift_timesheets WHERE job_id = $job_id
 			AND status = " . TIMESHEET_BATCHED . "
-			AND (status_invoice_client = " . INVOICE_PENDING . "
-				OR status_invoice_client = " . INVOICE_READY . ")";
+			AND status_invoice_client = " . INVOICE_READY;
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -181,8 +180,7 @@ class Invoice_model extends CI_Model {
 		$sql = "SELECT j.*, sum(js.total_amount_client) as `total_amount` FROM `job_shift_timesheets` js
 						LEFT JOIN `jobs` j ON js.job_id = j.job_id
 						WHERE js.status = " . TIMESHEET_BATCHED . "
-						AND (js.status_invoice_client = " . INVOICE_READY . "
-							OR js.status_invoice_client = " . INVOICE_PENDING . ")
+						AND js.status_invoice_client = " . INVOICE_READY . "
 						AND js.client_id = " . $user_id . "
 						GROUP BY js.job_id";
 		$query = $this->db->query($sql);
