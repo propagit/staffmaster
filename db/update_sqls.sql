@@ -1,8 +1,8 @@
-INSERT INTO `export_templates` (`target`, `object`, `level`, `name`, `status`) VALUES ('xero', 'invoice', 'pay_rate', 'Xero (Pay Rate Per Line)', ‘0’);
+INSERT INTO `export_templates` (`target`, `object`, `level`, `name`, `status`) VALUES ('xero', 'invoice', 'pay_rate', 'Xero (Pay Rate Per Line)', '0');
 
 
 INSERT INTO `export_template_data` (`export_id`, `order`, `title`, `value`) VALUES
-(26, 1, 'EmailAddress', '{client_email}’),
+(26, 1, 'EmailAddress', '{client_email}'),
 (26, 2, 'POAddressLine1', '{client_address}'),
 (26, 3, 'POAddressLine2', '{client_suburb}'),
 (26, 4, 'POAddressLine3', ''),
