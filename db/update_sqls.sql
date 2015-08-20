@@ -1,4 +1,4 @@
-INSERT INTO `export_templates` (`export_id`, `target`, `object`, `level`, `name`, `status`) VALUES (NULL, 'xero', 'invoice', 'pay_rate', 'Xero (Pay Rate Per Line)', ‘0’);
+INSERT INTO `export_templates` (`target`, `object`, `level`, `name`, `status`) VALUES ('xero', 'invoice', 'pay_rate', 'Xero (Pay Rate Per Line)', ‘0’);
 
 
 INSERT INTO `export_template_data` (`export_id`, `order`, `title`, `value`) VALUES
