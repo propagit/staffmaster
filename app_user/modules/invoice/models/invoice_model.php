@@ -341,6 +341,7 @@ class Invoice_model extends CI_Model {
 	function add_job_to_invoice($job_id) {
 		$this->db->where('job_id', $job_id);
 		$this->db->where('status_invoice_client', INVOICE_PENDING);
+		$this->db->where('status',TIMESHEET_BATCHED);
 		return $this->db->update('job_shift_timesheets', array('status_invoice_client' => INVOICE_READY));
 	}
 
