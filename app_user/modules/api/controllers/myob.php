@@ -1889,7 +1889,45 @@ class Myob extends MX_Controller {
 		return null;
 	}
 
-	function read_timesheets($external_id)
+	function read_timesheets($external_id, $filter = '')
+	{
+		/*$employee = $this->read_employee($external_id);
+		if (!$employee)
+		{
+			return;
+		}
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		#$filter = "?StartDate=2015-08-24T00:00:00&EndDate=2015-08-31T00:00:00";
+		if($filter){
+			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID . '/' . $filter;
+		}else{
+			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
+		}
+
+		$ch = curl_init($url);
+
+
+		#curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		#curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);*/
+		$response = $this->get_timesheets($external_id, $filter);
+		var_dump($response);
+	}
+	
+	function get_timesheets($external_id, $filter = '')
 	{
 		$employee = $this->read_employee($external_id);
 		if (!$employee)
@@ -1903,8 +1941,11 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-
-		$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
+		if($filter){
+			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID . '/' . $filter;
+		}else{
+			$url = $this->cloud_api_url . $this->company_id . '/Payroll/Timesheet/' . $employee->UID;
+		}
 
 		$ch = curl_init($url);
 
@@ -1919,7 +1960,14 @@ class Myob extends MX_Controller {
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		var_dump($response);
+		
+		$response = json_decode($response);
+
+		if ($response)
+		{
+			return $response;
+		}
+		return null;
 	}
 
 	function validate_append_timesheet($timesheet_id)
@@ -2037,19 +2085,33 @@ class Myob extends MX_Controller {
 	{
 		$this->load->model('payrun/payrun_model');
 		$timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
+		#print_r($timesheets);exit;
 		usort($timesheets, function($a, $b) { // anonymous function
 		    // compare numbers only
 		    if (isset($a['external_staff_id'])) {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
+	
+		
 		$errors = array();
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
 		{
+			if(1){
+			#if($timesheet['timesheet_id'] == 8){
 			$employee = $this->read_employee($timesheet['external_staff_id']);
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+			
+			# get existing timesheets for this user
+			$filter = "?StartDate=" . $timesheet['date_from'] . "T00:00:00&EndDate=" . $timesheet['date_to'] . "T00:00:00";
+			$existing_timesheets_obj = $this->get_timesheets($timesheet['external_staff_id'], $filter);
+			print_r($existing_timesheets_obj);
+			
+			# change to array
+			$existing_timesheets = json_decode(json_encode($existing_timesheets_obj), TRUE);
 			$lines = array();
+			
 			foreach($pay_rates as $pay_rate)
 			{
 				$earningID = $pay_rate['group'];
@@ -2057,16 +2119,20 @@ class Myob extends MX_Controller {
 				{
 					$earningID = $timesheet['payrate'];
 				}
-				$activityID = $pay_rate['activity'];
-				if (!$activityID)
-				{
-					$payrate_id = $timesheet['payrate_id'];
-					if ($timesheet['client_payrate_id'] > 0)
+				
+				# if client has not disabled time billing
+				if(!$this->time_billing_disabled){
+					$activityID = $pay_rate['activity'];
+					if (!$activityID)
 					{
-						$payrate_id = $timesheet['client_payrate_id'];
+						$payrate_id = $timesheet['payrate_id'];
+						if ($timesheet['client_payrate_id'] > 0)
+						{
+							$payrate_id = $timesheet['client_payrate_id'];
+						}
+						$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
+						$activityID = $payrate['name'];
 					}
-					$payrate = modules::run('attribute/payrate/get_payrate', $payrate_id);
-					$activityID = $payrate['name'];
 				}
 
 				$break = '';
@@ -2076,28 +2142,74 @@ class Myob extends MX_Controller {
 
 				$payroll = $this->read_payroll($earningID);
 				$customer = $this->read_customer($timesheet['external_client_id']);
-				$activity = $this->read_activity($activityID);
-
-				$lines[] = array(
-					'PayrollCategory' => array(
-						'UID' => $payroll->UID
-					),
-					'Job' => null,
-					'Activity' => !$this->time_billing_disabled ? array(
-						'UID' => $activity->UID
-					) : null,
-					'Customer' => ($customer) ? array(
-						'UID' => $customer->UID
-					) : null,
-					'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
-					'Entries' => array(
-						array(
-							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
-							'Hours' => $pay_rate['hours'],
-							'Processed' => false
+				
+				# if client uses time billing feature
+				if($client_uses_timebilling){
+					$activity = $this->read_activity($activityID);
+				}
+				
+				if(isset($existing_timesheets['Lines']) && count($existing_timesheets['Lines']) > 0){
+					$matched_any = false;
+					foreach($existing_timesheets['Lines'] as $key => $existing_lines){
+						# append existing is same payroll
+						
+						if($existing_lines['PayrollCategory']['UID'] == $payroll->UID){
+							$existing_timesheets['Lines'][$key]['Entries'][] = array(
+																				'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+																				'Hours' => $pay_rate['hours'],
+																				'Processed' => false
+																			);
+							$matched_any = true;
+																			
+						}
+					}
+					# if none of the existing timesheet has same payrate - this is a new timesheet
+					if(!$matched_any){
+						$existing_timesheets['Lines'][] = array(
+								'PayrollCategory' => array(
+									'UID' => $payroll->UID
+								),
+								'Job' => null,
+								'Activity' => !$this->time_billing_disabled ? array(
+									'UID' => $activity->UID
+								) : null,
+								'Customer' => ($customer) ? array(
+									'UID' => $customer->UID
+								) : null,
+								'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
+								'Entries' => array(
+									array(
+										'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+										'Hours' => $pay_rate['hours'],
+										'Processed' => false
+									)
+								)
+							);	
+					}
+					# get all existing lines
+					$lines = $existing_timesheets['Lines'];
+				}else{
+					$lines[] = array(
+						'PayrollCategory' => array(
+							'UID' => $payroll->UID
+						),
+						'Job' => null,
+						'Activity' => !$this->time_billing_disabled ? array(
+							'UID' => $activity->UID
+						) : null,
+						'Customer' => ($customer) ? array(
+							'UID' => $customer->UID
+						) : null,
+						'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
+						'Entries' => array(
+							array(
+								'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+								'Hours' => $pay_rate['hours'],
+								'Processed' => false
+							)
 						)
-					)
-				);
+					);
+				}
 			}
 
 			$start_date = date('Y-m-d H:i:s', $timesheet['start_time']);
@@ -2121,7 +2233,7 @@ class Myob extends MX_Controller {
 			);
 
 			#var_dump($timesheet_data); continue;
-
+			#exit;
 			$params = json_encode($timesheet_data);
 
 			$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -2149,14 +2261,11 @@ class Myob extends MX_Controller {
 
 			$response = curl_exec($ch);
 			curl_close($ch);
-			var_dump($response);exit;
-			$response = json_decode($response);
-			if (isset($response->Errors))
-			{
-				$errors[] = $response->Errors;
-			}
+			var_dump($response);
+			} # if timesheet_id
 		}
-		var_dump($errors);
+		
+
 	}
 
 	function append_timesheets($payrun_id)
@@ -2175,8 +2284,14 @@ class Myob extends MX_Controller {
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
 		{
+			
 			$employee = $this->read_employee($timesheet['external_staff_id']);
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
+			# get existing timesheets for this user
+			$filter = "?StartDate=" . $timesheet['date_from'] . "T00:00:00&EndDate=" . $timesheet['date_to'] . "T00:00:00";
+			$existing_timesheets_obj = $this->get_timesheets($timesheet['external_staff_id'], $filter);
+			# change to array
+			$existing_timesheets = json_decode(json_encode($existing_timesheets_obj), TRUE);
 			$lines = array();
 			foreach($pay_rates as $pay_rate)
 			{
@@ -2213,27 +2328,69 @@ class Myob extends MX_Controller {
 				if($client_uses_timebilling){
 					$activity = $this->read_activity($activityID);
 				}
-
-				$lines[] = array(
-					'PayrollCategory' => array(
-						'UID' => $payroll->UID
-					),
-					'Job' => null,
-					'Activity' => !$this->time_billing_disabled ? array(
-						'UID' => $activity->UID
-					) : null,
-					'Customer' => ($customer) ? array(
-						'UID' => $customer->UID
-					) : null,
-					'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
-					'Entries' => array(
-						array(
-							'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
-							'Hours' => $pay_rate['hours'],
-							'Processed' => false
+				
+				if(isset($existing_timesheets['Lines']) && count($existing_timesheets['Lines']) > 0){
+					$matched_any = false;
+					foreach($existing_timesheets['Lines'] as $key => $existing_lines){
+						# append existing is same payroll
+						
+						if($existing_lines['PayrollCategory']['UID'] == $payroll->UID){
+							$existing_timesheets['Lines'][$key]['Entries'][] = array(
+																				'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+																				'Hours' => $pay_rate['hours'],
+																				'Processed' => false
+																			);
+							$matched_any = true;
+																			
+						}
+					}
+					# if none of the existing timesheet has same payrate - this is a new timesheet
+					if(!$matched_any){
+						$existing_timesheets['Lines'][] = array(
+								'PayrollCategory' => array(
+									'UID' => $payroll->UID
+								),
+								'Job' => null,
+								'Activity' => !$this->time_billing_disabled ? array(
+									'UID' => $activity->UID
+								) : null,
+								'Customer' => ($customer) ? array(
+									'UID' => $customer->UID
+								) : null,
+								'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
+								'Entries' => array(
+									array(
+										'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+										'Hours' => $pay_rate['hours'],
+										'Processed' => false
+									)
+								)
+							);	
+					}
+					# get all existing lines
+					$lines = $existing_timesheets['Lines'];
+				}else{
+					$lines[] = array(
+						'PayrollCategory' => array(
+							'UID' => $payroll->UID
+						),
+						'Job' => null,
+						'Activity' => !$this->time_billing_disabled ? array(
+							'UID' => $activity->UID
+						) : null,
+						'Customer' => ($customer) ? array(
+							'UID' => $customer->UID
+						) : null,
+						'Notes' => trim($timesheet['venue'] . ' ' . date('H:i', $pay_rate['start']) . ' - ' . date('H:i', $pay_rate['finish']) . ' ' . $break),
+						'Entries' => array(
+							array(
+								'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
+								'Hours' => $pay_rate['hours'],
+								'Processed' => false
+							)
 						)
-					)
-				);
+					);
+				}
 			}
 
 			$start_date = date('Y-m-d H:i:s', $timesheet['start_time']);
