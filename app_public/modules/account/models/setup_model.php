@@ -135,12 +135,31 @@ class Setup_model extends CI_Model {
 				AND job_date LIKE '$month%'";
 		$query = $this->db->query($sql);
 		$result = $query->first_row('array');
+		
 		$usage = $result['usage'];
 		if ($usage < 25)
 		{
+			# avaliable system credit
+			$avaliable_credit = $this->get_available_system_credits($subdomain);
+			
 			$deducted = 25 - $usage;
+			if(($avaliable_credit - $deducted) <= 0){
+				$deducted = $avaliable_credit;	
+			}
+
 			$sql = "UPDATE `account` SET `system_credits`= `system_credits` - $deducted";
 			$this->db->query($sql);
 		}
+	}
+	
+	function get_available_system_credits($subdomain)
+	{
+		$this->init($subdomain);
+		
+		$sql = "SELECT * FROM 
+				account";
+		$query = $this->db->query($sql);
+		$result = $query->first_row('array');
+		return $result['system_credits'];
 	}
 }
