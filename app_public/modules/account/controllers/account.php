@@ -77,7 +77,7 @@ class Account extends MX_Controller {
 
 		if ($date == 1)
 		{
-			$month = date('Y-m-d', strtotime('last month'));
+			$month = date('Y-m', strtotime('last month'));
 			foreach($accounts as $account)
 			{
 				$this->setup_model->minimum_usage($account['subdomain'], $month);
