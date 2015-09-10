@@ -910,7 +910,8 @@ class Xero extends MX_Controller {
 						# use xero_earning_rate_id passed to the function
 						$earning_rate_id = $xero_earning_rate_id;	
 					}
-					if($line['job_date'] == date('Y-m-d',strtotime($payrun_start_date . "+$i days"))){
+					#if($line['job_date'] == date('Y-m-d',strtotime($payrun_start_date . "+$i days"))){
+					if(date('Y-m-d',$dp['start']) == date('Y-m-d',strtotime($payrun_start_date . "+$i days"))){
 						if($temp_no_of_units[$earning_rate_id][$i]){
 							$total_hour += $temp_no_of_units[$earning_rate_id][$i];	
 						}
