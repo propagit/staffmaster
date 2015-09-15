@@ -1923,7 +1923,6 @@ class Myob extends MX_Controller {
 
 		$response = curl_exec($ch);
 		curl_close($ch);*/
-		$filter = "?StartDate=2015-08-27T00:00:00&EndDate=2015-09-03T00:00:00";
 		$response = $this->get_timesheets($external_id, $filter);
 		var_dump($response);
 	}
