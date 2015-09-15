@@ -56,17 +56,33 @@ class Public_dispatcher extends MX_Controller {
 		$input = $this->input->post();
 		$fields = $this->form_model->get_fields($form['form_id']);
 		$errors = array();
+		$custom_fields = $this->form_model->get_custom_fields($form['form_id'], true);
+		
 		$id_for_email = '';
 		foreach($fields as $field) {
-			# check if this is a file date
-			if(array_key_exists($field['form_field_id'] .'_'. $field['name'],$input)){
-				if ($field['required'] && (!isset($input[$field['form_field_id'] .'_'. $field['name']]) || !$input[$field['form_field_id'] .'_'. $field['name']])) {
-					$errors[] = $field['form_field_id'] .'_'. $field['name'];
-				}	
-			}
 			
-			if ($field['required'] && (!isset($input[$field['form_field_id']]) || !$input[$field['form_field_id']])) {
-				$errors[] = $field['form_field_id'];
+			# check if this field is a custom attribute - the only way to do so now is to check if $field['name'] is a number
+			if(is_numeric($field['name'])){
+				$custom_field_exists = false;
+				foreach($custom_fields as $custom){
+					if($field['name'] == $custom['field_id']){
+						$custom_field_exists = true;
+					}
+				}
+				
+				if($custom_field_exists){	
+					# check if this is a file date
+					if(array_key_exists($field['form_field_id'] .'_'. $field['name'],$input)){
+						if ($field['required'] && (!isset($input[$field['form_field_id'] .'_'. $field['name']]) || !$input[$field['form_field_id'] .'_'. $field['name']])) {
+							$errors[] = $field['form_field_id'] .'_'. $field['name'];
+						}	
+					}
+					
+					if ($field['required'] && (!isset($input[$field['form_field_id']]) || !$input[$field['form_field_id']])) {
+						$errors[] = $field['form_field_id'];
+					}
+				}
+			
 			}
 			if ($field['name'] == 'email') {
 				if (isset($input[$field['form_field_id']])) {

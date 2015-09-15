@@ -70,6 +70,11 @@
 					if ($field['type'] == 'file') {
 						$value = '<a href="' . base_url() . UPLOADS_URL . '/tmp/' . $value . '" target="_blank">' . $value . '</a>';
 					}
+					if ($field['type'] == 'fileDate') {
+						if(file_exists(UPLOADS_URL . '/tmp/' . $value)){
+							$value = '<a href="' . base_url() . UPLOADS_URL . '/tmp/' . $value . '" target="_blank">' . $value . '</a>';
+						}
+					}
 					?>
 				<div class="col-md-3 text-muted"><?=$field['label'];?>&nbsp;</div>
 				<div class="col-md-9"><?=$value;?>&nbsp;</div>
