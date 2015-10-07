@@ -182,6 +182,8 @@ class Timesheet extends MX_Controller {
 				
 				# Then clear to set up new rate
 				$current_rate = $rate['value'];
+				$current_group = $rate['group'];
+				$current_activity = $client_rate['group'];
 				$current_start = $i;
 				$current_hours = 0.25;				
 			}			
@@ -598,7 +600,6 @@ class Timesheet extends MX_Controller {
 		$payrun_id = 1;
 		$this->db->where('staff_id != ',$staff_id)->update('job_shift_timesheets',array('payrun_id' => 0));*/
 		#modules::run('payrun/revert_xero_payrun',1);
-		
 	}
 	
 	
