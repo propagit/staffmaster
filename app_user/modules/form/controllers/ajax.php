@@ -7,7 +7,7 @@ class Ajax extends MX_Controller {
 		parent::__construct();
 		$this->load->model('form_model');
 	}
-	
+
 	function add_form() {
 		$input = $this->input->post();
 		if (!$input['name']) {
@@ -17,17 +17,17 @@ class Ajax extends MX_Controller {
 		$form_id = $this->form_model->add_form($input);
 		echo json_encode(array('ok' => true, 'form_id' => $form_id));
 	}
-	
+
 	function delete_form() {
 		$form_id = $this->input->post('form_id');
 		$this->form_model->delete_form($form_id);
 	}
-	
+
 	function update_settings() {
 		$input = $this->input->post();
 		$this->form_model->update_form($input['form_id'], array('receive_email' => $input['receive_email']));
 	}
-	
+
 	function active_field() {
 		$input = $this->input->post();
 		if ($this->form_model->active_field($input['form_id'], $input['label'], $input['name'])) {
@@ -36,7 +36,7 @@ class Ajax extends MX_Controller {
 			echo 'default';
 		}
 	}
-	
+
 	function require_field() {
 		$input = $this->input->post();
 		if ($this->form_model->require_field($input['form_id'], $input['name'])) {
@@ -45,13 +45,13 @@ class Ajax extends MX_Controller {
 			echo 'default';
 		}
 	}
-	
+
 	function view_applicant($applicant_id) {
 		$data['applicant_id'] = $applicant_id;
 		$data['applicant'] = $this->form_model->get_applicant($applicant_id);
 		$this->load->view('applicant/modal_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function accept_applicant() {
 		$applicant_id = $this->input->post('applicant_id');
 		$status = $this->input->post('status');
@@ -77,10 +77,10 @@ class Ajax extends MX_Controller {
 			'phone' => '',
 			'mobile' => ''
 		);
-		
+
 		$this->load->model('user/user_model');
 		$this->load->model('staff/staff_model');
-		
+
 		# Copy user details
 		foreach($fields as $field) {
 			if (isset($user_data[$field['name']])) {
@@ -94,11 +94,11 @@ class Ajax extends MX_Controller {
 			}
 		}
 		$user_id = $this->user_model->insert_user($user_data);
-		
+
 		if($user_id){
 			modules::run('staff/create_staff_dir',$user_id);
 		}
-		
+
 		$staff_data = array(
 			'user_id' => $user_id,
 			'gender' => '',
@@ -110,10 +110,10 @@ class Ajax extends MX_Controller {
 			'f_bsb' => '',
 			's_choice' => 'own',
 			's_fund_name' => '',
-			's_membership' => '',
-			'locations' => ''		
+			's_employee_id' => '',
+			'locations' => ''
 		);
-		
+
 		# Copy staff personal details
 		foreach($fields as $field) {
 			if (isset($staff_data[$field['name']])) {
@@ -137,11 +137,11 @@ class Ajax extends MX_Controller {
 			}
 		}
 		$staff_id = $this->staff_model->insert_staff($staff_data);
-		
-		
+
+
 		# Copy group, role, photos, and others
 		$this->load->helper('image');
-		
+
 		foreach($fields as $field) {
 			if ($field['name'] == 'group') {
 				$groups = json_decode($field['value']);
@@ -153,20 +153,20 @@ class Ajax extends MX_Controller {
 			}
 			if ($field['name'] == 'availability') {
 				$days = json_decode($field['value']);
-				$values = '';			
+				$values = '';
 				for($day=1; $day <=7; $day++) {
 					for($hour=0; $hour <=23; $hour++) {
 						$ok = in_array($day, $days) ? '1' : '0';
-						$values .= '('.$user_id.','.$day.','.$hour.','.$ok.'),'; 		
+						$values .= '('.$user_id.','.$day.','.$hour.','.$ok.'),';
 					}
-				}  
+				}
 				$values = rtrim($values,',');
 				$sql = "INSERT INTO `user_staff_availability` (`user_id`, `day`, `hour`, `value`) VALUES ".$values;
 				$this->db->query($sql);
 			}
 			if ($field['name'] == 'role') {
 				$roles = json_decode($field['value']);
-				if (count($roles) > 0) {					
+				if (count($roles) > 0) {
 					foreach($roles as $role_id) {
 						$this->staff_model->add_staff_role($user_id, $role_id);
 					}
@@ -184,43 +184,43 @@ class Ajax extends MX_Controller {
 						$fp = fopen($dir.'/index.html', 'w');
 						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 						fclose($fp);
-						
+
 						$dir_thumb = $dir . '/thumb';
 						mkdir($dir_thumb);
 						chmod($dir_thumb,0777);
 						$fp = fopen($dir_thumb.'/index.html', 'w');
 						fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 						fclose($fp);
-						
+
 					}
-					
+
 					foreach($pictures as $picture) {
 						$hero = (!$hero) ? 1 : 0;
 						# Move file across
 						$source = UPLOADS_PATH . '/tmp/' . $picture;
 						$destination = $dir . '/' . $picture;
 						rename($source, $destination);
-						
-	
+
+
 						$target =  $dir . '/thumb/' . $picture;
 						copy($destination, $target);
 						$this->load->helper('image');
 						scale_image($target, $target, IMG_THUMB_SIZE, IMG_THUMB_SIZE);
-						
-						# Add to database 
+
+						# Add to database
 						$this->staff_model->add_picture(array(
 							'user_id' => $user_id,
 							'name' => $picture,
 							'hero' => $hero
 						));
-					}					
+					}
 				}
 			}
-			
+
 		}
-		
-		
-		
+
+
+
 		# Copy custom attributes
 		$custom_fields = $this->form_model->get_custom_fields($form_id);
 		foreach($custom_fields as $custom_field) {
@@ -238,29 +238,29 @@ class Ajax extends MX_Controller {
 						$field_value = explode('.',$field['value']);
 						if(isset($field_value[1])){
 							# this is a file
-							rename(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);	
+							rename(UPLOADS_PATH . '/tmp/' . $field['value'], UPLOADS_PATH . '/staff/' . $user_id . '/' . $field['value']);
 							$this->staff_model->update_custom_field($user_id, $field['name'], $field['value'], true);
 						}else{
-							# it is a date	
+							# it is a date
 							$this->staff_model->update_custom_field_date($user_id, $field['name'], $field['value']);
 						}
-						
-						
+
+
 					}
 				}
 			}
 		}
-		
+
 		#$this->form_model->accept_applicant($applicant_id);
 		$this->form_model->delete_applicant($applicant_id);
 	}
-	
+
 	function reject_applicant() {
 		$applicant_id = $this->input->post('applicant_id');
 		#$this->form_model->reject_applicant($applicant_id);
 		$this->form_model->delete_applicant($applicant_id);
 	}
-	
+
 	function reject_applicants() {
 		$applicant_ids = $this->input->post('applicant_ids');
 		foreach($applicant_ids as $applicant_id) {
@@ -268,15 +268,15 @@ class Ajax extends MX_Controller {
 			$this->form_model->delete_applicant($applicant_id);
 		}
 	}
-	
+
 	function print_applicants() {
 		$applicant_ids = $this->input->post('applicant_ids');
-		
+
 		# As PDF creation takes a bit of memory, we're saving the created file in /uploads/pdf/
 		$filename = "applicants_" . date('Y-m-d');
 		#if(!file_exists(UPLOADS_PATH.'/pdf/'.$filename.'.pdf')){
 			$pdfFilePath = UPLOADS_PATH."/pdf/$filename.pdf";
-			
+
 			$dir = UPLOADS_PATH.'/pdf/';
 			if(!is_dir($dir))
 			{
@@ -286,9 +286,9 @@ class Ajax extends MX_Controller {
 			  fwrite($fp, '<html><head>Permission Denied</head><body><h3>Permission denied</h3></body></html>');
 			  fclose($fp);
 			}
-			 
-			ini_set('memory_limit','128M'); # boost the memory limit if it's low 
-			
+
+			ini_set('memory_limit','128M'); # boost the memory limit if it's low
+
 			$applicants = array();
 			foreach($applicant_ids as $applicant_id)
 			{
@@ -297,20 +297,20 @@ class Ajax extends MX_Controller {
 				$applicants[] = $this->load->view('applicant/download_view', isset($data) ? $data : NULL, true);
 			}
 			$html = implode('<pagebreak />', $applicants);
-			
-					
+
+
 			$this->load->library('pdf');
-			$pdf = $this->pdf->load(); 			
+			$pdf = $this->pdf->load();
 			$stylesheet = file_get_contents('./assets/css/pdf.css');
 			$custom_styles = '<style>'.modules::run('custom_styles').'</style>';
 			//echo $custom_styles;exit();
 			$pdf->WriteHTML($stylesheet,1);
 			$pdf->WriteHTML($custom_styles,1);
 			$pdf->WriteHTML($html,2);
-			$pdf->Output($pdfFilePath, 'F'); // save to file 
+			$pdf->Output($pdfFilePath, 'F'); // save to file
 		#}
-		
+
 		echo $filename . ".pdf";
 	}
 }
-	
+
