@@ -137,6 +137,9 @@ class Ajax extends MX_Controller {
 			}
 		}
 		$staff_data['s_employee_id'] = $staff_data['s_membership'];
+		$staff_data['s_external_id'] = $staff_data['s_fund_name'];
+		$staff_data['s_membership'] = '';
+		$staff_data['s_fund_name'] = '';
 		$staff_id = $this->staff_model->insert_staff($staff_data);
 
 
