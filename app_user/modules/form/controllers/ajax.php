@@ -110,7 +110,7 @@ class Ajax extends MX_Controller {
 			'f_bsb' => '',
 			's_choice' => 'own',
 			's_fund_name' => '',
-			's_employee_id' => '',
+			's_membership' => '',
 			'locations' => ''
 		);
 
@@ -136,6 +136,7 @@ class Ajax extends MX_Controller {
 				$staff_data['locations'] = json_encode($data);
 			}
 		}
+		$staff_data['s_employee_id'] = $staff_data['s_membership'];
 		$staff_id = $this->staff_model->insert_staff($staff_data);
 
 
