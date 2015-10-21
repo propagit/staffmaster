@@ -58,7 +58,7 @@ class Myob extends MX_Controller {
 				{
 					$url .= "&state=" . urlencode($function);
 				}
-				die($url);
+				//die($url);
 				header("Location: $url");
 			}
 			$api_access_code = $_GET['code'];
