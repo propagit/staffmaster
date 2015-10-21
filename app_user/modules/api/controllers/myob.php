@@ -58,6 +58,7 @@ class Myob extends MX_Controller {
 				{
 					$url .= "&state=" . urlencode($function);
 				}
+				die($url);
 				header("Location: $url");
 			}
 			$api_access_code = $_GET['code'];
@@ -74,7 +75,7 @@ class Myob extends MX_Controller {
 				$this->config_model->add(array('key' => 'myob_access_token', 'value' => $oauth_tokens->access_token));
 				$this->config_model->add(array('key' => 'myob_access_token_expires', 'value' => time() + $oauth_tokens->expires_in));
 				$this->config_model->add(array('key' => 'myob_refresh_token', 'value' => $oauth_tokens->refresh_token));
-				
+
 				header("Location: " . base_url() . 'api/myob/connect/' . $function);
 			}
 			else
@@ -87,8 +88,8 @@ class Myob extends MX_Controller {
 		$result = '';
 		$params = explode('~', $function);
 		$param = isset($params[1]) ? urlencode($params[1]) : '';
-		
-		
+
+
 		switch($params[0])
 		{
 			case 'read_employee':
@@ -200,8 +201,8 @@ class Myob extends MX_Controller {
 	        'x-myobapi-key: ' . $this->api_key,
 	        'x-myobapi-version: v2'
 		);
-		$url = $this->cloud_api_url; 
-		
+		$url = $this->cloud_api_url;
+
 		$ch = curl_init($url);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -357,7 +358,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	function test_search_employee()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -390,8 +391,8 @@ class Myob extends MX_Controller {
 		return null;
 	}
 
-	
-		
+
+
 	function test_read_employee($external_id)
 	{
 		$e = $this->read_employee($external_id);
@@ -435,7 +436,7 @@ class Myob extends MX_Controller {
 		}
 		return null;
 	}
-	
+
 	/**
 	*	@desc: get employee from MYOB
 	*	@params: $external_id (UID in MYOB)
@@ -466,7 +467,7 @@ class Myob extends MX_Controller {
 		$response = json_decode($response);
 		return $response;
 	}
-	
+
 	function test_read_employee_by_UID($uid)
 	{
 		$e = $this->read_employee_by_UID($uid);
@@ -638,7 +639,7 @@ class Myob extends MX_Controller {
 
 		return true;
 	}
-	
+
 	/**
 	*	@desc: updates the display ID [Card ID] with UID in myob in an event the employee do not have a display id and we need to sync the employee anyway
 	*	@return: true if success
@@ -646,7 +647,7 @@ class Myob extends MX_Controller {
 	*/
 	function update_employee_displayID_onetime($employee,$display_id)
 	{
-		
+
 		$access_token = $this->config_model->get('myob_access_token');
 		if ($access_token)
 		{
@@ -667,13 +668,13 @@ class Myob extends MX_Controller {
 				}
 			}
 		}
-		
+
 		#$employee = $this->read_employee_by_UID($uid);
 		#var_dump($employee);
 		$employee->DisplayID = $display_id;
-		
+
 		$params = json_encode($employee);
-		
+
 		#var_dump($employee);die();
 
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
@@ -1034,14 +1035,14 @@ class Myob extends MX_Controller {
 		// $params = json_encode($payroll_details);
 		$payroll->DateOfBirth = $staff['dob'] != '0000-00-00' ? $staff['dob'] . ' 00:00:00' : $payroll->DateOfBirth;
 		$payroll->Gender = $gender;
-		
+
 		$tfn = str_replace(array(' ','-'), '', $staff['f_tfn']);
 		$tfn = trim($tfn);
 		$tfn = substr($tfn,0,3) . ' ' . substr($tfn, 3,3) . ' ' . substr($tfn,6);
-		
+
 		$payroll->Tax->TaxFileNumber = $tfn;
 		$params = json_encode($payroll);
-		
+
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1166,7 +1167,7 @@ class Myob extends MX_Controller {
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -1514,10 +1515,10 @@ class Myob extends MX_Controller {
 		}
 		return true;
 	}
-	
+
 	function update_customer_displayID_onetime($customer,$display_id)
 	{
-		
+
 		$access_token = $this->config_model->get('myob_access_token');
 		if ($access_token)
 		{
@@ -1538,9 +1539,9 @@ class Myob extends MX_Controller {
 				}
 			}
 		}
-	
+
 		$customer->DisplayID = $display_id;
-		
+
 		$params = json_encode($customer);
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
@@ -1574,7 +1575,7 @@ class Myob extends MX_Controller {
 			return false;
 		}
 		return true;
-		
+
 	}
 
 	function delete_customer($external_id)
@@ -1926,7 +1927,7 @@ class Myob extends MX_Controller {
 		$response = $this->get_timesheets($external_id, $filter);
 		var_dump($response);
 	}
-	
+
 	function get_timesheets($external_id, $filter = '')
 	{
 		$employee = $this->read_employee($external_id);
@@ -1960,7 +1961,7 @@ class Myob extends MX_Controller {
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		
+
 		$response = json_decode($response);
 
 		if ($response)
@@ -1973,8 +1974,8 @@ class Myob extends MX_Controller {
 	function validate_append_timesheet($timesheet_id)
 	{
 		$timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
-		
-		
+
+
 		# Check payroll category for employee on MYOB
 		$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 		foreach($pay_rates as $pay_rate)
@@ -1997,15 +1998,15 @@ class Myob extends MX_Controller {
 				#var_dump($result);
 				return $result;
 			}
-			
+
 			/**
-				ActivityID is required for time billing. 
+				ActivityID is required for time billing.
 				This is however not required for timesheet
-				
+
 				Check config to see if the client is using MYOB time billing feature
 				If they are validate activityID, else skip this step
 			*/
-			
+
 			if(!$this->time_billing_disabled){
 				$activityID = $pay_rate['activity'];
 				if (!$activityID)
@@ -2031,8 +2032,8 @@ class Myob extends MX_Controller {
 			}
 
 		}
-	
-		
+
+
 
 		# Make sure the staff is set up on MYOB
 		$staff = modules::run('staff/get_staff', $timesheet['staff_id']);
@@ -2092,8 +2093,8 @@ class Myob extends MX_Controller {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
-	
-		
+
+
 		$errors = array();
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
@@ -2102,16 +2103,16 @@ class Myob extends MX_Controller {
 			#if($timesheet['timesheet_id'] == 8){
 			$employee = $this->read_employee($timesheet['external_staff_id']);
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
-			
+
 			# get existing timesheets for this user
 			$filter = "?StartDate=" . $timesheet['date_from'] . "T00:00:00&EndDate=" . $timesheet['date_to'] . "T00:00:00";
 			$existing_timesheets_obj = $this->get_timesheets($timesheet['external_staff_id'], $filter);
 			print_r($existing_timesheets_obj);
-			
+
 			# change to array
 			$existing_timesheets = json_decode(json_encode($existing_timesheets_obj), TRUE);
 			$lines = array();
-			
+
 			foreach($pay_rates as $pay_rate)
 			{
 				$earningID = $pay_rate['group'];
@@ -2119,7 +2120,7 @@ class Myob extends MX_Controller {
 				{
 					$earningID = $timesheet['payrate'];
 				}
-				
+
 				# if client has not disabled time billing
 				if(!$this->time_billing_disabled){
 					$activityID = $pay_rate['activity'];
@@ -2142,17 +2143,17 @@ class Myob extends MX_Controller {
 
 				$payroll = $this->read_payroll($earningID);
 				$customer = $this->read_customer($timesheet['external_client_id']);
-				
+
 				# if client uses time billing feature
 				if($client_uses_timebilling){
 					$activity = $this->read_activity($activityID);
 				}
-				
+
 				if(isset($existing_timesheets['Lines']) && count($existing_timesheets['Lines']) > 0){
 					$matched_any = false;
 					foreach($existing_timesheets['Lines'] as $key => $existing_lines){
 						# append existing is same payroll
-						
+
 						if($existing_lines['PayrollCategory']['UID'] == $payroll->UID){
 							$existing_timesheets['Lines'][$key]['Entries'][] = array(
 																				'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
@@ -2160,7 +2161,7 @@ class Myob extends MX_Controller {
 																				'Processed' => false
 																			);
 							$matched_any = true;
-																			
+
 						}
 					}
 					# if none of the existing timesheet has same payrate - this is a new timesheet
@@ -2184,7 +2185,7 @@ class Myob extends MX_Controller {
 										'Processed' => false
 									)
 								)
-							);	
+							);
 					}
 					# get all existing lines
 					$lines = $existing_timesheets['Lines'];
@@ -2264,7 +2265,7 @@ class Myob extends MX_Controller {
 			var_dump($response);
 			} # if timesheet_id
 		}
-		
+
 
 	}
 
@@ -2278,13 +2279,13 @@ class Myob extends MX_Controller {
 			    return $a['external_staff_id'] - $b['external_staff_id'];
 		    }
 		});
-	
-		
+
+
 		$errors = array();
 		# Now all conditions are satisfied, push to MYOB
 		foreach($timesheets as $timesheet)
 		{
-			
+
 			$employee = $this->read_employee($timesheet['external_staff_id']);
 			$pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
 			# get existing timesheets for this user
@@ -2300,7 +2301,7 @@ class Myob extends MX_Controller {
 				{
 					$earningID = $timesheet['payrate'];
 				}
-				
+
 				# if client has not disabled time billing
 				if(!$this->time_billing_disabled){
 					$activityID = $pay_rate['activity'];
@@ -2323,17 +2324,17 @@ class Myob extends MX_Controller {
 
 				$payroll = $this->read_payroll($earningID);
 				$customer = $this->read_customer($timesheet['external_client_id']);
-				
+
 				# if client uses time billing feature
 				if($client_uses_timebilling){
 					$activity = $this->read_activity($activityID);
 				}
-				
+
 				if(isset($existing_timesheets['Lines']) && count($existing_timesheets['Lines']) > 0){
 					$matched_any = false;
 					foreach($existing_timesheets['Lines'] as $key => $existing_lines){
 						# append existing is same payroll
-						
+
 						if($existing_lines['PayrollCategory']['UID'] == $payroll->UID){
 							$existing_timesheets['Lines'][$key]['Entries'][] = array(
 																				'Date' => date('Y-m-d H:i:s', $pay_rate['start']),
@@ -2341,7 +2342,7 @@ class Myob extends MX_Controller {
 																				'Processed' => false
 																			);
 							$matched_any = true;
-																			
+
 						}
 					}
 					# if none of the existing timesheet has same payrate - this is a new timesheet
@@ -2365,7 +2366,7 @@ class Myob extends MX_Controller {
 										'Processed' => false
 									)
 								)
-							);	
+							);
 					}
 					# get all existing lines
 					$lines = $existing_timesheets['Lines'];
