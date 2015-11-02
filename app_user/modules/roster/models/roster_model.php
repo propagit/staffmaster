@@ -40,7 +40,8 @@ class Roster_model extends CI_Model {
 				LEFT JOIN `jobs` j ON j.job_id = js.job_id
 				WHERE js.`staff_id` = '" . $this->user_id . "'
 				AND js.`status` NOT IN ('-1','-2')
-				AND js.`job_date` LIKE '" . $active_month . "%'";
+				AND js.`job_date` LIKE '" . $active_month . "%'
+				ORDER BY js.job_date ASC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
