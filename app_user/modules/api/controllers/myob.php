@@ -497,7 +497,7 @@ class Myob extends MX_Controller {
 				array(
 					'Location' => 1,
 					'Street' => $staff['address'],
-					'City' => trim($staff['city']) ? $staff['city'] : $staff['suburb'],
+					'City' => trim($staff['suburb']) ? $staff['suburb'] : $staff['city'],
 					'State' => $staff['state'],
 					'PostCode' => $staff['postcode'],
 					'Country' => $staff['country'],
@@ -589,7 +589,7 @@ class Myob extends MX_Controller {
 			array(
 				'Location' => 1,
 				'Street' => $staff['address'],
-				'City' => trim($staff['city']) ? $staff['city'] : $staff['suburb'],
+				'City' => trim($staff['suburb']) ? $staff['suburb'] : $staff['city'],
 				'State' => $staff['state'],
 				'PostCode' => $staff['postcode'],
 				'Country' => $staff['country'],
