@@ -1033,7 +1033,7 @@ class Myob extends MX_Controller {
 		// );
 		// #var_dump($payroll_details); die();
 		// $params = json_encode($payroll_details);
-		$payroll->DateOfBirth = $staff['dob'] != '0000-00-00' ? $staff['dob'] . ' 00:00:00' : $payroll->DateOfBirth;
+		$payroll->DateOfBirth = $staff['dob'] != '0000-00-00' ? $staff['dob'] . 'T00:00:00' : $payroll->DateOfBirth;
 		$payroll->Gender = $gender;
 
 		$tfn = str_replace(array(' ','-'), '', $staff['f_tfn']);
