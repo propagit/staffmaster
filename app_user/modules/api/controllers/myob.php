@@ -1110,6 +1110,7 @@ class Myob extends MX_Controller {
 		$tfn = str_replace(array(' ','-'), '', $staff['f_tfn']);
 		$tfn = trim($tfn);
 		$tfn = substr($tfn,0,3) . ' ' . substr($tfn, 3,3) . ' ' . substr($tfn,6);
+		$tfn = trim($tfn);
 
 		if ($tfn) {
 			$payroll->Tax->TaxFileNumber = $tfn;
