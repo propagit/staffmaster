@@ -1100,39 +1100,22 @@ class Myob extends MX_Controller {
 		$super = null;
 		if ($s_external_id)
 		{
-			$super = array(
-				'SuperannuationFund' => array(
-					'UID' => $s_external_id
-				),
-				'EmployeeMembershipNumber' => $staff['s_employee_id']
-			);
+			$payroll->Superannuation->SuperannuationFund->UID = $s_external_id;
+			$payroll->Superannuation->EmployeeMembershipNumber = $staff['s_employee_id'];
 		}
 
-		$payroll->DateOfBirth = $staff['dob'] . ' 00:00:00';
+		$payroll->DateOfBirth = $staff['dob'] != '0000-00-00' ? $staff['dob'] . ' 00:00:00' : $payroll->DateOfBirth;
 		$payroll->Gender = $gender;
-		$payroll->Superannuation = $super;
-		$payroll->Tax->TaxFileNumber = $staff['f_tfn'];
 
-		// var_dump($payroll); die();
+		$tfn = str_replace(array(' ','-'), '', $staff['f_tfn']);
+		$tfn = trim($tfn);
+		$tfn = substr($tfn,0,3) . ' ' . substr($tfn, 3,3) . ' ' . substr($tfn,6);
 
-		// $payroll_details = array(
-		// 	'UID' => $payroll->UID,
-		// 	'Employee' => array(
-		// 		'UID' => $payroll->Employee->UID
-		// 	),
-		// 	'DateOfBirth' => $staff['dob'] . ' 00:00:00',
-		// 	'Gender' => $gender,
-		// 	'Wage' => json_decode(json_encode($payroll->Wage), true),
-		// 	'Superannuation' => $super,
-		// 	'Tax' => array(
-		// 		'TaxFileNumber' => $staff['f_tfn'],
-		// 		'TaxTable' => json_decode(json_encode($payroll->Tax->TaxTable), true)
-		// 	),
-		// 	'RowVersion' => $payroll->RowVersion
-		// );
-		#var_dump($payroll_details); die();
+		$payroll->Tax->TaxFileNumber = $tfn;
+		$params = json_encode($payroll);
+		var_dump($params);
+		return;
 
-		$params = json_encode($payroll); var_dump($params); die();
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
 			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
@@ -1143,11 +1126,7 @@ class Myob extends MX_Controller {
 	        'Content-Length: ' . strlen($params)
 		);
 
-		var_dump($headers); echo '<hr />';
-
 		$url = $this->cloud_api_url . $this->company_id . '/Contact/EmployeePayrollDetails/' . $payroll->UID;
-
-		var_dump($url); echo '<hr />';
 		$ch = curl_init($url);
 
 
@@ -1157,17 +1136,16 @@ class Myob extends MX_Controller {
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
-		// var_dump($ch); die();
+
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		var_dump($response);
+		#var_dump($response);die();
 		$response = json_decode($response);
 		if (isset($response->Errors))
 		{
 			return false;
 		}
-
 		return true;
 	}
 
