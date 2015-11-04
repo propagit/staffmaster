@@ -1111,7 +1111,13 @@ class Myob extends MX_Controller {
 		$tfn = trim($tfn);
 		$tfn = substr($tfn,0,3) . ' ' . substr($tfn, 3,3) . ' ' . substr($tfn,6);
 
-		$payroll->Tax->TaxFileNumber = $tfn;
+		if ($tfn) {
+			$payroll->Tax->TaxFileNumber = $tfn;
+		} else {
+			unset($payroll->Tax);
+		}
+
+
 		$params = json_encode($payroll);
 
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
