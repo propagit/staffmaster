@@ -1119,6 +1119,7 @@ class Myob extends MX_Controller {
 
 
 		$params = json_encode($payroll);
+		print_r($params); return;
 
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
