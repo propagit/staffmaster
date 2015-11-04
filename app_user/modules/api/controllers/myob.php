@@ -1113,8 +1113,6 @@ class Myob extends MX_Controller {
 
 		$payroll->Tax->TaxFileNumber = $tfn;
 		$params = json_encode($payroll);
-		var_dump($params);
-		return;
 
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
 		$headers = array(
@@ -1140,7 +1138,7 @@ class Myob extends MX_Controller {
 
 		$response = curl_exec($ch);
 		curl_close($ch);
-		#var_dump($response);die();
+		var_dump($response); return;
 		$response = json_decode($response);
 		if (isset($response->Errors))
 		{
