@@ -133,11 +133,14 @@ function load_job_shifts(job_id, date, scroll)
  */
 function load_job_calendar(job_id, date)
 {
+    var timezone = jstz.determine();
+    var timezone_name = timezone.name();
+    console.log(timezone_name);
 	preloading($('#wrapper_calendar'));
 	$.ajax({
 		type: "POST",
 		url: base_url + 'job/ajax/load_job_calendar',
-		data: { job_id: job_id, date: date },
+		data: { job_id: job_id, date: date, timezone: timezone_name },
 		success: function(html)
 		{
 			loaded($('#wrapper_calendar'), html);
