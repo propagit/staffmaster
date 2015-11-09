@@ -543,7 +543,7 @@ class Ajax extends MX_Controller {
 					$key += 3600;
 				}
 				if ($this->input->post('timezone')) {
-					$offset = modules::run('job/calendar/get_timezone_offset', 'Australia/Melbourne', $timezone);
+					$offset = modules::run('job/calendar/get_timezone_offset', 'Australia/Melbourne', $this->input->post('timezone'));
 					$key = $key - $offset;
 				}
 
