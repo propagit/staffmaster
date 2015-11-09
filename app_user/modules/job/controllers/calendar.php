@@ -149,6 +149,9 @@ class Calendar extends MX_Controller {
 			{
 				$key += 3600;
 			}
+			if (SUBDOMAIN == 'raunchy') {
+				$key += 24*3600;
+			}
 			$out[] = array(
 							'active_job_campaigns' => isset($val['job_campaign']['count']) ? $val['job_campaign']['count'] : '',
 							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',
