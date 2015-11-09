@@ -17,7 +17,7 @@ class Calendar extends MX_Controller {
 		$this->user = $this->session->userdata('user_data');
 		$this->is_client = modules::run('auth/is_client');
 	}
-	
+
 	function index($method='', $param1='', $param2='', $param3='',$param4='')
 	{
 		switch($method)
@@ -34,7 +34,7 @@ class Calendar extends MX_Controller {
 			break;
 		}
 	}
-	
+
 	function main_view()
 	{
 		if ($this->is_client)
@@ -46,24 +46,24 @@ class Calendar extends MX_Controller {
 		$data['user_id'] = $this->user['user_id'];
 		$this->load->view('calendar/main_view', isset($data) ? $data : NULL);
 	}
-	
+
 	/**
-	*	@desc Loads company calendar which contains all the shift count for a month based on their status 
+	*	@desc Loads company calendar which contains all the shift count for a month based on their status
 	*
 	*   @name home
 	*	@access public
 	*	@param (post) date
 	*	@return loads view file which shows the shift data in a monthly calendar
-	*	
+	*
 	*/
 	function home()
 	{
 		$selected_client_user_id = 0;
 		$this->session->unset_userdata('company_calendar_filter_client_id');
-		
+
 		$selected_state_code = 'all';
 		$this->session->unset_userdata('company_calendar_filter_state_code');
-		
+
 		$data['selected_client_user_id'] = $selected_client_user_id;
 		$data['selected_state_code'] = $selected_state_code;
 		$data['clients'] = modules::run('client/get_clients');
@@ -77,7 +77,7 @@ class Calendar extends MX_Controller {
 	*	@access public
 	*	@param (string / int) month , (string / int) year
 	*	@return json encoded array of events for the calendar
-	*	
+	*
 	*/
 	function get_company_calendar_data($month = '',$year = '')
 	{
@@ -85,7 +85,7 @@ class Calendar extends MX_Controller {
 			$month = date('m');
 		}
 		if(!$year){
-			$year = date('Y');	
+			$year = date('Y');
 		}
 		$new_date = $month.' '.$year;
 		$client_user_id = 0;
@@ -94,7 +94,7 @@ class Calendar extends MX_Controller {
 			$client_user_id = $this->session->userdata('company_calendar_filter_client_id');
 		}
 		if($this->session->userdata('company_calendar_filter_state_code')){
-			$state_code = $this->session->userdata('company_calendar_filter_state_code');	
+			$state_code = $this->session->userdata('company_calendar_filter_state_code');
 		}
 		$filters = array(
 						'client_user_id' => $client_user_id,
@@ -104,19 +104,19 @@ class Calendar extends MX_Controller {
 		{
 			$filters['client_user_id'] = $this->user['user_id'];
 		}
-		$job_campaign = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters); 
+		$job_campaign = $this->job_shift_model->get_job_campaing_count_by_year_and_month($month,$year,$filters);
 		$unassigned = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters);//status 0
 		$unassigned_alert = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unassigned',$filters, false, true);//status 0
 		$unconfirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'unconfirmed',$filters);//status 1
 		$rejected = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'rejected',$filters);//status -1
 		$confirmed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'confirmed',$filters);//status 2
 		$completed = $this->job_shift_model->get_shift_by_year_and_month($month,$year,'completed',$filters);//status 3
-		
-		
+
+
 		//merge the records in one array
-		//this is so that the its easier to display. 
+		//this is so that the its easier to display.
 		$merged_array = array();
-		
+
 		foreach($job_campaign as $jc){
 			$merged_array[$jc->job_date]['job_campaign']['count'] = $jc->total_jobs;
 		}
@@ -133,25 +133,25 @@ class Calendar extends MX_Controller {
 			$merged_array[$uc->job_date]['unconfirmed']['count'] = $uc->total_shifts;
 		}
 		foreach($rejected as $rs){
-			$merged_array[$rs->job_date]['rejected']['count'] = $rs->total_shifts;	
+			$merged_array[$rs->job_date]['rejected']['count'] = $rs->total_shifts;
 		}
 		foreach($confirmed as $cs){
 			$merged_array[$cs->job_date]['confirmed']['count'] = $cs->total_shifts;
 		}
 		foreach($completed as $cmps){
-			$merged_array[$cmps->job_date]['completed']['count'] = $cmps->total_shifts;	
+			$merged_array[$cmps->job_date]['completed']['count'] = $cmps->total_shifts;
 		}
-		
+
 		foreach($merged_array as $key => $val){
-			
+
 			$key = strtotime($key);
 			if (date('I', $key))
 			{
-				$key += 3600;
+				#$key += 3600;
 			}
 			$out[] = array(
 							'active_job_campaigns' => isset($val['job_campaign']['count']) ? $val['job_campaign']['count'] : '',
-							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',							
+							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',
 							'alert_shifts' => isset($val['unassigned_alert']['count']) ? $val['unassigned_alert']['count'] : '',
 							'unconfirmed_shift' => isset($val['unconfirmed']['count']) ? $val['unconfirmed']['count'] : '',
 							'rejected_shift' => isset($val['rejected']['count']) ? $val['rejected']['count'] : '',
@@ -180,9 +180,9 @@ class Calendar extends MX_Controller {
 				'end' => $new_date.'000'
 				);
 		}
-		
+
 		return json_encode($out);
 	}
-	
-	
+
+
 }
