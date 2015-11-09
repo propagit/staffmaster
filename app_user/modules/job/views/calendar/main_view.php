@@ -118,7 +118,7 @@ function load_calendar(month){
 	$.ajax({
 		type: 'POST',
 		url: '<?=base_url();?>job/ajax_calendar/load_calendar',
-		data: {month: month},
+		data: {month: month, timezone: timezone_name},
 		success: function(html){
 			load_month_summary(month);
 			$('#wp_calendar').html(html);

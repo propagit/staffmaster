@@ -23,7 +23,7 @@ class Calendar extends MX_Controller {
 		switch($method)
 		{
 			case 'get_company_calendar_data':
-				$this->get_company_calendar_data($param1,$param2);
+				$this->get_company_calendar_data($param1,$param2,$param3);
 			break;
 			case 'main':
 					$this->main_view();
@@ -79,7 +79,7 @@ class Calendar extends MX_Controller {
 	*	@return json encoded array of events for the calendar
 	*
 	*/
-	function get_company_calendar_data($month = '',$year = '')
+	function get_company_calendar_data($month = '',$year = '',$timezone='')
 	{
 		if(!$month){
 			$month = date('m');
@@ -149,9 +149,12 @@ class Calendar extends MX_Controller {
 			{
 				$key += 3600;
 			}
-			if (SUBDOMAIN == 'raunchy') {
-				$key += 24*3600;
+			if ($timezone != '') {
+				$offset = $this->get_timezone_offset('Australia/Melbourne', $timezone);
+				$key = $key - $offset;
 			}
+
+
 			$out[] = array(
 							'active_job_campaigns' => isset($val['job_campaign']['count']) ? $val['job_campaign']['count'] : '',
 							'unfilled_shifts' => isset($val['unassigned']['count']) ? $val['unassigned']['count'] : '',
@@ -168,8 +171,9 @@ class Calendar extends MX_Controller {
 		if(!$out){
 			$new_date = strtotime($new_date);
 
-			if (SUBDOMAIN == 'raunchy') {
-				$new_date += 24*3600;
+			if ($timezone != '') {
+				$offset = $this->get_timezone_offset('Australia/Melbourne', $timezone);
+				$new_date = $new_date - $offset;
 			}
 			if (date('I', $new_date))
 			{
@@ -191,5 +195,17 @@ class Calendar extends MX_Controller {
 		return json_encode($out);
 	}
 
-
+	function get_timezone_offset($remote_tz, $origin_tz = null) {
+	    if($origin_tz === null) {
+	        if(!is_string($origin_tz = date_default_timezone_get())) {
+	            return false; // A UTC timestamp was returned -- bail out!
+	        }
+	    }
+	    $origin_dtz = new DateTimeZone($origin_tz);
+	    $remote_dtz = new DateTimeZone($remote_tz);
+	    $origin_dt = new DateTime("now", $origin_dtz);
+	    $remote_dt = new DateTime("now", $remote_dtz);
+	    $offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+	    return $offset;
+	}
 }
