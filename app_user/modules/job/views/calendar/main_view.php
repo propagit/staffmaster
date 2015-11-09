@@ -40,13 +40,13 @@
 	<div class="box bottom-box">
     	<div class="inner-box">
         	<!-- filter -->
-        	<? if (modules::run('auth/is_client')) { ?>        	
+        	<? if (modules::run('auth/is_client')) { ?>
         	<?#=modules::run('client/menu_dropdown_departments', $user_id, 'department_id', 'Department: Any');?>
         	<? } else { ?>
             <?=modules::run('client/menu_dropdown', 'client_id', 'Client: Any', $this->session->userdata('company_calendar_filter_client_id'));?>
             <? } ?>
             <?=modules::run('common/menu_dropdown_states', 'state', 'Location: Any', $this->session->userdata('company_calendar_filter_state_code'));?>
-            
+
             <!-- calendar nav -->
 			<div id="nav_month_shifts" class="company-calendar-nav-wrap">
 				<div class="btn-group btn-nav">
@@ -58,9 +58,9 @@
 					</ul>
 				</div>
 			</div>
-			
+
             <div id="wp_calendar" style="min-height:600px;">
-	            
+
             </div>
         </div><!--inner box-->
 	</div><!--box-->
@@ -75,7 +75,7 @@ $(function(){
 	<? if ($filter_client = $this->session->userdata('company_calendar_filter_client_id') && !modules::run('auth/is_client')) { ?>
 	select_menu('client_id', '<?=$filter_client;?>', 'Client');
 	<? } ?>
-	
+
 	load_calendar('<?=date('Y-m');?>');
 	$('a[data-calendar-nav]').each(function() {
 		var $this = $(this);
@@ -95,7 +95,7 @@ $(function(){
 			success: function(html) {
 				load_calendar($('#header-company-calendar-month').html());
 			}
-		})		
+		})
 	});
 	$('#menu-client_id ul li a').click(function(){
 		var value = $(this).attr('data-value');
@@ -108,10 +108,13 @@ $(function(){
 			success: function(html) {
 				load_calendar($('#header-company-calendar-month').html());
 			}
-		})		
+		})
 	});
 });
 function load_calendar(month){
+	var timezone = jstz.determine();
+	var timezone_name = timezone.name();
+	console.log(timezone_name);
 	$.ajax({
 		type: 'POST',
 		url: '<?=base_url();?>job/ajax_calendar/load_calendar',
@@ -120,7 +123,7 @@ function load_calendar(month){
 			load_month_summary(month);
 			$('#wp_calendar').html(html);
 		}
-	});		
+	});
 }
 function load_month_summary(month){
 	$.ajax({
@@ -137,7 +140,7 @@ function load_month_summary(month){
 			$('#confirmed-shifts-count').html(data['confirmed']);
 			$('#completed-shifts-count').html(data['completed']);
 		}
-	});	
+	});
 }
 function redirect_search_shift(shift_date,shift_status)
 {
@@ -148,6 +151,6 @@ function redirect_search_shift(shift_date,shift_status)
 		success: function(html){
 			window.location.href = '<?=base_url();?>job/search';
 		}
-	});	
+	});
 }
 </script>
