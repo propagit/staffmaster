@@ -542,6 +542,10 @@ class Ajax extends MX_Controller {
 				{
 					$key += 3600;
 				}
+				if ($this->input->post('timezone')) {
+					$offset = modules::run('job/calendar/get_timezone_offset', 'Australia/Melbourne', $timezone);
+					$key = $key - $offset;
+				}
 
 				$out[] = array(
 					'unassigned' => $this->job_shift_model->count_job_shifts($job_id, $date['job_date'], '0'),
