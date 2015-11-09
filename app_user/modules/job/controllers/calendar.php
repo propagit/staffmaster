@@ -147,7 +147,7 @@ class Calendar extends MX_Controller {
 			$key = strtotime($key);
 			if (date('I', $key))
 			{
-				#$key += 3600;
+				$key += 3600;
 			}
 			$out[] = array(
 							'active_job_campaigns' => isset($val['job_campaign']['count']) ? $val['job_campaign']['count'] : '',
@@ -164,6 +164,10 @@ class Calendar extends MX_Controller {
 		}
 		if(!$out){
 			$new_date = strtotime($new_date);
+
+			if (SUBDOMAIN == 'raunchy') {
+				$new_date += 24*3600;
+			}
 			if (date('I', $new_date))
 			{
 				$new_date += 3600;
