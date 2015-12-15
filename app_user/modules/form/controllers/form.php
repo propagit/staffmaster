@@ -12,7 +12,7 @@ class Form extends MX_Controller {
 		$this->load->model('form_model');
 		$this->load->model('attribute/custom_field_model');
 	}
-	
+
 	public function index($method='', $param='')
 	{
 		switch($method)
@@ -28,13 +28,13 @@ class Form extends MX_Controller {
 				break;
 		}
 	}
-	
+
 	function main_view()
 	{
 		$data['forms'] = $this->form_model->get_forms();
 		$this->load->view('main_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function edit_view($form_id)
 	{
 		$data['form'] = $this->form_model->get_form($form_id);
@@ -47,7 +47,7 @@ class Form extends MX_Controller {
 		$data['url'] = str_replace('http:','',base_url()) . 'public/form/' . $form_id;
 		$this->load->view('edit_view', isset($data) ? $data : NULL);
 	}
-	
+
 	function personal_fields($fields = array(), $list_actived = false)
 	{
 		$personal = array(
@@ -77,16 +77,16 @@ class Form extends MX_Controller {
 					$personal[$field['name']]['form_field_id'] = $field['form_field_id'];
 					if ($field['required']) {
 						$personal[$field['name']]['required'] = 1;
-					}	
-				}							
+					}
+				}
 			}
 		}
 		if ($list_actived) {
 			$personal['actived'] = $actived;
-		}		
+		}
 		return $personal;
 	}
-	
+
 	function extra_fields($fields = array())
 	{
 		$extra = array(
@@ -94,7 +94,7 @@ class Form extends MX_Controller {
 			'role' => array('label' => 'Roles'),
 			'availability' => array('label' => 'Availability'),
 			'location' => array('label' => 'Locations'),
-			'group' => array('label' => 'Groups') 
+			'group' => array('label' => 'Groups')
 		);
 		if (count($fields) > 0) {
 			foreach($fields as $field) {
@@ -103,19 +103,21 @@ class Form extends MX_Controller {
 					$extra[$field['name']]['form_field_id'] = $field['form_field_id'];
 					if ($field['required']) {
 						$extra[$field['name']]['required'] = 1;
-					}	
-				}							
+					}
+				}
 			}
 		}
 		return $extra;
 	}
-	
+
 	function financial_fields($fields = array(), $list_actived = false)
 	{
 		$financial = array(
 			'f_acc_name' => array('label' => 'Account Name'),
 			'f_acc_number' => array('label' => 'Account Number'),
-			'f_bsb' => array('label' => 'BSB')		
+			'f_bsb' => array('label' => 'BSB'),
+			'f_tfn' => array('label' => 'TFN'),
+			'f_abn' => array('label' => 'ABN')
 		);
 		$actived = 0;
 		if (count($fields) > 0) {
@@ -126,8 +128,8 @@ class Form extends MX_Controller {
 					$financial[$field['name']]['form_field_id'] = $field['form_field_id'];
 					if ($field['required']) {
 						$financial[$field['name']]['required'] = 1;
-					}	
-				}							
+					}
+				}
 			}
 		}
 		if ($list_actived) {
@@ -135,7 +137,7 @@ class Form extends MX_Controller {
 		}
 		return $financial;
 	}
-	
+
 	function super_fields($fields = array(), $list_actived = false)
 	{
 		$super = array(
@@ -151,17 +153,17 @@ class Form extends MX_Controller {
 					$super[$field['name']]['form_field_id'] = $field['form_field_id'];
 					if ($field['required']) {
 						$super[$field['name']]['required'] = 1;
-					}	
-				}							
+					}
+				}
 			}
 		}
-		
+
 		if ($list_actived) {
 			$super['actived'] = $actived;
 		}
 		return $super;
 	}
-	
+
 	function applicant_list_view()
 	{
 		$data['applicants'] = $this->form_model->get_applicants();
