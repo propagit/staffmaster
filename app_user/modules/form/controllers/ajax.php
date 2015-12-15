@@ -108,6 +108,8 @@ class Ajax extends MX_Controller {
 			'f_acc_name' => '',
 			'f_acc_number' => '',
 			'f_bsb' => '',
+			'f_tfn' => '',
+			'f_abn' => '',
 			's_choice' => 'own',
 			's_fund_name' => '',
 			's_membership' => '',
