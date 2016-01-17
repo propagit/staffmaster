@@ -82,6 +82,12 @@ if (defined('ENVIRONMENT'))
 
 $temp_sub_domain = explode(".",$_SERVER['HTTP_HOST']);
 $sub_domain =  array_shift($temp_sub_domain);
+
+if ($sub_domain == 'labourking')
+{
+	header("Location: http://staffbooks.com");
+}
+
 if($sub_domain == 'sm' || $sub_domain == 'www')
 {
 	$application_folder = '../app_public';
