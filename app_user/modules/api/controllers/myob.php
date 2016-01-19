@@ -370,7 +370,7 @@ class Myob extends MX_Controller {
 		);
 
 		$filter = "filter=IsActive%20eq%20true";
-		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee/?$top=5000';
+		$url = $this->cloud_api_url . $this->company_id . '/Contact/Employee';
 
 		$ch = curl_init($url);
 
