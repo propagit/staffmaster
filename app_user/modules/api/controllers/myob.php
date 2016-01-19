@@ -192,6 +192,31 @@ class Myob extends MX_Controller {
 		return $result;
 	}
 
+	function test_company()
+	{
+		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
+		$headers = array(
+			'Authorization: Bearer ' . $this->config_model->get('myob_access_token'),
+	        'x-myobapi-cftoken: '.$cftoken,
+	        'x-myobapi-key: ' . $this->api_key,
+	        'x-myobapi-version: v2'
+		);
+		$url = $this->cloud_api_url;
+
+		$ch = curl_init($url);
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // enforce that when we use SSL the verification is correct
+
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$company = json_decode($response);
+		var_dump($company);
+	}
+
 	function company()
 	{
 		$cftoken = base64_encode($this->config_model->get('myob_username') . ':' . $this->config_model->get('myob_password'));
