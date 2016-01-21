@@ -88,7 +88,7 @@ if ($sub_domain == 'labourking')
 	header("Location: http://staffbooks.com");
 }
 
-if($sub_domain == 'sm' || $sub_domain == 'www')
+if($sub_domain == 'staffbooks' || $sub_domain == 'www')
 {
 	$application_folder = '../app_public';
 }
