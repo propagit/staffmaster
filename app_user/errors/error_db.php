@@ -36,9 +36,9 @@
 			<div class="box">
 				<h2><i class="fa fa-frown-o"></i> &nbsp; Oh no!<br />There appears to have been a malfunction</h2>
 				<br />
-				<?=$message;?>
+				<!-- <?=$message;?> -->
 				<br />
-				<a class="btn btn-core btn-lg" href="/"><i class="fa fa-dashboard"></i> Go To Dashboard</a>
+				<a class="btn btn-core btn-lg" href="http://staffbooks.com"><i class="fa fa-dashboard"></i> Go To StaffBooks</a>
 			</div>
     	</div>
     </div>

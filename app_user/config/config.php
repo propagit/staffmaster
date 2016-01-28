@@ -24,6 +24,7 @@ include('./../app_user/config/constants.php');
 // $config['base_url'] = 'http'.$ssl_set.'://'.$_SERVER['HTTP_HOST'];
 
 $config['base_url'] = 'https://' . SUBDOMAIN . '.staffbooks.systems';
+// $config['base_url'] = 'http://' . SUBDOMAIN . '.sb.com';
 
 /*
 |--------------------------------------------------------------------------
