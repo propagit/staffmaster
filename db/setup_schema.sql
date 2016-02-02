@@ -29,7 +29,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`system_credits`) VALUES
-(100);
+(10000000);
 
 
 -- --------------------------------------------------------
