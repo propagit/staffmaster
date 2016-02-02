@@ -309,6 +309,7 @@ class Email extends MX_Controller {
 	{
 		$to = '';
 		$from = '';
+		$reply_to = '';
 		$cc = '';
 		$bcc = '';
 		$from_text = '';
@@ -325,6 +326,10 @@ class Email extends MX_Controller {
 
 					case 'from':
 						$from = $val;
+					break;
+
+					case 'reply_to':
+						$reply_to = $val;
 					break;
 
 					case 'cc':
@@ -370,6 +375,7 @@ class Email extends MX_Controller {
 			$this->email->initialize($config);
 			$this->email->from($from,$from_text);
 			$this->email->to($to);
+			$this->email->reply_to($reply_to);
 			$this->email->cc($cc);
 			$this->email->bcc($bcc);
 			if (!isset($data['overwrite']))

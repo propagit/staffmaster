@@ -7,7 +7,7 @@
         <br>               
         <div class="row">
             <div class="form-group">
-                <label for="email_from" class="col-md-2 control-label">Email From</label>
+                <label for="email_from" class="col-md-2 control-label">Reply To</label>
                 <div class="col-md-4 first-left">
                     <input type="text" class="form-control" id="client_invoice_email_from" name="client_invoice_email_from" value="<?=$template->email_from;?>"/>
                 </div>

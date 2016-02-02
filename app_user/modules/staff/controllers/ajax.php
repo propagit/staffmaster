@@ -1098,10 +1098,10 @@ class Ajax extends MX_Controller {
 				$send_email = true;
 				if($template_info->email_template_id == WELCOME_EMAIL_TEMPLATE_ID){
 					//check if this staff has already received a welcome email
-					$staff = $this->staff_model->get_staff($user_id);
-					if($staff['welcome_email_sent'] == 'yes'){
-						$send_email = false;
-					}
+					//$staff = $this->staff_model->get_staff($user_id);
+					//if($staff['welcome_email_sent'] == 'yes'){
+					//	$send_email = false;
+					//}
 				}elseif($template_info->email_template_id == ROSTER_UPDATE_EMAIL_TEMPLATE_ID){
 					$active_month = date('Y-m');
 					$rosters = $this->roster_model->get_user_rosters_by_month($user_id,$active_month);
@@ -1121,7 +1121,9 @@ class Ajax extends MX_Controller {
 					if($email){
 						$email_data = array(
 									'to' => $email,
-									'from' => $template_info->email_from,
+									//'from' => $template_info->email_from,
+									'from' => SMTEAM_EMAIL,
+									'reply_to' => $template_info->email_from,
 									'from_text' => $company['email_c_name'],
 									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
 									'message' => modules::run('email/format_template_body',$email_body,$obj)
