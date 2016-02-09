@@ -45,12 +45,10 @@ class Sms extends MX_Controller {
 		$sendsms = $this->cbf->load();
 
 		$sender = VIRTUAL_NUMBER;
-		/*
 		$company = modules::run('setting/company_profile');
 		if ($company['company_name']) {
 			$sender = $company['company_name'];
-		}*/
-
+		}
 		$sendsms->setDA($to);
 		$sendsms->setSA($sender);
 		#$sendsms->setDR("1");
