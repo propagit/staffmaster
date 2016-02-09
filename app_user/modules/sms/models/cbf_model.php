@@ -10,6 +10,7 @@ class Cbf_model extends CI_Model {
 		if ($company['company_name']) {
 			$sender = $company['company_name'];
 		}
+        $sender = 'StaffBooks';
 		return $this->send_sms($destination, $sender, $message, false);
 	}
 
