@@ -95,7 +95,7 @@ class Ajax extends MX_Controller {
 
 
 		$user_id = $this->user_model->insert_user($user_data);
-		
+
 		if($user_id){
 			modules::run('staff/create_staff_dir',$user_id);
 		}
@@ -125,7 +125,7 @@ class Ajax extends MX_Controller {
 		modules::run('staff/send_welcome_email', $user_id, $input['email_address'], $input['password']);
 		echo json_encode(array('ok' => true, 'user_id' => $user_id));
 	}
-	
+
 	/**
 	*	@name: update_staff
 	*	@desc: abstract function to update staff profile
@@ -297,7 +297,7 @@ class Ajax extends MX_Controller {
 			echo json_encode(array('ok' => false, 'error_id' => 's_employee_id', 'msg' => 'Staff Membership Number is required'));
 			return;
 		}
-		
+
 		if ($data['s_choice'] == 'own') {
 			if(!$data['s_external_id']){
 				echo json_encode(array('ok' => false, 'error_id' => 's_external_id', 'msg' => 'Super Fund is required'));
@@ -1123,7 +1123,7 @@ class Ajax extends MX_Controller {
 									'to' => $email,
 									//'from' => $template_info->email_from,
 									'from' => SMTEAM_EMAIL,
-									'reply_to' => $template_info->email_from,
+									'reply_to' => $template_info ? $template_info->email_from : $company['email_c_email'],
 									'from_text' => $company['email_c_name'],
 									'subject' => modules::run('email/format_template_body',$template_info->email_subject,$obj),
 									'message' => modules::run('email/format_template_body',$email_body,$obj)
@@ -1461,23 +1461,23 @@ class Ajax extends MX_Controller {
 		if (!$chunks || $chunk == $chunks - 1) {
 			// Strip the temp .part suffix off
 			rename("{$filePath}.part", $filePath);
-	
+
 			# Add to database
 			$this->staff_model->update_custom_field($user_id, $field_id, $fileName, true);
-	
+
 		}
 
 		// Return Success JSON-RPC response
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
-	
+
 	# $field_type[file, date]
 	# depreciated - not used anymore
 	function _format_fileDate_custom_field($user_id,$field_id,$value,$field_type)
 	{
 		$field = $this->staff_model->get_staff_custom_field($user_id,$field_id);
-		
-		# update	
+
+		# update
 		if($field){
 			# if file
 			$old_value = json_decode($field['value']);
@@ -1491,9 +1491,9 @@ class Ajax extends MX_Controller {
 		}else{
 			# add
 			if($field_type == 'file'){
-				$value = json_encode(array('files' => array($value),'date' => ''));	
+				$value = json_encode(array('files' => array($value),'date' => ''));
 			}else{
-				$value = json_encode(array('files' => array(),'date' => date('Y-m-d',strtotime($value))));	
+				$value = json_encode(array('files' => array(),'date' => date('Y-m-d',strtotime($value))));
 			}
 			return $value;
 		}
@@ -1525,7 +1525,7 @@ class Ajax extends MX_Controller {
 			$this->staff_model->delete_payrates($user_id);
 		}
 	}
-	
+
 	function set_default_payrate() {
 		$default_payrate_id = $this->input->post('default_payrate_id');
 		$user_id = $this->input->post('user_id');
