@@ -453,7 +453,7 @@ class Staff_model extends CI_Model {
 					}
 				}
 			}
-			
+
 			if(isset($custom_attrs['fileDate_file']) && $custom_attrs['fileDate_file'] != ''){
 				foreach($custom_attrs['fileDate_file'] as $key => $val){
 					$match = ($val == 'yes' ? '!=' : '=');
@@ -462,23 +462,23 @@ class Staff_model extends CI_Model {
 					}
 				}
 			}
-			
+
 			if(isset($custom_attrs['fileDate_date_from']) && $custom_attrs['fileDate_date_from']){
 				foreach($custom_attrs['fileDate_date_from'] as $key => $val){
 					if($val){
 						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND field_date >= '" . date('Y-m-d', strtotime($val)) . "'))";
-					} 
+					}
 				}
-				
+
 			}
-			
+
 			if(isset($custom_attrs['fileDate_date_to']) && $custom_attrs['fileDate_date_to']){
 				foreach($custom_attrs['fileDate_date_to'] as $key => $val){
 					if($val){
 						$sql .= " AND s.user_id IN (SELECT user_id FROM staff_custom_fields WHERE (field_id = '".$key."' AND field_date <= '" . date('Y-m-d', strtotime($val)) . "'))";
-					} 
+					}
 				}
-				
+
 			}
 		}
 
@@ -902,10 +902,15 @@ class Staff_model extends CI_Model {
 	*/
 	function get_staff_user_ids_by_group_id($group_id)
 	{
-		$user_ids = $this->db->select('user_id')
+		$sql = "SELECT g.user_id FROM staff_groups g
+					LEFT JOIN users u ON (u.user_id = g.user_id AND u.is_staff = 1 AND u.is_admin = 0 AND u.status = 1)
+				WHERE g.attribute_group_id = $group_id";
+
+		/*$user_ids = $this->db->select('user_id')
 							 ->where('attribute_group_id',$group_id)
 							 ->get('staff_groups')
-							 ->result();
+							 ->result();*/
+		$user_ids = $this->db->query($sql)->result();
 		return $user_ids;
 	}
 	/**
@@ -940,7 +945,7 @@ class Staff_model extends CI_Model {
 	}
 
 	function get_custom_fields($user_id) {
-		$sql = "SELECT c.*, s.value as `staff_value`, s.field_date as field_date 
+		$sql = "SELECT c.*, s.value as `staff_value`, s.field_date as field_date
 				FROM custom_fields c
 					LEFT JOIN staff_custom_fields s ON (s.field_id = c.field_id AND s.user_id = $user_id)";
 		if (modules::run('auth/is_staff')) {
@@ -956,9 +961,9 @@ class Staff_model extends CI_Model {
 		$this->db->where('field_id', $field_id);
 		$query = $this->db->get('staff_custom_fields');
 		$field = $query->first_row('array');
-		
+
 		if ($field) { # Update
-			if ($accel) { # Combine new value to old values			
+			if ($accel) { # Combine new value to old values
 				$old_value = json_decode($field['value']);
 				$old_value[] = $value;
 				$value = json_encode($old_value);
@@ -978,7 +983,7 @@ class Staff_model extends CI_Model {
 			return $this->db->insert_id();
 		}
 	}
-	
+
 	function update_custom_field_date($user_id, $field_id, $value)
 	{
 		$field = $this->get_custom_field($user_id,$field_id);
@@ -995,14 +1000,14 @@ class Staff_model extends CI_Model {
 			return $this->db->insert_id();
 		}
 	}
-	
+
 	function get_staff_custom_field($user_id,$field_id)
 	{
 		$this->db->where('user_id', $user_id);
 		$this->db->where('field_id', $field_id);
 		$query = $this->db->get('staff_custom_fields');
-		return $query->first_row('array');	
-		
+		return $query->first_row('array');
+
 	}
 
 	function delete_file_field($user_id, $field_id, $file) {
@@ -1124,7 +1129,7 @@ class Staff_model extends CI_Model {
 						 ->row_array();
 		return $staff['default_payrate_id'];
 	}
-	
+
 	function get_staff_with_age_group($user_id)
 	{
 		$sql = "SELECT s.*, u.*,
@@ -1138,19 +1143,19 @@ class Staff_model extends CI_Model {
 				FROM user_staffs s
 				LEFT JOIN users u ON s.user_id = u.user_id WHERE s.user_id = '" . $user_id . "'";
 		$query = $this->db->query($sql);
-		return $query->first_row('array');	
+		return $query->first_row('array');
 	}
-	
+
 	function get_staff_roles($user_id)
 	{
 		$sql = "SELECT * FROM attribute_roles ar
 					WHERE ar.role_id IN
-						(SELECT attribute_role_id FROM staff_roles sr 
+						(SELECT attribute_role_id FROM staff_roles sr
 						WHERE sr.user_id = " . $user_id .")";
 		$staff_roles = $this->db->query($sql)->result_array();
 		return $staff_roles;
 	}
-	
+
 	function get_active_staff_without_external_id()
 	{
 		$sql = "SELECT s.*, u.*
