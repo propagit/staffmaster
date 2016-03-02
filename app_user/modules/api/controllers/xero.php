@@ -25,7 +25,7 @@ class Xero extends MX_Controller {
 			# demo
             #'consumer_key' => 'U8PV3ETRIVPW7F6NVCP7BICHBIT4QS',
             #'shared_secret' => '6CHG5QVKWGREAYMCW23BHC6KDBZZW3',
-			
+
             // API versions
             'core_version' => '2.0',
             'payroll_version' => '1.0',
@@ -97,7 +97,7 @@ class Xero extends MX_Controller {
 		$count = 1;
 		$staff = array();
 		$more_staff = true;
-		
+
 		while($more_staff){
 			$response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Employees', 'payroll'), array('page' => $count));
 			if ($this->XeroOAuth->response['code'] == 200) {
@@ -106,10 +106,10 @@ class Xero extends MX_Controller {
 				if(isset($result['Employee'])){
 					$staff = array_merge($staff,$result['Employee']);
 				}else{
-					$more_staff = false;	
+					$more_staff = false;
 				}
 			}else{
-				$more_staff = false;		
+				$more_staff = false;
 			}
 			$count++;
 		}
@@ -118,6 +118,32 @@ class Xero extends MX_Controller {
 
     function read_employees() {
         var_dump($this->get_employees());
+    }
+
+    function get_contacts() {
+        $count = 1;
+        $data = array();
+        $more_contact = true;
+        while($more_contact) {
+            $response = $this->XeroOAuth->request('GET', $this->XeroOAuth->url('Contacts'), array('page' => $count));
+            if ($this->XeroOAuth->response['code'] == 200) {
+                $contacts = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
+                $result = json_decode(json_encode($contacts->Contacts[0]), TRUE);
+                if (isset($result['Contact'])) {
+                    $data = array_merge($data, $result['Contact']);
+                } else {
+                    $more_contact = false;
+                }
+            } else {
+                $more_contact = false;
+            }
+            $count++;
+        }
+        return $data;
+    }
+
+    function read_contacts() {
+        var_dump($this->get_contacts());
     }
 
     function get_employee($id) {
@@ -149,8 +175,8 @@ class Xero extends MX_Controller {
         }
         $city = $staff['city'];
         if (!$city) { $city = $staff['suburb']; }
-        if (!$city) { $city = 'Not Specified'; }	
-	
+        if (!$city) { $city = 'Not Specified'; }
+
 		$xml = "<Employees>
                     <Employee>
                         <FirstName>" . $staff['first_name'] . "</FirstName>
@@ -170,9 +196,9 @@ class Xero extends MX_Controller {
                         </HomeAddress>
                     </Employee>
                 </Employees>";
-			
+
         $response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Employees', 'payroll'), array(), $xml);
-		
+
         if ($this->XeroOAuth->response['code'] == 200) {
             $employees = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 
@@ -181,24 +207,24 @@ class Xero extends MX_Controller {
 
             $this->load->model('staff/staff_model');
             $this->staff_model->update_staff($user_id, array('external_staff_id' => $result['Employee']['EmployeeID']),true);
-			
+
 			#update staff other informations
 			return $this->update_employee($result['Employee']['EmployeeID'], $bypass_error);
-			
+
             #return $result['Employee'];
         }
-		
+
 		# Api exception
 		if ($this->XeroOAuth->response['code'] == 400){
 			# When this happens an Api Excetion has happened, as the code to add employee has been pre validated for all required fields.
-			# this exception can be because of bad data format such as year being over the current year such as 2092 etc	
-			
+			# this exception can be because of bad data format such as year being over the current year such as 2092 etc
+
 			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
 			$xml = $this->XeroOAuth->response['response'];
 			#var_dump($xml);
 			$regex = "#<ValidationErrors><ValidationError><Message>(.*?)</Message></ValidationError></ValidationErrors>#";
-			$message = preg_match($regex, $xml, $errors);	
+			$message = preg_match($regex, $xml, $errors);
 			#echo 'api-exception';
 			echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => $errors[1]));
 			return;
@@ -221,29 +247,29 @@ class Xero extends MX_Controller {
         $city = $staff['city'];
         if (!$city) { $city = $staff['suburb']; }
         if (!$city) { $city = 'Not Specified'; }
-		
+
 		# staff optional fields
 		$staff_phone = '';
 		if($staff['phone']){
 			$staff_phone = "<Phone>" . $staff['phone']. "</Phone>";
 		}
-		
+
 		$staff_mobile = '';
 		if($staff['mobile']){
 			$staff_mobile = "<Mobile>" . $staff['mobile']. "</Mobile>";
 		}
-		
+
 		$staff_gender = '';
 		if($staff['gender']){
 			$staff_gender = "<Gender>" . strtoupper($staff['gender']) . "</Gender>";
 		}
-		
+
         $super = '';
-		
+
 		# check if staff has super set up in xero
 		$super_membership_id = '';
 		if (isset($employee['SuperMemberships']['SuperMembership'])){
-					
+
 			# check for multiple super in xero
 			$xero_super_accounts = $employee['SuperMemberships'];
 			if(isset($employee['SuperMemberships']['SuperMembership'][0])){
@@ -252,15 +278,15 @@ class Xero extends MX_Controller {
 			foreach($xero_super_accounts as $sup_account) {
 				# get super membership id of the first one
 				$super_membership_id = $sup_account['SuperMembershipID'];
-				break; 	
+				break;
 			 }
-		}	
-			
+		}
+
 		 # check if staff has chosen his own super fund
-		 if(trim($staff['s_employee_id'])){	
+		 if(trim($staff['s_employee_id'])){
 			 if($staff['s_choice'] == 'own'){
 				if($staff['s_external_id'] && $staff['s_employee_id']){
-					
+
 					# if super account is set on xero
 					if ($super_membership_id){
 						$super .= "<SuperMemberships>
@@ -270,15 +296,15 @@ class Xero extends MX_Controller {
 									  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
 									</SuperMembership>
 								  </SuperMemberships>";
-		
-					}else{ 
+
+					}else{
 						# create new super on xero
 						$super .= "<SuperMemberships>
 									<SuperMembership>
 									  <SuperFundID>" . $staff['s_external_id'] . "</SuperFundID>
 									  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
 									</SuperMembership>
-								  </SuperMemberships>";	
+								  </SuperMemberships>";
 					}
 				}
 			  }else{
@@ -293,40 +319,40 @@ class Xero extends MX_Controller {
 										<EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
 									</SuperMembership>
 								  </SuperMemberships>";
-		
-						}else{ 
+
+						}else{
 							# create new super on xero
 							$super .= "<SuperMemberships>
 										<SuperMembership>
 										  <SuperFundID>" . $id . "</SuperFundID>
 										  <EmployeeNumber>" . $staff['s_employee_id'] . "</EmployeeNumber>
 										</SuperMembership>
-									  </SuperMemberships>";	
+									  </SuperMemberships>";
 						}
 					}else{
 						if(!$bypass_error){
 							echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => 'Your employer has not set any default Super Funds. Please select your own super.'));
-							exit;return;	
+							exit;return;
 						}
 					}
 			  }
 		  }
-	
-		
+
+
         $bank_accounts = '';
-	
+
         if (isset($employee['BankAccounts']['BankAccount']))
         {
             $bank_accounts .= "<BankAccounts>";
-			
+
 			# check if staff has more than one bank accoun in xero
 			$emp_bank_accounts = $employee['BankAccounts'];
 			if(isset($employee['BankAccounts']['BankAccount'][0])){
 				$emp_bank_accounts = $employee['BankAccounts']['BankAccount'];
 			}
-			
+
             foreach($emp_bank_accounts as $account) {
-				
+
                 if (isset($account['Remainder']) && $account['Remainder'] == "true") {
                     $bank_accounts .= "
                             <BankAccount>
@@ -351,7 +377,7 @@ class Xero extends MX_Controller {
             $bank_accounts .= "
                 </BankAccounts>";
 
-				
+
 		}else{
 			# if no bank account has been set
 			if($staff['f_acc_name'] && $staff['f_bsb'] && $staff['f_acc_number']){
@@ -363,18 +389,18 @@ class Xero extends MX_Controller {
 										<AccountNumber>" . $staff['f_acc_number'] . "</AccountNumber>
 										<Remainder>true</Remainder>
 									</BankAccount>
-								</BankAccounts>";	
-							
+								</BankAccounts>";
+
 			}
 		}
-	
-		
+
+
 		# staff tfn - xero validates valid tfn
 		$tax = '';
-		if(trim($staff['f_tfn'])){	
+		if(trim($staff['f_tfn'])){
 			# Check EmploymentBasis
 			#$employment_basis = isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'CASUAL';
-			
+
 			$tax = "
 				<TaxDeclaration>
 					<TFNPendingOrExemptionHeld>false</TFNPendingOrExemptionHeld>
@@ -385,7 +411,7 @@ class Xero extends MX_Controller {
 					<EmploymentBasis>" . (isset($employee['TaxDeclaration']['EmploymentBasis']) ? $employee['TaxDeclaration']['EmploymentBasis'] : 'CASUAL') . "</EmploymentBasis>
 				</TaxDeclaration>
 				";
-		}	
+		}
 
         $xml = "<Employees>
                     <Employee>
@@ -405,7 +431,7 @@ class Xero extends MX_Controller {
                             <PostalCode>" . ($staff['postcode'] ? $staff['postcode'] : "0000") . "</PostalCode>
                             <Country>" . ($staff['country'] ? $staff['country'] : "Not Specified") . "</Country>
                         </HomeAddress>
-						$tax	
+						$tax
                         $bank_accounts
                         $super
                     </Employee>
@@ -425,13 +451,13 @@ class Xero extends MX_Controller {
             	return $result['Employee'];
 			}
         }
-		
-		# validation error 
+
+		# validation error
 		if ($this->XeroOAuth->response['code'] == 400){
-						
+
 			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
-			
+
 			$xml = $this->XeroOAuth->response['response'];
 			#var_dump($xml);
 			$regex = "#<ValidationErrors><ValidationError><Message>(.*?)</Message></ValidationError></ValidationErrors>#";
@@ -440,7 +466,7 @@ class Xero extends MX_Controller {
 			#var_dump($xml);
 			#var_dump($errors);exit;
 			#var_dump($result['Employee']);exit;return;
-			
+
 			if($bypass_error){
 				return array('xero_exception_occured' => $errors[1]);
 			}else{
@@ -476,10 +502,10 @@ class Xero extends MX_Controller {
             return $result['PayRun'];
         }
     }
-	
+
 	function read_payrun($id)
 	{
-		var_dump($this->get_payrun($id));	
+		var_dump($this->get_payrun($id));
 	}
 
     function get_payitems()
@@ -566,47 +592,47 @@ class Xero extends MX_Controller {
             return $result;
         }
     }
-	
-	
+
+
     function validate_timesheet_employee_payitems($timesheet_id,$xero_payrun_id = '')
     {
         $timesheet = modules::run('timesheet/get_timesheet', $timesheet_id);
         $staff = modules::run('staff/get_staff', $timesheet['staff_id']);
-		
+
         $errors = array();
         if ($staff['external_staff_id']) {
             #$employee = $this->read_employee($staff['external_staff_id']);
 			$employee = $this->get_employee($staff['external_staff_id']);
-			
+
 			#echo '<pre>'.print_r($employee,true).'</pre>';exit;
-			
-            if ($employee) {				
-				# Check if employee has Pay calendar & OrdinaryEarningsRateID 
+
+            if ($employee) {
+				# Check if employee has Pay calendar & OrdinaryEarningsRateID
 				if(!isset($employee['PayrollCalendarID'])){
 					$errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - has no payroll calendar<br>";
 				}else{
-					# Check if Pay Period falls under 
+					# Check if Pay Period falls under
 					$cur_payrun = $this->get_payrun($xero_payrun_id);
 					if($cur_payrun['PayrollCalendarID'] != $employee['PayrollCalendarID']){
 						$errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - payrun calender do not match the selected payrun calender<br>";
 					}
 				}
-				
+
 				if(!isset($employee['OrdinaryEarningsRateID'])){
 					$errors[] = "Employee " . $staff['first_name'] . " " . $staff['last_name'] . " - has no ordinary earning rate<br>";
 				}
-				
-				
+
+
                 $pay_items = $this->get_payitems();
 				# Extract employee earning ids
 				$earnings = array();
-				
+
 				# Check if any payrates has been set for this employee
 				if(isset($employee['PayTemplate']['EarningsLines']['EarningsLine'])){
-					
+
 					# Convert employee earning ids -> names
 					# Check if multiple payrates has been set for this employee in xero
-					if(isset($employee['PayTemplate']['EarningsLines']['EarningsLine'][0])){		
+					if(isset($employee['PayTemplate']['EarningsLines']['EarningsLine'][0])){
 						foreach($employee['PayTemplate']['EarningsLines']['EarningsLine'] as $earning_line)
 						{
 							foreach($pay_items as $item)
@@ -627,7 +653,7 @@ class Xero extends MX_Controller {
 							}
 					}
 				}
-				
+
                 # Check if time sheet pay rate is in employee earnings
 
                 $pay_rates = modules::run('timesheet/extract_timesheet_payrate', $timesheet['timesheet_id']);
@@ -656,7 +682,7 @@ class Xero extends MX_Controller {
         return $errors;
 
     }
-	
+
 	# function to create an array of EarningRateID with their Name as key.
 	# this is usefull when pushing timesheet to xero
 	function get_payitems_by_name(){
@@ -669,20 +695,20 @@ class Xero extends MX_Controller {
 	}
 
     function create_timesheets($payrun_id)
-    {	
+    {
 		#echo $payrun_id;exit;return;
         $this->load->model('payrun/payrun_model');
         $timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
 		$payrun = $this->payrun_model->get_payrun($payrun_id);
-		
+
 		# get payrates from zero
 		$xero_payrates = $this->get_payitems_by_name();
-		
+
 		# number of days in payrun
 		$date_diff = (strtotime($payrun['date_to']) - strtotime($payrun['date_from'])) / (60*60*24);
-		
+
 		$xero_arr = $this->sort_array($timesheets,'external_staff_id');
-		
+
 		#echo '<pre>' . print_r($xero_arr,true) . '</pre>';exit;
 		$xml = "";
 		foreach($xero_arr as $key => $val){
@@ -694,42 +720,42 @@ class Xero extends MX_Controller {
 						<Status>Draft</Status>
 						<TimesheetLines>
 					";
-			
-			 # this returns an array for each staff's timesheet grouped by payrate			
-			 $line_arr = $this->sort_array($val,'payrate');	
-			 
+
+			 # this returns an array for each staff's timesheet grouped by payrate
+			 $line_arr = $this->sort_array($val,'payrate');
+
 			 # the key for this array is the payrate, which we will use to get the payrate id or EarningsRateID in xero
 			 foreach($line_arr as $k => $v){
-				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k],$xero_payrates);	
+				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k],$xero_payrates);
 			 } #foreaeach ($line_arr...)
-				
+
 			 $xml .= "	</TimesheetLines>
                 	  </Timesheet>
 					";
-			
+
 		}
 		$final_xml = " <Timesheets>$xml</Timesheets>";
-		
+
 		$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $final_xml);
 		#return var_dump($response);
 		if ($this->XeroOAuth->response['code'] == 200) {
 			$timesheet = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($timesheet->Timesheets), TRUE);
 
-			
+
 			$result_arr = $result;
 			if(isset($result['Timesheet'][0])){
 				$result_arr = $result['Timesheet'];
 			}
-			
-			
-			
+
+
+
 			$msg = array(
 							'msg' => 'Xero Push Successful',
 							'pay_period_to' => $payrun['date_to'],
-							'pay_period_from' => $payrun['date_from'] 
+							'pay_period_from' => $payrun['date_from']
 						);
-			
+
 			foreach($result_arr as $t){
 				#echo $t['EmployeeID']."<br>".$t['TimesheetID'];
 				foreach($xero_arr as $key => $val){
@@ -738,7 +764,7 @@ class Xero extends MX_Controller {
 							$this->payrun_model->update_synced($v['timesheet_id'], array(
 								'external_id' => $t['TimesheetID'],
 								'external_msg' => json_encode($msg)
-							));	
+							));
 						}
 					}
 				}
@@ -749,7 +775,7 @@ class Xero extends MX_Controller {
 		if ($this->XeroOAuth->response['code'] == 400) {
 			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
-			
+
 			$xml = $this->XeroOAuth->response['response'];
 			#var_dump($xml);exit;
 			$regex = "#<Message>(.*?)</Message>#";
@@ -761,7 +787,7 @@ class Xero extends MX_Controller {
 			return json_encode(array('ok' => false, 'error_id' => '', 'msg' => $errors[1]));
 		}
     }
-	
+
 	# for testing the payrun xml output
 	function xero_ts()
 	{
@@ -769,18 +795,18 @@ class Xero extends MX_Controller {
 		$payrun_id = 1;
 		$this->load->model('payrun/payrun_model');
         $timesheets = $this->payrun_model->get_export_timesheets($payrun_id);
-		
-		
+
+
 		$payrun = $this->payrun_model->get_payrun($payrun_id);
-		
+
 		#print_r($timesheets);exit;
-		
+
 		# get payrates from zero
 		$xero_payrates = $this->get_payitems_by_name();
-		
+
 		# number of days in payrun
 		$date_diff = (strtotime($payrun['date_to']) - strtotime($payrun['date_from'])) / (60*60*24);
-		
+
 		$xero_arr = $this->sort_array($timesheets,'external_staff_id');
 		#echo '<pre>' . print_r($xero_arr,true) . '</pre>';exit;
 		$xml = "";
@@ -793,45 +819,45 @@ class Xero extends MX_Controller {
 						<Status>Draft</Status>
 						<TimesheetLines>
 				    ";
-			
-			 # this returns an array for each staff's timesheet grouped by payrate			
-			 $line_arr = $this->sort_array($val,'payrate');	
-			 
+
+			 # this returns an array for each staff's timesheet grouped by payrate
+			 $line_arr = $this->sort_array($val,'payrate');
+
 			 # the key for this array is the payrate, which we will use to get the payrate id or EarningsRateID in xero
 			 foreach($line_arr as $k => $v){
 				$xml .= $this->create_number_of_units($v,$date_diff,$payrun['date_from'],$xero_payrates[$k],$xero_payrates);
 			 } #foreaeach ($line_arr...)
-				
-			 $xml .= "	 
+
+			 $xml .= "
 						</TimesheetLines>
                 	</Timesheet>
 					";
 		}
-		
+
 		$final_xml = " <Timesheets>$xml</Timesheets>";
-		
+
 		echo $final_xml;exit;
-		
+
 		#$response = $this->XeroOAuth->request('POST', $this->XeroOAuth->url('Timesheets', 'payroll'), array(), $final_xml);
 		#return var_dump($response);exit;
 		if ($this->XeroOAuth->response['code'] == 200) {
 			$timesheet = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($timesheet->Timesheets), TRUE);
 
-			
+
 			$result_arr = $result;
 			if(isset($result['Timesheet'][0])){
 				$result_arr = $result['Timesheet'];
 			}
-			
-			
-			
+
+
+
 			$msg = array(
 							'msg' => 'Xero Push Successful',
 							'pay_period_to' => $payrun['date_to'],
-							'pay_period_from' => $payrun['date_from'] 
+							'pay_period_from' => $payrun['date_from']
 						);
-			
+
 			foreach($result_arr as $t){
 				#echo $t['EmployeeID']."<br>".$t['TimesheetID'];
 				foreach($xero_arr as $key => $val){
@@ -840,12 +866,12 @@ class Xero extends MX_Controller {
 							$this->payrun_model->update_synced($v['timesheet_id'], array(
 								'external_id' => $t['TimesheetID'],
 								'external_msg' => json_encode($msg)
-							));	
+							));
 						}
 					}
 				}
 			}
-			
+
 			echo json_encode(array('ok' => true, 'error_id' => '', 'msg' => ''));
 			return;
 		}
@@ -853,7 +879,7 @@ class Xero extends MX_Controller {
 		if ($this->XeroOAuth->response['code'] == 400) {
 			$validation_err = $this->XeroOAuth->parseResponse($this->XeroOAuth->response['response'], $this->XeroOAuth->response['format']);
 			$result = json_decode(json_encode($validation_err->Employees[0]), TRUE);
-			
+
 			$xml = $this->XeroOAuth->response['response'];
 			#var_dump($xml);exit;
 			$regex = "#<Message>(.*?)</Message>#";
@@ -865,10 +891,10 @@ class Xero extends MX_Controller {
 			echo json_encode(array('ok' => false, 'error_id' => '', 'msg' => $errors[1]));
 			return; exit;
 		}
-	
-		
+
+
 	}
-	
+
 	function create_number_of_units($timesheet,$no_of_days,$payrun_start_date,$xero_earning_rate_id,$xero_payrates)
 	{
 		$no_of_units = array();
@@ -877,23 +903,23 @@ class Xero extends MX_Controller {
 		$temp_no_of_units = array();
 
 		for($i = 0; $i <= $no_of_days; $i++){
-			#$no_of_units[$i] = "<NumberOfUnit>0.00</NumberOfUnit>";	
+			#$no_of_units[$i] = "<NumberOfUnit>0.00</NumberOfUnit>";
 			foreach($timesheet as $line){
 				#$earning_rate_id = $xero_earning_rate_id;
 				# check if timesheet has different payrates depending on the time of the day configured in StaffBooks payrate template
 				# not ideal but this was added later on to the system on a short notice - to be made more robust on future updates
-				
-				# a check to avoid quering the extract_timesheet_payrate for the same timesheet over and over again 
+
+				# a check to avoid quering the extract_timesheet_payrate for the same timesheet over and over again
 				if(!$cur_ts_id){
 					$cur_ts_id = $line['timesheet_id'];
 				}else{
 					if($cur_ts_id != $line['timesheet_id']){
 						#new timesheet
 						$get_diff_payrate = true;
-						$cur_ts_id = $line['timesheet_id'];	
-						
+						$cur_ts_id = $line['timesheet_id'];
+
 					}else{
-						$get_diff_payrate = false;	
+						$get_diff_payrate = false;
 					}
 				}
 				# get timesheet payrates
@@ -908,28 +934,28 @@ class Xero extends MX_Controller {
 						$earning_rate_id = $xero_payrates[$dp['group']];
 					}else{
 						# use xero_earning_rate_id passed to the function
-						$earning_rate_id = $xero_earning_rate_id;	
+						$earning_rate_id = $xero_earning_rate_id;
 					}
 					#if($line['job_date'] == date('Y-m-d',strtotime($payrun_start_date . "+$i days"))){
 					if(date('Y-m-d',$dp['start']) == date('Y-m-d',strtotime($payrun_start_date . "+$i days"))){
 						if($temp_no_of_units[$earning_rate_id][$i]){
-							$total_hour += $temp_no_of_units[$earning_rate_id][$i];	
+							$total_hour += $temp_no_of_units[$earning_rate_id][$i];
 						}
-						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>" . $total_hour . "</NumberOfUnit>";	
-						$temp_no_of_units[$earning_rate_id][$i] = $total_hour;	
-						
+						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>" . $total_hour . "</NumberOfUnit>";
+						$temp_no_of_units[$earning_rate_id][$i] = $total_hour;
+
 					}else{
 						if($temp_no_of_units[$earning_rate_id][$i]){
-							$total_hour = $temp_no_of_units[$earning_rate_id][$i];	
+							$total_hour = $temp_no_of_units[$earning_rate_id][$i];
 						}else{
-							$total_hour = '0.00';	
+							$total_hour = '0.00';
 						}
-						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>" . $total_hour . "</NumberOfUnit>";		
+						$no_of_units[$earning_rate_id][$i] = "<NumberOfUnit>" . $total_hour . "</NumberOfUnit>";
 					}
 				}
-			} 	 #foreach timesheet as line				
+			} 	 #foreach timesheet as line
 		}
-	
+
 		#$units = implode("",$no_of_units);
 		$xml = "";
 		foreach($no_of_units as $key => $nou){
@@ -938,9 +964,9 @@ class Xero extends MX_Controller {
 							<NumberOfUnits>
 								" . implode("",$nou) . "
 							</NumberOfUnits>
-					</TimesheetLine>"; 	
+					</TimesheetLine>";
 		}
-		
+
 		/*$xml = "<TimesheetLine>
 					<EarningsRateID>" . $xero_earning_rate_id . "</EarningsRateID>
 						<NumberOfUnits>
@@ -949,38 +975,38 @@ class Xero extends MX_Controller {
 				</TimesheetLine>";*/
 		return $xml;
 	}
-	
+
 	# sorts timesheet by key
 	function sort_array($array,$sort_key)
 	{
 		$sorted = array();
 		foreach($array as $arr){
-			$sorted[$arr[$sort_key]][] = $arr;	
+			$sorted[$arr[$sort_key]][] = $arr;
 		}
 		return $sorted;
-		
+
 	}
-	
+
 	function get_staff_csv()
 	{
 		$staff = $this->get_employees();
-		
+
 		$csvname = 'anderson_staff.csv';
-		
+
 		header('Content-type: application/csv; charset=utf-8;');
         header("Content-Disposition: attachment; filename=$csvname");
-		
+
 		$fp = fopen("php://output", 'w');
-		
+
 		$headings = array(
 								'EmployeeID',
 								'FirstName',
 								'LastName',
 								'Email'
 							);
-		
+
 		fputcsv($fp,$headings);
-		
+
 		foreach($staff as $s){
 			fputcsv($fp,
 						array(
@@ -989,7 +1015,7 @@ class Xero extends MX_Controller {
 							isset($s['LastName']) ? $s['LastName'] : 'NA',
 							isset($s['Email']) ? $s['Email'] : 'NA'
 							)
-					);	
+					);
 		}
 		fclose($fp);
 	}
