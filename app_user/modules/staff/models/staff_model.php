@@ -902,9 +902,9 @@ class Staff_model extends CI_Model {
 	*/
 	function get_staff_user_ids_by_group_id($group_id)
 	{
-		$sql = "SELECT g.user_id FROM staff_groups g
-					LEFT JOIN users u ON (u.user_id = g.user_id AND u.is_staff = 1 AND u.is_admin = 0 AND u.status = 1)
-				WHERE g.attribute_group_id = $group_id";
+		$sql = "SELECT g.user_id FROM staff_groups g, users u
+				WHERE u.user_id = g.user_id AND u.is_staff = 1 AND u.is_admin = 0 AND u.status = 1
+				AND g.attribute_group_id = $group_id";
 
 		/*$user_ids = $this->db->select('user_id')
 							 ->where('attribute_group_id',$group_id)
