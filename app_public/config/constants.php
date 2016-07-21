@@ -45,7 +45,7 @@ define('MASTER_DB', 'smcloud');
 
 define('SITE_NAME', 'StaffBooks');
 define('LIVE_SERVER', false);
-define('VIRTUAL_NUMBER', '447624803738');
+define('VIRTUAL_NUMBER', '447624803725');
 define('CBF_USER', 'staffbooks');
 define('CBF_PASS', 'staffb00ks');
 define('SMS_PRICE', 0.1); # 10 cents per sms
