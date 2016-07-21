@@ -53,7 +53,7 @@ class Sms extends MX_Controller {
 					$ans = substr($result['msg'], 0, 1);
 
 					# Test new version
-					if ($data[2] == '61403704961' || $data[2] == '61402133066') {
+					if ($data[1] == '61403704961' || $data[1] == '61402133066') {
 						return;
 					}
 
