@@ -33,7 +33,7 @@ class Sms extends MX_Controller {
 		#var_dump($datas);
 		if (is_array($datas)) {
 			foreach($datas as $data) {
-				#var_dump($data);
+				var_dump($data);
 
 				$result = array(
 					'sender' => $data[1], # Sender number
@@ -41,7 +41,7 @@ class Sms extends MX_Controller {
 					'msg' => pack("H*", $data[7]),
 					'received_on' => date('Y-m-d H:i:s', $data[5])
 				);
-				var_dump($result);
+				// var_dump($result);
 				if ($result['msg'] != '')
 				{
 					$this->load->model('sms_model');
