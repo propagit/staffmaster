@@ -2345,7 +2345,7 @@ INSERT INTO `supers` (`super_id`, `name`) VALUES
 (171, 'Oracle Superannuation Plan'),
 (172, 'Perpetual Super Wrap'),
 (173, 'Perpetual WealthFocus Superannuation Fund'),
-(174, 'Perpetual's Select Superannuation Fund'),
+(174, 'Perpetual\'s Select Superannuation Fund'),
 (175, 'Personal Choice Private Fund'),
 (176, 'Pitcher Retirement Plan'),
 (177, 'Plan B Eligible Rollover Fund'),

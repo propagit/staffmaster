@@ -52,6 +52,11 @@ class Sms extends MX_Controller {
 					$code = substr($result['msg'], 1);
 					$ans = substr($result['msg'], 0, 1);
 
+					# Test new version
+					if ($data[2] == '61403704961' || $data[2] == '61402133066') {
+						return;
+					}
+
 					$request = $this->sms_model->get_request($result['sender'], $code);
 					if ($request)
 					{
