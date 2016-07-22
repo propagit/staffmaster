@@ -128,6 +128,7 @@ class Sms extends MX_Controller {
 
 	function processResponse() {
 		$unprocessed_requests = $this->sms_model->get_unprocess_request();
+		print_r($unprocessed_requests);
 		foreach($unprocessed_requests as $r)
 		{
 
