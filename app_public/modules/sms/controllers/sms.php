@@ -55,9 +55,7 @@ class Sms extends MX_Controller {
 					$response_id = $this->sms_model->insert_response($result);
 
 					# Test new version
-					if ($data[1] == '61403704961' || $data[1] == '61402133066') {
-						return;
-					}
+					return;
 
 					$request = $this->sms_model->get_request($result['sender'], $code);
 					if ($request)
@@ -124,55 +122,6 @@ class Sms extends MX_Controller {
 		}
 
 
-	}
-
-	function processResponse() {
-		$unprocessed_requests = $this->sms_model->get_unprocess_request();
-		print_r($unprocessed_requests);
-		foreach($unprocessed_requests as $r)
-		{
-
-			$this->load->model('account_sms_model');
-			$shift = $this->account_sms_model->get_job_shift($r['subdomain'], $r['shift_id']);
-			if ($shift['staff_id'] != $r['user_id'] && $shift['status'] == 2)
-			{
-				# Shift has been taken and confirmed by a different staff
-				$invalid_sms = $this->account_sms_model->get_sms_template($r['subdomain'], 3);
-				if ($invalid_sms['status'])
-				{
-					$msg = $invalid_sms['msg'];
-					$msg = str_replace('{Code}', $r['msg'], $msg);
-					$this->send_1way_sms($r['sender'], $msg, $r['subdomain']);
-				}
-			}
-			else
-			{
-				if ($r['answer'] == 'y')
-				{
-					# Confirm this job
-					$this->account_sms_model->update_job_shift($r['subdomain'], $r['shift_id'], $r['user_id'], 2);
-					$confirm_sms = $this->account_sms_model->get_sms_template($r['subdomain'], 2);
-					if ($confirm_sms['status'])
-					{
-						$msg = $confirm_sms['msg'];
-						$msg = str_replace('{Date}',date('d/m/Y',$shift['start_time']),$msg);
-                        $msg = str_replace('{StartTime}',date('H:i',$shift['start_time']),$msg);
-                        $msg = str_replace('{FinishTime}',date('H:i',$shift['finish_time']),$msg);
-                        $this->send_1way_sms($r['sender'], $msg, $r['subdomain']);
-					}
-				}
-
-				if ($r['answer'] == 'n' && $r['user_id'] == $shift['staff_id'])
-				{
-					# Reject this job
-					$this->account_sms_model->update_job_shift($r['subdomain'], $r['shift_id'], $r['user_id'], -1);
-				}
-			}
-
-			$this->load->model('sms_model');
-			$this->sms_model->update_request($r['request_id'], array('processed' => 1));
-			$this->sms_model->update_reponse($r['response_id'], array('processed' => 1));
-		}
 	}
 
 	function processIncoming ($input)
