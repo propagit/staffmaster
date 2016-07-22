@@ -33,7 +33,7 @@ class Sms extends MX_Controller {
 		#var_dump($datas);
 		if (is_array($datas)) {
 			foreach($datas as $data) {
-				var_dump($data);
+				#var_dump($data);
 
 				$result = array(
 					'sender' => $data[1], # Sender number
@@ -44,13 +44,15 @@ class Sms extends MX_Controller {
 				// var_dump($result);
 				if ($result['msg'] != '')
 				{
-					$this->load->model('sms_model');
-					# Log the response
-					$response_id = $this->sms_model->insert_response($result);
-
 					# Now checking the request
 					$code = substr($result['msg'], 1);
 					$ans = substr($result['msg'], 0, 1);
+					$result['code'] = $code;
+					$result['answer'] = strtolower($ans);
+
+					$this->load->model('sms_model');
+					# Log the response
+					$response_id = $this->sms_model->insert_response($result);
 
 					# Test new version
 					if ($data[1] == '61403704961' || $data[1] == '61402133066') {
