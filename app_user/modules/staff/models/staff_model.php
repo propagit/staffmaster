@@ -939,7 +939,7 @@ class Staff_model extends CI_Model {
 				FROM custom_fields c
 				LEFT JOIN staff_custom_fields s ON s.field_id = c.field_id
 				WHERE s.user_id = $user_id
-				AND c.field_id = $field_id";
+				AND c.field_id = $field_id ORDER BY c.field_order";
 		$query = $this->db->query($sql);
 		return $query->first_row('array');
 	}
