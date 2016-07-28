@@ -86,7 +86,7 @@ class Form_model extends CI_Model {
 			$this->db->where('active', ACTIVE);
 		}
 		$this->db->where('form_id', $form_id);
-		$this->db->order_by('field_order', 'asc');
+		// $this->db->order_by('field_order', 'asc');
 		$query = $this->db->get('form_fields');
 		return $query->result_array();
 	}
