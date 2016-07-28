@@ -34,10 +34,12 @@ class Form_model extends CI_Model {
 		$sql = "SELECT c.*, f.form_field_id, f.required
 				FROM custom_fields c
 					LEFT JOIN form_fields f ON (f.name = c.field_id AND f.form_id = $form_id)
-				WHERE c.admin_only = 0 ORDER BY c.field_order";
+				WHERE c.admin_only = 0";
 		if ($show_actived) {
 			$sql .= " AND f.form_field_id > 0";
 		}
+		$sql .= " ORDER BY c.field_order";
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -86,7 +88,6 @@ class Form_model extends CI_Model {
 			$this->db->where('active', ACTIVE);
 		}
 		$this->db->where('form_id', $form_id);
-		// $this->db->order_by('field_order', 'asc');
 		$query = $this->db->get('form_fields');
 		return $query->result_array();
 	}
