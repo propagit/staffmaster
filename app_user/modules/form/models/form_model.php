@@ -31,7 +31,7 @@ class Form_model extends CI_Model {
 	}
 
 	function get_custom_fields($form_id, $show_actived=false) {
-		$sql = "SELECT c.*, f.form_field_id, f.required
+		$sql = "SELECT c.*, f.form_field_id, f.required, f.active
 				FROM custom_fields c
 					LEFT JOIN form_fields f ON (f.name = c.field_id AND f.form_id = $form_id)
 				WHERE c.admin_only = 0";

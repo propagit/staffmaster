@@ -73,11 +73,9 @@ class Form extends MX_Controller {
 			foreach($fields as $field) {
 				if (isset($personal[$field['name']])) {
 					$actived++;
-					$personal[$field['name']]['active'] = 1;
+					$personal[$field['name']]['active'] = $field['active'];
 					$personal[$field['name']]['form_field_id'] = $field['form_field_id'];
-					if ($field['required']) {
-						$personal[$field['name']]['required'] = 1;
-					}
+					$personal[$field['name']]['required'] = $field['required'];
 				}
 			}
 		}
@@ -99,11 +97,9 @@ class Form extends MX_Controller {
 		if (count($fields) > 0) {
 			foreach($fields as $field) {
 				if (isset($extra[$field['name']])) {
-					$extra[$field['name']]['active'] = 1;
+					$extra[$field['name']]['active'] = $field['active'];
 					$extra[$field['name']]['form_field_id'] = $field['form_field_id'];
-					if ($field['required']) {
-						$extra[$field['name']]['required'] = 1;
-					}
+					$extra[$field['name']]['required'] = $field['required'];
 				}
 			}
 		}
@@ -124,11 +120,9 @@ class Form extends MX_Controller {
 			foreach($fields as $field) {
 				if (isset($financial[$field['name']])) {
 					$actived++;
-					$financial[$field['name']]['active'] = 1;
+					$financial[$field['name']]['active'] = $field['active'];
 					$financial[$field['name']]['form_field_id'] = $field['form_field_id'];
-					if ($field['required']) {
-						$financial[$field['name']]['required'] = 1;
-					}
+					$financial[$field['name']]['required'] = $field['required'];
 				}
 			}
 		}
@@ -149,11 +143,9 @@ class Form extends MX_Controller {
 			foreach($fields as $field) {
 				if (isset($super[$field['name']])) {
 					$actived++;
-					$super[$field['name']]['active'] = 1;
+					$super[$field['name']]['active'] = $field['active'];
 					$super[$field['name']]['form_field_id'] = $field['form_field_id'];
-					if ($field['required']) {
-						$super[$field['name']]['required'] = 1;
-					}
+					$super[$field['name']]['required'] = $field['required'];
 				}
 			}
 		}

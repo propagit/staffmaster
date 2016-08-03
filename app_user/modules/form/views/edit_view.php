@@ -3,14 +3,14 @@
 	<div class="box top-box">
    		 <h2>Configure: <?=$form['name'];?></h2>
 		 <p>Applicant details entered into the form will send via email to the address you specify below, the email will contain an approve link that will create the staff profile in a pending status. Changing the status of a staff member from pending to approved will make these staff account accessible and allow the staff member to work on jobs you create in the system.</p>
-            <a class="btn btn-info" href="<?=base_url();?>form" ><i class="fa fa-arrow-left"></i> Back to Forms List</a>  
+            <a class="btn btn-info" href="<?=base_url();?>form" ><i class="fa fa-arrow-left"></i> Back to Forms List</a>
     </div>
 </div>
 <!--end top box-->
 
 <div class="col-md-12">
 	<div class="box bottom-box">
-    
+
     	<div class="col-md-6 white-box">
             <div class="inner-box">
             	<h2>Form Settings</h2>
@@ -30,13 +30,13 @@
             	</form>
             </div>
         </div>
-        
+
         <div class="col-md-6 white-box">
             <div class="inner-box">
             	<a href="<?=$url;?>" class="btn btn-core pull-right" target="_blank"><i class="fa fa-eye"></i> Preview</a>
             	<h2>Available Fields</h2>
             	<br />
-            	
+
 				<div class="list-group" id="form-fields">
 					<div class="list-group-item active">
 						<a onclick="load_fields(this,'personal')" class="pull-right"><i class="fa fa-plus-square"></i></a>
@@ -53,8 +53,8 @@
 							<? } ?>
 						</table>
 					</div>
-					
-					
+
+
 					<div class="list-group-item">
 						<a onclick="load_fields(this,'financial')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Financial Details</b>
@@ -70,7 +70,7 @@
 							<? } ?>
 						</table>
 					</div>
-					
+
 					<div class="list-group-item">
 						<a onclick="load_fields(this,'super')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Super Details</b>
@@ -86,7 +86,7 @@
 							<? } ?>
 						</table>
 					</div>
-					
+
 					<? foreach($extra_fields as $name => $field) { ?>
 					<div class="list-group-item">
 						<b><?=$field['label'];?></b>
@@ -96,21 +96,21 @@
 						</div>
 					</div>
 					<? } ?>
-					
+
 					<div href="#" class="list-group-item">
 						<a onclick="load_fields(this,'custom')" class="pull-right"><i class="fa fa-plus-square"></i></a>
 						<b>Custom Attributes</b>
 						<table class="table table-hover table-condensed table-fields hide" id="fields-custom">
-							<? foreach($custom_fields as $field) { 
+							<? foreach($custom_fields as $field) {
 							   $label = $field['label'];
-							   if($field['type'] == 'fileDate'){ 
+							   if($field['type'] == 'fileDate'){
 							   		$labels = json_decode($field['label']);
 									$label = $labels->file_label;
 							   }
 							?>
 							<tr>
 								<td class="left"><?=$label;?></td>
-								<td class="right" width="20"><span class="label label-<?=($field['required'] != NULL) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$label;?>','<?=$field['field_id'];?>')">Active</span></td>
+								<td class="right" width="20"><span class="label label-<?=($field['active']) ? 'success' : 'default'?>" onclick="active_field(this,'<?=$label;?>','<?=$field['field_id'];?>')">Active</span></td>
 								<td class="right" width="20"><span class="label label-<?=($field['required']) ? 'success' : 'default'?>" onclick="require_field(this,'<?=$field['field_id'];?>')">Required</span></td>
 							</tr>
 							<? } ?>
@@ -118,11 +118,11 @@
 					</div>
 				</div>
 
-                             
-                
+
+
             </div>
         </div>
-        
+
 	</div>
 </div>
 <script>
