@@ -251,7 +251,7 @@ class Ajax extends MX_Controller {
 			if ($platform == 'myob')
 			{
 				$period = $this->payrun_model->get_payrun_timesheets_date_period($type);
-				if (!isset($input['date_from']) || $input['date_from'] == '' || $period['start_date'] =< strtotime($input['date_from'])) {
+				if (!isset($input['date_from']) || $input['date_from'] == '' || $period['start_date'] <= strtotime($input['date_from'])) {
 					echo json_encode(array(
 						'ok' => false,
 						'error_id' => 'date_from'
